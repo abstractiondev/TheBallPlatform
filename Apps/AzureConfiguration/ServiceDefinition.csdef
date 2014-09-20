@@ -21,6 +21,9 @@
     </LocalResources>
   </WorkerRole>
   <WebRole name="TheBallWebFarm" vmsize="ExtraSmall">
+    <Startup>
+      <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple" />
+    </Startup>
     <Runtime executionContext="elevated" />
     <Sites>
       <Site name="Web">
