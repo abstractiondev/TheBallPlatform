@@ -108,6 +108,7 @@
   <ItemGroup>
     <Content Include="index.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="TheBallCertLogin.aspx" />
     <Content Include="TheBallLogin.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -126,6 +127,13 @@
     <Compile Include="InformationContextManagerModule.cs" />
     <Compile Include="RESTForwarderModule.cs" />
     <Compile Include="RESTRequestForwardingHandler.cs" />
+    <Compile Include="TheBallCertLogin.aspx.cs">
+      <DependentUpon>TheBallCertLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TheBallCertLogin.aspx.designer.cs">
+      <DependentUpon>TheBallCertLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="WebSocketHandler.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Web;
+using System.Web.Caching;
 using AzureSupport;
 using TheBall;
 using TheBall.CORE;
@@ -86,10 +87,10 @@ namespace WebInterface
                 return;
 
             // Do resource tracking only on non-local requests
-            if (request.IsLocal == false)
+            var application = (HttpApplication)sender;
+            var response = application.Response;
+            if (request.IsLocal == false && response.Filter is ContentLengthFilter)
             {
-                var application = (HttpApplication)sender;
-                var response = application.Response;
                 var contentLengthFilter = (ContentLengthFilter)response.Filter;
                 var contentLength = contentLengthFilter.BytesWritten;
                 Debug.WriteLine("Content length sent: " + contentLength);
