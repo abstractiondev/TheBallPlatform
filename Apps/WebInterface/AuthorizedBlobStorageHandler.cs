@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web;
 //using System.Web.Helpers;
@@ -62,6 +63,11 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             string user = context.User.Identity.Name;
+            if (context.Request.Path.StartsWith("/cert/"))
+            {
+                ProcessCertificateRequest(context);
+                return;
+            }
             var userIdentity = context.User;
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             var request = context.Request;
@@ -100,6 +106,22 @@ namespace WebInterface
                 response.StatusCode = 403;
                 response.Write(securityException.ToString());
             }
+        }
+
+        private void ProcessCertificateRequest(HttpContext context)
+        {
+            var request = context.Request;
+            var x509 = new X509Certificate2(request.ClientCertificate.Certificate);
+
+            // create the certificate chain by using the machine store
+            var chain = new X509Chain(true);
+            chain.ChainPolicy.RevocationMode = X509RevocationMode.Offline;
+            chain.Build(x509);
+
+            // at this point chain.ChainElements[0] will contain the original
+            // certificate, the higher indexes are the issuers.
+            // note that if the certificate is self-signed, there will be just one entry.
+            var issuer = chain.ChainElements[1].Certificate.Thumbprint;
         }
 
         private void HandleEncryptedDeviceRequest(HttpContext context)
