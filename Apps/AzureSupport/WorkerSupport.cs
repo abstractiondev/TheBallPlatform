@@ -579,6 +579,7 @@ namespace TheBall
                 "AaltoGlobalImpact.OIP/GroupContainer",
                 "AaltoGlobalImpact.OIP/AttachedToObjectCollection",
                 "AaltoGlobalImpact.OIP/BinaryFileCollection",
+                "AaltoGlobalImpact.OIP/DynamicContentCollection"
             };
             foreach (string renderRequiredFolder in foldersToCopy)
             {

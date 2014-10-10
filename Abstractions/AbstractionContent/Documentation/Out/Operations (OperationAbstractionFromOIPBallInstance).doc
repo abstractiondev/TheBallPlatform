@@ -1401,6 +1401,33 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>SetCategoryContentRanking</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Set category content ranking from request content JSON
+          
+		</div>
+		</p><h2>Target Definition: RankingData</h2>
+		<p>		<div class="MsoNormal" >
+		Ranking data deserialized from JSON
+		</div>
+		</p><h2>Target Definition: CategoryID ( RankingData )</h2>
+		<p>		<div class="MsoNormal" >
+		Current category ID
+		</div>
+		</p><h2>Target Definition: ContentRankingCollection</h2>
+		<p>		<div class="MsoNormal" >
+		Content ranking collection
+		</div>
+		</p><h2>Target Definition: CategoryRankingCollection ( CategoryID, ContentRankingCollection )</h2>
+		<p>		<div class="MsoNormal" >
+		Filter content ranks by input category
+		</div>
+		</p><h2>Method Call: SyncRankingItemsToRankingData ( RankingData, CategoryRankingCollection )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync existing ranking items to incoming ranking data
+		</div>
 		</p><h1>SetCategoryHierarchyAndOrderInNodeSummary</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

@@ -613,6 +613,19 @@ using System.IO;
 				}
 				}
 		
+		public class SetCategoryContentRanking 
+		{
+				public static void Execute()
+		{
+						
+					INT.CategoryChildRanking RankingData = SetCategoryContentRankingImplementation.GetTarget_RankingData();	
+				string CategoryID = SetCategoryContentRankingImplementation.GetTarget_CategoryID(RankingData);	
+				ContentCategoryRankCollection ContentRankingCollection = SetCategoryContentRankingImplementation.GetTarget_ContentRankingCollection();	
+				ContentCategoryRank[] CategoryRankingCollection = SetCategoryContentRankingImplementation.GetTarget_CategoryRankingCollection(CategoryID, ContentRankingCollection);	
+				SetCategoryContentRankingImplementation.ExecuteMethod_SyncRankingItemsToRankingData(RankingData, CategoryRankingCollection);		
+				}
+				}
+		
 		public class SetCategoryHierarchyAndOrderInNodeSummary 
 		{
 				public static void Execute()

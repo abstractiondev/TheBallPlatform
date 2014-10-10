@@ -219,7 +219,7 @@ namespace TheBall
                 fullNameOrExtension = Path.GetExtension(fullNameOrExtension);
             }
 
-            switch (fullNameOrExtension)
+            switch (fullNameOrExtension.ToLower())
             {
                 #region Big freaking list of mime types
                 // combination of values from Windows 7 Registry and  
@@ -718,6 +718,7 @@ namespace TheBall
                 case ".wdb": return "application/vnd.ms-works";
                 case ".wdp": return "image/vnd.ms-photo";
                 case ".webarchive": return "application/x-safari-webarchive";
+                case ".webm": return "video/webm";
                 case ".webtest": return "application/xml";
                 case ".wiq": return "application/xml";
                 case ".wiz": return "application/msword";

@@ -739,6 +739,30 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="SetCategoryContentRanking">
+      <OperationSpec>
+        <Description>
+            Set category content ranking from request content JSON
+          </Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="RankingData" dataType="INT.CategoryChildRanking" designDesc="Ranking data deserialized from JSON" state="implemented" />
+          <TargetDefinition name="CategoryID" dataType="string" designDesc="Current category ID" state="implemented">
+            <Target name="RankingData" />
+          </TargetDefinition>
+          <TargetDefinition name="ContentRankingCollection" dataType="ContentCategoryRankCollection" designDesc="Content ranking collection" state="implemented" />
+          <TargetDefinition name="CategoryRankingCollection" dataType="ContentCategoryRank[]" designDesc="Filter content ranks by input category" state="implemented">
+            <Target name="CategoryID" />
+            <Target name="ContentRankingCollection" />
+          </TargetDefinition>
+          <MethodExecute name="SyncRankingItemsToRankingData" designDesc="Sync existing ranking items to incoming ranking data" state="implemented">
+            <Target name="RankingData" />
+            <Target name="CategoryRankingCollection" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="SetCategoryHierarchyAndOrderInNodeSummary">
       <OperationSpec>
         <Description>

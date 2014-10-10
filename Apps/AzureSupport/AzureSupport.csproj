@@ -146,6 +146,7 @@
     <Compile Include="AaltoGlobalImpact.OIP\MigrationSupport.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\PickCategorizedContentToConnectionImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\ProcessConnectionReceivedDataImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\SetCategoryContentRankingImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\SetGroupAsDefaultForAccountImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
     <Compile Include="IAccountInfo.cs" />
@@ -156,6 +157,8 @@
     <Compile Include="Partials\AttachedToObjectCollection.cs" />
     <Compile Include="Partials\Comment.cs" />
     <Compile Include="Partials\CommentCollection.cs" />
+    <Compile Include="Partials\ContentCategoryRank.cs" />
+    <Compile Include="Partials\ContentCategoryRankCollection.cs" />
     <Compile Include="Partials\DynamicContent.cs" />
     <Compile Include="Partials\DynamicContentCollection.cs" />
     <Compile Include="Partials\DynamicContentGroup.cs" />

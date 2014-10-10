@@ -1446,6 +1446,52 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SetCategoryContentRanking" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Set category content ranking from request content JSON
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RankingData" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ranking data deserialized from JSON</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CategoryID ( RankingData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current category ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ContentRankingCollection" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Content ranking collection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CategoryRankingCollection ( CategoryID, ContentRankingCollection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Filter content ranks by input category</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SyncRankingItemsToRankingData ( RankingData, CategoryRankingCollection )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync existing ranking items to incoming ranking data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetCategoryHierarchyAndOrderInNodeSummary" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

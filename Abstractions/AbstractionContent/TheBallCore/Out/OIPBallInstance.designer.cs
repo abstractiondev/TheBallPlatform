@@ -31,6 +31,28 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class CategoryChildRanking
+			{
+				[DataMember]
+				public string CategoryID { get; set; }
+				[DataMember]
+				public RankingItem[] RankingItems { get; set; }
+			}
+
+			[DataContract]
+			public partial class RankingItem
+			{
+				[DataMember]
+				public string ContentID { get; set; }
+				[DataMember]
+				public string ContentSemanticType { get; set; }
+				[DataMember]
+				public string RankName { get; set; }
+				[DataMember]
+				public string RankValue { get; set; }
+			}
+
+			[DataContract]
 			public partial class ParentToChildren
 			{
 				[DataMember]
@@ -49296,6 +49318,7 @@ EmbeddedContent.Description
 				public static DynamicContent CreateDefault()
 				{
 					var result = new DynamicContent();
+					result.ImageData = MediaContent.CreateDefault();
 					return result;
 				}
 				/*
@@ -49335,6 +49358,7 @@ DynamicContent.RawContent
 DynamicContent.RawContent
 ";
 
+					result.ImageData = MediaContent.CreateDemoDefault();
 					result.EditType = @"DynamicContent.EditType";
 
 					result.PageLocation = @"DynamicContent.PageLocation";
@@ -49348,6 +49372,10 @@ DynamicContent.RawContent
 				{
 					//Type collType = masterInstance.GetType();
 					//string typeName = collType.Name;
+					if(ImageData != null) {
+						((IInformationObject) ImageData).UpdateCollections(masterInstance);
+					}
+
 				}
 
                 public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
@@ -49365,6 +49393,14 @@ DynamicContent.RawContent
 				{
 					if(filterOnFalse(this))
 						result.Add(this);
+					{ // Scoping block for variable name reusability
+						IInformationObject item = ImageData;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
 					if(searchWithinCurrentMasterOnly == false)
 					{
 					}					
@@ -49372,6 +49408,15 @@ DynamicContent.RawContent
 
 				private object FindFromObjectTree(string objectId)
 				{
+					{
+						var item = ImageData;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
 					return null;
 				}
 				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
@@ -49390,6 +49435,11 @@ DynamicContent.RawContent
 							}
 							existingValue.Add(iObject);
 						}
+					}
+					{
+						var item = (IInformationObject) ImageData;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 
 				}
@@ -49411,6 +49461,8 @@ DynamicContent.RawContent
 							return true;
 						if(RawContent != _unmodified_RawContent)
 							return true;
+						if(ImageData != _unmodified_ImageData)
+							return true;
 						if(IsEnabled != _unmodified_IsEnabled)
 							return true;
 						if(ApplyActively != _unmodified_ApplyActively)
@@ -49419,6 +49471,15 @@ DynamicContent.RawContent
 							return true;
 						if(PageLocation != _unmodified_PageLocation)
 							return true;
+						{
+							IInformationObject item = (IInformationObject) ImageData;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
 				
 						return false;
 					}
@@ -49426,6 +49487,14 @@ DynamicContent.RawContent
 
 				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
 				{
+					if(ImageData != null) {
+						if(ImageData.ID == replacingObject.ID)
+							ImageData = (MediaContent) replacingObject;
+						else {
+							IInformationObject iObject = ImageData;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 				}
 
 
@@ -49438,6 +49507,7 @@ DynamicContent.RawContent
 					ElementQuery = sourceObject.ElementQuery;
 					Content = sourceObject.Content;
 					RawContent = sourceObject.RawContent;
+					ImageData = sourceObject.ImageData;
 					IsEnabled = sourceObject.IsEnabled;
 					ApplyActively = sourceObject.ApplyActively;
 					EditType = sourceObject.EditType;
@@ -49460,6 +49530,10 @@ DynamicContent.RawContent
 					_unmodified_EditType = EditType;
 					_unmodified_PageLocation = PageLocation;
 				
+					_unmodified_ImageData = ImageData;
+					if(ImageData != null)
+						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
+
 				
 				}
 
@@ -49526,6 +49600,9 @@ DynamicContent.RawContent
 			[DataMember]
 			public string RawContent { get; set; }
 			private string _unmodified_RawContent;
+			[DataMember]
+			public MediaContent ImageData { get; set; }
+			private MediaContent _unmodified_ImageData;
 			[DataMember]
 			public bool IsEnabled { get; set; }
 			private bool _unmodified_IsEnabled;
