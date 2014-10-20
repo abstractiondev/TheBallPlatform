@@ -20,7 +20,7 @@ namespace TheBall.Infrastructure
             Exception exception = null;
             try
             {
-                drive = CloudDriveSupport.CreatePageBlobDrive(driveBlobName, sizeInMegabytes);
+                //drive = CloudDriveSupport.CreatePageBlobDrive(driveBlobName, sizeInMegabytes);
             }
             catch (Exception ex)
             {

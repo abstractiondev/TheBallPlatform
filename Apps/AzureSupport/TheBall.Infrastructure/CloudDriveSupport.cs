@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.StorageClient.Protocol;
 
 namespace TheBall.Infrastructure
 {
+#if never
     public static class CloudDriveSupport
     {
         private static CloudStorageAccount Account;
@@ -143,4 +144,5 @@ namespace TheBall.Infrastructure
             cloudDrive.Unmount();
         }
     }
+#endif
 }

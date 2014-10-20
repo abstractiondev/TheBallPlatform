@@ -2,6 +2,16 @@ using System;
 using System.IO;
 using Microsoft.WindowsAzure.StorageClient;
 
+namespace Microsoft.WindowsAzure.StorageClient
+{
+    public class CloudDrive
+    {
+        public string LocalPath
+        { get; set; }
+    }
+    
+}
+
 namespace TheBall.Infrastructure
 {
     public class MountCloudDriveImplementation
@@ -13,7 +23,7 @@ namespace TheBall.Infrastructure
             try
             {
                 const int CacheSizeMB = 1024;
-                driveLetter = driveReference.Mount(CacheSizeMB, DriveMountOptions.None);
+                //driveLetter = driveReference.Mount(CacheSizeMB, DriveMountOptions.None);
                 DateTime nowUtc = DateTime.UtcNow;
                 string refText = nowUtc.ToString();
                 string newFileName = Path.Combine(driveLetter, "Testfile.txt");

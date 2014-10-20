@@ -8,7 +8,7 @@ namespace TheBall.Index
         {
             if (resourceInfo.Success == false)
                 return;
-            CloudDriveSupport.UnmountDrive(resourceInfo.CloudDrive);
+            //CloudDriveSupport.UnmountDrive(resourceInfo.CloudDrive);
         }
     }
 }

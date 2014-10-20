@@ -189,8 +189,8 @@ namespace CaloomWorkerRole
                         {
                             try
                             {
-                                WorkerSupport.ProcessIndexing(indexingMessages, IndexerInfo.CloudDrive.LocalPath);
-                                WorkerSupport.ProcessQueries(queryMessages, IndexerInfo.CloudDrive.LocalPath);
+                                //WorkerSupport.ProcessIndexing(indexingMessages, IndexerInfo.CloudDrive.LocalPath);
+                                //WorkerSupport.ProcessQueries(queryMessages, IndexerInfo.CloudDrive.LocalPath);
                             }
                             catch (Exception ex)
                             {
@@ -274,6 +274,7 @@ namespace CaloomWorkerRole
 
         private void tryToBecomeIndexingMaster()
         {
+            /*
             QueueSupport.ReportStatistics("Trying to become indexing master: " + RoleEnvironment.CurrentRoleInstance.Id);
             AttemptToBecomeInfrastructureIndexerParameters parameters =
                 new AttemptToBecomeInfrastructureIndexerParameters
@@ -294,7 +295,8 @@ namespace CaloomWorkerRole
                 DriveInfo driveInfo = new DriveInfo(driveLetter);
                 var availableMegabytes = driveInfo.AvailableFreeSpace/(1024*1024);
                 QueueSupport.ReportStatistics("Success: " + result.CloudDrive.LocalPath + " available: " + availableMegabytes + "MB");
-            }
+            }*/
+            IsIndexingMaster = false;
         }
 
         public override void OnStop()
