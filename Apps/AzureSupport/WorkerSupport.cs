@@ -574,11 +574,16 @@ namespace TheBall
             string[] foldersToCopy = new string[] { 
                 "AaltoGlobalImpact.OIP/NodeSummaryContainer", 
                 "AaltoGlobalImpact.OIP/TextContent",
+                "AaltoGlobalImpact.OIP/EmbeddedContent",
                 "AaltoGlobalImpact.OIP/AddressAndLocationCollection", 
                 "AaltoGlobalImpact.OIP/MediaContent", 
                 "AaltoGlobalImpact.OIP/GroupContainer",
                 "AaltoGlobalImpact.OIP/AttachedToObjectCollection",
                 "AaltoGlobalImpact.OIP/BinaryFileCollection",
+                "AaltoGlobalImpact.OIP/LinkToContentCollection",
+                "AaltoGlobalImpact.OIP/EmbeddedContentCollection",
+                "AaltoGlobalImpact.OIP/CategoryCollection",
+                "AaltoGlobalImpact.OIP/ContentCategoryRankCollection",
                 "AaltoGlobalImpact.OIP/DynamicContentCollection"
             };
             foreach (string renderRequiredFolder in foldersToCopy)

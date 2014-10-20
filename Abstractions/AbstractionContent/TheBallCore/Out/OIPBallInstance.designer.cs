@@ -26043,6 +26043,8 @@ AccountRoles.OrganizationsImPartOf
 					if(customDemo != null)
 						return customDemo;
 					var result = new RenderedNode();
+					result.OriginalContentID = @"RenderedNode.OriginalContentID";
+
 					result.TechnicalSource = @"RenderedNode.TechnicalSource";
 
 					result.ImageBaseUrl = @"RenderedNode.ImageBaseUrl";
@@ -26259,6 +26261,8 @@ RenderedNode.Excerpt
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
+						if(OriginalContentID != _unmodified_OriginalContentID)
+							return true;
 						if(TechnicalSource != _unmodified_TechnicalSource)
 							return true;
 						if(ImageBaseUrl != _unmodified_ImageBaseUrl)
@@ -26386,6 +26390,7 @@ RenderedNode.Excerpt
 
 				private void CopyContentFrom(RenderedNode sourceObject)
 				{
+					OriginalContentID = sourceObject.OriginalContentID;
 					TechnicalSource = sourceObject.TechnicalSource;
 					ImageBaseUrl = sourceObject.ImageBaseUrl;
 					ImageExt = sourceObject.ImageExt;
@@ -26407,6 +26412,7 @@ RenderedNode.Excerpt
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_OriginalContentID = OriginalContentID;
 					_unmodified_TechnicalSource = TechnicalSource;
 					_unmodified_ImageBaseUrl = ImageBaseUrl;
 					_unmodified_ImageExt = ImageExt;
@@ -26446,6 +26452,9 @@ RenderedNode.Excerpt
 				{
 					switch (propertyName)
 					{
+						case "OriginalContentID":
+							OriginalContentID = value;
+							break;
 						case "TechnicalSource":
 							TechnicalSource = value;
 							break;
@@ -26480,6 +26489,9 @@ RenderedNode.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string OriginalContentID { get; set; }
+			private string _unmodified_OriginalContentID;
 			[DataMember]
 			public string TechnicalSource { get; set; }
 			private string _unmodified_TechnicalSource;

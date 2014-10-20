@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 
 namespace TheBall.CORE
@@ -542,6 +543,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromBlog(Blog blog)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = blog.ID;
             node.TechnicalSource = NodeSourceTypeBlog;
             node.Title = blog.Title;
             node.Excerpt = blog.Excerpt;
@@ -598,6 +600,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromActivity(Activity activity)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = activity.ID;
             node.TechnicalSource = NodeSourceTypeActivity;
             node.Title = activity.ActivityName;
             node.Excerpt = activity.Excerpt;
@@ -677,6 +680,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromCategory(Category category)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = category.ID;
             node.TechnicalSource = NodeSourceTypeCategory;
             node.Title = category.Title;
             node.Excerpt = category.Excerpt;
@@ -717,6 +721,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromEmbeddedContent(EmbeddedContent embeddedContent)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = embeddedContent.ID;
             node.TechnicalSource = NodeSourceTypeEmbeddedContent;
             node.Title = embeddedContent.Title;
             node.Excerpt = embeddedContent.Description;
@@ -725,7 +730,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(embeddedContent.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(embeddedContent.Categories, cat => cat.CategoryName));
-                node.CategoryIDList = embeddedContent.Categories.SelectedIDCommaSeparated;
+                node.CategoryIDList =
+                    String.Join(",", embeddedContent.Categories.CollectionContent.Select(cat => cat.ID).ToArray());
             }
             if (embeddedContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(embeddedContent.Locations));
@@ -745,6 +751,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromLinkToContent(LinkToContent linkToContent)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = linkToContent.ID;
             node.TechnicalSource = NodeSourceTypeLinkToContent;
             node.Title = linkToContent.Title;
             node.Excerpt = linkToContent.Description;
@@ -758,7 +765,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(linkToContent.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(linkToContent.Categories, cat => cat.CategoryName));
-                node.CategoryIDList = linkToContent.Categories.SelectedIDCommaSeparated;
+                node.CategoryIDList =
+                    String.Join(",", linkToContent.Categories.CollectionContent.Select(cat => cat.ID).ToArray());
             }
             if (linkToContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(linkToContent.Locations));
@@ -777,6 +785,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromImage(Image image)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = image.ID;
             node.TechnicalSource = NodeSourceTypeImage;
             node.Title = image.Title;
             if (!String.IsNullOrEmpty(image.Description))
@@ -793,7 +802,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(image.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(image.Categories, cat => cat.CategoryName));
-                node.CategoryIDList = image.Categories.SelectedIDCommaSeparated;
+                node.CategoryIDList =
+                    String.Join(",", image.Categories.CollectionContent.Select(cat => cat.ID).ToArray());
             }
             if (image.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(image.Locations));
@@ -813,6 +823,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromBinaryFile(BinaryFile binaryFile)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = binaryFile.ID;
             node.TechnicalSource = NodeSourceTypeBinaryFile;
             node.Title = binaryFile.Title;
             node.Excerpt = binaryFile.Description;
@@ -821,7 +832,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(binaryFile.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(binaryFile.Categories, cat => cat.CategoryName));
-                node.CategoryIDList = binaryFile.Categories.SelectedIDCommaSeparated;
+                node.CategoryIDList =
+                    String.Join(",", binaryFile.Categories.CollectionContent.Select(cat => cat.ID).ToArray());
             }
             return node;
         }
@@ -839,6 +851,7 @@ namespace AaltoGlobalImpact.OIP
         internal static RenderedNode getNodeFromTextContent(TextContent textContent)
         {
             RenderedNode node = RenderedNode.CreateDefault();
+            node.OriginalContentID = textContent.ID;
             node.TechnicalSource = NodeSourceTypeTextContent;
             node.Title = textContent.Title;
             node.Excerpt = textContent.Excerpt;
@@ -852,7 +865,8 @@ namespace AaltoGlobalImpact.OIP
             {
                 node.Categories.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, getTitleOrNameFromCategory));
                 node.CategoryNames.CollectionContent.AddRange(getCategoryCollectionTexts(textContent.Categories, cat => cat.CategoryName));
-                node.CategoryIDList = textContent.Categories.SelectedIDCommaSeparated;
+                node.CategoryIDList =
+                    String.Join(",", textContent.Categories.CollectionContent.Select(cat => cat.ID).ToArray());
             }
             if(textContent.Locations != null)
                 node.Locations.CollectionContent.AddRange(getLocationCollectionTexts(textContent.Locations));

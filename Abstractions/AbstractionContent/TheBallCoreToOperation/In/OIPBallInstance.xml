@@ -418,6 +418,7 @@
       </InformationObject>
       <InformationObject name="RenderedNode" designDesc="Node representing information to be presented in Tile-like fashion">
         <InformationItems>
+          <InformationItem name="OriginalContentID" logicalDataType="Text_Short"/>
           <InformationItem name="TechnicalSource" logicalDataType="Text_Short"/>
           <InformationItem name="ImageBaseUrl" logicalDataType="Text_Short" />
           <InformationItem name="ImageExt" logicalDataType="Text_Short" />
