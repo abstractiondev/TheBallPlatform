@@ -59,13 +59,10 @@
       <HintPath>..\packages\Castle.Core.3.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\AzureWebFarm.0.9.2.27\lib\NET40\Microsoft.Web.Administration.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Web.Deployment, Version=8.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AzureWebFarm.0.9.2.27\lib\NET40\Microsoft.Web.Deployment.dll</HintPath>
+      <HintPath>C:\Program Files\IIS\Microsoft Web Deploy V2\Microsoft.Web.Deployment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>

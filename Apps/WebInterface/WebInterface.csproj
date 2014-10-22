@@ -186,6 +186,7 @@
     <None Include="Properties\PublishProfiles\test.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\test.theball.me.pubxml" />
     <None Include="Properties\PublishProfiles\testoip.aaltoglobalimpact.org.pubxml" />
+    <None Include="Properties\PublishProfiles\theball.onlinetaekwondo.net.pubxml" />
     <None Include="Properties\PublishProfiles\weball.cloudapp.net.pubxml" />
     <None Include="Properties\PublishProfiles\Websites.pubxml" />
   </ItemGroup>
