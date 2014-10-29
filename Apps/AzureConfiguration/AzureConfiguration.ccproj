@@ -34,9 +34,10 @@
   </PropertyGroup>
   <!-- Items for the project -->
   <ItemGroup>
+    <ServiceConfiguration Include="ServiceConfiguration.TheBallMeTest.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.TheBallMeProduction.cscfg" />
     <ServiceDefinition Include="ServiceDefinition.csdef" />
-    <ServiceConfiguration Include="ServiceConfiguration.Local.cscfg" />
-    <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
+    <ServiceConfiguration Include="ServiceConfiguration.iZENZEiPlatform.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBallWebFarm\TheBallWebFarm.csproj">
@@ -55,6 +56,12 @@
       <RoleName>WorkerRoleAccelerator.Core</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>False</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Profiles" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\caloomdemoStaging.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

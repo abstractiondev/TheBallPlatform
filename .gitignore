@@ -37,3 +37,4 @@ Demos/CQRS_CustomerBankAccountDemo/Apps/AndroidClient/.idea/workspace.xml
 *.userprefs
 .DS_Store
 PrecompiledWeb/*
+Apps/AzureConfiguration/*.cscfg

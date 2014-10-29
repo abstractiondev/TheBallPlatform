@@ -7,6 +7,7 @@
     <Imports>
       <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
+      <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
       <Setting name="DataConnectionString" />
@@ -19,6 +20,8 @@
       <LocalStorage name="ConfigFiles" cleanOnRoleRecycle="true" sizeInMB="10" />
       <LocalStorage name="LocalCache" cleanOnRoleRecycle="true" sizeInMB="10240" />
     </LocalResources>
+    <Certificates>
+    </Certificates>
   </WorkerRole>
   <WebRole name="TheBallWebFarm" vmsize="ExtraSmall">
     <Startup>
@@ -42,9 +45,8 @@
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
-      <Import moduleName="RemoteAccess" />
-      <Import moduleName="RemoteForwarder" />
       <Import moduleName="WebDeploy" />
+      <Import moduleName="RemoteAccess" />
     </Imports>
     <LocalResources>
       <LocalStorage name="Sites" cleanOnRoleRecycle="true" sizeInMB="2500" />
@@ -63,10 +65,13 @@
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="CaloomCom" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="AaltoglobalimpactOrg" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="ProtonitNet" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="TheBallMe" storeLocation="LocalMachine" storeName="My" />
+      <!--
+      <Certificate name="members.onlinetaekwondo.net" storeLocation="LocalMachine" storeName="My" />
+      -->
+      <Certificate name="Cert1" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Cert2" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Cert3" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="Cert4" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>
