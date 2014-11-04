@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,8 +17,10 @@ using DotNetOpenAuth.AspNet.Clients;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OpenId;
+using DotNetOpenAuth.OpenId.Extensions.AttributeExchange;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
+using Microsoft.WindowsAzure;
 using TheBall;
 
 namespace WebInterface
@@ -52,6 +56,12 @@ namespace WebInterface
                         // This is where you would look for any OpenID extension responses included
                         // in the authentication assertion.                                
                         var claimsResponse = response.GetExtension<ClaimsResponse>();
+                        var fetchResponse = response.GetExtension<FetchResponse>();
+                        if (fetchResponse != null)
+                        {
+                            var email = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
+                            var stored = email;
+                        }
                         profileFields = claimsResponse;
                         // Store off the "friendly" username to display -- NOT for username lookup                                
                         friendlyName = response.FriendlyIdentifierForDisplay;
@@ -131,7 +141,9 @@ namespace WebInterface
                 );
             var hashSourceBin = Encoding.UTF8.GetBytes(hashSourceStr);
             //throw new NotImplementedException("Wilma login functional, pre-shared secret needs to be config/non-source code implemented");
-            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes("INSERTYOURSHAREDSECRETHERE")); // TODO: Dynamic config load from Ball-instance specific container
+            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
+            string wilmaSharedSecret = settings.Get("WilmaSharedSecret");
+            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes(wilmaSharedSecret)); // TODO: Dynamic config load from Ball-instance specific container
             var hashValue = hmacsha1.ComputeHash(hashSourceBin);
             string hashValueStr = Convert.ToBase64String(hashValue);
             if(hashValueStr != h)
@@ -245,7 +257,7 @@ namespace WebInterface
                     request.AddExtension(new ClaimsRequest
                                              {
                                                  //Country = DemandLevel.Request,
-                                                 //Email = DemandLevel.Request,
+                                                 Email = DemandLevel.Require,
                                                  //Gender = DemandLevel.Require,
                                                  //PostalCode = DemandLevel.Require,
                                                  //TimeZone = DemandLevel.Require,
