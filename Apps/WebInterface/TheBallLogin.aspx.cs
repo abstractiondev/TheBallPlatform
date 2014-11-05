@@ -57,14 +57,15 @@ namespace WebInterface
                         // in the authentication assertion.                                
                         var claimsResponse = response.GetExtension<ClaimsResponse>();
                         var fetchResponse = response.GetExtension<FetchResponse>();
-                        if (fetchResponse != null)
+                        friendlyName = response.FriendlyIdentifierForDisplay;
+                        bool isTrustableProvider = isTrustableFriendlyName(friendlyName);
+                        string emailAddress = null;
+                        if (fetchResponse != null && isTrustableProvider)
                         {
-                            var email = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
-                            var stored = email;
+                            emailAddress = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
                         }
                         profileFields = claimsResponse;
                         // Store off the "friendly" username to display -- NOT for username lookup                                
-                        friendlyName = response.FriendlyIdentifierForDisplay;
                         // Use FormsAuthentication to tell ASP.NET that the user is now logged in,                                
                         // with the OpenID Claimed Identifier as their username. 
                         string userName = response.ClaimedIdentifier.ToString();
@@ -73,7 +74,7 @@ namespace WebInterface
                         //                                                                 DateTime.Now.AddDays(10),
                         //                                                                 true, "user custom data");
 
-                        AuthenticationSupport.SetAuthenticationCookie(Response, userName);
+                        AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
                         //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
                         //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
                         string redirectUrl = Request.Params["ReturnUrl"];
@@ -116,6 +117,15 @@ namespace WebInterface
                     }
                 }
             }
+        }
+
+        private bool isTrustableFriendlyName(string friendlyName)
+        {
+            if (friendlyName == "www.google.com/accounts/o8/id")
+                return true;
+            if (friendlyName.StartsWith("me.yahoo.com/a/"))
+                return true;
+            return false;
         }
 
         private void handleOAuth2()
@@ -204,7 +214,7 @@ namespace WebInterface
                     throw new SecurityException("Invalid URL for UserID");
                 //string queryWithoutPrefix = query.Substring(secureProtocolPrefix.Length);
                 string wilmaUserID = query + "/" + wilmaLoginName;
-                AuthenticationSupport.SetAuthenticationCookie(Response, wilmaUserID);
+                AuthenticationSupport.SetAuthenticationCookie(Response, wilmaUserID, null);
                 string redirectUrl = Request.Params["ReturnUrl"];
                 if (redirectUrl == null)
                     redirectUrl = FormsAuthentication.DefaultUrl;
