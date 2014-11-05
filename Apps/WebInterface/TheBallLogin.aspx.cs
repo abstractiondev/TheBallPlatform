@@ -48,6 +48,7 @@ namespace WebInterface
             string friendlyName;
             string idprovider = Request.Params["idprovider"];
             string idProviderUrl = Request.Params["idProviderUrl"];
+            bool requestEmail = Request.Params["requestEmail"] != null;
             if (response != null)
             {
                 switch (response.Status)
@@ -93,7 +94,7 @@ namespace WebInterface
             {
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
                 {
-                    CreateOpenIDRequestAndRedirect(idProviderUrl);
+                    CreateOpenIDRequestAndRedirect(idProviderUrl, requestEmail);
                     return;
                 }
                 if (idprovider != null)
@@ -101,10 +102,10 @@ namespace WebInterface
                     switch (idprovider)
                     {
                         case "google":
-                            PerformGoogleLogin();
+                            PerformGoogleLogin(requestEmail);
                             return;
                         case "yahoo":
-                            PerformYahooLogin();
+                            PerformYahooLogin(requestEmail);
                             return;
                         case "aol":
                             PerformAOLLogin();
@@ -255,7 +256,7 @@ namespace WebInterface
             CreateOpenIDRequestAndRedirect(openIdUrl);
         }
 
-        private void CreateOpenIDRequestAndRedirect(string openIdUrl)
+        private void CreateOpenIDRequestAndRedirect(string openIdUrl, bool requestEmail = false)
         {
             try
             {
@@ -267,7 +268,7 @@ namespace WebInterface
                     request.AddExtension(new ClaimsRequest
                                              {
                                                  //Country = DemandLevel.Request,
-                                                 Email = DemandLevel.Require,
+                                                 Email = requestEmail ? DemandLevel.Require : DemandLevel.NoRequest,
                                                  //Gender = DemandLevel.Require,
                                                  //PostalCode = DemandLevel.Require,
                                                  //TimeZone = DemandLevel.Require,
@@ -286,7 +287,7 @@ namespace WebInterface
 
         protected void bGoogleLogin_Click(object sender, EventArgs e)
         {
-            PerformGoogleLogin();
+            PerformGoogleLogin(false);
         }
 
 
@@ -297,14 +298,14 @@ namespace WebInterface
         }
 
 
-        private void PerformGoogleLogin()
+        private void PerformGoogleLogin(bool requestEmail)
         {
-            CreateOpenIDRequestAndRedirect("https://www.google.com/accounts/o8/id");
+            CreateOpenIDRequestAndRedirect("https://www.google.com/accounts/o8/id", requestEmail);
         }
 
-        private void PerformYahooLogin()
+        private void PerformYahooLogin(bool requestEmail)
         {
-            CreateOpenIDRequestAndRedirect("https://me.yahoo.com");
+            CreateOpenIDRequestAndRedirect("https://me.yahoo.com", requestEmail);
         }
 
 
