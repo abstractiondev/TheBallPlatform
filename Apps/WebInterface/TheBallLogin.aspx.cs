@@ -51,6 +51,7 @@ namespace WebInterface
             string idprovider = Request.Params["idprovider"];
             string idProviderUrl = Request.Params["idProviderUrl"];
             bool requestEmail = Request.Params["requestEmail"] != null;
+            string redirectUrl = Request.Params["ReturnUrl"];
             if (openIDResponse != null)
             {
                 handleOpenIDResponse(openIDResponse);
@@ -59,12 +60,35 @@ namespace WebInterface
                 string oauthCode = Request.Params["code"];
                 if (String.IsNullOrEmpty(oauthCode) == false)
                 {
-                    var authTokens = GetAuthTokens(new Uri("https://localhost:44300/TheBallLogin.aspx"), oauthCode);
+                    var authTokens = GetAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
                     var jwtToken = new JwtSecurityToken(authTokens.Item2);
+                    string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
+                    string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
+                    bool emailVerified =
+                        Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
+                    string userName = myUserID;
+                    string emailAddress = emailVerified ? myEmail : null;
+                    AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
+                    string state = Request.Params["state"];
+                    if (state.Contains("RedirectUrl="))
+                        redirectUrl = state.Replace("RedirectUrl=", "");
+                    else
+                        redirectUrl = FormsAuthentication.DefaultUrl;
+                    Response.Redirect(redirectUrl, true);
                 }
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
                 {
-                    CreateOpenIDRequestAndRedirect(idProviderUrl, requestEmail);
+                    if (idProviderUrl == "https://www.google.com/accounts/o8/id")
+                    {
+                        var req = Request;
+                        string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + (String.IsNullOrEmpty(redirectUrl) ? "" : "?RedirectUrl=" + redirectUrl);
+                        var loginUrl = GetServiceLoginUrl(new Uri(currentReturnUrl));
+                        Response.Redirect(loginUrl.AbsoluteUri);
+                    }
+                    else
+                    {
+                        CreateOpenIDRequestAndRedirect(idProviderUrl, requestEmail);
+                    }
                     return;
                 }
                 if (idprovider != null)
@@ -272,10 +296,6 @@ namespace WebInterface
             }
             //string openIdUrl = this.openIdBox.Text;
             //CreateOpenIDRequestAndRedirect(openIdUrl);
-            var req = Request;
-            string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + "?mycustomparam=1";
-            var redirectUrl = GetServiceLoginUrl(new Uri(currentReturnUrl));
-            Response.Redirect(redirectUrl.AbsoluteUri);
         }
 
         private void CreateOpenIDRequestAndRedirect(string openIdUrl, bool requestEmail = false)
@@ -343,7 +363,7 @@ namespace WebInterface
                 { "response_type", "code" },
                 { "client_id", client_id },
                 { "scope", "openid email" },
-                { "prompt", "select_account"},
+                // { "prompt", "select_account"},
                 { "openid.realm", "https://" + req.Url.DnsSafeHost + (req.Url.IsDefaultPort ? "" : ":" + req.Url.Port) + "/" },
                 { "redirect_uri", returnUrl.GetLeftPart(UriPartial.Path) },
                 { "state", state },
