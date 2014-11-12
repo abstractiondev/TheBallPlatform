@@ -11,6 +11,7 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using JsonFx.Json;
 using JsonFx.Serialization;
+using Microsoft.WindowsAzure.StorageClient;
 using TheBall.Index;
 
 namespace AzureSupport
@@ -79,8 +80,13 @@ namespace AzureSupport
 
         public static T GetObjectFromString<T>(string jsonString)
         {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
             var reader = new JsonReader();
-            return reader.Read<T>(jsonString);
+            var result = reader.Read<T>(jsonString);
+            watch.Stop();
+            var elapsed = watch.ElapsedMilliseconds;
+            return result;
         }
     }
 }

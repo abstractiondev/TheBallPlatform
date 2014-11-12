@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Diagnostics;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -57,6 +60,7 @@ namespace WebInterface
                 if (String.IsNullOrEmpty(oauthCode) == false)
                 {
                     var authTokens = GetAuthTokens(new Uri("https://localhost:44300/TheBallLogin.aspx"), oauthCode);
+                    var jwtToken = new JwtSecurityToken(authTokens.Item2);
                 }
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
                 {
@@ -338,7 +342,7 @@ namespace WebInterface
             {
                 { "response_type", "code" },
                 { "client_id", client_id },
-                { "scope", "openid" },
+                { "scope", "openid email" },
                 { "prompt", "select_account"},
                 { "openid.realm", "https://" + req.Url.DnsSafeHost + (req.Url.IsDefaultPort ? "" : ":" + req.Url.Port) + "/" },
                 { "redirect_uri", returnUrl.GetLeftPart(UriPartial.Path) },
@@ -383,21 +387,20 @@ namespace WebInterface
                 if (responseStream == null)
                     return null;
 
-                using (var reader = new StreamReader(responseStream))
-                {
-                    var response = reader.ReadToEnd();
-                    dynamic json = JSONSupport.GetJsonFromStream(response);
-                    //var accessToken = json.Value<string>("access_token");
-                    //var idToken = json.Value<string>("id_token");
-                    var accessToken = json.access_token;
-                    var idToken = json.id_token;
-                    //var decodedID = JWT.Decode(idToken);
-                    //dynamic idJson = JSONSupport.GetJsonFromStream(decodedID);
-                    return new Tuple<string, string>(accessToken, idToken);
-                }
+                var json = JSONSupport.GetObjectFromStream<OAuthData>(responseStream);
+                var accessToken = json.access_token;
+                var idToken = json.id_token;
+                return new Tuple<string, string>(accessToken, idToken);
             }
         }
 
-
+        [DataContract]
+        private class OAuthData
+        {
+            [DataMember]
+            public string id_token;
+            [DataMember]
+            public string access_token;
+        }
     }
 }
