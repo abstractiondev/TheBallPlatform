@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AzureSupport;
 using DotNetOpenAuth.AspNet.Clients;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
@@ -43,55 +44,20 @@ namespace WebInterface
             }
             openIdBox.Focus();         
             OpenIdRelyingParty openid = new OpenIdRelyingParty();        
-            var response = openid.GetResponse();
-            ClaimsResponse profileFields;
-            string friendlyName;
+            var openIDResponse = openid.GetResponse();
             string idprovider = Request.Params["idprovider"];
             string idProviderUrl = Request.Params["idProviderUrl"];
             bool requestEmail = Request.Params["requestEmail"] != null;
-            if (response != null)
+            if (openIDResponse != null)
             {
-                switch (response.Status)
-                {
-                    case AuthenticationStatus.Authenticated:
-                        // This is where you would look for any OpenID extension responses included
-                        // in the authentication assertion.                                
-                        var claimsResponse = response.GetExtension<ClaimsResponse>();
-                        var fetchResponse = response.GetExtension<FetchResponse>();
-                        friendlyName = response.FriendlyIdentifierForDisplay;
-                        bool isTrustableProvider = isTrustableFriendlyName(friendlyName);
-                        string emailAddress = null;
-                        if (fetchResponse != null && isTrustableProvider)
-                        {
-                            emailAddress = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
-                        }
-                        profileFields = claimsResponse;
-                        // Store off the "friendly" username to display -- NOT for username lookup                                
-                        // Use FormsAuthentication to tell ASP.NET that the user is now logged in,                                
-                        // with the OpenID Claimed Identifier as their username. 
-                        string userName = response.ClaimedIdentifier.ToString();
-                        //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName,
-                        //                                                                 DateTime.Now,
-                        //                                                                 DateTime.Now.AddDays(10),
-                        //                                                                 true, "user custom data");
-
-                        AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
-                        //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
-                        //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
-                        string redirectUrl = Request.Params["ReturnUrl"];
-                        if (redirectUrl == null)
-                            redirectUrl = FormsAuthentication.DefaultUrl;
-                        Response.Redirect(redirectUrl, true);
-                        break;
-                    case AuthenticationStatus.Canceled:
-                        this.loginCanceledLabel.Visible = true;
-                        break;
-                    case AuthenticationStatus.Failed:
-                        this.loginFailedLabel.Visible = true;
-                        break;
-                }
+                handleOpenIDResponse(openIDResponse);
             } else
             {
+                string oauthCode = Request.Params["code"];
+                if (String.IsNullOrEmpty(oauthCode) == false)
+                {
+                    var authTokens = GetAuthTokens(new Uri("https://localhost:44300/TheBallLogin.aspx"), oauthCode);
+                }
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
                 {
                     CreateOpenIDRequestAndRedirect(idProviderUrl, requestEmail);
@@ -99,24 +65,72 @@ namespace WebInterface
                 }
                 if (idprovider != null)
                 {
-                    switch (idprovider)
-                    {
-                        case "google":
-                            PerformGoogleLogin(requestEmail);
-                            return;
-                        case "yahoo":
-                            PerformYahooLogin(requestEmail);
-                            return;
-                        case "aol":
-                            PerformAOLLogin();
-                            return;
-                        case "wordpress":
-                            openIdBox.Text = "http://ENTER-YOUR-BLOG-NAME-HERE.wordpress.com";
-                            break;
-                        default:
-                            break;
-                    }
+                    performLoginForProvider(idprovider, requestEmail);
                 }
+            }
+        }
+
+        private void performLoginForProvider(string idprovider, bool requestEmail)
+        {
+            switch (idprovider)
+            {
+                case "google":
+                    PerformGoogleLogin(requestEmail);
+                    return;
+                case "yahoo":
+                    PerformYahooLogin(requestEmail);
+                    return;
+                case "aol":
+                    PerformAOLLogin();
+                    return;
+                case "wordpress":
+                    openIdBox.Text = "http://ENTER-YOUR-BLOG-NAME-HERE.wordpress.com";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void handleOpenIDResponse(IAuthenticationResponse openIDResponse)
+        {
+            switch (openIDResponse.Status)
+            {
+                case AuthenticationStatus.Authenticated:
+                    // This is where you would look for any OpenID extension responses included
+                    // in the authentication assertion.                                
+                    var claimsResponse = openIDResponse.GetExtension<ClaimsResponse>();
+                    var fetchResponse = openIDResponse.GetExtension<FetchResponse>();
+                    var friendlyName = openIDResponse.FriendlyIdentifierForDisplay;
+                    bool isTrustableProvider = isTrustableFriendlyName(friendlyName);
+                    string emailAddress = null;
+                    if (fetchResponse != null && isTrustableProvider)
+                    {
+                        emailAddress = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
+                    }
+                    var profileFields = claimsResponse;
+                    // Store off the "friendly" username to display -- NOT for username lookup                                
+                    // Use FormsAuthentication to tell ASP.NET that the user is now logged in,                                
+                    // with the OpenID Claimed Identifier as their username. 
+                    string userName = openIDResponse.ClaimedIdentifier.ToString();
+                    //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, userName,
+                    //                                                                 DateTime.Now,
+                    //                                                                 DateTime.Now.AddDays(10),
+                    //                                                                 true, "user custom data");
+
+                    AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
+                    //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
+                    //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
+                    string redirectUrl = Request.Params["ReturnUrl"];
+                    if (redirectUrl == null)
+                        redirectUrl = FormsAuthentication.DefaultUrl;
+                    Response.Redirect(redirectUrl, true);
+                    break;
+                case AuthenticationStatus.Canceled:
+                    this.loginCanceledLabel.Visible = true;
+                    break;
+                case AuthenticationStatus.Failed:
+                    this.loginFailedLabel.Visible = true;
+                    break;
             }
         }
 
@@ -252,8 +266,12 @@ namespace WebInterface
                 return;
                 // don't login if custom validation failed.        
             }
-            string openIdUrl = this.openIdBox.Text;
-            CreateOpenIDRequestAndRedirect(openIdUrl);
+            //string openIdUrl = this.openIdBox.Text;
+            //CreateOpenIDRequestAndRedirect(openIdUrl);
+            var req = Request;
+            string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + "?mycustomparam=1";
+            var redirectUrl = GetServiceLoginUrl(new Uri(currentReturnUrl));
+            Response.Redirect(redirectUrl.AbsoluteUri);
         }
 
         private void CreateOpenIDRequestAndRedirect(string openIdUrl, bool requestEmail = false)
@@ -306,6 +324,78 @@ namespace WebInterface
         private void PerformYahooLogin(bool requestEmail)
         {
             CreateOpenIDRequestAndRedirect("https://me.yahoo.com", requestEmail);
+        }
+
+        protected static Uri GetServiceLoginUrl(Uri returnUrl)
+        {
+            string authorizationEndpoint = "https://accounts.google.com/o/oauth2/auth";
+            var state = string.IsNullOrEmpty(returnUrl.Query) ? string.Empty : returnUrl.Query.Substring(1);
+            var req = HttpContext.Current.Request;
+            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
+            string client_id = settings.Get("GoogleOAuthClientID");
+
+            return BuildUri(authorizationEndpoint, new NameValueCollection
+            {
+                { "response_type", "code" },
+                { "client_id", client_id },
+                { "scope", "openid" },
+                { "prompt", "select_account"},
+                { "openid.realm", "https://" + req.Url.DnsSafeHost + (req.Url.IsDefaultPort ? "" : ":" + req.Url.Port) + "/" },
+                { "redirect_uri", returnUrl.GetLeftPart(UriPartial.Path) },
+                { "state", state },
+            });
+        }
+
+        private static Uri BuildUri(string baseUri, NameValueCollection queryParameters)
+        {
+            var q = HttpUtility.ParseQueryString(string.Empty);
+            q.Add(queryParameters);
+            var builder = new UriBuilder(baseUri) { Query = q.ToString() };
+            return builder.Uri;
+        }
+
+        protected static Tuple<string, string> GetAuthTokens(Uri returnUrl, string authorizationCode)
+        {
+            string TokenEndpoint = "https://accounts.google.com/o/oauth2/token";
+            var postData = HttpUtility.ParseQueryString(string.Empty);
+            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
+            string client_id = settings.Get("GoogleOAuthClientID");
+            string client_secret = settings.Get("GoogleOAuthClientSecret");
+            var nvc = new NameValueCollection
+            {
+                {"grant_type", "authorization_code"},
+                {"code", authorizationCode},
+                {"client_id", client_id},
+                {"client_secret", client_secret},
+                {"redirect_uri", returnUrl.GetLeftPart(UriPartial.Path)},
+            };
+            postData.Add(nvc);
+            var webRequest = (HttpWebRequest)WebRequest.Create(TokenEndpoint);
+            webRequest.Method = "POST";
+            webRequest.ContentType = "application/x-www-form-urlencoded";
+
+            using (var s = webRequest.GetRequestStream())
+            using (var sw = new StreamWriter(s))
+                sw.Write(postData.ToString());
+            using (var webResponse = webRequest.GetResponse())
+            {
+                var responseStream = webResponse.GetResponseStream();
+                if (responseStream == null)
+                    return null;
+
+                using (var reader = new StreamReader(responseStream))
+                {
+                    var response = reader.ReadToEnd();
+                    dynamic json = JSONSupport.GetJsonFromStream(response);
+                    //var accessToken = json.Value<string>("access_token");
+                    //var idToken = json.Value<string>("id_token");
+                    var accessToken = json.access_token;
+                    var idToken = json.id_token;
+                    //var decodedID = JWT.Decode(idToken);
+                    //dynamic idJson = JSONSupport.GetJsonFromStream(decodedID);
+                    return new Tuple<string, string>(accessToken, idToken);
+                }
+            }
         }
 
 

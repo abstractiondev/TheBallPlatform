@@ -177,6 +177,7 @@
     <Content Include="InstanceSettings_TheBallDevDev.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="InstanceSettings_OnlineTraining.config" />
     <None Include="Properties\PublishProfiles\betaoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
