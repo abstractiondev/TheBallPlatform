@@ -817,6 +817,48 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="RegisterEmailAddress">
+      <OperationSpec>
+        <Description>
+            Registers email address to account. 
+            It is called at email address validator (confirming the email), but also with verified-cookie based email, when account is freshly created.
+          </Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountID" dataType="string" designDesc="Account whose email is to be registered" state="implemented" />
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address to add to account" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="ValidateUnexistingEmail" designDesc="Validate that the email to add is not already registered" state="implemented">
+            <Parameter name="EmailAddress" />
+          </MethodExecute>
+          <TargetDefinition name="AccountRoot" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Account object" state="implemented">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="EmailRoot" dataType="AaltoGlobalImpact.OIP.TBREmailRoot" designDesc="Email root object" state="implemented">
+            <Parameter name="EmailAddress" />
+          </TargetDefinition>
+          <MethodExecute name="AddEmailToAccount" designDesc="Add email object to accounts email collection" state="implemented">
+            <Parameter name="EmailAddress" />
+            <Target name="AccountRoot" />
+          </MethodExecute>
+          <MethodExecute name="AddAccountToEmailRoot" designDesc="Add account object to email root" state="implemented">
+            <Target name="AccountRoot" />
+            <Target name="EmailRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreEmailRoot" designDesc="Store email root object FIRST to confirm that this email was first bound to this registration." state="implemented">
+            <Target name="EmailRoot" />
+          </MethodExecute>
+          <MethodExecute name="StoreAccountRoot" designDesc="Store account root" state="implemented">
+            <Target name="AccountRoot" />
+          </MethodExecute>
+          <MethodExecute name="UpdateAccountRootAndContainerWithChanges" designDesc="Update account root and container objects with changes" state="implemented">
+            <Parameter name="AccountID" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="UnregisterEmailAddress">
       <OperationSpec>
         <Description>

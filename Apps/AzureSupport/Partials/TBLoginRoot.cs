@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Principal;
+using System.Web;
 using TheBall;
 using TheBall.CORE;
 
@@ -28,14 +31,44 @@ namespace AaltoGlobalImpact.OIP
                 string accountID = accountRoot.ID;
                 accountRoot.StoreInformation();
 
-                UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                GenericPrincipal principal = (GenericPrincipal) HttpContext.Current.User;
+                TheBallIdentity identity = (TheBallIdentity) principal.Identity;
+                string emailAddress = identity.EmailAddress;
+                if (emailAddress != null)
                 {
-                    AccountID = accountID
-                });
-                UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
+                    try
+                    {
+
+                        RegisterEmailAddress.Execute(new RegisterEmailAddressParameters
+                        {
+                            AccountID = accountID,
+                            EmailAddress = emailAddress
+                        });
+                    }
+                    catch (Exception)
+                    {
+
+                        UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                        {
+                            AccountID = accountID
+                        });
+                        UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
+                        {
+                            AccountID = accountID
+                        });
+                    }
+                }
+                else
                 {
-                    AccountID = accountID
-                });
+                    UpdateAccountRootToReferences.Execute(new UpdateAccountRootToReferencesParameters
+                    {
+                        AccountID = accountID
+                    });
+                    UpdateAccountContainerFromAccountRoot.Execute(new UpdateAccountContainerFromAccountRootParameters
+                    {
+                        AccountID = accountID
+                    });
+                }
 
                 // If this request is for account, we propagate the pages immediately
                 bool useBackgroundWorker = isAccountRequest == false;

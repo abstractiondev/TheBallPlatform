@@ -594,6 +594,30 @@ using System.IO;
 				BeginAccountEmailAddressRegistrationImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation);		
 				}
 				}
+				public class RegisterEmailAddressParameters 
+		{
+				public string AccountID ;
+				public string EmailAddress ;
+				}
+		
+		public class RegisterEmailAddress 
+		{
+				private static void PrepareParameters(RegisterEmailAddressParameters parameters)
+		{
+					}
+				public static void Execute(RegisterEmailAddressParameters parameters)
+		{
+						PrepareParameters(parameters);
+					RegisterEmailAddressImplementation.ExecuteMethod_ValidateUnexistingEmail(parameters.EmailAddress);		
+				AaltoGlobalImpact.OIP.TBRAccountRoot AccountRoot = RegisterEmailAddressImplementation.GetTarget_AccountRoot(parameters.AccountID);	
+				AaltoGlobalImpact.OIP.TBREmailRoot EmailRoot = RegisterEmailAddressImplementation.GetTarget_EmailRoot(parameters.EmailAddress);	
+				RegisterEmailAddressImplementation.ExecuteMethod_AddEmailToAccount(parameters.EmailAddress, AccountRoot);		
+				RegisterEmailAddressImplementation.ExecuteMethod_AddAccountToEmailRoot(AccountRoot, EmailRoot);		
+				RegisterEmailAddressImplementation.ExecuteMethod_StoreEmailRoot(EmailRoot);		
+				RegisterEmailAddressImplementation.ExecuteMethod_StoreAccountRoot(AccountRoot);		
+				RegisterEmailAddressImplementation.ExecuteMethod_UpdateAccountRootAndContainerWithChanges(parameters.AccountID);		
+				}
+				}
 				public class UnregisterEmailAddressParameters 
 		{
 				public string AccountID ;

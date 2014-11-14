@@ -3088,6 +3088,84 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Push information to output
 		</div>
+		</p><h1>RegisterEmailAddress (AccountID, EmailAddress)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+            Registers email address to account. 
+            It is called at email address validator (confirming the email), but also with verified-cookie based email, when account is freshly created.
+          
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account whose email is to be registered
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address to add to account
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ValidateUnexistingEmail ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that the email to add is not already registered
+		</div>
+		</p><h2>Target Definition: AccountRoot ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: EmailRoot ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Email root object
+		</div>
+		</p><h2>Method Call: AddEmailToAccount ( AccountRoot, EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Add email object to accounts email collection
+		</div>
+		</p><h2>Method Call: AddAccountToEmailRoot ( AccountRoot, EmailRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Add account object to email root
+		</div>
+		</p><h2>Method Call: StoreEmailRoot ( EmailRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Store email root object FIRST to confirm that this email was first bound to this registration.
+		</div>
+		</p><h2>Method Call: StoreAccountRoot ( AccountRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Store account root
+		</div>
+		</p><h2>Method Call: UpdateAccountRootAndContainerWithChanges ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Update account root and container objects with changes
+		</div>
 		</p><h1>RemoteDeviceCoreOperation (InputStream, OutputStream)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

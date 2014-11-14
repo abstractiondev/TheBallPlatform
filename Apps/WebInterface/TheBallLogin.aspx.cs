@@ -60,21 +60,8 @@ namespace WebInterface
                 string oauthCode = Request.Params["code"];
                 if (String.IsNullOrEmpty(oauthCode) == false)
                 {
-                    var authTokens = GetAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
-                    var jwtToken = new JwtSecurityToken(authTokens.Item2);
-                    string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
-                    string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
-                    bool emailVerified =
-                        Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
-                    string userName = myUserID;
-                    string emailAddress = emailVerified ? myEmail : null;
-                    AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
-                    string state = Request.Params["state"];
-                    if (state.Contains("RedirectUrl="))
-                        redirectUrl = state.Replace("RedirectUrl=", "");
-                    else
-                        redirectUrl = FormsAuthentication.DefaultUrl;
-                    Response.Redirect(redirectUrl, true);
+                    FinalizeOAuthLogin(oauthCode);
+                    return;
                 }
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
                 {
@@ -96,6 +83,26 @@ namespace WebInterface
                     performLoginForProvider(idprovider, requestEmail);
                 }
             }
+        }
+
+        private string FinalizeOAuthLogin(string oauthCode)
+        {
+            var authTokens = GetAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
+            var jwtToken = new JwtSecurityToken(authTokens.Item2);
+            string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
+            string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
+            bool emailVerified =
+                Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
+            string userName = myUserID;
+            DateTime limitTimestamp = DateTime.UtcNow;
+            if(jwtToken.ValidTo < limitTimestamp)
+                throw new SecurityException("Token expired");
+            string emailAddress = emailVerified ? myEmail : null;
+            AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
+            string state = Request.Params["state"];
+            string redirectUrl = state.Contains("RedirectUrl=") ? state.Replace("RedirectUrl=", "") : FormsAuthentication.DefaultUrl;
+            Response.Redirect(redirectUrl, true);
+            return redirectUrl;
         }
 
         private void performLoginForProvider(string idprovider, bool requestEmail)

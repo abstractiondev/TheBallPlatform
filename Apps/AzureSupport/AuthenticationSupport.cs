@@ -7,6 +7,16 @@ using AzureSupport;
 
 namespace TheBall
 {
+    public class TheBallIdentity : GenericIdentity
+    {
+        public readonly string EmailAddress;
+
+        public TheBallIdentity(string userName, string emailAddress = null) : base(userName, "theball")
+        {
+            EmailAddress = emailAddress;
+        }
+    }
+
     public static class AuthenticationSupport
     {
         private const string AuthCookieName = "TheBall_AUTH";
@@ -58,7 +68,7 @@ namespace TheBall
                     string emailAddress = null;
                     if (valueSplit.Length > 2)
                         emailAddress = valueSplit[2];
-                    context.User = new GenericPrincipal(new GenericIdentity(userName, "theball"), new string[0]);
+                    context.User = new GenericPrincipal(new TheBallIdentity(userName, emailAddress), null);
                     // Reset cookie time to be again timeout from this request
                     //encCookie.Expires = DateTime.Now.AddSeconds(TimeoutSeconds);
                     //context.Response.Cookies.Set(encCookie);

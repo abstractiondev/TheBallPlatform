@@ -235,6 +235,8 @@ namespace WebInterface
 
             if(String.IsNullOrEmpty(emailValidation.RedirectUrlAfterValidation) == false)
                 context.Response.Redirect(emailValidation.RedirectUrlAfterValidation, true);
+            else
+                context.Response.Redirect(InstanceConfiguration.AccountDefaultRedirect, true);
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)

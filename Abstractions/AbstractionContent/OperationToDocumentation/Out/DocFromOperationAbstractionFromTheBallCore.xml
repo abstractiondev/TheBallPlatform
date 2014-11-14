@@ -3178,6 +3178,109 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="RegisterEmailAddress (AccountID, EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>
+            Registers email address to account. 
+            It is called at email address validator (confirming the email), but also with verified-cookie based email, when account is freshly created.
+          </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account whose email is to be registered</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address to add to account</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateUnexistingEmail ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that the email to add is not already registered</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountRoot ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailRoot ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email root object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddEmailToAccount ( AccountRoot, EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add email object to accounts email collection</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddAccountToEmailRoot ( AccountRoot, EmailRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add account object to email root</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreEmailRoot ( EmailRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store email root object FIRST to confirm that this email was first bound to this registration.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreAccountRoot ( AccountRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store account root</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateAccountRootAndContainerWithChanges ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update account root and container objects with changes</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="RemoteDeviceCoreOperation (InputStream, OutputStream)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
