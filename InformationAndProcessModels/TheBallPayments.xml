@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="TheBall.Payments">
+    <InformationModel>
+      <!--
+      <InformationObject name="Payment" designDesc="Payment object">
+        
+      </InformationObject>
+      -->
+    </InformationModel>
+    <Operations>
+      <Operation name="AssociatePaymentToGroup">
+        <OperationSpec>
+          <Description>Associate payment to group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="ID of the group to associate the payment to" state="implemented"/>
+          <Parameter name="PaymentID" dataType="string" designDesc="ID of the payment to connect to group" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupAsOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Group as owner" state="implemented">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    
+    <!--
+    <Subscriptions />
+    -->
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

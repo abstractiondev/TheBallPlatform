@@ -109,6 +109,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs">
       <Link>TheBall.Interface\OperationAbstractionFromTheBallInterface.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs">
+      <Link>TheBall.Payments\OperationAbstractionFromTheBallPayments.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\CaloomCore.designer.cs">
       <Link>Abstractions\CaloomCore.designer.cs</Link>
     </Compile>
@@ -135,6 +138,9 @@
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallInterface.designer.cs">
       <Link>TheBall.Interface\TheBallInterface.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments.designer.cs">
+      <Link>TheBall.Payments\TheBallPayments.designer.cs</Link>
     </Compile>
     <Compile Include="AaltoGlobalImpact.OIP\ClearDefaultGroupFromAccountImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\ListConnectionPackageContentsImplementation.cs" />
@@ -370,6 +376,7 @@
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
+    <Compile Include="TheBall.Payments\AssociatePaymentToGroupImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
