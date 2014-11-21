@@ -1,6 +1,34 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
+    <Operation name="FetchCustomersFromStripe">
+      <OperationSpec>
+        <Description>Fetch customers from Stripe</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to fetch the customers to" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Validate group ID as valid Payments managing group" state="implemented">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="StripeCustomers" dataType="Stripe.StripeCustomer[]" designDesc="Stripe customers from service call" state="implemented" />
+          <TargetDefinition name="CurrentCustomers" dataType="CustomerCollection" designDesc="Current customer collection" state="implemented">
+            <Target name="Owner" />
+          </TargetDefinition>
+          <TargetDefinition name="NewCustomersToCreate" dataType="Customer[]" designDesc="New customers to create" state="implemented">
+            <Target name="Owner" />
+            <Target name="StripeCustomers" />
+            <Target name="CurrentCustomers" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObjects" designDesc="Store new customers" state="implemented">
+            <Target name="Owner" />
+            <Target name="NewCustomersToCreate" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="AssociatePaymentToGroup">
       <OperationSpec>
         <Description>Associate payment to group</Description>

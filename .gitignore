@@ -40,3 +40,4 @@ PrecompiledWeb/*
 Apps/AzureConfiguration/*.cscfg
 Apps/WebInterface/SecureConfig/*
 Apps/AzureConfiguration/Profiles/*
+Apps/WebInterface/Properties/PublishProfiles/*.pubxml

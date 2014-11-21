@@ -64,8 +64,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\Microsoft SDKs\Azure\.NET SDK\v2.4\bin\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Spatial4n.Core">
       <HintPath>..\..\packages\Spatial4n.Core.0.3\lib\net40\Spatial4n.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net">
+      <HintPath>..\..\packages\Stripe.net.2.3.3\lib\net40\Stripe.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -377,6 +383,7 @@
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
     <Compile Include="TheBall.Payments\AssociatePaymentToGroupImplementation.cs" />
+    <Compile Include="TheBall.Payments\FetchCustomersFromStripeImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
@@ -398,6 +405,7 @@
     <Content Include="Ext\AWS_notice.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

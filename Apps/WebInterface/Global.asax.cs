@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -7,6 +9,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
 using Microsoft.WindowsAzure;
+using Stripe;
 using TheBall;
 
 namespace WebInterface
@@ -20,6 +23,9 @@ namespace WebInterface
             StorageSupport.InitializeWithConnectionString(connStr);
             QueueSupport.RegisterQueue("index-defaultindex-index");
             QueueSupport.RegisterQueue("index-defaultindex-query");
+            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
+            string stripeApiKey = settings.Get("StripeSecretKey");
+            StripeConfiguration.SetApiKey(stripeApiKey);
         }
 
         protected void Session_Start(object sender, EventArgs e)

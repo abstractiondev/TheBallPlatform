@@ -275,6 +275,52 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Group as owner
 		</div>
+		</p><h1>FetchCustomersFromStripe (GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Fetch customers from Stripe
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to fetch the customers to
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Owner ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate group ID as valid Payments managing group
+		</div>
+		</p><h2>Target Definition: StripeCustomers</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe customers from service call
+		</div>
+		</p><h2>Target Definition: CurrentCustomers ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Current customer collection
+		</div>
+		</p><h2>Target Definition: NewCustomersToCreate ( Owner, StripeCustomers, CurrentCustomers )</h2>
+		<p>		<div class="MsoNormal" >
+		New customers to create
+		</div>
+		</p><h2>Method Call: StoreObjects ( Owner, NewCustomersToCreate )</h2>
+		<p>		<div class="MsoNormal" >
+		Store new customers
+		</div>
 		</p></div>
 
 </body>

@@ -88,6 +88,12 @@
     <Reference Include="Microsoft.WindowsAzure.StorageClient">
       <HintPath>..\Ext\AzureDLLs\Microsoft.WindowsAzure.StorageClient.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Stripe.net">
+      <HintPath>..\..\packages\Stripe.net.2.3.3\lib\net40\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.IdentityModel" />
@@ -182,6 +188,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="InstanceSettings_OnlineTraining.config" />
+    <Content Include="InstanceSettings_Diosphere.config" />
     <None Include="Properties\PublishProfiles\betaoip.aaltoglobalimpact.org.pubxml" />
     <None Include="Properties\PublishProfiles\business.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\demo.caloom.com.pubxml" />
@@ -191,6 +198,7 @@
     <None Include="Properties\PublishProfiles\test.caloom.com.pubxml" />
     <None Include="Properties\PublishProfiles\test.theball.me.pubxml" />
     <None Include="Properties\PublishProfiles\testoip.aaltoglobalimpact.org.pubxml" />
+    <None Include="Properties\PublishProfiles\theball.diosphere.org.pubxml" />
     <None Include="Properties\PublishProfiles\theball.onlinetaekwondo.net.pubxml" />
     <None Include="Properties\PublishProfiles\weball.cloudapp.net.pubxml" />
     <None Include="Properties\PublishProfiles\Websites.pubxml" />
