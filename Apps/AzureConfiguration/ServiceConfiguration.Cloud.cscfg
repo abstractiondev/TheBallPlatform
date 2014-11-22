@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+  <Role name="WorkerRoleAccelerator.Core">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="" />
+      <Setting name="DataConnectionString" value="" />
+      <Setting name="AmazonSESAccessInfo" value="" />
+      <Setting name="WorkerRoleEntryPointContainerName" value="" />
+      <Setting name="WorkerActiveContainerName" value=""/>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="TheBallWebFarm">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="" />
+      <Setting name="DataConnectionString" value="" />
+      <Setting name="AmazonSESAccessInfo" value="" />
+      <Setting name="SyncEnabled" value="true" />
+      <Setting name="SitesContainerName" value="sites" />
+      <Setting name="DirectoriesToExclude" value="App_Data/TEMP;TEMP" />
+      <Setting name="SyncIntervalInSeconds" value="60" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert1" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert2" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert3" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert4" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>
