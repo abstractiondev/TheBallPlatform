@@ -17,3 +17,4 @@ The steps to do are following:
 - Run WebTemplateManager to upload system templates for account/group
 
 
+Coming soon - TeamCity build configurations to build and deploy the platform :-)
