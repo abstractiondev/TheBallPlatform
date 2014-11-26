@@ -1,0 +1,37 @@
+<Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003' ToolsVersion="12.0">
+
+  <UsingTask TaskName="TokenReplace" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <InPath ParameterType="System.String" Required="true" />
+      <Token ParameterType="System.String" Required="true" />
+      <Replacement ParameterType="System.String" Required="true" />
+      <OutPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+string content = File.ReadAllText(InPath);
+content = content.Replace(Token, Replacement);
+File.WriteAllText(OutPath, content);
+]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name='Publish' >
+    <TokenReplace InPath="InitialReplaceable.pubxml" Token="$DeploymentHostName$" Replacement="$(DeploymentHostName)" OutPath="IntermediateTEMP.pubxml"/>
+    <TokenReplace InPath="IntermediateTEMP.pubxml" Token="$IISAppName$" Replacement="$(IISAppName)" OutPath="IntermediateTEMP.pubxml"/>
+    <TokenReplace InPath="IntermediateTEMP.pubxml" Token="$UserName$" Replacement="$(UserName)" OutPath="..\Apps\WebInterface\Properties\PublishProfiles\tcauto.pubxml"/>
+  </Target>
+</Project>
+
+
+<!--
+
+    <MSDeployServiceURL>https://$DeploymentHostName$:8172/msdeploy.axd</MSDeployServiceURL>
+    <DeployIisAppPath>$IISAppName$</DeployIisAppPath>
+    <RemoteSitePhysicalPath />
+    <SkipExtraFilesOnServer>False</SkipExtraFilesOnServer>
+    <MSDeployPublishMethod>WMSVC</MSDeployPublishMethod>
+    <EnableMSDeployBackup>True</EnableMSDeployBackup>
+    <UserName>$UserName$</UserName>
+  
+  -->
