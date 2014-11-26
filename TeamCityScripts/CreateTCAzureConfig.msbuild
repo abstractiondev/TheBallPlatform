@@ -1,0 +1,81 @@
+<Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003' ToolsVersion="12.0">
+
+  <UsingTask TaskName="TokenReplace" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v12.0.dll">
+    <ParameterGroup>
+      <InPath ParameterType="System.String" Required="true" />
+      <Token ParameterType="System.String" Required="true" />
+      <Replacement ParameterType="System.String" Required="true" />
+      <OutPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+string content = File.ReadAllText(InPath);
+content = content.Replace(Token, Replacement);
+File.WriteAllText(OutPath, content);
+]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name='Publish' >
+    <TokenReplace InPath="ServiceConfiguration.InitialReplaceable.cscfg" Token="$StorageAccountName$" Replacement="$(StorageAccountName)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$StorageAccountKey$" Replacement="$(StorageAccountKey)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$AmazonSESAccessInfo$" Replacement="$(AmazonSESAccessInfo)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$WorkerRoleActiveContainerNames$" Replacement="$(WorkerRoleActiveContainerNames)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$RDPUserName$" Replacement="$(RDPUserName)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$RDPEncryptedPassword$" Replacement="$(RDPEncryptedPassword)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$RDPCertificateThumbprint$" Replacement="$(RDPCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificateThumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate2Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate3Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate4Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate5Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\$(.cscfg"/>
+  </Target>
+</Project>
+
+
+<!--
+
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="AmazonSESAccessInfo" value="$AmazonSESAccessInfo$" />
+      <Setting name="WorkerRoleEntryPointContainerName" value="worker-role-accelerator" />
+      <Setting name="WorkerActiveContainerName" value="$WorkerRoleActiveContainerNames$"/>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="$RDPUserName$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="$RDPEncryptedPassword$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2025-01-31T23:59:59.0000000+02:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="$RDPCertificateThumbprint$" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <Role name="TheBallWebFarm">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="AmazonSESAccessInfo" value="$AmazonSESAccessInfo$" />
+      <Setting name="SyncEnabled" value="true" />
+      <Setting name="SitesContainerName" value="sites" />
+      <Setting name="DirectoriesToExclude" value="App_Data/TEMP;TEMP" />
+      <Setting name="SyncIntervalInSeconds" value="60" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="$RDPUserName$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="$RDPEncryptedPassword$" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2025-01-31T23:59:59.0000000+02:00" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" thumbprint="$HTTPSCertificateThumbprint$" thumbprintAlgorithm="sha1" />
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="$RDPCertificateThumbprint$" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert1" thumbprint="$HTTPSCertificate2Thumbprint$" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert2" thumbprint="$HTTPSCertificate3Thumbprint$" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert3" thumbprint="$HTTPSCertificate4Thumbprint$" thumbprintAlgorithm="sha1" />
+      <Certificate name="Cert4" thumbprint="$HTTPSCertificate5Thumbprint$" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  
+  -->
