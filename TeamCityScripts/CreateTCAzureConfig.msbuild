@@ -28,7 +28,7 @@ File.WriteAllText(OutPath, content);
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate2Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate3Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate4Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
-    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate5Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\$(.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$HTTPSCertificate5Thumbprint$" Replacement="$(HTTPSCertificateThumbprint)" OutPath="c:\SecureParts\$(AzureConfigurationName).cscfg"/>
   </Target>
 </Project>
 
