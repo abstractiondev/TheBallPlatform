@@ -89,7 +89,30 @@ using System.IO;
 		{
 				public string GroupID ;
 				}
-				public class InviteMemberToGroupParameters 
+				public class InviteNewMemberToPlatformAndGroupParameters 
+		{
+				public string MemberEmailAddress ;
+				public string GroupID ;
+				}
+		
+		public class InviteNewMemberToPlatformAndGroup 
+		{
+				private static void PrepareParameters(InviteNewMemberToPlatformAndGroupParameters parameters)
+		{
+					}
+				public static void Execute(InviteNewMemberToPlatformAndGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InviteNewMemberToPlatformAndGroupImplementation.ExecuteMethod_ValidateThatEmailAddressIsNew(parameters.MemberEmailAddress);		
+				TBRGroupRoot GroupRoot = InviteNewMemberToPlatformAndGroupImplementation.GetTarget_GroupRoot(parameters.GroupID);	
+				TBEmailValidation EmailValidation = InviteNewMemberToPlatformAndGroupImplementation.GetTarget_EmailValidation(parameters.MemberEmailAddress, parameters.GroupID);	
+				InviteNewMemberToPlatformAndGroupImplementation.ExecuteMethod_AddAsPendingInvitationToGroupRoot(parameters.MemberEmailAddress, GroupRoot);		
+				InviteNewMemberToPlatformAndGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot, EmailValidation);		
+				InviteNewMemberToPlatformAndGroupImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation, GroupRoot);		
+				}
+				}
+
+		    public class InviteMemberToGroupParameters 
 		{
 				public string MemberEmailAddress ;
 				public string GroupID ;

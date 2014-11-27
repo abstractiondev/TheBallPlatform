@@ -787,6 +787,73 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Update account and account and group containers
 		</div>
+		</p><h1>InviteNewMemberToPlatformAndGroup (MemberEmailAddress, GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Invite new member to platform and to collaboration group
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		MemberEmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Email address of the member
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Group ID to invite to
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ValidateThatEmailAddressIsNew ( MemberEmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that email address doesn't exist already on the platform
+		</div>
+		</p><h2>Target Definition: GroupRoot ( GroupID )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Group root for given ID
+		</div>
+		</p><h2>Target Definition: EmailValidation ( MemberEmailAddress, GroupID )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Email validation item for 14 days
+		</div>
+		</p><h2>Method Call: AddAsPendingInvitationToGroupRoot ( GroupRoot, MemberEmailAddress )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Add as pending invitation to group root
+		</div>
+		</p><h2>Method Call: StoreObjects ( GroupRoot, EmailValidation )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Store modified objects
+		</div>
+		</p><h2>Method Call: SendEmailConfirmation ( EmailValidation, GroupRoot )</h2>
+		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+		Create and send email confirmation for joining the group
+		</div>
 		</p><h1>ListConnectionPackageContents (Process)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

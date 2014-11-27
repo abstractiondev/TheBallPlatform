@@ -20,6 +20,8 @@ namespace TheBall
         public static readonly string EmailDeviceJoinMessageFormat;
         public static readonly string EmailGroupJoinSubjectFormat;
         public static readonly string EmailGroupJoinMessageFormat;
+        public static readonly string EmailGroupAndPlatformJoinSubjectFormat;
+        public static readonly string EmailGroupAndPlatformJoinMessageFormat;
         public static readonly string EmailInputJoinSubjectFormat;
         public static readonly string EmailInputJoinMessageFormat;
         public static readonly string EmailOutputJoinSubjectFormat;
@@ -122,6 +124,10 @@ namespace TheBall
             EmailValidationMessageFormat = CloudConfigurationManager.GetSetting("EmailValidationMessageFormat");
             EmailGroupJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailGroupJoinSubjectFormat");
             EmailGroupJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailGroupJoinMessageFormat");
+
+            EmailGroupAndPlatformJoinSubjectFormat = CloudConfigurationManager.GetSetting("EmailGroupAndPlatformJoinSubjectFormat");
+            EmailGroupAndPlatformJoinMessageFormat = CloudConfigurationManager.GetSetting("EmailGroupAndPlatformJoinMessageFormat");
+
             EmailAccountMergeValidationSubjectFormat = CloudConfigurationManager.GetSetting("EmailAccountMergeValidationSubjectFormat");
             EmailAccountMergeValidationMessageFormat = CloudConfigurationManager.GetSetting("EmailAccountMergeValidationMessageFormat");
             EmailValidationURLWithoutID = CloudConfigurationManager.GetSetting("EmailValidationURLWithoutID");

@@ -212,5 +212,15 @@ namespace TheBall
                 SendEmail(FromAddress, emailAddress, subject, message);
             }
         }
+
+        public static void SendGroupAndPlatformJoinEmail(TBEmailValidation emailValidation, TBCollaboratingGroup collaboratingGroup)
+        {
+            string urlLink = GetUrlLink(emailValidation.ID);
+            string emailMessageFormat = InstanceConfiguration.EmailGroupAndPlatformJoinMessageFormat;
+            string message = String.Format(emailMessageFormat, collaboratingGroup.Title, urlLink);
+            SendEmail(FromAddress, emailValidation.Email,
+                String.Format(InstanceConfiguration.EmailGroupAndPlatformJoinSubjectFormat, collaboratingGroup.Title),
+                      message);
+        }
     }
 }

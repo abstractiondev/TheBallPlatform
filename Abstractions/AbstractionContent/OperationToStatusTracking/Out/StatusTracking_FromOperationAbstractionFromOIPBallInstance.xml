@@ -61,6 +61,30 @@
     <StatusItem name="CreateGroup_GroupID" displayName="VariableType: GroupID" description="GroupID of created group">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_MemberEmailAddress" displayName="VariableType: MemberEmailAddress" description="Email address of the member">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to invite to">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_ValidateThatEmailAddressIsNew" displayName="MethodExecuteType: ValidateThatEmailAddressIsNew" description="Validate that email address doesn't exist already on the platform">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_GroupRoot" displayName="TargetDefinitionType: GroupRoot" description="Group root for given ID">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_EmailValidation" displayName="TargetDefinitionType: EmailValidation" description="Email validation item for 14 days">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_AddAsPendingInvitationToGroupRoot" displayName="MethodExecuteType: AddAsPendingInvitationToGroupRoot" description="Add as pending invitation to group root">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="InviteNewMemberToPlatformAndGroup_SendEmailConfirmation" displayName="MethodExecuteType: SendEmailConfirmation" description="Create and send email confirmation for joining the group">
+      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="InviteMemberToGroup_MemberEmailAddress" displayName="VariableType: MemberEmailAddress" description="Email address of the member">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -618,6 +642,16 @@
       <ItemRef itemName="CreateGroup_RefreshAccountAndGroupContainers" />
       <ItemRef itemName="CreateGroup_GroupID" />
       <GroupRef groupName="RefreshAccountGroupMemberships" />
+    </Group>
+    <Group name="InviteNewMemberToPlatformAndGroup">
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_MemberEmailAddress" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_GroupID" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_ValidateThatEmailAddressIsNew" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_GroupRoot" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_EmailValidation" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_AddAsPendingInvitationToGroupRoot" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_StoreObjects" />
+      <ItemRef itemName="InviteNewMemberToPlatformAndGroup_SendEmailConfirmation" />
     </Group>
     <Group name="InviteMemberToGroup">
       <ItemRef itemName="InviteMemberToGroup_MemberEmailAddress" />

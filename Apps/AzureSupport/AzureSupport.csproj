@@ -156,6 +156,7 @@
       <Link>TheBall.Payments\TheBallPayments.designer.cs</Link>
     </Compile>
     <Compile Include="AaltoGlobalImpact.OIP\ClearDefaultGroupFromAccountImplementation.cs" />
+    <Compile Include="AaltoGlobalImpact.OIP\InviteNewMemberToPlatformAndGroupImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\ListConnectionPackageContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\MigrateActivitiesAndBlogsToTextContentsImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\MigrationSupport.cs" />
