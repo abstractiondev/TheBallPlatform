@@ -8,7 +8,8 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <div>Autoforwarding onwards (to original URL) after login.</div>
+        <div>Autoforwarding onwards (to original URL) after login. You shouldn't see this page unless there's an error.</div>
+        <!--
         <asp:Label ID="Label1" runat="server" Text="OpenID Login" /><asp:TextBox ID="openIdBox"
             runat="server" /><asp:Button ID="loginButton" runat="server" Text="Login" OnClick="loginButton_Click" /><asp:CustomValidator
                 runat="server" ID="openidValidator" ErrorMessage="Invalid OpenID Identifier"
@@ -17,6 +18,7 @@
         <asp:Label ID="loginFailedLabel" runat="server" EnableViewState="False" Text="Login failed"
             Visible="False" /><asp:Label ID="loginCanceledLabel" runat="server" EnableViewState="False"
                 Text="Login canceled" Visible="False" />
+            -->
     </div>
     </form>
 <div id="fb-root"></div>
