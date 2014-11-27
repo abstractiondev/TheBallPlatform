@@ -17,9 +17,9 @@ File.WriteAllText(OutPath, content);
   </UsingTask>
 
   <Target Name='Publish' >
-    <TokenReplace InPath="InitialReplaceable.pubxml" Token="$DeploymentHostName$" Replacement="$(DeploymentHostName)" OutPath="IntermediateTEMP.pubxml"/>
-    <TokenReplace InPath="IntermediateTEMP.pubxml" Token="$IISAppName$" Replacement="$(IISAppName)" OutPath="IntermediateTEMP.pubxml"/>
-    <TokenReplace InPath="IntermediateTEMP.pubxml" Token="$UserName$" Replacement="$(UserName)" OutPath="..\Apps\WebInterface\Properties\PublishProfiles\tcauto.pubxml"/>
+    <TokenReplace InPath="$(MSBuildProjectDirectory)\InitialReplaceable.pubxml" Token="$DeploymentHostName$" Replacement="$(DeploymentHostName)" OutPath="$(MSBuildProjectDirectory)\IntermediateTEMP.pubxml"/>
+    <TokenReplace InPath="$(MSBuildProjectDirectory)\IntermediateTEMP.pubxml" Token="$IISAppName$" Replacement="$(IISAppName)" OutPath="$(MSBuildProjectDirectory)\IntermediateTEMP.pubxml"/>
+    <TokenReplace InPath="$(MSBuildProjectDirectory)\IntermediateTEMP.pubxml" Token="$UserName$" Replacement="$(UserName)" OutPath="$(MSBuildProjectDirectory)\..\Apps\WebInterface\Properties\PublishProfiles\tcauto.pubxml"/>
   </Target>
 </Project>
 
