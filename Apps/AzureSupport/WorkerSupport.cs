@@ -404,7 +404,7 @@ namespace TheBall
                 }
                 string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
                 var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
-                const double invalidSubscriptionSubmissionTimeInSeconds = 600;
+                const double invalidSubscriptionSubmissionTimeInSeconds = 3600;
                 if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-invalidSubscriptionSubmissionTimeInSeconds)))
                     return false;
                 WorkerSupport.ExecuteSubscriptionChains(chainContent);
