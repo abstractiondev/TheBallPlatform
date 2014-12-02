@@ -111,8 +111,7 @@ using System.IO;
 				InviteNewMemberToPlatformAndGroupImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation, GroupRoot);		
 				}
 				}
-
-		    public class InviteMemberToGroupParameters 
+				public class InviteMemberToGroupParameters 
 		{
 				public string MemberEmailAddress ;
 				public string GroupID ;

@@ -77,10 +77,7 @@ namespace AaltoGlobalImpact.OIP
                 {
                     RenderWebSupport.RefreshAccountTemplate(accountID, templateName, useBackgroundWorker: useBackgroundWorker);
                 }
-                if(isAccountRequest)
-                {
-                    accountRoot.Account.InitializeAndConnectMastersAndCollections();
-                }
+                accountRoot.Account.InitializeAndConnectMastersAndCollections();
             }
             loginRoot = RetrieveFromDefaultLocation(loginRootID);
             return loginRoot;

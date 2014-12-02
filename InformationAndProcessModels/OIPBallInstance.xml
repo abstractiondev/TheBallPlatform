@@ -180,6 +180,7 @@
       <InformationObject name="TBGroupJoinConfirmation" designDesc="Group joining confirmation through email">
         <InformationItems>
           <InformationItem name="GroupID" logicalDataType="Text_Short" />
+          <InformationItem name="InvitationMode" logicalDataType="Text_Short"/>
           <!--
           <InformationItem name="InvitingAccountID" logicalDataType="Text_Short"/>
           -->

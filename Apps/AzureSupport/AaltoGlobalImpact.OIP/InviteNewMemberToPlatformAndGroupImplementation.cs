@@ -27,7 +27,8 @@ namespace AaltoGlobalImpact.OIP
             emailValidation.ValidUntil = DateTime.UtcNow.AddDays(14); // Two weeks to accept the group join
             emailValidation.GroupJoinConfirmation = new TBGroupJoinConfirmation
             {
-                GroupID = groupId
+                GroupID = groupId,
+                InvitationMode = "PLATFORM"
             };
             return emailValidation;
         }

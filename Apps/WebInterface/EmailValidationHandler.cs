@@ -61,35 +61,47 @@ namespace WebInterface
                 RespondEmailValidationRecordNotExist(context);
                 return;
             }
-            StorageSupport.DeleteInformationObject(emailValidation);
-            if (emailValidation.ValidUntil < DateTime.UtcNow)
+            bool deleteEmailValidation = true;
+            try
             {
-                RespondEmailValidationExpired(context, emailValidation);
-                return;
+                if (emailValidation.ValidUntil < DateTime.UtcNow)
+                {
+                    RespondEmailValidationExpired(context, emailValidation);
+                    return;
+                }
+                if (emailValidation.GroupJoinConfirmation != null)
+                {
+                    if (emailValidation.GroupJoinConfirmation.InvitationMode == "PLATFORM")
+                    {
+                        deleteEmailValidation = HandleGroupAndPlatformJoinConfirmation(context, account, emailValidation);
+                    } else 
+                        HandleGroupJoinConfirmation(context, account, emailValidation);
+                }
+                else if (emailValidation.DeviceJoinConfirmation != null)
+                {
+                    HandleDeviceJoinConfirmation(context, account, emailValidation);
+                }
+                else if (emailValidation.InformationInputConfirmation != null)
+                {
+                    HandleInputJoinConfirmation(context, account, emailValidation);
+                }
+                else if (emailValidation.InformationOutputConfirmation != null)
+                {
+                    HandleOutputJoinConfirmation(context, account, emailValidation);
+                }
+                else if (emailValidation.MergeAccountsConfirmation != null)
+                {
+                    HandleAccountMergeConfirmation(context, account, emailValidation);
+                }
+                else
+                {
+                    HandleAccountEmailValidation(context, account, emailValidation);
+                }
             }
-            if(emailValidation.GroupJoinConfirmation != null)
+            finally
             {
-                HandleGroupJoinConfirmation(context, account, emailValidation);
-            }
-            else if (emailValidation.DeviceJoinConfirmation != null)
-            {
-                HandleDeviceJoinConfirmation(context, account, emailValidation);
-            }
-            else if (emailValidation.InformationInputConfirmation != null)
-            {
-                HandleInputJoinConfirmation(context, account, emailValidation);
-            }
-            else if (emailValidation.InformationOutputConfirmation != null)
-            {
-                HandleOutputJoinConfirmation(context, account, emailValidation);
-            }
-            else if (emailValidation.MergeAccountsConfirmation != null)
-            {
-                HandleAccountMergeConfirmation(context, account, emailValidation);
-            }
-            else
-            {
-                HandleAccountEmailValidation(context, account, emailValidation);
+                if(deleteEmailValidation)
+                    StorageSupport.DeleteInformationObject(emailValidation);
             }
         }
 
@@ -191,6 +203,24 @@ namespace WebInterface
             ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
                                                  {GroupID = groupID, MemberEmailAddress = emailValidation.Email});
             context.Response.Redirect("/auth/grp/" + groupID + "/");
+        }
+
+        private bool HandleGroupAndPlatformJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        {
+            ValidateAccountsEmailAddress(account, emailValidation);
+            string groupID = emailValidation.GroupJoinConfirmation.GroupID;
+            ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
+            {
+                GroupID = groupID,
+                MemberEmailAddress = emailValidation.Email
+            });
+            InformationContext.Current.Owner = account;
+            SetGroupAsDefaultForAccount.Execute(new SetGroupAsDefaultForAccountParameters
+            {
+                GroupID = groupID
+            });
+            context.Response.Redirect("/auth/account/");
+            return true;
         }
 
         private static void ValidateAccountsEmailAddress(TBAccount account, TBEmailValidation emailValidation)

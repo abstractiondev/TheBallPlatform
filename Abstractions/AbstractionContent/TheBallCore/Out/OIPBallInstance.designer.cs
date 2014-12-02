@@ -10027,6 +10027,8 @@ namespace INT {
 					var result = new TBGroupJoinConfirmation();
 					result.GroupID = @"TBGroupJoinConfirmation.GroupID";
 
+					result.InvitationMode = @"TBGroupJoinConfirmation.InvitationMode";
+
 				
 					return result;
 				}
@@ -10087,6 +10089,8 @@ namespace INT {
 
 						if(GroupID != _unmodified_GroupID)
 							return true;
+						if(InvitationMode != _unmodified_InvitationMode)
+							return true;
 				
 						return false;
 					}
@@ -10100,6 +10104,7 @@ namespace INT {
 				private void CopyContentFrom(TBGroupJoinConfirmation sourceObject)
 				{
 					GroupID = sourceObject.GroupID;
+					InvitationMode = sourceObject.InvitationMode;
 				}
 				
 
@@ -10107,6 +10112,7 @@ namespace INT {
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_GroupID = GroupID;
+					_unmodified_InvitationMode = InvitationMode;
 				
 				
 				}
@@ -10119,6 +10125,9 @@ namespace INT {
 						case "GroupID":
 							GroupID = value;
 							break;
+						case "InvitationMode":
+							InvitationMode = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -10126,6 +10135,9 @@ namespace INT {
 			[DataMember]
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
+			[DataMember]
+			public string InvitationMode { get; set; }
+			private string _unmodified_InvitationMode;
 			
 			}
 			[DataContract]

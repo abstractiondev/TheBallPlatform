@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -410,6 +411,20 @@ namespace TheBall
                         RemoveMemberFromGroup.Execute(parameters);
                         break;
                     }
+
+                case "InviteMemberToGroupAndPlatform":
+                {
+                    if(containerOwner.IsGroupContainer() == false)
+                        throw new InvalidOperationException("Group invitation is only supported in group context");
+                    string emailAddress = form["emailAddress"];
+                    string groupID = containerOwner.LocationPrefix;
+                    InviteNewMemberToPlatformAndGroup.Execute(new InviteNewMemberToPlatformAndGroupParameters
+                    {
+                        GroupID = groupID,
+                        MemberEmailAddress = emailAddress
+                    });
+                    break;
+                }
                 case "InviteMemberToGroup":
                     {
                         if (containerOwner.IsGroupContainer() == false)
