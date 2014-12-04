@@ -7,6 +7,17 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Payments { 
+		
+		public class ProcessPayment 
+		{
+				public static void Execute()
+		{
+						
+					INT.PaymentToken PaymentToken = ProcessPaymentImplementation.GetTarget_PaymentToken();	
+				ProcessPaymentImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
+				ProcessPaymentImplementation.ExecuteMethod_ProcessPayment(PaymentToken);		
+				}
+				}
 				public class FetchCustomersFromStripeParameters 
 		{
 				public string GroupID ;

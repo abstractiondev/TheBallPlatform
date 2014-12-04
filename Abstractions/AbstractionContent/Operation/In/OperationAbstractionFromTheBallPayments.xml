@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
+    <Operation name="ProcessPayment">
+      <OperationSpec>
+        <Description>Process Stripe payment</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="PaymentToken" dataType="INT.PaymentToken" designDesc="Obtain Stripe Token from request stream" state="implemented" />
+          <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
+            <Target name="PaymentToken" />
+          </MethodExecute>
+          <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
+            <Target name="PaymentToken" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="FetchCustomersFromStripe">
       <OperationSpec>
         <Description>Fetch customers from Stripe</Description>

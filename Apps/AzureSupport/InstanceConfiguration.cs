@@ -39,6 +39,7 @@ namespace TheBall
         public static readonly string AzureStorageKey;
         public static readonly string AzureAccountName;
         public static readonly string AdminGroupID;
+        public static readonly string PaymentsGroupID;
         public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
 
         // Infrastructure content/fields
@@ -90,7 +91,7 @@ namespace TheBall
             AccountDefaultRedirect = CloudConfigurationManager.GetSetting("AccountDefaultRedirect");
             GroupDefaultRedirect = CloudConfigurationManager.GetSetting("GroupDefaultRedirect");
             AdminGroupID = CloudConfigurationManager.GetSetting("AdminGroupID");
-
+            PaymentsGroupID = CloudConfigurationManager.GetSetting("PaymentsGroupID");
             #endregion
 
             #region Email

@@ -123,6 +123,36 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ProcessPayment" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process Stripe payment</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PaymentToken" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Obtain Stripe Token from request stream</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateMatchingEmail ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that account active email matches payment token email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessPayment ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process payment to Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
         </Content>
       </Document>
     </Documents>

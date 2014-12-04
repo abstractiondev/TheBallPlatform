@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Payments">
+    <StatusItem name="ProcessPayment_PaymentToken" displayName="TargetDefinitionType: PaymentToken" description="Obtain Stripe Token from request stream">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessPayment_ValidateMatchingEmail" displayName="MethodExecuteType: ValidateMatchingEmail" description="Validate that account active email matches payment token email">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ProcessPayment_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="FetchCustomersFromStripe_GroupID" displayName="VariableType: GroupID" description="Group ID to fetch the customers to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -30,6 +39,11 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="ProcessPayment">
+      <ItemRef itemName="ProcessPayment_PaymentToken" />
+      <ItemRef itemName="ProcessPayment_ValidateMatchingEmail" />
+      <ItemRef itemName="ProcessPayment_ProcessPayment" />
+    </Group>
     <Group name="FetchCustomersFromStripe">
       <ItemRef itemName="FetchCustomersFromStripe_GroupID" />
       <ItemRef itemName="FetchCustomersFromStripe_Owner" />

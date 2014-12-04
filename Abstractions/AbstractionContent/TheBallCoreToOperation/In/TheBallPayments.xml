@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Payments">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="PaymentToken" designDesc="Payment authorized token">
+          <InterfaceItems>
+            <InterfaceItem name="id" logicalDataType="Text_Short"/>
+            <InterfaceItem name="currentproduct" logicalDataType="Text_Short"/>
+            <InterfaceItem name="email" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel>
       <!--
       <InformationObject name="Payment" designDesc="Payment object">
         
       </InformationObject>
       -->
+      <InformationObject name="PaymentItem" designDesc="Generic purchaseable item">
+        <InformationItems>
+          <InformationItem name="TargetItemDomain" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetItemName" logicalDataType="Text_Short"/>
+          <InformationItem name="TargetItemID" logicalDataType="Text_Short"/>
+          <InformationItem name="ItemType" logicalDataType="Text_Short"/>
+          <InformationItem name="ItemTypeID" logicalDataType="Text_Short"/>
+          <InformationItem name="Price" logicalDataType="Text_Short"/>
+          <InformationItem name="Currency" logicalDataType="Text_Short"/>
+          <InformationItem name="BillingInterval" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="CustomerCollection" designDesc="Collection of customers">
         <CollectionFor collectionType="Master" contentInformationObjectName="Customer"/>
       </InformationObject>
@@ -19,6 +42,22 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="ProcessPayment">
+        <OperationSpec>
+          <Description>Process Stripe payment</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="INT.PaymentToken" name="PaymentToken" designDesc="Obtain Stripe Token from request stream" state="implemented" />
+            <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
+              <Target name="PaymentToken"/>
+            </MethodExecute>
+            <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
+              <Target name="PaymentToken"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="FetchCustomersFromStripe">
         <OperationSpec>
           <Description>Fetch customers from Stripe</Description>
