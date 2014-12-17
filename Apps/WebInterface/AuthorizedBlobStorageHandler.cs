@@ -364,6 +364,11 @@ namespace WebInterface
                 string operationName = request.Params["operation"];
                 
                 Type operationType = TypeSupport.GetTypeByName(operationName);
+                if (operationType.Namespace == "TheBall.Payments")
+                {
+                    InformationContext.Current.Owner =
+                        VirtualOwner.FigureOwner("grp/" + InstanceConfiguration.PaymentsGroupID);
+                }
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
                 method.Invoke(null, null);
                 context.Response.End();

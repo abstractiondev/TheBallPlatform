@@ -334,7 +334,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Validate that account active email matches payment token email
 		</div>
-		</p><h2>Method Call: ProcessPayment ( PaymentToken )</h2>
+		</p><h2>Target Definition: CustomerAccount</h2>
+		<p>		<div class="MsoNormal" >
+		Customer account object based on active account ID. Created if missing
+		</div>
+		</p><h2>Method Call: ProcessPayment ( PaymentToken, CustomerAccount )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>

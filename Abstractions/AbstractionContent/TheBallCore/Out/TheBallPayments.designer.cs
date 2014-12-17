@@ -46,12 +46,12 @@ namespace INT {
             public static void EnsureMasterCollections(IContainerOwner owner)
             {
                 {
-                    var masterCollection = CustomerCollection.GetMasterCollectionInstance(owner);
+                    var masterCollection = CustomerAccountCollection.GetMasterCollectionInstance(owner);
                     if(masterCollection == null)
                     {
-                        masterCollection = CustomerCollection.CreateDefault();
+                        masterCollection = CustomerAccountCollection.CreateDefault();
                         masterCollection.RelativeLocation =
-                            CustomerCollection.GetMasterCollectionLocation(owner);
+                            CustomerAccountCollection.GetMasterCollectionLocation(owner);
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
@@ -62,9 +62,9 @@ namespace INT {
             public static void RefreshMasterCollections(IContainerOwner owner)
             {
                 {
-                    IInformationCollection masterCollection = CustomerCollection.GetMasterCollectionInstance(owner);
+                    IInformationCollection masterCollection = CustomerAccountCollection.GetMasterCollectionInstance(owner);
                     if (masterCollection == null)
-                        throw new InvalidDataException("Master collection CustomerCollection missing for owner");
+                        throw new InvalidDataException("Master collection CustomerAccountCollection missing for owner");
                     masterCollection.RefreshContent();
                     StorageSupport.StoreInformation((IInformationObject) masterCollection, owner);
                 }
@@ -527,7 +527,7 @@ namespace INT {
 			}
 			[DataContract]
 			[Serializable]
-			public partial class CustomerCollection : IInformationObject , IInformationCollection
+			public partial class CustomerAccountCollection : IInformationObject , IInformationCollection
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -535,26 +535,26 @@ namespace INT {
 					}
 				}
 
-				public CustomerCollection()
+				public CustomerAccountCollection()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
-				    this.Name = "CustomerCollection";
+				    this.Name = "CustomerAccountCollection";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.Payments/CustomerCollection/";
+					string contentTypeName = "TheBall.Payments/CustomerAccountCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CustomerCollection), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CustomerAccountCollection), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -563,7 +563,7 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "CustomerCollection", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.Payments", "CustomerAccountCollection", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -571,20 +571,20 @@ namespace INT {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static CustomerCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static CustomerAccountCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCustomerCollection(relativeLocation, owner);
+					return RetrieveCustomerAccountCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: CustomerCollection");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CustomerAccountCollection");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CustomerCollection), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CustomerAccountCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -603,23 +603,23 @@ namespace INT {
 				}
 
 
-                public static CustomerCollection RetrieveCustomerCollection(string relativeLocation, IContainerOwner owner = null)
+                public static CustomerAccountCollection RetrieveCustomerAccountCollection(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (CustomerCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CustomerCollection), null, owner);
+                    var result = (CustomerAccountCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CustomerAccountCollection), null, owner);
                     return result;
                 }
 
-				public static CustomerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static CustomerAccountCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = CustomerCollection.RetrieveCustomerCollection("Content/TheBall.Payments/CustomerCollection/" + contentName, containerOwner);
-					var result = CustomerCollection.RetrieveCustomerCollection("TheBall.Payments/CustomerCollection/" + contentName, containerOwner);
+					// var result = CustomerAccountCollection.RetrieveCustomerAccountCollection("Content/TheBall.Payments/CustomerAccountCollection/" + contentName, containerOwner);
+					var result = CustomerAccountCollection.RetrieveCustomerAccountCollection("TheBall.Payments/CustomerAccountCollection/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/CustomerCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/CustomerCollection/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/CustomerAccountCollection/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/CustomerAccountCollection/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -689,7 +689,7 @@ namespace INT {
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((CustomerCollection) sourceMaster);
+					CopyContentFrom((CustomerAccountCollection) sourceMaster);
 				}
 
 
@@ -703,7 +703,7 @@ namespace INT {
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerAccountCollection));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -716,13 +716,13 @@ namespace INT {
 					}
 				}
 
-				public static CustomerCollection DeserializeFromXml(string xmlString)
+				public static CustomerAccountCollection DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerCollection));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerAccountCollection));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (CustomerCollection) serializer.ReadObject(xmlReader);
+							return (CustomerAccountCollection) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -758,7 +758,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.Payments", "CustomerCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Payments", "CustomerAccountCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -772,11 +772,11 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Payments", "CustomerCollection", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Payments", "CustomerAccountCollection", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref CustomerCollection customDemoObject);
+				static partial void CreateCustomDemo(ref CustomerAccountCollection customDemoObject);
 
 
 				
@@ -814,7 +814,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Customer.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = CustomerAccount.GetRelativeLocationFromID("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -826,16 +826,16 @@ namespace INT {
 					// DirectoryToMaster
 					string itemDirectory = GetItemDirectory();
 					IInformationObject[] informationObjects = StorageSupport.RetrieveInformationObjects(itemDirectory,
-																								 typeof(Customer));
+																								 typeof(CustomerAccount));
                     Array.ForEach(informationObjects, io => io.MasterETag = io.ETag);
 					CollectionContent.Clear();
-					CollectionContent.AddRange(informationObjects.Select(obj => (Customer) obj));
+					CollectionContent.AddRange(informationObjects.Select(obj => (CustomerAccount) obj));
             
 				}
 
-				public static CustomerCollection GetMasterCollectionInstance(IContainerOwner owner)
+				public static CustomerAccountCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return CustomerCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return CustomerAccountCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -843,12 +843,12 @@ namespace INT {
 					// DirectoryToCollection
 					string itemDirectory = GetItemDirectory();
 					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(CustomerCollection).FullName);
+															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(CustomerAccountCollection).FullName);
 				}
 
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
-					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Payments/CustomerCollection/" + "MasterCollection");
+					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Payments/CustomerAccountCollection/" + "MasterCollection");
 				}
 
 
@@ -865,30 +865,30 @@ namespace INT {
 
 				
 		
-				public static CustomerCollection CreateDefault()
+				public static CustomerAccountCollection CreateDefault()
 				{
-					var result = new CustomerCollection();
+					var result = new CustomerAccountCollection();
 					return result;
 				}
 
 				/*
-				public static CustomerCollection CreateDemoDefault()
+				public static CustomerAccountCollection CreateDemoDefault()
 				{
-					CustomerCollection customDemo = null;
-					CustomerCollection.CreateCustomDemo(ref customDemo);
+					CustomerAccountCollection customDemo = null;
+					CustomerAccountCollection.CreateCustomDemo(ref customDemo);
 					if(customDemo != null)
 						return customDemo;
-					var result = new CustomerCollection();
-					result.CollectionContent.Add(Customer.CreateDemoDefault());
-					//result.CollectionContent.Add(Customer.CreateDemoDefault());
-					//result.CollectionContent.Add(Customer.CreateDemoDefault());
+					var result = new CustomerAccountCollection();
+					result.CollectionContent.Add(CustomerAccount.CreateDemoDefault());
+					//result.CollectionContent.Add(CustomerAccount.CreateDemoDefault());
+					//result.CollectionContent.Add(CustomerAccount.CreateDemoDefault());
 					return result;
 				}
 				*/
 
 		
-				[DataMember] public List<Customer> CollectionContent = new List<Customer>();
-				private Customer[] _unmodified_CollectionContent;
+				[DataMember] public List<CustomerAccount> CollectionContent = new List<CustomerAccount>();
+				private CustomerAccount[] _unmodified_CollectionContent;
 
 				[DataMember] public bool IsCollectionFiltered;
 				private bool _unmodified_IsCollectionFiltered;
@@ -918,7 +918,7 @@ namespace INT {
 					}
 				}
 
-				public Customer[] GetIDSelectedArray()
+				public CustomerAccount[] GetIDSelectedArray()
 				{
 					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
 						return CollectionContent.ToArray();
@@ -954,7 +954,7 @@ namespace INT {
 					for(int i = 0; i < CollectionContent.Count; i++) // >
 					{
 						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (Customer )replacingObject;
+							CollectionContent[i] = (CustomerAccount )replacingObject;
 						else { // Cannot have circular reference, so can be in else branch
 							IInformationObject iObject = CollectionContent[i];
 							iObject.ReplaceObjectInTree(replacingObject);
@@ -994,7 +994,7 @@ namespace INT {
 						iObject.SetInstanceTreeValuesAsUnmodified();
 				}
 
-				private void CopyContentFrom(CustomerCollection sourceObject)
+				private void CopyContentFrom(CustomerAccountCollection sourceObject)
 				{
 					CollectionContent = sourceObject.CollectionContent;
 					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
@@ -1051,7 +1051,7 @@ namespace INT {
 			}
 			[DataContract]
 			[Serializable]
-			public partial class Customer : IInformationObject 
+			public partial class CustomerAccount : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -1059,26 +1059,26 @@ namespace INT {
 					}
 				}
 
-				public Customer()
+				public CustomerAccount()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
-				    this.Name = "Customer";
+				    this.Name = "CustomerAccount";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.Payments/Customer/";
+					string contentTypeName = "TheBall.Payments/CustomerAccount/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Customer), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(CustomerAccount), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -1087,7 +1087,7 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "Customer", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.Payments", "CustomerAccount", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -1095,20 +1095,20 @@ namespace INT {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static Customer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static CustomerAccount RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCustomer(relativeLocation, owner);
+					return RetrieveCustomerAccount(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: Customer");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: CustomerAccount");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Customer), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CustomerAccount), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -1127,23 +1127,23 @@ namespace INT {
 				}
 
 
-                public static Customer RetrieveCustomer(string relativeLocation, IContainerOwner owner = null)
+                public static CustomerAccount RetrieveCustomerAccount(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (Customer) StorageSupport.RetrieveInformation(relativeLocation, typeof(Customer), null, owner);
+                    var result = (CustomerAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(CustomerAccount), null, owner);
                     return result;
                 }
 
-				public static Customer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static CustomerAccount RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = Customer.RetrieveCustomer("Content/TheBall.Payments/Customer/" + contentName, containerOwner);
-					var result = Customer.RetrieveCustomer("TheBall.Payments/Customer/" + contentName, containerOwner);
+					// var result = CustomerAccount.RetrieveCustomerAccount("Content/TheBall.Payments/CustomerAccount/" + contentName, containerOwner);
+					var result = CustomerAccount.RetrieveCustomerAccount("TheBall.Payments/CustomerAccount/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/Customer/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/Customer/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/CustomerAccount/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/CustomerAccount/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -1213,7 +1213,7 @@ namespace INT {
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((Customer) sourceMaster);
+					CopyContentFrom((CustomerAccount) sourceMaster);
 				}
 
 
@@ -1227,7 +1227,7 @@ namespace INT {
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Customer));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerAccount));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -1240,13 +1240,13 @@ namespace INT {
 					}
 				}
 
-				public static Customer DeserializeFromXml(string xmlString)
+				public static CustomerAccount DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Customer));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(CustomerAccount));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (Customer) serializer.ReadObject(xmlReader);
+							return (CustomerAccount) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -1282,7 +1282,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.Payments", "Customer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Payments", "CustomerAccount", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -1296,32 +1296,32 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Payments", "Customer", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Payments", "CustomerAccount", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref Customer customDemoObject);
+				static partial void CreateCustomDemo(ref CustomerAccount customDemoObject);
 
 
 
-				public static Customer CreateDefault()
+				public static CustomerAccount CreateDefault()
 				{
-					var result = new Customer();
+					var result = new CustomerAccount();
 					return result;
 				}
 				/*
-				public static Customer CreateDemoDefault()
+				public static CustomerAccount CreateDemoDefault()
 				{
-					Customer customDemo = null;
-					Customer.CreateCustomDemo(ref customDemo);
+					CustomerAccount customDemo = null;
+					CustomerAccount.CreateCustomDemo(ref customDemo);
 					if(customDemo != null)
 						return customDemo;
-					var result = new Customer();
-					result.StripeID = @"Customer.StripeID";
+					var result = new CustomerAccount();
+					result.StripeID = @"CustomerAccount.StripeID";
 
-					result.EmailAddress = @"Customer.EmailAddress";
+					result.EmailAddress = @"CustomerAccount.EmailAddress";
 
-					result.Description = @"Customer.Description";
+					result.Description = @"CustomerAccount.Description";
 
 				
 					return result;
@@ -1397,7 +1397,7 @@ namespace INT {
 				}
 
 
-				private void CopyContentFrom(Customer sourceObject)
+				private void CopyContentFrom(CustomerAccount sourceObject)
 				{
 					StripeID = sourceObject.StripeID;
 					EmailAddress = sourceObject.EmailAddress;

@@ -4,7 +4,7 @@ namespace TheBall.CORE
 {
     public static class SystemSupport
     {
-        public static readonly string[] ReservedDomainNames = new string[] {"TheBall.CORE"};
+        public static readonly string[] ReservedDomainNames = new string[] {"TheBall.CORE", "TheBall.Payments"};
         public const string SystemOwnerRoot = "sys/AAA";
 
         public static string[] FilterAwayReservedFolders(string[] directories)

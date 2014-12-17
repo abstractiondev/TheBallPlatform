@@ -145,7 +145,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( PaymentToken )" level="2">
+            <Header text="Target Definition: CustomerAccount" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer account object based on active account ID. Created if missing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessPayment ( PaymentToken, CustomerAccount )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe</TextContent>

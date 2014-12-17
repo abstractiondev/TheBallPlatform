@@ -30,10 +30,10 @@
           <InformationItem name="BillingInterval" logicalDataType="Text_Short"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="CustomerCollection" designDesc="Collection of customers">
-        <CollectionFor collectionType="Master" contentInformationObjectName="Customer"/>
+      <InformationObject name="CustomerAccountCollection" designDesc="Collection of customer accounts">
+        <CollectionFor collectionType="Master" contentInformationObjectName="CustomerAccount"/>
       </InformationObject>
-      <InformationObject name="Customer" designDesc="Payment identified customer">
+      <InformationObject name="CustomerAccount" designDesc="Payment identified customer, ID based on account">
         <InformationItems>
           <InformationItem name="StripeID" logicalDataType="Text_Short"/>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
@@ -52,8 +52,10 @@
             <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
               <Target name="PaymentToken"/>
             </MethodExecute>
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on active account ID. Created if missing" state="implemented" />
             <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
               <Target name="PaymentToken"/>
+              <Target name="CustomerAccount"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
@@ -71,10 +73,10 @@
               <Parameter name="GroupID"/>
             </TargetDefinition>
             <TargetDefinition name="StripeCustomers" dataType="Stripe.StripeCustomer[]" designDesc="Stripe customers from service call" state="implemented" />
-            <TargetDefinition name="CurrentCustomers" dataType="CustomerCollection" designDesc="Current customer collection" state="implemented">
+            <TargetDefinition name="CurrentCustomers" dataType="CustomerAccountCollection" designDesc="Current customer collection" state="implemented">
               <Target name="Owner"/>
             </TargetDefinition>
-            <TargetDefinition name="NewCustomersToCreate" dataType="Customer[]" designDesc="New customers to create" state="implemented">
+            <TargetDefinition name="NewCustomersToCreate" dataType="CustomerAccount[]" designDesc="New customers to create" state="implemented">
               <Target name="Owner"/>
               <Target name="StripeCustomers"/>
               <Target name="CurrentCustomers"/>

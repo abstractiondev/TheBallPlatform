@@ -19,12 +19,12 @@ namespace TheBall.Payments
             return customers;
         }
 
-        public static CustomerCollection GetTarget_CurrentCustomers(IContainerOwner owner)
+        public static CustomerAccountCollection GetTarget_CurrentCustomers(IContainerOwner owner)
         {
-            return CustomerCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+            return CustomerAccountCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
         }
 
-        public static Customer[] GetTarget_NewCustomersToCreate(IContainerOwner owner, StripeCustomer[] stripeCustomers, CustomerCollection currentCustomers)
+        public static CustomerAccount[] GetTarget_NewCustomersToCreate(IContainerOwner owner, StripeCustomer[] stripeCustomers, CustomerAccountCollection currentCustomers)
         {
             var newStripeCustomers =
                 stripeCustomers.Where(
@@ -32,7 +32,7 @@ namespace TheBall.Payments
                         currentCustomers.CollectionContent.All(customer => customer.StripeID != sCustomer.Id.ToLower())).ToArray();
             var newCustomers = newStripeCustomers.Select(sCustomer =>
             {
-                var customer = new Customer();
+                var customer = new CustomerAccount();
                 customer.SetLocationAsOwnerContent(owner, customer.ID);
                 customer.EmailAddress = sCustomer.Email;
                 customer.Description = sCustomer.Description;
@@ -41,7 +41,7 @@ namespace TheBall.Payments
             return newCustomers;
         }
 
-        public static void ExecuteMethod_StoreObjects(IContainerOwner owner, Customer[] newCustomersToCreate)
+        public static void ExecuteMethod_StoreObjects(IContainerOwner owner, CustomerAccount[] newCustomersToCreate)
         {
             foreach (var customer in newCustomersToCreate)
                 customer.StoreInformation(owner);
