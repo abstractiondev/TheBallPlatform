@@ -392,6 +392,7 @@
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
     <Compile Include="TheBall.Payments\AssociatePaymentToGroupImplementation.cs" />
+    <Compile Include="TheBall.Payments\AccountPaymentInfo.cs" />
     <Compile Include="TheBall.Payments\FetchCustomersFromStripeImplementation.cs" />
     <Compile Include="TheBall.Payments\ProcessPaymentImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />

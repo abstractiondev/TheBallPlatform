@@ -18,6 +18,16 @@
         
       </InformationObject>
       -->
+      <InformationObject name="AccountPaymentCollection" designDesc="Collection of account payment infos">
+        <CollectionFor collectionType="Master" contentInformationObjectName="AccountPaymentInfo"/>
+      </InformationObject>
+                         
+      <InformationObject name="AccountPaymentInfo" designDesc="Account Payment Info" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="AccountID" logicalDataType="Text_Short"/>
+          <InformationItem name="PaymentItems" logicalDataType="InformationObject" informationObjectName="PaymentItem" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="GroupOffering" designDesc="Group offering item">
         <InformationItems>
           <InformationItem name="GroupID" logicalDataType="Text_Short"/>
@@ -34,6 +44,8 @@
           <InformationItem name="Price" logicalDataType="Text_Short"/>
           <InformationItem name="Currency" logicalDataType="Text_Short"/>
           <InformationItem name="BillingInterval" logicalDataType="Text_Short"/>
+          <InformationItem name="PaidDateTime" logicalDataType="Time_DateTime"/>
+          <InformationItem name="NextDueDate" logicalDataType="Time_Date"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="CustomerAccountCollection" designDesc="Collection of customer accounts">
