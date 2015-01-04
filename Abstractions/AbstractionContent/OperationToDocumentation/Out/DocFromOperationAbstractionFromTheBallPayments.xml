@@ -4,6 +4,64 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallPayments)" title="Operations (OperationAbstractionFromTheBallPayments)">
         <Content>
+          <Header text="ActivateAndPayGroupSubscriptionPlan" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Activate and pay group subscription</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PaymentToken" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Obtain Stripe Token from request stream</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateMatchingEmail ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that account active email matches payment token email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountID" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Active account ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomerAccount ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer account object based accountID. Created if missing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: PlanName ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Plan name from the payment token</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessPayment ( PaymentToken, CustomerAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process payment to Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: GrantAccessToAccount ( PlanName, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grant plan access to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="AssociatePaymentToGroup (GroupID, PaymentID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -51,6 +109,71 @@
               <Paragraph>
                 <Text>
                   <TextContent>Group as owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CancelGroupSubscriptionPlan (PlanName, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Cancel group paid subscription</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PlanName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Plan Name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to grant access for</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomerAccount ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer account object based on account ID. Must be found</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CancelSubscriptionPlan ( CustomerAccount, PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Cancel subscription plan on Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RevokeAccessFromAccount ( PlanName, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke plan access to account</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -123,6 +246,115 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="GrantPaidAccessToGroup (GroupID, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grant paid access to group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to grant access to</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to grant access for</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddAccountToGroup ( GroupID, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add account to group by inviting and confirming. Grant as visitor role.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="GrantPlanAccessToAccount (PlanName, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grant plan access to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PlanName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Plan Name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to grant access for</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plan of given name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: GrantAccessToAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grant access to plan groups. Using GrantPaidAccessToGroup operation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ProcessPayment" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -156,6 +388,115 @@
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RemovePlanAccessFromAccount (PlanName, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove plan access from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PlanName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Plan Name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to grant access for</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plan of given name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke access from plan groups. Using RevokePaidAccessFromGroup operation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RevokePaidAccessFromGroup (GroupID, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke paid access to group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to revoke access from</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to revoke access from</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveAccountFromGroup ( GroupID, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove account from group.</TextContent>
                 </Text>
               </Paragraph>
             </Header>

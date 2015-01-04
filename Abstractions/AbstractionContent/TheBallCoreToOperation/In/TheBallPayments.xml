@@ -18,10 +18,19 @@
         
       </InformationObject>
       -->
+      <InformationObject name="GroupSubscriptionPlanCollection" designDesc="Collection of group subscription plans">
+        <CollectionFor collectionType="Master" contentInformationObjectName="GroupSubscriptionPlan"/>
+      </InformationObject>
+      <InformationObject name="GroupSubscriptionPlan" designDesc="Group subscription plan item, including the group IDs" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="PlanName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="GroupIDs" logicalDataType="Text_Short" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
       <InformationObject name="AccountPaymentCollection" designDesc="Collection of account payment infos">
         <CollectionFor collectionType="Master" contentInformationObjectName="AccountPaymentInfo"/>
       </InformationObject>
-                         
       <InformationObject name="AccountPaymentInfo" designDesc="Account Payment Info" provideCreateMethod="false">
         <InformationItems>
           <InformationItem name="AccountID" logicalDataType="Text_Short"/>
@@ -60,7 +69,132 @@
       </InformationObject>
     </InformationModel>
     <Operations>
-      
+      <Operation name="ActivateAndPayGroupSubscriptionPlan">
+        <OperationSpec>
+          <Description>Activate and pay group subscription</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="INT.PaymentToken" name="PaymentToken" designDesc="Obtain Stripe Token from request stream" state="implemented" />
+            <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
+              <Target name="PaymentToken"/>
+            </MethodExecute>
+            <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
+              <Target name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
+              <Target name="PaymentToken"/>
+            </TargetDefinition>
+            <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
+              <Target name="PaymentToken"/>
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+            <MethodExecute name="GrantAccessToAccount" designDesc="Grant plan access to account" state="implemented">
+              <Target name="PlanName"/>
+              <Target name="AccountID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="CancelGroupSubscriptionPlan">
+        <OperationSpec>
+          <Description>Cancel group paid subscription</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <MethodExecute name="CancelSubscriptionPlan" designDesc="Cancel subscription plan on Stripe" state="implemented">
+              <Parameter name="PlanName"/>
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+            <MethodExecute name="RevokeAccessFromAccount" designDesc="Revoke plan access to account" state="implemented">
+              <Parameter name="PlanName"/>
+              <Parameter name="AccountID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="GrantPlanAccessToAccount">
+        <OperationSpec>
+          <Description>Grant plan access to account</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan of given name" state="implemented">
+              <Parameter name="PlanName"/>
+            </TargetDefinition>
+            <MethodExecute name="GrantAccessToAccountForPlanGroups" designDesc="Grant access to plan groups. Using GrantPaidAccessToGroup operation" state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupSubscriptionPlan"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="GrantPaidAccessToGroup">
+        <OperationSpec>
+          <Description>Grant paid access to group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to grant access to" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="AddAccountToGroup" designDesc="Add account to group by inviting and confirming. Grant as visitor role." state="implemented">
+              <Parameter name="GroupID"/>
+              <Parameter name="AccountID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="RemovePlanAccessFromAccount">
+        <OperationSpec>
+          <Description>Remove plan access from account</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan of given name" state="implemented">
+              <Parameter name="PlanName"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveAccessFromAccountForPlanGroups" designDesc="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation" state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupSubscriptionPlan"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="RevokePaidAccessFromGroup">
+        <OperationSpec>
+          <Description>Revoke paid access to group</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to revoke access from" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID to revoke access from" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="RemoveAccountFromGroup" designDesc="Remove account from group." state="implemented">
+              <Parameter name="GroupID"/>
+              <Parameter name="AccountID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ProcessPayment">
         <OperationSpec>
           <Description>Process Stripe payment</Description>

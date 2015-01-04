@@ -391,10 +391,17 @@
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
+    <Compile Include="TheBall.Payments\ActivateAndPayGroupSubscriptionPlanImplementation.cs" />
     <Compile Include="TheBall.Payments\AssociatePaymentToGroupImplementation.cs" />
     <Compile Include="TheBall.Payments\AccountPaymentInfo.cs" />
+    <Compile Include="TheBall.Payments\CancelGroupSubscriptionPlanImplementation.cs" />
     <Compile Include="TheBall.Payments\FetchCustomersFromStripeImplementation.cs" />
+    <Compile Include="TheBall.Payments\GrantPaidAccessToGroupImplementation.cs" />
+    <Compile Include="TheBall.Payments\GrantPlanAccessToAccountImplementation.cs" />
+    <Compile Include="TheBall.Payments\GroupSubscriptionPlan.cs" />
     <Compile Include="TheBall.Payments\ProcessPaymentImplementation.cs" />
+    <Compile Include="TheBall.Payments\RemovePlanAccessFromAccountImplementation.cs" />
+    <Compile Include="TheBall.Payments\RevokePaidAccessFromGroupImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />
