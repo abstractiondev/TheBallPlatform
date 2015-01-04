@@ -249,10 +249,6 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Under design 1, Being implemented 4
 		</div>
-		</p><h2>InviteMemberToGroup (0 %)</h2>
-		<p>		<div class="MsoNormal" >
-		Being implemented 9
-		</div>
 		</p><h2>RemoveMemberFromGroup (0 %)</h2>
 		<p>		<div class="MsoNormal" >
 		Being implemented 10
@@ -320,6 +316,10 @@ div.WordSection1
 		</p><h2>InviteNewMemberToPlatformAndGroup (13 %)</h2>
 		<p>		<div class="MsoNormal" >
 		Being implemented 7, Implemented 1
+		</div>
+		</p><h2>InviteMemberToGroup (36 %)</h2>
+		<p>		<div class="MsoNormal" >
+		Being implemented 7, Implemented 4
 		</div>
 		</p><h1>AssignCollaboratorRole (0 %)</h1>
 		<p><table border="1">
@@ -978,40 +978,74 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h1>InviteMemberToGroup (0 %)</h1>
+		</p><h1>InviteMemberToGroup (36 %)</h1>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Item</div></th><th><div class=MsoNormal>Status</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		VariableType: MemberEmailAddress
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
+				<div class="MsoNormal" >
+		Implemented
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Email address of the member
 		</div>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		VariableType: GroupID
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Being implemented
+				<div class="MsoNormal" >
+		Implemented
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Group ID to invite to
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: DontSendEmailInvitation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Dont send email invitation
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		VariableType: MemberRole
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Implemented
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Member role to invite to group
 		</div>
 				</td>
 				</tr>
@@ -1079,7 +1113,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Add as pending invitation to group root
+		Add as pending invitation to group root. Default to collaborator role if MemberRole not given
 		</div>
 				</td>
 				</tr>

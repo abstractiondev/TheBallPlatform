@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Payments">
+    <StatusItem name="ValidatePlanContainingGroups_PlanName" displayName="VariableType: PlanName" description="Plan name to validate for groups">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ValidatePlanContainingGroups_GroupSubscriptionPlan" displayName="TargetDefinitionType: GroupSubscriptionPlan" description="Group subscription plan">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ValidatePlanContainingGroups_ValidateGroupsInPlan" displayName="MethodExecuteType: ValidateGroupsInPlan" description="Validate groups exist (at least one) in plan">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_PaymentToken" displayName="TargetDefinitionType: PaymentToken" description="Obtain Stripe Token from request stream">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -16,10 +25,13 @@
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_PlanName" displayName="TargetDefinitionType: PlanName" description="Plan name from the payment token">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ValidatePlan" displayName="OperationExecuteType: ValidatePlan" description="Validate plan before charging for payment">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_GrantAccessToAccount" displayName="MethodExecuteType: GrantAccessToAccount" description="Grant plan access to account">
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_GrantAccessToPaidPlan" displayName="OperationExecuteType: GrantAccessToPaidPlan" description="Grant access to paid plan">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CancelGroupSubscriptionPlan_PlanName" displayName="VariableType: PlanName" description="Plan Name">
@@ -34,7 +46,7 @@
     <StatusItem name="CancelGroupSubscriptionPlan_CancelSubscriptionPlan" displayName="MethodExecuteType: CancelSubscriptionPlan" description="Cancel subscription plan on Stripe">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CancelGroupSubscriptionPlan_RevokeAccessFromAccount" displayName="MethodExecuteType: RevokeAccessFromAccount" description="Revoke plan access to account">
+    <StatusItem name="CancelGroupSubscriptionPlan_RevokeAccessToCanceledPlan" displayName="OperationExecuteType: RevokeAccessToCanceledPlan" description="Revoke access to canceled plan">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="GrantPlanAccessToAccount_PlanName" displayName="VariableType: PlanName" description="Plan Name">
@@ -58,16 +70,16 @@
     <StatusItem name="GrantPaidAccessToGroup_AddAccountToGroup" displayName="MethodExecuteType: AddAccountToGroup" description="Add account to group by inviting and confirming. Grant as visitor role.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="RemovePlanAccessFromAccount_PlanName" displayName="VariableType: PlanName" description="Plan Name">
+    <StatusItem name="RevokePlanAccessFromAccount_PlanName" displayName="VariableType: PlanName" description="Plan Name">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="RemovePlanAccessFromAccount_AccountID" displayName="VariableType: AccountID" description="Account ID to grant access for">
+    <StatusItem name="RevokePlanAccessFromAccount_AccountID" displayName="VariableType: AccountID" description="Account ID to grant access for">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="RemovePlanAccessFromAccount_GroupSubscriptionPlan" displayName="TargetDefinitionType: GroupSubscriptionPlan" description="Group subscription plan of given name">
+    <StatusItem name="RevokePlanAccessFromAccount_GroupSubscriptionPlan" displayName="TargetDefinitionType: GroupSubscriptionPlan" description="Group subscription plan of given name">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="RemovePlanAccessFromAccount_RemoveAccessFromAccountForPlanGroups" displayName="MethodExecuteType: RemoveAccessFromAccountForPlanGroups" description="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation">
+    <StatusItem name="RevokePlanAccessFromAccount_RevokeAccessFromAccountForPlanGroups" displayName="MethodExecuteType: RevokeAccessFromAccountForPlanGroups" description="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="RevokePaidAccessFromGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to revoke access from">
@@ -120,21 +132,30 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="ValidatePlanContainingGroups">
+      <ItemRef itemName="ValidatePlanContainingGroups_PlanName" />
+      <ItemRef itemName="ValidatePlanContainingGroups_GroupSubscriptionPlan" />
+      <ItemRef itemName="ValidatePlanContainingGroups_ValidateGroupsInPlan" />
+    </Group>
     <Group name="ActivateAndPayGroupSubscriptionPlan">
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_PaymentToken" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidateMatchingEmail" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_AccountID" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_CustomerAccount" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_PlanName" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidatePlan" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ProcessPayment" />
-      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_GrantAccessToAccount" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_GrantAccessToPaidPlan" />
+      <GroupRef groupName="ValidatePlanContainingGroups" />
+      <GroupRef groupName="GrantPlanAccessToAccount" />
     </Group>
     <Group name="CancelGroupSubscriptionPlan">
       <ItemRef itemName="CancelGroupSubscriptionPlan_PlanName" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_AccountID" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_CustomerAccount" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_CancelSubscriptionPlan" />
-      <ItemRef itemName="CancelGroupSubscriptionPlan_RevokeAccessFromAccount" />
+      <ItemRef itemName="CancelGroupSubscriptionPlan_RevokeAccessToCanceledPlan" />
+      <GroupRef groupName="RevokePlanAccessFromAccount" />
     </Group>
     <Group name="GrantPlanAccessToAccount">
       <ItemRef itemName="GrantPlanAccessToAccount_PlanName" />
@@ -147,11 +168,11 @@
       <ItemRef itemName="GrantPaidAccessToGroup_AccountID" />
       <ItemRef itemName="GrantPaidAccessToGroup_AddAccountToGroup" />
     </Group>
-    <Group name="RemovePlanAccessFromAccount">
-      <ItemRef itemName="RemovePlanAccessFromAccount_PlanName" />
-      <ItemRef itemName="RemovePlanAccessFromAccount_AccountID" />
-      <ItemRef itemName="RemovePlanAccessFromAccount_GroupSubscriptionPlan" />
-      <ItemRef itemName="RemovePlanAccessFromAccount_RemoveAccessFromAccountForPlanGroups" />
+    <Group name="RevokePlanAccessFromAccount">
+      <ItemRef itemName="RevokePlanAccessFromAccount_PlanName" />
+      <ItemRef itemName="RevokePlanAccessFromAccount_AccountID" />
+      <ItemRef itemName="RevokePlanAccessFromAccount_GroupSubscriptionPlan" />
+      <ItemRef itemName="RevokePlanAccessFromAccount_RevokeAccessFromAccountForPlanGroups" />
     </Group>
     <Group name="RevokePaidAccessFromGroup">
       <ItemRef itemName="RevokePaidAccessFromGroup_GroupID" />

@@ -1,20 +1,39 @@
+using System.Linq;
+using Stripe;
+
 namespace TheBall.Payments
 {
     public class CancelGroupSubscriptionPlanImplementation
     {
         public static CustomerAccount GetTarget_CustomerAccount(string accountId)
         {
-            throw new System.NotImplementedException();
+            var owner = InformationContext.CurrentOwner;
+            CustomerAccount customerAccount = CustomerAccount.RetrieveFromOwnerContent(owner, accountId);
+            return customerAccount;
         }
 
         public static void ExecuteMethod_CancelSubscriptionPlan(string planName, CustomerAccount customerAccount)
         {
-            throw new System.NotImplementedException();
+            StripeCustomerService stripeCustomerService = new StripeCustomerService();
+            var stripeCustomer = stripeCustomerService.Get(customerAccount.StripeID);
+            var stripeSubscriptions = stripeCustomer.StripeSubscriptionList.StripeSubscriptions;
+            var planSubscriptions =
+                stripeSubscriptions.Where(subscription => subscription.StripePlan.Name == planName).ToArray();
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService();
+            var customerID = stripeCustomer.Id;
+            foreach (var subscription in planSubscriptions)
+            {
+                subscriptionService.Cancel(customerID, subscription.Id);
+            }
         }
 
-        public static void ExecuteMethod_RevokeAccessFromAccount(string planName, string accountId)
+        public static RevokePlanAccessFromAccountParameters RevokeAccessToCanceledPlan_GetParameters(string planName, string accountId)
         {
-            throw new System.NotImplementedException();
+            return new RevokePlanAccessFromAccountParameters
+            {
+                AccountID = accountId,
+                PlanName = planName
+            };
         }
     }
 }

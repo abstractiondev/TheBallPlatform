@@ -6,7 +6,7 @@ namespace TheBall.Payments
     {
         public static IContainerOwner GetTarget_GroupAsOwner(string groupId)
         {
-            throw new System.NotImplementedException();
+            return new VirtualOwner("grp", groupId);
         }
     }
 }

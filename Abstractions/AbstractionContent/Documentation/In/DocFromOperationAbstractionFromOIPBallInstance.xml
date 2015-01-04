@@ -633,7 +633,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="InviteMemberToGroup (MemberEmailAddress, GroupID)" level="1">
+          <Header text="InviteMemberToGroup (MemberEmailAddress, GroupID, DontSendEmailInvitation, MemberRole)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -651,25 +651,47 @@
                   </Columns>
                   <Rows>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>MemberEmailAddress</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>Email address of the member</TextContent>
                       </ColumnData>
                     </Row>
                     <Row>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>GroupID</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
-                      <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                      <ColumnData>
                         <TextContent>Group ID to invite to</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DontSendEmailInvitation</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Dont send email invitation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberRole</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Member role to invite to group</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -697,10 +719,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: AddAsPendingInvitationToGroupRoot ( GroupRoot, MemberEmailAddress )" level="2">
+            <Header text="Method Call: AddAsPendingInvitationToGroupRoot ( GroupRoot, MemberEmailAddress, MemberRole )" level="2">
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
-                  <TextContent>Add as pending invitation to group root</TextContent>
+                  <TextContent>Add as pending invitation to group root. Default to collaborator role if MemberRole not given</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -711,7 +733,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SendEmailConfirmation ( EmailValidation, GroupRoot )" level="2">
+            <Header text="Method Call: SendEmailConfirmation ( EmailValidation, GroupRoot, DontSendEmailInvitation )" level="2">
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
                   <TextContent>Create and send email confirmation for joining the group</TextContent>

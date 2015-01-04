@@ -47,6 +47,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Operation Call: ValidatePlan ( PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate plan before charging for payment</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: ProcessPayment ( PaymentToken, CustomerAccount )" level="2">
               <Paragraph>
                 <Text>
@@ -54,10 +61,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: GrantAccessToAccount ( PlanName, AccountID )" level="2">
+            <Header text="Operation Call: GrantAccessToPaidPlan ( PlanName, AccountID )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Grant plan access to account</TextContent>
+                  <TextContent>Grant access to paid plan</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -170,10 +177,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: RevokeAccessFromAccount ( PlanName, AccountID )" level="2">
+            <Header text="Operation Call: RevokeAccessToCanceledPlan ( PlanName, AccountID )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Revoke plan access to account</TextContent>
+                  <TextContent>Revoke access to canceled plan</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -392,64 +399,6 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="RemovePlanAccessFromAccount (PlanName, AccountID)" level="1">
-            <Header text="Specifications" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Remove plan access from account</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>PlanName</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Plan Name</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>AccountID</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Account ID to grant access for</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Group subscription plan of given name</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: RemoveAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Revoke access from plan groups. Using RevokePaidAccessFromGroup operation</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-          </Header>
           <Header text="RevokePaidAccessFromGroup (GroupID, AccountID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -497,6 +446,111 @@
               <Paragraph>
                 <Text>
                   <TextContent>Remove account from group.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RevokePlanAccessFromAccount (PlanName, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke plan access from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PlanName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Plan Name</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to grant access for</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plan of given name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RevokeAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke access from plan groups. Using RevokePaidAccessFromGroup operation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ValidatePlanContainingGroups (PlanName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that plan contains groups</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PlanName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Plan name to validate for groups</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plan</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateGroupsInPlan ( GroupSubscriptionPlan )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate groups exist (at least one) in plan</TextContent>
                 </Text>
               </Paragraph>
             </Header>

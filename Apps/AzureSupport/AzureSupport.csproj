@@ -400,8 +400,9 @@
     <Compile Include="TheBall.Payments\GrantPlanAccessToAccountImplementation.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlan.cs" />
     <Compile Include="TheBall.Payments\ProcessPaymentImplementation.cs" />
-    <Compile Include="TheBall.Payments\RemovePlanAccessFromAccountImplementation.cs" />
+    <Compile Include="TheBall.Payments\RevokePlanAccessFromAccountImplementation.cs" />
     <Compile Include="TheBall.Payments\RevokePaidAccessFromGroupImplementation.cs" />
+    <Compile Include="TheBall.Payments\ValidatePlanContainingGroupsImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />

@@ -1,6 +1,24 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
+    <Operation name="ValidatePlanContainingGroups">
+      <OperationSpec>
+        <Description>Validate that plan contains groups</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="PlanName" dataType="string" designDesc="Plan name to validate for groups" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan" state="implemented">
+            <Parameter name="PlanName" />
+          </TargetDefinition>
+          <MethodExecute name="ValidateGroupsInPlan" designDesc="Validate groups exist (at least one) in plan" state="implemented">
+            <Target name="GroupSubscriptionPlan" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ActivateAndPayGroupSubscriptionPlan">
       <OperationSpec>
         <Description>Activate and pay group subscription</Description>
@@ -18,14 +36,17 @@
           <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
             <Target name="PaymentToken" />
           </TargetDefinition>
+          <OperationExecute name="ValidatePlan" targetOperationName="ValidatePlanContainingGroups" designDesc="Validate plan before charging for payment" state="implemented">
+            <Target name="PlanName" />
+          </OperationExecute>
           <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
             <Target name="PaymentToken" />
             <Target name="CustomerAccount" />
           </MethodExecute>
-          <MethodExecute name="GrantAccessToAccount" designDesc="Grant plan access to account" state="implemented">
+          <OperationExecute name="GrantAccessToPaidPlan" targetOperationName="GrantPlanAccessToAccount" designDesc="Grant access to paid plan" state="implemented">
             <Target name="PlanName" />
             <Target name="AccountID" />
-          </MethodExecute>
+          </OperationExecute>
         </SequentialExecution>
       </Execution>
     </Operation>
@@ -46,10 +67,10 @@
             <Parameter name="PlanName" />
             <Target name="CustomerAccount" />
           </MethodExecute>
-          <MethodExecute name="RevokeAccessFromAccount" designDesc="Revoke plan access to account" state="implemented">
+          <OperationExecute name="RevokeAccessToCanceledPlan" targetOperationName="RevokePlanAccessFromAccount" designDesc="Revoke access to canceled plan" state="implemented">
             <Parameter name="PlanName" />
             <Parameter name="AccountID" />
-          </MethodExecute>
+          </OperationExecute>
         </SequentialExecution>
       </Execution>
     </Operation>
@@ -90,9 +111,9 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="RemovePlanAccessFromAccount">
+    <Operation name="RevokePlanAccessFromAccount">
       <OperationSpec>
-        <Description>Remove plan access from account</Description>
+        <Description>Revoke plan access from account</Description>
       </OperationSpec>
       <Parameters>
         <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented" />
@@ -103,7 +124,7 @@
           <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan of given name" state="implemented">
             <Parameter name="PlanName" />
           </TargetDefinition>
-          <MethodExecute name="RemoveAccessFromAccountForPlanGroups" designDesc="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation" state="implemented">
+          <MethodExecute name="RevokeAccessFromAccountForPlanGroups" designDesc="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation" state="implemented">
             <Parameter name="AccountID" />
             <Target name="GroupSubscriptionPlan" />
           </MethodExecute>

@@ -1,21 +1,17 @@
-using System;
-using System.IO;
-using AaltoGlobalImpact.OIP;
-
 namespace TheBall.Payments
 {
-    public class GrantPlanAccessToAccountImplementation
+    public class RevokePlanAccessFromAccountImplementation
     {
         public static GroupSubscriptionPlan GetTarget_GroupSubscriptionPlan(string planName)
         {
             return GroupSubscriptionPlan.RetrieveFromOwnerContent(InformationContext.CurrentOwner, planName);
         }
 
-        public static void ExecuteMethod_GrantAccessToAccountForPlanGroups(string accountId, GroupSubscriptionPlan groupSubscriptionPlan)
+        public static void ExecuteMethod_RevokeAccessFromAccountForPlanGroups(string accountId, GroupSubscriptionPlan groupSubscriptionPlan)
         {
             foreach (var groupID in groupSubscriptionPlan.GroupIDs)
             {
-                GrantPaidAccessToGroup.Execute(new GrantPaidAccessToGroupParameters
+                RevokePaidAccessFromGroup.Execute(new RevokePaidAccessFromGroupParameters
                 {
                     AccountID = accountId,
                     GroupID = groupID

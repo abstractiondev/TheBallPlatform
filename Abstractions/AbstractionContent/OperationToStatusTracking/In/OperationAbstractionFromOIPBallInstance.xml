@@ -134,8 +134,10 @@
         <Description>Invite member to collaboration group</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="designApproved" />
-        <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="designApproved" />
+        <Parameter name="MemberEmailAddress" dataType="string" designDesc="Email address of the member" state="implemented" />
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to invite to" state="implemented" />
+        <Parameter name="DontSendEmailInvitation" dataType="bool" designDesc="Dont send email invitation" state="implemented" />
+        <Parameter name="MemberRole" dataType="string" designDesc="Member role to invite to group" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -149,8 +151,9 @@
           <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID of email" state="designApproved">
             <Parameter name="MemberEmailAddress" />
           </TargetDefinition>
-          <MethodExecute name="AddAsPendingInvitationToGroupRoot" designDesc="Add as pending invitation to group root" state="designApproved">
+          <MethodExecute name="AddAsPendingInvitationToGroupRoot" designDesc="Add as pending invitation to group root. Default to collaborator role if MemberRole not given" state="designApproved">
             <Parameter name="MemberEmailAddress" />
+            <Parameter name="MemberRole" />
             <Target name="GroupRoot" />
           </MethodExecute>
           <MethodExecute name="StoreObjects" designDesc="Store modified objects" state="designApproved">
@@ -158,6 +161,7 @@
             <Target name="EmailValidation" />
           </MethodExecute>
           <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the group" state="designApproved">
+            <Parameter name="DontSendEmailInvitation" />
             <Target name="EmailValidation" />
             <Target name="GroupRoot" />
           </MethodExecute>

@@ -32,8 +32,10 @@ namespace AaltoGlobalImpact.OIP
             return groupContainer;
         }
 
-        public static void ExecuteMethod_AddAsPendingInvitationToGroupRoot(string memberEmailAddress, TBRGroupRoot groupRoot)
+        public static void ExecuteMethod_AddAsPendingInvitationToGroupRoot(string memberEmailAddress, string memberRole, TBRGroupRoot groupRoot)
         {
+            if (string.IsNullOrEmpty(memberRole))
+                memberRole = TBCollaboratorRole.CollaboratorRoleValue;
             TBCollaboratorRole role =
                 groupRoot.Group.Roles.CollectionContent.FirstOrDefault(
                     candidate => candidate.Email.EmailAddress == memberEmailAddress);
@@ -46,7 +48,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 role = TBCollaboratorRole.CreateDefault();
                 role.Email.EmailAddress = memberEmailAddress;
-                role.Role = TBCollaboratorRole.CollaboratorRoleValue;
+                role.Role = memberRole;
                 role.SetRoleAsInvited();
                 groupRoot.Group.Roles.CollectionContent.Add(role);
             }
@@ -58,9 +60,10 @@ namespace AaltoGlobalImpact.OIP
             emailValidation.StoreInformation();
         }
 
-        public static void ExecuteMethod_SendEmailConfirmation(TBEmailValidation emailValidation, TBRGroupRoot groupRoot)
+        public static void ExecuteMethod_SendEmailConfirmation(bool dontSendEmailInvitation, TBEmailValidation emailValidation, TBRGroupRoot groupRoot)
         {
-            EmailSupport.SendGroupJoinEmail(emailValidation, groupRoot.Group);
+            if(dontSendEmailInvitation == false)
+                EmailSupport.SendGroupJoinEmail(emailValidation, groupRoot.Group);
         }
 
         public static string GetTarget_AccountID(string memberEmailAddress)

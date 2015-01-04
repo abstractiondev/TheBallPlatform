@@ -716,7 +716,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete information object
 		</div>
-		</p><h1>InviteMemberToGroup (MemberEmailAddress, GroupID)</h1>
+		</p><h1>InviteMemberToGroup (MemberEmailAddress, GroupID, DontSendEmailInvitation, MemberRole)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Invite member to collaboration group
@@ -726,35 +726,69 @@ div.WordSection1
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		MemberEmailAddress
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Email address of the member
 		</div>
 				</td>
 				</tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		GroupID
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		Group ID to invite to
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DontSendEmailInvitation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Dont send email invitation
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MemberRole
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Member role to invite to group
 		</div>
 				</td>
 				</tr>
@@ -771,15 +805,15 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Account ID of email
 		</div>
-		</p><h2>Method Call: AddAsPendingInvitationToGroupRoot ( GroupRoot, MemberEmailAddress )</h2>
+		</p><h2>Method Call: AddAsPendingInvitationToGroupRoot ( GroupRoot, MemberEmailAddress, MemberRole )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Add as pending invitation to group root
+		Add as pending invitation to group root. Default to collaborator role if MemberRole not given
 		</div>
 		</p><h2>Method Call: StoreObjects ( GroupRoot, EmailValidation )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Store modified objects
 		</div>
-		</p><h2>Method Call: SendEmailConfirmation ( EmailValidation, GroupRoot )</h2>
+		</p><h2>Method Call: SendEmailConfirmation ( EmailValidation, GroupRoot, DontSendEmailInvitation )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Create and send email confirmation for joining the group
 		</div>

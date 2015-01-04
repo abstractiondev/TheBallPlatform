@@ -40,13 +40,6 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="InviteMemberToGroup (0 %)" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Being implemented 9</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="RemoveMemberFromGroup (0 %)" level="2">
               <Paragraph>
                 <Text>
@@ -163,6 +156,13 @@
               <Paragraph>
                 <Text>
                   <TextContent>Being implemented 7, Implemented 1</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="InviteMemberToGroup (36 %)" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Being implemented 7, Implemented 4</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -665,7 +665,7 @@
               </Table>
             </Paragraph>
           </Header>
-          <Header text="InviteMemberToGroup (0 %)" level="1">
+          <Header text="InviteMemberToGroup (36 %)" level="1">
             <Paragraph>
               <Table>
                 <Columns>
@@ -675,25 +675,47 @@
                 </Columns>
                 <Rows>
                   <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>VariableType: MemberEmailAddress</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>Email address of the member</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>VariableType: GroupID</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
                     </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
+                    <ColumnData>
                       <TextContent>Group ID to invite to</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: DontSendEmailInvitation</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Dont send email invitation</TextContent>
+                    </ColumnData>
+                  </Row>
+                  <Row>
+                    <ColumnData>
+                      <TextContent>VariableType: MemberRole</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Implemented</TextContent>
+                    </ColumnData>
+                    <ColumnData>
+                      <TextContent>Member role to invite to group</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>
@@ -737,7 +759,7 @@
                       <TextContent>Being implemented</TextContent>
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Add as pending invitation to group root</TextContent>
+                      <TextContent>Add as pending invitation to group root. Default to collaborator role if MemberRole not given</TextContent>
                     </ColumnData>
                   </Row>
                   <Row>

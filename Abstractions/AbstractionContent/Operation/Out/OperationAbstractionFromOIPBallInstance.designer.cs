@@ -115,6 +115,8 @@ using System.IO;
 		{
 				public string MemberEmailAddress ;
 				public string GroupID ;
+				public bool DontSendEmailInvitation ;
+				public string MemberRole ;
 				}
 		
 		public class InviteMemberToGroup 
@@ -128,9 +130,9 @@ using System.IO;
 					TBRGroupRoot GroupRoot = InviteMemberToGroupImplementation.GetTarget_GroupRoot(parameters.GroupID);	
 				TBEmailValidation EmailValidation = InviteMemberToGroupImplementation.GetTarget_EmailValidation(parameters.MemberEmailAddress, parameters.GroupID);	
 				string AccountID = InviteMemberToGroupImplementation.GetTarget_AccountID(parameters.MemberEmailAddress);	
-				InviteMemberToGroupImplementation.ExecuteMethod_AddAsPendingInvitationToGroupRoot(parameters.MemberEmailAddress, GroupRoot);		
+				InviteMemberToGroupImplementation.ExecuteMethod_AddAsPendingInvitationToGroupRoot(parameters.MemberEmailAddress, parameters.MemberRole, GroupRoot);		
 				InviteMemberToGroupImplementation.ExecuteMethod_StoreObjects(GroupRoot, EmailValidation);		
-				InviteMemberToGroupImplementation.ExecuteMethod_SendEmailConfirmation(EmailValidation, GroupRoot);		
+				InviteMemberToGroupImplementation.ExecuteMethod_SendEmailConfirmation(parameters.DontSendEmailInvitation, EmailValidation, GroupRoot);		
 				
 		{ // Local block to allow local naming
 			RefreshAccountGroupMembershipsParameters operationParameters = InviteMemberToGroupImplementation.RefreshAccountAndGroupContainers_GetParameters(GroupRoot, AccountID);

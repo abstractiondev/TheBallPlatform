@@ -1,9 +1,29 @@
+ 
+
+using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Payments { 
+				public class ValidatePlanContainingGroupsParameters 
+		{
+				public string PlanName ;
+				}
+		
+		public class ValidatePlanContainingGroups 
+		{
+				private static void PrepareParameters(ValidatePlanContainingGroupsParameters parameters)
+		{
+					}
+				public static void Execute(ValidatePlanContainingGroupsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					GroupSubscriptionPlan GroupSubscriptionPlan = ValidatePlanContainingGroupsImplementation.GetTarget_GroupSubscriptionPlan(parameters.PlanName);	
+				ValidatePlanContainingGroupsImplementation.ExecuteMethod_ValidateGroupsInPlan(GroupSubscriptionPlan);		
+				}
+				}
 		
 		public class ActivateAndPayGroupSubscriptionPlan 
 		{
@@ -15,8 +35,19 @@ using System.IO;
 				string AccountID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
 				string PlanName = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PlanName(PaymentToken);	
+				
+		{ // Local block to allow local naming
+			ValidatePlanContainingGroupsParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.ValidatePlan_GetParameters(PlanName);
+			ValidatePlanContainingGroups.Execute(operationParameters);
+									
+		} // Local block closing
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ProcessPayment(PaymentToken, CustomerAccount);		
-				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_GrantAccessToAccount(PlanName, AccountID);		
+				
+		{ // Local block to allow local naming
+			GrantPlanAccessToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(PlanName, AccountID);
+			GrantPlanAccessToAccount.Execute(operationParameters);
+									
+		} // Local block closing
 				}
 				}
 				public class CancelGroupSubscriptionPlanParameters 
@@ -35,7 +66,12 @@ using System.IO;
 						PrepareParameters(parameters);
 					CustomerAccount CustomerAccount = CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(parameters.AccountID);	
 				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(parameters.PlanName, CustomerAccount);		
-				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_RevokeAccessFromAccount(parameters.PlanName, parameters.AccountID);		
+				
+		{ // Local block to allow local naming
+			RevokePlanAccessFromAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessToCanceledPlan_GetParameters(parameters.PlanName, parameters.AccountID);
+			RevokePlanAccessFromAccount.Execute(operationParameters);
+									
+		} // Local block closing
 				}
 				}
 				public class GrantPlanAccessToAccountParameters 
@@ -56,8 +92,7 @@ using System.IO;
 				GrantPlanAccessToAccountImplementation.ExecuteMethod_GrantAccessToAccountForPlanGroups(parameters.AccountID, GroupSubscriptionPlan);		
 				}
 				}
-
-		    public class GrantPaidAccessToGroupParameters 
+				public class GrantPaidAccessToGroupParameters 
 		{
 				public string GroupID ;
 				public string AccountID ;
@@ -74,27 +109,25 @@ using System.IO;
 					GrantPaidAccessToGroupImplementation.ExecuteMethod_AddAccountToGroup(parameters.GroupID, parameters.AccountID);		
 				}
 				}
-
-		    public class RemovePlanAccessFromAccountParameters 
+				public class RevokePlanAccessFromAccountParameters 
 		{
 				public string PlanName ;
 				public string AccountID ;
 				}
 		
-		public class RemovePlanAccessFromAccount 
+		public class RevokePlanAccessFromAccount 
 		{
-				private static void PrepareParameters(RemovePlanAccessFromAccountParameters parameters)
+				private static void PrepareParameters(RevokePlanAccessFromAccountParameters parameters)
 		{
 					}
-				public static void Execute(RemovePlanAccessFromAccountParameters parameters)
+				public static void Execute(RevokePlanAccessFromAccountParameters parameters)
 		{
 						PrepareParameters(parameters);
-					GroupSubscriptionPlan GroupSubscriptionPlan = RemovePlanAccessFromAccountImplementation.GetTarget_GroupSubscriptionPlan(parameters.PlanName);	
-				RemovePlanAccessFromAccountImplementation.ExecuteMethod_RemoveAccessFromAccountForPlanGroups(parameters.AccountID, GroupSubscriptionPlan);		
+					GroupSubscriptionPlan GroupSubscriptionPlan = RevokePlanAccessFromAccountImplementation.GetTarget_GroupSubscriptionPlan(parameters.PlanName);	
+				RevokePlanAccessFromAccountImplementation.ExecuteMethod_RevokeAccessFromAccountForPlanGroups(parameters.AccountID, GroupSubscriptionPlan);		
 				}
 				}
-
-		    public class RevokePaidAccessFromGroupParameters 
+				public class RevokePaidAccessFromGroupParameters 
 		{
 				public string GroupID ;
 				public string AccountID ;
@@ -111,8 +144,8 @@ using System.IO;
 					RevokePaidAccessFromGroupImplementation.ExecuteMethod_RemoveAccountFromGroup(parameters.GroupID, parameters.AccountID);		
 				}
 				}
-
-		    public class ProcessPayment 
+		
+		public class ProcessPayment 
 		{
 				public static void Execute()
 		{

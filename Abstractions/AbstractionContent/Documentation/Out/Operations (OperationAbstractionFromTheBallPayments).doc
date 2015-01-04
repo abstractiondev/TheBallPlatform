@@ -253,13 +253,17 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Plan name from the payment token
 		</div>
+		</p><h2>Operation Call: ValidatePlan ( PlanName )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate plan before charging for payment
+		</div>
 		</p><h2>Method Call: ProcessPayment ( PaymentToken, CustomerAccount )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>
-		</p><h2>Method Call: GrantAccessToAccount ( PlanName, AccountID )</h2>
+		</p><h2>Operation Call: GrantAccessToPaidPlan ( PlanName, AccountID )</h2>
 		<p>		<div class="MsoNormal" >
-		Grant plan access to account
+		Grant access to paid plan
 		</div>
 		</p><h1>AssociatePaymentToGroup (GroupID, PaymentID)</h1>
 		<h2>Specifications</h2>
@@ -359,9 +363,9 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Cancel subscription plan on Stripe
 		</div>
-		</p><h2>Method Call: RevokeAccessFromAccount ( PlanName, AccountID )</h2>
+		</p><h2>Operation Call: RevokeAccessToCanceledPlan ( PlanName, AccountID )</h2>
 		<p>		<div class="MsoNormal" >
-		Revoke plan access to account
+		Revoke access to canceled plan
 		</div>
 		</p><h1>FetchCustomersFromStripe (GroupID)</h1>
 		<h2>Specifications</h2>
@@ -528,57 +532,6 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>
-		</p><h1>RemovePlanAccessFromAccount (PlanName, AccountID)</h1>
-		<h2>Specifications</h2>
-		<p>		<div class="MsoNormal" >
-		Remove plan access from account
-		</div>
-		</p><h2>Parameters</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		PlanName
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Plan Name
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		AccountID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Account ID to grant access for
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Target Definition: GroupSubscriptionPlan ( PlanName )</h2>
-		<p>		<div class="MsoNormal" >
-		Group subscription plan of given name
-		</div>
-		</p><h2>Method Call: RemoveAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )</h2>
-		<p>		<div class="MsoNormal" >
-		Revoke access from plan groups. Using RevokePaidAccessFromGroup operation
-		</div>
 		</p><h1>RevokePaidAccessFromGroup (GroupID, AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -625,6 +578,91 @@ div.WordSection1
 		</p><h2>Method Call: RemoveAccountFromGroup ( GroupID, AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Remove account from group.
+		</div>
+		</p><h1>RevokePlanAccessFromAccount (PlanName, AccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Revoke plan access from account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PlanName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Plan Name
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID to grant access for
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupSubscriptionPlan ( PlanName )</h2>
+		<p>		<div class="MsoNormal" >
+		Group subscription plan of given name
+		</div>
+		</p><h2>Method Call: RevokeAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Revoke access from plan groups. Using RevokePaidAccessFromGroup operation
+		</div>
+		</p><h1>ValidatePlanContainingGroups (PlanName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that plan contains groups
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PlanName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Plan name to validate for groups
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupSubscriptionPlan ( PlanName )</h2>
+		<p>		<div class="MsoNormal" >
+		Group subscription plan
+		</div>
+		</p><h2>Method Call: ValidateGroupsInPlan ( GroupSubscriptionPlan )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate groups exist (at least one) in plan
 		</div>
 		</p></div>
 
