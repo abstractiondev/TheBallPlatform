@@ -28,7 +28,8 @@
           <InformationItem name="GroupIDs" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="AccountPaymentCollection" designDesc="Collection of account payment infos">
+      <!--
+      <InformationObject name="AccountPaymentInfoCollection" designDesc="Collection of account payment infos">
         <CollectionFor collectionType="Master" contentInformationObjectName="AccountPaymentInfo"/>
       </InformationObject>
       <InformationObject name="AccountPaymentInfo" designDesc="Account Payment Info" provideCreateMethod="false">
@@ -57,6 +58,7 @@
           <InformationItem name="NextDueDate" logicalDataType="Time_Date"/>
         </InformationItems>
       </InformationObject>
+      -->
       <InformationObject name="CustomerAccountCollection" designDesc="Collection of customer accounts">
         <CollectionFor collectionType="Master" contentInformationObjectName="CustomerAccount"/>
       </InformationObject>
@@ -65,6 +67,7 @@
           <InformationItem name="StripeID" logicalDataType="Text_Short"/>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Short"/>
+          <InformationItem name="ActivePlans" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
     </InformationModel>

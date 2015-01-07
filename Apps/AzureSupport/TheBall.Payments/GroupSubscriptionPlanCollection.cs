@@ -2,13 +2,8 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall.Payments
 {
-    partial class GroupSubscriptionPlan : IAdditionalFormatProvider
+    partial class GroupSubscriptionPlanCollection : IAdditionalFormatProvider
     {
-        public object FindObjectByID(string objectId)
-        {
-            throw new System.NotSupportedException();
-        }
-
         public AdditionalFormatContent[] GetAdditionalContentToStore(string masterBlobETag)
         {
             return this.GetFormattedContentToStore(masterBlobETag);
