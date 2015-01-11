@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace SQLite.TheBall.CORE { 
 		
@@ -28,6 +29,15 @@ namespace SQLite.TheBall.CORE {
 		    {
 
 		    }
+
+            public override void SubmitChanges(ConflictMode failureMode)
+            {
+                var changeSet = GetChangeSet();
+                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in requiringBeforeSaveProcessing)
+                    itemToProcess.PrepareForStoring();
+                base.SubmitChanges(failureMode);
+            }
 
 			public Table<ContentPackage> ContentPackageTable {
 				get {
@@ -675,7 +685,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ID { get; set; }
 
-        [Column(Name = "ProcessIDs")] public byte[] ProcessIDsData;
+        [Column(Name = "ProcessIDs")] public string ProcessIDsData;
 
 		private bool _IsProcessIDsUsed = false;
         private List<string> _ProcessIDs = null;
@@ -685,11 +695,8 @@ namespace SQLite.TheBall.CORE {
             {
                 if (_ProcessIDs == null && ProcessIDsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ProcessIDsData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _ProcessIDs = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(ProcessIDsData);
+                    _ProcessIDs = new List<string>(arrayData);
 					_IsProcessIDsUsed = true;
                 }
                 return _ProcessIDs;
@@ -706,13 +713,8 @@ namespace SQLite.TheBall.CORE {
                     ProcessIDsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ProcessIDs.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ProcessIDsData = memStream.ToArray();
-                    }
+                    ProcessIDsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -732,7 +734,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public SemanticInformationItem ExecutingOperation { get; set; }
 		// private SemanticInformationItem _unmodified_ExecutingOperation;
-        [Column(Name = "InitialArguments")] public byte[] InitialArgumentsData;
+        [Column(Name = "InitialArguments")] public string InitialArgumentsData;
 
 		private bool _IsInitialArgumentsUsed = false;
         private List<SemanticInformationItem> _InitialArguments = null;
@@ -742,11 +744,8 @@ namespace SQLite.TheBall.CORE {
             {
                 if (_InitialArguments == null && InitialArgumentsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    SemanticInformationItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(InitialArgumentsData))
-                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
-                    _InitialArguments = new List<SemanticInformationItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InitialArgumentsData);
+                    _InitialArguments = new List<SemanticInformationItem>(arrayData);
 					_IsInitialArgumentsUsed = true;
                 }
                 return _InitialArguments;
@@ -754,7 +753,7 @@ namespace SQLite.TheBall.CORE {
             set { _InitialArguments = value; }
         }
 
-        [Column(Name = "ProcessItems")] public byte[] ProcessItemsData;
+        [Column(Name = "ProcessItems")] public string ProcessItemsData;
 
 		private bool _IsProcessItemsUsed = false;
         private List<ProcessItem> _ProcessItems = null;
@@ -764,11 +763,8 @@ namespace SQLite.TheBall.CORE {
             {
                 if (_ProcessItems == null && ProcessItemsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    ProcessItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ProcessItemsData))
-                        objectArray = (ProcessItem[]) bf.Deserialize(memStream);
-                    _ProcessItems = new List<ProcessItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<ProcessItem[]>(ProcessItemsData);
+                    _ProcessItems = new List<ProcessItem>(arrayData);
 					_IsProcessItemsUsed = true;
                 }
                 return _ProcessItems;
@@ -785,13 +781,8 @@ namespace SQLite.TheBall.CORE {
                     InitialArgumentsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _InitialArguments.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        InitialArgumentsData = memStream.ToArray();
-                    }
+                    InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -801,13 +792,8 @@ namespace SQLite.TheBall.CORE {
                     ProcessItemsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ProcessItems.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ProcessItemsData = memStream.ToArray();
-                    }
+                    ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -819,7 +805,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ID { get; set; }
 
-        [Column(Name = "Outputs")] public byte[] OutputsData;
+        [Column(Name = "Outputs")] public string OutputsData;
 
 		private bool _IsOutputsUsed = false;
         private List<SemanticInformationItem> _Outputs = null;
@@ -829,11 +815,8 @@ namespace SQLite.TheBall.CORE {
             {
                 if (_Outputs == null && OutputsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    SemanticInformationItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(OutputsData))
-                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
-                    _Outputs = new List<SemanticInformationItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(OutputsData);
+                    _Outputs = new List<SemanticInformationItem>(arrayData);
 					_IsOutputsUsed = true;
                 }
                 return _Outputs;
@@ -841,7 +824,7 @@ namespace SQLite.TheBall.CORE {
             set { _Outputs = value; }
         }
 
-        [Column(Name = "Inputs")] public byte[] InputsData;
+        [Column(Name = "Inputs")] public string InputsData;
 
 		private bool _IsInputsUsed = false;
         private List<SemanticInformationItem> _Inputs = null;
@@ -851,11 +834,8 @@ namespace SQLite.TheBall.CORE {
             {
                 if (_Inputs == null && InputsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    SemanticInformationItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(InputsData))
-                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
-                    _Inputs = new List<SemanticInformationItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InputsData);
+                    _Inputs = new List<SemanticInformationItem>(arrayData);
 					_IsInputsUsed = true;
                 }
                 return _Inputs;
@@ -872,13 +852,8 @@ namespace SQLite.TheBall.CORE {
                     OutputsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _Outputs.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        OutputsData = memStream.ToArray();
-                    }
+                    OutputsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -888,13 +863,8 @@ namespace SQLite.TheBall.CORE {
                     InputsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _Inputs.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        InputsData = memStream.ToArray();
-                    }
+                    InputsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 

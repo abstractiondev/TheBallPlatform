@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace SQLite.TheBall.Index { 
 		
@@ -28,6 +29,15 @@ namespace SQLite.TheBall.Index {
 		    {
 
 		    }
+
+            public override void SubmitChanges(ConflictMode failureMode)
+            {
+                var changeSet = GetChangeSet();
+                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in requiringBeforeSaveProcessing)
+                    itemToProcess.PrepareForStoring();
+                base.SubmitChanges(failureMode);
+            }
 
 			public Table<IndexingRequest> IndexingRequestTable {
 				get {
@@ -56,7 +66,7 @@ namespace SQLite.TheBall.Index {
 		[Column]
 		public string IndexName { get; set; }
 		// private string _unmodified_IndexName;
-        [Column(Name = "ObjectLocations")] public byte[] ObjectLocationsData;
+        [Column(Name = "ObjectLocations")] public string ObjectLocationsData;
 
 		private bool _IsObjectLocationsUsed = false;
         private List<string> _ObjectLocations = null;
@@ -66,11 +76,8 @@ namespace SQLite.TheBall.Index {
             {
                 if (_ObjectLocations == null && ObjectLocationsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ObjectLocationsData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _ObjectLocations = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(ObjectLocationsData);
+                    _ObjectLocations = new List<string>(arrayData);
 					_IsObjectLocationsUsed = true;
                 }
                 return _ObjectLocations;
@@ -87,13 +94,8 @@ namespace SQLite.TheBall.Index {
                     ObjectLocationsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ObjectLocations.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ObjectLocationsData = memStream.ToArray();
-                    }
+                    ObjectLocationsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -133,7 +135,7 @@ namespace SQLite.TheBall.Index {
 		[Column]
 		public long LastCompletionDurationMs { get; set; }
 		// private long _unmodified_LastCompletionDurationMs;
-        [Column(Name = "QueryResultObjects")] public byte[] QueryResultObjectsData;
+        [Column(Name = "QueryResultObjects")] public string QueryResultObjectsData;
 
 		private bool _IsQueryResultObjectsUsed = false;
         private List<QueryResultItem> _QueryResultObjects = null;
@@ -143,11 +145,8 @@ namespace SQLite.TheBall.Index {
             {
                 if (_QueryResultObjects == null && QueryResultObjectsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    QueryResultItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(QueryResultObjectsData))
-                        objectArray = (QueryResultItem[]) bf.Deserialize(memStream);
-                    _QueryResultObjects = new List<QueryResultItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<QueryResultItem[]>(QueryResultObjectsData);
+                    _QueryResultObjects = new List<QueryResultItem>(arrayData);
 					_IsQueryResultObjectsUsed = true;
                 }
                 return _QueryResultObjects;
@@ -164,13 +163,8 @@ namespace SQLite.TheBall.Index {
                     QueryResultObjectsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _QueryResultObjects.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        QueryResultObjectsData = memStream.ToArray();
-                    }
+                    QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 

@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace SQLite.TheBall.Interface { 
 		
@@ -28,6 +29,15 @@ namespace SQLite.TheBall.Interface {
 		    {
 
 		    }
+
+            public override void SubmitChanges(ConflictMode failureMode)
+            {
+                var changeSet = GetChangeSet();
+                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in requiringBeforeSaveProcessing)
+                    itemToProcess.PrepareForStoring();
+                base.SubmitChanges(failureMode);
+            }
 
 			public Table<WizardContainer> WizardContainerTable {
 				get {
@@ -97,7 +107,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ID { get; set; }
 
-        [Column(Name = "ActiveTasks")] public byte[] ActiveTasksData;
+        [Column(Name = "ActiveTasks")] public string ActiveTasksData;
 
 		private bool _IsActiveTasksUsed = false;
         private List<WizardTask> _ActiveTasks = null;
@@ -107,11 +117,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ActiveTasks == null && ActiveTasksData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    WizardTask[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ActiveTasksData))
-                        objectArray = (WizardTask[]) bf.Deserialize(memStream);
-                    _ActiveTasks = new List<WizardTask>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<WizardTask[]>(ActiveTasksData);
+                    _ActiveTasks = new List<WizardTask>(arrayData);
 					_IsActiveTasksUsed = true;
                 }
                 return _ActiveTasks;
@@ -128,13 +135,8 @@ namespace SQLite.TheBall.Interface {
                     ActiveTasksData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ActiveTasks.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ActiveTasksData = memStream.ToArray();
-                    }
+                    ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -189,7 +191,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string OtherSideConnectionID { get; set; }
 		// private string _unmodified_OtherSideConnectionID;
-        [Column(Name = "ThisSideCategories")] public byte[] ThisSideCategoriesData;
+        [Column(Name = "ThisSideCategories")] public string ThisSideCategoriesData;
 
 		private bool _IsThisSideCategoriesUsed = false;
         private List<Category> _ThisSideCategories = null;
@@ -199,11 +201,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ThisSideCategories == null && ThisSideCategoriesData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    Category[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ThisSideCategoriesData))
-                        objectArray = (Category[]) bf.Deserialize(memStream);
-                    _ThisSideCategories = new List<Category>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<Category[]>(ThisSideCategoriesData);
+                    _ThisSideCategories = new List<Category>(arrayData);
 					_IsThisSideCategoriesUsed = true;
                 }
                 return _ThisSideCategories;
@@ -211,7 +210,7 @@ namespace SQLite.TheBall.Interface {
             set { _ThisSideCategories = value; }
         }
 
-        [Column(Name = "OtherSideCategories")] public byte[] OtherSideCategoriesData;
+        [Column(Name = "OtherSideCategories")] public string OtherSideCategoriesData;
 
 		private bool _IsOtherSideCategoriesUsed = false;
         private List<Category> _OtherSideCategories = null;
@@ -221,11 +220,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_OtherSideCategories == null && OtherSideCategoriesData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    Category[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(OtherSideCategoriesData))
-                        objectArray = (Category[]) bf.Deserialize(memStream);
-                    _OtherSideCategories = new List<Category>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<Category[]>(OtherSideCategoriesData);
+                    _OtherSideCategories = new List<Category>(arrayData);
 					_IsOtherSideCategoriesUsed = true;
                 }
                 return _OtherSideCategories;
@@ -233,7 +229,7 @@ namespace SQLite.TheBall.Interface {
             set { _OtherSideCategories = value; }
         }
 
-        [Column(Name = "CategoryLinks")] public byte[] CategoryLinksData;
+        [Column(Name = "CategoryLinks")] public string CategoryLinksData;
 
 		private bool _IsCategoryLinksUsed = false;
         private List<CategoryLink> _CategoryLinks = null;
@@ -243,11 +239,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_CategoryLinks == null && CategoryLinksData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    CategoryLink[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(CategoryLinksData))
-                        objectArray = (CategoryLink[]) bf.Deserialize(memStream);
-                    _CategoryLinks = new List<CategoryLink>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<CategoryLink[]>(CategoryLinksData);
+                    _CategoryLinks = new List<CategoryLink>(arrayData);
 					_IsCategoryLinksUsed = true;
                 }
                 return _CategoryLinks;
@@ -255,7 +248,7 @@ namespace SQLite.TheBall.Interface {
             set { _CategoryLinks = value; }
         }
 
-        [Column(Name = "IncomingPackages")] public byte[] IncomingPackagesData;
+        [Column(Name = "IncomingPackages")] public string IncomingPackagesData;
 
 		private bool _IsIncomingPackagesUsed = false;
         private List<TransferPackage> _IncomingPackages = null;
@@ -265,11 +258,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_IncomingPackages == null && IncomingPackagesData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    TransferPackage[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(IncomingPackagesData))
-                        objectArray = (TransferPackage[]) bf.Deserialize(memStream);
-                    _IncomingPackages = new List<TransferPackage>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(IncomingPackagesData);
+                    _IncomingPackages = new List<TransferPackage>(arrayData);
 					_IsIncomingPackagesUsed = true;
                 }
                 return _IncomingPackages;
@@ -277,7 +267,7 @@ namespace SQLite.TheBall.Interface {
             set { _IncomingPackages = value; }
         }
 
-        [Column(Name = "OutgoingPackages")] public byte[] OutgoingPackagesData;
+        [Column(Name = "OutgoingPackages")] public string OutgoingPackagesData;
 
 		private bool _IsOutgoingPackagesUsed = false;
         private List<TransferPackage> _OutgoingPackages = null;
@@ -287,11 +277,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_OutgoingPackages == null && OutgoingPackagesData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    TransferPackage[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(OutgoingPackagesData))
-                        objectArray = (TransferPackage[]) bf.Deserialize(memStream);
-                    _OutgoingPackages = new List<TransferPackage>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(OutgoingPackagesData);
+                    _OutgoingPackages = new List<TransferPackage>(arrayData);
 					_IsOutgoingPackagesUsed = true;
                 }
                 return _OutgoingPackages;
@@ -332,13 +319,8 @@ namespace SQLite.TheBall.Interface {
                     ThisSideCategoriesData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ThisSideCategories.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ThisSideCategoriesData = memStream.ToArray();
-                    }
+                    ThisSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -348,13 +330,8 @@ namespace SQLite.TheBall.Interface {
                     OtherSideCategoriesData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _OtherSideCategories.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        OtherSideCategoriesData = memStream.ToArray();
-                    }
+                    OtherSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -364,13 +341,8 @@ namespace SQLite.TheBall.Interface {
                     CategoryLinksData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _CategoryLinks.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        CategoryLinksData = memStream.ToArray();
-                    }
+                    CategoryLinksData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -380,13 +352,8 @@ namespace SQLite.TheBall.Interface {
                     IncomingPackagesData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _IncomingPackages.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        IncomingPackagesData = memStream.ToArray();
-                    }
+                    IncomingPackagesData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -396,13 +363,8 @@ namespace SQLite.TheBall.Interface {
                     OutgoingPackagesData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _OutgoingPackages.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        OutgoingPackagesData = memStream.ToArray();
-                    }
+                    OutgoingPackagesData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -430,7 +392,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public bool IsProcessed { get; set; }
 		// private bool _unmodified_IsProcessed;
-        [Column(Name = "PackageContentBlobs")] public byte[] PackageContentBlobsData;
+        [Column(Name = "PackageContentBlobs")] public string PackageContentBlobsData;
 
 		private bool _IsPackageContentBlobsUsed = false;
         private List<string> _PackageContentBlobs = null;
@@ -440,11 +402,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_PackageContentBlobs == null && PackageContentBlobsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(PackageContentBlobsData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _PackageContentBlobs = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(PackageContentBlobsData);
+                    _PackageContentBlobs = new List<string>(arrayData);
 					_IsPackageContentBlobsUsed = true;
                 }
                 return _PackageContentBlobs;
@@ -461,13 +420,8 @@ namespace SQLite.TheBall.Interface {
                     PackageContentBlobsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _PackageContentBlobs.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        PackageContentBlobsData = memStream.ToArray();
-                    }
+                    PackageContentBlobsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -537,7 +491,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ID { get; set; }
 
-        [Column(Name = "PendingOperations")] public byte[] PendingOperationsData;
+        [Column(Name = "PendingOperations")] public string PendingOperationsData;
 
 		private bool _IsPendingOperationsUsed = false;
         private List<OperationExecutionItem> _PendingOperations = null;
@@ -547,11 +501,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_PendingOperations == null && PendingOperationsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    OperationExecutionItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(PendingOperationsData))
-                        objectArray = (OperationExecutionItem[]) bf.Deserialize(memStream);
-                    _PendingOperations = new List<OperationExecutionItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(PendingOperationsData);
+                    _PendingOperations = new List<OperationExecutionItem>(arrayData);
 					_IsPendingOperationsUsed = true;
                 }
                 return _PendingOperations;
@@ -559,7 +510,7 @@ namespace SQLite.TheBall.Interface {
             set { _PendingOperations = value; }
         }
 
-        [Column(Name = "ExecutingOperations")] public byte[] ExecutingOperationsData;
+        [Column(Name = "ExecutingOperations")] public string ExecutingOperationsData;
 
 		private bool _IsExecutingOperationsUsed = false;
         private List<OperationExecutionItem> _ExecutingOperations = null;
@@ -569,11 +520,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ExecutingOperations == null && ExecutingOperationsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    OperationExecutionItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ExecutingOperationsData))
-                        objectArray = (OperationExecutionItem[]) bf.Deserialize(memStream);
-                    _ExecutingOperations = new List<OperationExecutionItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(ExecutingOperationsData);
+                    _ExecutingOperations = new List<OperationExecutionItem>(arrayData);
 					_IsExecutingOperationsUsed = true;
                 }
                 return _ExecutingOperations;
@@ -581,7 +529,7 @@ namespace SQLite.TheBall.Interface {
             set { _ExecutingOperations = value; }
         }
 
-        [Column(Name = "RecentCompletedOperations")] public byte[] RecentCompletedOperationsData;
+        [Column(Name = "RecentCompletedOperations")] public string RecentCompletedOperationsData;
 
 		private bool _IsRecentCompletedOperationsUsed = false;
         private List<OperationExecutionItem> _RecentCompletedOperations = null;
@@ -591,11 +539,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_RecentCompletedOperations == null && RecentCompletedOperationsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    OperationExecutionItem[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(RecentCompletedOperationsData))
-                        objectArray = (OperationExecutionItem[]) bf.Deserialize(memStream);
-                    _RecentCompletedOperations = new List<OperationExecutionItem>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(RecentCompletedOperationsData);
+                    _RecentCompletedOperations = new List<OperationExecutionItem>(arrayData);
 					_IsRecentCompletedOperationsUsed = true;
                 }
                 return _RecentCompletedOperations;
@@ -603,7 +548,7 @@ namespace SQLite.TheBall.Interface {
             set { _RecentCompletedOperations = value; }
         }
 
-        [Column(Name = "ChangeItemTrackingList")] public byte[] ChangeItemTrackingListData;
+        [Column(Name = "ChangeItemTrackingList")] public string ChangeItemTrackingListData;
 
 		private bool _IsChangeItemTrackingListUsed = false;
         private List<string> _ChangeItemTrackingList = null;
@@ -613,11 +558,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ChangeItemTrackingList == null && ChangeItemTrackingListData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ChangeItemTrackingListData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _ChangeItemTrackingList = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(ChangeItemTrackingListData);
+                    _ChangeItemTrackingList = new List<string>(arrayData);
 					_IsChangeItemTrackingListUsed = true;
                 }
                 return _ChangeItemTrackingList;
@@ -634,13 +576,8 @@ namespace SQLite.TheBall.Interface {
                     PendingOperationsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _PendingOperations.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        PendingOperationsData = memStream.ToArray();
-                    }
+                    PendingOperationsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -650,13 +587,8 @@ namespace SQLite.TheBall.Interface {
                     ExecutingOperationsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ExecutingOperations.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ExecutingOperationsData = memStream.ToArray();
-                    }
+                    ExecutingOperationsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -666,13 +598,8 @@ namespace SQLite.TheBall.Interface {
                     RecentCompletedOperationsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _RecentCompletedOperations.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        RecentCompletedOperationsData = memStream.ToArray();
-                    }
+                    RecentCompletedOperationsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -682,13 +609,8 @@ namespace SQLite.TheBall.Interface {
                     ChangeItemTrackingListData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ChangeItemTrackingList.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ChangeItemTrackingListData = memStream.ToArray();
-                    }
+                    ChangeItemTrackingListData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -708,7 +630,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public DateTime EndTimeUTC { get; set; }
 		// private DateTime _unmodified_EndTimeUTC;
-        [Column(Name = "ChangedObjectIDList")] public byte[] ChangedObjectIDListData;
+        [Column(Name = "ChangedObjectIDList")] public string ChangedObjectIDListData;
 
 		private bool _IsChangedObjectIDListUsed = false;
         private List<string> _ChangedObjectIDList = null;
@@ -718,11 +640,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ChangedObjectIDList == null && ChangedObjectIDListData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ChangedObjectIDListData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _ChangedObjectIDList = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(ChangedObjectIDListData);
+                    _ChangedObjectIDList = new List<string>(arrayData);
 					_IsChangedObjectIDListUsed = true;
                 }
                 return _ChangedObjectIDList;
@@ -739,13 +658,8 @@ namespace SQLite.TheBall.Interface {
                     ChangedObjectIDListData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ChangedObjectIDList.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ChangedObjectIDListData = memStream.ToArray();
-                    }
+                    ChangedObjectIDListData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -815,7 +729,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ID { get; set; }
 
-        [Column(Name = "Values")] public byte[] ValuesData;
+        [Column(Name = "Values")] public string ValuesData;
 
 		private bool _IsValuesUsed = false;
         private List<GenericValue> _Values = null;
@@ -825,11 +739,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_Values == null && ValuesData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    GenericValue[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ValuesData))
-                        objectArray = (GenericValue[]) bf.Deserialize(memStream);
-                    _Values = new List<GenericValue>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<GenericValue[]>(ValuesData);
+                    _Values = new List<GenericValue>(arrayData);
 					_IsValuesUsed = true;
                 }
                 return _Values;
@@ -854,13 +765,8 @@ namespace SQLite.TheBall.Interface {
                     ValuesData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _Values.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ValuesData = memStream.ToArray();
-                    }
+                    ValuesData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -880,7 +786,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string String { get; set; }
 		// private string _unmodified_String;
-        [Column(Name = "StringArray")] public byte[] StringArrayData;
+        [Column(Name = "StringArray")] public string StringArrayData;
 
 		private bool _IsStringArrayUsed = false;
         private List<string> _StringArray = null;
@@ -890,11 +796,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_StringArray == null && StringArrayData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(StringArrayData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _StringArray = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(StringArrayData);
+                    _StringArray = new List<string>(arrayData);
 					_IsStringArrayUsed = true;
                 }
                 return _StringArray;
@@ -906,7 +809,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public double Number { get; set; }
 		// private double _unmodified_Number;
-        [Column(Name = "NumberArray")] public byte[] NumberArrayData;
+        [Column(Name = "NumberArray")] public string NumberArrayData;
 
 		private bool _IsNumberArrayUsed = false;
         private List<double> _NumberArray = null;
@@ -916,11 +819,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_NumberArray == null && NumberArrayData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    double[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(NumberArrayData))
-                        objectArray = (double[]) bf.Deserialize(memStream);
-                    _NumberArray = new List<double>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<double[]>(NumberArrayData);
+                    _NumberArray = new List<double>(arrayData);
 					_IsNumberArrayUsed = true;
                 }
                 return _NumberArray;
@@ -932,7 +832,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public bool Boolean { get; set; }
 		// private bool _unmodified_Boolean;
-        [Column(Name = "BooleanArray")] public byte[] BooleanArrayData;
+        [Column(Name = "BooleanArray")] public string BooleanArrayData;
 
 		private bool _IsBooleanArrayUsed = false;
         private List<bool> _BooleanArray = null;
@@ -942,11 +842,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_BooleanArray == null && BooleanArrayData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    bool[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(BooleanArrayData))
-                        objectArray = (bool[]) bf.Deserialize(memStream);
-                    _BooleanArray = new List<bool>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<bool[]>(BooleanArrayData);
+                    _BooleanArray = new List<bool>(arrayData);
 					_IsBooleanArrayUsed = true;
                 }
                 return _BooleanArray;
@@ -958,7 +855,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public DateTime DateTime { get; set; }
 		// private DateTime _unmodified_DateTime;
-        [Column(Name = "DateTimeArray")] public byte[] DateTimeArrayData;
+        [Column(Name = "DateTimeArray")] public string DateTimeArrayData;
 
 		private bool _IsDateTimeArrayUsed = false;
         private List<DateTime> _DateTimeArray = null;
@@ -968,11 +865,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_DateTimeArray == null && DateTimeArrayData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    DateTime[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(DateTimeArrayData))
-                        objectArray = (DateTime[]) bf.Deserialize(memStream);
-                    _DateTimeArray = new List<DateTime>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<DateTime[]>(DateTimeArrayData);
+                    _DateTimeArray = new List<DateTime>(arrayData);
 					_IsDateTimeArrayUsed = true;
                 }
                 return _DateTimeArray;
@@ -984,7 +878,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public GenericObject Object { get; set; }
 		// private GenericObject _unmodified_Object;
-        [Column(Name = "ObjectArray")] public byte[] ObjectArrayData;
+        [Column(Name = "ObjectArray")] public string ObjectArrayData;
 
 		private bool _IsObjectArrayUsed = false;
         private List<GenericObject> _ObjectArray = null;
@@ -994,11 +888,8 @@ namespace SQLite.TheBall.Interface {
             {
                 if (_ObjectArray == null && ObjectArrayData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    GenericObject[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ObjectArrayData))
-                        objectArray = (GenericObject[]) bf.Deserialize(memStream);
-                    _ObjectArray = new List<GenericObject>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<GenericObject[]>(ObjectArrayData);
+                    _ObjectArray = new List<GenericObject>(arrayData);
 					_IsObjectArrayUsed = true;
                 }
                 return _ObjectArray;
@@ -1019,13 +910,8 @@ namespace SQLite.TheBall.Interface {
                     StringArrayData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _StringArray.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        StringArrayData = memStream.ToArray();
-                    }
+                    StringArrayData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -1035,13 +921,8 @@ namespace SQLite.TheBall.Interface {
                     NumberArrayData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _NumberArray.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        NumberArrayData = memStream.ToArray();
-                    }
+                    NumberArrayData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -1051,13 +932,8 @@ namespace SQLite.TheBall.Interface {
                     BooleanArrayData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _BooleanArray.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        BooleanArrayData = memStream.ToArray();
-                    }
+                    BooleanArrayData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -1067,13 +943,8 @@ namespace SQLite.TheBall.Interface {
                     DateTimeArrayData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _DateTimeArray.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        DateTimeArrayData = memStream.ToArray();
-                    }
+                    DateTimeArrayData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -1083,13 +954,8 @@ namespace SQLite.TheBall.Interface {
                     ObjectArrayData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ObjectArray.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ObjectArrayData = memStream.ToArray();
-                    }
+                    ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 

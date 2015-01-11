@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace SQLite.TheBall.Payments { 
 		
@@ -23,20 +24,20 @@ namespace SQLite.TheBall.Payments {
 
 		public class TheBallDataContext : DataContext
 		{
-		    public override void SubmitChanges(ConflictMode failureMode)
+
+            public TheBallDataContext(IDbConnection connection) : base(connection)
 		    {
-		        var changeSet = GetChangeSet();
-		        var requiringBeforeSaveProcessing =
-		            changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach(var itemToProcess in requiringBeforeSaveProcessing)
+
+		    }
+
+            public override void SubmitChanges(ConflictMode failureMode)
+            {
+                var changeSet = GetChangeSet();
+                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in requiringBeforeSaveProcessing)
                     itemToProcess.PrepareForStoring();
-		        base.SubmitChanges(failureMode);
-		    }
-
-		    public TheBallDataContext(IDbConnection connection) : base(connection)
-		    {
-
-		    }
+                base.SubmitChanges(failureMode);
+            }
 
 			public Table<GroupSubscriptionPlan> GroupSubscriptionPlanTable {
 				get {
@@ -64,7 +65,7 @@ namespace SQLite.TheBall.Payments {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "GroupIDs")] public byte[] GroupIDsData;
+        [Column(Name = "GroupIDs")] public string GroupIDsData;
 
 		private bool _IsGroupIDsUsed = false;
         private List<string> _GroupIDs = null;
@@ -74,11 +75,8 @@ namespace SQLite.TheBall.Payments {
             {
                 if (_GroupIDs == null && GroupIDsData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(GroupIDsData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _GroupIDs = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(GroupIDsData);
+                    _GroupIDs = new List<string>(arrayData);
 					_IsGroupIDsUsed = true;
                 }
                 return _GroupIDs;
@@ -95,13 +93,8 @@ namespace SQLite.TheBall.Payments {
                     GroupIDsData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _GroupIDs.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        GroupIDsData = memStream.ToArray();
-                    }
+                    GroupIDsData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 
@@ -125,7 +118,7 @@ namespace SQLite.TheBall.Payments {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "ActivePlans")] public byte[] ActivePlansData;
+        [Column(Name = "ActivePlans")] public string ActivePlansData;
 
 		private bool _IsActivePlansUsed = false;
         private List<string> _ActivePlans = null;
@@ -135,11 +128,8 @@ namespace SQLite.TheBall.Payments {
             {
                 if (_ActivePlans == null && ActivePlansData != null)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    string[] objectArray;
-                    using (MemoryStream memStream = new MemoryStream(ActivePlansData))
-                        objectArray = (string[]) bf.Deserialize(memStream);
-                    _ActivePlans = new List<string>(objectArray);
+                    var arrayData = JsonConvert.DeserializeObject<string[]>(ActivePlansData);
+                    _ActivePlans = new List<string>(arrayData);
 					_IsActivePlansUsed = true;
                 }
                 return _ActivePlans;
@@ -156,13 +146,8 @@ namespace SQLite.TheBall.Payments {
                     ActivePlansData = null;
                 else
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
                     var dataToStore = _ActivePlans.ToArray();
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        bf.Serialize(memStream, dataToStore);
-                        ActivePlansData = memStream.ToArray();
-                    }
+                    ActivePlansData = JsonConvert.SerializeObject(dataToStore);
                 }
             }
 

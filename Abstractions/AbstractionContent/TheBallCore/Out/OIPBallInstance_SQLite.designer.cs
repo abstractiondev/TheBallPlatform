@@ -12,6 +12,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace SQLite.AaltoGlobalImpact.OIP { 
 		
@@ -28,6 +29,15 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
 
 		    }
+
+            public override void SubmitChanges(ConflictMode failureMode)
+            {
+                var changeSet = GetChangeSet();
+                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in requiringBeforeSaveProcessing)
+                    itemToProcess.PrepareForStoring();
+                base.SubmitChanges(failureMode);
+            }
 
 			public Table<TBSystem> TBSystemTable {
 				get {
