@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -109,35 +110,54 @@ namespace SQLite.TheBall.Interface {
 
         [Column(Name = "ActiveTasks")] public string ActiveTasksData;
 
-		private bool _IsActiveTasksUsed = false;
-        private List<WizardTask> _ActiveTasks = null;
-        public List<WizardTask> ActiveTasks
+        private bool _IsActiveTasksRetrieved = false;
+        private bool _IsActiveTasksChanged = false;
+        private ObservableCollection<WizardTask> _ActiveTasks = null;
+        public ObservableCollection<WizardTask> ActiveTasks
         {
             get
             {
-                if (_ActiveTasks == null && ActiveTasksData != null)
+                if (!_IsActiveTasksRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<WizardTask[]>(ActiveTasksData);
-                    _ActiveTasks = new List<WizardTask>(arrayData);
-					_IsActiveTasksUsed = true;
+                    if (ActiveTasksData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<WizardTask[]>(ActiveTasksData);
+                        _ActiveTasks = new ObservableCollection<WizardTask>(arrayData);
+                    }
+                    else
+                    {
+                        _ActiveTasks = new ObservableCollection<WizardTask>();
+						ActiveTasksData = Guid.NewGuid().ToString();
+						_IsActiveTasksChanged = true;
+                    }
+                    _IsActiveTasksRetrieved = true;
+                    _ActiveTasks.CollectionChanged += (sender, args) =>
+						{
+							ActiveTasksData = Guid.NewGuid().ToString();
+							_IsActiveTasksChanged = true;
+						};
                 }
                 return _ActiveTasks;
             }
-            set { _ActiveTasks = value; }
+            set 
+			{ 
+				_ActiveTasks = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsActiveTasksRetrieved = true;
+                ActiveTasksData = Guid.NewGuid().ToString();
+                _IsActiveTasksChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsActiveTasksUsed)
+            if (_IsActiveTasksChanged)
             {
-                if (_ActiveTasks == null)
-                    ActiveTasksData = null;
-                else
-                {
-                    var dataToStore = _ActiveTasks.ToArray();
-                    ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ActiveTasks.ToArray();
+                ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -193,97 +213,217 @@ namespace SQLite.TheBall.Interface {
 		// private string _unmodified_OtherSideConnectionID;
         [Column(Name = "ThisSideCategories")] public string ThisSideCategoriesData;
 
-		private bool _IsThisSideCategoriesUsed = false;
-        private List<Category> _ThisSideCategories = null;
-        public List<Category> ThisSideCategories
+        private bool _IsThisSideCategoriesRetrieved = false;
+        private bool _IsThisSideCategoriesChanged = false;
+        private ObservableCollection<Category> _ThisSideCategories = null;
+        public ObservableCollection<Category> ThisSideCategories
         {
             get
             {
-                if (_ThisSideCategories == null && ThisSideCategoriesData != null)
+                if (!_IsThisSideCategoriesRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<Category[]>(ThisSideCategoriesData);
-                    _ThisSideCategories = new List<Category>(arrayData);
-					_IsThisSideCategoriesUsed = true;
+                    if (ThisSideCategoriesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<Category[]>(ThisSideCategoriesData);
+                        _ThisSideCategories = new ObservableCollection<Category>(arrayData);
+                    }
+                    else
+                    {
+                        _ThisSideCategories = new ObservableCollection<Category>();
+						ThisSideCategoriesData = Guid.NewGuid().ToString();
+						_IsThisSideCategoriesChanged = true;
+                    }
+                    _IsThisSideCategoriesRetrieved = true;
+                    _ThisSideCategories.CollectionChanged += (sender, args) =>
+						{
+							ThisSideCategoriesData = Guid.NewGuid().ToString();
+							_IsThisSideCategoriesChanged = true;
+						};
                 }
                 return _ThisSideCategories;
             }
-            set { _ThisSideCategories = value; }
+            set 
+			{ 
+				_ThisSideCategories = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsThisSideCategoriesRetrieved = true;
+                ThisSideCategoriesData = Guid.NewGuid().ToString();
+                _IsThisSideCategoriesChanged = true;
+
+			}
         }
 
         [Column(Name = "OtherSideCategories")] public string OtherSideCategoriesData;
 
-		private bool _IsOtherSideCategoriesUsed = false;
-        private List<Category> _OtherSideCategories = null;
-        public List<Category> OtherSideCategories
+        private bool _IsOtherSideCategoriesRetrieved = false;
+        private bool _IsOtherSideCategoriesChanged = false;
+        private ObservableCollection<Category> _OtherSideCategories = null;
+        public ObservableCollection<Category> OtherSideCategories
         {
             get
             {
-                if (_OtherSideCategories == null && OtherSideCategoriesData != null)
+                if (!_IsOtherSideCategoriesRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<Category[]>(OtherSideCategoriesData);
-                    _OtherSideCategories = new List<Category>(arrayData);
-					_IsOtherSideCategoriesUsed = true;
+                    if (OtherSideCategoriesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<Category[]>(OtherSideCategoriesData);
+                        _OtherSideCategories = new ObservableCollection<Category>(arrayData);
+                    }
+                    else
+                    {
+                        _OtherSideCategories = new ObservableCollection<Category>();
+						OtherSideCategoriesData = Guid.NewGuid().ToString();
+						_IsOtherSideCategoriesChanged = true;
+                    }
+                    _IsOtherSideCategoriesRetrieved = true;
+                    _OtherSideCategories.CollectionChanged += (sender, args) =>
+						{
+							OtherSideCategoriesData = Guid.NewGuid().ToString();
+							_IsOtherSideCategoriesChanged = true;
+						};
                 }
                 return _OtherSideCategories;
             }
-            set { _OtherSideCategories = value; }
+            set 
+			{ 
+				_OtherSideCategories = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOtherSideCategoriesRetrieved = true;
+                OtherSideCategoriesData = Guid.NewGuid().ToString();
+                _IsOtherSideCategoriesChanged = true;
+
+			}
         }
 
         [Column(Name = "CategoryLinks")] public string CategoryLinksData;
 
-		private bool _IsCategoryLinksUsed = false;
-        private List<CategoryLink> _CategoryLinks = null;
-        public List<CategoryLink> CategoryLinks
+        private bool _IsCategoryLinksRetrieved = false;
+        private bool _IsCategoryLinksChanged = false;
+        private ObservableCollection<CategoryLink> _CategoryLinks = null;
+        public ObservableCollection<CategoryLink> CategoryLinks
         {
             get
             {
-                if (_CategoryLinks == null && CategoryLinksData != null)
+                if (!_IsCategoryLinksRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<CategoryLink[]>(CategoryLinksData);
-                    _CategoryLinks = new List<CategoryLink>(arrayData);
-					_IsCategoryLinksUsed = true;
+                    if (CategoryLinksData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<CategoryLink[]>(CategoryLinksData);
+                        _CategoryLinks = new ObservableCollection<CategoryLink>(arrayData);
+                    }
+                    else
+                    {
+                        _CategoryLinks = new ObservableCollection<CategoryLink>();
+						CategoryLinksData = Guid.NewGuid().ToString();
+						_IsCategoryLinksChanged = true;
+                    }
+                    _IsCategoryLinksRetrieved = true;
+                    _CategoryLinks.CollectionChanged += (sender, args) =>
+						{
+							CategoryLinksData = Guid.NewGuid().ToString();
+							_IsCategoryLinksChanged = true;
+						};
                 }
                 return _CategoryLinks;
             }
-            set { _CategoryLinks = value; }
+            set 
+			{ 
+				_CategoryLinks = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsCategoryLinksRetrieved = true;
+                CategoryLinksData = Guid.NewGuid().ToString();
+                _IsCategoryLinksChanged = true;
+
+			}
         }
 
         [Column(Name = "IncomingPackages")] public string IncomingPackagesData;
 
-		private bool _IsIncomingPackagesUsed = false;
-        private List<TransferPackage> _IncomingPackages = null;
-        public List<TransferPackage> IncomingPackages
+        private bool _IsIncomingPackagesRetrieved = false;
+        private bool _IsIncomingPackagesChanged = false;
+        private ObservableCollection<TransferPackage> _IncomingPackages = null;
+        public ObservableCollection<TransferPackage> IncomingPackages
         {
             get
             {
-                if (_IncomingPackages == null && IncomingPackagesData != null)
+                if (!_IsIncomingPackagesRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(IncomingPackagesData);
-                    _IncomingPackages = new List<TransferPackage>(arrayData);
-					_IsIncomingPackagesUsed = true;
+                    if (IncomingPackagesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(IncomingPackagesData);
+                        _IncomingPackages = new ObservableCollection<TransferPackage>(arrayData);
+                    }
+                    else
+                    {
+                        _IncomingPackages = new ObservableCollection<TransferPackage>();
+						IncomingPackagesData = Guid.NewGuid().ToString();
+						_IsIncomingPackagesChanged = true;
+                    }
+                    _IsIncomingPackagesRetrieved = true;
+                    _IncomingPackages.CollectionChanged += (sender, args) =>
+						{
+							IncomingPackagesData = Guid.NewGuid().ToString();
+							_IsIncomingPackagesChanged = true;
+						};
                 }
                 return _IncomingPackages;
             }
-            set { _IncomingPackages = value; }
+            set 
+			{ 
+				_IncomingPackages = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsIncomingPackagesRetrieved = true;
+                IncomingPackagesData = Guid.NewGuid().ToString();
+                _IsIncomingPackagesChanged = true;
+
+			}
         }
 
         [Column(Name = "OutgoingPackages")] public string OutgoingPackagesData;
 
-		private bool _IsOutgoingPackagesUsed = false;
-        private List<TransferPackage> _OutgoingPackages = null;
-        public List<TransferPackage> OutgoingPackages
+        private bool _IsOutgoingPackagesRetrieved = false;
+        private bool _IsOutgoingPackagesChanged = false;
+        private ObservableCollection<TransferPackage> _OutgoingPackages = null;
+        public ObservableCollection<TransferPackage> OutgoingPackages
         {
             get
             {
-                if (_OutgoingPackages == null && OutgoingPackagesData != null)
+                if (!_IsOutgoingPackagesRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(OutgoingPackagesData);
-                    _OutgoingPackages = new List<TransferPackage>(arrayData);
-					_IsOutgoingPackagesUsed = true;
+                    if (OutgoingPackagesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<TransferPackage[]>(OutgoingPackagesData);
+                        _OutgoingPackages = new ObservableCollection<TransferPackage>(arrayData);
+                    }
+                    else
+                    {
+                        _OutgoingPackages = new ObservableCollection<TransferPackage>();
+						OutgoingPackagesData = Guid.NewGuid().ToString();
+						_IsOutgoingPackagesChanged = true;
+                    }
+                    _IsOutgoingPackagesRetrieved = true;
+                    _OutgoingPackages.CollectionChanged += (sender, args) =>
+						{
+							OutgoingPackagesData = Guid.NewGuid().ToString();
+							_IsOutgoingPackagesChanged = true;
+						};
                 }
                 return _OutgoingPackages;
             }
-            set { _OutgoingPackages = value; }
+            set 
+			{ 
+				_OutgoingPackages = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOutgoingPackagesRetrieved = true;
+                OutgoingPackagesData = Guid.NewGuid().ToString();
+                _IsOutgoingPackagesChanged = true;
+
+			}
         }
 
 
@@ -313,59 +453,34 @@ namespace SQLite.TheBall.Interface {
         public void PrepareForStoring()
         {
 		
-            if (_IsThisSideCategoriesUsed)
+            if (_IsThisSideCategoriesChanged)
             {
-                if (_ThisSideCategories == null)
-                    ThisSideCategoriesData = null;
-                else
-                {
-                    var dataToStore = _ThisSideCategories.ToArray();
-                    ThisSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ThisSideCategories.ToArray();
+                ThisSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsOtherSideCategoriesUsed)
+            if (_IsOtherSideCategoriesChanged)
             {
-                if (_OtherSideCategories == null)
-                    OtherSideCategoriesData = null;
-                else
-                {
-                    var dataToStore = _OtherSideCategories.ToArray();
-                    OtherSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _OtherSideCategories.ToArray();
+                OtherSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsCategoryLinksUsed)
+            if (_IsCategoryLinksChanged)
             {
-                if (_CategoryLinks == null)
-                    CategoryLinksData = null;
-                else
-                {
-                    var dataToStore = _CategoryLinks.ToArray();
-                    CategoryLinksData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _CategoryLinks.ToArray();
+                CategoryLinksData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsIncomingPackagesUsed)
+            if (_IsIncomingPackagesChanged)
             {
-                if (_IncomingPackages == null)
-                    IncomingPackagesData = null;
-                else
-                {
-                    var dataToStore = _IncomingPackages.ToArray();
-                    IncomingPackagesData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _IncomingPackages.ToArray();
+                IncomingPackagesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsOutgoingPackagesUsed)
+            if (_IsOutgoingPackagesChanged)
             {
-                if (_OutgoingPackages == null)
-                    OutgoingPackagesData = null;
-                else
-                {
-                    var dataToStore = _OutgoingPackages.ToArray();
-                    OutgoingPackagesData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _OutgoingPackages.ToArray();
+                OutgoingPackagesData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -394,35 +509,54 @@ namespace SQLite.TheBall.Interface {
 		// private bool _unmodified_IsProcessed;
         [Column(Name = "PackageContentBlobs")] public string PackageContentBlobsData;
 
-		private bool _IsPackageContentBlobsUsed = false;
-        private List<string> _PackageContentBlobs = null;
-        public List<string> PackageContentBlobs
+        private bool _IsPackageContentBlobsRetrieved = false;
+        private bool _IsPackageContentBlobsChanged = false;
+        private ObservableCollection<string> _PackageContentBlobs = null;
+        public ObservableCollection<string> PackageContentBlobs
         {
             get
             {
-                if (_PackageContentBlobs == null && PackageContentBlobsData != null)
+                if (!_IsPackageContentBlobsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(PackageContentBlobsData);
-                    _PackageContentBlobs = new List<string>(arrayData);
-					_IsPackageContentBlobsUsed = true;
+                    if (PackageContentBlobsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(PackageContentBlobsData);
+                        _PackageContentBlobs = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _PackageContentBlobs = new ObservableCollection<string>();
+						PackageContentBlobsData = Guid.NewGuid().ToString();
+						_IsPackageContentBlobsChanged = true;
+                    }
+                    _IsPackageContentBlobsRetrieved = true;
+                    _PackageContentBlobs.CollectionChanged += (sender, args) =>
+						{
+							PackageContentBlobsData = Guid.NewGuid().ToString();
+							_IsPackageContentBlobsChanged = true;
+						};
                 }
                 return _PackageContentBlobs;
             }
-            set { _PackageContentBlobs = value; }
+            set 
+			{ 
+				_PackageContentBlobs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsPackageContentBlobsRetrieved = true;
+                PackageContentBlobsData = Guid.NewGuid().ToString();
+                _IsPackageContentBlobsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsPackageContentBlobsUsed)
+            if (_IsPackageContentBlobsChanged)
             {
-                if (_PackageContentBlobs == null)
-                    PackageContentBlobsData = null;
-                else
-                {
-                    var dataToStore = _PackageContentBlobs.ToArray();
-                    PackageContentBlobsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _PackageContentBlobs.ToArray();
+                PackageContentBlobsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -493,125 +627,201 @@ namespace SQLite.TheBall.Interface {
 
         [Column(Name = "PendingOperations")] public string PendingOperationsData;
 
-		private bool _IsPendingOperationsUsed = false;
-        private List<OperationExecutionItem> _PendingOperations = null;
-        public List<OperationExecutionItem> PendingOperations
+        private bool _IsPendingOperationsRetrieved = false;
+        private bool _IsPendingOperationsChanged = false;
+        private ObservableCollection<OperationExecutionItem> _PendingOperations = null;
+        public ObservableCollection<OperationExecutionItem> PendingOperations
         {
             get
             {
-                if (_PendingOperations == null && PendingOperationsData != null)
+                if (!_IsPendingOperationsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(PendingOperationsData);
-                    _PendingOperations = new List<OperationExecutionItem>(arrayData);
-					_IsPendingOperationsUsed = true;
+                    if (PendingOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(PendingOperationsData);
+                        _PendingOperations = new ObservableCollection<OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _PendingOperations = new ObservableCollection<OperationExecutionItem>();
+						PendingOperationsData = Guid.NewGuid().ToString();
+						_IsPendingOperationsChanged = true;
+                    }
+                    _IsPendingOperationsRetrieved = true;
+                    _PendingOperations.CollectionChanged += (sender, args) =>
+						{
+							PendingOperationsData = Guid.NewGuid().ToString();
+							_IsPendingOperationsChanged = true;
+						};
                 }
                 return _PendingOperations;
             }
-            set { _PendingOperations = value; }
+            set 
+			{ 
+				_PendingOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsPendingOperationsRetrieved = true;
+                PendingOperationsData = Guid.NewGuid().ToString();
+                _IsPendingOperationsChanged = true;
+
+			}
         }
 
         [Column(Name = "ExecutingOperations")] public string ExecutingOperationsData;
 
-		private bool _IsExecutingOperationsUsed = false;
-        private List<OperationExecutionItem> _ExecutingOperations = null;
-        public List<OperationExecutionItem> ExecutingOperations
+        private bool _IsExecutingOperationsRetrieved = false;
+        private bool _IsExecutingOperationsChanged = false;
+        private ObservableCollection<OperationExecutionItem> _ExecutingOperations = null;
+        public ObservableCollection<OperationExecutionItem> ExecutingOperations
         {
             get
             {
-                if (_ExecutingOperations == null && ExecutingOperationsData != null)
+                if (!_IsExecutingOperationsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(ExecutingOperationsData);
-                    _ExecutingOperations = new List<OperationExecutionItem>(arrayData);
-					_IsExecutingOperationsUsed = true;
+                    if (ExecutingOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(ExecutingOperationsData);
+                        _ExecutingOperations = new ObservableCollection<OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _ExecutingOperations = new ObservableCollection<OperationExecutionItem>();
+						ExecutingOperationsData = Guid.NewGuid().ToString();
+						_IsExecutingOperationsChanged = true;
+                    }
+                    _IsExecutingOperationsRetrieved = true;
+                    _ExecutingOperations.CollectionChanged += (sender, args) =>
+						{
+							ExecutingOperationsData = Guid.NewGuid().ToString();
+							_IsExecutingOperationsChanged = true;
+						};
                 }
                 return _ExecutingOperations;
             }
-            set { _ExecutingOperations = value; }
+            set 
+			{ 
+				_ExecutingOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsExecutingOperationsRetrieved = true;
+                ExecutingOperationsData = Guid.NewGuid().ToString();
+                _IsExecutingOperationsChanged = true;
+
+			}
         }
 
         [Column(Name = "RecentCompletedOperations")] public string RecentCompletedOperationsData;
 
-		private bool _IsRecentCompletedOperationsUsed = false;
-        private List<OperationExecutionItem> _RecentCompletedOperations = null;
-        public List<OperationExecutionItem> RecentCompletedOperations
+        private bool _IsRecentCompletedOperationsRetrieved = false;
+        private bool _IsRecentCompletedOperationsChanged = false;
+        private ObservableCollection<OperationExecutionItem> _RecentCompletedOperations = null;
+        public ObservableCollection<OperationExecutionItem> RecentCompletedOperations
         {
             get
             {
-                if (_RecentCompletedOperations == null && RecentCompletedOperationsData != null)
+                if (!_IsRecentCompletedOperationsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(RecentCompletedOperationsData);
-                    _RecentCompletedOperations = new List<OperationExecutionItem>(arrayData);
-					_IsRecentCompletedOperationsUsed = true;
+                    if (RecentCompletedOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<OperationExecutionItem[]>(RecentCompletedOperationsData);
+                        _RecentCompletedOperations = new ObservableCollection<OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _RecentCompletedOperations = new ObservableCollection<OperationExecutionItem>();
+						RecentCompletedOperationsData = Guid.NewGuid().ToString();
+						_IsRecentCompletedOperationsChanged = true;
+                    }
+                    _IsRecentCompletedOperationsRetrieved = true;
+                    _RecentCompletedOperations.CollectionChanged += (sender, args) =>
+						{
+							RecentCompletedOperationsData = Guid.NewGuid().ToString();
+							_IsRecentCompletedOperationsChanged = true;
+						};
                 }
                 return _RecentCompletedOperations;
             }
-            set { _RecentCompletedOperations = value; }
+            set 
+			{ 
+				_RecentCompletedOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsRecentCompletedOperationsRetrieved = true;
+                RecentCompletedOperationsData = Guid.NewGuid().ToString();
+                _IsRecentCompletedOperationsChanged = true;
+
+			}
         }
 
         [Column(Name = "ChangeItemTrackingList")] public string ChangeItemTrackingListData;
 
-		private bool _IsChangeItemTrackingListUsed = false;
-        private List<string> _ChangeItemTrackingList = null;
-        public List<string> ChangeItemTrackingList
+        private bool _IsChangeItemTrackingListRetrieved = false;
+        private bool _IsChangeItemTrackingListChanged = false;
+        private ObservableCollection<string> _ChangeItemTrackingList = null;
+        public ObservableCollection<string> ChangeItemTrackingList
         {
             get
             {
-                if (_ChangeItemTrackingList == null && ChangeItemTrackingListData != null)
+                if (!_IsChangeItemTrackingListRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(ChangeItemTrackingListData);
-                    _ChangeItemTrackingList = new List<string>(arrayData);
-					_IsChangeItemTrackingListUsed = true;
+                    if (ChangeItemTrackingListData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(ChangeItemTrackingListData);
+                        _ChangeItemTrackingList = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _ChangeItemTrackingList = new ObservableCollection<string>();
+						ChangeItemTrackingListData = Guid.NewGuid().ToString();
+						_IsChangeItemTrackingListChanged = true;
+                    }
+                    _IsChangeItemTrackingListRetrieved = true;
+                    _ChangeItemTrackingList.CollectionChanged += (sender, args) =>
+						{
+							ChangeItemTrackingListData = Guid.NewGuid().ToString();
+							_IsChangeItemTrackingListChanged = true;
+						};
                 }
                 return _ChangeItemTrackingList;
             }
-            set { _ChangeItemTrackingList = value; }
+            set 
+			{ 
+				_ChangeItemTrackingList = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsChangeItemTrackingListRetrieved = true;
+                ChangeItemTrackingListData = Guid.NewGuid().ToString();
+                _IsChangeItemTrackingListChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsPendingOperationsUsed)
+            if (_IsPendingOperationsChanged)
             {
-                if (_PendingOperations == null)
-                    PendingOperationsData = null;
-                else
-                {
-                    var dataToStore = _PendingOperations.ToArray();
-                    PendingOperationsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _PendingOperations.ToArray();
+                PendingOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsExecutingOperationsUsed)
+            if (_IsExecutingOperationsChanged)
             {
-                if (_ExecutingOperations == null)
-                    ExecutingOperationsData = null;
-                else
-                {
-                    var dataToStore = _ExecutingOperations.ToArray();
-                    ExecutingOperationsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ExecutingOperations.ToArray();
+                ExecutingOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsRecentCompletedOperationsUsed)
+            if (_IsRecentCompletedOperationsChanged)
             {
-                if (_RecentCompletedOperations == null)
-                    RecentCompletedOperationsData = null;
-                else
-                {
-                    var dataToStore = _RecentCompletedOperations.ToArray();
-                    RecentCompletedOperationsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _RecentCompletedOperations.ToArray();
+                RecentCompletedOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsChangeItemTrackingListUsed)
+            if (_IsChangeItemTrackingListChanged)
             {
-                if (_ChangeItemTrackingList == null)
-                    ChangeItemTrackingListData = null;
-                else
-                {
-                    var dataToStore = _ChangeItemTrackingList.ToArray();
-                    ChangeItemTrackingListData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ChangeItemTrackingList.ToArray();
+                ChangeItemTrackingListData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -632,35 +842,54 @@ namespace SQLite.TheBall.Interface {
 		// private DateTime _unmodified_EndTimeUTC;
         [Column(Name = "ChangedObjectIDList")] public string ChangedObjectIDListData;
 
-		private bool _IsChangedObjectIDListUsed = false;
-        private List<string> _ChangedObjectIDList = null;
-        public List<string> ChangedObjectIDList
+        private bool _IsChangedObjectIDListRetrieved = false;
+        private bool _IsChangedObjectIDListChanged = false;
+        private ObservableCollection<string> _ChangedObjectIDList = null;
+        public ObservableCollection<string> ChangedObjectIDList
         {
             get
             {
-                if (_ChangedObjectIDList == null && ChangedObjectIDListData != null)
+                if (!_IsChangedObjectIDListRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(ChangedObjectIDListData);
-                    _ChangedObjectIDList = new List<string>(arrayData);
-					_IsChangedObjectIDListUsed = true;
+                    if (ChangedObjectIDListData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(ChangedObjectIDListData);
+                        _ChangedObjectIDList = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _ChangedObjectIDList = new ObservableCollection<string>();
+						ChangedObjectIDListData = Guid.NewGuid().ToString();
+						_IsChangedObjectIDListChanged = true;
+                    }
+                    _IsChangedObjectIDListRetrieved = true;
+                    _ChangedObjectIDList.CollectionChanged += (sender, args) =>
+						{
+							ChangedObjectIDListData = Guid.NewGuid().ToString();
+							_IsChangedObjectIDListChanged = true;
+						};
                 }
                 return _ChangedObjectIDList;
             }
-            set { _ChangedObjectIDList = value; }
+            set 
+			{ 
+				_ChangedObjectIDList = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsChangedObjectIDListRetrieved = true;
+                ChangedObjectIDListData = Guid.NewGuid().ToString();
+                _IsChangedObjectIDListChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsChangedObjectIDListUsed)
+            if (_IsChangedObjectIDListChanged)
             {
-                if (_ChangedObjectIDList == null)
-                    ChangedObjectIDListData = null;
-                else
-                {
-                    var dataToStore = _ChangedObjectIDList.ToArray();
-                    ChangedObjectIDListData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ChangedObjectIDList.ToArray();
+                ChangedObjectIDListData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -731,21 +960,45 @@ namespace SQLite.TheBall.Interface {
 
         [Column(Name = "Values")] public string ValuesData;
 
-		private bool _IsValuesUsed = false;
-        private List<GenericValue> _Values = null;
-        public List<GenericValue> Values
+        private bool _IsValuesRetrieved = false;
+        private bool _IsValuesChanged = false;
+        private ObservableCollection<GenericValue> _Values = null;
+        public ObservableCollection<GenericValue> Values
         {
             get
             {
-                if (_Values == null && ValuesData != null)
+                if (!_IsValuesRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<GenericValue[]>(ValuesData);
-                    _Values = new List<GenericValue>(arrayData);
-					_IsValuesUsed = true;
+                    if (ValuesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<GenericValue[]>(ValuesData);
+                        _Values = new ObservableCollection<GenericValue>(arrayData);
+                    }
+                    else
+                    {
+                        _Values = new ObservableCollection<GenericValue>();
+						ValuesData = Guid.NewGuid().ToString();
+						_IsValuesChanged = true;
+                    }
+                    _IsValuesRetrieved = true;
+                    _Values.CollectionChanged += (sender, args) =>
+						{
+							ValuesData = Guid.NewGuid().ToString();
+							_IsValuesChanged = true;
+						};
                 }
                 return _Values;
             }
-            set { _Values = value; }
+            set 
+			{ 
+				_Values = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsValuesRetrieved = true;
+                ValuesData = Guid.NewGuid().ToString();
+                _IsValuesChanged = true;
+
+			}
         }
 
 
@@ -759,15 +1012,10 @@ namespace SQLite.TheBall.Interface {
         public void PrepareForStoring()
         {
 		
-            if (_IsValuesUsed)
+            if (_IsValuesChanged)
             {
-                if (_Values == null)
-                    ValuesData = null;
-                else
-                {
-                    var dataToStore = _Values.ToArray();
-                    ValuesData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _Values.ToArray();
+                ValuesData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -788,21 +1036,45 @@ namespace SQLite.TheBall.Interface {
 		// private string _unmodified_String;
         [Column(Name = "StringArray")] public string StringArrayData;
 
-		private bool _IsStringArrayUsed = false;
-        private List<string> _StringArray = null;
-        public List<string> StringArray
+        private bool _IsStringArrayRetrieved = false;
+        private bool _IsStringArrayChanged = false;
+        private ObservableCollection<string> _StringArray = null;
+        public ObservableCollection<string> StringArray
         {
             get
             {
-                if (_StringArray == null && StringArrayData != null)
+                if (!_IsStringArrayRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(StringArrayData);
-                    _StringArray = new List<string>(arrayData);
-					_IsStringArrayUsed = true;
+                    if (StringArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(StringArrayData);
+                        _StringArray = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _StringArray = new ObservableCollection<string>();
+						StringArrayData = Guid.NewGuid().ToString();
+						_IsStringArrayChanged = true;
+                    }
+                    _IsStringArrayRetrieved = true;
+                    _StringArray.CollectionChanged += (sender, args) =>
+						{
+							StringArrayData = Guid.NewGuid().ToString();
+							_IsStringArrayChanged = true;
+						};
                 }
                 return _StringArray;
             }
-            set { _StringArray = value; }
+            set 
+			{ 
+				_StringArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsStringArrayRetrieved = true;
+                StringArrayData = Guid.NewGuid().ToString();
+                _IsStringArrayChanged = true;
+
+			}
         }
 
 
@@ -811,21 +1083,45 @@ namespace SQLite.TheBall.Interface {
 		// private double _unmodified_Number;
         [Column(Name = "NumberArray")] public string NumberArrayData;
 
-		private bool _IsNumberArrayUsed = false;
-        private List<double> _NumberArray = null;
-        public List<double> NumberArray
+        private bool _IsNumberArrayRetrieved = false;
+        private bool _IsNumberArrayChanged = false;
+        private ObservableCollection<double> _NumberArray = null;
+        public ObservableCollection<double> NumberArray
         {
             get
             {
-                if (_NumberArray == null && NumberArrayData != null)
+                if (!_IsNumberArrayRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<double[]>(NumberArrayData);
-                    _NumberArray = new List<double>(arrayData);
-					_IsNumberArrayUsed = true;
+                    if (NumberArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<double[]>(NumberArrayData);
+                        _NumberArray = new ObservableCollection<double>(arrayData);
+                    }
+                    else
+                    {
+                        _NumberArray = new ObservableCollection<double>();
+						NumberArrayData = Guid.NewGuid().ToString();
+						_IsNumberArrayChanged = true;
+                    }
+                    _IsNumberArrayRetrieved = true;
+                    _NumberArray.CollectionChanged += (sender, args) =>
+						{
+							NumberArrayData = Guid.NewGuid().ToString();
+							_IsNumberArrayChanged = true;
+						};
                 }
                 return _NumberArray;
             }
-            set { _NumberArray = value; }
+            set 
+			{ 
+				_NumberArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsNumberArrayRetrieved = true;
+                NumberArrayData = Guid.NewGuid().ToString();
+                _IsNumberArrayChanged = true;
+
+			}
         }
 
 
@@ -834,21 +1130,45 @@ namespace SQLite.TheBall.Interface {
 		// private bool _unmodified_Boolean;
         [Column(Name = "BooleanArray")] public string BooleanArrayData;
 
-		private bool _IsBooleanArrayUsed = false;
-        private List<bool> _BooleanArray = null;
-        public List<bool> BooleanArray
+        private bool _IsBooleanArrayRetrieved = false;
+        private bool _IsBooleanArrayChanged = false;
+        private ObservableCollection<bool> _BooleanArray = null;
+        public ObservableCollection<bool> BooleanArray
         {
             get
             {
-                if (_BooleanArray == null && BooleanArrayData != null)
+                if (!_IsBooleanArrayRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<bool[]>(BooleanArrayData);
-                    _BooleanArray = new List<bool>(arrayData);
-					_IsBooleanArrayUsed = true;
+                    if (BooleanArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<bool[]>(BooleanArrayData);
+                        _BooleanArray = new ObservableCollection<bool>(arrayData);
+                    }
+                    else
+                    {
+                        _BooleanArray = new ObservableCollection<bool>();
+						BooleanArrayData = Guid.NewGuid().ToString();
+						_IsBooleanArrayChanged = true;
+                    }
+                    _IsBooleanArrayRetrieved = true;
+                    _BooleanArray.CollectionChanged += (sender, args) =>
+						{
+							BooleanArrayData = Guid.NewGuid().ToString();
+							_IsBooleanArrayChanged = true;
+						};
                 }
                 return _BooleanArray;
             }
-            set { _BooleanArray = value; }
+            set 
+			{ 
+				_BooleanArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsBooleanArrayRetrieved = true;
+                BooleanArrayData = Guid.NewGuid().ToString();
+                _IsBooleanArrayChanged = true;
+
+			}
         }
 
 
@@ -857,21 +1177,45 @@ namespace SQLite.TheBall.Interface {
 		// private DateTime _unmodified_DateTime;
         [Column(Name = "DateTimeArray")] public string DateTimeArrayData;
 
-		private bool _IsDateTimeArrayUsed = false;
-        private List<DateTime> _DateTimeArray = null;
-        public List<DateTime> DateTimeArray
+        private bool _IsDateTimeArrayRetrieved = false;
+        private bool _IsDateTimeArrayChanged = false;
+        private ObservableCollection<DateTime> _DateTimeArray = null;
+        public ObservableCollection<DateTime> DateTimeArray
         {
             get
             {
-                if (_DateTimeArray == null && DateTimeArrayData != null)
+                if (!_IsDateTimeArrayRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<DateTime[]>(DateTimeArrayData);
-                    _DateTimeArray = new List<DateTime>(arrayData);
-					_IsDateTimeArrayUsed = true;
+                    if (DateTimeArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<DateTime[]>(DateTimeArrayData);
+                        _DateTimeArray = new ObservableCollection<DateTime>(arrayData);
+                    }
+                    else
+                    {
+                        _DateTimeArray = new ObservableCollection<DateTime>();
+						DateTimeArrayData = Guid.NewGuid().ToString();
+						_IsDateTimeArrayChanged = true;
+                    }
+                    _IsDateTimeArrayRetrieved = true;
+                    _DateTimeArray.CollectionChanged += (sender, args) =>
+						{
+							DateTimeArrayData = Guid.NewGuid().ToString();
+							_IsDateTimeArrayChanged = true;
+						};
                 }
                 return _DateTimeArray;
             }
-            set { _DateTimeArray = value; }
+            set 
+			{ 
+				_DateTimeArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsDateTimeArrayRetrieved = true;
+                DateTimeArrayData = Guid.NewGuid().ToString();
+                _IsDateTimeArrayChanged = true;
+
+			}
         }
 
 
@@ -880,21 +1224,45 @@ namespace SQLite.TheBall.Interface {
 		// private GenericObject _unmodified_Object;
         [Column(Name = "ObjectArray")] public string ObjectArrayData;
 
-		private bool _IsObjectArrayUsed = false;
-        private List<GenericObject> _ObjectArray = null;
-        public List<GenericObject> ObjectArray
+        private bool _IsObjectArrayRetrieved = false;
+        private bool _IsObjectArrayChanged = false;
+        private ObservableCollection<GenericObject> _ObjectArray = null;
+        public ObservableCollection<GenericObject> ObjectArray
         {
             get
             {
-                if (_ObjectArray == null && ObjectArrayData != null)
+                if (!_IsObjectArrayRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<GenericObject[]>(ObjectArrayData);
-                    _ObjectArray = new List<GenericObject>(arrayData);
-					_IsObjectArrayUsed = true;
+                    if (ObjectArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<GenericObject[]>(ObjectArrayData);
+                        _ObjectArray = new ObservableCollection<GenericObject>(arrayData);
+                    }
+                    else
+                    {
+                        _ObjectArray = new ObservableCollection<GenericObject>();
+						ObjectArrayData = Guid.NewGuid().ToString();
+						_IsObjectArrayChanged = true;
+                    }
+                    _IsObjectArrayRetrieved = true;
+                    _ObjectArray.CollectionChanged += (sender, args) =>
+						{
+							ObjectArrayData = Guid.NewGuid().ToString();
+							_IsObjectArrayChanged = true;
+						};
                 }
                 return _ObjectArray;
             }
-            set { _ObjectArray = value; }
+            set 
+			{ 
+				_ObjectArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsObjectArrayRetrieved = true;
+                ObjectArrayData = Guid.NewGuid().ToString();
+                _IsObjectArrayChanged = true;
+
+			}
         }
 
 
@@ -904,59 +1272,34 @@ namespace SQLite.TheBall.Interface {
         public void PrepareForStoring()
         {
 		
-            if (_IsStringArrayUsed)
+            if (_IsStringArrayChanged)
             {
-                if (_StringArray == null)
-                    StringArrayData = null;
-                else
-                {
-                    var dataToStore = _StringArray.ToArray();
-                    StringArrayData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _StringArray.ToArray();
+                StringArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsNumberArrayUsed)
+            if (_IsNumberArrayChanged)
             {
-                if (_NumberArray == null)
-                    NumberArrayData = null;
-                else
-                {
-                    var dataToStore = _NumberArray.ToArray();
-                    NumberArrayData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _NumberArray.ToArray();
+                NumberArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsBooleanArrayUsed)
+            if (_IsBooleanArrayChanged)
             {
-                if (_BooleanArray == null)
-                    BooleanArrayData = null;
-                else
-                {
-                    var dataToStore = _BooleanArray.ToArray();
-                    BooleanArrayData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _BooleanArray.ToArray();
+                BooleanArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsDateTimeArrayUsed)
+            if (_IsDateTimeArrayChanged)
             {
-                if (_DateTimeArray == null)
-                    DateTimeArrayData = null;
-                else
-                {
-                    var dataToStore = _DateTimeArray.ToArray();
-                    DateTimeArrayData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _DateTimeArray.ToArray();
+                DateTimeArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsObjectArrayUsed)
+            if (_IsObjectArrayChanged)
             {
-                if (_ObjectArray == null)
-                    ObjectArrayData = null;
-                else
-                {
-                    var dataToStore = _ObjectArray.ToArray();
-                    ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ObjectArray.ToArray();
+                ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}

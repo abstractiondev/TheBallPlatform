@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -67,35 +68,54 @@ namespace SQLite.TheBall.Payments {
 		// private string _unmodified_Description;
         [Column(Name = "GroupIDs")] public string GroupIDsData;
 
-		private bool _IsGroupIDsUsed = false;
-        private List<string> _GroupIDs = null;
-        public List<string> GroupIDs
+        private bool _IsGroupIDsRetrieved = false;
+        private bool _IsGroupIDsChanged = false;
+        private ObservableCollection<string> _GroupIDs = null;
+        public ObservableCollection<string> GroupIDs
         {
             get
             {
-                if (_GroupIDs == null && GroupIDsData != null)
+                if (!_IsGroupIDsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(GroupIDsData);
-                    _GroupIDs = new List<string>(arrayData);
-					_IsGroupIDsUsed = true;
+                    if (GroupIDsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(GroupIDsData);
+                        _GroupIDs = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _GroupIDs = new ObservableCollection<string>();
+						GroupIDsData = Guid.NewGuid().ToString();
+						_IsGroupIDsChanged = true;
+                    }
+                    _IsGroupIDsRetrieved = true;
+                    _GroupIDs.CollectionChanged += (sender, args) =>
+						{
+							GroupIDsData = Guid.NewGuid().ToString();
+							_IsGroupIDsChanged = true;
+						};
                 }
                 return _GroupIDs;
             }
-            set { _GroupIDs = value; }
+            set 
+			{ 
+				_GroupIDs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsGroupIDsRetrieved = true;
+                GroupIDsData = Guid.NewGuid().ToString();
+                _IsGroupIDsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsGroupIDsUsed)
+            if (_IsGroupIDsChanged)
             {
-                if (_GroupIDs == null)
-                    GroupIDsData = null;
-                else
-                {
-                    var dataToStore = _GroupIDs.ToArray();
-                    GroupIDsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _GroupIDs.ToArray();
+                GroupIDsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -120,35 +140,54 @@ namespace SQLite.TheBall.Payments {
 		// private string _unmodified_Description;
         [Column(Name = "ActivePlans")] public string ActivePlansData;
 
-		private bool _IsActivePlansUsed = false;
-        private List<string> _ActivePlans = null;
-        public List<string> ActivePlans
+        private bool _IsActivePlansRetrieved = false;
+        private bool _IsActivePlansChanged = false;
+        private ObservableCollection<string> _ActivePlans = null;
+        public ObservableCollection<string> ActivePlans
         {
             get
             {
-                if (_ActivePlans == null && ActivePlansData != null)
+                if (!_IsActivePlansRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(ActivePlansData);
-                    _ActivePlans = new List<string>(arrayData);
-					_IsActivePlansUsed = true;
+                    if (ActivePlansData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(ActivePlansData);
+                        _ActivePlans = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _ActivePlans = new ObservableCollection<string>();
+						ActivePlansData = Guid.NewGuid().ToString();
+						_IsActivePlansChanged = true;
+                    }
+                    _IsActivePlansRetrieved = true;
+                    _ActivePlans.CollectionChanged += (sender, args) =>
+						{
+							ActivePlansData = Guid.NewGuid().ToString();
+							_IsActivePlansChanged = true;
+						};
                 }
                 return _ActivePlans;
             }
-            set { _ActivePlans = value; }
+            set 
+			{ 
+				_ActivePlans = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsActivePlansRetrieved = true;
+                ActivePlansData = Guid.NewGuid().ToString();
+                _IsActivePlansChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsActivePlansUsed)
+            if (_IsActivePlansChanged)
             {
-                if (_ActivePlans == null)
-                    ActivePlansData = null;
-                else
-                {
-                    var dataToStore = _ActivePlans.ToArray();
-                    ActivePlansData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ActivePlans.ToArray();
+                ActivePlansData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}

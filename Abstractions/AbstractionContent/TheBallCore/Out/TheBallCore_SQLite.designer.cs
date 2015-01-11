@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -687,35 +688,54 @@ namespace SQLite.TheBall.CORE {
 
         [Column(Name = "ProcessIDs")] public string ProcessIDsData;
 
-		private bool _IsProcessIDsUsed = false;
-        private List<string> _ProcessIDs = null;
-        public List<string> ProcessIDs
+        private bool _IsProcessIDsRetrieved = false;
+        private bool _IsProcessIDsChanged = false;
+        private ObservableCollection<string> _ProcessIDs = null;
+        public ObservableCollection<string> ProcessIDs
         {
             get
             {
-                if (_ProcessIDs == null && ProcessIDsData != null)
+                if (!_IsProcessIDsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(ProcessIDsData);
-                    _ProcessIDs = new List<string>(arrayData);
-					_IsProcessIDsUsed = true;
+                    if (ProcessIDsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(ProcessIDsData);
+                        _ProcessIDs = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _ProcessIDs = new ObservableCollection<string>();
+						ProcessIDsData = Guid.NewGuid().ToString();
+						_IsProcessIDsChanged = true;
+                    }
+                    _IsProcessIDsRetrieved = true;
+                    _ProcessIDs.CollectionChanged += (sender, args) =>
+						{
+							ProcessIDsData = Guid.NewGuid().ToString();
+							_IsProcessIDsChanged = true;
+						};
                 }
                 return _ProcessIDs;
             }
-            set { _ProcessIDs = value; }
+            set 
+			{ 
+				_ProcessIDs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsProcessIDsRetrieved = true;
+                ProcessIDsData = Guid.NewGuid().ToString();
+                _IsProcessIDsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsProcessIDsUsed)
+            if (_IsProcessIDsChanged)
             {
-                if (_ProcessIDs == null)
-                    ProcessIDsData = null;
-                else
-                {
-                    var dataToStore = _ProcessIDs.ToArray();
-                    ProcessIDsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ProcessIDs.ToArray();
+                ProcessIDsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -736,65 +756,103 @@ namespace SQLite.TheBall.CORE {
 		// private SemanticInformationItem _unmodified_ExecutingOperation;
         [Column(Name = "InitialArguments")] public string InitialArgumentsData;
 
-		private bool _IsInitialArgumentsUsed = false;
-        private List<SemanticInformationItem> _InitialArguments = null;
-        public List<SemanticInformationItem> InitialArguments
+        private bool _IsInitialArgumentsRetrieved = false;
+        private bool _IsInitialArgumentsChanged = false;
+        private ObservableCollection<SemanticInformationItem> _InitialArguments = null;
+        public ObservableCollection<SemanticInformationItem> InitialArguments
         {
             get
             {
-                if (_InitialArguments == null && InitialArgumentsData != null)
+                if (!_IsInitialArgumentsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InitialArgumentsData);
-                    _InitialArguments = new List<SemanticInformationItem>(arrayData);
-					_IsInitialArgumentsUsed = true;
+                    if (InitialArgumentsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InitialArgumentsData);
+                        _InitialArguments = new ObservableCollection<SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _InitialArguments = new ObservableCollection<SemanticInformationItem>();
+						InitialArgumentsData = Guid.NewGuid().ToString();
+						_IsInitialArgumentsChanged = true;
+                    }
+                    _IsInitialArgumentsRetrieved = true;
+                    _InitialArguments.CollectionChanged += (sender, args) =>
+						{
+							InitialArgumentsData = Guid.NewGuid().ToString();
+							_IsInitialArgumentsChanged = true;
+						};
                 }
                 return _InitialArguments;
             }
-            set { _InitialArguments = value; }
+            set 
+			{ 
+				_InitialArguments = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsInitialArgumentsRetrieved = true;
+                InitialArgumentsData = Guid.NewGuid().ToString();
+                _IsInitialArgumentsChanged = true;
+
+			}
         }
 
         [Column(Name = "ProcessItems")] public string ProcessItemsData;
 
-		private bool _IsProcessItemsUsed = false;
-        private List<ProcessItem> _ProcessItems = null;
-        public List<ProcessItem> ProcessItems
+        private bool _IsProcessItemsRetrieved = false;
+        private bool _IsProcessItemsChanged = false;
+        private ObservableCollection<ProcessItem> _ProcessItems = null;
+        public ObservableCollection<ProcessItem> ProcessItems
         {
             get
             {
-                if (_ProcessItems == null && ProcessItemsData != null)
+                if (!_IsProcessItemsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<ProcessItem[]>(ProcessItemsData);
-                    _ProcessItems = new List<ProcessItem>(arrayData);
-					_IsProcessItemsUsed = true;
+                    if (ProcessItemsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<ProcessItem[]>(ProcessItemsData);
+                        _ProcessItems = new ObservableCollection<ProcessItem>(arrayData);
+                    }
+                    else
+                    {
+                        _ProcessItems = new ObservableCollection<ProcessItem>();
+						ProcessItemsData = Guid.NewGuid().ToString();
+						_IsProcessItemsChanged = true;
+                    }
+                    _IsProcessItemsRetrieved = true;
+                    _ProcessItems.CollectionChanged += (sender, args) =>
+						{
+							ProcessItemsData = Guid.NewGuid().ToString();
+							_IsProcessItemsChanged = true;
+						};
                 }
                 return _ProcessItems;
             }
-            set { _ProcessItems = value; }
+            set 
+			{ 
+				_ProcessItems = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsProcessItemsRetrieved = true;
+                ProcessItemsData = Guid.NewGuid().ToString();
+                _IsProcessItemsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsInitialArgumentsUsed)
+            if (_IsInitialArgumentsChanged)
             {
-                if (_InitialArguments == null)
-                    InitialArgumentsData = null;
-                else
-                {
-                    var dataToStore = _InitialArguments.ToArray();
-                    InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _InitialArguments.ToArray();
+                InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsProcessItemsUsed)
+            if (_IsProcessItemsChanged)
             {
-                if (_ProcessItems == null)
-                    ProcessItemsData = null;
-                else
-                {
-                    var dataToStore = _ProcessItems.ToArray();
-                    ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ProcessItems.ToArray();
+                ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -807,65 +865,103 @@ namespace SQLite.TheBall.CORE {
 
         [Column(Name = "Outputs")] public string OutputsData;
 
-		private bool _IsOutputsUsed = false;
-        private List<SemanticInformationItem> _Outputs = null;
-        public List<SemanticInformationItem> Outputs
+        private bool _IsOutputsRetrieved = false;
+        private bool _IsOutputsChanged = false;
+        private ObservableCollection<SemanticInformationItem> _Outputs = null;
+        public ObservableCollection<SemanticInformationItem> Outputs
         {
             get
             {
-                if (_Outputs == null && OutputsData != null)
+                if (!_IsOutputsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(OutputsData);
-                    _Outputs = new List<SemanticInformationItem>(arrayData);
-					_IsOutputsUsed = true;
+                    if (OutputsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(OutputsData);
+                        _Outputs = new ObservableCollection<SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _Outputs = new ObservableCollection<SemanticInformationItem>();
+						OutputsData = Guid.NewGuid().ToString();
+						_IsOutputsChanged = true;
+                    }
+                    _IsOutputsRetrieved = true;
+                    _Outputs.CollectionChanged += (sender, args) =>
+						{
+							OutputsData = Guid.NewGuid().ToString();
+							_IsOutputsChanged = true;
+						};
                 }
                 return _Outputs;
             }
-            set { _Outputs = value; }
+            set 
+			{ 
+				_Outputs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOutputsRetrieved = true;
+                OutputsData = Guid.NewGuid().ToString();
+                _IsOutputsChanged = true;
+
+			}
         }
 
         [Column(Name = "Inputs")] public string InputsData;
 
-		private bool _IsInputsUsed = false;
-        private List<SemanticInformationItem> _Inputs = null;
-        public List<SemanticInformationItem> Inputs
+        private bool _IsInputsRetrieved = false;
+        private bool _IsInputsChanged = false;
+        private ObservableCollection<SemanticInformationItem> _Inputs = null;
+        public ObservableCollection<SemanticInformationItem> Inputs
         {
             get
             {
-                if (_Inputs == null && InputsData != null)
+                if (!_IsInputsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InputsData);
-                    _Inputs = new List<SemanticInformationItem>(arrayData);
-					_IsInputsUsed = true;
+                    if (InputsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InputsData);
+                        _Inputs = new ObservableCollection<SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _Inputs = new ObservableCollection<SemanticInformationItem>();
+						InputsData = Guid.NewGuid().ToString();
+						_IsInputsChanged = true;
+                    }
+                    _IsInputsRetrieved = true;
+                    _Inputs.CollectionChanged += (sender, args) =>
+						{
+							InputsData = Guid.NewGuid().ToString();
+							_IsInputsChanged = true;
+						};
                 }
                 return _Inputs;
             }
-            set { _Inputs = value; }
+            set 
+			{ 
+				_Inputs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsInputsRetrieved = true;
+                InputsData = Guid.NewGuid().ToString();
+                _IsInputsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsOutputsUsed)
+            if (_IsOutputsChanged)
             {
-                if (_Outputs == null)
-                    OutputsData = null;
-                else
-                {
-                    var dataToStore = _Outputs.ToArray();
-                    OutputsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _Outputs.ToArray();
+                OutputsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsInputsUsed)
+            if (_IsInputsChanged)
             {
-                if (_Inputs == null)
-                    InputsData = null;
-                else
-                {
-                    var dataToStore = _Inputs.ToArray();
-                    InputsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _Inputs.ToArray();
+                InputsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}

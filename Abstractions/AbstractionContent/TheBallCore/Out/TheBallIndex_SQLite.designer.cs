@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -68,35 +69,54 @@ namespace SQLite.TheBall.Index {
 		// private string _unmodified_IndexName;
         [Column(Name = "ObjectLocations")] public string ObjectLocationsData;
 
-		private bool _IsObjectLocationsUsed = false;
-        private List<string> _ObjectLocations = null;
-        public List<string> ObjectLocations
+        private bool _IsObjectLocationsRetrieved = false;
+        private bool _IsObjectLocationsChanged = false;
+        private ObservableCollection<string> _ObjectLocations = null;
+        public ObservableCollection<string> ObjectLocations
         {
             get
             {
-                if (_ObjectLocations == null && ObjectLocationsData != null)
+                if (!_IsObjectLocationsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<string[]>(ObjectLocationsData);
-                    _ObjectLocations = new List<string>(arrayData);
-					_IsObjectLocationsUsed = true;
+                    if (ObjectLocationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(ObjectLocationsData);
+                        _ObjectLocations = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _ObjectLocations = new ObservableCollection<string>();
+						ObjectLocationsData = Guid.NewGuid().ToString();
+						_IsObjectLocationsChanged = true;
+                    }
+                    _IsObjectLocationsRetrieved = true;
+                    _ObjectLocations.CollectionChanged += (sender, args) =>
+						{
+							ObjectLocationsData = Guid.NewGuid().ToString();
+							_IsObjectLocationsChanged = true;
+						};
                 }
                 return _ObjectLocations;
             }
-            set { _ObjectLocations = value; }
+            set 
+			{ 
+				_ObjectLocations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsObjectLocationsRetrieved = true;
+                ObjectLocationsData = Guid.NewGuid().ToString();
+                _IsObjectLocationsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsObjectLocationsUsed)
+            if (_IsObjectLocationsChanged)
             {
-                if (_ObjectLocations == null)
-                    ObjectLocationsData = null;
-                else
-                {
-                    var dataToStore = _ObjectLocations.ToArray();
-                    ObjectLocationsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _ObjectLocations.ToArray();
+                ObjectLocationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
@@ -137,35 +157,54 @@ namespace SQLite.TheBall.Index {
 		// private long _unmodified_LastCompletionDurationMs;
         [Column(Name = "QueryResultObjects")] public string QueryResultObjectsData;
 
-		private bool _IsQueryResultObjectsUsed = false;
-        private List<QueryResultItem> _QueryResultObjects = null;
-        public List<QueryResultItem> QueryResultObjects
+        private bool _IsQueryResultObjectsRetrieved = false;
+        private bool _IsQueryResultObjectsChanged = false;
+        private ObservableCollection<QueryResultItem> _QueryResultObjects = null;
+        public ObservableCollection<QueryResultItem> QueryResultObjects
         {
             get
             {
-                if (_QueryResultObjects == null && QueryResultObjectsData != null)
+                if (!_IsQueryResultObjectsRetrieved)
                 {
-                    var arrayData = JsonConvert.DeserializeObject<QueryResultItem[]>(QueryResultObjectsData);
-                    _QueryResultObjects = new List<QueryResultItem>(arrayData);
-					_IsQueryResultObjectsUsed = true;
+                    if (QueryResultObjectsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<QueryResultItem[]>(QueryResultObjectsData);
+                        _QueryResultObjects = new ObservableCollection<QueryResultItem>(arrayData);
+                    }
+                    else
+                    {
+                        _QueryResultObjects = new ObservableCollection<QueryResultItem>();
+						QueryResultObjectsData = Guid.NewGuid().ToString();
+						_IsQueryResultObjectsChanged = true;
+                    }
+                    _IsQueryResultObjectsRetrieved = true;
+                    _QueryResultObjects.CollectionChanged += (sender, args) =>
+						{
+							QueryResultObjectsData = Guid.NewGuid().ToString();
+							_IsQueryResultObjectsChanged = true;
+						};
                 }
                 return _QueryResultObjects;
             }
-            set { _QueryResultObjects = value; }
+            set 
+			{ 
+				_QueryResultObjects = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsQueryResultObjectsRetrieved = true;
+                QueryResultObjectsData = Guid.NewGuid().ToString();
+                _IsQueryResultObjectsChanged = true;
+
+			}
         }
 
         public void PrepareForStoring()
         {
 		
-            if (_IsQueryResultObjectsUsed)
+            if (_IsQueryResultObjectsChanged)
             {
-                if (_QueryResultObjects == null)
-                    QueryResultObjectsData = null;
-                else
-                {
-                    var dataToStore = _QueryResultObjects.ToArray();
-                    QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
-                }
+                var dataToStore = _QueryResultObjects.ToArray();
+                QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}
