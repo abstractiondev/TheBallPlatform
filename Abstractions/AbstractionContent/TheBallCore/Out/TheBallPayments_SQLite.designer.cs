@@ -54,7 +54,7 @@ namespace SQLite.TheBall.Payments {
     [Table(Name = "GroupSubscriptionPlan")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -103,7 +103,7 @@ namespace SQLite.TheBall.Payments {
     [Table(Name = "CustomerAccount")]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

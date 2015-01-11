@@ -49,7 +49,7 @@ namespace SQLite.Caloom.Schools {
     [Table(Name = "TrainingModule")]
 	public class TrainingModule : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

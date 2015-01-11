@@ -79,7 +79,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "Who")]
 	public class Who : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -106,7 +106,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ProductForWhom")]
 	public class ProductForWhom : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -141,7 +141,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "Product")]
 	public class Product : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -172,7 +172,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ProductUsage")]
 	public class ProductUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -191,7 +191,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "NodeSummaryContainer")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -210,7 +210,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "RenderedNode")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -265,7 +265,7 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ShortTextObject")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

@@ -189,7 +189,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ContentPackage")]
 	public class ContentPackage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -220,7 +220,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationInput")]
 	public class InformationInput : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -251,7 +251,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationOutput")]
 	public class InformationOutput : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -286,7 +286,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "AuthenticatedAsActiveDevice")]
 	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -325,7 +325,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "DeviceMembership")]
 	public class DeviceMembership : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -352,7 +352,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceFiscalExportSummary")]
 	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -375,7 +375,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceSummaryContainer")]
 	public class InvoiceSummaryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -402,7 +402,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Invoice")]
 	public class Invoice : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -453,7 +453,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceDetails")]
 	public class InvoiceDetails : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -488,7 +488,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceUser")]
 	public class InvoiceUser : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -527,7 +527,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceRowGroup")]
 	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -558,7 +558,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceEventDetailGroup")]
 	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -577,7 +577,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceEventDetail")]
 	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -628,7 +628,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceRow")]
 	public class InvoiceRow : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -667,7 +667,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -682,7 +682,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessContainer")]
 	public class ProcessContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
         [Column(Name = "ProcessIDs")] public string ProcessIDsData;
@@ -723,7 +723,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Process")]
 	public class Process : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -802,7 +802,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessItem")]
 	public class ProcessItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
         [Column(Name = "Outputs")] public string OutputsData;
@@ -873,7 +873,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "SemanticInformationItem")]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -892,7 +892,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationOwnerInfo")]
 	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -911,7 +911,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "UsageSummary")]
 	public class UsageSummary : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -930,7 +930,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "UsageMonitorItem")]
 	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -969,7 +969,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "RequestResourceUsage")]
 	public class RequestResourceUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1000,7 +1000,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessorUsage")]
 	public class ProcessorUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1031,7 +1031,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "StorageTransactionUsage")]
 	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1054,7 +1054,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "StorageUsage")]
 	public class StorageUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1081,7 +1081,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "NetworkUsage")]
 	public class NetworkUsage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1104,7 +1104,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "TimeRange")]
 	public class TimeRange : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1123,7 +1123,7 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "HTTPActivityDetails")]
 	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

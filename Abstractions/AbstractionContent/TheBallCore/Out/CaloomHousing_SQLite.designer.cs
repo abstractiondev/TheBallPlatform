@@ -49,7 +49,7 @@ namespace SQLite.Caloom.Housing {
     [Table(Name = "House")]
 	public class House : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

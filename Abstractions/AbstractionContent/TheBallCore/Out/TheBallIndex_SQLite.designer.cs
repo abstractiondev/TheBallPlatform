@@ -59,7 +59,7 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "IndexingRequest")]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -104,7 +104,7 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "QueryRequest")]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -173,7 +173,7 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "QueryResultItem")]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

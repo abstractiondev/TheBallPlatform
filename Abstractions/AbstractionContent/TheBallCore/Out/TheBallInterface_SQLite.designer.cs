@@ -104,7 +104,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "WizardContainer")]
 	public class WizardContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
         [Column(Name = "ActiveTasks")] public string ActiveTasksData;
@@ -145,7 +145,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "WizardTask")]
 	public class WizardTask : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -168,7 +168,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "Connection")]
 	public class Connection : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -373,7 +373,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "TransferPackage")]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -430,7 +430,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "CategoryLink")]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -453,7 +453,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -488,7 +488,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "StatusSummary")]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
         [Column(Name = "PendingOperations")] public string PendingOperationsData;
@@ -619,7 +619,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "InformationChangeItem")]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -668,7 +668,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "OperationExecutionItem")]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -711,7 +711,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericCollectionableObject")]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -726,7 +726,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericObject")]
 	public class GenericObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
         [Column(Name = "Values")] public string ValuesData;
@@ -775,7 +775,7 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericValue")]
 	public class GenericValue : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 

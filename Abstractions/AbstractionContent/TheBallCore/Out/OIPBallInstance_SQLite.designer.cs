@@ -694,7 +694,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBSystem")]
 	public class TBSystem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -713,7 +713,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "WebPublishInfo")]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -740,7 +740,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PublicationPackage")]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -759,7 +759,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRLoginRoot")]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -778,7 +778,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRAccountRoot")]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -793,7 +793,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRGroupRoot")]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -808,7 +808,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRLoginGroupRoot")]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -827,7 +827,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBREmailRoot")]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -842,7 +842,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBAccount")]
 	public class TBAccount : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -865,7 +865,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBAccountCollaborationGroup")]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -888,7 +888,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBLoginInfo")]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -903,7 +903,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBEmail")]
 	public class TBEmail : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -922,7 +922,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBCollaboratorRole")]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -945,7 +945,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBCollaboratingGroup")]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -964,7 +964,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBEmailValidation")]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1011,7 +1011,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBMergeAccountConfirmation")]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1030,7 +1030,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBGroupJoinConfirmation")]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1049,7 +1049,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBDeviceJoinConfirmation")]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1072,7 +1072,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBInformationInputConfirmation")]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1095,7 +1095,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBInformationOutputConfirmation")]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1118,7 +1118,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRegisterContainer")]
 	public class TBRegisterContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1141,7 +1141,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LoginProvider")]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1172,7 +1172,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContactOipContainer")]
 	public class ContactOipContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1187,7 +1187,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBPRegisterEmail")]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1202,7 +1202,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "JavaScriptContainer")]
 	public class JavaScriptContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1217,7 +1217,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "JavascriptContainer")]
 	public class JavascriptContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1232,7 +1232,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "FooterContainer")]
 	public class FooterContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1247,7 +1247,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "NavigationContainer")]
 	public class NavigationContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1262,7 +1262,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountSummary")]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1285,7 +1285,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountContainer")]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1312,7 +1312,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountIndex")]
 	public class AccountIndex : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1339,7 +1339,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountModule")]
 	public class AccountModule : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1366,7 +1366,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageGroupContainer")]
 	public class ImageGroupContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1381,7 +1381,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LocationContainer")]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1396,7 +1396,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddressAndLocation")]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1419,7 +1419,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "StreetAddress")]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1446,7 +1446,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountContent")]
 	public class AccountContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1461,7 +1461,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountProfile")]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1500,7 +1500,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountSecurity")]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1519,7 +1519,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountRoles")]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1542,7 +1542,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PersonalInfoVisibility")]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1557,7 +1557,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupedInformation")]
 	public class GroupedInformation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1576,7 +1576,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ReferenceToInformation")]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1595,7 +1595,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BlogContainer")]
 	public class BlogContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1622,7 +1622,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RecentBlogSummary")]
 	public class RecentBlogSummary : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1641,7 +1641,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "NodeSummaryContainer")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1688,7 +1688,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RenderedNode")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1763,7 +1763,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ShortTextObject")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1778,7 +1778,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LongTextObject")]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1793,7 +1793,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapContainer")]
 	public class MapContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1840,7 +1840,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapMarker")]
 	public class MapMarker : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1879,7 +1879,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CalendarContainer")]
 	public class CalendarContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1906,7 +1906,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AboutContainer")]
 	public class AboutContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1945,7 +1945,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OBSAccountContainer")]
 	public class OBSAccountContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1972,7 +1972,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ProjectContainer")]
 	public class ProjectContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -1999,7 +1999,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CourseContainer")]
 	public class CourseContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2026,7 +2026,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContainerHeader")]
 	public class ContainerHeader : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2045,7 +2045,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivitySummaryContainer")]
 	public class ActivitySummaryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2076,7 +2076,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivityIndex")]
 	public class ActivityIndex : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2103,7 +2103,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivityContainer")]
 	public class ActivityContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2126,7 +2126,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Activity")]
 	public class Activity : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2193,7 +2193,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Moderator")]
 	public class Moderator : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2212,7 +2212,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Collaborator")]
 	public class Collaborator : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2243,7 +2243,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupSummaryContainer")]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2274,7 +2274,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupContainer")]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2317,7 +2317,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupIndex")]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2344,7 +2344,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddAddressAndLocationInfo")]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2359,7 +2359,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddImageInfo")]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2374,7 +2374,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddImageGroupInfo")]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2389,7 +2389,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddEmailAddressInfo")]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2404,7 +2404,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CreateGroupInfo")]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2419,7 +2419,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddActivityInfo")]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2434,7 +2434,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddBlogPostInfo")]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2449,7 +2449,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddCategoryInfo")]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2464,7 +2464,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Group")]
 	public class Group : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2515,7 +2515,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Introduction")]
 	public class Introduction : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2534,7 +2534,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContentCategoryRank")]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2565,7 +2565,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LinkToContent")]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2608,7 +2608,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "EmbeddedContent")]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2647,7 +2647,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DynamicContentGroup")]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2678,7 +2678,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DynamicContent")]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2737,7 +2737,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AttachedToObject")]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2772,7 +2772,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Comment")]
 	public class Comment : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2831,7 +2831,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Selection")]
 	public class Selection : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2870,7 +2870,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TextContent")]
 	public class TextContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -2929,7 +2929,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Blog")]
 	public class Blog : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3008,7 +3008,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BlogIndexGroup")]
 	public class BlogIndexGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3059,7 +3059,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CalendarIndex")]
 	public class CalendarIndex : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3086,7 +3086,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Filter")]
 	public class Filter : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3101,7 +3101,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Calendar")]
 	public class Calendar : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3116,7 +3116,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Map")]
 	public class Map : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3131,7 +3131,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapIndexCollection")]
 	public class MapIndexCollection : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3158,7 +3158,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapResult")]
 	public class MapResult : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3173,7 +3173,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapResultsCollection")]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3196,7 +3196,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Video")]
 	public class Video : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3219,7 +3219,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Image")]
 	public class Image : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3258,7 +3258,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BinaryFile")]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3289,7 +3289,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageGroup")]
 	public class ImageGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3320,7 +3320,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "VideoGroup")]
 	public class VideoGroup : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3343,7 +3343,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Tooltip")]
 	public class Tooltip : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3358,7 +3358,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SocialPanel")]
 	public class SocialPanel : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3373,7 +3373,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Longitude")]
 	public class Longitude : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3388,7 +3388,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Latitude")]
 	public class Latitude : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3403,7 +3403,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Location")]
 	public class Location : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3426,7 +3426,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Date")]
 	public class Date : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3453,7 +3453,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Sex")]
 	public class Sex : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3468,7 +3468,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OBSAddress")]
 	public class OBSAddress : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3519,7 +3519,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Identity")]
 	public class Identity : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3550,7 +3550,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageVideoSoundVectorRaw")]
 	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3581,7 +3581,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CategoryContainer")]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3596,7 +3596,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3635,7 +3635,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Subscription")]
 	public class Subscription : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3670,7 +3670,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "QueueEnvelope")]
 	public class QueueEnvelope : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3705,7 +3705,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OperationRequest")]
 	public class OperationRequest : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3748,7 +3748,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionChainRequestMessage")]
 	public class SubscriptionChainRequestMessage : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3763,7 +3763,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionChainRequestContent")]
 	public class SubscriptionChainRequestContent : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3798,7 +3798,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionTarget")]
 	public class SubscriptionTarget : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3813,7 +3813,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DeleteEntireOwnerOperation")]
 	public class DeleteEntireOwnerOperation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3832,7 +3832,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DeleteOwnerContentOperation")]
 	public class DeleteOwnerContentOperation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3851,7 +3851,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SystemError")]
 	public class SystemError : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3878,7 +3878,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SystemErrorItem")]
 	public class SystemErrorItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3897,7 +3897,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "InformationSource")]
 	public class InformationSource : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3940,7 +3940,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RefreshDefaultViewsOperation")]
 	public class RefreshDefaultViewsOperation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3959,7 +3959,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "UpdateWebContentOperation")]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -3994,7 +3994,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "UpdateWebContentHandlerItem")]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -4013,7 +4013,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PublishWebContentOperation")]
 	public class PublishWebContentOperation : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -4040,7 +4040,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriberInput")]
 	public class SubscriberInput : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -4067,7 +4067,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Monitor")]
 	public class Monitor : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -4106,7 +4106,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "IconTitleDescription")]
 	public class IconTitleDescription : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
@@ -4129,7 +4129,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AboutAGIApplications")]
 	public class AboutAGIApplications : ITheBallDataContextStorable
 	{
-		[Column]
+		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
 
