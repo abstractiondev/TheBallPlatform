@@ -34,12 +34,8 @@
   </PropertyGroup>
   <!-- Items for the project -->
   <ItemGroup>
-    <ServiceConfiguration Include="ServiceConfiguration.DiospherePlatform.cscfg" />
-    <ServiceConfiguration Include="ServiceConfiguration.TheBallMeTest.cscfg" />
-    <ServiceConfiguration Include="ServiceConfiguration.TheBallMeProduction.cscfg" />
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
     <ServiceDefinition Include="ServiceDefinition.csdef" />
-    <ServiceConfiguration Include="ServiceConfiguration.iZENZEiPlatform.cscfg" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBallWebFarm\TheBallWebFarm.csproj">

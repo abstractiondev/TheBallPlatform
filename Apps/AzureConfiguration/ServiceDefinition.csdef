@@ -4,12 +4,27 @@
     <LoadBalancerProbe name="WebDeploy" protocol="http" port="80" path="Probe.aspx" intervalInSeconds="5" timeoutInSeconds="100" />
   </LoadBalancerProbes>
   <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
+    <Startup>
+      <Task commandLine="WorkerStartupTasks.cmd" executionContext="elevated" taskType="simple" />
+    </Startup>
+    <Runtime>
+      <Environment>
+        <Variable name="CoreFileShareAccountName">
+          <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountName']/@value" />
+        </Variable>
+        <Variable name="CoreFileShareAccountKey">
+          <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountKey']/@value" />
+        </Variable>
+      </Environment>
+    </Runtime>
     <Imports>
       <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
+      <Setting name="CoreFileShareAccountName" />
+      <Setting name="CoreFileShareAccountKey" />
       <Setting name="DataConnectionString" />
       <Setting name="WorkerRoleEntryPointContainerName" />
       <Setting name="StorageConnectionString" />

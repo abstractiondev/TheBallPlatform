@@ -19,6 +19,8 @@ File.WriteAllText(OutPath, content);
   <Target Name='Publish' >
     <TokenReplace InPath="ServiceConfiguration.InitialReplaceable.cscfg" Token="$StorageAccountName$" Replacement="$(StorageAccountName)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$StorageAccountKey$" Replacement="$(StorageAccountKey)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$CoreFileShareAccountName$" Replacement="$(CoreFileShareAccountName)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
+    <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$CoreFileShareAccountKey$" Replacement="$(CoreFileShareAccountKey)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$AmazonSESAccessInfo$" Replacement="$(AmazonSESAccessInfo)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$WorkerRoleActiveContainerNames$" Replacement="$(WorkerRoleActiveContainerNames)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
     <TokenReplace InPath="c:\SecureParts\IntermediateTEMP.cscfg" Token="$RDPUserName$" Replacement="$(RDPUserName)" OutPath="c:\SecureParts\IntermediateTEMP.cscfg"/>
