@@ -11,9 +11,16 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SQLite.TheBall.CORE { 
 		
+	internal interface ITheBallDataContextStorable
+	{
+		void PrepareForStoring();
+	}
+
+
 		public class TheBallDataContext : DataContext
 		{
 
@@ -170,7 +177,7 @@ namespace SQLite.TheBall.CORE {
         }
 
     [Table(Name = "ContentPackage")]
-	public class ContentPackage
+	public class ContentPackage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -195,9 +202,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InformationInput")]
-	public class InformationInput
+	public class InformationInput : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -222,9 +233,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InformationOutput")]
-	public class InformationOutput
+	public class InformationOutput : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -253,9 +268,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AuthenticatedAsActiveDevice")]
-	public class AuthenticatedAsActiveDevice
+	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -288,9 +307,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ConnectionURL { get; set; }
 		// private string _unmodified_ConnectionURL;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "DeviceMembership")]
-	public class DeviceMembership
+	public class DeviceMembership : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -311,9 +334,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceFiscalExportSummary")]
-	public class InvoiceFiscalExportSummary
+	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -330,9 +357,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceCollection ExportedInvoices { get; set; }
 		// private InvoiceCollection _unmodified_ExportedInvoices;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceSummaryContainer")]
-	public class InvoiceSummaryContainer
+	public class InvoiceSummaryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -353,9 +384,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceCollection PaidInvoicesLast12Months { get; set; }
 		// private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Invoice")]
-	public class Invoice
+	public class Invoice : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -400,9 +435,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceUserCollection InvoiceUsers { get; set; }
 		// private InvoiceUserCollection _unmodified_InvoiceUsers;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceDetails")]
-	public class InvoiceDetails
+	public class InvoiceDetails : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -431,9 +470,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string TotalFeesTotal { get; set; }
 		// private string _unmodified_TotalFeesTotal;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceUser")]
-	public class InvoiceUser
+	public class InvoiceUser : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -466,9 +509,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection { get; set; }
 		// private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceRowGroup")]
-	public class InvoiceRowGroup
+	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -493,9 +540,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceRowCollection InvoiceRowCollection { get; set; }
 		// private InvoiceRowCollection _unmodified_InvoiceRowCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceEventDetailGroup")]
-	public class InvoiceEventDetailGroup
+	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -508,9 +559,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceEventDetailCollection InvoiceEventDetailCollection { get; set; }
 		// private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceEventDetail")]
-	public class InvoiceEventDetail
+	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -555,9 +610,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InvoiceRow")]
-	public class InvoiceRow
+	public class InvoiceRow : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -590,9 +649,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Category")]
-	public class Category
+	public class Category : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -601,17 +664,62 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ProcessContainer")]
-	public class ProcessContainer
+	public class ProcessContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
 
-		public List< string > ProcessIDs = new List< string >();
+        [Column(Name = "ProcessIDs")] public byte[] ProcessIDsData;
+
+		private bool _IsProcessIDsUsed = false;
+        private List<string> _ProcessIDs = null;
+        public List<string> ProcessIDs
+        {
+            get
+            {
+                if (_ProcessIDs == null && ProcessIDsData != null)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    string[] objectArray;
+                    using (MemoryStream memStream = new MemoryStream(ProcessIDsData))
+                        objectArray = (string[]) bf.Deserialize(memStream);
+                    _ProcessIDs = new List<string>(objectArray);
+					_IsProcessIDsUsed = true;
+                }
+                return _ProcessIDs;
+            }
+            set { _ProcessIDs = value; }
+        }
+
+        public void PrepareForStoring()
+        {
+		
+            if (_IsProcessIDsUsed)
+            {
+                if (_ProcessIDs == null)
+                    ProcessIDsData = null;
+                else
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var dataToStore = _ProcessIDs.ToArray();
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        bf.Serialize(memStream, dataToStore);
+                        ProcessIDsData = memStream.ToArray();
+                    }
+                }
+            }
+
+		}
 	}
     [Table(Name = "Process")]
-	public class Process
+	public class Process : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -624,20 +732,176 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public SemanticInformationItem ExecutingOperation { get; set; }
 		// private SemanticInformationItem _unmodified_ExecutingOperation;
-		public List< SemanticInformationItem > InitialArguments = new List< SemanticInformationItem >();
-		public List< ProcessItem > ProcessItems = new List< ProcessItem >();
+        [Column(Name = "InitialArguments")] public byte[] InitialArgumentsData;
+
+		private bool _IsInitialArgumentsUsed = false;
+        private List<SemanticInformationItem> _InitialArguments = null;
+        public List<SemanticInformationItem> InitialArguments
+        {
+            get
+            {
+                if (_InitialArguments == null && InitialArgumentsData != null)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    SemanticInformationItem[] objectArray;
+                    using (MemoryStream memStream = new MemoryStream(InitialArgumentsData))
+                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
+                    _InitialArguments = new List<SemanticInformationItem>(objectArray);
+					_IsInitialArgumentsUsed = true;
+                }
+                return _InitialArguments;
+            }
+            set { _InitialArguments = value; }
+        }
+
+        [Column(Name = "ProcessItems")] public byte[] ProcessItemsData;
+
+		private bool _IsProcessItemsUsed = false;
+        private List<ProcessItem> _ProcessItems = null;
+        public List<ProcessItem> ProcessItems
+        {
+            get
+            {
+                if (_ProcessItems == null && ProcessItemsData != null)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    ProcessItem[] objectArray;
+                    using (MemoryStream memStream = new MemoryStream(ProcessItemsData))
+                        objectArray = (ProcessItem[]) bf.Deserialize(memStream);
+                    _ProcessItems = new List<ProcessItem>(objectArray);
+					_IsProcessItemsUsed = true;
+                }
+                return _ProcessItems;
+            }
+            set { _ProcessItems = value; }
+        }
+
+        public void PrepareForStoring()
+        {
+		
+            if (_IsInitialArgumentsUsed)
+            {
+                if (_InitialArguments == null)
+                    InitialArgumentsData = null;
+                else
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var dataToStore = _InitialArguments.ToArray();
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        bf.Serialize(memStream, dataToStore);
+                        InitialArgumentsData = memStream.ToArray();
+                    }
+                }
+            }
+
+            if (_IsProcessItemsUsed)
+            {
+                if (_ProcessItems == null)
+                    ProcessItemsData = null;
+                else
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var dataToStore = _ProcessItems.ToArray();
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        bf.Serialize(memStream, dataToStore);
+                        ProcessItemsData = memStream.ToArray();
+                    }
+                }
+            }
+
+		}
 	}
     [Table(Name = "ProcessItem")]
-	public class ProcessItem
+	public class ProcessItem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
 
-		public List< SemanticInformationItem > Outputs = new List< SemanticInformationItem >();
-		public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
+        [Column(Name = "Outputs")] public byte[] OutputsData;
+
+		private bool _IsOutputsUsed = false;
+        private List<SemanticInformationItem> _Outputs = null;
+        public List<SemanticInformationItem> Outputs
+        {
+            get
+            {
+                if (_Outputs == null && OutputsData != null)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    SemanticInformationItem[] objectArray;
+                    using (MemoryStream memStream = new MemoryStream(OutputsData))
+                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
+                    _Outputs = new List<SemanticInformationItem>(objectArray);
+					_IsOutputsUsed = true;
+                }
+                return _Outputs;
+            }
+            set { _Outputs = value; }
+        }
+
+        [Column(Name = "Inputs")] public byte[] InputsData;
+
+		private bool _IsInputsUsed = false;
+        private List<SemanticInformationItem> _Inputs = null;
+        public List<SemanticInformationItem> Inputs
+        {
+            get
+            {
+                if (_Inputs == null && InputsData != null)
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    SemanticInformationItem[] objectArray;
+                    using (MemoryStream memStream = new MemoryStream(InputsData))
+                        objectArray = (SemanticInformationItem[]) bf.Deserialize(memStream);
+                    _Inputs = new List<SemanticInformationItem>(objectArray);
+					_IsInputsUsed = true;
+                }
+                return _Inputs;
+            }
+            set { _Inputs = value; }
+        }
+
+        public void PrepareForStoring()
+        {
+		
+            if (_IsOutputsUsed)
+            {
+                if (_Outputs == null)
+                    OutputsData = null;
+                else
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var dataToStore = _Outputs.ToArray();
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        bf.Serialize(memStream, dataToStore);
+                        OutputsData = memStream.ToArray();
+                    }
+                }
+            }
+
+            if (_IsInputsUsed)
+            {
+                if (_Inputs == null)
+                    InputsData = null;
+                else
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    var dataToStore = _Inputs.ToArray();
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        bf.Serialize(memStream, dataToStore);
+                        InputsData = memStream.ToArray();
+                    }
+                }
+            }
+
+		}
 	}
     [Table(Name = "SemanticInformationItem")]
-	public class SemanticInformationItem
+	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -650,9 +914,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ItemValue { get; set; }
 		// private string _unmodified_ItemValue;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InformationOwnerInfo")]
-	public class InformationOwnerInfo
+	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -665,9 +933,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string OwnerIdentifier { get; set; }
 		// private string _unmodified_OwnerIdentifier;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "UsageSummary")]
-	public class UsageSummary
+	public class UsageSummary : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -680,9 +952,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public UsageMonitorItem SummaryMonitoringItem { get; set; }
 		// private UsageMonitorItem _unmodified_SummaryMonitoringItem;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "UsageMonitorItem")]
-	public class UsageMonitorItem
+	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -715,9 +991,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public NetworkUsageCollection NetworkUsages { get; set; }
 		// private NetworkUsageCollection _unmodified_NetworkUsages;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "RequestResourceUsage")]
-	public class RequestResourceUsage
+	public class RequestResourceUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -742,9 +1022,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public HTTPActivityDetails RequestDetails { get; set; }
 		// private HTTPActivityDetails _unmodified_RequestDetails;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ProcessorUsage")]
-	public class ProcessorUsage
+	public class ProcessorUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -769,9 +1053,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long Milliseconds { get; set; }
 		// private long _unmodified_Milliseconds;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "StorageTransactionUsage")]
-	public class StorageTransactionUsage
+	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -788,9 +1076,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long AmountOfTransactions { get; set; }
 		// private long _unmodified_AmountOfTransactions;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "StorageUsage")]
-	public class StorageUsage
+	public class StorageUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -811,9 +1103,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public double AmountOfUnits { get; set; }
 		// private double _unmodified_AmountOfUnits;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "NetworkUsage")]
-	public class NetworkUsage
+	public class NetworkUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -830,9 +1126,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long AmountOfBytes { get; set; }
 		// private long _unmodified_AmountOfBytes;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TimeRange")]
-	public class TimeRange
+	public class TimeRange : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -845,9 +1145,13 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public DateTime EndTime { get; set; }
 		// private DateTime _unmodified_EndTime;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "HTTPActivityDetails")]
-	public class HTTPActivityDetails
+	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -880,5 +1184,9 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long ReturnedContentLength { get; set; }
 		// private long _unmodified_ReturnedContentLength;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
  } 

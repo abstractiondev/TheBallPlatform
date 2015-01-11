@@ -11,9 +11,16 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SQLite.Caloom.Housing { 
 		
+	internal interface ITheBallDataContextStorable
+	{
+		void PrepareForStoring();
+	}
+
+
 		public class TheBallDataContext : DataContext
 		{
 
@@ -30,7 +37,7 @@ namespace SQLite.Caloom.Housing {
         }
 
     [Table(Name = "House")]
-	public class House
+	public class House : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -51,5 +58,9 @@ namespace SQLite.Caloom.Housing {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
  } 

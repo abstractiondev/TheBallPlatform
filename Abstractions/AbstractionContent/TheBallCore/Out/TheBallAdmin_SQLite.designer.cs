@@ -11,9 +11,16 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SQLite.TheBall.Admin { 
 		
+	internal interface ITheBallDataContextStorable
+	{
+		void PrepareForStoring();
+	}
+
+
 		public class TheBallDataContext : DataContext
 		{
 

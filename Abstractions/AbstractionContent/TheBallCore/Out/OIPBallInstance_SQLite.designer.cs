@@ -11,9 +11,16 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SQLite.AaltoGlobalImpact.OIP { 
 		
+	internal interface ITheBallDataContextStorable
+	{
+		void PrepareForStoring();
+	}
+
+
 		public class TheBallDataContext : DataContext
 		{
 
@@ -675,7 +682,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
         }
 
     [Table(Name = "TBSystem")]
-	public class TBSystem
+	public class TBSystem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -688,9 +695,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string AdminGroupID { get; set; }
 		// private string _unmodified_AdminGroupID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "WebPublishInfo")]
-	public class WebPublishInfo
+	public class WebPublishInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -711,9 +722,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public PublicationPackageCollection Publications { get; set; }
 		// private PublicationPackageCollection _unmodified_Publications;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "PublicationPackage")]
-	public class PublicationPackage
+	public class PublicationPackage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -726,9 +741,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime PublicationTime { get; set; }
 		// private DateTime _unmodified_PublicationTime;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBRLoginRoot")]
-	public class TBRLoginRoot
+	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -741,9 +760,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBRAccountRoot")]
-	public class TBRAccountRoot
+	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -752,9 +775,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBRGroupRoot")]
-	public class TBRGroupRoot
+	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -763,9 +790,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBCollaboratingGroup Group { get; set; }
 		// private TBCollaboratingGroup _unmodified_Group;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBRLoginGroupRoot")]
-	public class TBRLoginGroupRoot
+	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -778,9 +809,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBREmailRoot")]
-	public class TBREmailRoot
+	public class TBREmailRoot : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -789,9 +824,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBAccount")]
-	public class TBAccount
+	public class TBAccount : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -808,9 +847,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
 		// private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBAccountCollaborationGroup")]
-	public class TBAccountCollaborationGroup
+	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -827,9 +870,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBLoginInfo")]
-	public class TBLoginInfo
+	public class TBLoginInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -838,9 +885,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OpenIDUrl { get; set; }
 		// private string _unmodified_OpenIDUrl;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBEmail")]
-	public class TBEmail
+	public class TBEmail : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -853,9 +904,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime ValidatedAt { get; set; }
 		// private DateTime _unmodified_ValidatedAt;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBCollaboratorRole")]
-	public class TBCollaboratorRole
+	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -872,9 +927,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBCollaboratingGroup")]
-	public class TBCollaboratingGroup
+	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -887,9 +946,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBCollaboratorRoleCollection Roles { get; set; }
 		// private TBCollaboratorRoleCollection _unmodified_Roles;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBEmailValidation")]
-	public class TBEmailValidation
+	public class TBEmailValidation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -930,9 +993,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RedirectUrlAfterValidation { get; set; }
 		// private string _unmodified_RedirectUrlAfterValidation;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBMergeAccountConfirmation")]
-	public class TBMergeAccountConfirmation
+	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -945,9 +1012,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string AccountToMergeToID { get; set; }
 		// private string _unmodified_AccountToMergeToID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBGroupJoinConfirmation")]
-	public class TBGroupJoinConfirmation
+	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -960,9 +1031,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InvitationMode { get; set; }
 		// private string _unmodified_InvitationMode;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBDeviceJoinConfirmation")]
-	public class TBDeviceJoinConfirmation
+	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -979,9 +1054,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string DeviceMembershipID { get; set; }
 		// private string _unmodified_DeviceMembershipID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBInformationInputConfirmation")]
-	public class TBInformationInputConfirmation
+	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -998,9 +1077,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InformationInputID { get; set; }
 		// private string _unmodified_InformationInputID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBInformationOutputConfirmation")]
-	public class TBInformationOutputConfirmation
+	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1017,9 +1100,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InformationOutputID { get; set; }
 		// private string _unmodified_InformationOutputID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBRegisterContainer")]
-	public class TBRegisterContainer
+	public class TBRegisterContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1036,9 +1123,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public LoginProviderCollection LoginProviderCollection { get; set; }
 		// private LoginProviderCollection _unmodified_LoginProviderCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "LoginProvider")]
-	public class LoginProvider
+	public class LoginProvider : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1063,9 +1154,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ReturnUrl { get; set; }
 		// private string _unmodified_ReturnUrl;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ContactOipContainer")]
-	public class ContactOipContainer
+	public class ContactOipContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1074,9 +1169,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OIPModeratorGroupID { get; set; }
 		// private string _unmodified_OIPModeratorGroupID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TBPRegisterEmail")]
-	public class TBPRegisterEmail
+	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1085,9 +1184,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "JavaScriptContainer")]
-	public class JavaScriptContainer
+	public class JavaScriptContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1096,9 +1199,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "JavascriptContainer")]
-	public class JavascriptContainer
+	public class JavascriptContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1107,9 +1214,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "FooterContainer")]
-	public class FooterContainer
+	public class FooterContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1118,9 +1229,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "NavigationContainer")]
-	public class NavigationContainer
+	public class NavigationContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1129,9 +1244,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Dummy { get; set; }
 		// private string _unmodified_Dummy;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountSummary")]
-	public class AccountSummary
+	public class AccountSummary : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1148,9 +1267,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public GroupSummaryContainer GroupSummary { get; set; }
 		// private GroupSummaryContainer _unmodified_GroupSummary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountContainer")]
-	public class AccountContainer
+	public class AccountContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1171,9 +1294,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AccountSummary AccountSummary { get; set; }
 		// private AccountSummary _unmodified_AccountSummary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountIndex")]
-	public class AccountIndex
+	public class AccountIndex : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1194,9 +1321,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountModule")]
-	public class AccountModule
+	public class AccountModule : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1217,9 +1348,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection LocationCollection { get; set; }
 		// private AddressAndLocationCollection _unmodified_LocationCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ImageGroupContainer")]
-	public class ImageGroupContainer
+	public class ImageGroupContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1228,9 +1363,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageGroupCollection ImageGroups { get; set; }
 		// private ImageGroupCollection _unmodified_ImageGroups;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "LocationContainer")]
-	public class LocationContainer
+	public class LocationContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1239,9 +1378,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection Locations { get; set; }
 		// private AddressAndLocationCollection _unmodified_Locations;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddressAndLocation")]
-	public class AddressAndLocation
+	public class AddressAndLocation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1258,9 +1401,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "StreetAddress")]
-	public class StreetAddress
+	public class StreetAddress : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1281,9 +1428,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Country { get; set; }
 		// private string _unmodified_Country;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountContent")]
-	public class AccountContent
+	public class AccountContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1292,9 +1443,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Dummy { get; set; }
 		// private string _unmodified_Dummy;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountProfile")]
-	public class AccountProfile
+	public class AccountProfile : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1327,9 +1482,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SimplifiedAccountGroupID { get; set; }
 		// private string _unmodified_SimplifiedAccountGroupID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountSecurity")]
-	public class AccountSecurity
+	public class AccountSecurity : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1342,9 +1501,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBEmailCollection EmailCollection { get; set; }
 		// private TBEmailCollection _unmodified_EmailCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AccountRoles")]
-	public class AccountRoles
+	public class AccountRoles : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1361,9 +1524,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OrganizationsImPartOf { get; set; }
 		// private string _unmodified_OrganizationsImPartOf;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "PersonalInfoVisibility")]
-	public class PersonalInfoVisibility
+	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1372,9 +1539,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string NoOne_Network_All { get; set; }
 		// private string _unmodified_NoOne_Network_All;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "GroupedInformation")]
-	public class GroupedInformation
+	public class GroupedInformation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1387,9 +1558,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ReferenceCollection ReferenceCollection { get; set; }
 		// private ReferenceCollection _unmodified_ReferenceCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ReferenceToInformation")]
-	public class ReferenceToInformation
+	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1402,9 +1577,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string URL { get; set; }
 		// private string _unmodified_URL;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "BlogContainer")]
-	public class BlogContainer
+	public class BlogContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1425,9 +1604,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public BlogIndexGroup BlogIndexGroup { get; set; }
 		// private BlogIndexGroup _unmodified_BlogIndexGroup;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "RecentBlogSummary")]
-	public class RecentBlogSummary
+	public class RecentBlogSummary : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1440,9 +1623,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public BlogCollection RecentBlogCollection { get; set; }
 		// private BlogCollection _unmodified_RecentBlogCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "NodeSummaryContainer")]
-	public class NodeSummaryContainer
+	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1483,9 +1670,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection NodeSourceCategories { get; set; }
 		// private CategoryCollection _unmodified_NodeSourceCategories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "RenderedNode")]
-	public class RenderedNode
+	public class RenderedNode : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1554,9 +1745,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ShortTextCollection Locations { get; set; }
 		// private ShortTextCollection _unmodified_Locations;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ShortTextObject")]
-	public class ShortTextObject
+	public class ShortTextObject : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1565,9 +1760,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "LongTextObject")]
-	public class LongTextObject
+	public class LongTextObject : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1576,9 +1775,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "MapContainer")]
-	public class MapContainer
+	public class MapContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1619,9 +1822,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapMarkerCollection MapMarkers { get; set; }
 		// private MapMarkerCollection _unmodified_MapMarkers;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "MapMarker")]
-	public class MapMarker
+	public class MapMarker : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1654,9 +1861,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "CalendarContainer")]
-	public class CalendarContainer
+	public class CalendarContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1677,9 +1888,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex CalendarIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_CalendarIndexCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AboutContainer")]
-	public class AboutContainer
+	public class AboutContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1712,9 +1927,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageGroup ImageGroup { get; set; }
 		// private ImageGroup _unmodified_ImageGroup;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "OBSAccountContainer")]
-	public class OBSAccountContainer
+	public class OBSAccountContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1735,9 +1954,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex AccountIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_AccountIndexCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ProjectContainer")]
-	public class ProjectContainer
+	public class ProjectContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1758,9 +1981,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex ProjectIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_ProjectIndexCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "CourseContainer")]
-	public class CourseContainer
+	public class CourseContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1781,9 +2008,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex CourseIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_CourseIndexCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ContainerHeader")]
-	public class ContainerHeader
+	public class ContainerHeader : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1796,9 +2027,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubTitle { get; set; }
 		// private string _unmodified_SubTitle;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ActivitySummaryContainer")]
-	public class ActivitySummaryContainer
+	public class ActivitySummaryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1823,9 +2058,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ActivityCollection ActivityCollection { get; set; }
 		// private ActivityCollection _unmodified_ActivityCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ActivityIndex")]
-	public class ActivityIndex
+	public class ActivityIndex : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1846,9 +2085,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ActivityContainer")]
-	public class ActivityContainer
+	public class ActivityContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1865,9 +2108,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Activity ActivityModule { get; set; }
 		// private Activity _unmodified_ActivityModule;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Activity")]
-	public class Activity
+	public class Activity : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1928,9 +2175,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection CategoryCollection { get; set; }
 		// private CategoryCollection _unmodified_CategoryCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Moderator")]
-	public class Moderator
+	public class Moderator : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1943,9 +2194,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Collaborator")]
-	public class Collaborator
+	public class Collaborator : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1970,9 +2225,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "GroupSummaryContainer")]
-	public class GroupSummaryContainer
+	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -1997,9 +2256,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public GroupCollection GroupCollection { get; set; }
 		// private GroupCollection _unmodified_GroupCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "GroupContainer")]
-	public class GroupContainer
+	public class GroupContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2036,9 +2299,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection LocationCollection { get; set; }
 		// private AddressAndLocationCollection _unmodified_LocationCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "GroupIndex")]
-	public class GroupIndex
+	public class GroupIndex : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2059,9 +2326,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddAddressAndLocationInfo")]
-	public class AddAddressAndLocationInfo
+	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2070,9 +2341,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationName { get; set; }
 		// private string _unmodified_LocationName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddImageInfo")]
-	public class AddImageInfo
+	public class AddImageInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2081,9 +2356,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ImageTitle { get; set; }
 		// private string _unmodified_ImageTitle;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddImageGroupInfo")]
-	public class AddImageGroupInfo
+	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2092,9 +2371,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ImageGroupTitle { get; set; }
 		// private string _unmodified_ImageGroupTitle;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddEmailAddressInfo")]
-	public class AddEmailAddressInfo
+	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2103,9 +2386,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "CreateGroupInfo")]
-	public class CreateGroupInfo
+	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2114,9 +2401,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddActivityInfo")]
-	public class AddActivityInfo
+	public class AddActivityInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2125,9 +2416,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ActivityName { get; set; }
 		// private string _unmodified_ActivityName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddBlogPostInfo")]
-	public class AddBlogPostInfo
+	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2136,9 +2431,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AddCategoryInfo")]
-	public class AddCategoryInfo
+	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2147,9 +2446,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Group")]
-	public class Group
+	public class Group : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2194,9 +2497,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection CategoryCollection { get; set; }
 		// private CategoryCollection _unmodified_CategoryCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Introduction")]
-	public class Introduction
+	public class Introduction : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2209,9 +2516,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Body { get; set; }
 		// private string _unmodified_Body;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ContentCategoryRank")]
-	public class ContentCategoryRank
+	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2236,9 +2547,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RankValue { get; set; }
 		// private string _unmodified_RankValue;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "LinkToContent")]
-	public class LinkToContent
+	public class LinkToContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2275,9 +2590,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "EmbeddedContent")]
-	public class EmbeddedContent
+	public class EmbeddedContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2310,9 +2629,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "DynamicContentGroup")]
-	public class DynamicContentGroup
+	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2337,9 +2660,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ContentItemNames { get; set; }
 		// private string _unmodified_ContentItemNames;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "DynamicContent")]
-	public class DynamicContent
+	public class DynamicContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2392,9 +2719,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string PageLocation { get; set; }
 		// private string _unmodified_PageLocation;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AttachedToObject")]
-	public class AttachedToObject
+	public class AttachedToObject : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2423,9 +2754,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TargetObjectDomain { get; set; }
 		// private string _unmodified_TargetObjectDomain;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Comment")]
-	public class Comment
+	public class Comment : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2478,9 +2813,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LastAuthorAccountID { get; set; }
 		// private string _unmodified_LastAuthorAccountID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Selection")]
-	public class Selection
+	public class Selection : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2513,9 +2852,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public double DoubleValue { get; set; }
 		// private double _unmodified_DoubleValue;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "TextContent")]
-	public class TextContent
+	public class TextContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2568,9 +2911,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RawHtmlContent { get; set; }
 		// private string _unmodified_RawHtmlContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Blog")]
-	public class Blog
+	public class Blog : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2643,9 +2990,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SocialPanelCollection SocialPanel { get; set; }
 		// private SocialPanelCollection _unmodified_SocialPanel;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "BlogIndexGroup")]
-	public class BlogIndexGroup
+	public class BlogIndexGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2690,9 +3041,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "CalendarIndex")]
-	public class CalendarIndex
+	public class CalendarIndex : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2713,9 +3068,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Filter")]
-	public class Filter
+	public class Filter : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2724,9 +3083,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Calendar")]
-	public class Calendar
+	public class Calendar : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2735,9 +3098,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Map")]
-	public class Map
+	public class Map : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2746,9 +3113,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "MapIndexCollection")]
-	public class MapIndexCollection
+	public class MapIndexCollection : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2769,9 +3140,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapCollection MapByCategory { get; set; }
 		// private MapCollection _unmodified_MapByCategory;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "MapResult")]
-	public class MapResult
+	public class MapResult : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2780,9 +3155,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "MapResultsCollection")]
-	public class MapResultsCollection
+	public class MapResultsCollection : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2799,9 +3178,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapResultCollection ResultByProximity { get; set; }
 		// private MapResultCollection _unmodified_ResultByProximity;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Video")]
-	public class Video
+	public class Video : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2818,9 +3201,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Caption { get; set; }
 		// private string _unmodified_Caption;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Image")]
-	public class Image
+	public class Image : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2853,9 +3240,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "BinaryFile")]
-	public class BinaryFile
+	public class BinaryFile : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2880,9 +3271,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ImageGroup")]
-	public class ImageGroup
+	public class ImageGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2907,9 +3302,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageCollection ImagesCollection { get; set; }
 		// private ImageCollection _unmodified_ImagesCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "VideoGroup")]
-	public class VideoGroup
+	public class VideoGroup : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2926,9 +3325,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public VideoCollection VideoCollection { get; set; }
 		// private VideoCollection _unmodified_VideoCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Tooltip")]
-	public class Tooltip
+	public class Tooltip : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2937,9 +3340,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TooltipText { get; set; }
 		// private string _unmodified_TooltipText;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SocialPanel")]
-	public class SocialPanel
+	public class SocialPanel : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2948,9 +3355,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Filter SocialFilter { get; set; }
 		// private Filter _unmodified_SocialFilter;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Longitude")]
-	public class Longitude
+	public class Longitude : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2959,9 +3370,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Latitude")]
-	public class Latitude
+	public class Latitude : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2970,9 +3385,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Location")]
-	public class Location
+	public class Location : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -2989,9 +3408,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Latitude Latitude { get; set; }
 		// private Latitude _unmodified_Latitude;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Date")]
-	public class Date
+	public class Date : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3012,9 +3435,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime Year { get; set; }
 		// private DateTime _unmodified_Year;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Sex")]
-	public class Sex
+	public class Sex : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3023,9 +3450,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SexText { get; set; }
 		// private string _unmodified_SexText;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "OBSAddress")]
-	public class OBSAddress
+	public class OBSAddress : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3070,9 +3501,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Continent { get; set; }
 		// private string _unmodified_Continent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Identity")]
-	public class Identity
+	public class Identity : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3097,9 +3532,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Date Birthday { get; set; }
 		// private Date _unmodified_Birthday;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ImageVideoSoundVectorRaw")]
-	public class ImageVideoSoundVectorRaw
+	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3124,9 +3563,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public byte[] Raw { get; set; }
 		// private byte[] _unmodified_Raw;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "CategoryContainer")]
-	public class CategoryContainer
+	public class CategoryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3135,9 +3578,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Category")]
-	public class Category
+	public class Category : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3170,9 +3617,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ParentCategoryID { get; set; }
 		// private string _unmodified_ParentCategoryID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Subscription")]
-	public class Subscription
+	public class Subscription : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3201,9 +3652,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubscriptionType { get; set; }
 		// private string _unmodified_SubscriptionType;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "QueueEnvelope")]
-	public class QueueEnvelope
+	public class QueueEnvelope : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3232,9 +3687,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SystemError ErrorContent { get; set; }
 		// private SystemError _unmodified_ErrorContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "OperationRequest")]
-	public class OperationRequest
+	public class OperationRequest : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3271,9 +3730,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProcessIDToExecute { get; set; }
 		// private string _unmodified_ProcessIDToExecute;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SubscriptionChainRequestMessage")]
-	public class SubscriptionChainRequestMessage
+	public class SubscriptionChainRequestMessage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3282,9 +3745,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ContentItemID { get; set; }
 		// private string _unmodified_ContentItemID;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SubscriptionChainRequestContent")]
-	public class SubscriptionChainRequestContent
+	public class SubscriptionChainRequestContent : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3313,9 +3780,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
 		// private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SubscriptionTarget")]
-	public class SubscriptionTarget
+	public class SubscriptionTarget : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3324,9 +3795,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string BlobLocation { get; set; }
 		// private string _unmodified_BlobLocation;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "DeleteEntireOwnerOperation")]
-	public class DeleteEntireOwnerOperation
+	public class DeleteEntireOwnerOperation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3339,9 +3814,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationPrefix { get; set; }
 		// private string _unmodified_LocationPrefix;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "DeleteOwnerContentOperation")]
-	public class DeleteOwnerContentOperation
+	public class DeleteOwnerContentOperation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3354,9 +3833,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationPrefix { get; set; }
 		// private string _unmodified_LocationPrefix;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SystemError")]
-	public class SystemError
+	public class SystemError : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3377,9 +3860,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public QueueEnvelope MessageContent { get; set; }
 		// private QueueEnvelope _unmodified_MessageContent;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SystemErrorItem")]
-	public class SystemErrorItem
+	public class SystemErrorItem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3392,9 +3879,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LongDescription { get; set; }
 		// private string _unmodified_LongDescription;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "InformationSource")]
-	public class InformationSource
+	public class InformationSource : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3431,9 +3922,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime SourceLastModified { get; set; }
 		// private DateTime _unmodified_SourceLastModified;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "RefreshDefaultViewsOperation")]
-	public class RefreshDefaultViewsOperation
+	public class RefreshDefaultViewsOperation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3446,9 +3941,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TypeNameToRefresh { get; set; }
 		// private string _unmodified_TypeNameToRefresh;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "UpdateWebContentOperation")]
-	public class UpdateWebContentOperation
+	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3477,9 +3976,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public UpdateWebContentHandlerCollection Handlers { get; set; }
 		// private UpdateWebContentHandlerCollection _unmodified_Handlers;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "UpdateWebContentHandlerItem")]
-	public class UpdateWebContentHandlerItem
+	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3492,9 +3995,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OptionName { get; set; }
 		// private string _unmodified_OptionName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "PublishWebContentOperation")]
-	public class PublishWebContentOperation
+	public class PublishWebContentOperation : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3515,9 +4022,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TargetContainerName { get; set; }
 		// private string _unmodified_TargetContainerName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "SubscriberInput")]
-	public class SubscriberInput
+	public class SubscriberInput : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3538,9 +4049,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubscriberRelativeLocation { get; set; }
 		// private string _unmodified_SubscriberRelativeLocation;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Monitor")]
-	public class Monitor
+	public class Monitor : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3573,9 +4088,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OperationActionName { get; set; }
 		// private string _unmodified_OperationActionName;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "IconTitleDescription")]
-	public class IconTitleDescription
+	public class IconTitleDescription : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3592,9 +4111,13 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "AboutAGIApplications")]
-	public class AboutAGIApplications
+	public class AboutAGIApplications : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -3607,5 +4130,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public IconTitleDescription ForAllPeople { get; set; }
 		// private IconTitleDescription _unmodified_ForAllPeople;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
  } 

@@ -11,9 +11,16 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace SQLite.Caloom.CORE { 
 		
+	internal interface ITheBallDataContextStorable
+	{
+		void PrepareForStoring();
+	}
+
+
 		public class TheBallDataContext : DataContext
 		{
 
@@ -60,7 +67,7 @@ namespace SQLite.Caloom.CORE {
         }
 
     [Table(Name = "Who")]
-	public class Who
+	public class Who : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -81,9 +88,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ProductForWhom")]
-	public class ProductForWhom
+	public class ProductForWhom : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -112,9 +123,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public Who Who { get; set; }
 		// private Who _unmodified_Who;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "Product")]
-	public class Product
+	public class Product : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -139,9 +154,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ProductUsageCollection SubProducts { get; set; }
 		// private ProductUsageCollection _unmodified_SubProducts;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ProductUsage")]
-	public class ProductUsage
+	public class ProductUsage : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -154,9 +173,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public double UsageAmountInDecimal { get; set; }
 		// private double _unmodified_UsageAmountInDecimal;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "NodeSummaryContainer")]
-	public class NodeSummaryContainer
+	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -169,9 +192,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ProductCollection NodeSourceProducts { get; set; }
 		// private ProductCollection _unmodified_NodeSourceProducts;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "RenderedNode")]
-	public class RenderedNode
+	public class RenderedNode : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -220,9 +247,13 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ShortTextCollection Filters { get; set; }
 		// private ShortTextCollection _unmodified_Filters;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
     [Table(Name = "ShortTextObject")]
-	public class ShortTextObject
+	public class ShortTextObject : ITheBallDataContextStorable
 	{
 		[Column]
 		public string ID { get; set; }
@@ -231,5 +262,9 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
+        public void PrepareForStoring()
+        {
+		
+		}
 	}
  } 
