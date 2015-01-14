@@ -22,11 +22,11 @@ namespace PlatformCoreTests
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var asmName = new AssemblyName(args.Name);
-            throw new Exception("Invalid resolution");
             if (asmName.Name == "SQLite.Interop.dll")
             {
                 var currAsm = Assembly.GetExecutingAssembly();
-                var fullName = Path.Combine(currAsm.Location, "x86", "SQLite.Interop.dll");
+                var directoryName = Path.GetDirectoryName(currAsm.Location);
+                var fullName = Path.Combine(directoryName, "x64", "SQLite.Interop.dll");
                 return Assembly.LoadFile(fullName);
             }
             return null;
