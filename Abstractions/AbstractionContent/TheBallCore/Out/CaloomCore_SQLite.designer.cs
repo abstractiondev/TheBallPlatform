@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,50 @@ namespace SQLite.Caloom.CORE {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(Who.GetCreateTableSQL());
+				tableCreationCommands.Add(ProductForWhom.GetCreateTableSQL());
+				tableCreationCommands.Add(Product.GetCreateTableSQL());
+				tableCreationCommands.Add(ProductUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
+				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<Who> WhoTable {
 				get {
@@ -80,6 +105,20 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "Who")]
 	public class Who : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Who(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -99,7 +138,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -107,6 +146,22 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ProductForWhom")]
 	public class ProductForWhom : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProductForWhom(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Product] TEXT NOT NULL, 
+[Who] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -134,7 +189,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public Who Who { get; set; }
 		// private Who _unmodified_Who;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -142,6 +197,21 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "Product")]
 	public class Product : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Product(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[SubProducts] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -165,7 +235,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ProductUsageCollection SubProducts { get; set; }
 		// private ProductUsageCollection _unmodified_SubProducts;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -173,6 +243,18 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ProductUsage")]
 	public class ProductUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProductUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Product] TEXT NOT NULL, 
+[UsageAmountInDecimal] REAL NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -184,7 +266,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public double UsageAmountInDecimal { get; set; }
 		// private double _unmodified_UsageAmountInDecimal;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -192,6 +274,18 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "NodeSummaryContainer")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS NodeSummaryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Nodes] TEXT NOT NULL, 
+[NodeSourceProducts] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -203,7 +297,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ProductCollection NodeSourceProducts { get; set; }
 		// private ProductCollection _unmodified_NodeSourceProducts;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -211,6 +305,27 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "RenderedNode")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS RenderedNode(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TechnicalSource] TEXT NOT NULL, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[ActualContentUrl] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[TimestampText] TEXT NOT NULL, 
+[MainSortableText] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL, 
+[Authors] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL, 
+[Filters] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -258,7 +373,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public ShortTextCollection Filters { get; set; }
 		// private ShortTextCollection _unmodified_Filters;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -266,6 +381,17 @@ namespace SQLite.Caloom.CORE {
     [Table(Name = "ShortTextObject")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ShortTextObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Content] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -273,7 +399,7 @@ namespace SQLite.Caloom.CORE {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}

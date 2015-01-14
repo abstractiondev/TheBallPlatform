@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,173 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(TBSystem.GetCreateTableSQL());
+				tableCreationCommands.Add(WebPublishInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(PublicationPackage.GetCreateTableSQL());
+				tableCreationCommands.Add(TBRLoginRoot.GetCreateTableSQL());
+				tableCreationCommands.Add(TBRAccountRoot.GetCreateTableSQL());
+				tableCreationCommands.Add(TBRGroupRoot.GetCreateTableSQL());
+				tableCreationCommands.Add(TBRLoginGroupRoot.GetCreateTableSQL());
+				tableCreationCommands.Add(TBREmailRoot.GetCreateTableSQL());
+				tableCreationCommands.Add(TBAccount.GetCreateTableSQL());
+				tableCreationCommands.Add(TBAccountCollaborationGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(TBLoginInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(TBEmail.GetCreateTableSQL());
+				tableCreationCommands.Add(TBCollaboratorRole.GetCreateTableSQL());
+				tableCreationCommands.Add(TBCollaboratingGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(TBEmailValidation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBMergeAccountConfirmation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBGroupJoinConfirmation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBDeviceJoinConfirmation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBInformationInputConfirmation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBInformationOutputConfirmation.GetCreateTableSQL());
+				tableCreationCommands.Add(TBRegisterContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(LoginProvider.GetCreateTableSQL());
+				tableCreationCommands.Add(ContactOipContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(TBPRegisterEmail.GetCreateTableSQL());
+				tableCreationCommands.Add(JavaScriptContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(JavascriptContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(FooterContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(NavigationContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountIndex.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountModule.GetCreateTableSQL());
+				tableCreationCommands.Add(ImageGroupContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(LocationContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(AddressAndLocation.GetCreateTableSQL());
+				tableCreationCommands.Add(StreetAddress.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountContent.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountProfile.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountSecurity.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountRoles.GetCreateTableSQL());
+				tableCreationCommands.Add(PersonalInfoVisibility.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupedInformation.GetCreateTableSQL());
+				tableCreationCommands.Add(ReferenceToInformation.GetCreateTableSQL());
+				tableCreationCommands.Add(BlogContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(RecentBlogSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
+				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
+				tableCreationCommands.Add(LongTextObject.GetCreateTableSQL());
+				tableCreationCommands.Add(MapContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(MapMarker.GetCreateTableSQL());
+				tableCreationCommands.Add(CalendarContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(AboutContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(OBSAccountContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(ProjectContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(CourseContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(ContainerHeader.GetCreateTableSQL());
+				tableCreationCommands.Add(ActivitySummaryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(ActivityIndex.GetCreateTableSQL());
+				tableCreationCommands.Add(ActivityContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(Activity.GetCreateTableSQL());
+				tableCreationCommands.Add(Moderator.GetCreateTableSQL());
+				tableCreationCommands.Add(Collaborator.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupSummaryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupIndex.GetCreateTableSQL());
+				tableCreationCommands.Add(AddAddressAndLocationInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddImageInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddImageGroupInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddEmailAddressInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(CreateGroupInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddActivityInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddBlogPostInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(AddCategoryInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(Group.GetCreateTableSQL());
+				tableCreationCommands.Add(Introduction.GetCreateTableSQL());
+				tableCreationCommands.Add(ContentCategoryRank.GetCreateTableSQL());
+				tableCreationCommands.Add(LinkToContent.GetCreateTableSQL());
+				tableCreationCommands.Add(EmbeddedContent.GetCreateTableSQL());
+				tableCreationCommands.Add(DynamicContentGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(DynamicContent.GetCreateTableSQL());
+				tableCreationCommands.Add(AttachedToObject.GetCreateTableSQL());
+				tableCreationCommands.Add(Comment.GetCreateTableSQL());
+				tableCreationCommands.Add(Selection.GetCreateTableSQL());
+				tableCreationCommands.Add(TextContent.GetCreateTableSQL());
+				tableCreationCommands.Add(Blog.GetCreateTableSQL());
+				tableCreationCommands.Add(BlogIndexGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(CalendarIndex.GetCreateTableSQL());
+				tableCreationCommands.Add(Filter.GetCreateTableSQL());
+				tableCreationCommands.Add(Calendar.GetCreateTableSQL());
+				tableCreationCommands.Add(Map.GetCreateTableSQL());
+				tableCreationCommands.Add(MapIndexCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(MapResult.GetCreateTableSQL());
+				tableCreationCommands.Add(MapResultsCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(Video.GetCreateTableSQL());
+				tableCreationCommands.Add(Image.GetCreateTableSQL());
+				tableCreationCommands.Add(BinaryFile.GetCreateTableSQL());
+				tableCreationCommands.Add(ImageGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(VideoGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(Tooltip.GetCreateTableSQL());
+				tableCreationCommands.Add(SocialPanel.GetCreateTableSQL());
+				tableCreationCommands.Add(Longitude.GetCreateTableSQL());
+				tableCreationCommands.Add(Latitude.GetCreateTableSQL());
+				tableCreationCommands.Add(Location.GetCreateTableSQL());
+				tableCreationCommands.Add(Date.GetCreateTableSQL());
+				tableCreationCommands.Add(Sex.GetCreateTableSQL());
+				tableCreationCommands.Add(OBSAddress.GetCreateTableSQL());
+				tableCreationCommands.Add(Identity.GetCreateTableSQL());
+				tableCreationCommands.Add(ImageVideoSoundVectorRaw.GetCreateTableSQL());
+				tableCreationCommands.Add(CategoryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(Category.GetCreateTableSQL());
+				tableCreationCommands.Add(Subscription.GetCreateTableSQL());
+				tableCreationCommands.Add(QueueEnvelope.GetCreateTableSQL());
+				tableCreationCommands.Add(OperationRequest.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionChainRequestMessage.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionChainRequestContent.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionTarget.GetCreateTableSQL());
+				tableCreationCommands.Add(DeleteEntireOwnerOperation.GetCreateTableSQL());
+				tableCreationCommands.Add(DeleteOwnerContentOperation.GetCreateTableSQL());
+				tableCreationCommands.Add(SystemError.GetCreateTableSQL());
+				tableCreationCommands.Add(SystemErrorItem.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationSource.GetCreateTableSQL());
+				tableCreationCommands.Add(RefreshDefaultViewsOperation.GetCreateTableSQL());
+				tableCreationCommands.Add(UpdateWebContentOperation.GetCreateTableSQL());
+				tableCreationCommands.Add(UpdateWebContentHandlerItem.GetCreateTableSQL());
+				tableCreationCommands.Add(PublishWebContentOperation.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriberInput.GetCreateTableSQL());
+				tableCreationCommands.Add(Monitor.GetCreateTableSQL());
+				tableCreationCommands.Add(IconTitleDescription.GetCreateTableSQL());
+				tableCreationCommands.Add(AboutAGIApplications.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<TBSystem> TBSystemTable {
 				get {
@@ -695,6 +843,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBSystem")]
 	public class TBSystem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBSystem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[InstanceName] TEXT NOT NULL, 
+[AdminGroupID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -706,7 +866,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string AdminGroupID { get; set; }
 		// private string _unmodified_AdminGroupID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -714,6 +874,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "WebPublishInfo")]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS WebPublishInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[PublishType] TEXT NOT NULL, 
+[PublishContainer] TEXT NOT NULL, 
+[ActivePublication] TEXT NOT NULL, 
+[Publications] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -733,7 +907,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public PublicationPackageCollection Publications { get; set; }
 		// private PublicationPackageCollection _unmodified_Publications;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -741,6 +915,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PublicationPackage")]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS PublicationPackage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[PackageName] TEXT NOT NULL, 
+[PublicationTime] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -752,7 +938,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime PublicationTime { get; set; }
 		// private DateTime _unmodified_PublicationTime;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -760,6 +946,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRLoginRoot")]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBRLoginRoot(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[DomainName] TEXT NOT NULL, 
+[Account] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -771,7 +969,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -779,6 +977,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRAccountRoot")]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBRAccountRoot(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Account] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -786,7 +995,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -794,6 +1003,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRGroupRoot")]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBRGroupRoot(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Group] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -801,7 +1021,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBCollaboratingGroup Group { get; set; }
 		// private TBCollaboratingGroup _unmodified_Group;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -809,6 +1029,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRLoginGroupRoot")]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBRLoginGroupRoot(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Role] TEXT NOT NULL, 
+[GroupID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -820,7 +1052,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string GroupID { get; set; }
 		// private string _unmodified_GroupID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -828,6 +1060,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBREmailRoot")]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBREmailRoot(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Account] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -835,7 +1078,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccount Account { get; set; }
 		// private TBAccount _unmodified_Account;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -843,6 +1086,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBAccount")]
 	public class TBAccount : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBAccount(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Emails] TEXT NOT NULL, 
+[Logins] TEXT NOT NULL, 
+[GroupRoleCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -858,7 +1114,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
 		// private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -866,6 +1122,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBAccountCollaborationGroup")]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBAccountCollaborationGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupID] TEXT NOT NULL, 
+[GroupRole] TEXT NOT NULL, 
+[RoleStatus] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -881,7 +1150,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -889,6 +1158,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBLoginInfo")]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBLoginInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OpenIDUrl] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -896,7 +1176,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OpenIDUrl { get; set; }
 		// private string _unmodified_OpenIDUrl;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -904,6 +1184,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBEmail")]
 	public class TBEmail : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBEmail(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[EmailAddress] TEXT NOT NULL, 
+[ValidatedAt] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -915,7 +1207,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime ValidatedAt { get; set; }
 		// private DateTime _unmodified_ValidatedAt;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -923,6 +1215,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBCollaboratorRole")]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBCollaboratorRole(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Email] TEXT NOT NULL, 
+[Role] TEXT NOT NULL, 
+[RoleStatus] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -938,7 +1243,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RoleStatus { get; set; }
 		// private string _unmodified_RoleStatus;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -946,6 +1251,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBCollaboratingGroup")]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBCollaboratingGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL, 
+[Roles] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -957,7 +1274,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBCollaboratorRoleCollection Roles { get; set; }
 		// private TBCollaboratorRoleCollection _unmodified_Roles;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -965,6 +1282,25 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBEmailValidation")]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBEmailValidation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Email] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[ValidUntil] TEXT NOT NULL, 
+[GroupJoinConfirmation] TEXT NOT NULL, 
+[DeviceJoinConfirmation] TEXT NOT NULL, 
+[InformationInputConfirmation] TEXT NOT NULL, 
+[InformationOutputConfirmation] TEXT NOT NULL, 
+[MergeAccountsConfirmation] TEXT NOT NULL, 
+[RedirectUrlAfterValidation] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1004,7 +1340,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RedirectUrlAfterValidation { get; set; }
 		// private string _unmodified_RedirectUrlAfterValidation;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1012,6 +1348,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBMergeAccountConfirmation")]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBMergeAccountConfirmation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[AccountToBeMergedID] TEXT NOT NULL, 
+[AccountToMergeToID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1023,7 +1371,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string AccountToMergeToID { get; set; }
 		// private string _unmodified_AccountToMergeToID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1031,6 +1379,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBGroupJoinConfirmation")]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBGroupJoinConfirmation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupID] TEXT NOT NULL, 
+[InvitationMode] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1042,7 +1402,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InvitationMode { get; set; }
 		// private string _unmodified_InvitationMode;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1050,6 +1410,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBDeviceJoinConfirmation")]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBDeviceJoinConfirmation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[DeviceMembershipID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1065,7 +1438,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string DeviceMembershipID { get; set; }
 		// private string _unmodified_DeviceMembershipID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1073,6 +1446,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBInformationInputConfirmation")]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBInformationInputConfirmation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[InformationInputID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1088,7 +1474,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InformationInputID { get; set; }
 		// private string _unmodified_InformationInputID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1096,6 +1482,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBInformationOutputConfirmation")]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBInformationOutputConfirmation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[InformationOutputID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1111,7 +1510,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string InformationOutputID { get; set; }
 		// private string _unmodified_InformationOutputID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1119,6 +1518,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBRegisterContainer")]
 	public class TBRegisterContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBRegisterContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[ReturnUrl] TEXT NOT NULL, 
+[LoginProviderCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1134,7 +1546,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public LoginProviderCollection LoginProviderCollection { get; set; }
 		// private LoginProviderCollection _unmodified_LoginProviderCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1142,6 +1554,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LoginProvider")]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS LoginProvider(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ProviderName] TEXT NOT NULL, 
+[ProviderIconClass] TEXT NOT NULL, 
+[ProviderType] TEXT NOT NULL, 
+[ProviderUrl] TEXT NOT NULL, 
+[ReturnUrl] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1165,7 +1592,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ReturnUrl { get; set; }
 		// private string _unmodified_ReturnUrl;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1173,6 +1600,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContactOipContainer")]
 	public class ContactOipContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ContactOipContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OIPModeratorGroupID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1180,7 +1618,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OIPModeratorGroupID { get; set; }
 		// private string _unmodified_OIPModeratorGroupID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1188,6 +1626,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TBPRegisterEmail")]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TBPRegisterEmail(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[EmailAddress] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1195,7 +1644,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1203,6 +1652,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "JavaScriptContainer")]
 	public class JavaScriptContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS JavaScriptContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1210,7 +1670,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1218,6 +1678,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "JavascriptContainer")]
 	public class JavascriptContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS JavascriptContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1225,7 +1696,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1233,6 +1704,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "FooterContainer")]
 	public class FooterContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS FooterContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1240,7 +1722,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string HtmlContent { get; set; }
 		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1248,6 +1730,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "NavigationContainer")]
 	public class NavigationContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS NavigationContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Dummy] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1255,7 +1748,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Dummy { get; set; }
 		// private string _unmodified_Dummy;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1263,6 +1756,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountSummary")]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountSummary(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Introduction] TEXT NOT NULL, 
+[ActivitySummary] TEXT NOT NULL, 
+[GroupSummary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1278,7 +1784,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public GroupSummaryContainer GroupSummary { get; set; }
 		// private GroupSummaryContainer _unmodified_GroupSummary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1286,6 +1792,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountContainer")]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[AccountIndex] TEXT NOT NULL, 
+[AccountModule] TEXT NOT NULL, 
+[AccountSummary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1305,7 +1825,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AccountSummary AccountSummary { get; set; }
 		// private AccountSummary _unmodified_AccountSummary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1313,6 +1833,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountIndex")]
 	public class AccountIndex : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountIndex(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1332,7 +1866,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1340,6 +1874,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountModule")]
 	public class AccountModule : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountModule(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Profile] TEXT NOT NULL, 
+[Security] TEXT NOT NULL, 
+[Roles] TEXT NOT NULL, 
+[LocationCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1359,7 +1907,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection LocationCollection { get; set; }
 		// private AddressAndLocationCollection _unmodified_LocationCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1367,6 +1915,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageGroupContainer")]
 	public class ImageGroupContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ImageGroupContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageGroups] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1374,7 +1933,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageGroupCollection ImageGroups { get; set; }
 		// private ImageGroupCollection _unmodified_ImageGroups;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1382,6 +1941,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LocationContainer")]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS LocationContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Locations] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1389,7 +1959,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection Locations { get; set; }
 		// private AddressAndLocationCollection _unmodified_Locations;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1397,6 +1967,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddressAndLocation")]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddressAndLocation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[Address] TEXT NOT NULL, 
+[Location] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1412,7 +1995,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1420,6 +2003,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "StreetAddress")]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS StreetAddress(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Street] TEXT NOT NULL, 
+[ZipCode] TEXT NOT NULL, 
+[Town] TEXT NOT NULL, 
+[Country] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1439,7 +2036,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Country { get; set; }
 		// private string _unmodified_Country;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1447,6 +2044,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountContent")]
 	public class AccountContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Dummy] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1454,7 +2062,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Dummy { get; set; }
 		// private string _unmodified_Dummy;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1462,6 +2070,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountProfile")]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountProfile(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ProfileImage] TEXT NOT NULL, 
+[FirstName] TEXT NOT NULL, 
+[LastName] TEXT NOT NULL, 
+[Address] TEXT NOT NULL, 
+[IsSimplifiedAccount] INTEGER NOT NULL, 
+[SimplifiedAccountEmail] TEXT NOT NULL, 
+[SimplifiedAccountGroupID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1493,7 +2118,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SimplifiedAccountGroupID { get; set; }
 		// private string _unmodified_SimplifiedAccountGroupID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1501,6 +2126,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountSecurity")]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountSecurity(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[LoginInfoCollection] TEXT NOT NULL, 
+[EmailCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1512,7 +2149,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public TBEmailCollection EmailCollection { get; set; }
 		// private TBEmailCollection _unmodified_EmailCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1520,6 +2157,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AccountRoles")]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AccountRoles(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ModeratorInGroups] TEXT NOT NULL, 
+[MemberInGroups] TEXT NOT NULL, 
+[OrganizationsImPartOf] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1535,7 +2185,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OrganizationsImPartOf { get; set; }
 		// private string _unmodified_OrganizationsImPartOf;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1543,6 +2193,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PersonalInfoVisibility")]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS PersonalInfoVisibility(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[NoOne_Network_All] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1550,7 +2211,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string NoOne_Network_All { get; set; }
 		// private string _unmodified_NoOne_Network_All;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1558,6 +2219,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupedInformation")]
 	public class GroupedInformation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GroupedInformation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupName] TEXT NOT NULL, 
+[ReferenceCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1569,7 +2242,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ReferenceCollection ReferenceCollection { get; set; }
 		// private ReferenceCollection _unmodified_ReferenceCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1577,6 +2250,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ReferenceToInformation")]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ReferenceToInformation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL, 
+[URL] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1588,7 +2273,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string URL { get; set; }
 		// private string _unmodified_URL;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1596,6 +2281,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BlogContainer")]
 	public class BlogContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS BlogContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[FeaturedBlog] TEXT NOT NULL, 
+[RecentBlogSummary] TEXT NOT NULL, 
+[BlogIndexGroup] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1615,7 +2314,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public BlogIndexGroup BlogIndexGroup { get; set; }
 		// private BlogIndexGroup _unmodified_BlogIndexGroup;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1623,6 +2322,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RecentBlogSummary")]
 	public class RecentBlogSummary : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS RecentBlogSummary(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Introduction] TEXT NOT NULL, 
+[RecentBlogCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1634,7 +2345,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public BlogCollection RecentBlogCollection { get; set; }
 		// private BlogCollection _unmodified_RecentBlogCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1642,6 +2353,25 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "NodeSummaryContainer")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS NodeSummaryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Nodes] TEXT NOT NULL, 
+[NodeSourceBlogs] TEXT NOT NULL, 
+[NodeSourceActivities] TEXT NOT NULL, 
+[NodeSourceTextContent] TEXT NOT NULL, 
+[NodeSourceLinkToContent] TEXT NOT NULL, 
+[NodeSourceEmbeddedContent] TEXT NOT NULL, 
+[NodeSourceImages] TEXT NOT NULL, 
+[NodeSourceBinaryFiles] TEXT NOT NULL, 
+[NodeSourceCategories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1681,7 +2411,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection NodeSourceCategories { get; set; }
 		// private CategoryCollection _unmodified_NodeSourceCategories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1689,6 +2419,32 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RenderedNode")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS RenderedNode(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OriginalContentID] TEXT NOT NULL, 
+[TechnicalSource] TEXT NOT NULL, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[ImageExt] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[ActualContentUrl] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[TimestampText] TEXT NOT NULL, 
+[MainSortableText] TEXT NOT NULL, 
+[IsCategoryFilteringNode] INTEGER NOT NULL, 
+[CategoryFilters] TEXT NOT NULL, 
+[CategoryNames] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL, 
+[CategoryIDList] TEXT NOT NULL, 
+[Authors] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1756,7 +2512,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ShortTextCollection Locations { get; set; }
 		// private ShortTextCollection _unmodified_Locations;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1764,6 +2520,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ShortTextObject")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ShortTextObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Content] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1771,7 +2538,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1779,6 +2546,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LongTextObject")]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS LongTextObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Content] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1786,7 +2564,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1794,6 +2572,25 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapContainer")]
 	public class MapContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS MapContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[MapFeatured] TEXT NOT NULL, 
+[MapCollection] TEXT NOT NULL, 
+[MapResultCollection] TEXT NOT NULL, 
+[MapIndexCollection] TEXT NOT NULL, 
+[MarkerSourceLocations] TEXT NOT NULL, 
+[MarkerSourceBlogs] TEXT NOT NULL, 
+[MarkerSourceActivities] TEXT NOT NULL, 
+[MapMarkers] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1833,7 +2630,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapMarkerCollection MapMarkers { get; set; }
 		// private MapMarkerCollection _unmodified_MapMarkers;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1841,6 +2638,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapMarker")]
 	public class MapMarker : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS MapMarker(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[IconUrl] TEXT NOT NULL, 
+[MarkerSource] TEXT NOT NULL, 
+[CategoryName] TEXT NOT NULL, 
+[LocationText] TEXT NOT NULL, 
+[PopupTitle] TEXT NOT NULL, 
+[PopupContent] TEXT NOT NULL, 
+[Location] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1872,7 +2686,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1880,6 +2694,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CalendarContainer")]
 	public class CalendarContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CalendarContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CalendarContainerHeader] TEXT NOT NULL, 
+[CalendarFeatured] TEXT NOT NULL, 
+[CalendarCollection] TEXT NOT NULL, 
+[CalendarIndexCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1899,7 +2727,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex CalendarIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_CalendarIndexCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1907,6 +2735,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AboutContainer")]
 	public class AboutContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AboutContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[MainImage] TEXT NOT NULL, 
+[Header] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Body] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[ImageGroup] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1938,7 +2783,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageGroup ImageGroup { get; set; }
 		// private ImageGroup _unmodified_ImageGroup;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1946,6 +2791,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OBSAccountContainer")]
 	public class OBSAccountContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS OBSAccountContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[AccountContainerHeader] TEXT NOT NULL, 
+[AccountFeatured] TEXT NOT NULL, 
+[AccountCollection] TEXT NOT NULL, 
+[AccountIndexCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1965,7 +2824,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex AccountIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_AccountIndexCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1973,6 +2832,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ProjectContainer")]
 	public class ProjectContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProjectContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ProjectContainerHeader] TEXT NOT NULL, 
+[ProjectFeatured] TEXT NOT NULL, 
+[ProjectCollection] TEXT NOT NULL, 
+[ProjectIndexCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1992,7 +2865,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex ProjectIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_ProjectIndexCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2000,6 +2873,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CourseContainer")]
 	public class CourseContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CourseContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CourseContainerHeader] TEXT NOT NULL, 
+[CourseFeatured] TEXT NOT NULL, 
+[CourseCollection] TEXT NOT NULL, 
+[CourseIndexCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2019,7 +2906,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CalendarIndex CourseIndexCollection { get; set; }
 		// private CalendarIndex _unmodified_CourseIndexCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2027,6 +2914,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContainerHeader")]
 	public class ContainerHeader : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ContainerHeader(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL, 
+[SubTitle] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2038,7 +2937,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubTitle { get; set; }
 		// private string _unmodified_SubTitle;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2046,6 +2945,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivitySummaryContainer")]
 	public class ActivitySummaryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ActivitySummaryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[SummaryBody] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[ActivityIndex] TEXT NOT NULL, 
+[ActivityCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2069,7 +2983,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ActivityCollection ActivityCollection { get; set; }
 		// private ActivityCollection _unmodified_ActivityCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2077,6 +2991,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivityIndex")]
 	public class ActivityIndex : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ActivityIndex(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2096,7 +3024,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2104,6 +3032,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ActivityContainer")]
 	public class ActivityContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ActivityContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[ActivityIndex] TEXT NOT NULL, 
+[ActivityModule] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2119,7 +3060,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Activity ActivityModule { get; set; }
 		// private Activity _unmodified_ActivityModule;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2127,6 +3068,30 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Activity")]
 	public class Activity : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Activity(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[ProfileImage] TEXT NOT NULL, 
+[IconImage] TEXT NOT NULL, 
+[ActivityName] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[ContactPerson] TEXT NOT NULL, 
+[StartingTime] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[IFrameSources] TEXT NOT NULL, 
+[Collaborators] TEXT NOT NULL, 
+[ImageGroupCollection] TEXT NOT NULL, 
+[LocationCollection] TEXT NOT NULL, 
+[CategoryCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2186,7 +3151,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection CategoryCollection { get; set; }
 		// private CategoryCollection _unmodified_CategoryCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2194,6 +3159,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Moderator")]
 	public class Moderator : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Moderator(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ModeratorName] TEXT NOT NULL, 
+[ProfileUrl] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2205,7 +3182,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2213,6 +3190,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Collaborator")]
 	public class Collaborator : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Collaborator(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[AccountID] TEXT NOT NULL, 
+[EmailAddress] TEXT NOT NULL, 
+[CollaboratorName] TEXT NOT NULL, 
+[Role] TEXT NOT NULL, 
+[ProfileUrl] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2236,7 +3228,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProfileUrl { get; set; }
 		// private string _unmodified_ProfileUrl;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2244,6 +3236,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupSummaryContainer")]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GroupSummaryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[SummaryBody] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[GroupSummaryIndex] TEXT NOT NULL, 
+[GroupCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2267,7 +3274,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public GroupCollection GroupCollection { get; set; }
 		// private GroupCollection _unmodified_GroupCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2275,6 +3282,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupContainer")]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GroupContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Header] TEXT NOT NULL, 
+[GroupIndex] TEXT NOT NULL, 
+[GroupProfile] TEXT NOT NULL, 
+[Collaborators] TEXT NOT NULL, 
+[PendingCollaborators] TEXT NOT NULL, 
+[Activities] TEXT NOT NULL, 
+[ImageGroupCollection] TEXT NOT NULL, 
+[LocationCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2310,7 +3335,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public AddressAndLocationCollection LocationCollection { get; set; }
 		// private AddressAndLocationCollection _unmodified_LocationCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2318,6 +3343,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "GroupIndex")]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GroupIndex(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2337,7 +3376,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2345,6 +3384,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddAddressAndLocationInfo")]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddAddressAndLocationInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[LocationName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2352,7 +3402,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationName { get; set; }
 		// private string _unmodified_LocationName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2360,6 +3410,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddImageInfo")]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddImageInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageTitle] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2367,7 +3428,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ImageTitle { get; set; }
 		// private string _unmodified_ImageTitle;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2375,6 +3436,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddImageGroupInfo")]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddImageGroupInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageGroupTitle] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2382,7 +3454,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ImageGroupTitle { get; set; }
 		// private string _unmodified_ImageGroupTitle;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2390,6 +3462,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddEmailAddressInfo")]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddEmailAddressInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[EmailAddress] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2397,7 +3480,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2405,6 +3488,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CreateGroupInfo")]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CreateGroupInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2412,7 +3506,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2420,6 +3514,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddActivityInfo")]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddActivityInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ActivityName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2427,7 +3532,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ActivityName { get; set; }
 		// private string _unmodified_ActivityName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2435,6 +3540,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddBlogPostInfo")]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddBlogPostInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2442,7 +3558,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2450,6 +3566,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AddCategoryInfo")]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AddCategoryInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CategoryName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2457,7 +3584,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2465,6 +3592,26 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Group")]
 	public class Group : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Group(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[ProfileImage] TEXT NOT NULL, 
+[IconImage] TEXT NOT NULL, 
+[GroupName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
+[WwwSiteToPublishTo] TEXT NOT NULL, 
+[CustomUICollection] TEXT NOT NULL, 
+[Moderators] TEXT NOT NULL, 
+[CategoryCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2508,7 +3655,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection CategoryCollection { get; set; }
 		// private CategoryCollection _unmodified_CategoryCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2516,6 +3663,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Introduction")]
 	public class Introduction : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Introduction(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL, 
+[Body] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2527,7 +3686,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Body { get; set; }
 		// private string _unmodified_Body;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2535,6 +3694,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ContentCategoryRank")]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ContentCategoryRank(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ContentID] TEXT NOT NULL, 
+[ContentSemanticType] TEXT NOT NULL, 
+[CategoryID] TEXT NOT NULL, 
+[RankName] TEXT NOT NULL, 
+[RankValue] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2558,7 +3732,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RankValue { get; set; }
 		// private string _unmodified_RankValue;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2566,6 +3740,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "LinkToContent")]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS LinkToContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[URL] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[ImageData] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2601,7 +3793,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2609,6 +3801,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "EmbeddedContent")]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS EmbeddedContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[IFrameTagContents] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2640,7 +3849,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2648,6 +3857,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DynamicContentGroup")]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS DynamicContentGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[HostName] TEXT NOT NULL, 
+[GroupHeader] TEXT NOT NULL, 
+[SortValue] TEXT NOT NULL, 
+[PageLocation] TEXT NOT NULL, 
+[ContentItemNames] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2671,7 +3895,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ContentItemNames { get; set; }
 		// private string _unmodified_ContentItemNames;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2679,6 +3903,28 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DynamicContent")]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS DynamicContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[HostName] TEXT NOT NULL, 
+[ContentName] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[ElementQuery] TEXT NOT NULL, 
+[Content] TEXT NOT NULL, 
+[RawContent] TEXT NOT NULL, 
+[ImageData] TEXT NOT NULL, 
+[IsEnabled] INTEGER NOT NULL, 
+[ApplyActively] INTEGER NOT NULL, 
+[EditType] TEXT NOT NULL, 
+[PageLocation] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2730,7 +3976,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string PageLocation { get; set; }
 		// private string _unmodified_PageLocation;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2738,6 +3984,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AttachedToObject")]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AttachedToObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SourceObjectID] TEXT NOT NULL, 
+[SourceObjectName] TEXT NOT NULL, 
+[SourceObjectDomain] TEXT NOT NULL, 
+[TargetObjectID] TEXT NOT NULL, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetObjectDomain] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2765,7 +4027,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TargetObjectDomain { get; set; }
 		// private string _unmodified_TargetObjectDomain;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2773,6 +4035,28 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Comment")]
 	public class Comment : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Comment(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TargetObjectID] TEXT NOT NULL, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetObjectDomain] TEXT NOT NULL, 
+[CommentText] TEXT NOT NULL, 
+[Created] TEXT NOT NULL, 
+[OriginalAuthorName] TEXT NOT NULL, 
+[OriginalAuthorEmail] TEXT NOT NULL, 
+[OriginalAuthorAccountID] TEXT NOT NULL, 
+[LastModified] TEXT NOT NULL, 
+[LastAuthorName] TEXT NOT NULL, 
+[LastAuthorEmail] TEXT NOT NULL, 
+[LastAuthorAccountID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2824,7 +4108,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LastAuthorAccountID { get; set; }
 		// private string _unmodified_LastAuthorAccountID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2832,6 +4116,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Selection")]
 	public class Selection : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Selection(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TargetObjectID] TEXT NOT NULL, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetObjectDomain] TEXT NOT NULL, 
+[SelectionCategory] TEXT NOT NULL, 
+[TextValue] TEXT NOT NULL, 
+[BooleanValue] INTEGER NOT NULL, 
+[DoubleValue] REAL NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2863,7 +4164,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public double DoubleValue { get; set; }
 		// private double _unmodified_DoubleValue;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2871,6 +4172,28 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "TextContent")]
 	public class TextContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TextContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageData] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[SubTitle] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Body] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL, 
+[SortOrderNumber] REAL NOT NULL, 
+[IFrameSources] TEXT NOT NULL, 
+[RawHtmlContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -2922,7 +4245,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string RawHtmlContent { get; set; }
 		// private string _unmodified_RawHtmlContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -2930,6 +4253,33 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Blog")]
 	public class Blog : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Blog(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[ProfileImage] TEXT NOT NULL, 
+[IconImage] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[SubTitle] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[FeaturedImage] TEXT NOT NULL, 
+[ImageGroupCollection] TEXT NOT NULL, 
+[VideoGroup] TEXT NOT NULL, 
+[Body] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[IFrameSources] TEXT NOT NULL, 
+[LocationCollection] TEXT NOT NULL, 
+[CategoryCollection] TEXT NOT NULL, 
+[SocialPanel] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3001,7 +4351,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SocialPanelCollection SocialPanel { get; set; }
 		// private SocialPanelCollection _unmodified_SocialPanel;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3009,6 +4359,26 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BlogIndexGroup")]
 	public class BlogIndexGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS BlogIndexGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[GroupedByDate] TEXT NOT NULL, 
+[GroupedByLocation] TEXT NOT NULL, 
+[GroupedByAuthor] TEXT NOT NULL, 
+[GroupedByCategory] TEXT NOT NULL, 
+[FullBlogArchive] TEXT NOT NULL, 
+[BlogSourceForSummary] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3052,7 +4422,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3060,6 +4430,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CalendarIndex")]
 	public class CalendarIndex : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CalendarIndex(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3079,7 +4463,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Summary { get; set; }
 		// private string _unmodified_Summary;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3087,6 +4471,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Filter")]
 	public class Filter : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Filter(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3094,7 +4489,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3102,6 +4497,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Calendar")]
 	public class Calendar : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Calendar(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3109,7 +4515,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3117,6 +4523,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Map")]
 	public class Map : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Map(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3124,7 +4541,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3132,6 +4549,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapIndexCollection")]
 	public class MapIndexCollection : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS MapIndexCollection(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[MapByDate] TEXT NOT NULL, 
+[MapByLocation] TEXT NOT NULL, 
+[MapByAuthor] TEXT NOT NULL, 
+[MapByCategory] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3151,7 +4582,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapCollection MapByCategory { get; set; }
 		// private MapCollection _unmodified_MapByCategory;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3159,6 +4590,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapResult")]
 	public class MapResult : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS MapResult(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Location] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3166,7 +4608,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Location Location { get; set; }
 		// private Location _unmodified_Location;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3174,6 +4616,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "MapResultsCollection")]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS MapResultsCollection(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ResultByDate] TEXT NOT NULL, 
+[ResultByAuthor] TEXT NOT NULL, 
+[ResultByProximity] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3189,7 +4644,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public MapResultCollection ResultByProximity { get; set; }
 		// private MapResultCollection _unmodified_ResultByProximity;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3197,6 +4652,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Video")]
 	public class Video : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Video(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[VideoData] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Caption] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3212,7 +4680,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Caption { get; set; }
 		// private string _unmodified_Caption;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3220,6 +4688,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Image")]
 	public class Image : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Image(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[ImageData] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Caption] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Locations] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3251,7 +4736,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3259,6 +4744,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "BinaryFile")]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS BinaryFile(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OriginalFileName] TEXT NOT NULL, 
+[Data] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Categories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3282,7 +4782,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3290,6 +4790,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageGroup")]
 	public class ImageGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ImageGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[FeaturedImage] TEXT NOT NULL, 
+[ImagesCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3313,7 +4828,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public ImageCollection ImagesCollection { get; set; }
 		// private ImageCollection _unmodified_ImagesCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3321,6 +4836,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "VideoGroup")]
 	public class VideoGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS VideoGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[VideoCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3336,7 +4864,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public VideoCollection VideoCollection { get; set; }
 		// private VideoCollection _unmodified_VideoCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3344,6 +4872,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Tooltip")]
 	public class Tooltip : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Tooltip(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TooltipText] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3351,7 +4890,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TooltipText { get; set; }
 		// private string _unmodified_TooltipText;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3359,6 +4898,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SocialPanel")]
 	public class SocialPanel : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SocialPanel(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SocialFilter] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3366,7 +4916,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Filter SocialFilter { get; set; }
 		// private Filter _unmodified_SocialFilter;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3374,6 +4924,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Longitude")]
 	public class Longitude : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Longitude(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TextValue] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3381,7 +4942,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3389,6 +4950,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Latitude")]
 	public class Latitude : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Latitude(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TextValue] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3396,7 +4968,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TextValue { get; set; }
 		// private string _unmodified_TextValue;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3404,6 +4976,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Location")]
 	public class Location : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Location(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[LocationName] TEXT NOT NULL, 
+[Longitude] TEXT NOT NULL, 
+[Latitude] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3419,7 +5004,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Latitude Latitude { get; set; }
 		// private Latitude _unmodified_Latitude;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3427,6 +5012,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Date")]
 	public class Date : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Date(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Day] TEXT NOT NULL, 
+[Week] TEXT NOT NULL, 
+[Month] TEXT NOT NULL, 
+[Year] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3446,7 +5045,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime Year { get; set; }
 		// private DateTime _unmodified_Year;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3454,6 +5053,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Sex")]
 	public class Sex : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Sex(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SexText] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3461,7 +5071,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SexText { get; set; }
 		// private string _unmodified_SexText;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3469,6 +5079,26 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OBSAddress")]
 	public class OBSAddress : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS OBSAddress(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[StreetName] TEXT NOT NULL, 
+[BuildingNumber] TEXT NOT NULL, 
+[PostOfficeBox] TEXT NOT NULL, 
+[PostalCode] TEXT NOT NULL, 
+[Municipality] TEXT NOT NULL, 
+[Region] TEXT NOT NULL, 
+[Province] TEXT NOT NULL, 
+[state] TEXT NOT NULL, 
+[Country] TEXT NOT NULL, 
+[Continent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3512,7 +5142,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Continent { get; set; }
 		// private string _unmodified_Continent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3520,6 +5150,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Identity")]
 	public class Identity : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Identity(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[FirstName] TEXT NOT NULL, 
+[LastName] TEXT NOT NULL, 
+[Initials] TEXT NOT NULL, 
+[Sex] TEXT NOT NULL, 
+[Birthday] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3543,7 +5188,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public Date Birthday { get; set; }
 		// private Date _unmodified_Birthday;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3551,6 +5196,21 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "ImageVideoSoundVectorRaw")]
 	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ImageVideoSoundVectorRaw(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Image] BLOB NOT NULL, 
+[Video] BLOB NOT NULL, 
+[Sound] BLOB NOT NULL, 
+[Vector] TEXT NOT NULL, 
+[Raw] BLOB NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3574,7 +5234,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public byte[] Raw { get; set; }
 		// private byte[] _unmodified_Raw;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3582,6 +5242,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "CategoryContainer")]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CategoryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Categories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3589,7 +5260,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public CategoryCollection Categories { get; set; }
 		// private CategoryCollection _unmodified_Categories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3597,6 +5268,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Category(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ReferenceToInformation] TEXT NOT NULL, 
+[CategoryName] TEXT NOT NULL, 
+[ImageData] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[ParentCategory] TEXT NOT NULL, 
+[ParentCategoryID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3628,7 +5316,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ParentCategoryID { get; set; }
 		// private string _unmodified_ParentCategoryID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3636,6 +5324,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Subscription")]
 	public class Subscription : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Subscription(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Priority] INTEGER NOT NULL, 
+[TargetRelativeLocation] TEXT NOT NULL, 
+[TargetInformationObjectType] TEXT NOT NULL, 
+[SubscriberRelativeLocation] TEXT NOT NULL, 
+[SubscriberInformationObjectType] TEXT NOT NULL, 
+[SubscriptionType] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3663,7 +5367,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubscriptionType { get; set; }
 		// private string _unmodified_SubscriptionType;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3671,6 +5375,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "QueueEnvelope")]
 	public class QueueEnvelope : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS QueueEnvelope(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ActiveContainerName] TEXT NOT NULL, 
+[OwnerPrefix] TEXT NOT NULL, 
+[CurrentRetryCount] INTEGER NOT NULL, 
+[SingleOperation] TEXT NOT NULL, 
+[OrderDependentOperationSequence] TEXT NOT NULL, 
+[ErrorContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3698,7 +5418,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SystemError ErrorContent { get; set; }
 		// private SystemError _unmodified_ErrorContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3706,6 +5426,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "OperationRequest")]
 	public class OperationRequest : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS OperationRequest(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SubscriberNotification] TEXT NOT NULL, 
+[SubscriptionChainRequest] TEXT NOT NULL, 
+[UpdateWebContentOperation] TEXT NOT NULL, 
+[RefreshDefaultViewsOperation] TEXT NOT NULL, 
+[DeleteEntireOwner] TEXT NOT NULL, 
+[DeleteOwnerContent] TEXT NOT NULL, 
+[PublishWebContent] TEXT NOT NULL, 
+[ProcessIDToExecute] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3741,7 +5479,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ProcessIDToExecute { get; set; }
 		// private string _unmodified_ProcessIDToExecute;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3749,6 +5487,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionChainRequestMessage")]
 	public class SubscriptionChainRequestMessage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SubscriptionChainRequestMessage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ContentItemID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3756,7 +5505,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string ContentItemID { get; set; }
 		// private string _unmodified_ContentItemID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3764,6 +5513,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionChainRequestContent")]
 	public class SubscriptionChainRequestContent : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SubscriptionChainRequestContent(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SubmitTime] TEXT NOT NULL, 
+[ProcessingStartTime] TEXT NOT NULL, 
+[ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
+[ProcessingEndTimeWebTemplatesRendering] TEXT NOT NULL, 
+[ProcessingEndTime] TEXT NOT NULL, 
+[SubscriptionTargetCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3791,7 +5556,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
 		// private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3799,6 +5564,17 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriptionTarget")]
 	public class SubscriptionTarget : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SubscriptionTarget(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[BlobLocation] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3806,7 +5582,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string BlobLocation { get; set; }
 		// private string _unmodified_BlobLocation;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3814,6 +5590,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DeleteEntireOwnerOperation")]
 	public class DeleteEntireOwnerOperation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS DeleteEntireOwnerOperation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ContainerName] TEXT NOT NULL, 
+[LocationPrefix] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3825,7 +5613,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationPrefix { get; set; }
 		// private string _unmodified_LocationPrefix;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3833,6 +5621,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "DeleteOwnerContentOperation")]
 	public class DeleteOwnerContentOperation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS DeleteOwnerContentOperation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ContainerName] TEXT NOT NULL, 
+[LocationPrefix] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3844,7 +5644,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LocationPrefix { get; set; }
 		// private string _unmodified_LocationPrefix;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3852,6 +5652,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SystemError")]
 	public class SystemError : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SystemError(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ErrorTitle] TEXT NOT NULL, 
+[OccurredAt] TEXT NOT NULL, 
+[SystemErrorItems] TEXT NOT NULL, 
+[MessageContent] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3871,7 +5685,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public QueueEnvelope MessageContent { get; set; }
 		// private QueueEnvelope _unmodified_MessageContent;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3879,6 +5693,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SystemErrorItem")]
 	public class SystemErrorItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SystemErrorItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ShortDescription] TEXT NOT NULL, 
+[LongDescription] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3890,7 +5716,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string LongDescription { get; set; }
 		// private string _unmodified_LongDescription;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3898,6 +5724,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "InformationSource")]
 	public class InformationSource : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InformationSource(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SourceName] TEXT NOT NULL, 
+[SourceLocation] TEXT NOT NULL, 
+[SourceType] TEXT NOT NULL, 
+[IsDynamic] INTEGER NOT NULL, 
+[SourceInformationObjectType] TEXT NOT NULL, 
+[SourceETag] TEXT NOT NULL, 
+[SourceMD5] TEXT NOT NULL, 
+[SourceLastModified] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3933,7 +5777,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public DateTime SourceLastModified { get; set; }
 		// private DateTime _unmodified_SourceLastModified;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3941,6 +5785,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "RefreshDefaultViewsOperation")]
 	public class RefreshDefaultViewsOperation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS RefreshDefaultViewsOperation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ViewLocation] TEXT NOT NULL, 
+[TypeNameToRefresh] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3952,7 +5808,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TypeNameToRefresh { get; set; }
 		// private string _unmodified_TypeNameToRefresh;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3960,6 +5816,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "UpdateWebContentOperation")]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS UpdateWebContentOperation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SourceContainerName] TEXT NOT NULL, 
+[SourcePathRoot] TEXT NOT NULL, 
+[TargetContainerName] TEXT NOT NULL, 
+[TargetPathRoot] TEXT NOT NULL, 
+[RenderWhileSync] INTEGER NOT NULL, 
+[Handlers] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -3987,7 +5859,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public UpdateWebContentHandlerCollection Handlers { get; set; }
 		// private UpdateWebContentHandlerCollection _unmodified_Handlers;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -3995,6 +5867,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "UpdateWebContentHandlerItem")]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS UpdateWebContentHandlerItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[InformationTypeName] TEXT NOT NULL, 
+[OptionName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4006,7 +5890,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OptionName { get; set; }
 		// private string _unmodified_OptionName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -4014,6 +5898,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "PublishWebContentOperation")]
 	public class PublishWebContentOperation : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS PublishWebContentOperation(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SourceContainerName] TEXT NOT NULL, 
+[SourcePathRoot] TEXT NOT NULL, 
+[SourceOwner] TEXT NOT NULL, 
+[TargetContainerName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4033,7 +5931,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string TargetContainerName { get; set; }
 		// private string _unmodified_TargetContainerName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -4041,6 +5939,20 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "SubscriberInput")]
 	public class SubscriberInput : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SubscriberInput(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[InputRelativeLocation] TEXT NOT NULL, 
+[InformationObjectName] TEXT NOT NULL, 
+[InformationItemName] TEXT NOT NULL, 
+[SubscriberRelativeLocation] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4060,7 +5972,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string SubscriberRelativeLocation { get; set; }
 		// private string _unmodified_SubscriberRelativeLocation;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -4068,6 +5980,23 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "Monitor")]
 	public class Monitor : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Monitor(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetItemName] TEXT NOT NULL, 
+[MonitoringUtcTimeStampToStart] TEXT NOT NULL, 
+[MonitoringCycleFrequencyUnit] TEXT NOT NULL, 
+[MonitoringCycleEveryXthOfUnit] INTEGER NOT NULL, 
+[CustomMonitoringCycleOperationName] TEXT NOT NULL, 
+[OperationActionName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4099,7 +6028,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string OperationActionName { get; set; }
 		// private string _unmodified_OperationActionName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -4107,6 +6036,19 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "IconTitleDescription")]
 	public class IconTitleDescription : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS IconTitleDescription(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Icon] BLOB NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4122,7 +6064,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -4130,6 +6072,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
     [Table(Name = "AboutAGIApplications")]
 	public class AboutAGIApplications : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AboutAGIApplications(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[BuiltForAnybody] TEXT NOT NULL, 
+[ForAllPeople] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -4141,7 +6095,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		[Column]
 		public IconTitleDescription ForAllPeople { get; set; }
 		// private IconTitleDescription _unmodified_ForAllPeople;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}

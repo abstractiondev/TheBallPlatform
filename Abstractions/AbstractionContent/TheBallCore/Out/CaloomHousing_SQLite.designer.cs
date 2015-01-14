@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,44 @@ namespace SQLite.Caloom.Housing {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(House.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<House> HouseTable {
 				get {
@@ -50,6 +69,20 @@ namespace SQLite.Caloom.Housing {
     [Table(Name = "House")]
 	public class House : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS House(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -69,7 +102,7 @@ namespace SQLite.Caloom.Housing {
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}

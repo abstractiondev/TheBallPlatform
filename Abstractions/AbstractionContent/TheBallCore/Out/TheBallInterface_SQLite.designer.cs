@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,55 @@ namespace SQLite.TheBall.Interface {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(WizardContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(WizardTask.GetCreateTableSQL());
+				tableCreationCommands.Add(Connection.GetCreateTableSQL());
+				tableCreationCommands.Add(TransferPackage.GetCreateTableSQL());
+				tableCreationCommands.Add(CategoryLink.GetCreateTableSQL());
+				tableCreationCommands.Add(Category.GetCreateTableSQL());
+				tableCreationCommands.Add(StatusSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationChangeItem.GetCreateTableSQL());
+				tableCreationCommands.Add(OperationExecutionItem.GetCreateTableSQL());
+				tableCreationCommands.Add(GenericCollectionableObject.GetCreateTableSQL());
+				tableCreationCommands.Add(GenericObject.GetCreateTableSQL());
+				tableCreationCommands.Add(GenericValue.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<WizardContainer> WizardContainerTable {
 				get {
@@ -105,6 +135,17 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "WizardContainer")]
 	public class WizardContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS WizardContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ActiveTasks] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -151,12 +192,12 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsActiveTasksChanged)
+            if (_IsActiveTasksChanged || isInitialInsert)
             {
-                var dataToStore = _ActiveTasks.ToArray();
+                var dataToStore = ActiveTasks.ToArray();
                 ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -165,6 +206,19 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "WizardTask")]
 	public class WizardTask : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS WizardTask(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TaskName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[InputType] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -180,7 +234,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string InputType { get; set; }
 		// private string _unmodified_InputType;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -188,6 +242,32 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "Connection")]
 	public class Connection : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Connection(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OutputInformationID] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[DeviceID] TEXT NOT NULL, 
+[IsActiveParty] INTEGER NOT NULL, 
+[OtherSideConnectionID] TEXT NOT NULL, 
+[ThisSideCategories] TEXT NOT NULL, 
+[OtherSideCategories] TEXT NOT NULL, 
+[CategoryLinks] TEXT NOT NULL, 
+[IncomingPackages] TEXT NOT NULL, 
+[OutgoingPackages] TEXT NOT NULL, 
+[OperationNameToListPackageContents] TEXT NOT NULL, 
+[OperationNameToProcessReceived] TEXT NOT NULL, 
+[OperationNameToUpdateThisSideCategories] TEXT NOT NULL, 
+[ProcessIDToListPackageContents] TEXT NOT NULL, 
+[ProcessIDToProcessReceived] TEXT NOT NULL, 
+[ProcessIDToUpdateThisSideCategories] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -450,36 +530,36 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ProcessIDToUpdateThisSideCategories { get; set; }
 		// private string _unmodified_ProcessIDToUpdateThisSideCategories;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsThisSideCategoriesChanged)
+            if (_IsThisSideCategoriesChanged || isInitialInsert)
             {
-                var dataToStore = _ThisSideCategories.ToArray();
+                var dataToStore = ThisSideCategories.ToArray();
                 ThisSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsOtherSideCategoriesChanged)
+            if (_IsOtherSideCategoriesChanged || isInitialInsert)
             {
-                var dataToStore = _OtherSideCategories.ToArray();
+                var dataToStore = OtherSideCategories.ToArray();
                 OtherSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsCategoryLinksChanged)
+            if (_IsCategoryLinksChanged || isInitialInsert)
             {
-                var dataToStore = _CategoryLinks.ToArray();
+                var dataToStore = CategoryLinks.ToArray();
                 CategoryLinksData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsIncomingPackagesChanged)
+            if (_IsIncomingPackagesChanged || isInitialInsert)
             {
-                var dataToStore = _IncomingPackages.ToArray();
+                var dataToStore = IncomingPackages.ToArray();
                 IncomingPackagesData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsOutgoingPackagesChanged)
+            if (_IsOutgoingPackagesChanged || isInitialInsert)
             {
-                var dataToStore = _OutgoingPackages.ToArray();
+                var dataToStore = OutgoingPackages.ToArray();
                 OutgoingPackagesData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -488,6 +568,21 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "TransferPackage")]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TransferPackage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ConnectionID] TEXT NOT NULL, 
+[PackageDirection] TEXT NOT NULL, 
+[PackageType] TEXT NOT NULL, 
+[IsProcessed] INTEGER NOT NULL, 
+[PackageContentBlobs] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -550,12 +645,12 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsPackageContentBlobsChanged)
+            if (_IsPackageContentBlobsChanged || isInitialInsert)
             {
-                var dataToStore = _PackageContentBlobs.ToArray();
+                var dataToStore = PackageContentBlobs.ToArray();
                 PackageContentBlobsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -564,6 +659,19 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "CategoryLink")]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CategoryLink(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SourceCategoryID] TEXT NOT NULL, 
+[TargetCategoryID] TEXT NOT NULL, 
+[LinkingType] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -579,7 +687,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string LinkingType { get; set; }
 		// private string _unmodified_LinkingType;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -587,6 +695,22 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Category(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[NativeCategoryID] TEXT NOT NULL, 
+[NativeCategoryDomainName] TEXT NOT NULL, 
+[NativeCategoryObjectName] TEXT NOT NULL, 
+[NativeCategoryTitle] TEXT NOT NULL, 
+[IdentifyingCategoryName] TEXT NOT NULL, 
+[ParentCategoryID] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -614,7 +738,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ParentCategoryID { get; set; }
 		// private string _unmodified_ParentCategoryID;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -622,6 +746,20 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "StatusSummary")]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS StatusSummary(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[PendingOperations] TEXT NOT NULL, 
+[ExecutingOperations] TEXT NOT NULL, 
+[RecentCompletedOperations] TEXT NOT NULL, 
+[ChangeItemTrackingList] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -797,30 +935,30 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsPendingOperationsChanged)
+            if (_IsPendingOperationsChanged || isInitialInsert)
             {
-                var dataToStore = _PendingOperations.ToArray();
+                var dataToStore = PendingOperations.ToArray();
                 PendingOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsExecutingOperationsChanged)
+            if (_IsExecutingOperationsChanged || isInitialInsert)
             {
-                var dataToStore = _ExecutingOperations.ToArray();
+                var dataToStore = ExecutingOperations.ToArray();
                 ExecutingOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsRecentCompletedOperationsChanged)
+            if (_IsRecentCompletedOperationsChanged || isInitialInsert)
             {
-                var dataToStore = _RecentCompletedOperations.ToArray();
+                var dataToStore = RecentCompletedOperations.ToArray();
                 RecentCompletedOperationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsChangeItemTrackingListChanged)
+            if (_IsChangeItemTrackingListChanged || isInitialInsert)
             {
-                var dataToStore = _ChangeItemTrackingList.ToArray();
+                var dataToStore = ChangeItemTrackingList.ToArray();
                 ChangeItemTrackingListData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -829,6 +967,19 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "InformationChangeItem")]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InformationChangeItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[StartTimeUTC] TEXT NOT NULL, 
+[EndTimeUTC] TEXT NOT NULL, 
+[ChangedObjectIDList] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -883,12 +1034,12 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsChangedObjectIDListChanged)
+            if (_IsChangedObjectIDListChanged || isInitialInsert)
             {
-                var dataToStore = _ChangedObjectIDList.ToArray();
+                var dataToStore = ChangedObjectIDList.ToArray();
                 ChangedObjectIDListData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -897,6 +1048,24 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "OperationExecutionItem")]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS OperationExecutionItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OperationName] TEXT NOT NULL, 
+[OperationDomain] TEXT NOT NULL, 
+[OperationID] TEXT NOT NULL, 
+[CallerProvidedInfo] TEXT NOT NULL, 
+[CreationTime] TEXT NOT NULL, 
+[ExecutionBeginTime] TEXT NOT NULL, 
+[ExecutionCompletedTime] TEXT NOT NULL, 
+[ExecutionStatus] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -932,7 +1101,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string ExecutionStatus { get; set; }
 		// private string _unmodified_ExecutionStatus;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -940,6 +1109,17 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericCollectionableObject")]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GenericCollectionableObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ValueObject] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -947,7 +1127,7 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public GenericObject ValueObject { get; set; }
 		// private GenericObject _unmodified_ValueObject;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -955,6 +1135,19 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericObject")]
 	public class GenericObject : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GenericObject(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Values] TEXT NOT NULL, 
+[IncludeInCollection] INTEGER NOT NULL, 
+[OptionalCollectionName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1009,12 +1202,12 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string OptionalCollectionName { get; set; }
 		// private string _unmodified_OptionalCollectionName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsValuesChanged)
+            if (_IsValuesChanged || isInitialInsert)
             {
-                var dataToStore = _Values.ToArray();
+                var dataToStore = Values.ToArray();
                 ValuesData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -1023,6 +1216,28 @@ namespace SQLite.TheBall.Interface {
     [Table(Name = "GenericValue")]
 	public class GenericValue : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GenericValue(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ValueName] TEXT NOT NULL, 
+[String] TEXT NOT NULL, 
+[StringArray] TEXT NOT NULL, 
+[Number] REAL NOT NULL, 
+[NumberArray] TEXT NOT NULL, 
+[Boolean] INTEGER NOT NULL, 
+[BooleanArray] TEXT NOT NULL, 
+[DateTime] TEXT NOT NULL, 
+[DateTimeArray] TEXT NOT NULL, 
+[Object] TEXT NOT NULL, 
+[ObjectArray] TEXT NOT NULL, 
+[IndexingInfo] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1269,36 +1484,36 @@ namespace SQLite.TheBall.Interface {
 		[Column]
 		public string IndexingInfo { get; set; }
 		// private string _unmodified_IndexingInfo;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsStringArrayChanged)
+            if (_IsStringArrayChanged || isInitialInsert)
             {
-                var dataToStore = _StringArray.ToArray();
+                var dataToStore = StringArray.ToArray();
                 StringArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsNumberArrayChanged)
+            if (_IsNumberArrayChanged || isInitialInsert)
             {
-                var dataToStore = _NumberArray.ToArray();
+                var dataToStore = NumberArray.ToArray();
                 NumberArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsBooleanArrayChanged)
+            if (_IsBooleanArrayChanged || isInitialInsert)
             {
-                var dataToStore = _BooleanArray.ToArray();
+                var dataToStore = BooleanArray.ToArray();
                 BooleanArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsDateTimeArrayChanged)
+            if (_IsDateTimeArrayChanged || isInitialInsert)
             {
-                var dataToStore = _DateTimeArray.ToArray();
+                var dataToStore = DateTimeArray.ToArray();
                 DateTimeArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsObjectArrayChanged)
+            if (_IsObjectArrayChanged || isInitialInsert)
             {
-                var dataToStore = _ObjectArray.ToArray();
+                var dataToStore = ObjectArray.ToArray();
                 ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 

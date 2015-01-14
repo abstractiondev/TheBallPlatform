@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,45 @@ namespace SQLite.TheBall.Payments {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(GroupSubscriptionPlan.GetCreateTableSQL());
+				tableCreationCommands.Add(CustomerAccount.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<GroupSubscriptionPlan> GroupSubscriptionPlanTable {
 				get {
@@ -55,6 +75,19 @@ namespace SQLite.TheBall.Payments {
     [Table(Name = "GroupSubscriptionPlan")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS GroupSubscriptionPlan(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[PlanName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[GroupIDs] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -109,12 +142,12 @@ namespace SQLite.TheBall.Payments {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsGroupIDsChanged)
+            if (_IsGroupIDsChanged || isInitialInsert)
             {
-                var dataToStore = _GroupIDs.ToArray();
+                var dataToStore = GroupIDs.ToArray();
                 GroupIDsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -123,6 +156,20 @@ namespace SQLite.TheBall.Payments {
     [Table(Name = "CustomerAccount")]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS CustomerAccount(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[StripeID] TEXT NOT NULL, 
+[EmailAddress] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[ActivePlans] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -181,12 +228,12 @@ namespace SQLite.TheBall.Payments {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsActivePlansChanged)
+            if (_IsActivePlansChanged || isInitialInsert)
             {
-                var dataToStore = _ActivePlans.ToArray();
+                var dataToStore = ActivePlans.ToArray();
                 ActivePlansData = JsonConvert.SerializeObject(dataToStore);
             }
 

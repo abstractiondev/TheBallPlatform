@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,46 @@ namespace SQLite.TheBall.Index {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(IndexingRequest.GetCreateTableSQL());
+				tableCreationCommands.Add(QueryRequest.GetCreateTableSQL());
+				tableCreationCommands.Add(QueryResultItem.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<IndexingRequest> IndexingRequestTable {
 				get {
@@ -60,6 +81,18 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "IndexingRequest")]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS IndexingRequest(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[IndexName] TEXT NOT NULL, 
+[ObjectLocations] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -110,12 +143,12 @@ namespace SQLite.TheBall.Index {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsObjectLocationsChanged)
+            if (_IsObjectLocationsChanged || isInitialInsert)
             {
-                var dataToStore = _ObjectLocations.ToArray();
+                var dataToStore = ObjectLocations.ToArray();
                 ObjectLocationsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -124,6 +157,24 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "QueryRequest")]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS QueryRequest(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[QueryString] TEXT NOT NULL, 
+[DefaultFieldName] TEXT NOT NULL, 
+[IndexName] TEXT NOT NULL, 
+[IsQueryCompleted] INTEGER NOT NULL, 
+[LastRequestTime] TEXT NOT NULL, 
+[LastCompletionTime] TEXT NOT NULL, 
+[LastCompletionDurationMs] INTEGER NOT NULL, 
+[QueryResultObjects] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -198,12 +249,12 @@ namespace SQLite.TheBall.Index {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsQueryResultObjectsChanged)
+            if (_IsQueryResultObjectsChanged || isInitialInsert)
             {
-                var dataToStore = _QueryResultObjects.ToArray();
+                var dataToStore = QueryResultObjects.ToArray();
                 QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -212,6 +263,20 @@ namespace SQLite.TheBall.Index {
     [Table(Name = "QueryResultItem")]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS QueryResultItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ObjectDomainName] TEXT NOT NULL, 
+[ObjectName] TEXT NOT NULL, 
+[ObjectID] TEXT NOT NULL, 
+[Rank] REAL NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -231,7 +296,7 @@ namespace SQLite.TheBall.Index {
 		[Column]
 		public double Rank { get; set; }
 		// private double _unmodified_Rank;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}

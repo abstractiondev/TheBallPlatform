@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
@@ -19,26 +20,72 @@ namespace SQLite.TheBall.CORE {
 		
 	internal interface ITheBallDataContextStorable
 	{
-		void PrepareForStoring();
+		void PrepareForStoring(bool isInitialInsert);
 	}
 
 
 		public class TheBallDataContext : DataContext
 		{
 
-            public TheBallDataContext(IDbConnection connection) : base(connection)
+            public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
-
+                if(connection.State != ConnectionState.Open)
+                    connection.Open();
 		    }
 
             public override void SubmitChanges(ConflictMode failureMode)
             {
                 var changeSet = GetChangeSet();
-                var requiringBeforeSaveProcessing = changeSet.Inserts.Concat(changeSet.Updates).Cast<ITheBallDataContextStorable>().ToArray();
-                foreach (var itemToProcess in requiringBeforeSaveProcessing)
-                    itemToProcess.PrepareForStoring();
+                var insertsToProcess = changeSet.Inserts.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in insertsToProcess)
+                    itemToProcess.PrepareForStoring(true);
+                var updatesToProcess = changeSet.Updates.Cast<ITheBallDataContextStorable>().ToArray();
+                foreach (var itemToProcess in updatesToProcess)
+                    itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+			public void CreateDomainDatabaseTablesIfNotExists()
+			{
+				List<string> tableCreationCommands = new List<string>();
+				tableCreationCommands.Add(ContentPackage.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationInput.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationOutput.GetCreateTableSQL());
+				tableCreationCommands.Add(AuthenticatedAsActiveDevice.GetCreateTableSQL());
+				tableCreationCommands.Add(DeviceMembership.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceFiscalExportSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceSummaryContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(Invoice.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceDetails.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceUser.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceRowGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceEventDetailGroup.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceEventDetail.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceRow.GetCreateTableSQL());
+				tableCreationCommands.Add(Category.GetCreateTableSQL());
+				tableCreationCommands.Add(ProcessContainer.GetCreateTableSQL());
+				tableCreationCommands.Add(Process.GetCreateTableSQL());
+				tableCreationCommands.Add(ProcessItem.GetCreateTableSQL());
+				tableCreationCommands.Add(SemanticInformationItem.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationOwnerInfo.GetCreateTableSQL());
+				tableCreationCommands.Add(UsageSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(UsageMonitorItem.GetCreateTableSQL());
+				tableCreationCommands.Add(RequestResourceUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(ProcessorUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(StorageTransactionUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(StorageUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(NetworkUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(TimeRange.GetCreateTableSQL());
+				tableCreationCommands.Add(HTTPActivityDetails.GetCreateTableSQL());
+			    var connection = this.Connection;
+				foreach (string commandText in tableCreationCommands)
+			    {
+			        var command = connection.CreateCommand();
+			        command.CommandText = commandText;
+                    command.CommandType = CommandType.Text;
+			        command.ExecuteNonQuery();
+			    }
+			}
 
 			public Table<ContentPackage> ContentPackageTable {
 				get {
@@ -190,6 +237,21 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ContentPackage")]
 	public class ContentPackage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ContentPackage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[PackageType] TEXT NOT NULL, 
+[PackageName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[PackageRootFolder] TEXT NOT NULL, 
+[CreationTime] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -213,7 +275,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -221,6 +283,21 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationInput")]
 	public class InformationInput : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InformationInput(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[InputDescription] TEXT NOT NULL, 
+[LocationURL] TEXT NOT NULL, 
+[LocalContentName] TEXT NOT NULL, 
+[AuthenticatedDeviceID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -244,7 +321,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -252,6 +329,22 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationOutput")]
 	public class InformationOutput : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InformationOutput(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OutputDescription] TEXT NOT NULL, 
+[DestinationURL] TEXT NOT NULL, 
+[DestinationContentName] TEXT NOT NULL, 
+[LocalContentURL] TEXT NOT NULL, 
+[AuthenticatedDeviceID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -279,7 +372,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -287,6 +380,23 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "AuthenticatedAsActiveDevice")]
 	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS AuthenticatedAsActiveDevice(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[AuthenticationDescription] TEXT NOT NULL, 
+[SharedSecret] TEXT NOT NULL, 
+[ActiveSymmetricAESKey] BLOB NOT NULL, 
+[EstablishedTrustID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL, 
+[NegotiationURL] TEXT NOT NULL, 
+[ConnectionURL] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -318,7 +428,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ConnectionURL { get; set; }
 		// private string _unmodified_ConnectionURL;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -326,6 +436,20 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "DeviceMembership")]
 	public class DeviceMembership : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS DeviceMembership(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[DeviceDescription] TEXT NOT NULL, 
+[SharedSecret] TEXT NOT NULL, 
+[ActiveSymmetricAESKey] BLOB NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -345,7 +469,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -353,6 +477,19 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceFiscalExportSummary")]
 	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[FiscalInclusiveStartDate] TEXT NOT NULL, 
+[FiscalInclusiveEndDate] TEXT NOT NULL, 
+[ExportedInvoices] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -368,7 +505,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceCollection ExportedInvoices { get; set; }
 		// private InvoiceCollection _unmodified_ExportedInvoices;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -376,6 +513,20 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceSummaryContainer")]
 	public class InvoiceSummaryContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceSummaryContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OpenInvoices] TEXT NOT NULL, 
+[PredictedInvoices] TEXT NOT NULL, 
+[PaidInvoicesActiveYear] TEXT NOT NULL, 
+[PaidInvoicesLast12Months] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -395,7 +546,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceCollection PaidInvoicesLast12Months { get; set; }
 		// private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -403,6 +554,26 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Invoice")]
 	public class Invoice : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Invoice(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[InvoiceName] TEXT NOT NULL, 
+[InvoiceID] TEXT NOT NULL, 
+[InvoicedAmount] TEXT NOT NULL, 
+[CreateDate] TEXT NOT NULL, 
+[DueDate] TEXT NOT NULL, 
+[PaidAmount] TEXT NOT NULL, 
+[FeesAndInterestAmount] TEXT NOT NULL, 
+[UnpaidAmount] TEXT NOT NULL, 
+[InvoiceDetails] TEXT NOT NULL, 
+[InvoiceUsers] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -446,7 +617,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceUserCollection InvoiceUsers { get; set; }
 		// private InvoiceUserCollection _unmodified_InvoiceUsers;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -454,6 +625,22 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceDetails")]
 	public class InvoiceDetails : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceDetails(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[MonthlyFeesTotal] TEXT NOT NULL, 
+[OneTimeFeesTotal] TEXT NOT NULL, 
+[UsageFeesTotal] TEXT NOT NULL, 
+[InterestFeesTotal] TEXT NOT NULL, 
+[PenaltyFeesTotal] TEXT NOT NULL, 
+[TotalFeesTotal] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -481,7 +668,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string TotalFeesTotal { get; set; }
 		// private string _unmodified_TotalFeesTotal;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -489,6 +676,23 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceUser")]
 	public class InvoiceUser : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceUser(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[UserName] TEXT NOT NULL, 
+[UserID] TEXT NOT NULL, 
+[UserPhoneNumber] TEXT NOT NULL, 
+[UserSubscriptionNumber] TEXT NOT NULL, 
+[UserInvoiceTotalAmount] TEXT NOT NULL, 
+[InvoiceRowGroupCollection] TEXT NOT NULL, 
+[InvoiceEventDetailGroupCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -520,7 +724,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection { get; set; }
 		// private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -528,6 +732,21 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceRowGroup")]
 	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupName] TEXT NOT NULL, 
+[GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
+[GroupTotalTaxes] TEXT NOT NULL, 
+[GroupTotalPriceWithTaxes] TEXT NOT NULL, 
+[InvoiceRowCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -551,7 +770,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceRowCollection InvoiceRowCollection { get; set; }
 		// private InvoiceRowCollection _unmodified_InvoiceRowCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -559,6 +778,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceEventDetailGroup")]
 	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceEventDetailGroup(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[GroupName] TEXT NOT NULL, 
+[InvoiceEventDetailCollection] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -570,7 +801,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public InvoiceEventDetailCollection InvoiceEventDetailCollection { get; set; }
 		// private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -578,6 +809,26 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceEventDetail")]
 	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceEventDetail(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[IndentMode] TEXT NOT NULL, 
+[EventStartDateTime] TEXT NOT NULL, 
+[EventEndDateTime] TEXT NOT NULL, 
+[ReceivingParty] TEXT NOT NULL, 
+[AmountOfUnits] TEXT NOT NULL, 
+[Duration] TEXT NOT NULL, 
+[UnitPrice] TEXT NOT NULL, 
+[PriceWithoutTaxes] TEXT NOT NULL, 
+[Taxes] TEXT NOT NULL, 
+[PriceWithTaxes] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -621,7 +872,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -629,6 +880,23 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InvoiceRow")]
 	public class InvoiceRow : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InvoiceRow(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[IndentMode] TEXT NOT NULL, 
+[AmountOfUnits] TEXT NOT NULL, 
+[Duration] TEXT NOT NULL, 
+[UnitPrice] TEXT NOT NULL, 
+[PriceWithoutTaxes] TEXT NOT NULL, 
+[Taxes] TEXT NOT NULL, 
+[PriceWithTaxes] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -660,7 +928,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -668,6 +936,17 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Category")]
 	public class Category : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Category(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CategoryName] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -675,7 +954,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -683,6 +962,17 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessContainer")]
 	public class ProcessContainer : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProcessContainer(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ProcessIDs] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -729,12 +1019,12 @@ namespace SQLite.TheBall.CORE {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsProcessIDsChanged)
+            if (_IsProcessIDsChanged || isInitialInsert)
             {
-                var dataToStore = _ProcessIDs.ToArray();
+                var dataToStore = ProcessIDs.ToArray();
                 ProcessIDsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -743,6 +1033,20 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "Process")]
 	public class Process : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS Process(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ProcessDescription] TEXT NOT NULL, 
+[ExecutingOperation] TEXT NOT NULL, 
+[InitialArguments] TEXT NOT NULL, 
+[ProcessItems] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -840,18 +1144,18 @@ namespace SQLite.TheBall.CORE {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsInitialArgumentsChanged)
+            if (_IsInitialArgumentsChanged || isInitialInsert)
             {
-                var dataToStore = _InitialArguments.ToArray();
+                var dataToStore = InitialArguments.ToArray();
                 InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsProcessItemsChanged)
+            if (_IsProcessItemsChanged || isInitialInsert)
             {
-                var dataToStore = _ProcessItems.ToArray();
+                var dataToStore = ProcessItems.ToArray();
                 ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -860,6 +1164,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessItem")]
 	public class ProcessItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProcessItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[Outputs] TEXT NOT NULL, 
+[Inputs] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -949,18 +1265,18 @@ namespace SQLite.TheBall.CORE {
 			}
         }
 
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsOutputsChanged)
+            if (_IsOutputsChanged || isInitialInsert)
             {
-                var dataToStore = _Outputs.ToArray();
+                var dataToStore = Outputs.ToArray();
                 OutputsData = JsonConvert.SerializeObject(dataToStore);
             }
 
-            if (_IsInputsChanged)
+            if (_IsInputsChanged || isInitialInsert)
             {
-                var dataToStore = _Inputs.ToArray();
+                var dataToStore = Inputs.ToArray();
                 InputsData = JsonConvert.SerializeObject(dataToStore);
             }
 
@@ -969,6 +1285,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "SemanticInformationItem")]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS SemanticInformationItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ItemFullType] TEXT NOT NULL, 
+[ItemValue] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -980,7 +1308,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string ItemValue { get; set; }
 		// private string _unmodified_ItemValue;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -988,6 +1316,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "InformationOwnerInfo")]
 	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS InformationOwnerInfo(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OwnerType] TEXT NOT NULL, 
+[OwnerIdentifier] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -999,7 +1339,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public string OwnerIdentifier { get; set; }
 		// private string _unmodified_OwnerIdentifier;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1007,6 +1347,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "UsageSummary")]
 	public class UsageSummary : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS UsageSummary(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SummaryName] TEXT NOT NULL, 
+[SummaryMonitoringItem] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1018,7 +1370,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public UsageMonitorItem SummaryMonitoringItem { get; set; }
 		// private UsageMonitorItem _unmodified_SummaryMonitoringItem;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1026,6 +1378,23 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "UsageMonitorItem")]
 	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS UsageMonitorItem(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OwnerInfo] TEXT NOT NULL, 
+[TimeRangeInclusiveStartExclusiveEnd] TEXT NOT NULL, 
+[StepSizeInMinutes] INTEGER NOT NULL, 
+[ProcessorUsages] TEXT NOT NULL, 
+[StorageTransactionUsages] TEXT NOT NULL, 
+[StorageUsages] TEXT NOT NULL, 
+[NetworkUsages] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1057,7 +1426,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public NetworkUsageCollection NetworkUsages { get; set; }
 		// private NetworkUsageCollection _unmodified_NetworkUsages;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1065,6 +1434,21 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "RequestResourceUsage")]
 	public class RequestResourceUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS RequestResourceUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[OwnerInfo] TEXT NOT NULL, 
+[ProcessorUsage] TEXT NOT NULL, 
+[StorageTransactionUsage] TEXT NOT NULL, 
+[NetworkUsage] TEXT NOT NULL, 
+[RequestDetails] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1088,7 +1472,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public HTTPActivityDetails RequestDetails { get; set; }
 		// private HTTPActivityDetails _unmodified_RequestDetails;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1096,6 +1480,21 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "ProcessorUsage")]
 	public class ProcessorUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS ProcessorUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TimeRange] TEXT NOT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfTicks] REAL NOT NULL, 
+[FrequencyTicksPerSecond] REAL NOT NULL, 
+[Milliseconds] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1119,7 +1518,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long Milliseconds { get; set; }
 		// private long _unmodified_Milliseconds;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1127,6 +1526,19 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "StorageTransactionUsage")]
 	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS StorageTransactionUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TimeRange] TEXT NOT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfTransactions] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1142,7 +1554,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long AmountOfTransactions { get; set; }
 		// private long _unmodified_AmountOfTransactions;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1150,6 +1562,20 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "StorageUsage")]
 	public class StorageUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS StorageUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[SnapshotTime] TEXT NOT NULL, 
+[UsageType] TEXT NOT NULL, 
+[UsageUnit] TEXT NOT NULL, 
+[AmountOfUnits] REAL NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1169,7 +1595,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public double AmountOfUnits { get; set; }
 		// private double _unmodified_AmountOfUnits;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1177,6 +1603,19 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "NetworkUsage")]
 	public class NetworkUsage : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS NetworkUsage(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[TimeRange] TEXT NOT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfBytes] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1192,7 +1631,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long AmountOfBytes { get; set; }
 		// private long _unmodified_AmountOfBytes;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1200,6 +1639,18 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "TimeRange")]
 	public class TimeRange : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS TimeRange(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[StartTime] TEXT NOT NULL, 
+[EndTime] TEXT NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1211,7 +1662,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public DateTime EndTime { get; set; }
 		// private DateTime _unmodified_EndTime;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
@@ -1219,6 +1670,23 @@ namespace SQLite.TheBall.CORE {
     [Table(Name = "HTTPActivityDetails")]
 	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS HTTPActivityDetails(
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[RemoteIPAddress] TEXT NOT NULL, 
+[RemoteEndpointUserName] TEXT NOT NULL, 
+[UserID] TEXT NOT NULL, 
+[UTCDateTime] TEXT NOT NULL, 
+[RequestLine] TEXT NOT NULL, 
+[HTTPStatusCode] INTEGER NOT NULL, 
+[ReturnedContentLength] INTEGER NOT NULL
+)";
+        }
+
+
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
@@ -1250,7 +1718,7 @@ namespace SQLite.TheBall.CORE {
 		[Column]
 		public long ReturnedContentLength { get; set; }
 		// private long _unmodified_ReturnedContentLength;
-        public void PrepareForStoring()
+        public void PrepareForStoring(bool isInitialInsert)
         {
 		
 		}
