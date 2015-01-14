@@ -26,7 +26,7 @@ namespace PlatformCoreTests
             {
                 var currAsm = Assembly.GetExecutingAssembly();
                 var directoryName = Path.GetDirectoryName(currAsm.Location);
-                var fullName = Path.Combine(directoryName, "x64", "SQLite.Interop.dll");
+                var fullName = Path.Combine(directoryName, "x86", "SQLite.Interop.dll");
                 return Assembly.LoadFile(fullName);
             }
             return null;

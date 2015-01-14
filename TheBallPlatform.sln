@@ -360,8 +360,8 @@ Global
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Production|x86.ActiveCfg = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|PHP 5.2.ActiveCfg = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.ActiveCfg = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Staging|Any CPU.ActiveCfg = Release|Any CPU
