@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLite.TheBall.Payments;
 
@@ -10,6 +12,25 @@ namespace PlatformCoreTests
     [TestClass]
     public class SQLiteTests
     {
+
+        [AssemblyInitialize]
+        public static void FixBindings(TestContext context)
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var asmName = new AssemblyName(args.Name);
+            if (asmName.Name == "SQLite.Interop.dll")
+            {
+                var currAsm = Assembly.GetExecutingAssembly();
+                var fullName = Path.Combine(currAsm.Location, "x86", "SQLite.Interop.dll");
+                return Assembly.LoadFile(fullName);
+            }
+            return null;
+        }
+
         [TestMethod]
         public void CreatePaymentDomainDataBaseFromScratchTest()
         {
