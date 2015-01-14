@@ -22,6 +22,7 @@ namespace PlatformCoreTests
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             var asmName = new AssemblyName(args.Name);
+            throw new Exception("Invalid resolution");
             if (asmName.Name == "SQLite.Interop.dll")
             {
                 var currAsm = Assembly.GetExecutingAssembly();
