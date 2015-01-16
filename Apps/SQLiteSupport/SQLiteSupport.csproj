@@ -62,6 +62,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments.serialization.designer.cs">
+      <Link>TheBall.Payments\TheBallPayments.serialization.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments_SQLite.designer.cs">
       <Link>TheBall.Payments\TheBallPayments_SQLite.designer.cs</Link>
     </Compile>

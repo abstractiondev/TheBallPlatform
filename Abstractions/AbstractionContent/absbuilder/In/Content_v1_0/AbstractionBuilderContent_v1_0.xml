@@ -4,6 +4,7 @@
     <Abstractions>
       <Abstraction name="TheBallCoreABS">
         <Generator name="AzureCSharpClassGenerator_v1_0"/>
+        <Generator name="DataContractSerializationCSharpClassGenerator_v1_0"/>
         <Generator name="SQLiteCSharpClassGenerator_v1_0"/>
         <Generator name="InterfaceModelCSharpClassGenerator_v1_0"/>
         <Generator name="KBObservableModelJSGenerator_v1_0"/>
