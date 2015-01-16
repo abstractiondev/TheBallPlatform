@@ -23,11 +23,13 @@ namespace SQLite.TheBall.Index {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
+		[Flags]
 		public enum SerializationType 
 		{
 			Undefined = 0,
 			XML = 1,
-			JSON = 2
+			JSON = 2,
+			XML_AND_JSON = XML | JSON
 		}
 
 		[Table]
@@ -37,7 +39,7 @@ namespace SQLite.TheBall.Index {
 			public string ID { get; set; }
 
 			[Column]
-			public string SemanticType { get; set; }
+			public string SemanticDomain { get; set; }
 			[Column]
 			public string ObjectType { get; set; }
 			[Column]
@@ -47,7 +49,7 @@ namespace SQLite.TheBall.Index {
 			[Column]
 			public string LastWriteTime { get; set; }
 			[Column]
-			public int FileLength { get; set; }
+			public long FileLength { get; set; }
 			[Column]
 			public int SerializationType { get; set; }
 		}
@@ -63,7 +65,7 @@ namespace SQLite.TheBall.Index {
 		            @"
 CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticType] TEXT NOT NULL, 
+[SemanticDomain] TEXT NOT NULL, 
 [ObjectType] TEXT NOT NULL, 
 [ObjectID] TEXT NOT NULL,
 [MD5] TEXT NOT NULL,
@@ -71,7 +73,12 @@ CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [FileLength] INTEGER NOT NULL,
 [SerializationType] INTEGER NOT NULL
 )",
-		            //@""
+		            @"
+CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
+SemanticDomain, 
+ObjectType, 
+ObjectID
+)"
 		        };
 		    }
 

@@ -68,6 +68,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallPayments_SQLite.designer.cs">
       <Link>TheBall.Payments\TheBallPayments_SQLite.designer.cs</Link>
     </Compile>
+    <Compile Include="FileSystemSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
