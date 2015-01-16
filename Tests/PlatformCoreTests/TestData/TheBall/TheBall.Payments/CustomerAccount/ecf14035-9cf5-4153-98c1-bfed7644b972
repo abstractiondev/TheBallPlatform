@@ -1,0 +1,13 @@
+﻿<CustomerAccount xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/TheBall.Payments">
+  <ActivePlans xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" i:nil="true" />
+  <Description i:nil="true" />
+  <EmailAddress i:nil="true" />
+  <GeneratedByProcessID i:nil="true" />
+  <ID>ecf14035-9cf5-4153-98c1-bfed7644b972</ID>
+  <MasterETag i:nil="true" />
+  <Name>CustomerAccount</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <RelativeLocation>grp/e370760e-fde1-47e6-81ce-bc5ec12f6eff/TheBall.Payments/CustomerAccount/ecf14035-9cf5-4153-98c1-bfed7644b972</RelativeLocation>
+  <SemanticDomainName>TheBall.Payments</SemanticDomainName>
+  <StripeID>cus_5IG8UymaRx5kQ9</StripeID>
+</CustomerAccount>

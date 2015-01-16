@@ -92,6 +92,8 @@
   <ItemGroup>
     <Compile Include="SQLiteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializationTests.cs" />
+    <Compile Include="TestSupport.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\SQLiteSupport\SQLiteSupport.csproj">
@@ -102,7 +104,15 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="TestData\TheBall\TheBall.Payments\CustomerAccountCollection\MasterCollection" />
+    <None Include="TestData\TheBall\TheBall.Payments\CustomerAccountCollection\MasterCollection.json" />
+    <None Include="TestData\TheBall\TheBall.Payments\CustomerAccount\ecf14035-9cf5-4153-98c1-bfed7644b972" />
+    <None Include="TestData\TheBall\TheBall.Payments\CustomerAccount\ecf14035-9cf5-4153-98c1-bfed7644b972.json" />
+    <None Include="TestData\TheBall\TheBall.Payments\CustomerCollection\MasterCollection" />
+    <None Include="TestData\TheBall\TheBall.Payments\GroupSubscriptionPlanCollection\MasterCollection" />
+    <None Include="TestData\TheBall\TheBall.Payments\GroupSubscriptionPlanCollection\MasterCollection.json" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -130,6 +140,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\System.Data.SQLite.Core.1.0.94.0\build\net40\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Data.SQLite.Core.1.0.94.0\build\net40\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /S "$(ProjectDir)TestData\*" "$(TargetDir)TestData\"
+</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

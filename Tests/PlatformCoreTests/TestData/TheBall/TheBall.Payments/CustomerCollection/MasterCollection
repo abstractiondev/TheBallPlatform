@@ -1,0 +1,12 @@
+﻿<CustomerCollection xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/TheBall.Payments">
+  <CollectionContent />
+  <GeneratedByProcessID i:nil="true" />
+  <ID>fb15a793-c8ab-4773-9f7e-f93776607583</ID>
+  <IsCollectionFiltered>false</IsCollectionFiltered>
+  <MasterETag i:nil="true" />
+  <Name>CustomerCollection</Name>
+  <OrderFilterIDList xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <RelativeLocation>grp/e370760e-fde1-47e6-81ce-bc5ec12f6eff/TheBall.Payments/CustomerCollection/MasterCollection</RelativeLocation>
+  <SemanticDomainName>TheBall.Payments</SemanticDomainName>
+</CustomerCollection>
