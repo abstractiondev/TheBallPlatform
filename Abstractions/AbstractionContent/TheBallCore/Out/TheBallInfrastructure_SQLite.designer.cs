@@ -51,7 +51,9 @@ namespace SQLite.TheBall.Infrastructure {
 			[Column]
 			public long FileLength { get; set; }
 			[Column]
-			public int SerializationType { get; set; }
+			public SerializationType SerializationType { get; set; }
+
+            public ChangeAction CurrentChangeAction { get; set; }
 		}
 
 
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [MD5] TEXT NOT NULL,
 [LastWriteTime] TEXT NOT NULL,
 [FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
+[SerializationType] INTEGER NOT NULL,
 )",
 		            @"
 CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
