@@ -499,7 +499,7 @@ namespace WebInterface
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = String.Format("/C net use X: \\{0}.file.core.windows.net\tbcore /u:{0} {1}",
+                startInfo.Arguments = String.Format("/C net use X: \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
                     shareAndUserName, shareKeyName);
 
                 process.StartInfo = startInfo;
