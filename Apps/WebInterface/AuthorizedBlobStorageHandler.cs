@@ -526,8 +526,6 @@ namespace WebInterface
                 catch // very silent
                 {
                     performYMount();
-                    if (!Directory.Exists(dbDirectory))
-                        Directory.CreateDirectory(dbDirectory);
                 }
                 string dbName = dbDirectory + "\\Intermediate.sqlite";
                 using (
