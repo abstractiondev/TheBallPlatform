@@ -385,47 +385,11 @@ namespace WebInterface
                 bool redirectAfter = HandleOwnerClientTemplatePOST(containerOwner, request);
                 bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
                                        containerOwner.LocationPrefix == InstanceConfiguration.PaymentsGroupID;
-                try
+                if (isPaymentsGroup)
                 {
-                    string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                    if(!Directory.Exists(dbDirectory))
-                        Directory.CreateDirectory(dbDirectory);
-                    string dbName = dbDirectory + "\\Intermediate.sqlite";
-                    using (var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName))
-                    {
-                        string ownerRootPath = StorageSupport.GetOwnerRootAddress(containerOwner);
-                        bool anyChangesApplied = SQLiteSync.ApplyStorageChangesToSQLiteDB(ownerRootPath, dbContext, rootPath =>
-                        {
-                            var blobListing = containerOwner.GetOwnerBlobListing("TheBall.Payments", true);
-                            List<InformationObjectMetaData> metaDatas = new List<InformationObjectMetaData>();
-                            foreach (CloudBlockBlob blob in blobListing)
-                            {
-                                if (Path.GetExtension(blob.Name) != String.Empty)
-                                    continue;
-                                var nameComponents = blob.Name.Split('/');
-                                string objectID = nameComponents[nameComponents.Length - 1];
-                                string objectType = nameComponents[nameComponents.Length - 2];
-                                string semanticDomain = nameComponents[nameComponents.Length - 3];
-                                var metaData = new InformationObjectMetaData
-                                {
-                                    CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
-                                    FileLength =  blob.Properties.Length,
-                                    LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
-                                    MD5 = blob.Properties.ContentMD5,
-                                    SemanticDomain = semanticDomain,
-                                    ObjectType = objectType,
-                                    ObjectID = objectID
-                                };
-                                metaDatas.Add(metaData);
-                            }
-                            return metaDatas.ToArray();
-                        });
-                    }
+                    SQLiteSyncOwnerData(containerOwner);
                 }
-                catch // Quiet regardless of what
-                {
-                    
-                }
+
                 return redirectAfter;
             }
 
@@ -518,6 +482,55 @@ namespace WebInterface
 
             return true;
 #endif
+        }
+
+        private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)
+        {
+            try
+            {
+                string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" +
+                                     containerOwner.LocationPrefix;
+                if (!Directory.Exists(dbDirectory))
+                    Directory.CreateDirectory(dbDirectory);
+                string dbName = dbDirectory + "\\Intermediate.sqlite";
+                using (
+                    var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName)
+                    )
+                {
+                    string ownerRootPath = StorageSupport.GetOwnerRootAddress(containerOwner);
+                    bool anyChangesApplied = SQLiteSync.ApplyStorageChangesToSQLiteDB(ownerRootPath, dbContext,
+                        rootPath =>
+                        {
+                            var blobListing = containerOwner.GetOwnerBlobListing("TheBall.Payments", true);
+                            List<InformationObjectMetaData> metaDatas = new List<InformationObjectMetaData>();
+                            foreach (CloudBlockBlob blob in blobListing)
+                            {
+                                if (Path.GetExtension(blob.Name) != String.Empty)
+                                    continue;
+                                var nameComponents = blob.Name.Split('/');
+                                string objectID = nameComponents[nameComponents.Length - 1];
+                                string objectType = nameComponents[nameComponents.Length - 2];
+                                string semanticDomain = nameComponents[nameComponents.Length - 3];
+                                var metaData = new InformationObjectMetaData
+                                {
+                                    CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
+                                    FileLength = blob.Properties.Length,
+                                    LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
+                                    MD5 = blob.Properties.ContentMD5,
+                                    SemanticDomain = semanticDomain,
+                                    ObjectType = objectType,
+                                    ObjectID = objectID
+                                };
+                                metaDatas.Add(metaData);
+                            }
+                            return metaDatas.ToArray();
+                        });
+                }
+            }
+            catch // Quiet regardless of what
+            {
+                throw;
+            }
         }
 
         private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
