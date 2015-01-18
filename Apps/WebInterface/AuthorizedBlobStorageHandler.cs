@@ -487,6 +487,8 @@ namespace WebInterface
 #endif
         }
 
+        private static bool notYetMounted = false;
+
         private static void performYMount()
         {
             NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
@@ -500,7 +502,7 @@ namespace WebInterface
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = String.Format("/C net use \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
+                startInfo.Arguments = String.Format("/C net use X: \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
                     shareAndUserName, shareKeyName);
 
                 process.StartInfo = startInfo;
@@ -517,26 +519,15 @@ namespace WebInterface
         {
             try
             {
-                //string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                string dbDirectory = @"\\theballdevfiles.file.core.windows.net\tbcore\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                try
-                {
-                    if (!Directory.Exists(dbDirectory))
-                        Directory.CreateDirectory(dbDirectory);
-                }
-                catch // very silent
+                string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
+                //string dbDirectory = @"\\theballdevfiles.file.core.windows.net\tbcore\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
+                if (!notYetMounted)
                 {
                     performYMount();
-                    try
-                    {
-                        if (!Directory.Exists(dbDirectory))
-                            Directory.CreateDirectory(dbDirectory);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception("Second time failed: " + dbDirectory, ex);
-                    }
+                    notYetMounted = true;
                 }
+                if (!Directory.Exists(dbDirectory))
+                    Directory.CreateDirectory(dbDirectory);
                 string dbName = dbDirectory + "\\Intermediate.sqlite";
                 using (
                     var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName)
