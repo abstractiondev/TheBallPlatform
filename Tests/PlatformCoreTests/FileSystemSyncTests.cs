@@ -13,6 +13,14 @@ namespace PlatformCoreTests
         private readonly string PathRoot = TestSupport.TheBallPath;
 
         [TestMethod]
+        public void VerifyFileSystemCountTest()
+        {
+            var fileEntries = FileSystemSync.GetFileInfos(PathRoot);
+            Assert.AreEqual(7, fileEntries.Length);
+        }
+
+
+        [TestMethod]
         public void GetFileSystemInfoResultsTest()
         {
             var fileEntries = FileSystemSync.GetFileInfos(PathRoot);

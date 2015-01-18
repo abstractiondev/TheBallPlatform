@@ -12,6 +12,15 @@ namespace PlatformCoreTests
         private readonly string PathRoot = TestSupport.TheBallPath;
 
         [TestMethod]
+        public void VerifyCurrentMetaDataCountTest()
+        {
+            var fileEntries = FileSystemSync.GetFileInfos(PathRoot);
+            var metaDatas = FileSystemSync.GetMetaDatas(PathRoot, fileEntries);
+            var datasToAdd = MetaDataSync.ApplyChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
+            Assert.AreEqual(4, datasToAdd.Length);
+        }
+
+        [TestMethod]
         public void GetCurrentFileSystemSyncsAsInsertsTest()
         {
             var fileEntries = FileSystemSync.GetFileInfos(PathRoot);

@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [MD5] TEXT NOT NULL,
 [LastWriteTime] TEXT NOT NULL,
 [FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL,
+[SerializationType] INTEGER NOT NULL
 )",
 		            @"
 CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
