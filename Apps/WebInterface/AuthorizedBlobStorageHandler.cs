@@ -492,14 +492,15 @@ namespace WebInterface
             NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
             string shareAndUserName = settings.Get("FileShareName");
             string shareKeyName = settings.Get("FileShareKey");
-
+            if(String.IsNullOrEmpty(shareAndUserName) || String.IsNullOrEmpty(shareKeyName))
+                throw new InvalidDataException("Missing required configuration data");
             try
             {
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 startInfo.FileName = "cmd.exe";
-                startInfo.Arguments = String.Format("/C net use X: \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
+                startInfo.Arguments = String.Format("/C net use \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
                     shareAndUserName, shareKeyName);
 
                 process.StartInfo = startInfo;
@@ -516,8 +517,8 @@ namespace WebInterface
         {
             try
             {
-                string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" +
-                                     containerOwner.LocationPrefix;
+                //string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
+                string dbDirectory = @"\\theballdevfiles.file.core.windows.net\tbcore\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
                 try
                 {
                     if (!Directory.Exists(dbDirectory))
@@ -526,6 +527,15 @@ namespace WebInterface
                 catch // very silent
                 {
                     performYMount();
+                    try
+                    {
+                        if (!Directory.Exists(dbDirectory))
+                            Directory.CreateDirectory(dbDirectory);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Second time failed: " + dbDirectory, ex);
+                    }
                 }
                 string dbName = dbDirectory + "\\Intermediate.sqlite";
                 using (
