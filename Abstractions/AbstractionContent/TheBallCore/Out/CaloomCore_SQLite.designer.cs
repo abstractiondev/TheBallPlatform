@@ -27,6 +27,23 @@ namespace SQLite.Caloom.CORE {
 
 		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
+            // Track whether Dispose has been called. 
+            private bool disposed = false;
+		    protected override void Dispose(bool disposing)
+		    {
+		        if (disposed)
+		            return;
+                base.Dispose(disposing);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+		        disposed = true;
+		    }
+
+		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
+		    {
+		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
+                return new TheBallDataContext(connection);
+		    }
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {

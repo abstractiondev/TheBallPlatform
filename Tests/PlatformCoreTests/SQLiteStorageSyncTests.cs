@@ -1,5 +1,7 @@
+using System;
 using System.Data.Linq;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLite.TheBall.Payments;
@@ -13,18 +15,24 @@ namespace PlatformCoreTests
         private readonly string PathRoot = TestSupport.TheBallPath;
 
         private SQLite.TheBall.Payments.TheBallDataContext CurrentContext;
+        private string CurrentDBFileName;
 
         [TestInitialize]
         public void SetupForTest()
         {
-            CurrentContext = new TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
+            CurrentDBFileName = Path.GetTempFileName();
+            //CurrentDBFileName = ":memory:";
+            CurrentContext = TheBallDataContext.CreateOrAttachToExistingDB(CurrentDBFileName);
             CurrentContext.CreateDomainDatabaseTablesIfNotExists();
         }
 
         [TestCleanup]
         public void TearDownForTest()
         {
+            CurrentContext.Dispose();
             CurrentContext = null;
+            if(CurrentDBFileName != ":memory:")
+                File.Delete(CurrentDBFileName);
         }
 
         [TestMethod]
