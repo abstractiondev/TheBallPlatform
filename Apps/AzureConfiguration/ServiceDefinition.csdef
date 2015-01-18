@@ -39,7 +39,16 @@
   </WorkerRole>
   <WebRole name="TheBallWebFarm" vmsize="ExtraSmall">
     <Startup>
-      <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple" />
+      <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="CoreFileShareAccountName">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountName']/@value" />
+          </Variable>
+          <Variable name="CoreFileShareAccountKey">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountKey']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
     </Startup>
     <Runtime executionContext="elevated" />
     <Sites>
@@ -69,6 +78,8 @@
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
     <ConfigurationSettings>
+      <Setting name="CoreFileShareAccountName" />
+      <Setting name="CoreFileShareAccountKey" />
       <Setting name="DataConnectionString" />
       <Setting name="StorageConnectionString" />
       <Setting name="SyncEnabled" />

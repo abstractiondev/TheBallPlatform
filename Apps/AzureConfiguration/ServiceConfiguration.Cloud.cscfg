@@ -24,6 +24,8 @@
   <Role name="TheBallWebFarm">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="CoreFileShareAccountName" value=""/>
+      <Setting name="CoreFileShareAccountKey" value=""/>
       <Setting name="StorageConnectionString" value="" />
       <Setting name="DataConnectionString" value="" />
       <Setting name="AmazonSESAccessInfo" value="" />
