@@ -490,8 +490,15 @@ namespace WebInterface
             {
                 string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" +
                                      containerOwner.LocationPrefix;
-                if (!Directory.Exists(dbDirectory))
-                    Directory.CreateDirectory(dbDirectory);
+                try
+                {
+                    if (!Directory.Exists(dbDirectory))
+                        Directory.CreateDirectory(dbDirectory);
+                }
+                catch // very silent
+                {
+                    
+                }
                 string dbName = dbDirectory + "\\Intermediate.sqlite";
                 using (
                     var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName)
