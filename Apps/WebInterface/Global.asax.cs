@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
@@ -26,6 +27,15 @@ namespace WebInterface
             NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
             string stripeApiKey = settings.Get("StripeSecretKey");
             StripeConfiguration.SetApiKey(stripeApiKey);
+            var xmlBOMString = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            SQLiteSupport.ContentStorage.GetContentAsStringFunc = blobName =>
+            {
+                var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, blobName);
+                var text = blob.DownloadText();
+                if (text.StartsWith(xmlBOMString))
+                    text = text.Substring(xmlBOMString.Length);
+                return text;
+            };
         }
 
         protected void Session_Start(object sender, EventArgs e)

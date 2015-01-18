@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [SerializationType] INTEGER NOT NULL
 )",
                 @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
+CREATE UNIQUE INDEX IF NOT EXISTS ObjectIX ON InformationObjectMetaData (
 SemanticDomain, 
 ObjectType, 
 ObjectID

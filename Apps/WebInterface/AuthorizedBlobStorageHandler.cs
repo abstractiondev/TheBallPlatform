@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,7 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using SecuritySupport;
+using SQLiteSupport;
 using TheBall;
 using TheBall.CORE;
 
@@ -364,7 +366,8 @@ namespace WebInterface
                 string operationName = request.Params["operation"];
                 
                 Type operationType = TypeSupport.GetTypeByName(operationName);
-                if (operationType.Namespace == "TheBall.Payments")
+                bool isPaymentsOperation = operationType.Namespace == "TheBall.Payments";
+                if (isPaymentsOperation)
                 {
                     InformationContext.Current.Owner =
                         VirtualOwner.FigureOwner("grp/" + InstanceConfiguration.PaymentsGroupID);
@@ -380,6 +383,49 @@ namespace WebInterface
             if(isClientTemplateRequest)
             {
                 bool redirectAfter = HandleOwnerClientTemplatePOST(containerOwner, request);
+                bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
+                                       containerOwner.LocationPrefix == InstanceConfiguration.PaymentsGroupID;
+                try
+                {
+                    string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
+                    if(!Directory.Exists(dbDirectory))
+                        Directory.CreateDirectory(dbDirectory);
+                    string dbName = dbDirectory + "\\Intermediate.sqlite";
+                    using (var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName))
+                    {
+                        string ownerRootPath = StorageSupport.GetOwnerRootAddress(containerOwner);
+                        bool anyChangesApplied = SQLiteSync.ApplyStorageChangesToSQLiteDB(ownerRootPath, dbContext, rootPath =>
+                        {
+                            var blobListing = containerOwner.GetOwnerBlobListing("TheBall.Payments", true);
+                            List<InformationObjectMetaData> metaDatas = new List<InformationObjectMetaData>();
+                            foreach (CloudBlockBlob blob in blobListing)
+                            {
+                                if (Path.GetExtension(blob.Name) != String.Empty)
+                                    continue;
+                                var nameComponents = blob.Name.Split('/');
+                                string objectID = nameComponents[nameComponents.Length - 1];
+                                string objectType = nameComponents[nameComponents.Length - 2];
+                                string semanticDomain = nameComponents[nameComponents.Length - 3];
+                                var metaData = new InformationObjectMetaData
+                                {
+                                    CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
+                                    FileLength =  blob.Properties.Length,
+                                    LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
+                                    MD5 = blob.Properties.ContentMD5,
+                                    SemanticDomain = semanticDomain,
+                                    ObjectType = objectType,
+                                    ObjectID = objectID
+                                };
+                                metaDatas.Add(metaData);
+                            }
+                            return metaDatas.ToArray();
+                        });
+                    }
+                }
+                catch // Quiet regardless of what
+                {
+                    
+                }
                 return redirectAfter;
             }
 
