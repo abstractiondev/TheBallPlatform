@@ -16,7 +16,7 @@ namespace SQLiteSupport
         /// <param name="currentDatas">Current datas</param>
         /// <param name="existingDatas">Existing datas</param>
         /// <returns>Datas to add (= datas in current data, that don't yet exist in existing data)</returns>
-        public static InformationObjectMetaData[] ApplyChangeActionsToExistingData(InformationObjectMetaData[] currentDatas,
+        public static InformationObjectMetaData[] UpdatePendingChangeActionsToExistingData(InformationObjectMetaData[] currentDatas,
             InformationObjectMetaData[] existingDatas)
         {
             // initially set all processing to delete, thus only visited objects get changeaction changed to something else
@@ -63,6 +63,34 @@ namespace SQLiteSupport
         private static string getMetaDataKey(InformationObjectMetaData item)
         {
             return string.Format("{0}/{1}/{2}", item.SemanticDomain, item.ObjectType, item.ObjectID);
+        }
+
+        public static bool ApplyChangeActionsToExistingData(InformationObjectMetaData[] currentDatas, InformationObjectMetaData[] existingDatas, 
+            Action<InformationObjectMetaData> insertAction, Action<InformationObjectMetaData> updateAction, Action<InformationObjectMetaData> deleteAction)
+        {
+            var pendingInserts = UpdatePendingChangeActionsToExistingData(currentDatas, existingDatas);
+            var allChanges =
+                existingDatas.Where(item => item.CurrentChangeAction != ChangeAction.None)
+                    .Concat(pendingInserts)
+                    .ToArray();
+            bool anyChanges = allChanges.Length > 0;
+            foreach (var change in allChanges)
+            {
+                switch (change.CurrentChangeAction)
+                {
+                    case ChangeAction.Insert:
+                        insertAction(change);
+                        break;
+                    case ChangeAction.Update:
+                        updateAction(change);
+                        break;
+                    case ChangeAction.Delete:
+                        deleteAction(change);
+                        break;
+                }
+                change.CurrentChangeAction = ChangeAction.None;
+            }
+            return anyChanges;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace PlatformCoreTests
         {
             var fileEntries = FileSystemSync.GetFileInfos(PathRoot);
             var metaDatas = FileSystemSync.GetMetaDatas(PathRoot, fileEntries);
-            var datasToAdd = MetaDataSync.ApplyChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
+            var datasToAdd = MetaDataSync.UpdatePendingChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
             Assert.AreEqual(4, datasToAdd.Length);
         }
 
@@ -25,7 +25,7 @@ namespace PlatformCoreTests
         {
             var fileEntries = FileSystemSync.GetFileInfos(PathRoot);
             var metaDatas = FileSystemSync.GetMetaDatas(PathRoot, fileEntries);
-            var datasToAdd = MetaDataSync.ApplyChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
+            var datasToAdd = MetaDataSync.UpdatePendingChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
             Assert.IsTrue(metaDatas.SequenceEqual(datasToAdd));
         }
 
@@ -34,8 +34,8 @@ namespace PlatformCoreTests
         {
             var fileEntries = FileSystemSync.GetFileInfos(PathRoot);
             var metaDatas = FileSystemSync.GetMetaDatas(PathRoot, fileEntries);
-            var datasToAdd = MetaDataSync.ApplyChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
-            var newDatasToAdd = MetaDataSync.ApplyChangeActionsToExistingData(metaDatas, metaDatas);
+            var datasToAdd = MetaDataSync.UpdatePendingChangeActionsToExistingData(metaDatas, new InformationObjectMetaData[0]);
+            var newDatasToAdd = MetaDataSync.UpdatePendingChangeActionsToExistingData(metaDatas, metaDatas);
             Assert.AreEqual(0, newDatasToAdd.Length);
             Assert.IsTrue(metaDatas.All(metaData => metaData.CurrentChangeAction == ChangeAction.None));
         }
