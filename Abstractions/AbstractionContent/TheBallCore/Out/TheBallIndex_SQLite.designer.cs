@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using SQLiteSupport;
+
 
 namespace SQLite.TheBall.Index { 
 		
@@ -23,67 +25,8 @@ namespace SQLite.TheBall.Index {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		[Flags]
-		public enum SerializationType 
+		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
-			Undefined = 0,
-			XML = 1,
-			JSON = 2,
-			XML_AND_JSON = XML | JSON
-		}
-
-		[Table]
-		public class InformationObjectMetaData
-		{
-			[Column(IsPrimaryKey = true)]
-			public string ID { get; set; }
-
-			[Column]
-			public string SemanticDomain { get; set; }
-			[Column]
-			public string ObjectType { get; set; }
-			[Column]
-			public string ObjectID { get; set; }
-			[Column]
-			public string MD5 { get; set; }
-			[Column]
-			public string LastWriteTime { get; set; }
-			[Column]
-			public long FileLength { get; set; }
-			[Column]
-			public SerializationType SerializationType { get; set; }
-
-            public ChangeAction CurrentChangeAction { get; set; }
-		}
-
-
-		public class TheBallDataContext : DataContext
-		{
-
-		    public static string[] GetMetaDataTableCreateSQLs()
-		    {
-		        return new string[]
-		        {
-		            @"
-CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticDomain] TEXT NOT NULL, 
-[ObjectType] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL,
-[MD5] TEXT NOT NULL,
-[LastWriteTime] TEXT NOT NULL,
-[FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
-)",
-		            @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
-SemanticDomain, 
-ObjectType, 
-ObjectID
-)"
-		        };
-		    }
-
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
@@ -106,7 +49,7 @@ ObjectID
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
-                tableCreationCommands.AddRange(GetMetaDataTableCreateSQLs());
+                tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(IndexingRequest.GetCreateTableSQL());
 				tableCreationCommands.Add(QueryRequest.GetCreateTableSQL());
 				tableCreationCommands.Add(QueryResultItem.GetCreateTableSQL());
@@ -125,6 +68,135 @@ ObjectID
 					return this.GetTable<InformationObjectMetaData>();
 				}
 			}
+
+			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "IndexingRequest")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.IndexingRequest.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.IndexName = serializedObject.IndexName;
+                    existingObject.ObjectLocations.Clear();
+					if(serializedObject.ObjectLocations != null)
+	                    serializedObject.ObjectLocations.ForEach(item => existingObject.ObjectLocations.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "QueryRequest")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.QueryRequest.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.QueryString = serializedObject.QueryString;
+		            existingObject.DefaultFieldName = serializedObject.DefaultFieldName;
+		            existingObject.IndexName = serializedObject.IndexName;
+		            existingObject.IsQueryCompleted = serializedObject.IsQueryCompleted;
+		            existingObject.LastRequestTime = serializedObject.LastRequestTime;
+		            existingObject.LastCompletionTime = serializedObject.LastCompletionTime;
+		            existingObject.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+                    existingObject.QueryResultObjects.Clear();
+					if(serializedObject.QueryResultObjects != null)
+	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "QueryResultItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.QueryResultItem.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
+		            existingObject.ObjectName = serializedObject.ObjectName;
+		            existingObject.ObjectID = serializedObject.ObjectID;
+		            existingObject.Rank = serializedObject.Rank;
+		            return;
+		        } 
+		    }
+
+		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "IndexingRequest")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.IndexingRequest.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new IndexingRequest {ID = insertData.ObjectID};
+		            objectToAdd.IndexName = serializedObject.IndexName;
+					if(serializedObject.ObjectLocations != null)
+						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
+					IndexingRequestTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "QueryRequest")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.QueryRequest.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new QueryRequest {ID = insertData.ObjectID};
+		            objectToAdd.QueryString = serializedObject.QueryString;
+		            objectToAdd.DefaultFieldName = serializedObject.DefaultFieldName;
+		            objectToAdd.IndexName = serializedObject.IndexName;
+		            objectToAdd.IsQueryCompleted = serializedObject.IsQueryCompleted;
+		            objectToAdd.LastRequestTime = serializedObject.LastRequestTime;
+		            objectToAdd.LastCompletionTime = serializedObject.LastCompletionTime;
+		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+					if(serializedObject.QueryResultObjects != null)
+						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
+					QueryRequestTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "QueryResultItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.QueryResultItem.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new QueryResultItem {ID = insertData.ObjectID};
+		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;
+		            objectToAdd.ObjectName = serializedObject.ObjectName;
+		            objectToAdd.ObjectID = serializedObject.ObjectID;
+		            objectToAdd.Rank = serializedObject.Rank;
+					QueryResultItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
+		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "IndexingRequest")
+		        {
+                    IndexingRequestTable.DeleteOnSubmit(new IndexingRequest { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "QueryRequest")
+		        {
+                    QueryRequestTable.DeleteOnSubmit(new QueryRequest { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "QueryResultItem")
+		        {
+                    QueryResultItemTable.DeleteOnSubmit(new QueryResultItem { ID = deleteData.ObjectID });
+		            return;
+		        }
+		    }
+
 
 			public Table<IndexingRequest> IndexingRequestTable {
 				get {
@@ -211,6 +283,8 @@ CREATE TABLE IF NOT EXISTS IndexingRequest(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(IndexName == null)
+				IndexName = string.Empty;
             if (_IsObjectLocationsChanged || isInitialInsert)
             {
                 var dataToStore = ObjectLocations.ToArray();
@@ -317,6 +391,12 @@ CREATE TABLE IF NOT EXISTS QueryRequest(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(QueryString == null)
+				QueryString = string.Empty;
+			if(DefaultFieldName == null)
+				DefaultFieldName = string.Empty;
+			if(IndexName == null)
+				IndexName = string.Empty;
             if (_IsQueryResultObjectsChanged || isInitialInsert)
             {
                 var dataToStore = QueryResultObjects.ToArray();
@@ -364,6 +444,12 @@ CREATE TABLE IF NOT EXISTS QueryResultItem(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ObjectDomainName == null)
+				ObjectDomainName = string.Empty;
+			if(ObjectName == null)
+				ObjectName = string.Empty;
+			if(ObjectID == null)
+				ObjectID = string.Empty;
 		}
 	}
  } 

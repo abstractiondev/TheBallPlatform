@@ -69,8 +69,11 @@
       <Link>TheBall.Payments\TheBallPayments_SQLite.designer.cs</Link>
     </Compile>
     <Compile Include="FileSystemSync.cs" />
+    <Compile Include="InformationObjectMetaData.cs" />
     <Compile Include="MetaDataSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLiteSync.cs" />
+    <Compile Include="ContentStorage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

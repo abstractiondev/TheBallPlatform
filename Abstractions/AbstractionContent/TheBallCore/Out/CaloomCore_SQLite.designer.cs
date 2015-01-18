@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using SQLiteSupport;
+
 
 namespace SQLite.Caloom.CORE { 
 		
@@ -23,67 +25,8 @@ namespace SQLite.Caloom.CORE {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		[Flags]
-		public enum SerializationType 
+		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
-			Undefined = 0,
-			XML = 1,
-			JSON = 2,
-			XML_AND_JSON = XML | JSON
-		}
-
-		[Table]
-		public class InformationObjectMetaData
-		{
-			[Column(IsPrimaryKey = true)]
-			public string ID { get; set; }
-
-			[Column]
-			public string SemanticDomain { get; set; }
-			[Column]
-			public string ObjectType { get; set; }
-			[Column]
-			public string ObjectID { get; set; }
-			[Column]
-			public string MD5 { get; set; }
-			[Column]
-			public string LastWriteTime { get; set; }
-			[Column]
-			public long FileLength { get; set; }
-			[Column]
-			public SerializationType SerializationType { get; set; }
-
-            public ChangeAction CurrentChangeAction { get; set; }
-		}
-
-
-		public class TheBallDataContext : DataContext
-		{
-
-		    public static string[] GetMetaDataTableCreateSQLs()
-		    {
-		        return new string[]
-		        {
-		            @"
-CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticDomain] TEXT NOT NULL, 
-[ObjectType] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL,
-[MD5] TEXT NOT NULL,
-[LastWriteTime] TEXT NOT NULL,
-[FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
-)",
-		            @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
-SemanticDomain, 
-ObjectType, 
-ObjectID
-)"
-		        };
-		    }
-
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
@@ -106,7 +49,7 @@ ObjectID
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
-                tableCreationCommands.AddRange(GetMetaDataTableCreateSQLs());
+                tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(Who.GetCreateTableSQL());
 				tableCreationCommands.Add(ProductForWhom.GetCreateTableSQL());
 				tableCreationCommands.Add(Product.GetCreateTableSQL());
@@ -129,6 +72,257 @@ ObjectID
 					return this.GetTable<InformationObjectMetaData>();
 				}
 			}
+
+			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "Who")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.Who.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = WhoTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.Description = serializedObject.Description;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ProductForWhom")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.ProductForWhom.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ProductForWhomTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.Product = serializedObject.Product;
+		            existingObject.Who = serializedObject.Who;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Product")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.Product.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ProductTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.SubProducts = serializedObject.SubProducts;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ProductUsage")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.ProductUsage.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.Product = serializedObject.Product;
+		            existingObject.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "NodeSummaryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.Nodes = serializedObject.Nodes;
+		            existingObject.NodeSourceProducts = serializedObject.NodeSourceProducts;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "RenderedNode")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.ActualContentUrl = serializedObject.ActualContentUrl;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.TimestampText = serializedObject.TimestampText;
+		            existingObject.MainSortableText = serializedObject.MainSortableText;
+		            existingObject.Categories = serializedObject.Categories;
+		            existingObject.Authors = serializedObject.Authors;
+		            existingObject.Locations = serializedObject.Locations;
+		            existingObject.Filters = serializedObject.Filters;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ShortTextObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.Content = serializedObject.Content;
+		            return;
+		        } 
+		    }
+
+		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "Who")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.Who.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Who {ID = insertData.ObjectID};
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.Description = serializedObject.Description;
+					WhoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ProductForWhom")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.ProductForWhom.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new ProductForWhom {ID = insertData.ObjectID};
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.Product = serializedObject.Product;
+		            objectToAdd.Who = serializedObject.Who;
+					ProductForWhomTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Product")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.Product.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Product {ID = insertData.ObjectID};
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.SubProducts = serializedObject.SubProducts;
+					ProductTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ProductUsage")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.ProductUsage.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new ProductUsage {ID = insertData.ObjectID};
+		            objectToAdd.Product = serializedObject.Product;
+		            objectToAdd.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
+					ProductUsageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "NodeSummaryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID};
+		            objectToAdd.Nodes = serializedObject.Nodes;
+		            objectToAdd.NodeSourceProducts = serializedObject.NodeSourceProducts;
+					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "RenderedNode")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
+		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.ActualContentUrl = serializedObject.ActualContentUrl;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.TimestampText = serializedObject.TimestampText;
+		            objectToAdd.MainSortableText = serializedObject.MainSortableText;
+		            objectToAdd.Categories = serializedObject.Categories;
+		            objectToAdd.Authors = serializedObject.Authors;
+		            objectToAdd.Locations = serializedObject.Locations;
+		            objectToAdd.Filters = serializedObject.Filters;
+					RenderedNodeTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ShortTextObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
+		            objectToAdd.Content = serializedObject.Content;
+					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
+		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "Who")
+		        {
+                    WhoTable.DeleteOnSubmit(new Who { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ProductForWhom")
+		        {
+                    ProductForWhomTable.DeleteOnSubmit(new ProductForWhom { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Product")
+		        {
+                    ProductTable.DeleteOnSubmit(new Product { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ProductUsage")
+		        {
+                    ProductUsageTable.DeleteOnSubmit(new ProductUsage { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "NodeSummaryContainer")
+		        {
+                    NodeSummaryContainerTable.DeleteOnSubmit(new NodeSummaryContainer { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RenderedNode")
+		        {
+                    RenderedNodeTable.DeleteOnSubmit(new RenderedNode { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ShortTextObject")
+		        {
+                    ShortTextObjectTable.DeleteOnSubmit(new ShortTextObject { ID = deleteData.ObjectID });
+		            return;
+		        }
+		    }
+
 
 			public Table<Who> WhoTable {
 				get {
@@ -206,6 +400,14 @@ CREATE TABLE IF NOT EXISTS Who(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ImageBaseUrl == null)
+				ImageBaseUrl = string.Empty;
+			if(Title == null)
+				Title = string.Empty;
+			if(Excerpt == null)
+				Excerpt = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
 		}
 	}
     [Table(Name = "ProductForWhom")]
@@ -257,6 +459,14 @@ CREATE TABLE IF NOT EXISTS ProductForWhom(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ImageBaseUrl == null)
+				ImageBaseUrl = string.Empty;
+			if(Title == null)
+				Title = string.Empty;
+			if(Excerpt == null)
+				Excerpt = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
 		}
 	}
     [Table(Name = "Product")]
@@ -303,6 +513,14 @@ CREATE TABLE IF NOT EXISTS Product(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ImageBaseUrl == null)
+				ImageBaseUrl = string.Empty;
+			if(Title == null)
+				Title = string.Empty;
+			if(Excerpt == null)
+				Excerpt = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
 		}
 	}
     [Table(Name = "ProductUsage")]
@@ -441,6 +659,20 @@ CREATE TABLE IF NOT EXISTS RenderedNode(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(TechnicalSource == null)
+				TechnicalSource = string.Empty;
+			if(ImageBaseUrl == null)
+				ImageBaseUrl = string.Empty;
+			if(Title == null)
+				Title = string.Empty;
+			if(ActualContentUrl == null)
+				ActualContentUrl = string.Empty;
+			if(Excerpt == null)
+				Excerpt = string.Empty;
+			if(TimestampText == null)
+				TimestampText = string.Empty;
+			if(MainSortableText == null)
+				MainSortableText = string.Empty;
 		}
 	}
     [Table(Name = "ShortTextObject")]
@@ -467,6 +699,8 @@ CREATE TABLE IF NOT EXISTS ShortTextObject(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(Content == null)
+				Content = string.Empty;
 		}
 	}
  } 

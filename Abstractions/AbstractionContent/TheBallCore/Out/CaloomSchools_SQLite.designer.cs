@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using SQLiteSupport;
+
 
 namespace SQLite.Caloom.Schools { 
 		
@@ -23,67 +25,8 @@ namespace SQLite.Caloom.Schools {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		[Flags]
-		public enum SerializationType 
+		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
-			Undefined = 0,
-			XML = 1,
-			JSON = 2,
-			XML_AND_JSON = XML | JSON
-		}
-
-		[Table]
-		public class InformationObjectMetaData
-		{
-			[Column(IsPrimaryKey = true)]
-			public string ID { get; set; }
-
-			[Column]
-			public string SemanticDomain { get; set; }
-			[Column]
-			public string ObjectType { get; set; }
-			[Column]
-			public string ObjectID { get; set; }
-			[Column]
-			public string MD5 { get; set; }
-			[Column]
-			public string LastWriteTime { get; set; }
-			[Column]
-			public long FileLength { get; set; }
-			[Column]
-			public SerializationType SerializationType { get; set; }
-
-            public ChangeAction CurrentChangeAction { get; set; }
-		}
-
-
-		public class TheBallDataContext : DataContext
-		{
-
-		    public static string[] GetMetaDataTableCreateSQLs()
-		    {
-		        return new string[]
-		        {
-		            @"
-CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticDomain] TEXT NOT NULL, 
-[ObjectType] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL,
-[MD5] TEXT NOT NULL,
-[LastWriteTime] TEXT NOT NULL,
-[FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
-)",
-		            @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
-SemanticDomain, 
-ObjectType, 
-ObjectID
-)"
-		        };
-		    }
-
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
@@ -106,7 +49,7 @@ ObjectID
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
-                tableCreationCommands.AddRange(GetMetaDataTableCreateSQLs());
+                tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(TrainingModule.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
@@ -123,6 +66,61 @@ ObjectID
 					return this.GetTable<InformationObjectMetaData>();
 				}
 			}
+
+			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "TrainingModule")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.TrainingModule.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = TrainingModuleTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.TrainingModules = serializedObject.TrainingModules;
+		            return;
+		        } 
+		    }
+
+		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "TrainingModule")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.TrainingModule.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new TrainingModule {ID = insertData.ObjectID};
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.TrainingModules = serializedObject.TrainingModules;
+					TrainingModuleTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
+		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "TrainingModule")
+		        {
+                    TrainingModuleTable.DeleteOnSubmit(new TrainingModule { ID = deleteData.ObjectID });
+		            return;
+		        }
+		    }
+
 
 			public Table<TrainingModule> TrainingModuleTable {
 				get {
@@ -175,6 +173,14 @@ CREATE TABLE IF NOT EXISTS TrainingModule(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ImageBaseUrl == null)
+				ImageBaseUrl = string.Empty;
+			if(Title == null)
+				Title = string.Empty;
+			if(Excerpt == null)
+				Excerpt = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
 		}
 	}
  } 

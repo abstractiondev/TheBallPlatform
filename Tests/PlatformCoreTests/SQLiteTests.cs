@@ -72,6 +72,5 @@ namespace PlatformCoreTests
             Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
             Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
         }
-
     }
 }

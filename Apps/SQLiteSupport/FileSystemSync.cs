@@ -16,6 +16,12 @@ namespace SQLiteSupport
             return result;
         }
 
+        public static InformationObjectMetaData[] GetMetaDatas(string pathRoot)
+        {
+            var fileInfos = GetFileInfos(pathRoot);
+            return GetMetaDatas(pathRoot, fileInfos);
+        }
+        
         public static InformationObjectMetaData[] GetMetaDatas(string pathRoot, FileInfo[] fileInfos)
         {
             if (!pathRoot.EndsWith("\\"))
@@ -33,7 +39,8 @@ namespace SQLiteSupport
                     ObjectType = objectType,
                     ObjectID = objectID,
                     FileLength = fi.Length,
-                    LastWriteTime = fi.LastWriteTimeUtc.ToString("s")
+                    LastWriteTime = fi.LastWriteTimeUtc.ToString("s"),
+                    CurrentStoragePath = relativePath
                 };
             }).ToArray();
             return result;

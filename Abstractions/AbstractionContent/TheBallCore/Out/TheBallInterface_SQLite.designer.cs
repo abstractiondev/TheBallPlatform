@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using SQLiteSupport;
+
 
 namespace SQLite.TheBall.Interface { 
 		
@@ -23,67 +25,8 @@ namespace SQLite.TheBall.Interface {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		[Flags]
-		public enum SerializationType 
+		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
-			Undefined = 0,
-			XML = 1,
-			JSON = 2,
-			XML_AND_JSON = XML | JSON
-		}
-
-		[Table]
-		public class InformationObjectMetaData
-		{
-			[Column(IsPrimaryKey = true)]
-			public string ID { get; set; }
-
-			[Column]
-			public string SemanticDomain { get; set; }
-			[Column]
-			public string ObjectType { get; set; }
-			[Column]
-			public string ObjectID { get; set; }
-			[Column]
-			public string MD5 { get; set; }
-			[Column]
-			public string LastWriteTime { get; set; }
-			[Column]
-			public long FileLength { get; set; }
-			[Column]
-			public SerializationType SerializationType { get; set; }
-
-            public ChangeAction CurrentChangeAction { get; set; }
-		}
-
-
-		public class TheBallDataContext : DataContext
-		{
-
-		    public static string[] GetMetaDataTableCreateSQLs()
-		    {
-		        return new string[]
-		        {
-		            @"
-CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticDomain] TEXT NOT NULL, 
-[ObjectType] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL,
-[MD5] TEXT NOT NULL,
-[LastWriteTime] TEXT NOT NULL,
-[FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
-)",
-		            @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
-SemanticDomain, 
-ObjectType, 
-ObjectID
-)"
-		        };
-		    }
-
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
@@ -106,7 +49,7 @@ ObjectID
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
-                tableCreationCommands.AddRange(GetMetaDataTableCreateSQLs());
+                tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(WizardContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(WizardTask.GetCreateTableSQL());
 				tableCreationCommands.Add(Connection.GetCreateTableSQL());
@@ -134,6 +77,517 @@ ObjectID
 					return this.GetTable<InformationObjectMetaData>();
 				}
 			}
+
+			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "WizardContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.WizardContainer.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = WizardContainerTable.Single(item => item.ID == updateData.ObjectID);
+                    existingObject.ActiveTasks.Clear();
+					if(serializedObject.ActiveTasks != null)
+	                    serializedObject.ActiveTasks.ForEach(item => existingObject.ActiveTasks.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "WizardTask")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.WizardTask.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = WizardTaskTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.TaskName = serializedObject.TaskName;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.InputType = serializedObject.InputType;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Connection")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.Connection.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ConnectionTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.OutputInformationID = serializedObject.OutputInformationID;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.DeviceID = serializedObject.DeviceID;
+		            existingObject.IsActiveParty = serializedObject.IsActiveParty;
+		            existingObject.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+                    existingObject.ThisSideCategories.Clear();
+					if(serializedObject.ThisSideCategories != null)
+	                    serializedObject.ThisSideCategories.ForEach(item => existingObject.ThisSideCategories.Add(item));
+					
+                    existingObject.OtherSideCategories.Clear();
+					if(serializedObject.OtherSideCategories != null)
+	                    serializedObject.OtherSideCategories.ForEach(item => existingObject.OtherSideCategories.Add(item));
+					
+                    existingObject.CategoryLinks.Clear();
+					if(serializedObject.CategoryLinks != null)
+	                    serializedObject.CategoryLinks.ForEach(item => existingObject.CategoryLinks.Add(item));
+					
+                    existingObject.IncomingPackages.Clear();
+					if(serializedObject.IncomingPackages != null)
+	                    serializedObject.IncomingPackages.ForEach(item => existingObject.IncomingPackages.Add(item));
+					
+                    existingObject.OutgoingPackages.Clear();
+					if(serializedObject.OutgoingPackages != null)
+	                    serializedObject.OutgoingPackages.ForEach(item => existingObject.OutgoingPackages.Add(item));
+					
+		            existingObject.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
+		            existingObject.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
+		            existingObject.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
+		            existingObject.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
+		            existingObject.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
+		            existingObject.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TransferPackage")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.TransferPackage.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = TransferPackageTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ConnectionID = serializedObject.ConnectionID;
+		            existingObject.PackageDirection = serializedObject.PackageDirection;
+		            existingObject.PackageType = serializedObject.PackageType;
+		            existingObject.IsProcessed = serializedObject.IsProcessed;
+                    existingObject.PackageContentBlobs.Clear();
+					if(serializedObject.PackageContentBlobs != null)
+	                    serializedObject.PackageContentBlobs.ForEach(item => existingObject.PackageContentBlobs.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CategoryLink")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.CategoryLink.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = CategoryLinkTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
+		            existingObject.TargetCategoryID = serializedObject.TargetCategoryID;
+		            existingObject.LinkingType = serializedObject.LinkingType;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Category")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.Category.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.NativeCategoryID = serializedObject.NativeCategoryID;
+		            existingObject.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
+		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
+		            existingObject.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
+		            existingObject.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
+		            existingObject.ParentCategoryID = serializedObject.ParentCategoryID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "StatusSummary")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.StatusSummary.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
+                    existingObject.PendingOperations.Clear();
+					if(serializedObject.PendingOperations != null)
+	                    serializedObject.PendingOperations.ForEach(item => existingObject.PendingOperations.Add(item));
+					
+                    existingObject.ExecutingOperations.Clear();
+					if(serializedObject.ExecutingOperations != null)
+	                    serializedObject.ExecutingOperations.ForEach(item => existingObject.ExecutingOperations.Add(item));
+					
+                    existingObject.RecentCompletedOperations.Clear();
+					if(serializedObject.RecentCompletedOperations != null)
+	                    serializedObject.RecentCompletedOperations.ForEach(item => existingObject.RecentCompletedOperations.Add(item));
+					
+                    existingObject.ChangeItemTrackingList.Clear();
+					if(serializedObject.ChangeItemTrackingList != null)
+	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "InformationChangeItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.InformationChangeItem.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = InformationChangeItemTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.StartTimeUTC = serializedObject.StartTimeUTC;
+		            existingObject.EndTimeUTC = serializedObject.EndTimeUTC;
+                    existingObject.ChangedObjectIDList.Clear();
+					if(serializedObject.ChangedObjectIDList != null)
+	                    serializedObject.ChangedObjectIDList.ForEach(item => existingObject.ChangedObjectIDList.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "OperationExecutionItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = OperationExecutionItemTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.OperationName = serializedObject.OperationName;
+		            existingObject.OperationDomain = serializedObject.OperationDomain;
+		            existingObject.OperationID = serializedObject.OperationID;
+		            existingObject.CallerProvidedInfo = serializedObject.CallerProvidedInfo;
+		            existingObject.CreationTime = serializedObject.CreationTime;
+		            existingObject.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
+		            existingObject.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
+		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericCollectionableObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ValueObject = serializedObject.ValueObject;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.GenericObject.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
+                    existingObject.Values.Clear();
+					if(serializedObject.Values != null)
+	                    serializedObject.Values.ForEach(item => existingObject.Values.Add(item));
+					
+		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
+		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericValue")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.GenericValue.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GenericValueTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.ValueName = serializedObject.ValueName;
+		            existingObject.String = serializedObject.String;
+                    existingObject.StringArray.Clear();
+					if(serializedObject.StringArray != null)
+	                    serializedObject.StringArray.ForEach(item => existingObject.StringArray.Add(item));
+					
+		            existingObject.Number = serializedObject.Number;
+                    existingObject.NumberArray.Clear();
+					if(serializedObject.NumberArray != null)
+	                    serializedObject.NumberArray.ForEach(item => existingObject.NumberArray.Add(item));
+					
+		            existingObject.Boolean = serializedObject.Boolean;
+                    existingObject.BooleanArray.Clear();
+					if(serializedObject.BooleanArray != null)
+	                    serializedObject.BooleanArray.ForEach(item => existingObject.BooleanArray.Add(item));
+					
+		            existingObject.DateTime = serializedObject.DateTime;
+                    existingObject.DateTimeArray.Clear();
+					if(serializedObject.DateTimeArray != null)
+	                    serializedObject.DateTimeArray.ForEach(item => existingObject.DateTimeArray.Add(item));
+					
+		            existingObject.Object = serializedObject.Object;
+                    existingObject.ObjectArray.Clear();
+					if(serializedObject.ObjectArray != null)
+	                    serializedObject.ObjectArray.ForEach(item => existingObject.ObjectArray.Add(item));
+					
+		            existingObject.IndexingInfo = serializedObject.IndexingInfo;
+		            return;
+		        } 
+		    }
+
+		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "WizardContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.WizardContainer.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new WizardContainer {ID = insertData.ObjectID};
+					if(serializedObject.ActiveTasks != null)
+						serializedObject.ActiveTasks.ForEach(item => objectToAdd.ActiveTasks.Add(item));
+					WizardContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "WizardTask")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.WizardTask.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new WizardTask {ID = insertData.ObjectID};
+		            objectToAdd.TaskName = serializedObject.TaskName;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.InputType = serializedObject.InputType;
+					WizardTaskTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Connection")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.Connection.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Connection {ID = insertData.ObjectID};
+		            objectToAdd.OutputInformationID = serializedObject.OutputInformationID;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.DeviceID = serializedObject.DeviceID;
+		            objectToAdd.IsActiveParty = serializedObject.IsActiveParty;
+		            objectToAdd.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+					if(serializedObject.ThisSideCategories != null)
+						serializedObject.ThisSideCategories.ForEach(item => objectToAdd.ThisSideCategories.Add(item));
+					if(serializedObject.OtherSideCategories != null)
+						serializedObject.OtherSideCategories.ForEach(item => objectToAdd.OtherSideCategories.Add(item));
+					if(serializedObject.CategoryLinks != null)
+						serializedObject.CategoryLinks.ForEach(item => objectToAdd.CategoryLinks.Add(item));
+					if(serializedObject.IncomingPackages != null)
+						serializedObject.IncomingPackages.ForEach(item => objectToAdd.IncomingPackages.Add(item));
+					if(serializedObject.OutgoingPackages != null)
+						serializedObject.OutgoingPackages.ForEach(item => objectToAdd.OutgoingPackages.Add(item));
+		            objectToAdd.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
+		            objectToAdd.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
+		            objectToAdd.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
+		            objectToAdd.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
+		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
+		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
+					ConnectionTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TransferPackage")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.TransferPackage.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new TransferPackage {ID = insertData.ObjectID};
+		            objectToAdd.ConnectionID = serializedObject.ConnectionID;
+		            objectToAdd.PackageDirection = serializedObject.PackageDirection;
+		            objectToAdd.PackageType = serializedObject.PackageType;
+		            objectToAdd.IsProcessed = serializedObject.IsProcessed;
+					if(serializedObject.PackageContentBlobs != null)
+						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
+					TransferPackageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CategoryLink")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.CategoryLink.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new CategoryLink {ID = insertData.ObjectID};
+		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
+		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
+		            objectToAdd.LinkingType = serializedObject.LinkingType;
+					CategoryLinkTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Category")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.Category.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Category {ID = insertData.ObjectID};
+		            objectToAdd.NativeCategoryID = serializedObject.NativeCategoryID;
+		            objectToAdd.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
+		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
+		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
+		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
+		            objectToAdd.ParentCategoryID = serializedObject.ParentCategoryID;
+					CategoryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "StatusSummary")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.StatusSummary.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new StatusSummary {ID = insertData.ObjectID};
+					if(serializedObject.PendingOperations != null)
+						serializedObject.PendingOperations.ForEach(item => objectToAdd.PendingOperations.Add(item));
+					if(serializedObject.ExecutingOperations != null)
+						serializedObject.ExecutingOperations.ForEach(item => objectToAdd.ExecutingOperations.Add(item));
+					if(serializedObject.RecentCompletedOperations != null)
+						serializedObject.RecentCompletedOperations.ForEach(item => objectToAdd.RecentCompletedOperations.Add(item));
+					if(serializedObject.ChangeItemTrackingList != null)
+						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
+					StatusSummaryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "InformationChangeItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.InformationChangeItem.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID};
+		            objectToAdd.StartTimeUTC = serializedObject.StartTimeUTC;
+		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
+					if(serializedObject.ChangedObjectIDList != null)
+						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
+					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "OperationExecutionItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID};
+		            objectToAdd.OperationName = serializedObject.OperationName;
+		            objectToAdd.OperationDomain = serializedObject.OperationDomain;
+		            objectToAdd.OperationID = serializedObject.OperationID;
+		            objectToAdd.CallerProvidedInfo = serializedObject.CallerProvidedInfo;
+		            objectToAdd.CreationTime = serializedObject.CreationTime;
+		            objectToAdd.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
+		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
+		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
+					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericCollectionableObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID};
+		            objectToAdd.ValueObject = serializedObject.ValueObject;
+					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.GenericObject.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GenericObject {ID = insertData.ObjectID};
+					if(serializedObject.Values != null)
+						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
+		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
+		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
+					GenericObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericValue")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.GenericValue.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GenericValue {ID = insertData.ObjectID};
+		            objectToAdd.ValueName = serializedObject.ValueName;
+		            objectToAdd.String = serializedObject.String;
+					if(serializedObject.StringArray != null)
+						serializedObject.StringArray.ForEach(item => objectToAdd.StringArray.Add(item));
+		            objectToAdd.Number = serializedObject.Number;
+					if(serializedObject.NumberArray != null)
+						serializedObject.NumberArray.ForEach(item => objectToAdd.NumberArray.Add(item));
+		            objectToAdd.Boolean = serializedObject.Boolean;
+					if(serializedObject.BooleanArray != null)
+						serializedObject.BooleanArray.ForEach(item => objectToAdd.BooleanArray.Add(item));
+		            objectToAdd.DateTime = serializedObject.DateTime;
+					if(serializedObject.DateTimeArray != null)
+						serializedObject.DateTimeArray.ForEach(item => objectToAdd.DateTimeArray.Add(item));
+		            objectToAdd.Object = serializedObject.Object;
+					if(serializedObject.ObjectArray != null)
+						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
+		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
+					GenericValueTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
+		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "WizardContainer")
+		        {
+                    WizardContainerTable.DeleteOnSubmit(new WizardContainer { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "WizardTask")
+		        {
+                    WizardTaskTable.DeleteOnSubmit(new WizardTask { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Connection")
+		        {
+                    ConnectionTable.DeleteOnSubmit(new Connection { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TransferPackage")
+		        {
+                    TransferPackageTable.DeleteOnSubmit(new TransferPackage { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryLink")
+		        {
+                    CategoryLinkTable.DeleteOnSubmit(new CategoryLink { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Category")
+		        {
+                    CategoryTable.DeleteOnSubmit(new Category { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "StatusSummary")
+		        {
+                    StatusSummaryTable.DeleteOnSubmit(new StatusSummary { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InformationChangeItem")
+		        {
+                    InformationChangeItemTable.DeleteOnSubmit(new InformationChangeItem { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "OperationExecutionItem")
+		        {
+                    OperationExecutionItemTable.DeleteOnSubmit(new OperationExecutionItem { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericCollectionableObject")
+		        {
+                    GenericCollectionableObjectTable.DeleteOnSubmit(new GenericCollectionableObject { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericObject")
+		        {
+                    GenericObjectTable.DeleteOnSubmit(new GenericObject { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericValue")
+		        {
+                    GenericValueTable.DeleteOnSubmit(new GenericValue { ID = deleteData.ObjectID });
+		            return;
+		        }
+		    }
+
 
 			public Table<WizardContainer> WizardContainerTable {
 				get {
@@ -302,6 +756,12 @@ CREATE TABLE IF NOT EXISTS WizardTask(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(TaskName == null)
+				TaskName = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
+			if(InputType == null)
+				InputType = string.Empty;
 		}
 	}
     [Table(Name = "Connection")]
@@ -598,6 +1058,26 @@ CREATE TABLE IF NOT EXISTS Connection(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(OutputInformationID == null)
+				OutputInformationID = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
+			if(DeviceID == null)
+				DeviceID = string.Empty;
+			if(OtherSideConnectionID == null)
+				OtherSideConnectionID = string.Empty;
+			if(OperationNameToListPackageContents == null)
+				OperationNameToListPackageContents = string.Empty;
+			if(OperationNameToProcessReceived == null)
+				OperationNameToProcessReceived = string.Empty;
+			if(OperationNameToUpdateThisSideCategories == null)
+				OperationNameToUpdateThisSideCategories = string.Empty;
+			if(ProcessIDToListPackageContents == null)
+				ProcessIDToListPackageContents = string.Empty;
+			if(ProcessIDToProcessReceived == null)
+				ProcessIDToProcessReceived = string.Empty;
+			if(ProcessIDToUpdateThisSideCategories == null)
+				ProcessIDToUpdateThisSideCategories = string.Empty;
             if (_IsThisSideCategoriesChanged || isInitialInsert)
             {
                 var dataToStore = ThisSideCategories.ToArray();
@@ -713,6 +1193,12 @@ CREATE TABLE IF NOT EXISTS TransferPackage(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ConnectionID == null)
+				ConnectionID = string.Empty;
+			if(PackageDirection == null)
+				PackageDirection = string.Empty;
+			if(PackageType == null)
+				PackageType = string.Empty;
             if (_IsPackageContentBlobsChanged || isInitialInsert)
             {
                 var dataToStore = PackageContentBlobs.ToArray();
@@ -755,6 +1241,12 @@ CREATE TABLE IF NOT EXISTS CategoryLink(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(SourceCategoryID == null)
+				SourceCategoryID = string.Empty;
+			if(TargetCategoryID == null)
+				TargetCategoryID = string.Empty;
+			if(LinkingType == null)
+				LinkingType = string.Empty;
 		}
 	}
     [Table(Name = "Category")]
@@ -806,6 +1298,18 @@ CREATE TABLE IF NOT EXISTS Category(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(NativeCategoryID == null)
+				NativeCategoryID = string.Empty;
+			if(NativeCategoryDomainName == null)
+				NativeCategoryDomainName = string.Empty;
+			if(NativeCategoryObjectName == null)
+				NativeCategoryObjectName = string.Empty;
+			if(NativeCategoryTitle == null)
+				NativeCategoryTitle = string.Empty;
+			if(IdentifyingCategoryName == null)
+				IdentifyingCategoryName = string.Empty;
+			if(ParentCategoryID == null)
+				ParentCategoryID = string.Empty;
 		}
 	}
     [Table(Name = "StatusSummary")]
@@ -1169,6 +1673,16 @@ CREATE TABLE IF NOT EXISTS OperationExecutionItem(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(OperationName == null)
+				OperationName = string.Empty;
+			if(OperationDomain == null)
+				OperationDomain = string.Empty;
+			if(OperationID == null)
+				OperationID = string.Empty;
+			if(CallerProvidedInfo == null)
+				CallerProvidedInfo = string.Empty;
+			if(ExecutionStatus == null)
+				ExecutionStatus = string.Empty;
 		}
 	}
     [Table(Name = "GenericCollectionableObject")]
@@ -1270,6 +1784,8 @@ CREATE TABLE IF NOT EXISTS GenericObject(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(OptionalCollectionName == null)
+				OptionalCollectionName = string.Empty;
             if (_IsValuesChanged || isInitialInsert)
             {
                 var dataToStore = Values.ToArray();
@@ -1552,6 +2068,12 @@ CREATE TABLE IF NOT EXISTS GenericValue(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ValueName == null)
+				ValueName = string.Empty;
+			if(String == null)
+				String = string.Empty;
+			if(IndexingInfo == null)
+				IndexingInfo = string.Empty;
             if (_IsStringArrayChanged || isInitialInsert)
             {
                 var dataToStore = StringArray.ToArray();

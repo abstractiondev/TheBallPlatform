@@ -91,6 +91,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="FileSystemSyncTests.cs" />
+    <Compile Include="SQLiteStorageSyncTests.cs" />
     <Compile Include="MetaDataSyncTests.cs" />
     <Compile Include="SQLiteTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

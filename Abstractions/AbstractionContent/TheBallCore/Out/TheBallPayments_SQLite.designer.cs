@@ -15,6 +15,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
+using SQLiteSupport;
+
 
 namespace SQLite.TheBall.Payments { 
 		
@@ -23,67 +25,8 @@ namespace SQLite.TheBall.Payments {
 		void PrepareForStoring(bool isInitialInsert);
 	}
 
-		[Flags]
-		public enum SerializationType 
+		public class TheBallDataContext : DataContext, IStorageSyncableDataContext
 		{
-			Undefined = 0,
-			XML = 1,
-			JSON = 2,
-			XML_AND_JSON = XML | JSON
-		}
-
-		[Table]
-		public class InformationObjectMetaData
-		{
-			[Column(IsPrimaryKey = true)]
-			public string ID { get; set; }
-
-			[Column]
-			public string SemanticDomain { get; set; }
-			[Column]
-			public string ObjectType { get; set; }
-			[Column]
-			public string ObjectID { get; set; }
-			[Column]
-			public string MD5 { get; set; }
-			[Column]
-			public string LastWriteTime { get; set; }
-			[Column]
-			public long FileLength { get; set; }
-			[Column]
-			public SerializationType SerializationType { get; set; }
-
-            public ChangeAction CurrentChangeAction { get; set; }
-		}
-
-
-		public class TheBallDataContext : DataContext
-		{
-
-		    public static string[] GetMetaDataTableCreateSQLs()
-		    {
-		        return new string[]
-		        {
-		            @"
-CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[SemanticDomain] TEXT NOT NULL, 
-[ObjectType] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL,
-[MD5] TEXT NOT NULL,
-[LastWriteTime] TEXT NOT NULL,
-[FileLength] INTEGER NOT NULL,
-[SerializationType] INTEGER NOT NULL
-)",
-		            @"
-CREATE UNIQUE INDEX ObjectIX ON InformationObjectMetaData (
-SemanticDomain, 
-ObjectType, 
-ObjectID
-)"
-		        };
-		    }
-
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
 		    {
@@ -106,7 +49,7 @@ ObjectID
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
-                tableCreationCommands.AddRange(GetMetaDataTableCreateSQLs());
+                tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(GroupSubscriptionPlan.GetCreateTableSQL());
 				tableCreationCommands.Add(CustomerAccount.GetCreateTableSQL());
 			    var connection = this.Connection;
@@ -124,6 +67,97 @@ ObjectID
 					return this.GetTable<InformationObjectMetaData>();
 				}
 			}
+
+			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "GroupSubscriptionPlan")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GroupSubscriptionPlanTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.PlanName = serializedObject.PlanName;
+		            existingObject.Description = serializedObject.Description;
+                    existingObject.GroupIDs.Clear();
+					if(serializedObject.GroupIDs != null)
+	                    serializedObject.GroupIDs.ForEach(item => existingObject.GroupIDs.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CustomerAccount")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::TheBall.Payments.CustomerAccount.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
+		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            existingObject.Description = serializedObject.Description;
+                    existingObject.ActivePlans.Clear();
+					if(serializedObject.ActivePlans != null)
+	                    serializedObject.ActivePlans.ForEach(item => existingObject.ActivePlans.Add(item));
+					
+		            return;
+		        } 
+		    }
+
+		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "GroupSubscriptionPlan")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID};
+		            objectToAdd.PlanName = serializedObject.PlanName;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.GroupIDs != null)
+						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
+					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CustomerAccount")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::TheBall.Payments.CustomerAccount.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new CustomerAccount {ID = insertData.ObjectID};
+		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.ActivePlans != null)
+						serializedObject.ActivePlans.ForEach(item => objectToAdd.ActivePlans.Add(item));
+					CustomerAccountTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
+		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
+		        {
+                    GroupSubscriptionPlanTable.DeleteOnSubmit(new GroupSubscriptionPlan { ID = deleteData.ObjectID });
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CustomerAccount")
+		        {
+                    CustomerAccountTable.DeleteOnSubmit(new CustomerAccount { ID = deleteData.ObjectID });
+		            return;
+		        }
+		    }
+
 
 			public Table<GroupSubscriptionPlan> GroupSubscriptionPlanTable {
 				get {
@@ -210,6 +244,10 @@ CREATE TABLE IF NOT EXISTS GroupSubscriptionPlan(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(PlanName == null)
+				PlanName = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
             if (_IsGroupIDsChanged || isInitialInsert)
             {
                 var dataToStore = GroupIDs.ToArray();
@@ -296,6 +334,12 @@ CREATE TABLE IF NOT EXISTS CustomerAccount(
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(StripeID == null)
+				StripeID = string.Empty;
+			if(EmailAddress == null)
+				EmailAddress = string.Empty;
+			if(Description == null)
+				Description = string.Empty;
             if (_IsActivePlansChanged || isInitialInsert)
             {
                 var dataToStore = ActivePlans.ToArray();
