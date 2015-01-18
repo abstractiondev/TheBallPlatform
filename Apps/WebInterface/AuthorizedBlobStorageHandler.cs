@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +23,7 @@ using SecuritySupport;
 using SQLiteSupport;
 using TheBall;
 using TheBall.CORE;
+using Process = TheBall.CORE.Process;
 
 namespace WebInterface
 {
@@ -484,11 +487,36 @@ namespace WebInterface
 #endif
         }
 
+        private static void performYMount()
+        {
+            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
+            string shareAndUserName = settings.Get("FileShareName");
+            string shareKeyName = settings.Get("FileShareKey");
+
+            try
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.FileName = "cmd.exe";
+                startInfo.Arguments = String.Format("/C net use Y: \\{0}.file.core.windows.net\tbcore /u:{0} {1}",
+                    shareAndUserName, shareKeyName);
+
+                process.StartInfo = startInfo;
+                process.Start();
+                process.WaitForExit();
+            }
+            catch (Exception)
+            {
+                throw;
+            }            
+        }
+
         private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)
         {
             try
             {
-                string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" +
+                string dbDirectory = "Y:\\" + containerOwner.ContainerName + "\\" +
                                      containerOwner.LocationPrefix;
                 try
                 {
@@ -497,7 +525,9 @@ namespace WebInterface
                 }
                 catch // very silent
                 {
-                    
+                    performYMount();
+                    if (!Directory.Exists(dbDirectory))
+                        Directory.CreateDirectory(dbDirectory);
                 }
                 string dbName = dbDirectory + "\\Intermediate.sqlite";
                 using (
