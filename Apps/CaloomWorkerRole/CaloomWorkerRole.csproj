@@ -64,6 +64,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Data.SQLite">
       <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.94.0\lib\net45\System.Data.SQLite.dll</HintPath>
@@ -91,6 +92,10 @@
     <ProjectReference Include="..\AzureSupport\AzureSupport.csproj">
       <Project>{33f04eb2-55de-4539-8e67-152a6057f100}</Project>
       <Name>AzureSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLiteSupport\SQLiteSupport.csproj">
+      <Project>{4944d743-f381-471e-980b-54d8387f5478}</Project>
+      <Name>SQLiteSupport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
