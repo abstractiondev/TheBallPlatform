@@ -63,6 +63,7 @@ namespace CaloomWorkerRole
                                    //Task.Factory.StartNew(() => {}), 
                                };
             QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID + " version: " + InstanceConfiguration.VersionString, TimeSpan.FromDays(1));
+            prepareCoreShareForWorker();
             int activeContainerIX = 0;
             int PollCyclePerRound = PollCyclePerContainerMilliseconds/ActiveContainerNames.Length;
             while (!IsStopped)
@@ -255,20 +256,29 @@ namespace CaloomWorkerRole
             //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             tryToBecomeIndexingMaster();
-            prepareCoreShareForWorker();
+            //prepareCoreShareForWorker();
             IsStopped = false;
             return base.OnStart();
         }
 
         private void prepareCoreShareForWorker()
         {
-            string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
-            if (!Directory.Exists(workerDirectory))
-                Directory.CreateDirectory(workerDirectory);
-            string sqliteDatabaseFile = String.Format(@"\\{0}\Worker.sqlite", workerDirectory);
-            using (var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqliteDatabaseFile))
+            try
             {
-                
+                string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
+                if (!Directory.Exists(workerDirectory))
+                    Directory.CreateDirectory(workerDirectory);
+                string sqliteDatabaseFile = String.Format(@"\\{0}\Worker.sqlite", workerDirectory);
+                using (
+                    var dbContext =
+                        SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqliteDatabaseFile))
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorSupport.ReportException(ex);
             }
         }
 
