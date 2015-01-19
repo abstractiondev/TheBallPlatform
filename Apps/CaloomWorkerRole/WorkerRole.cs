@@ -265,7 +265,7 @@ namespace CaloomWorkerRole
             string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
             if (!Directory.Exists(workerDirectory))
                 Directory.CreateDirectory(workerDirectory);
-            string sqliteDatabaseFile = String.Format(@"\\{0}\Worker-{1}.sqlite", workerDirectory, CurrWorkerID);
+            string sqliteDatabaseFile = String.Format(@"\\{0}\Worker.sqlite", workerDirectory);
             using (var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqliteDatabaseFile))
             {
                 
