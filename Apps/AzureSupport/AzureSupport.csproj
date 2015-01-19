@@ -166,6 +166,7 @@
     <Compile Include="AaltoGlobalImpact.OIP\SetCategoryContentRankingImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\SetGroupAsDefaultForAccountImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
+    <Compile Include="FileShareSupport.cs" />
     <Compile Include="IAccountInfo.cs" />
     <Compile Include="InformationObjectSupport.cs" />
     <Compile Include="MediaFileData.cs" />

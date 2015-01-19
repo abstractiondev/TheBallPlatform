@@ -9,6 +9,7 @@ using System.Text;
 using System.Web;
 using System.Web.Security;
 using System.Web.SessionState;
+using AzureSupport;
 using Microsoft.WindowsAzure;
 using Stripe;
 using TheBall;
@@ -36,6 +37,8 @@ namespace WebInterface
                     text = text.Substring(xmlBOMString.Length);
                 return text;
             };
+            FileShareSupport.MountCoreShare();
+
         }
 
         protected void Session_Start(object sender, EventArgs e)

@@ -487,46 +487,12 @@ namespace WebInterface
 #endif
         }
 
-        private static bool notYetMounted = false;
-
-        private static void performYMount()
-        {
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
-            string shareAndUserName = settings.Get("FileShareName");
-            string shareKeyName = settings.Get("FileShareKey");
-            if(String.IsNullOrEmpty(shareAndUserName) || String.IsNullOrEmpty(shareKeyName))
-                throw new InvalidDataException("Missing required configuration data");
-            try
-            {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.FileName = "cmd.exe";
-                //startInfo.Arguments = String.Format("/C net use X: \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
-                startInfo.Arguments = String.Format("/C net use \\\\{0}.file.core.windows.net\\tbcore /u:{0} {1}",
-                    shareAndUserName, shareKeyName);
-
-                process.StartInfo = startInfo;
-                process.Start();
-                process.WaitForExit();
-            }
-            catch (Exception)
-            {
-                throw;
-            }            
-        }
-
         private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)
         {
             try
             {
                 //string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                string dbDirectory = @"\\\\theballdevfiles.file.core.windows.net\tbcore\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                if (!notYetMounted)
-                {
-                    performYMount();
-                    notYetMounted = true;
-                }
+                string dbDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName +  "\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
                 if (!Directory.Exists(dbDirectory))
                     Directory.CreateDirectory(dbDirectory);
                 string dbName = dbDirectory + "\\Intermediate.sqlite";

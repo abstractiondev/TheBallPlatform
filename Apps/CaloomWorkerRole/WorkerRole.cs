@@ -255,8 +255,16 @@ namespace CaloomWorkerRole
             //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             tryToBecomeIndexingMaster();
+            prepareCoreShareForWorker();
             IsStopped = false;
             return base.OnStart();
+        }
+
+        private void prepareCoreShareForWorker()
+        {
+            string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
+            if (!Directory.Exists(workerDirectory))
+                Directory.CreateDirectory(workerDirectory);
         }
 
         private void releaseIndexingMasterResourcesForMaster()

@@ -38,6 +38,9 @@ namespace TheBall
         public static readonly string GroupDefaultRedirect;
         public static readonly string AzureStorageKey;
         public static readonly string AzureAccountName;
+        public static readonly string CoreFileShareAccountName;
+        public static readonly string CoreFileShareAccountKey;
+        public static readonly string CoreShareWithFolderName;
         public static readonly string AdminGroupID;
         public static readonly string PaymentsGroupID;
         public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
@@ -69,6 +72,9 @@ namespace TheBall
             AzureStorageKey = connStrSplits[1];
             connStrSplits = connStrSplits[0].Split(new[] {";AccountName="}, StringSplitOptions.None);
             AzureAccountName = connStrSplits[1];
+            CoreFileShareAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+            CoreFileShareAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
+            CoreShareWithFolderName = String.Format(@"\\{0}.file.core.windows.net\{1}", CoreFileShareAccountName, "tbcore");
             WorkerActiveContainerName = CloudConfigurationManager.GetSetting("WorkerActiveContainerName");
             var containerRedirectValue = CloudConfigurationManager.GetSetting("ContainerRedirects");
             if (String.IsNullOrEmpty(containerRedirectValue) == false)
