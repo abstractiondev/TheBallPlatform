@@ -1027,6 +1027,39 @@
     <StatusItem name="ConfirmAccountMergeFromEmail_PerformAccountMerge" displayName="MethodExecuteType: PerformAccountMerge" description="Perform account merge with source and target IDs">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_Owner" displayName="VariableType: Owner" description="Owner whose objects are to be updated">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_SemanticDomain" displayName="VariableType: SemanticDomain" description="Semantic domain of objects to be updated">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_SQLiteDBLocationDirectory" displayName="TargetDefinitionType: SQLiteDBLocationDirectory" description="SQLite database location based on owner and semantic domain.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_CreateDBLocationDirectoryIfMissing" displayName="MethodExecuteType: CreateDBLocationDirectoryIfMissing" description="Create database directory if missing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_DataContextFullTypeName" displayName="TargetDefinitionType: DataContextFullTypeName" description="SQLite data context full type name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_DataContextType" displayName="TargetDefinitionType: DataContextType" description="SQLite data context type object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_DatabaseAttachOrCreateMethodName" displayName="TargetDefinitionType: DatabaseAttachOrCreateMethodName" description="Database attach or create method name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_SQLiteDBLocationFileName" displayName="TargetDefinitionType: SQLiteDBLocationFileName" description="SQLite full database path based on semantic domain">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_OwnerRootPath" displayName="TargetDefinitionType: OwnerRootPath" description="Absolute cloud storage root path to owner root">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_BlobsToSync" displayName="TargetDefinitionType: BlobsToSync" description="Blob listings to sync">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateOwnerDomainObjectsInSQLiteStorage_PerformSyncing" displayName="MethodExecuteType: PerformSyncing" description="Perform actual syncing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
   </StatusItems>
   <Groups>
     <Group name="CreateProcess">
@@ -1465,6 +1498,19 @@
       <ItemRef itemName="ConfirmAccountMergeFromEmail_MergeAccountConfirmation" />
       <ItemRef itemName="ConfirmAccountMergeFromEmail_ValidateCurrentAccountAsMergingActor" />
       <ItemRef itemName="ConfirmAccountMergeFromEmail_PerformAccountMerge" />
+    </Group>
+    <Group name="UpdateOwnerDomainObjectsInSQLiteStorage">
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_Owner" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_SemanticDomain" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_SQLiteDBLocationDirectory" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_CreateDBLocationDirectoryIfMissing" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_DataContextFullTypeName" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_DataContextType" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_DatabaseAttachOrCreateMethodName" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_SQLiteDBLocationFileName" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_OwnerRootPath" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_BlobsToSync" />
+      <ItemRef itemName="UpdateOwnerDomainObjectsInSQLiteStorage_PerformSyncing" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

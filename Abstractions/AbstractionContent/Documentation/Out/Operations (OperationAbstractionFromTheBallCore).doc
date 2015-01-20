@@ -3897,6 +3897,85 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Perform unlink
 		</div>
+		</p><h1>UpdateOwnerDomainObjectsInSQLiteStorage (Owner, SemanticDomain)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update owner domain objects in owner's SQLite storage, located within "tbcore" Azure file share
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner whose objects are to be updated
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SemanticDomain
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Semantic domain of objects to be updated
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: SQLiteDBLocationDirectory ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		SQLite database location based on owner and semantic domain.
+		</div>
+		</p><h2>Method Call: CreateDBLocationDirectoryIfMissing ( SQLiteDBLocationDirectory )</h2>
+		<p>		<div class="MsoNormal" >
+		Create database directory if missing
+		</div>
+		</p><h2>Target Definition: DataContextFullTypeName ( SemanticDomain )</h2>
+		<p>		<div class="MsoNormal" >
+		SQLite data context full type name
+		</div>
+		</p><h2>Target Definition: DataContextType ( DataContextFullTypeName )</h2>
+		<p>		<div class="MsoNormal" >
+		SQLite data context type object
+		</div>
+		</p><h2>Target Definition: DatabaseAttachOrCreateMethodName</h2>
+		<p>		<div class="MsoNormal" >
+		Database attach or create method name
+		</div>
+		</p><h2>Target Definition: SQLiteDBLocationFileName ( SQLiteDBLocationDirectory, SemanticDomain )</h2>
+		<p>		<div class="MsoNormal" >
+		SQLite full database path based on semantic domain
+		</div>
+		</p><h2>Target Definition: OwnerRootPath ( Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Absolute cloud storage root path to owner root
+		</div>
+		</p><h2>Target Definition: BlobsToSync ( Owner, SemanticDomain )</h2>
+		<p>		<div class="MsoNormal" >
+		Blob listings to sync
+		</div>
+		</p><h2>Method Call: PerformSyncing ( DataContextType, DatabaseAttachOrCreateMethodName, SQLiteDBLocationFileName, OwnerRootPath, BlobsToSync )</h2>
+		<p>		<div class="MsoNormal" >
+		Perform actual syncing
+		</div>
 		</p><h1>UpdateUsageMonitoringItems (Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

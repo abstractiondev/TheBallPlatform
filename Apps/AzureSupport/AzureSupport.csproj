@@ -83,6 +83,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
@@ -211,6 +212,7 @@
     <Compile Include="TheBall.CORE\SetObjectTreeValuesImplementation.cs" />
     <Compile Include="TheBall.CORE\SyncCopyContentToDeviceTargetImplementation.cs" />
     <Compile Include="TheBall.CORE\TransferGroupInitiatorImplementation.cs" />
+    <Compile Include="TheBall.CORE\UpdateOwnerDomainObjectsInSQLiteStorageImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringSummariesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateUsageMonitoringItemsImplementation.cs" />
     <Compile Include="TheBall.CORE\ProcessAllResourceUsagesToOwnerCollectionsImplementation.cs" />
@@ -419,6 +421,10 @@
     <ProjectReference Include="..\SecuritySupport\SecuritySupport.csproj">
       <Project>{FE40FC1C-284E-4F91-B00F-5CCA71846208}</Project>
       <Name>SecuritySupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLiteSupport\SQLiteSupport.csproj">
+      <Project>{4944d743-f381-471e-980b-54d8387f5478}</Project>
+      <Name>SQLiteSupport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

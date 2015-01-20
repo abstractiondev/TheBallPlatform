@@ -1867,6 +1867,50 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="UpdateOwnerDomainObjectsInSQLiteStorage">
+        <OperationSpec>
+          <Description>Update owner domain objects in owner's SQLite storage, located within "tbcore" Azure file share</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Owner" dataType="IContainerOwner" designDesc="Owner whose objects are to be updated" state="implemented"/>
+          <Parameter name="SemanticDomain" dataType="string" designDesc="Semantic domain of objects to be updated" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="SQLiteDBLocationDirectory" dataType="string" designDesc="SQLite database location based on owner and semantic domain." state="implemented">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateDBLocationDirectoryIfMissing" designDesc="Create database directory if missing" state="implemented">
+              <Target name="SQLiteDBLocationDirectory"/>
+            </MethodExecute>
+            <TargetDefinition name="DataContextFullTypeName" dataType="string" designDesc="SQLite data context full type name" state="implemented">
+              <Parameter name="SemanticDomain"/>
+            </TargetDefinition>
+            <TargetDefinition name="DataContextType" dataType="System.Type" designDesc="SQLite data context type object" state="implemented">
+              <Target name="DataContextFullTypeName"/>
+            </TargetDefinition>
+            <TargetDefinition name="DatabaseAttachOrCreateMethodName" dataType="string" designDesc="Database attach or create method name" state="implemented" />
+            <TargetDefinition name="SQLiteDBLocationFileName" dataType="string" designDesc="SQLite full database path based on semantic domain" state="implemented">
+              <Parameter name="SemanticDomain"/>
+              <Target name="SQLiteDBLocationDirectory"/>
+            </TargetDefinition>
+            <TargetDefinition name="OwnerRootPath" dataType="string" designDesc="Absolute cloud storage root path to owner root" state="implemented">
+              <Parameter name="Owner"/>
+            </TargetDefinition>
+            <TargetDefinition name="BlobsToSync" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Blob listings to sync" state="implemented">
+              <Parameter name="Owner"/>
+              <Parameter name="SemanticDomain"/>
+            </TargetDefinition>
+            <MethodExecute name="PerformSyncing" designDesc="Perform actual syncing" state="implemented">
+              <Target name="DataContextType"/>
+              <Target name="DatabaseAttachOrCreateMethodName"/>
+              <Target name="SQLiteDBLocationFileName"/>
+              <Target name="OwnerRootPath"/>
+              <Target name="BlobsToSync"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     </Operations>
     <!--
     <Subscriptions>

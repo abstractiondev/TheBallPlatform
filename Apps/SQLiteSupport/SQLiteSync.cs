@@ -7,7 +7,7 @@ using SQLite.TheBall.Payments;
 
 namespace SQLiteSupport
 {
-    public interface IStorageSyncableDataContext
+    public interface IStorageSyncableDataContext : IDisposable
     {
         Table<InformationObjectMetaData> InformationObjectMetaDataTable { get; }
         void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData);

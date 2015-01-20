@@ -42,9 +42,7 @@ namespace SQLite.TheBall.Payments {
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
 		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                var context = new TheBallDataContext(connection);
-                context.CreateDomainDatabaseTablesIfNotExists();
-		        return context;
+                return new TheBallDataContext(connection);
 		    }
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)

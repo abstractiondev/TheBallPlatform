@@ -1068,4 +1068,29 @@ using System.IO;
 				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_PerformAccountMerge(MergeAccountConfirmation);		
 				}
 				}
+				public class UpdateOwnerDomainObjectsInSQLiteStorageParameters 
+		{
+				public IContainerOwner Owner ;
+				public string SemanticDomain ;
+				}
+		
+		public class UpdateOwnerDomainObjectsInSQLiteStorage 
+		{
+				private static void PrepareParameters(UpdateOwnerDomainObjectsInSQLiteStorageParameters parameters)
+		{
+					}
+				public static void Execute(UpdateOwnerDomainObjectsInSQLiteStorageParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string SQLiteDBLocationDirectory = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationDirectory(parameters.Owner);	
+				UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_CreateDBLocationDirectoryIfMissing(SQLiteDBLocationDirectory);		
+				string DataContextFullTypeName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DataContextFullTypeName(parameters.SemanticDomain);	
+				System.Type DataContextType = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DataContextType(DataContextFullTypeName);	
+				string DatabaseAttachOrCreateMethodName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DatabaseAttachOrCreateMethodName();	
+				string SQLiteDBLocationFileName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationFileName(parameters.SemanticDomain, SQLiteDBLocationDirectory);	
+				string OwnerRootPath = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_OwnerRootPath(parameters.Owner);	
+				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] BlobsToSync = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_BlobsToSync(parameters.Owner, parameters.SemanticDomain);	
+				UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_PerformSyncing(DataContextType, DatabaseAttachOrCreateMethodName, SQLiteDBLocationFileName, OwnerRootPath, BlobsToSync);		
+				}
+				}
 		 } 
