@@ -489,6 +489,15 @@ namespace WebInterface
 
         private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)
         {
+            UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+            {
+                Owner = containerOwner,
+                SemanticDomain = "TheBall.Payments"
+            });
+        }
+        
+        private static void SQLiteSyncOwnerData_obsolete(IContainerOwner containerOwner)
+        {
             try
             {
                 //string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;

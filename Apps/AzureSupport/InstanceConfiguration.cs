@@ -62,6 +62,8 @@ namespace TheBall
             #region Data storage
 
             const string ConnStrFileName = @"D:\UserData\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";
+            bool isLocalDeveloperMachine = File.Exists(ConnStrFileName);
+
             if (File.Exists(ConnStrFileName))
                 AzureStorageConnectionString = File.ReadAllText(ConnStrFileName);
             else
@@ -74,7 +76,10 @@ namespace TheBall
             AzureAccountName = connStrSplits[1];
             CoreFileShareAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
             CoreFileShareAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-            CoreShareWithFolderName = String.Format(@"\\{0}.file.core.windows.net\{1}", CoreFileShareAccountName, "tbcore");
+            if(isLocalDeveloperMachine)
+                CoreShareWithFolderName = String.Format(@"x:\{0}", "tbcore");
+            else
+                CoreShareWithFolderName = String.Format(@"\\{0}.file.core.windows.net\{1}", CoreFileShareAccountName, "tbcore");
             WorkerActiveContainerName = CloudConfigurationManager.GetSetting("WorkerActiveContainerName");
             var containerRedirectValue = CloudConfigurationManager.GetSetting("ContainerRedirects");
             if (String.IsNullOrEmpty(containerRedirectValue) == false)

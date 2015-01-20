@@ -75,12 +75,15 @@ namespace TheBall.CORE
 
         public static string GetTarget_SQLiteDBLocationFileName(string semanticDomain, string sqLiteDbLocationDirectory)
         {
-            return Path.Combine(sqLiteDbLocationDirectory, semanticDomain + ".sqlite");
+            string fullFileName = Path.Combine(sqLiteDbLocationDirectory, semanticDomain + ".sqlite");
+            if (fullFileName.StartsWith(@"\\"))
+                fullFileName = @"\\" + fullFileName;
+            return fullFileName;
         }
 
         public static string GetTarget_DataContextFullTypeName(string semanticDomain)
         {
-            return String.Format("SQLite.{0}.TheBallDataContext", semanticDomain);
+            return String.Format("SQLite.{0}.TheBallDataContext, SQLiteSupport", semanticDomain);
         }
 
         public static Type GetTarget_DataContextType(string dataContextFullTypeName)

@@ -42,7 +42,9 @@ namespace SQLite.TheBall.Interface {
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
 		    {
 		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
-                return new TheBallDataContext(connection);
+                var dataContext = new TheBallDataContext(connection);
+				dataContext.CreateDomainDatabaseTablesIfNotExists();
+				return dataContext;
 		    }
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
