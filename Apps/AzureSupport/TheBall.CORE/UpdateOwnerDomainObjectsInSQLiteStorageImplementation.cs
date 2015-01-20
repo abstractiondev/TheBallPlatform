@@ -23,9 +23,16 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_PerformSyncing(Type dataContextType, string databaseAttachOrCreateMethodName, string sqLiteDbLocationFileName, string ownerRootPath, CloudBlockBlob[] blobsToSync)
         {
+            if(dataContextType == null)
+                throw new ArgumentNullException("dataContextType");
+            if(databaseAttachOrCreateMethodName == null)
+                throw new ArgumentNullException("databaseAttachOrCreateMethodName");
+            if (sqLiteDbLocationFileName == null) throw new ArgumentNullException("sqLiteDbLocationFileName");
+            if (ownerRootPath == null) throw new ArgumentNullException("ownerRootPath");
+            if (blobsToSync == null) throw new ArgumentNullException("blobsToSync");
             //dataContextType.InvokeMember()
             using (
-                IStorageSyncableDataContext dbContext = (IStorageSyncableDataContext)dataContextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null, new object[] { sqLiteDbLocationFileName })
+                IStorageSyncableDataContext dbContext = (IStorageSyncableDataContext)dataContextType.InvokeMember(databaseAttachOrCreateMethodName, BindingFlags.InvokeMethod, null, null, new object[] { sqLiteDbLocationFileName })
                     //SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqLiteDbLocationFileName)
                 )
             {
