@@ -1,6 +1,6 @@
  
 
-namespace TheBall.Interface { 
+namespace SER.TheBall.Interface { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-					[DataContract]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]
@@ -32,7 +32,7 @@ namespace INT {
 				public CategoryLinkItem[] LinkItems { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class CategoryInfo
 			{
 				[DataMember]
@@ -51,7 +51,7 @@ namespace INT {
 				public string ParentCategoryID { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class CategoryLinkParameters
 			{
 				[DataMember]
@@ -60,7 +60,7 @@ namespace INT {
 				public CategoryLinkItem[] LinkItems { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class CategoryLinkItem
 			{
 				[DataMember]
@@ -71,7 +71,7 @@ namespace INT {
 				public string LinkingType { get; set; }
 			}
 
- } 			[DataContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class WizardContainer 
 			{
@@ -142,7 +142,7 @@ namespace INT {
 			public List< WizardTask > ActiveTasks = new List< WizardTask >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class WizardTask 
 			{
@@ -228,7 +228,7 @@ namespace INT {
 			private string _unmodified_InputType;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class ConnectionCollection 
 			{
@@ -347,7 +347,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class Connection 
 			{
@@ -459,7 +459,7 @@ namespace INT {
 			private string _unmodified_ProcessIDToUpdateThisSideCategories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class TransferPackage 
 			{
@@ -542,7 +542,7 @@ namespace INT {
 			public List< string > PackageContentBlobs = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class CategoryLink 
 			{
@@ -628,7 +628,7 @@ namespace INT {
 			private string _unmodified_LinkingType;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class Category 
 			{
@@ -726,7 +726,7 @@ namespace INT {
 			private string _unmodified_ParentCategoryID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class StatusSummary 
 			{
@@ -803,7 +803,7 @@ namespace INT {
 			public List< string > ChangeItemTrackingList = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class InformationChangeItem 
 			{
@@ -880,7 +880,7 @@ namespace INT {
 			public List< string > ChangedObjectIDList = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class OperationExecutionItem 
 			{
@@ -986,7 +986,7 @@ namespace INT {
 			private string _unmodified_ExecutionStatus;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class GenericObjectCollection 
 			{
@@ -1105,7 +1105,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class GenericCollectionableObject 
 			{
@@ -1183,7 +1183,7 @@ namespace INT {
 			private GenericObject _unmodified_ValueObject;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class GenericObject 
 			{
@@ -1260,7 +1260,7 @@ namespace INT {
 			private string _unmodified_OptionalCollectionName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
 			public partial class GenericValue 
 			{

@@ -1,6 +1,6 @@
  
 
-namespace Caloom.Schools { 
+namespace SER.Caloom.Schools { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-		 } 			[DataContract]
+		 }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.Schools")]
 			[Serializable]
 			public partial class TrainingModule 
 			{
@@ -105,7 +105,7 @@ namespace INT {
 			private TrainingModuleCollection _unmodified_TrainingModules;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.Schools")]
 			[Serializable]
 			public partial class TrainingModuleCollection 
 			{

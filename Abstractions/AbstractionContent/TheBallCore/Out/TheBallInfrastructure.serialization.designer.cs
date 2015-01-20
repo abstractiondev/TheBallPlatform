@@ -1,6 +1,6 @@
  
 
-namespace TheBall.Infrastructure { 
+namespace SER.TheBall.Infrastructure { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

@@ -1,6 +1,6 @@
  
 
-namespace TheBall.CORE { 
+namespace SER.TheBall.CORE { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-					[DataContract]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class DeviceOperationData
 			{
 				[DataMember]
@@ -26,7 +26,7 @@ namespace INT {
 				public ContentItemLocationWithMD5[] OperationSpecificContentData { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class ContentItemLocationWithMD5
 			{
 				[DataMember]
@@ -37,7 +37,7 @@ namespace INT {
 				public ItemData[] ItemDatas { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class ItemData
 			{
 				[DataMember]
@@ -46,7 +46,7 @@ namespace INT {
 				public string ItemTextData { get; set; }
 			}
 
- } 			[DataContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ContentPackageCollection 
 			{
@@ -165,7 +165,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ContentPackage 
 			{
@@ -259,7 +259,7 @@ namespace INT {
 			private DateTime _unmodified_CreationTime;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InformationInputCollection 
 			{
@@ -378,7 +378,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InformationInput 
 			{
@@ -472,7 +472,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InformationOutputCollection 
 			{
@@ -591,7 +591,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InformationOutput 
 			{
@@ -689,7 +689,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection 
 			{
@@ -808,7 +808,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class AuthenticatedAsActiveDevice 
 			{
@@ -910,7 +910,7 @@ namespace INT {
 			private string _unmodified_ConnectionURL;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class DeviceMembershipCollection 
 			{
@@ -1029,7 +1029,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class DeviceMembership 
 			{
@@ -1119,7 +1119,7 @@ namespace INT {
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceFiscalExportSummary 
 			{
@@ -1205,7 +1205,7 @@ namespace INT {
 			private InvoiceCollection _unmodified_ExportedInvoices;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceSummaryContainer 
 			{
@@ -1295,7 +1295,7 @@ namespace INT {
 			private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceCollection 
 			{
@@ -1414,7 +1414,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class Invoice 
 			{
@@ -1528,7 +1528,7 @@ namespace INT {
 			private InvoiceUserCollection _unmodified_InvoiceUsers;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceDetails 
 			{
@@ -1626,7 +1626,7 @@ namespace INT {
 			private string _unmodified_TotalFeesTotal;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceUserCollection 
 			{
@@ -1745,7 +1745,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceUser 
 			{
@@ -1847,7 +1847,7 @@ namespace INT {
 			private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceRowGroupCollection 
 			{
@@ -1966,7 +1966,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceEventDetailGroupCollection 
 			{
@@ -2085,7 +2085,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceRowGroup 
 			{
@@ -2179,7 +2179,7 @@ namespace INT {
 			private InvoiceRowCollection _unmodified_InvoiceRowCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceEventDetailGroup 
 			{
@@ -2261,7 +2261,7 @@ namespace INT {
 			private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceEventDetailCollection 
 			{
@@ -2380,7 +2380,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceRowCollection 
 			{
@@ -2499,7 +2499,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceEventDetail 
 			{
@@ -2613,7 +2613,7 @@ namespace INT {
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InvoiceRow 
 			{
@@ -2715,7 +2715,7 @@ namespace INT {
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class CategoryCollection 
 			{
@@ -2834,7 +2834,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class Category 
 			{
@@ -2912,7 +2912,7 @@ namespace INT {
 			private string _unmodified_CategoryName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ProcessContainer 
 			{
@@ -2983,7 +2983,7 @@ namespace INT {
 			public List< string > ProcessIDs = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class Process 
 			{
@@ -3062,7 +3062,7 @@ namespace INT {
 			public List< ProcessItem > ProcessItems = new List< ProcessItem >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ProcessItem 
 			{
@@ -3135,7 +3135,7 @@ namespace INT {
 			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class SemanticInformationItem 
 			{
@@ -3217,7 +3217,7 @@ namespace INT {
 			private string _unmodified_ItemValue;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class InformationOwnerInfo 
 			{
@@ -3299,7 +3299,7 @@ namespace INT {
 			private string _unmodified_OwnerIdentifier;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class UsageSummary 
 			{
@@ -3381,7 +3381,7 @@ namespace INT {
 			private UsageMonitorItem _unmodified_SummaryMonitoringItem;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class UsageMonitorItem 
 			{
@@ -3483,7 +3483,7 @@ namespace INT {
 			private NetworkUsageCollection _unmodified_NetworkUsages;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class RequestResourceUsageCollection 
 			{
@@ -3602,7 +3602,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class RequestResourceUsage 
 			{
@@ -3696,7 +3696,7 @@ namespace INT {
 			private HTTPActivityDetails _unmodified_RequestDetails;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ProcessorUsageCollection 
 			{
@@ -3815,7 +3815,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class ProcessorUsage 
 			{
@@ -3909,7 +3909,7 @@ namespace INT {
 			private long _unmodified_Milliseconds;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class StorageTransactionUsageCollection 
 			{
@@ -4028,7 +4028,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class StorageTransactionUsage 
 			{
@@ -4114,7 +4114,7 @@ namespace INT {
 			private long _unmodified_AmountOfTransactions;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class StorageUsageCollection 
 			{
@@ -4233,7 +4233,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class StorageUsage 
 			{
@@ -4323,7 +4323,7 @@ namespace INT {
 			private double _unmodified_AmountOfUnits;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class NetworkUsageCollection 
 			{
@@ -4442,7 +4442,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class NetworkUsage 
 			{
@@ -4528,7 +4528,7 @@ namespace INT {
 			private long _unmodified_AmountOfBytes;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class TimeRange 
 			{
@@ -4610,7 +4610,7 @@ namespace INT {
 			private DateTime _unmodified_EndTime;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class HTTPActivityDetailsCollection 
 			{
@@ -4729,7 +4729,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
 			[Serializable]
 			public partial class HTTPActivityDetails 
 			{

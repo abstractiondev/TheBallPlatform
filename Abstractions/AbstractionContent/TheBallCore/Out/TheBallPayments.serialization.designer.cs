@@ -1,6 +1,6 @@
  
 
-namespace TheBall.Payments { 
+namespace SER.TheBall.Payments { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-					[DataContract]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
 			public partial class PaymentToken
 			{
 				[DataMember]
@@ -22,7 +22,7 @@ namespace INT {
 				public string email { get; set; }
 			}
 
- } 			[DataContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
 			[Serializable]
 			public partial class GroupSubscriptionPlanCollection 
 			{
@@ -141,7 +141,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
 			[Serializable]
 			public partial class GroupSubscriptionPlan 
 			{
@@ -218,7 +218,7 @@ namespace INT {
 			public List< string > GroupIDs = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
 			[Serializable]
 			public partial class CustomerAccountCollection 
 			{
@@ -337,7 +337,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
 			[Serializable]
 			public partial class CustomerAccount 
 			{

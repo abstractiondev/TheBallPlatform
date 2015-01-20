@@ -96,7 +96,7 @@ namespace SQLite.TheBall.Index {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.IndexingRequest.DeserializeFromXml(
+		                global::SER.TheBall.Payments.IndexingRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IndexName = serializedObject.IndexName;
@@ -110,7 +110,7 @@ namespace SQLite.TheBall.Index {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.QueryRequest.DeserializeFromXml(
+		                global::SER.TheBall.Payments.QueryRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.QueryString = serializedObject.QueryString;
@@ -130,7 +130,7 @@ namespace SQLite.TheBall.Index {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.QueryResultItem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.QueryResultItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
@@ -150,7 +150,7 @@ namespace SQLite.TheBall.Index {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.IndexingRequest.DeserializeFromXml(
+                        global::SER.TheBall.Payments.IndexingRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new IndexingRequest {ID = insertData.ObjectID};
 		            objectToAdd.IndexName = serializedObject.IndexName;
@@ -163,7 +163,7 @@ namespace SQLite.TheBall.Index {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.QueryRequest.DeserializeFromXml(
+                        global::SER.TheBall.Payments.QueryRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryRequest {ID = insertData.ObjectID};
 		            objectToAdd.QueryString = serializedObject.QueryString;
@@ -182,7 +182,7 @@ namespace SQLite.TheBall.Index {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.QueryResultItem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.QueryResultItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryResultItem {ID = insertData.ObjectID};
 		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;

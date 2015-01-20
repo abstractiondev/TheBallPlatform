@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
+using AzureSupport.TheBall.CORE;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
 using TheBall.Index;
@@ -407,9 +408,27 @@ namespace TheBall
                 const double invalidSubscriptionSubmissionTimeInSeconds = 3600;
                 if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-invalidSubscriptionSubmissionTimeInSeconds)))
                     return false;
-                WorkerSupport.ExecuteSubscriptionChains(chainContent);
+                var affectedDomains = WorkerSupport.ExecuteSubscriptionChains(chainContent);
                 foreach (string blob in blobs)
                     StorageSupport.DeleteBlob(blob);
+                if (InstanceConfiguration.UseSQLiteMasterDatabase)
+                {
+                    foreach (string semanticDomain in affectedDomains)
+                    {
+                        try
+                        {
+                            UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+                            {
+                                Owner = lockedOwner,
+                                SemanticDomain = semanticDomain
+                            });
+                        }
+                        catch (Exception ex) // Shh for now
+                        {
+                            ErrorSupport.ReportException(ex);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -448,7 +467,7 @@ namespace TheBall
         }
 
 
-        public static void ExecuteSubscriptionChains(params SubscriptionChainRequestContent[] contentList)
+        public static string[] ExecuteSubscriptionChains(params SubscriptionChainRequestContent[] contentList)
         {
             InformationContext.Current.IsExecutingSubscriptions = true;
             try
@@ -465,11 +484,30 @@ namespace TheBall
                 var webPageSubscriptions =
                     subscriptions.Where(sub => sub.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource).
                         ToArray();
+                List<string> domainsAffected = new List<string>();
                 foreach (var subscription in informationObjectSubscriptions)
                 {
                     ExecuteSubscription(subscription);
                     Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
                         subscription.SubscriberRelativeLocation);
+                    if (InstanceConfiguration.UseSQLiteMasterDatabase)
+                    {
+                        try
+                        {
+                            subscription.TargetRelativeLocation.ExecuteForObject(
+                                delegate(IContainerOwner owner, string semanticDomain, string objectType,
+                                    string objectId,
+                                    string fullPath)
+                                {
+                                    if (!domainsAffected.Contains(semanticDomain))
+                                        domainsAffected.Add(semanticDomain);
+                                });
+                        }
+                        catch(Exception ex) // Shh for now
+                        {
+                            ErrorSupport.ReportException(ex);
+                        }
+                    }
                 }
                 foreach (var subscription in webPageSubscriptions)
                 {
@@ -480,6 +518,7 @@ namespace TheBall
                     Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
                         subscription.SubscriberRelativeLocation);
                 }
+                return domainsAffected.ToArray();
             }
             finally
             {

@@ -223,7 +223,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBSystem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBSystem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBSystemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.InstanceName = serializedObject.InstanceName;
@@ -234,7 +234,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.WebPublishInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.WebPublishInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WebPublishInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.PublishType = serializedObject.PublishType;
@@ -247,7 +247,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.PublicationPackage.DeserializeFromXml(
+		                global::SER.TheBall.Payments.PublicationPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PublicationPackageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.PackageName = serializedObject.PackageName;
@@ -258,7 +258,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBRLoginRoot.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBRLoginRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginRootTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.DomainName = serializedObject.DomainName;
@@ -269,7 +269,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBRAccountRoot.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBRAccountRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRAccountRootTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Account = serializedObject.Account;
@@ -279,7 +279,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBRGroupRoot.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBRGroupRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRGroupRootTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Group = serializedObject.Group;
@@ -289,7 +289,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBRLoginGroupRoot.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBRLoginGroupRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginGroupRootTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Role = serializedObject.Role;
@@ -300,7 +300,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBREmailRoot.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBREmailRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBREmailRootTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Account = serializedObject.Account;
@@ -310,7 +310,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBAccount.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBAccount.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Emails = serializedObject.Emails;
@@ -322,7 +322,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBAccountCollaborationGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBAccountCollaborationGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountCollaborationGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -334,7 +334,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBLoginInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBLoginInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
@@ -344,7 +344,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBEmail.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBEmail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -355,7 +355,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBCollaboratorRole.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBCollaboratorRole.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratorRoleTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Email = serializedObject.Email;
@@ -367,7 +367,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBCollaboratingGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBCollaboratingGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratingGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -378,7 +378,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBEmailValidation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBEmailValidation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailValidationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Email = serializedObject.Email;
@@ -396,7 +396,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBMergeAccountConfirmation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBMergeAccountConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBMergeAccountConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
@@ -407,7 +407,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBGroupJoinConfirmation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBGroupJoinConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBGroupJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -418,7 +418,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBDeviceJoinConfirmation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBDeviceJoinConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBDeviceJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -430,7 +430,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBInformationInputConfirmation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBInformationInputConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationInputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -442,7 +442,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBInformationOutputConfirmation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBInformationOutputConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationOutputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -454,7 +454,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBRegisterContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBRegisterContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRegisterContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -466,7 +466,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.LoginProvider.DeserializeFromXml(
+		                global::SER.TheBall.Payments.LoginProvider.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LoginProviderTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ProviderName = serializedObject.ProviderName;
@@ -480,7 +480,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ContactOipContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ContactOipContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContactOipContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
@@ -490,7 +490,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TBPRegisterEmail.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TBPRegisterEmail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -500,7 +500,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.JavaScriptContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.JavaScriptContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = JavaScriptContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
@@ -510,7 +510,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.JavascriptContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.JavascriptContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = JavascriptContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
@@ -520,7 +520,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.FooterContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.FooterContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = FooterContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
@@ -530,7 +530,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.NavigationContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.NavigationContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NavigationContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Dummy = serializedObject.Dummy;
@@ -540,7 +540,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountSummary.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSummaryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Introduction = serializedObject.Introduction;
@@ -552,7 +552,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -565,7 +565,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountIndex.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountIndexTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -578,7 +578,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountModule.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountModule.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountModuleTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Profile = serializedObject.Profile;
@@ -591,7 +591,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ImageGroupContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ImageGroupContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageGroupContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageGroups = serializedObject.ImageGroups;
@@ -601,7 +601,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.LocationContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.LocationContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Locations = serializedObject.Locations;
@@ -611,7 +611,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddressAndLocation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddressAndLocation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddressAndLocationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -623,7 +623,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.StreetAddress.DeserializeFromXml(
+		                global::SER.TheBall.Payments.StreetAddress.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StreetAddressTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Street = serializedObject.Street;
@@ -636,7 +636,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Dummy = serializedObject.Dummy;
@@ -646,7 +646,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountProfile.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountProfile.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountProfileTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ProfileImage = serializedObject.ProfileImage;
@@ -662,7 +662,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountSecurity.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountSecurity.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSecurityTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.LoginInfoCollection = serializedObject.LoginInfoCollection;
@@ -673,7 +673,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AccountRoles.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AccountRoles.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountRolesTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ModeratorInGroups = serializedObject.ModeratorInGroups;
@@ -685,7 +685,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.PersonalInfoVisibility.DeserializeFromXml(
+		                global::SER.TheBall.Payments.PersonalInfoVisibility.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
@@ -695,7 +695,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GroupedInformation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GroupedInformation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupedInformationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupName = serializedObject.GroupName;
@@ -706,7 +706,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ReferenceToInformation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ReferenceToInformation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ReferenceToInformationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -717,7 +717,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.BlogContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.BlogContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BlogContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -730,7 +730,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.RecentBlogSummary.DeserializeFromXml(
+		                global::SER.TheBall.Payments.RecentBlogSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RecentBlogSummaryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Introduction = serializedObject.Introduction;
@@ -741,7 +741,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Nodes = serializedObject.Nodes;
@@ -759,7 +759,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+		                global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OriginalContentID = serializedObject.OriginalContentID;
@@ -784,7 +784,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Content = serializedObject.Content;
@@ -794,7 +794,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.LongTextObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.LongTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Content = serializedObject.Content;
@@ -804,7 +804,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.MapContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.MapContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -822,7 +822,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.MapMarker.DeserializeFromXml(
+		                global::SER.TheBall.Payments.MapMarker.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapMarkerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IconUrl = serializedObject.IconUrl;
@@ -838,7 +838,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CalendarContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CalendarContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CalendarContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.CalendarContainerHeader = serializedObject.CalendarContainerHeader;
@@ -851,7 +851,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AboutContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AboutContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AboutContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.MainImage = serializedObject.MainImage;
@@ -867,7 +867,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.OBSAccountContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.OBSAccountContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OBSAccountContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.AccountContainerHeader = serializedObject.AccountContainerHeader;
@@ -880,7 +880,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ProjectContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ProjectContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProjectContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ProjectContainerHeader = serializedObject.ProjectContainerHeader;
@@ -893,7 +893,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CourseContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CourseContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CourseContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.CourseContainerHeader = serializedObject.CourseContainerHeader;
@@ -906,7 +906,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ContainerHeader.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ContainerHeader.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContainerHeaderTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -917,7 +917,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ActivitySummaryContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ActivitySummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivitySummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -931,7 +931,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ActivityIndex.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ActivityIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivityIndexTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -944,7 +944,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ActivityContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ActivityContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivityContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -956,7 +956,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Activity.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Activity.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivityTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -979,7 +979,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Moderator.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Moderator.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ModeratorTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ModeratorName = serializedObject.ModeratorName;
@@ -990,7 +990,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Collaborator.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Collaborator.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CollaboratorTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.AccountID = serializedObject.AccountID;
@@ -1004,7 +1004,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GroupSummaryContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GroupSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -1018,7 +1018,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GroupContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GroupContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Header = serializedObject.Header;
@@ -1035,7 +1035,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GroupIndex.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GroupIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupIndexTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -1048,7 +1048,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddAddressAndLocationInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddAddressAndLocationInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.LocationName = serializedObject.LocationName;
@@ -1058,7 +1058,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddImageInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddImageInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageTitle = serializedObject.ImageTitle;
@@ -1068,7 +1068,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddImageGroupInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddImageGroupInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
@@ -1078,7 +1078,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddEmailAddressInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddEmailAddressInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -1088,7 +1088,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CreateGroupInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CreateGroupInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupName = serializedObject.GroupName;
@@ -1098,7 +1098,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddActivityInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddActivityInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ActivityName = serializedObject.ActivityName;
@@ -1108,7 +1108,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddBlogPostInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddBlogPostInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1118,7 +1118,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AddCategoryInfo.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AddCategoryInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.CategoryName = serializedObject.CategoryName;
@@ -1128,7 +1128,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Group.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Group.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -1147,7 +1147,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Introduction.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Introduction.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IntroductionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1158,7 +1158,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ContentCategoryRank.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ContentCategoryRank.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContentCategoryRankTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ContentID = serializedObject.ContentID;
@@ -1172,7 +1172,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.LinkToContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.LinkToContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LinkToContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.URL = serializedObject.URL;
@@ -1189,7 +1189,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.EmbeddedContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.EmbeddedContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = EmbeddedContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IFrameTagContents = serializedObject.IFrameTagContents;
@@ -1205,7 +1205,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.DynamicContentGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.DynamicContentGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.HostName = serializedObject.HostName;
@@ -1219,7 +1219,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.DynamicContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.DynamicContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.HostName = serializedObject.HostName;
@@ -1240,7 +1240,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AttachedToObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AttachedToObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AttachedToObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SourceObjectID = serializedObject.SourceObjectID;
@@ -1255,7 +1255,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Comment.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Comment.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CommentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
@@ -1276,7 +1276,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Selection.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Selection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SelectionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
@@ -1292,7 +1292,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TextContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TextContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TextContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageData = serializedObject.ImageData;
@@ -1313,7 +1313,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Blog.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Blog.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BlogTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -1339,7 +1339,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.BlogIndexGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.BlogIndexGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BlogIndexGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -1358,7 +1358,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CalendarIndex.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CalendarIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CalendarIndexTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -1371,7 +1371,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Filter.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Filter.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = FilterTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1381,7 +1381,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Calendar.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Calendar.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CalendarTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1391,7 +1391,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Map.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Map.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1401,7 +1401,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.MapIndexCollection.DeserializeFromXml(
+		                global::SER.TheBall.Payments.MapIndexCollection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapIndexCollectionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.MapByDate = serializedObject.MapByDate;
@@ -1414,7 +1414,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.MapResult.DeserializeFromXml(
+		                global::SER.TheBall.Payments.MapResult.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapResultTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Location = serializedObject.Location;
@@ -1424,7 +1424,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.MapResultsCollection.DeserializeFromXml(
+		                global::SER.TheBall.Payments.MapResultsCollection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapResultsCollectionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ResultByDate = serializedObject.ResultByDate;
@@ -1436,7 +1436,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Video.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Video.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.VideoData = serializedObject.VideoData;
@@ -1448,7 +1448,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Image.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Image.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -1464,7 +1464,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.BinaryFile.DeserializeFromXml(
+		                global::SER.TheBall.Payments.BinaryFile.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BinaryFileTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OriginalFileName = serializedObject.OriginalFileName;
@@ -1478,7 +1478,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ImageGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ImageGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -1492,7 +1492,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.VideoGroup.DeserializeFromXml(
+		                global::SER.TheBall.Payments.VideoGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Title = serializedObject.Title;
@@ -1504,7 +1504,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Tooltip.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Tooltip.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TooltipTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TooltipText = serializedObject.TooltipText;
@@ -1514,7 +1514,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SocialPanel.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SocialPanel.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SocialPanelTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SocialFilter = serializedObject.SocialFilter;
@@ -1524,7 +1524,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Longitude.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Longitude.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TextValue = serializedObject.TextValue;
@@ -1534,7 +1534,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Latitude.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Latitude.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TextValue = serializedObject.TextValue;
@@ -1544,7 +1544,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Location.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Location.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.LocationName = serializedObject.LocationName;
@@ -1556,7 +1556,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Date.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Date.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DateTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Day = serializedObject.Day;
@@ -1569,7 +1569,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Sex.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Sex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SexTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SexText = serializedObject.SexText;
@@ -1579,7 +1579,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.OBSAddress.DeserializeFromXml(
+		                global::SER.TheBall.Payments.OBSAddress.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OBSAddressTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.StreetName = serializedObject.StreetName;
@@ -1598,7 +1598,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Identity.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Identity.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IdentityTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.FirstName = serializedObject.FirstName;
@@ -1612,7 +1612,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ImageVideoSoundVectorRaw.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ImageVideoSoundVectorRaw.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageVideoSoundVectorRawTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Image = serializedObject.Image;
@@ -1626,7 +1626,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CategoryContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CategoryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Categories = serializedObject.Categories;
@@ -1636,7 +1636,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Category.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -1652,7 +1652,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Subscription.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Subscription.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Priority = serializedObject.Priority;
@@ -1667,7 +1667,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.QueueEnvelope.DeserializeFromXml(
+		                global::SER.TheBall.Payments.QueueEnvelope.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueueEnvelopeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ActiveContainerName = serializedObject.ActiveContainerName;
@@ -1682,7 +1682,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.OperationRequest.DeserializeFromXml(
+		                global::SER.TheBall.Payments.OperationRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OperationRequestTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SubscriberNotification = serializedObject.SubscriberNotification;
@@ -1699,7 +1699,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SubscriptionChainRequestMessage.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SubscriptionChainRequestMessage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionChainRequestMessageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ContentItemID = serializedObject.ContentItemID;
@@ -1709,7 +1709,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SubscriptionChainRequestContent.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SubscriptionChainRequestContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionChainRequestContentTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SubmitTime = serializedObject.SubmitTime;
@@ -1724,7 +1724,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SubscriptionTarget.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SubscriptionTarget.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionTargetTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.BlobLocation = serializedObject.BlobLocation;
@@ -1734,7 +1734,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.DeleteEntireOwnerOperation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.DeleteEntireOwnerOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeleteEntireOwnerOperationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ContainerName = serializedObject.ContainerName;
@@ -1745,7 +1745,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.DeleteOwnerContentOperation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.DeleteOwnerContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeleteOwnerContentOperationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ContainerName = serializedObject.ContainerName;
@@ -1756,7 +1756,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SystemError.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SystemError.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SystemErrorTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ErrorTitle = serializedObject.ErrorTitle;
@@ -1769,7 +1769,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SystemErrorItem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SystemErrorItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SystemErrorItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ShortDescription = serializedObject.ShortDescription;
@@ -1780,7 +1780,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.InformationSource.DeserializeFromXml(
+		                global::SER.TheBall.Payments.InformationSource.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationSourceTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SourceName = serializedObject.SourceName;
@@ -1797,7 +1797,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.RefreshDefaultViewsOperation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.RefreshDefaultViewsOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RefreshDefaultViewsOperationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ViewLocation = serializedObject.ViewLocation;
@@ -1808,7 +1808,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.UpdateWebContentOperation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.UpdateWebContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UpdateWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
@@ -1823,7 +1823,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.UpdateWebContentHandlerItem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.UpdateWebContentHandlerItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UpdateWebContentHandlerItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
@@ -1834,7 +1834,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.PublishWebContentOperation.DeserializeFromXml(
+		                global::SER.TheBall.Payments.PublishWebContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PublishWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
@@ -1847,7 +1847,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.SubscriberInput.DeserializeFromXml(
+		                global::SER.TheBall.Payments.SubscriberInput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriberInputTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.InputRelativeLocation = serializedObject.InputRelativeLocation;
@@ -1860,7 +1860,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Monitor.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Monitor.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MonitorTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
@@ -1876,7 +1876,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.IconTitleDescription.DeserializeFromXml(
+		                global::SER.TheBall.Payments.IconTitleDescription.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IconTitleDescriptionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Icon = serializedObject.Icon;
@@ -1888,7 +1888,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.AboutAGIApplications.DeserializeFromXml(
+		                global::SER.TheBall.Payments.AboutAGIApplications.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AboutAGIApplicationsTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.BuiltForAnybody = serializedObject.BuiltForAnybody;
@@ -1906,7 +1906,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBSystem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBSystem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBSystem {ID = insertData.ObjectID};
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
@@ -1918,7 +1918,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.WebPublishInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.WebPublishInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new WebPublishInfo {ID = insertData.ObjectID};
 		            objectToAdd.PublishType = serializedObject.PublishType;
@@ -1932,7 +1932,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.PublicationPackage.DeserializeFromXml(
+                        global::SER.TheBall.Payments.PublicationPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PublicationPackage {ID = insertData.ObjectID};
 		            objectToAdd.PackageName = serializedObject.PackageName;
@@ -1944,7 +1944,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBRLoginRoot.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBRLoginRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRLoginRoot {ID = insertData.ObjectID};
 		            objectToAdd.DomainName = serializedObject.DomainName;
@@ -1956,7 +1956,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBRAccountRoot.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBRAccountRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRAccountRoot {ID = insertData.ObjectID};
 		            objectToAdd.Account = serializedObject.Account;
@@ -1967,7 +1967,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBRGroupRoot.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBRGroupRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRGroupRoot {ID = insertData.ObjectID};
 		            objectToAdd.Group = serializedObject.Group;
@@ -1978,7 +1978,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBRLoginGroupRoot.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBRLoginGroupRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID};
 		            objectToAdd.Role = serializedObject.Role;
@@ -1990,7 +1990,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBREmailRoot.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBREmailRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBREmailRoot {ID = insertData.ObjectID};
 		            objectToAdd.Account = serializedObject.Account;
@@ -2001,7 +2001,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBAccount.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBAccount.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBAccount {ID = insertData.ObjectID};
 		            objectToAdd.Emails = serializedObject.Emails;
@@ -2014,7 +2014,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBAccountCollaborationGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBAccountCollaborationGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBAccountCollaborationGroup {ID = insertData.ObjectID};
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -2027,7 +2027,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBLoginInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBLoginInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
@@ -2038,7 +2038,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBEmail.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBEmail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBEmail {ID = insertData.ObjectID};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
@@ -2050,7 +2050,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBCollaboratorRole.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBCollaboratorRole.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBCollaboratorRole {ID = insertData.ObjectID};
 		            objectToAdd.Email = serializedObject.Email;
@@ -2063,7 +2063,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBCollaboratingGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBCollaboratingGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -2075,7 +2075,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBEmailValidation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBEmailValidation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBEmailValidation {ID = insertData.ObjectID};
 		            objectToAdd.Email = serializedObject.Email;
@@ -2094,7 +2094,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBMergeAccountConfirmation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBMergeAccountConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID};
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
@@ -2106,7 +2106,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBGroupJoinConfirmation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBGroupJoinConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID};
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -2118,7 +2118,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBDeviceJoinConfirmation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBDeviceJoinConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBDeviceJoinConfirmation {ID = insertData.ObjectID};
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -2131,7 +2131,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBInformationInputConfirmation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBInformationInputConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBInformationInputConfirmation {ID = insertData.ObjectID};
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -2144,7 +2144,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBInformationOutputConfirmation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBInformationOutputConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBInformationOutputConfirmation {ID = insertData.ObjectID};
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -2157,7 +2157,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBRegisterContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBRegisterContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRegisterContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2170,7 +2170,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.LoginProvider.DeserializeFromXml(
+                        global::SER.TheBall.Payments.LoginProvider.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LoginProvider {ID = insertData.ObjectID};
 		            objectToAdd.ProviderName = serializedObject.ProviderName;
@@ -2185,7 +2185,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ContactOipContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ContactOipContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ContactOipContainer {ID = insertData.ObjectID};
 		            objectToAdd.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
@@ -2196,7 +2196,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TBPRegisterEmail.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TBPRegisterEmail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
@@ -2207,7 +2207,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.JavaScriptContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.JavaScriptContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new JavaScriptContainer {ID = insertData.ObjectID};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
@@ -2218,7 +2218,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.JavascriptContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.JavascriptContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new JavascriptContainer {ID = insertData.ObjectID};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
@@ -2229,7 +2229,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.FooterContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.FooterContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new FooterContainer {ID = insertData.ObjectID};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
@@ -2240,7 +2240,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.NavigationContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.NavigationContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NavigationContainer {ID = insertData.ObjectID};
 		            objectToAdd.Dummy = serializedObject.Dummy;
@@ -2251,7 +2251,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountSummary.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSummary {ID = insertData.ObjectID};
 		            objectToAdd.Introduction = serializedObject.Introduction;
@@ -2264,7 +2264,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2278,7 +2278,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountIndex.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountIndex {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -2292,7 +2292,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountModule.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountModule.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountModule {ID = insertData.ObjectID};
 		            objectToAdd.Profile = serializedObject.Profile;
@@ -2306,7 +2306,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ImageGroupContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ImageGroupContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ImageGroupContainer {ID = insertData.ObjectID};
 		            objectToAdd.ImageGroups = serializedObject.ImageGroups;
@@ -2317,7 +2317,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.LocationContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.LocationContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LocationContainer {ID = insertData.ObjectID};
 		            objectToAdd.Locations = serializedObject.Locations;
@@ -2328,7 +2328,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddressAndLocation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddressAndLocation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddressAndLocation {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -2341,7 +2341,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.StreetAddress.DeserializeFromXml(
+                        global::SER.TheBall.Payments.StreetAddress.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StreetAddress {ID = insertData.ObjectID};
 		            objectToAdd.Street = serializedObject.Street;
@@ -2355,7 +2355,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountContent {ID = insertData.ObjectID};
 		            objectToAdd.Dummy = serializedObject.Dummy;
@@ -2366,7 +2366,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountProfile.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountProfile.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountProfile {ID = insertData.ObjectID};
 		            objectToAdd.ProfileImage = serializedObject.ProfileImage;
@@ -2383,7 +2383,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountSecurity.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountSecurity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSecurity {ID = insertData.ObjectID};
 		            objectToAdd.LoginInfoCollection = serializedObject.LoginInfoCollection;
@@ -2395,7 +2395,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AccountRoles.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AccountRoles.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountRoles {ID = insertData.ObjectID};
 		            objectToAdd.ModeratorInGroups = serializedObject.ModeratorInGroups;
@@ -2408,7 +2408,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.PersonalInfoVisibility.DeserializeFromXml(
+                        global::SER.TheBall.Payments.PersonalInfoVisibility.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
@@ -2419,7 +2419,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GroupedInformation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GroupedInformation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupedInformation {ID = insertData.ObjectID};
 		            objectToAdd.GroupName = serializedObject.GroupName;
@@ -2431,7 +2431,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ReferenceToInformation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ReferenceToInformation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -2443,7 +2443,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.BlogContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.BlogContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new BlogContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2457,7 +2457,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.RecentBlogSummary.DeserializeFromXml(
+                        global::SER.TheBall.Payments.RecentBlogSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RecentBlogSummary {ID = insertData.ObjectID};
 		            objectToAdd.Introduction = serializedObject.Introduction;
@@ -2469,7 +2469,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID};
 		            objectToAdd.Nodes = serializedObject.Nodes;
@@ -2488,7 +2488,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+                        global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
 		            objectToAdd.OriginalContentID = serializedObject.OriginalContentID;
@@ -2514,7 +2514,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
 		            objectToAdd.Content = serializedObject.Content;
@@ -2525,7 +2525,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.LongTextObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.LongTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID};
 		            objectToAdd.Content = serializedObject.Content;
@@ -2536,7 +2536,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.MapContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.MapContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2555,7 +2555,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.MapMarker.DeserializeFromXml(
+                        global::SER.TheBall.Payments.MapMarker.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapMarker {ID = insertData.ObjectID};
 		            objectToAdd.IconUrl = serializedObject.IconUrl;
@@ -2572,7 +2572,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CalendarContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CalendarContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CalendarContainer {ID = insertData.ObjectID};
 		            objectToAdd.CalendarContainerHeader = serializedObject.CalendarContainerHeader;
@@ -2586,7 +2586,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AboutContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AboutContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AboutContainer {ID = insertData.ObjectID};
 		            objectToAdd.MainImage = serializedObject.MainImage;
@@ -2603,7 +2603,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.OBSAccountContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.OBSAccountContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new OBSAccountContainer {ID = insertData.ObjectID};
 		            objectToAdd.AccountContainerHeader = serializedObject.AccountContainerHeader;
@@ -2617,7 +2617,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ProjectContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ProjectContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProjectContainer {ID = insertData.ObjectID};
 		            objectToAdd.ProjectContainerHeader = serializedObject.ProjectContainerHeader;
@@ -2631,7 +2631,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CourseContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CourseContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CourseContainer {ID = insertData.ObjectID};
 		            objectToAdd.CourseContainerHeader = serializedObject.CourseContainerHeader;
@@ -2645,7 +2645,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ContainerHeader.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ContainerHeader.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ContainerHeader {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -2657,7 +2657,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ActivitySummaryContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ActivitySummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ActivitySummaryContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2672,7 +2672,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ActivityIndex.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ActivityIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ActivityIndex {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -2686,7 +2686,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ActivityContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ActivityContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ActivityContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2699,7 +2699,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Activity.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Activity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Activity {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -2723,7 +2723,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Moderator.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Moderator.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Moderator {ID = insertData.ObjectID};
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
@@ -2735,7 +2735,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Collaborator.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Collaborator.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Collaborator {ID = insertData.ObjectID};
 		            objectToAdd.AccountID = serializedObject.AccountID;
@@ -2750,7 +2750,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GroupSummaryContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GroupSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2765,7 +2765,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GroupContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GroupContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupContainer {ID = insertData.ObjectID};
 		            objectToAdd.Header = serializedObject.Header;
@@ -2783,7 +2783,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GroupIndex.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GroupIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupIndex {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -2797,7 +2797,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddAddressAndLocationInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddAddressAndLocationInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID};
 		            objectToAdd.LocationName = serializedObject.LocationName;
@@ -2808,7 +2808,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddImageInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddImageInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
@@ -2819,7 +2819,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddImageGroupInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddImageGroupInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
@@ -2830,7 +2830,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddEmailAddressInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddEmailAddressInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
@@ -2841,7 +2841,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CreateGroupInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CreateGroupInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID};
 		            objectToAdd.GroupName = serializedObject.GroupName;
@@ -2852,7 +2852,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddActivityInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddActivityInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
@@ -2863,7 +2863,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddBlogPostInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddBlogPostInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -2874,7 +2874,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AddCategoryInfo.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AddCategoryInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
@@ -2885,7 +2885,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Group.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Group.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Group {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -2905,7 +2905,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Introduction.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Introduction.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Introduction {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -2917,7 +2917,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ContentCategoryRank.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ContentCategoryRank.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ContentCategoryRank {ID = insertData.ObjectID};
 		            objectToAdd.ContentID = serializedObject.ContentID;
@@ -2932,7 +2932,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.LinkToContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.LinkToContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LinkToContent {ID = insertData.ObjectID};
 		            objectToAdd.URL = serializedObject.URL;
@@ -2950,7 +2950,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.EmbeddedContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.EmbeddedContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new EmbeddedContent {ID = insertData.ObjectID};
 		            objectToAdd.IFrameTagContents = serializedObject.IFrameTagContents;
@@ -2967,7 +2967,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.DynamicContentGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.DynamicContentGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DynamicContentGroup {ID = insertData.ObjectID};
 		            objectToAdd.HostName = serializedObject.HostName;
@@ -2982,7 +2982,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.DynamicContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.DynamicContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DynamicContent {ID = insertData.ObjectID};
 		            objectToAdd.HostName = serializedObject.HostName;
@@ -3004,7 +3004,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AttachedToObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AttachedToObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AttachedToObject {ID = insertData.ObjectID};
 		            objectToAdd.SourceObjectID = serializedObject.SourceObjectID;
@@ -3020,7 +3020,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Comment.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Comment.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Comment {ID = insertData.ObjectID};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
@@ -3042,7 +3042,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Selection.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Selection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Selection {ID = insertData.ObjectID};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
@@ -3059,7 +3059,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TextContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TextContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TextContent {ID = insertData.ObjectID};
 		            objectToAdd.ImageData = serializedObject.ImageData;
@@ -3081,7 +3081,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Blog.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Blog.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Blog {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -3108,7 +3108,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.BlogIndexGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.BlogIndexGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new BlogIndexGroup {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -3128,7 +3128,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CalendarIndex.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CalendarIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CalendarIndex {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -3142,7 +3142,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Filter.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Filter.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Filter {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -3153,7 +3153,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Calendar.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Calendar.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Calendar {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -3164,7 +3164,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Map.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Map.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Map {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -3175,7 +3175,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.MapIndexCollection.DeserializeFromXml(
+                        global::SER.TheBall.Payments.MapIndexCollection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapIndexCollection {ID = insertData.ObjectID};
 		            objectToAdd.MapByDate = serializedObject.MapByDate;
@@ -3189,7 +3189,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.MapResult.DeserializeFromXml(
+                        global::SER.TheBall.Payments.MapResult.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapResult {ID = insertData.ObjectID};
 		            objectToAdd.Location = serializedObject.Location;
@@ -3200,7 +3200,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.MapResultsCollection.DeserializeFromXml(
+                        global::SER.TheBall.Payments.MapResultsCollection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapResultsCollection {ID = insertData.ObjectID};
 		            objectToAdd.ResultByDate = serializedObject.ResultByDate;
@@ -3213,7 +3213,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Video.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Video.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Video {ID = insertData.ObjectID};
 		            objectToAdd.VideoData = serializedObject.VideoData;
@@ -3226,7 +3226,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Image.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Image.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Image {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -3243,7 +3243,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.BinaryFile.DeserializeFromXml(
+                        global::SER.TheBall.Payments.BinaryFile.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new BinaryFile {ID = insertData.ObjectID};
 		            objectToAdd.OriginalFileName = serializedObject.OriginalFileName;
@@ -3258,7 +3258,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ImageGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ImageGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ImageGroup {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -3273,7 +3273,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.VideoGroup.DeserializeFromXml(
+                        global::SER.TheBall.Payments.VideoGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new VideoGroup {ID = insertData.ObjectID};
 		            objectToAdd.Title = serializedObject.Title;
@@ -3286,7 +3286,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Tooltip.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Tooltip.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Tooltip {ID = insertData.ObjectID};
 		            objectToAdd.TooltipText = serializedObject.TooltipText;
@@ -3297,7 +3297,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SocialPanel.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SocialPanel.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SocialPanel {ID = insertData.ObjectID};
 		            objectToAdd.SocialFilter = serializedObject.SocialFilter;
@@ -3308,7 +3308,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Longitude.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Longitude.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Longitude {ID = insertData.ObjectID};
 		            objectToAdd.TextValue = serializedObject.TextValue;
@@ -3319,7 +3319,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Latitude.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Latitude.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Latitude {ID = insertData.ObjectID};
 		            objectToAdd.TextValue = serializedObject.TextValue;
@@ -3330,7 +3330,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Location.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Location.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Location {ID = insertData.ObjectID};
 		            objectToAdd.LocationName = serializedObject.LocationName;
@@ -3343,7 +3343,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Date.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Date.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Date {ID = insertData.ObjectID};
 		            objectToAdd.Day = serializedObject.Day;
@@ -3357,7 +3357,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Sex.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Sex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Sex {ID = insertData.ObjectID};
 		            objectToAdd.SexText = serializedObject.SexText;
@@ -3368,7 +3368,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.OBSAddress.DeserializeFromXml(
+                        global::SER.TheBall.Payments.OBSAddress.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new OBSAddress {ID = insertData.ObjectID};
 		            objectToAdd.StreetName = serializedObject.StreetName;
@@ -3388,7 +3388,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Identity.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Identity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Identity {ID = insertData.ObjectID};
 		            objectToAdd.FirstName = serializedObject.FirstName;
@@ -3403,7 +3403,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ImageVideoSoundVectorRaw.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ImageVideoSoundVectorRaw.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ImageVideoSoundVectorRaw {ID = insertData.ObjectID};
 		            objectToAdd.Image = serializedObject.Image;
@@ -3418,7 +3418,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CategoryContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CategoryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CategoryContainer {ID = insertData.ObjectID};
 		            objectToAdd.Categories = serializedObject.Categories;
@@ -3429,7 +3429,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Category.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID};
 		            objectToAdd.ReferenceToInformation = serializedObject.ReferenceToInformation;
@@ -3446,7 +3446,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Subscription.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Subscription.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Subscription {ID = insertData.ObjectID};
 		            objectToAdd.Priority = serializedObject.Priority;
@@ -3462,7 +3462,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.QueueEnvelope.DeserializeFromXml(
+                        global::SER.TheBall.Payments.QueueEnvelope.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueueEnvelope {ID = insertData.ObjectID};
 		            objectToAdd.ActiveContainerName = serializedObject.ActiveContainerName;
@@ -3478,7 +3478,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.OperationRequest.DeserializeFromXml(
+                        global::SER.TheBall.Payments.OperationRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new OperationRequest {ID = insertData.ObjectID};
 		            objectToAdd.SubscriberNotification = serializedObject.SubscriberNotification;
@@ -3496,7 +3496,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SubscriptionChainRequestMessage.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SubscriptionChainRequestMessage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SubscriptionChainRequestMessage {ID = insertData.ObjectID};
 		            objectToAdd.ContentItemID = serializedObject.ContentItemID;
@@ -3507,7 +3507,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SubscriptionChainRequestContent.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SubscriptionChainRequestContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SubscriptionChainRequestContent {ID = insertData.ObjectID};
 		            objectToAdd.SubmitTime = serializedObject.SubmitTime;
@@ -3523,7 +3523,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SubscriptionTarget.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SubscriptionTarget.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SubscriptionTarget {ID = insertData.ObjectID};
 		            objectToAdd.BlobLocation = serializedObject.BlobLocation;
@@ -3534,7 +3534,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.DeleteEntireOwnerOperation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.DeleteEntireOwnerOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DeleteEntireOwnerOperation {ID = insertData.ObjectID};
 		            objectToAdd.ContainerName = serializedObject.ContainerName;
@@ -3546,7 +3546,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.DeleteOwnerContentOperation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.DeleteOwnerContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DeleteOwnerContentOperation {ID = insertData.ObjectID};
 		            objectToAdd.ContainerName = serializedObject.ContainerName;
@@ -3558,7 +3558,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SystemError.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SystemError.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SystemError {ID = insertData.ObjectID};
 		            objectToAdd.ErrorTitle = serializedObject.ErrorTitle;
@@ -3572,7 +3572,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SystemErrorItem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SystemErrorItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SystemErrorItem {ID = insertData.ObjectID};
 		            objectToAdd.ShortDescription = serializedObject.ShortDescription;
@@ -3584,7 +3584,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.InformationSource.DeserializeFromXml(
+                        global::SER.TheBall.Payments.InformationSource.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationSource {ID = insertData.ObjectID};
 		            objectToAdd.SourceName = serializedObject.SourceName;
@@ -3602,7 +3602,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.RefreshDefaultViewsOperation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.RefreshDefaultViewsOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RefreshDefaultViewsOperation {ID = insertData.ObjectID};
 		            objectToAdd.ViewLocation = serializedObject.ViewLocation;
@@ -3614,7 +3614,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.UpdateWebContentOperation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.UpdateWebContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UpdateWebContentOperation {ID = insertData.ObjectID};
 		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
@@ -3630,7 +3630,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.UpdateWebContentHandlerItem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.UpdateWebContentHandlerItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID};
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
@@ -3642,7 +3642,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.PublishWebContentOperation.DeserializeFromXml(
+                        global::SER.TheBall.Payments.PublishWebContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PublishWebContentOperation {ID = insertData.ObjectID};
 		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
@@ -3656,7 +3656,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.SubscriberInput.DeserializeFromXml(
+                        global::SER.TheBall.Payments.SubscriberInput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SubscriberInput {ID = insertData.ObjectID};
 		            objectToAdd.InputRelativeLocation = serializedObject.InputRelativeLocation;
@@ -3670,7 +3670,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Monitor.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Monitor.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Monitor {ID = insertData.ObjectID};
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
@@ -3687,7 +3687,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.IconTitleDescription.DeserializeFromXml(
+                        global::SER.TheBall.Payments.IconTitleDescription.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new IconTitleDescription {ID = insertData.ObjectID};
 		            objectToAdd.Icon = serializedObject.Icon;
@@ -3700,7 +3700,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.AboutAGIApplications.DeserializeFromXml(
+                        global::SER.TheBall.Payments.AboutAGIApplications.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AboutAGIApplications {ID = insertData.ObjectID};
 		            objectToAdd.BuiltForAnybody = serializedObject.BuiltForAnybody;

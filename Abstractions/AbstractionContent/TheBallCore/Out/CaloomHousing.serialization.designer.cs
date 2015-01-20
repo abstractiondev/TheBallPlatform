@@ -1,6 +1,6 @@
  
 
-namespace Caloom.Housing { 
+namespace SER.Caloom.Housing { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-		 } 			[DataContract]
+		 }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.Housing")]
 			[Serializable]
 			public partial class House 
 			{

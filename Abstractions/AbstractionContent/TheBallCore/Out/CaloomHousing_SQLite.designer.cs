@@ -94,7 +94,7 @@ namespace SQLite.Caloom.Housing {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.House.DeserializeFromXml(
+		                global::SER.TheBall.Payments.House.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = HouseTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -114,7 +114,7 @@ namespace SQLite.Caloom.Housing {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.House.DeserializeFromXml(
+                        global::SER.TheBall.Payments.House.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new House {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;

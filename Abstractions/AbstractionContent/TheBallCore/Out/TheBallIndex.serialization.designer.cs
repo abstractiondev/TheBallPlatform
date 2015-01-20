@@ -1,6 +1,6 @@
  
 
-namespace TheBall.Index { 
+namespace SER.TheBall.Index { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-					[DataContract]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index.INT")]
 			public partial class UserQuery
 			{
 				[DataMember]
@@ -20,7 +20,7 @@ namespace INT {
 				public string DefaultFieldName { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index.INT")]
 			public partial class QueryToken
 			{
 				[DataMember]
@@ -31,7 +31,7 @@ namespace INT {
 				public string QueryRequestObjectID { get; set; }
 			}
 
- } 			[DataContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
 			[Serializable]
 			public partial class IndexingRequest 
 			{
@@ -105,7 +105,7 @@ namespace INT {
 			public List< string > ObjectLocations = new List< string >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
 			[Serializable]
 			public partial class QueryRequest 
 			{
@@ -197,7 +197,7 @@ namespace INT {
 			public List< QueryResultItem > QueryResultObjects = new List< QueryResultItem >();
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
 			[Serializable]
 			public partial class QueryResultItem 
 			{

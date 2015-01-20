@@ -95,7 +95,7 @@ namespace SQLite.TheBall.Payments {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSubscriptionPlanTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.PlanName = serializedObject.PlanName;
@@ -110,7 +110,7 @@ namespace SQLite.TheBall.Payments {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CustomerAccount.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.StripeID = serializedObject.StripeID;
@@ -133,7 +133,7 @@ namespace SQLite.TheBall.Payments {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID};
 		            objectToAdd.PlanName = serializedObject.PlanName;
@@ -147,7 +147,7 @@ namespace SQLite.TheBall.Payments {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CustomerAccount.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID};
 		            objectToAdd.StripeID = serializedObject.StripeID;

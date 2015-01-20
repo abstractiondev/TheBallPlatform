@@ -1,6 +1,6 @@
  
 
-namespace AaltoGlobalImpact.OIP { 
+namespace SER.AaltoGlobalImpact.OIP { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-					[DataContract]
+		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP.INT")]
 			public partial class CategoryChildRanking
 			{
 				[DataMember]
@@ -20,7 +20,7 @@ namespace INT {
 				public RankingItem[] RankingItems { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP.INT")]
 			public partial class RankingItem
 			{
 				[DataMember]
@@ -33,7 +33,7 @@ namespace INT {
 				public string RankValue { get; set; }
 			}
 
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP.INT")]
 			public partial class ParentToChildren
 			{
 				[DataMember]
@@ -42,7 +42,7 @@ namespace INT {
 				public ParentToChildren[] children { get; set; }
 			}
 
- } 			[DataContract]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBSystem 
 			{
@@ -124,7 +124,7 @@ namespace INT {
 			private string _unmodified_AdminGroupID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class WebPublishInfo 
 			{
@@ -214,7 +214,7 @@ namespace INT {
 			private PublicationPackageCollection _unmodified_Publications;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class PublicationPackageCollection 
 			{
@@ -333,7 +333,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class PublicationPackage 
 			{
@@ -415,7 +415,7 @@ namespace INT {
 			private DateTime _unmodified_PublicationTime;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBRLoginRoot 
 			{
@@ -497,7 +497,7 @@ namespace INT {
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBRAccountRoot 
 			{
@@ -575,7 +575,7 @@ namespace INT {
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBRGroupRoot 
 			{
@@ -653,7 +653,7 @@ namespace INT {
 			private TBCollaboratingGroup _unmodified_Group;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBRLoginGroupRoot 
 			{
@@ -735,7 +735,7 @@ namespace INT {
 			private string _unmodified_GroupID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBREmailRoot 
 			{
@@ -813,7 +813,7 @@ namespace INT {
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBAccount 
 			{
@@ -899,7 +899,7 @@ namespace INT {
 			private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBAccountCollaborationGroup 
 			{
@@ -985,7 +985,7 @@ namespace INT {
 			private string _unmodified_RoleStatus;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBAccountCollaborationGroupCollection 
 			{
@@ -1104,7 +1104,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBLoginInfo 
 			{
@@ -1182,7 +1182,7 @@ namespace INT {
 			private string _unmodified_OpenIDUrl;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBLoginInfoCollection 
 			{
@@ -1301,7 +1301,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBEmail 
 			{
@@ -1383,7 +1383,7 @@ namespace INT {
 			private DateTime _unmodified_ValidatedAt;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBEmailCollection 
 			{
@@ -1502,7 +1502,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBCollaboratorRole 
 			{
@@ -1588,7 +1588,7 @@ namespace INT {
 			private string _unmodified_RoleStatus;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBCollaboratorRoleCollection 
 			{
@@ -1707,7 +1707,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBCollaboratingGroup 
 			{
@@ -1789,7 +1789,7 @@ namespace INT {
 			private TBCollaboratorRoleCollection _unmodified_Roles;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBEmailValidation 
 			{
@@ -1899,7 +1899,7 @@ namespace INT {
 			private string _unmodified_RedirectUrlAfterValidation;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBMergeAccountConfirmation 
 			{
@@ -1981,7 +1981,7 @@ namespace INT {
 			private string _unmodified_AccountToMergeToID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBGroupJoinConfirmation 
 			{
@@ -2063,7 +2063,7 @@ namespace INT {
 			private string _unmodified_InvitationMode;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBDeviceJoinConfirmation 
 			{
@@ -2149,7 +2149,7 @@ namespace INT {
 			private string _unmodified_DeviceMembershipID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBInformationInputConfirmation 
 			{
@@ -2235,7 +2235,7 @@ namespace INT {
 			private string _unmodified_InformationInputID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBInformationOutputConfirmation 
 			{
@@ -2321,7 +2321,7 @@ namespace INT {
 			private string _unmodified_InformationOutputID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBRegisterContainer 
 			{
@@ -2407,7 +2407,7 @@ namespace INT {
 			private LoginProviderCollection _unmodified_LoginProviderCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LoginProvider 
 			{
@@ -2501,7 +2501,7 @@ namespace INT {
 			private string _unmodified_ReturnUrl;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LoginProviderCollection 
 			{
@@ -2620,7 +2620,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ContactOipContainer 
 			{
@@ -2698,7 +2698,7 @@ namespace INT {
 			private string _unmodified_OIPModeratorGroupID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TBPRegisterEmail 
 			{
@@ -2776,7 +2776,7 @@ namespace INT {
 			private string _unmodified_EmailAddress;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class JavaScriptContainer 
 			{
@@ -2854,7 +2854,7 @@ namespace INT {
 			private string _unmodified_HtmlContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class JavascriptContainer 
 			{
@@ -2932,7 +2932,7 @@ namespace INT {
 			private string _unmodified_HtmlContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class FooterContainer 
 			{
@@ -3010,7 +3010,7 @@ namespace INT {
 			private string _unmodified_HtmlContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class NavigationContainer 
 			{
@@ -3088,7 +3088,7 @@ namespace INT {
 			private string _unmodified_Dummy;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountSummary 
 			{
@@ -3174,7 +3174,7 @@ namespace INT {
 			private GroupSummaryContainer _unmodified_GroupSummary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountContainer 
 			{
@@ -3264,7 +3264,7 @@ namespace INT {
 			private AccountSummary _unmodified_AccountSummary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountIndex 
 			{
@@ -3354,7 +3354,7 @@ namespace INT {
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountModule 
 			{
@@ -3444,7 +3444,7 @@ namespace INT {
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ImageGroupContainer 
 			{
@@ -3522,7 +3522,7 @@ namespace INT {
 			private ImageGroupCollection _unmodified_ImageGroups;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LocationContainer 
 			{
@@ -3600,7 +3600,7 @@ namespace INT {
 			private AddressAndLocationCollection _unmodified_Locations;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddressAndLocationCollection 
 			{
@@ -3719,7 +3719,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddressAndLocation 
 			{
@@ -3805,7 +3805,7 @@ namespace INT {
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class StreetAddress 
 			{
@@ -3895,7 +3895,7 @@ namespace INT {
 			private string _unmodified_Country;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountContent 
 			{
@@ -3973,7 +3973,7 @@ namespace INT {
 			private string _unmodified_Dummy;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountProfile 
 			{
@@ -4075,7 +4075,7 @@ namespace INT {
 			private string _unmodified_SimplifiedAccountGroupID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountSecurity 
 			{
@@ -4157,7 +4157,7 @@ namespace INT {
 			private TBEmailCollection _unmodified_EmailCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AccountRoles 
 			{
@@ -4243,7 +4243,7 @@ namespace INT {
 			private string _unmodified_OrganizationsImPartOf;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class PersonalInfoVisibility 
 			{
@@ -4321,7 +4321,7 @@ namespace INT {
 			private string _unmodified_NoOne_Network_All;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupedInformationCollection 
 			{
@@ -4440,7 +4440,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupedInformation 
 			{
@@ -4522,7 +4522,7 @@ namespace INT {
 			private ReferenceCollection _unmodified_ReferenceCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ReferenceToInformation 
 			{
@@ -4604,7 +4604,7 @@ namespace INT {
 			private string _unmodified_URL;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ReferenceCollection 
 			{
@@ -4723,7 +4723,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class BlogContainer 
 			{
@@ -4813,7 +4813,7 @@ namespace INT {
 			private BlogIndexGroup _unmodified_BlogIndexGroup;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class RecentBlogSummary 
 			{
@@ -4895,7 +4895,7 @@ namespace INT {
 			private BlogCollection _unmodified_RecentBlogCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class NodeSummaryContainer 
 			{
@@ -5005,7 +5005,7 @@ namespace INT {
 			private CategoryCollection _unmodified_NodeSourceCategories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class RenderedNodeCollection 
 			{
@@ -5124,7 +5124,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class RenderedNode 
 			{
@@ -5262,7 +5262,7 @@ namespace INT {
 			private ShortTextCollection _unmodified_Locations;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ShortTextCollection 
 			{
@@ -5381,7 +5381,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ShortTextObject 
 			{
@@ -5459,7 +5459,7 @@ namespace INT {
 			private string _unmodified_Content;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LongTextCollection 
 			{
@@ -5578,7 +5578,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LongTextObject 
 			{
@@ -5656,7 +5656,7 @@ namespace INT {
 			private string _unmodified_Content;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapContainer 
 			{
@@ -5766,7 +5766,7 @@ namespace INT {
 			private MapMarkerCollection _unmodified_MapMarkers;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapMarker 
 			{
@@ -5868,7 +5868,7 @@ namespace INT {
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapMarkerCollection 
 			{
@@ -5987,7 +5987,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CalendarContainer 
 			{
@@ -6077,7 +6077,7 @@ namespace INT {
 			private CalendarIndex _unmodified_CalendarIndexCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AboutContainer 
 			{
@@ -6179,7 +6179,7 @@ namespace INT {
 			private ImageGroup _unmodified_ImageGroup;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class OBSAccountContainer 
 			{
@@ -6269,7 +6269,7 @@ namespace INT {
 			private CalendarIndex _unmodified_AccountIndexCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ProjectContainer 
 			{
@@ -6359,7 +6359,7 @@ namespace INT {
 			private CalendarIndex _unmodified_ProjectIndexCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CourseContainer 
 			{
@@ -6449,7 +6449,7 @@ namespace INT {
 			private CalendarIndex _unmodified_CourseIndexCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ContainerHeader 
 			{
@@ -6531,7 +6531,7 @@ namespace INT {
 			private string _unmodified_SubTitle;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ActivitySummaryContainer 
 			{
@@ -6625,7 +6625,7 @@ namespace INT {
 			private ActivityCollection _unmodified_ActivityCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ActivityIndex 
 			{
@@ -6715,7 +6715,7 @@ namespace INT {
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ActivityContainer 
 			{
@@ -6801,7 +6801,7 @@ namespace INT {
 			private Activity _unmodified_ActivityModule;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ActivityCollection 
 			{
@@ -6920,7 +6920,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Activity 
 			{
@@ -7050,7 +7050,7 @@ namespace INT {
 			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ModeratorCollection 
 			{
@@ -7169,7 +7169,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Moderator 
 			{
@@ -7251,7 +7251,7 @@ namespace INT {
 			private string _unmodified_ProfileUrl;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CollaboratorCollection 
 			{
@@ -7370,7 +7370,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Collaborator 
 			{
@@ -7464,7 +7464,7 @@ namespace INT {
 			private string _unmodified_ProfileUrl;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupSummaryContainer 
 			{
@@ -7558,7 +7558,7 @@ namespace INT {
 			private GroupCollection _unmodified_GroupCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupContainer 
 			{
@@ -7664,7 +7664,7 @@ namespace INT {
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupIndex 
 			{
@@ -7754,7 +7754,7 @@ namespace INT {
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddAddressAndLocationInfo 
 			{
@@ -7832,7 +7832,7 @@ namespace INT {
 			private string _unmodified_LocationName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddImageInfo 
 			{
@@ -7910,7 +7910,7 @@ namespace INT {
 			private string _unmodified_ImageTitle;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddImageGroupInfo 
 			{
@@ -7988,7 +7988,7 @@ namespace INT {
 			private string _unmodified_ImageGroupTitle;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddEmailAddressInfo 
 			{
@@ -8066,7 +8066,7 @@ namespace INT {
 			private string _unmodified_EmailAddress;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CreateGroupInfo 
 			{
@@ -8144,7 +8144,7 @@ namespace INT {
 			private string _unmodified_GroupName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddActivityInfo 
 			{
@@ -8222,7 +8222,7 @@ namespace INT {
 			private string _unmodified_ActivityName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddBlogPostInfo 
 			{
@@ -8300,7 +8300,7 @@ namespace INT {
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AddCategoryInfo 
 			{
@@ -8378,7 +8378,7 @@ namespace INT {
 			private string _unmodified_CategoryName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class GroupCollection 
 			{
@@ -8497,7 +8497,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Group 
 			{
@@ -8611,7 +8611,7 @@ namespace INT {
 			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Introduction 
 			{
@@ -8693,7 +8693,7 @@ namespace INT {
 			private string _unmodified_Body;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ContentCategoryRankCollection 
 			{
@@ -8812,7 +8812,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ContentCategoryRank 
 			{
@@ -8906,7 +8906,7 @@ namespace INT {
 			private string _unmodified_RankValue;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LinkToContentCollection 
 			{
@@ -9025,7 +9025,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LinkToContent 
 			{
@@ -9131,7 +9131,7 @@ namespace INT {
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class EmbeddedContentCollection 
 			{
@@ -9250,7 +9250,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class EmbeddedContent 
 			{
@@ -9352,7 +9352,7 @@ namespace INT {
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DynamicContentGroupCollection 
 			{
@@ -9471,7 +9471,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DynamicContentGroup 
 			{
@@ -9565,7 +9565,7 @@ namespace INT {
 			private string _unmodified_ContentItemNames;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DynamicContentCollection 
 			{
@@ -9684,7 +9684,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DynamicContent 
 			{
@@ -9806,7 +9806,7 @@ namespace INT {
 			private string _unmodified_PageLocation;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AttachedToObjectCollection 
 			{
@@ -9925,7 +9925,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AttachedToObject 
 			{
@@ -10023,7 +10023,7 @@ namespace INT {
 			private string _unmodified_TargetObjectDomain;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CommentCollection 
 			{
@@ -10142,7 +10142,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Comment 
 			{
@@ -10264,7 +10264,7 @@ namespace INT {
 			private string _unmodified_LastAuthorAccountID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SelectionCollection 
 			{
@@ -10383,7 +10383,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Selection 
 			{
@@ -10485,7 +10485,7 @@ namespace INT {
 			private double _unmodified_DoubleValue;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TextContentCollection 
 			{
@@ -10604,7 +10604,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class TextContent 
 			{
@@ -10726,7 +10726,7 @@ namespace INT {
 			private string _unmodified_RawHtmlContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class BlogCollection 
 			{
@@ -10845,7 +10845,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Blog 
 			{
@@ -10987,7 +10987,7 @@ namespace INT {
 			private SocialPanelCollection _unmodified_SocialPanel;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class BlogIndexGroup 
 			{
@@ -11101,7 +11101,7 @@ namespace INT {
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CalendarIndex 
 			{
@@ -11191,7 +11191,7 @@ namespace INT {
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Filter 
 			{
@@ -11269,7 +11269,7 @@ namespace INT {
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Calendar 
 			{
@@ -11347,7 +11347,7 @@ namespace INT {
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CalendarCollection 
 			{
@@ -11466,7 +11466,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Map 
 			{
@@ -11544,7 +11544,7 @@ namespace INT {
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapCollection 
 			{
@@ -11663,7 +11663,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapIndexCollection 
 			{
@@ -11753,7 +11753,7 @@ namespace INT {
 			private MapCollection _unmodified_MapByCategory;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapResult 
 			{
@@ -11831,7 +11831,7 @@ namespace INT {
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapResultCollection 
 			{
@@ -11950,7 +11950,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MapResultsCollection 
 			{
@@ -12036,7 +12036,7 @@ namespace INT {
 			private MapResultCollection _unmodified_ResultByProximity;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Video 
 			{
@@ -12122,7 +12122,7 @@ namespace INT {
 			private string _unmodified_Caption;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ImageCollection 
 			{
@@ -12241,7 +12241,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Image 
 			{
@@ -12343,7 +12343,7 @@ namespace INT {
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class BinaryFileCollection 
 			{
@@ -12462,7 +12462,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class BinaryFile 
 			{
@@ -12556,7 +12556,7 @@ namespace INT {
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class MediaContent 
 			{
@@ -12622,7 +12622,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ImageGroupCollection 
 			{
@@ -12741,7 +12741,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ImageGroup 
 			{
@@ -12835,7 +12835,7 @@ namespace INT {
 			private ImageCollection _unmodified_ImagesCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class VideoGroup 
 			{
@@ -12921,7 +12921,7 @@ namespace INT {
 			private VideoCollection _unmodified_VideoCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class VideoCollection 
 			{
@@ -13040,7 +13040,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Tooltip 
 			{
@@ -13118,7 +13118,7 @@ namespace INT {
 			private string _unmodified_TooltipText;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SocialPanelCollection 
 			{
@@ -13237,7 +13237,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SocialPanel 
 			{
@@ -13315,7 +13315,7 @@ namespace INT {
 			private Filter _unmodified_SocialFilter;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Longitude 
 			{
@@ -13393,7 +13393,7 @@ namespace INT {
 			private string _unmodified_TextValue;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Latitude 
 			{
@@ -13471,7 +13471,7 @@ namespace INT {
 			private string _unmodified_TextValue;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Location 
 			{
@@ -13557,7 +13557,7 @@ namespace INT {
 			private Latitude _unmodified_Latitude;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class LocationCollection 
 			{
@@ -13676,7 +13676,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Date 
 			{
@@ -13766,7 +13766,7 @@ namespace INT {
 			private DateTime _unmodified_Year;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Sex 
 			{
@@ -13844,7 +13844,7 @@ namespace INT {
 			private string _unmodified_SexText;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class OBSAddress 
 			{
@@ -13958,7 +13958,7 @@ namespace INT {
 			private string _unmodified_Continent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Identity 
 			{
@@ -14052,7 +14052,7 @@ namespace INT {
 			private Date _unmodified_Birthday;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class ImageVideoSoundVectorRaw 
 			{
@@ -14146,7 +14146,7 @@ namespace INT {
 			private byte[] _unmodified_Raw;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CategoryContainer 
 			{
@@ -14224,7 +14224,7 @@ namespace INT {
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Category 
 			{
@@ -14326,7 +14326,7 @@ namespace INT {
 			private string _unmodified_ParentCategoryID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class CategoryCollection 
 			{
@@ -14445,7 +14445,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriptionCollection 
 			{
@@ -14564,7 +14564,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Subscription 
 			{
@@ -14662,7 +14662,7 @@ namespace INT {
 			private string _unmodified_SubscriptionType;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class QueueEnvelope 
 			{
@@ -14760,7 +14760,7 @@ namespace INT {
 			private SystemError _unmodified_ErrorContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class OperationRequestCollection 
 			{
@@ -14879,7 +14879,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class OperationRequest 
 			{
@@ -14985,7 +14985,7 @@ namespace INT {
 			private string _unmodified_ProcessIDToExecute;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriptionChainRequestMessage 
 			{
@@ -15063,7 +15063,7 @@ namespace INT {
 			private string _unmodified_ContentItemID;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriptionChainRequestContent 
 			{
@@ -15161,7 +15161,7 @@ namespace INT {
 			private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriptionTarget 
 			{
@@ -15239,7 +15239,7 @@ namespace INT {
 			private string _unmodified_BlobLocation;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriptionTargetCollection 
 			{
@@ -15358,7 +15358,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DeleteEntireOwnerOperation 
 			{
@@ -15440,7 +15440,7 @@ namespace INT {
 			private string _unmodified_LocationPrefix;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class DeleteOwnerContentOperation 
 			{
@@ -15522,7 +15522,7 @@ namespace INT {
 			private string _unmodified_LocationPrefix;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SystemError 
 			{
@@ -15612,7 +15612,7 @@ namespace INT {
 			private QueueEnvelope _unmodified_MessageContent;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SystemErrorItem 
 			{
@@ -15694,7 +15694,7 @@ namespace INT {
 			private string _unmodified_LongDescription;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SystemErrorItemCollection 
 			{
@@ -15813,7 +15813,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class InformationSource 
 			{
@@ -15919,7 +15919,7 @@ namespace INT {
 			private DateTime _unmodified_SourceLastModified;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class InformationSourceCollection 
 			{
@@ -16038,7 +16038,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class RefreshDefaultViewsOperation 
 			{
@@ -16120,7 +16120,7 @@ namespace INT {
 			private string _unmodified_TypeNameToRefresh;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class UpdateWebContentOperation 
 			{
@@ -16218,7 +16218,7 @@ namespace INT {
 			private UpdateWebContentHandlerCollection _unmodified_Handlers;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class UpdateWebContentHandlerItem 
 			{
@@ -16300,7 +16300,7 @@ namespace INT {
 			private string _unmodified_OptionName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class UpdateWebContentHandlerCollection 
 			{
@@ -16419,7 +16419,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class PublishWebContentOperation 
 			{
@@ -16509,7 +16509,7 @@ namespace INT {
 			private string _unmodified_TargetContainerName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class SubscriberInput 
 			{
@@ -16599,7 +16599,7 @@ namespace INT {
 			private string _unmodified_SubscriberRelativeLocation;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class Monitor 
 			{
@@ -16701,7 +16701,7 @@ namespace INT {
 			private string _unmodified_OperationActionName;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class IconTitleDescription 
 			{
@@ -16787,7 +16787,7 @@ namespace INT {
 			private string _unmodified_Description;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
 			[Serializable]
 			public partial class AboutAGIApplications 
 			{

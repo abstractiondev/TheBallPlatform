@@ -105,7 +105,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.WizardContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.WizardContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WizardContainerTable.Single(item => item.ID == updateData.ObjectID);
                     existingObject.ActiveTasks.Clear();
@@ -118,7 +118,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.WizardTask.DeserializeFromXml(
+		                global::SER.TheBall.Payments.WizardTask.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WizardTaskTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TaskName = serializedObject.TaskName;
@@ -130,7 +130,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Connection.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Connection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ConnectionTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OutputInformationID = serializedObject.OutputInformationID;
@@ -170,7 +170,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TransferPackage.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TransferPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TransferPackageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ConnectionID = serializedObject.ConnectionID;
@@ -187,7 +187,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.CategoryLink.DeserializeFromXml(
+		                global::SER.TheBall.Payments.CategoryLink.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryLinkTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
@@ -199,7 +199,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Category.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.NativeCategoryID = serializedObject.NativeCategoryID;
@@ -214,7 +214,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.StatusSummary.DeserializeFromXml(
+		                global::SER.TheBall.Payments.StatusSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
                     existingObject.PendingOperations.Clear();
@@ -239,7 +239,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.InformationChangeItem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.InformationChangeItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationChangeItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.StartTimeUTC = serializedObject.StartTimeUTC;
@@ -254,7 +254,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
+		                global::SER.TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OperationExecutionItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OperationName = serializedObject.OperationName;
@@ -271,7 +271,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ValueObject = serializedObject.ValueObject;
@@ -281,7 +281,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GenericObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GenericObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
                     existingObject.Values.Clear();
@@ -296,7 +296,7 @@ namespace SQLite.TheBall.Interface {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.GenericValue.DeserializeFromXml(
+		                global::SER.TheBall.Payments.GenericValue.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericValueTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ValueName = serializedObject.ValueName;
@@ -339,7 +339,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.WizardContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.WizardContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new WizardContainer {ID = insertData.ObjectID};
 					if(serializedObject.ActiveTasks != null)
@@ -351,7 +351,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.WizardTask.DeserializeFromXml(
+                        global::SER.TheBall.Payments.WizardTask.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new WizardTask {ID = insertData.ObjectID};
 		            objectToAdd.TaskName = serializedObject.TaskName;
@@ -364,7 +364,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Connection.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Connection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Connection {ID = insertData.ObjectID};
 		            objectToAdd.OutputInformationID = serializedObject.OutputInformationID;
@@ -395,7 +395,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TransferPackage.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TransferPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TransferPackage {ID = insertData.ObjectID};
 		            objectToAdd.ConnectionID = serializedObject.ConnectionID;
@@ -411,7 +411,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.CategoryLink.DeserializeFromXml(
+                        global::SER.TheBall.Payments.CategoryLink.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CategoryLink {ID = insertData.ObjectID};
 		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
@@ -424,7 +424,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Category.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID};
 		            objectToAdd.NativeCategoryID = serializedObject.NativeCategoryID;
@@ -440,7 +440,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.StatusSummary.DeserializeFromXml(
+                        global::SER.TheBall.Payments.StatusSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StatusSummary {ID = insertData.ObjectID};
 					if(serializedObject.PendingOperations != null)
@@ -458,7 +458,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.InformationChangeItem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.InformationChangeItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID};
 		            objectToAdd.StartTimeUTC = serializedObject.StartTimeUTC;
@@ -472,7 +472,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
+                        global::SER.TheBall.Payments.OperationExecutionItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID};
 		            objectToAdd.OperationName = serializedObject.OperationName;
@@ -490,7 +490,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GenericCollectionableObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID};
 		            objectToAdd.ValueObject = serializedObject.ValueObject;
@@ -501,7 +501,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GenericObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GenericObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericObject {ID = insertData.ObjectID};
 					if(serializedObject.Values != null)
@@ -515,7 +515,7 @@ namespace SQLite.TheBall.Interface {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.GenericValue.DeserializeFromXml(
+                        global::SER.TheBall.Payments.GenericValue.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericValue {ID = insertData.ObjectID};
 		            objectToAdd.ValueName = serializedObject.ValueName;

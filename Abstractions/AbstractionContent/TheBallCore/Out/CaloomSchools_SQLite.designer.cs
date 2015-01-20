@@ -94,7 +94,7 @@ namespace SQLite.Caloom.Schools {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.TrainingModule.DeserializeFromXml(
+		                global::SER.TheBall.Payments.TrainingModule.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TrainingModuleTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -115,7 +115,7 @@ namespace SQLite.Caloom.Schools {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.TrainingModule.DeserializeFromXml(
+                        global::SER.TheBall.Payments.TrainingModule.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TrainingModule {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;

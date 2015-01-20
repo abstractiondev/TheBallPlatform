@@ -1,6 +1,6 @@
  
 
-namespace Caloom.CORE { 
+namespace SER.Caloom.CORE { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -11,7 +11,7 @@ using System.Runtime.Serialization;
 
 
 namespace INT { 
-		 } 			[DataContract]
+		 }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class Who 
 			{
@@ -101,7 +101,7 @@ namespace INT {
 			private string _unmodified_Description;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ProductForWhom 
 			{
@@ -199,7 +199,7 @@ namespace INT {
 			private Who _unmodified_Who;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class Product 
 			{
@@ -293,7 +293,7 @@ namespace INT {
 			private ProductUsageCollection _unmodified_SubProducts;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ProductUsageCollection 
 			{
@@ -412,7 +412,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ProductUsage 
 			{
@@ -494,7 +494,7 @@ namespace INT {
 			private double _unmodified_UsageAmountInDecimal;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ProductCollection 
 			{
@@ -613,7 +613,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class NodeSummaryContainer 
 			{
@@ -695,7 +695,7 @@ namespace INT {
 			private ProductCollection _unmodified_NodeSourceProducts;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class RenderedNodeCollection 
 			{
@@ -814,7 +814,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class RenderedNode 
 			{
@@ -932,7 +932,7 @@ namespace INT {
 			private ShortTextCollection _unmodified_Filters;
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ShortTextCollection 
 			{
@@ -1051,7 +1051,7 @@ namespace INT {
 				
 			
 			}
-			[DataContract]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/Caloom.CORE")]
 			[Serializable]
 			public partial class ShortTextObject 
 			{

@@ -1,6 +1,6 @@
  
 
-namespace TheBall.Admin { 
+namespace SER.TheBall.Admin { 
 		using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

@@ -37,8 +37,8 @@ namespace WebInterface
                     text = text.Substring(xmlBOMString.Length);
                 return text;
             };
-            FileShareSupport.MountCoreShare();
-
+            if(!InstanceConfiguration.IsDeveloperMachine)
+                FileShareSupport.MountCoreShare();
         }
 
         protected void Session_Start(object sender, EventArgs e)

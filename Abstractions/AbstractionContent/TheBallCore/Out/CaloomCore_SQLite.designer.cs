@@ -100,7 +100,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Who.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Who.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WhoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -113,7 +113,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ProductForWhom.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ProductForWhom.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductForWhomTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -128,7 +128,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.Product.DeserializeFromXml(
+		                global::SER.TheBall.Payments.Product.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -142,7 +142,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ProductUsage.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ProductUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Product = serializedObject.Product;
@@ -153,7 +153,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+		                global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Nodes = serializedObject.Nodes;
@@ -164,7 +164,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+		                global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
@@ -184,7 +184,7 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+		                global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Content = serializedObject.Content;
@@ -201,7 +201,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Who.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Who.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Who {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -215,7 +215,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ProductForWhom.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ProductForWhom.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProductForWhom {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -231,7 +231,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.Product.DeserializeFromXml(
+                        global::SER.TheBall.Payments.Product.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Product {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -246,7 +246,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ProductUsage.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ProductUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProductUsage {ID = insertData.ObjectID};
 		            objectToAdd.Product = serializedObject.Product;
@@ -258,7 +258,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+                        global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID};
 		            objectToAdd.Nodes = serializedObject.Nodes;
@@ -270,7 +270,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.RenderedNode.DeserializeFromXml(
+                        global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
 		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
@@ -291,7 +291,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::TheBall.Payments.ShortTextObject.DeserializeFromXml(
+                        global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
 		            objectToAdd.Content = serializedObject.Content;
