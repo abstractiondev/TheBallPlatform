@@ -73,7 +73,6 @@ namespace SQLite.Caloom.CORE {
 				tableCreationCommands.Add(ProductForWhom.GetCreateTableSQL());
 				tableCreationCommands.Add(Product.GetCreateTableSQL());
 				tableCreationCommands.Add(ProductUsage.GetCreateTableSQL());
-				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
 				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
 			    var connection = this.Connection;
@@ -143,15 +142,6 @@ namespace SQLite.Caloom.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "NodeSummaryContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RenderedNode")
@@ -240,16 +230,6 @@ namespace SQLite.Caloom.CORE {
 					ProductUsageTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "NodeSummaryContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID};
-					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "RenderedNode")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -305,11 +285,6 @@ namespace SQLite.Caloom.CORE {
                     ProductUsageTable.DeleteOnSubmit(new ProductUsage { ID = deleteData.ObjectID });
 		            return;
 		        }
-		        if (deleteData.ObjectType == "NodeSummaryContainer")
-		        {
-                    NodeSummaryContainerTable.DeleteOnSubmit(new NodeSummaryContainer { ID = deleteData.ObjectID });
-		            return;
-		        }
 		        if (deleteData.ObjectType == "RenderedNode")
 		        {
                     RenderedNodeTable.DeleteOnSubmit(new RenderedNode { ID = deleteData.ObjectID });
@@ -341,11 +316,6 @@ namespace SQLite.Caloom.CORE {
 			public Table<ProductUsage> ProductUsageTable {
 				get {
 					return this.GetTable<ProductUsage>();
-				}
-			}
-			public Table<NodeSummaryContainer> NodeSummaryContainerTable {
-				get {
-					return this.GetTable<NodeSummaryContainer>();
 				}
 			}
 			public Table<RenderedNode> RenderedNodeTable {
@@ -528,28 +498,6 @@ CREATE TABLE IF NOT EXISTS ProductUsage(
 		[Column]
 		public double UsageAmountInDecimal { get; set; }
 		// private double _unmodified_UsageAmountInDecimal;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "NodeSummaryContainer")]
-	public class NodeSummaryContainer : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS NodeSummaryContainer(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		

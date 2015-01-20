@@ -75,7 +75,6 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(AuthenticatedAsActiveDevice.GetCreateTableSQL());
 				tableCreationCommands.Add(DeviceMembership.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceFiscalExportSummary.GetCreateTableSQL());
-				tableCreationCommands.Add(InvoiceSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(Invoice.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceDetails.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceUser.GetCreateTableSQL());
@@ -86,12 +85,10 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(Category.GetCreateTableSQL());
 				tableCreationCommands.Add(ProcessContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(Process.GetCreateTableSQL());
-				tableCreationCommands.Add(ProcessItem.GetCreateTableSQL());
 				tableCreationCommands.Add(SemanticInformationItem.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationOwnerInfo.GetCreateTableSQL());
 				tableCreationCommands.Add(UsageSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(UsageMonitorItem.GetCreateTableSQL());
-				tableCreationCommands.Add(RequestResourceUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(ProcessorUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(StorageTransactionUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(StorageUsage.GetCreateTableSQL());
@@ -199,15 +196,6 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = InvoiceFiscalExportSummaryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            existingObject.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "InvoiceSummaryContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = InvoiceSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Invoice")
@@ -347,15 +335,6 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.ProcessDescription = serializedObject.ProcessDescription;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "ProcessItem")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ProcessItemTable.Single(item => item.ID == updateData.ObjectID);
-		            return;
-		        } 
 		        if (updateData.ObjectType == "SemanticInformationItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -396,15 +375,6 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageMonitorItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "RequestResourceUsage")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = RequestResourceUsageTable.Single(item => item.ID == updateData.ObjectID);
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProcessorUsage")
@@ -578,16 +548,6 @@ namespace SQLite.TheBall.CORE {
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "InvoiceSummaryContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceSummaryContainer {ID = insertData.ObjectID};
-					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "Invoice")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -733,16 +693,6 @@ namespace SQLite.TheBall.CORE {
 					ProcessTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "ProcessItem")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProcessItem {ID = insertData.ObjectID};
-					ProcessItemTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "SemanticInformationItem")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -787,16 +737,6 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new UsageMonitorItem {ID = insertData.ObjectID};
 		            objectToAdd.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "RequestResourceUsage")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new RequestResourceUsage {ID = insertData.ObjectID};
-					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "ProcessorUsage")
@@ -917,11 +857,6 @@ namespace SQLite.TheBall.CORE {
                     InvoiceFiscalExportSummaryTable.DeleteOnSubmit(new InvoiceFiscalExportSummary { ID = deleteData.ObjectID });
 		            return;
 		        }
-		        if (deleteData.ObjectType == "InvoiceSummaryContainer")
-		        {
-                    InvoiceSummaryContainerTable.DeleteOnSubmit(new InvoiceSummaryContainer { ID = deleteData.ObjectID });
-		            return;
-		        }
 		        if (deleteData.ObjectType == "Invoice")
 		        {
                     InvoiceTable.DeleteOnSubmit(new Invoice { ID = deleteData.ObjectID });
@@ -972,11 +907,6 @@ namespace SQLite.TheBall.CORE {
                     ProcessTable.DeleteOnSubmit(new Process { ID = deleteData.ObjectID });
 		            return;
 		        }
-		        if (deleteData.ObjectType == "ProcessItem")
-		        {
-                    ProcessItemTable.DeleteOnSubmit(new ProcessItem { ID = deleteData.ObjectID });
-		            return;
-		        }
 		        if (deleteData.ObjectType == "SemanticInformationItem")
 		        {
                     SemanticInformationItemTable.DeleteOnSubmit(new SemanticInformationItem { ID = deleteData.ObjectID });
@@ -995,11 +925,6 @@ namespace SQLite.TheBall.CORE {
 		        if (deleteData.ObjectType == "UsageMonitorItem")
 		        {
                     UsageMonitorItemTable.DeleteOnSubmit(new UsageMonitorItem { ID = deleteData.ObjectID });
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RequestResourceUsage")
-		        {
-                    RequestResourceUsageTable.DeleteOnSubmit(new RequestResourceUsage { ID = deleteData.ObjectID });
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ProcessorUsage")
@@ -1065,11 +990,6 @@ namespace SQLite.TheBall.CORE {
 					return this.GetTable<InvoiceFiscalExportSummary>();
 				}
 			}
-			public Table<InvoiceSummaryContainer> InvoiceSummaryContainerTable {
-				get {
-					return this.GetTable<InvoiceSummaryContainer>();
-				}
-			}
 			public Table<Invoice> InvoiceTable {
 				get {
 					return this.GetTable<Invoice>();
@@ -1120,11 +1040,6 @@ namespace SQLite.TheBall.CORE {
 					return this.GetTable<Process>();
 				}
 			}
-			public Table<ProcessItem> ProcessItemTable {
-				get {
-					return this.GetTable<ProcessItem>();
-				}
-			}
 			public Table<SemanticInformationItem> SemanticInformationItemTable {
 				get {
 					return this.GetTable<SemanticInformationItem>();
@@ -1143,11 +1058,6 @@ namespace SQLite.TheBall.CORE {
 			public Table<UsageMonitorItem> UsageMonitorItemTable {
 				get {
 					return this.GetTable<UsageMonitorItem>();
-				}
-			}
-			public Table<RequestResourceUsage> RequestResourceUsageTable {
-				get {
-					return this.GetTable<RequestResourceUsage>();
 				}
 			}
 			public Table<ProcessorUsage> ProcessorUsageTable {
@@ -1488,28 +1398,6 @@ CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
 		[Column]
 		public DateTime FiscalInclusiveEndDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveEndDate;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "InvoiceSummaryContainer")]
-	public class InvoiceSummaryContainer : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS InvoiceSummaryContainer(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2068,28 +1956,6 @@ CREATE TABLE IF NOT EXISTS Process(
 				ProcessDescription = string.Empty;
 		}
 	}
-    [Table(Name = "ProcessItem")]
-	public class ProcessItem : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS ProcessItem(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
     [Table(Name = "SemanticInformationItem")]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
@@ -2209,28 +2075,6 @@ CREATE TABLE IF NOT EXISTS UsageMonitorItem(
 		[Column]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "RequestResourceUsage")]
-	public class RequestResourceUsage : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS RequestResourceUsage(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		

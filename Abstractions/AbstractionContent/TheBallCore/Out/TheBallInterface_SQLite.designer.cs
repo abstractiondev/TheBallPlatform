@@ -69,7 +69,6 @@ namespace SQLite.TheBall.Interface {
 			{
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
-				tableCreationCommands.Add(WizardContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(WizardTask.GetCreateTableSQL());
 				tableCreationCommands.Add(Connection.GetCreateTableSQL());
 				tableCreationCommands.Add(TransferPackage.GetCreateTableSQL());
@@ -78,7 +77,6 @@ namespace SQLite.TheBall.Interface {
 				tableCreationCommands.Add(StatusSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationChangeItem.GetCreateTableSQL());
 				tableCreationCommands.Add(OperationExecutionItem.GetCreateTableSQL());
-				tableCreationCommands.Add(GenericCollectionableObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericValue.GetCreateTableSQL());
 			    var connection = this.Connection;
@@ -101,15 +99,6 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "WizardContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = WizardContainerTable.Single(item => item.ID == updateData.ObjectID);
-		            return;
-		        } 
 		        if (updateData.ObjectType == "WizardTask")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -231,15 +220,6 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "GenericCollectionableObject")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
-		            return;
-		        } 
 		        if (updateData.ObjectType == "GenericObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -289,16 +269,6 @@ namespace SQLite.TheBall.Interface {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "WizardContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new WizardContainer {ID = insertData.ObjectID};
-					WizardContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "WizardTask")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -422,16 +392,6 @@ namespace SQLite.TheBall.Interface {
 					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "GenericCollectionableObject")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID};
-					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "GenericObject")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -475,11 +435,6 @@ namespace SQLite.TheBall.Interface {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "WizardContainer")
-		        {
-                    WizardContainerTable.DeleteOnSubmit(new WizardContainer { ID = deleteData.ObjectID });
-		            return;
-		        }
 		        if (deleteData.ObjectType == "WizardTask")
 		        {
                     WizardTaskTable.DeleteOnSubmit(new WizardTask { ID = deleteData.ObjectID });
@@ -520,11 +475,6 @@ namespace SQLite.TheBall.Interface {
                     OperationExecutionItemTable.DeleteOnSubmit(new OperationExecutionItem { ID = deleteData.ObjectID });
 		            return;
 		        }
-		        if (deleteData.ObjectType == "GenericCollectionableObject")
-		        {
-                    GenericCollectionableObjectTable.DeleteOnSubmit(new GenericCollectionableObject { ID = deleteData.ObjectID });
-		            return;
-		        }
 		        if (deleteData.ObjectType == "GenericObject")
 		        {
                     GenericObjectTable.DeleteOnSubmit(new GenericObject { ID = deleteData.ObjectID });
@@ -538,11 +488,6 @@ namespace SQLite.TheBall.Interface {
 		    }
 
 
-			public Table<WizardContainer> WizardContainerTable {
-				get {
-					return this.GetTable<WizardContainer>();
-				}
-			}
 			public Table<WizardTask> WizardTaskTable {
 				get {
 					return this.GetTable<WizardTask>();
@@ -583,11 +528,6 @@ namespace SQLite.TheBall.Interface {
 					return this.GetTable<OperationExecutionItem>();
 				}
 			}
-			public Table<GenericCollectionableObject> GenericCollectionableObjectTable {
-				get {
-					return this.GetTable<GenericCollectionableObject>();
-				}
-			}
 			public Table<GenericObject> GenericObjectTable {
 				get {
 					return this.GetTable<GenericObject>();
@@ -600,28 +540,6 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-    [Table(Name = "WizardContainer")]
-	public class WizardContainer : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS WizardContainer(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
     [Table(Name = "WizardTask")]
 	public class WizardTask : ITheBallDataContextStorable
 	{
@@ -1183,28 +1101,6 @@ CREATE TABLE IF NOT EXISTS OperationExecutionItem(
 				CallerProvidedInfo = string.Empty;
 			if(ExecutionStatus == null)
 				ExecutionStatus = string.Empty;
-		}
-	}
-    [Table(Name = "GenericCollectionableObject")]
-	public class GenericCollectionableObject : ITheBallDataContextStorable
-	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS GenericCollectionableObject(
-[ID] TEXT NOT NULL PRIMARY KEY, 
-
-)";
-        }
-
-
-		[Column(IsPrimaryKey = true)]
-		public string ID { get; set; }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
 		}
 	}
     [Table(Name = "GenericObject")]
