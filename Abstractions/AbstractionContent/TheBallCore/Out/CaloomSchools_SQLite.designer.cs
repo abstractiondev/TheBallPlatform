@@ -153,7 +153,7 @@ namespace SQLite.Caloom.Schools {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TrainingModule(
+CREATE TABLE IF NOT EXISTS [TrainingModule](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 

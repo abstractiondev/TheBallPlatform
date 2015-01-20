@@ -3823,7 +3823,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBSystem(
+CREATE TABLE IF NOT EXISTS [TBSystem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [InstanceName] TEXT NOT NULL, 
 [AdminGroupID] TEXT NOT NULL
@@ -3858,7 +3858,7 @@ CREATE TABLE IF NOT EXISTS TBSystem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS WebPublishInfo(
+CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [PublishType] TEXT NOT NULL, 
 [PublishContainer] TEXT NOT NULL
@@ -3893,7 +3893,7 @@ CREATE TABLE IF NOT EXISTS WebPublishInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS PublicationPackage(
+CREATE TABLE IF NOT EXISTS [PublicationPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [PackageName] TEXT NOT NULL, 
 [PublicationTime] TEXT NOT NULL
@@ -3926,7 +3926,7 @@ CREATE TABLE IF NOT EXISTS PublicationPackage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBRLoginRoot(
+CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [DomainName] TEXT NOT NULL
 )";
@@ -3954,7 +3954,7 @@ CREATE TABLE IF NOT EXISTS TBRLoginRoot(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBRLoginGroupRoot(
+CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Role] TEXT NOT NULL, 
 [GroupID] TEXT NOT NULL
@@ -3989,7 +3989,7 @@ CREATE TABLE IF NOT EXISTS TBRLoginGroupRoot(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBAccountCollaborationGroup(
+CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupID] TEXT NOT NULL, 
 [GroupRole] TEXT NOT NULL, 
@@ -4031,7 +4031,7 @@ CREATE TABLE IF NOT EXISTS TBAccountCollaborationGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBLoginInfo(
+CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OpenIDUrl] TEXT NOT NULL
 )";
@@ -4059,7 +4059,7 @@ CREATE TABLE IF NOT EXISTS TBLoginInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBEmail(
+CREATE TABLE IF NOT EXISTS [TBEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [EmailAddress] TEXT NOT NULL, 
 [ValidatedAt] TEXT NOT NULL
@@ -4092,7 +4092,7 @@ CREATE TABLE IF NOT EXISTS TBEmail(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBCollaboratorRole(
+CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Role] TEXT NOT NULL, 
 [RoleStatus] TEXT NOT NULL
@@ -4127,7 +4127,7 @@ CREATE TABLE IF NOT EXISTS TBCollaboratorRole(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBCollaboratingGroup(
+CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL
 )";
@@ -4155,7 +4155,7 @@ CREATE TABLE IF NOT EXISTS TBCollaboratingGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBEmailValidation(
+CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Email] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
@@ -4202,7 +4202,7 @@ CREATE TABLE IF NOT EXISTS TBEmailValidation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBMergeAccountConfirmation(
+CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [AccountToBeMergedID] TEXT NOT NULL, 
 [AccountToMergeToID] TEXT NOT NULL
@@ -4237,7 +4237,7 @@ CREATE TABLE IF NOT EXISTS TBMergeAccountConfirmation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBGroupJoinConfirmation(
+CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupID] TEXT NOT NULL, 
 [InvitationMode] TEXT NOT NULL
@@ -4272,7 +4272,7 @@ CREATE TABLE IF NOT EXISTS TBGroupJoinConfirmation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBDeviceJoinConfirmation(
+CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
@@ -4314,7 +4314,7 @@ CREATE TABLE IF NOT EXISTS TBDeviceJoinConfirmation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBInformationInputConfirmation(
+CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
@@ -4356,7 +4356,7 @@ CREATE TABLE IF NOT EXISTS TBInformationInputConfirmation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBInformationOutputConfirmation(
+CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
@@ -4398,7 +4398,7 @@ CREATE TABLE IF NOT EXISTS TBInformationOutputConfirmation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBRegisterContainer(
+CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ReturnUrl] TEXT NOT NULL
 )";
@@ -4426,7 +4426,7 @@ CREATE TABLE IF NOT EXISTS TBRegisterContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS LoginProvider(
+CREATE TABLE IF NOT EXISTS [LoginProvider](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ProviderName] TEXT NOT NULL, 
 [ProviderIconClass] TEXT NOT NULL, 
@@ -4482,7 +4482,7 @@ CREATE TABLE IF NOT EXISTS LoginProvider(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ContactOipContainer(
+CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OIPModeratorGroupID] TEXT NOT NULL
 )";
@@ -4510,7 +4510,7 @@ CREATE TABLE IF NOT EXISTS ContactOipContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TBPRegisterEmail(
+CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [EmailAddress] TEXT NOT NULL
 )";
@@ -4538,7 +4538,7 @@ CREATE TABLE IF NOT EXISTS TBPRegisterEmail(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS JavaScriptContainer(
+CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [HtmlContent] TEXT NOT NULL
 )";
@@ -4566,7 +4566,7 @@ CREATE TABLE IF NOT EXISTS JavaScriptContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS JavascriptContainer(
+CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [HtmlContent] TEXT NOT NULL
 )";
@@ -4594,7 +4594,7 @@ CREATE TABLE IF NOT EXISTS JavascriptContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS FooterContainer(
+CREATE TABLE IF NOT EXISTS [FooterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [HtmlContent] TEXT NOT NULL
 )";
@@ -4622,7 +4622,7 @@ CREATE TABLE IF NOT EXISTS FooterContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS NavigationContainer(
+CREATE TABLE IF NOT EXISTS [NavigationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Dummy] TEXT NOT NULL
 )";
@@ -4650,7 +4650,7 @@ CREATE TABLE IF NOT EXISTS NavigationContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AccountIndex(
+CREATE TABLE IF NOT EXISTS [AccountIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -4692,7 +4692,7 @@ CREATE TABLE IF NOT EXISTS AccountIndex(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS StreetAddress(
+CREATE TABLE IF NOT EXISTS [StreetAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Street] TEXT NOT NULL, 
 [ZipCode] TEXT NOT NULL, 
@@ -4741,7 +4741,7 @@ CREATE TABLE IF NOT EXISTS StreetAddress(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AccountContent(
+CREATE TABLE IF NOT EXISTS [AccountContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Dummy] TEXT NOT NULL
 )";
@@ -4769,7 +4769,7 @@ CREATE TABLE IF NOT EXISTS AccountContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AccountProfile(
+CREATE TABLE IF NOT EXISTS [AccountProfile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
@@ -4823,7 +4823,7 @@ CREATE TABLE IF NOT EXISTS AccountProfile(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AccountRoles(
+CREATE TABLE IF NOT EXISTS [AccountRoles](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OrganizationsImPartOf] TEXT NOT NULL
 )";
@@ -4851,7 +4851,7 @@ CREATE TABLE IF NOT EXISTS AccountRoles(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS PersonalInfoVisibility(
+CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [NoOne_Network_All] TEXT NOT NULL
 )";
@@ -4879,7 +4879,7 @@ CREATE TABLE IF NOT EXISTS PersonalInfoVisibility(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GroupedInformation(
+CREATE TABLE IF NOT EXISTS [GroupedInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupName] TEXT NOT NULL
 )";
@@ -4907,7 +4907,7 @@ CREATE TABLE IF NOT EXISTS GroupedInformation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ReferenceToInformation(
+CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [URL] TEXT NOT NULL
@@ -4942,7 +4942,7 @@ CREATE TABLE IF NOT EXISTS ReferenceToInformation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS RenderedNode(
+CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OriginalContentID] TEXT NOT NULL, 
 [TechnicalSource] TEXT NOT NULL, 
@@ -5038,7 +5038,7 @@ CREATE TABLE IF NOT EXISTS RenderedNode(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ShortTextObject(
+CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Content] TEXT NOT NULL
 )";
@@ -5066,7 +5066,7 @@ CREATE TABLE IF NOT EXISTS ShortTextObject(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS LongTextObject(
+CREATE TABLE IF NOT EXISTS [LongTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Content] TEXT NOT NULL
 )";
@@ -5094,7 +5094,7 @@ CREATE TABLE IF NOT EXISTS LongTextObject(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS MapMarker(
+CREATE TABLE IF NOT EXISTS [MapMarker](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IconUrl] TEXT NOT NULL, 
 [MarkerSource] TEXT NOT NULL, 
@@ -5157,7 +5157,7 @@ CREATE TABLE IF NOT EXISTS MapMarker(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AboutContainer(
+CREATE TABLE IF NOT EXISTS [AboutContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
@@ -5204,7 +5204,7 @@ CREATE TABLE IF NOT EXISTS AboutContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ContainerHeader(
+CREATE TABLE IF NOT EXISTS [ContainerHeader](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL
@@ -5239,7 +5239,7 @@ CREATE TABLE IF NOT EXISTS ContainerHeader(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ActivitySummaryContainer(
+CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SummaryBody] TEXT NOT NULL
 )";
@@ -5267,7 +5267,7 @@ CREATE TABLE IF NOT EXISTS ActivitySummaryContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ActivityIndex(
+CREATE TABLE IF NOT EXISTS [ActivityIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -5309,7 +5309,7 @@ CREATE TABLE IF NOT EXISTS ActivityIndex(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Activity(
+CREATE TABLE IF NOT EXISTS [Activity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ActivityName] TEXT NOT NULL, 
 [ContactPerson] TEXT NOT NULL, 
@@ -5370,7 +5370,7 @@ CREATE TABLE IF NOT EXISTS Activity(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Moderator(
+CREATE TABLE IF NOT EXISTS [Moderator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ModeratorName] TEXT NOT NULL, 
 [ProfileUrl] TEXT NOT NULL
@@ -5405,7 +5405,7 @@ CREATE TABLE IF NOT EXISTS Moderator(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Collaborator(
+CREATE TABLE IF NOT EXISTS [Collaborator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [AccountID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
@@ -5461,7 +5461,7 @@ CREATE TABLE IF NOT EXISTS Collaborator(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GroupSummaryContainer(
+CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SummaryBody] TEXT NOT NULL
 )";
@@ -5489,7 +5489,7 @@ CREATE TABLE IF NOT EXISTS GroupSummaryContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GroupIndex(
+CREATE TABLE IF NOT EXISTS [GroupIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -5531,7 +5531,7 @@ CREATE TABLE IF NOT EXISTS GroupIndex(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddAddressAndLocationInfo(
+CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [LocationName] TEXT NOT NULL
 )";
@@ -5559,7 +5559,7 @@ CREATE TABLE IF NOT EXISTS AddAddressAndLocationInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddImageInfo(
+CREATE TABLE IF NOT EXISTS [AddImageInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageTitle] TEXT NOT NULL
 )";
@@ -5587,7 +5587,7 @@ CREATE TABLE IF NOT EXISTS AddImageInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddImageGroupInfo(
+CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageGroupTitle] TEXT NOT NULL
 )";
@@ -5615,7 +5615,7 @@ CREATE TABLE IF NOT EXISTS AddImageGroupInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddEmailAddressInfo(
+CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [EmailAddress] TEXT NOT NULL
 )";
@@ -5643,7 +5643,7 @@ CREATE TABLE IF NOT EXISTS AddEmailAddressInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS CreateGroupInfo(
+CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupName] TEXT NOT NULL
 )";
@@ -5671,7 +5671,7 @@ CREATE TABLE IF NOT EXISTS CreateGroupInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddActivityInfo(
+CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ActivityName] TEXT NOT NULL
 )";
@@ -5699,7 +5699,7 @@ CREATE TABLE IF NOT EXISTS AddActivityInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddBlogPostInfo(
+CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL
 )";
@@ -5727,7 +5727,7 @@ CREATE TABLE IF NOT EXISTS AddBlogPostInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AddCategoryInfo(
+CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [CategoryName] TEXT NOT NULL
 )";
@@ -5755,7 +5755,7 @@ CREATE TABLE IF NOT EXISTS AddCategoryInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Group(
+CREATE TABLE IF NOT EXISTS [Group](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -5804,7 +5804,7 @@ CREATE TABLE IF NOT EXISTS Group(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Introduction(
+CREATE TABLE IF NOT EXISTS [Introduction](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Body] TEXT NOT NULL
@@ -5839,7 +5839,7 @@ CREATE TABLE IF NOT EXISTS Introduction(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ContentCategoryRank(
+CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ContentID] TEXT NOT NULL, 
 [ContentSemanticType] TEXT NOT NULL, 
@@ -5895,7 +5895,7 @@ CREATE TABLE IF NOT EXISTS ContentCategoryRank(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS LinkToContent(
+CREATE TABLE IF NOT EXISTS [LinkToContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [URL] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -5949,7 +5949,7 @@ CREATE TABLE IF NOT EXISTS LinkToContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS EmbeddedContent(
+CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IFrameTagContents] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -6003,7 +6003,7 @@ CREATE TABLE IF NOT EXISTS EmbeddedContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS DynamicContentGroup(
+CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [HostName] TEXT NOT NULL, 
 [GroupHeader] TEXT NOT NULL, 
@@ -6059,7 +6059,7 @@ CREATE TABLE IF NOT EXISTS DynamicContentGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS DynamicContent(
+CREATE TABLE IF NOT EXISTS [DynamicContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [HostName] TEXT NOT NULL, 
 [ContentName] TEXT NOT NULL, 
@@ -6153,7 +6153,7 @@ CREATE TABLE IF NOT EXISTS DynamicContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AttachedToObject(
+CREATE TABLE IF NOT EXISTS [AttachedToObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SourceObjectID] TEXT NOT NULL, 
 [SourceObjectName] TEXT NOT NULL, 
@@ -6216,7 +6216,7 @@ CREATE TABLE IF NOT EXISTS AttachedToObject(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Comment(
+CREATE TABLE IF NOT EXISTS [Comment](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
@@ -6317,7 +6317,7 @@ CREATE TABLE IF NOT EXISTS Comment(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Selection(
+CREATE TABLE IF NOT EXISTS [Selection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
@@ -6383,7 +6383,7 @@ CREATE TABLE IF NOT EXISTS Selection(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TextContent(
+CREATE TABLE IF NOT EXISTS [TextContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
@@ -6463,7 +6463,7 @@ CREATE TABLE IF NOT EXISTS TextContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Blog(
+CREATE TABLE IF NOT EXISTS [Blog](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
@@ -6531,7 +6531,7 @@ CREATE TABLE IF NOT EXISTS Blog(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS BlogIndexGroup(
+CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -6573,7 +6573,7 @@ CREATE TABLE IF NOT EXISTS BlogIndexGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS CalendarIndex(
+CREATE TABLE IF NOT EXISTS [CalendarIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -6615,7 +6615,7 @@ CREATE TABLE IF NOT EXISTS CalendarIndex(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Filter(
+CREATE TABLE IF NOT EXISTS [Filter](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL
 )";
@@ -6643,7 +6643,7 @@ CREATE TABLE IF NOT EXISTS Filter(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Calendar(
+CREATE TABLE IF NOT EXISTS [Calendar](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL
 )";
@@ -6671,7 +6671,7 @@ CREATE TABLE IF NOT EXISTS Calendar(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Map(
+CREATE TABLE IF NOT EXISTS [Map](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL
 )";
@@ -6699,7 +6699,7 @@ CREATE TABLE IF NOT EXISTS Map(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Video(
+CREATE TABLE IF NOT EXISTS [Video](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL
@@ -6734,7 +6734,7 @@ CREATE TABLE IF NOT EXISTS Video(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Image(
+CREATE TABLE IF NOT EXISTS [Image](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL, 
@@ -6776,7 +6776,7 @@ CREATE TABLE IF NOT EXISTS Image(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS BinaryFile(
+CREATE TABLE IF NOT EXISTS [BinaryFile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OriginalFileName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -6818,7 +6818,7 @@ CREATE TABLE IF NOT EXISTS BinaryFile(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ImageGroup(
+CREATE TABLE IF NOT EXISTS [ImageGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -6853,7 +6853,7 @@ CREATE TABLE IF NOT EXISTS ImageGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS VideoGroup(
+CREATE TABLE IF NOT EXISTS [VideoGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -6888,7 +6888,7 @@ CREATE TABLE IF NOT EXISTS VideoGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Tooltip(
+CREATE TABLE IF NOT EXISTS [Tooltip](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TooltipText] TEXT NOT NULL
 )";
@@ -6916,7 +6916,7 @@ CREATE TABLE IF NOT EXISTS Tooltip(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Longitude(
+CREATE TABLE IF NOT EXISTS [Longitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TextValue] TEXT NOT NULL
 )";
@@ -6944,7 +6944,7 @@ CREATE TABLE IF NOT EXISTS Longitude(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Latitude(
+CREATE TABLE IF NOT EXISTS [Latitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TextValue] TEXT NOT NULL
 )";
@@ -6972,7 +6972,7 @@ CREATE TABLE IF NOT EXISTS Latitude(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Location(
+CREATE TABLE IF NOT EXISTS [Location](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [LocationName] TEXT NOT NULL
 )";
@@ -7000,7 +7000,7 @@ CREATE TABLE IF NOT EXISTS Location(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Date(
+CREATE TABLE IF NOT EXISTS [Date](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Day] TEXT NOT NULL, 
 [Week] TEXT NOT NULL, 
@@ -7041,7 +7041,7 @@ CREATE TABLE IF NOT EXISTS Date(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Sex(
+CREATE TABLE IF NOT EXISTS [Sex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SexText] TEXT NOT NULL
 )";
@@ -7069,7 +7069,7 @@ CREATE TABLE IF NOT EXISTS Sex(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS OBSAddress(
+CREATE TABLE IF NOT EXISTS [OBSAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [StreetName] TEXT NOT NULL, 
 [BuildingNumber] TEXT NOT NULL, 
@@ -7160,7 +7160,7 @@ CREATE TABLE IF NOT EXISTS OBSAddress(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Identity(
+CREATE TABLE IF NOT EXISTS [Identity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
@@ -7202,7 +7202,7 @@ CREATE TABLE IF NOT EXISTS Identity(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ImageVideoSoundVectorRaw(
+CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Image] BLOB NOT NULL, 
 [Video] BLOB NOT NULL, 
@@ -7250,7 +7250,7 @@ CREATE TABLE IF NOT EXISTS ImageVideoSoundVectorRaw(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Category(
+CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [CategoryName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -7299,7 +7299,7 @@ CREATE TABLE IF NOT EXISTS Category(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Subscription(
+CREATE TABLE IF NOT EXISTS [Subscription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Priority] INTEGER NOT NULL, 
 [TargetRelativeLocation] TEXT NOT NULL, 
@@ -7360,7 +7360,7 @@ CREATE TABLE IF NOT EXISTS Subscription(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS QueueEnvelope(
+CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ActiveContainerName] TEXT NOT NULL, 
 [OwnerPrefix] TEXT NOT NULL, 
@@ -7400,7 +7400,7 @@ CREATE TABLE IF NOT EXISTS QueueEnvelope(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS OperationRequest(
+CREATE TABLE IF NOT EXISTS [OperationRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ProcessIDToExecute] TEXT NOT NULL
 )";
@@ -7428,7 +7428,7 @@ CREATE TABLE IF NOT EXISTS OperationRequest(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SubscriptionChainRequestMessage(
+CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ContentItemID] TEXT NOT NULL
 )";
@@ -7456,7 +7456,7 @@ CREATE TABLE IF NOT EXISTS SubscriptionChainRequestMessage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SubscriptionChainRequestContent(
+CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SubmitTime] TEXT NOT NULL, 
 [ProcessingStartTime] TEXT NOT NULL, 
@@ -7502,7 +7502,7 @@ CREATE TABLE IF NOT EXISTS SubscriptionChainRequestContent(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SubscriptionTarget(
+CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [BlobLocation] TEXT NOT NULL
 )";
@@ -7530,7 +7530,7 @@ CREATE TABLE IF NOT EXISTS SubscriptionTarget(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS DeleteEntireOwnerOperation(
+CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
@@ -7565,7 +7565,7 @@ CREATE TABLE IF NOT EXISTS DeleteEntireOwnerOperation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS DeleteOwnerContentOperation(
+CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
@@ -7600,7 +7600,7 @@ CREATE TABLE IF NOT EXISTS DeleteOwnerContentOperation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SystemError(
+CREATE TABLE IF NOT EXISTS [SystemError](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ErrorTitle] TEXT NOT NULL, 
 [OccurredAt] TEXT NOT NULL
@@ -7633,7 +7633,7 @@ CREATE TABLE IF NOT EXISTS SystemError(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SystemErrorItem(
+CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ShortDescription] TEXT NOT NULL, 
 [LongDescription] TEXT NOT NULL
@@ -7668,7 +7668,7 @@ CREATE TABLE IF NOT EXISTS SystemErrorItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InformationSource(
+CREATE TABLE IF NOT EXISTS [InformationSource](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SourceName] TEXT NOT NULL, 
 [SourceLocation] TEXT NOT NULL, 
@@ -7741,7 +7741,7 @@ CREATE TABLE IF NOT EXISTS InformationSource(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS RefreshDefaultViewsOperation(
+CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ViewLocation] TEXT NOT NULL, 
 [TypeNameToRefresh] TEXT NOT NULL
@@ -7776,7 +7776,7 @@ CREATE TABLE IF NOT EXISTS RefreshDefaultViewsOperation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS UpdateWebContentOperation(
+CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
@@ -7830,7 +7830,7 @@ CREATE TABLE IF NOT EXISTS UpdateWebContentOperation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS UpdateWebContentHandlerItem(
+CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [InformationTypeName] TEXT NOT NULL, 
 [OptionName] TEXT NOT NULL
@@ -7865,7 +7865,7 @@ CREATE TABLE IF NOT EXISTS UpdateWebContentHandlerItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS PublishWebContentOperation(
+CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
@@ -7914,7 +7914,7 @@ CREATE TABLE IF NOT EXISTS PublishWebContentOperation(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SubscriberInput(
+CREATE TABLE IF NOT EXISTS [SubscriberInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [InputRelativeLocation] TEXT NOT NULL, 
 [InformationObjectName] TEXT NOT NULL, 
@@ -7963,7 +7963,7 @@ CREATE TABLE IF NOT EXISTS SubscriberInput(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Monitor(
+CREATE TABLE IF NOT EXISTS [Monitor](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetItemName] TEXT NOT NULL, 
@@ -8029,7 +8029,7 @@ CREATE TABLE IF NOT EXISTS Monitor(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS IconTitleDescription(
+CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Icon] BLOB NOT NULL, 
 [Title] TEXT NOT NULL, 

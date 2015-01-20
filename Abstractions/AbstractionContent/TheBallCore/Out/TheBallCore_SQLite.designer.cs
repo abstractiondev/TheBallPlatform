@@ -1099,7 +1099,7 @@ namespace SQLite.TheBall.CORE {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ContentPackage(
+CREATE TABLE IF NOT EXISTS [ContentPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [PackageType] TEXT NOT NULL, 
 [PackageName] TEXT NOT NULL, 
@@ -1153,7 +1153,7 @@ CREATE TABLE IF NOT EXISTS ContentPackage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InformationInput(
+CREATE TABLE IF NOT EXISTS [InformationInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [InputDescription] TEXT NOT NULL, 
 [LocationURL] TEXT NOT NULL, 
@@ -1207,7 +1207,7 @@ CREATE TABLE IF NOT EXISTS InformationInput(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InformationOutput(
+CREATE TABLE IF NOT EXISTS [InformationOutput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OutputDescription] TEXT NOT NULL, 
 [DestinationURL] TEXT NOT NULL, 
@@ -1268,7 +1268,7 @@ CREATE TABLE IF NOT EXISTS InformationOutput(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS AuthenticatedAsActiveDevice(
+CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [AuthenticationDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
@@ -1334,7 +1334,7 @@ CREATE TABLE IF NOT EXISTS AuthenticatedAsActiveDevice(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS DeviceMembership(
+CREATE TABLE IF NOT EXISTS [DeviceMembership](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [DeviceDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
@@ -1379,7 +1379,7 @@ CREATE TABLE IF NOT EXISTS DeviceMembership(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
+CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [FiscalInclusiveStartDate] TEXT NOT NULL, 
 [FiscalInclusiveEndDate] TEXT NOT NULL
@@ -1410,7 +1410,7 @@ CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Invoice(
+CREATE TABLE IF NOT EXISTS [Invoice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [InvoiceName] TEXT NOT NULL, 
 [InvoiceID] TEXT NOT NULL, 
@@ -1483,7 +1483,7 @@ CREATE TABLE IF NOT EXISTS Invoice(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceDetails(
+CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [MonthlyFeesTotal] TEXT NOT NULL, 
 [OneTimeFeesTotal] TEXT NOT NULL, 
@@ -1546,7 +1546,7 @@ CREATE TABLE IF NOT EXISTS InvoiceDetails(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceUser(
+CREATE TABLE IF NOT EXISTS [InvoiceUser](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [UserName] TEXT NOT NULL, 
 [UserID] TEXT NOT NULL, 
@@ -1602,7 +1602,7 @@ CREATE TABLE IF NOT EXISTS InvoiceUser(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
+CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupName] TEXT NOT NULL, 
 [GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
@@ -1651,7 +1651,7 @@ CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceEventDetailGroup(
+CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [GroupName] TEXT NOT NULL
 )";
@@ -1679,7 +1679,7 @@ CREATE TABLE IF NOT EXISTS InvoiceEventDetailGroup(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceEventDetail(
+CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IndentMode] TEXT NOT NULL, 
 [EventStartDateTime] TEXT NOT NULL, 
@@ -1766,7 +1766,7 @@ CREATE TABLE IF NOT EXISTS InvoiceEventDetail(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InvoiceRow(
+CREATE TABLE IF NOT EXISTS [InvoiceRow](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IndentMode] TEXT NOT NULL, 
 [AmountOfUnits] TEXT NOT NULL, 
@@ -1836,7 +1836,7 @@ CREATE TABLE IF NOT EXISTS InvoiceRow(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Category(
+CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [CategoryName] TEXT NOT NULL
 )";
@@ -1864,7 +1864,7 @@ CREATE TABLE IF NOT EXISTS Category(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ProcessContainer(
+CREATE TABLE IF NOT EXISTS [ProcessContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ProcessIDs] TEXT NOT NULL
 )";
@@ -1935,7 +1935,7 @@ CREATE TABLE IF NOT EXISTS ProcessContainer(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Process(
+CREATE TABLE IF NOT EXISTS [Process](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ProcessDescription] TEXT NOT NULL
 )";
@@ -1963,7 +1963,7 @@ CREATE TABLE IF NOT EXISTS Process(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS SemanticInformationItem(
+CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ItemFullType] TEXT NOT NULL, 
 [ItemValue] TEXT NOT NULL
@@ -1998,7 +1998,7 @@ CREATE TABLE IF NOT EXISTS SemanticInformationItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InformationOwnerInfo(
+CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OwnerType] TEXT NOT NULL, 
 [OwnerIdentifier] TEXT NOT NULL
@@ -2033,7 +2033,7 @@ CREATE TABLE IF NOT EXISTS InformationOwnerInfo(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS UsageSummary(
+CREATE TABLE IF NOT EXISTS [UsageSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SummaryName] TEXT NOT NULL
 )";
@@ -2061,7 +2061,7 @@ CREATE TABLE IF NOT EXISTS UsageSummary(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS UsageMonitorItem(
+CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [StepSizeInMinutes] INTEGER NOT NULL
 )";
@@ -2087,7 +2087,7 @@ CREATE TABLE IF NOT EXISTS UsageMonitorItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ProcessorUsage(
+CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTicks] REAL NOT NULL, 
@@ -2130,7 +2130,7 @@ CREATE TABLE IF NOT EXISTS ProcessorUsage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS StorageTransactionUsage(
+CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTransactions] INTEGER NOT NULL
@@ -2163,7 +2163,7 @@ CREATE TABLE IF NOT EXISTS StorageTransactionUsage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS StorageUsage(
+CREATE TABLE IF NOT EXISTS [StorageUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SnapshotTime] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
@@ -2208,7 +2208,7 @@ CREATE TABLE IF NOT EXISTS StorageUsage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS NetworkUsage(
+CREATE TABLE IF NOT EXISTS [NetworkUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfBytes] INTEGER NOT NULL
@@ -2241,7 +2241,7 @@ CREATE TABLE IF NOT EXISTS NetworkUsage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TimeRange(
+CREATE TABLE IF NOT EXISTS [TimeRange](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [StartTime] TEXT NOT NULL, 
 [EndTime] TEXT NOT NULL
@@ -2272,7 +2272,7 @@ CREATE TABLE IF NOT EXISTS TimeRange(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS HTTPActivityDetails(
+CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [RemoteIPAddress] TEXT NOT NULL, 
 [RemoteEndpointUserName] TEXT NOT NULL, 

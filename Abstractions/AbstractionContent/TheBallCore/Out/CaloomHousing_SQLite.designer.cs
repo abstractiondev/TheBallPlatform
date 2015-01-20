@@ -153,7 +153,7 @@ namespace SQLite.Caloom.Housing {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS House(
+CREATE TABLE IF NOT EXISTS [House](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 

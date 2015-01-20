@@ -547,7 +547,7 @@ namespace SQLite.TheBall.Interface {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS WizardTask(
+CREATE TABLE IF NOT EXISTS [WizardTask](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TaskName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -589,7 +589,7 @@ CREATE TABLE IF NOT EXISTS WizardTask(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Connection(
+CREATE TABLE IF NOT EXISTS [Connection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OutputInformationID] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -685,7 +685,7 @@ CREATE TABLE IF NOT EXISTS Connection(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS TransferPackage(
+CREATE TABLE IF NOT EXISTS [TransferPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ConnectionID] TEXT NOT NULL, 
 [PackageDirection] TEXT NOT NULL, 
@@ -782,7 +782,7 @@ CREATE TABLE IF NOT EXISTS TransferPackage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS CategoryLink(
+CREATE TABLE IF NOT EXISTS [CategoryLink](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [SourceCategoryID] TEXT NOT NULL, 
 [TargetCategoryID] TEXT NOT NULL, 
@@ -824,7 +824,7 @@ CREATE TABLE IF NOT EXISTS CategoryLink(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Category(
+CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [NativeCategoryID] TEXT NOT NULL, 
 [NativeCategoryDomainName] TEXT NOT NULL, 
@@ -887,7 +887,7 @@ CREATE TABLE IF NOT EXISTS Category(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS StatusSummary(
+CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ChangeItemTrackingList] TEXT NOT NULL
 )";
@@ -958,7 +958,7 @@ CREATE TABLE IF NOT EXISTS StatusSummary(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS InformationChangeItem(
+CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [StartTimeUTC] TEXT NOT NULL, 
 [EndTimeUTC] TEXT NOT NULL, 
@@ -1039,7 +1039,7 @@ CREATE TABLE IF NOT EXISTS InformationChangeItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS OperationExecutionItem(
+CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [OperationName] TEXT NOT NULL, 
 [OperationDomain] TEXT NOT NULL, 
@@ -1110,7 +1110,7 @@ CREATE TABLE IF NOT EXISTS OperationExecutionItem(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GenericObject(
+CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IncludeInCollection] INTEGER NOT NULL, 
 [OptionalCollectionName] TEXT NOT NULL
@@ -1143,7 +1143,7 @@ CREATE TABLE IF NOT EXISTS GenericObject(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GenericValue(
+CREATE TABLE IF NOT EXISTS [GenericValue](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ValueName] TEXT NOT NULL, 
 [String] TEXT NOT NULL, 

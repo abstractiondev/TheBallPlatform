@@ -235,7 +235,7 @@ namespace SQLite.TheBall.Index {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS IndexingRequest(
+CREATE TABLE IF NOT EXISTS [IndexingRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [IndexName] TEXT NOT NULL, 
 [ObjectLocations] TEXT NOT NULL
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS IndexingRequest(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS QueryRequest(
+CREATE TABLE IF NOT EXISTS [QueryRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [QueryString] TEXT NOT NULL, 
 [DefaultFieldName] TEXT NOT NULL, 
@@ -375,7 +375,7 @@ CREATE TABLE IF NOT EXISTS QueryRequest(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS QueryResultItem(
+CREATE TABLE IF NOT EXISTS [QueryResultItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ObjectDomainName] TEXT NOT NULL, 
 [ObjectName] TEXT NOT NULL, 

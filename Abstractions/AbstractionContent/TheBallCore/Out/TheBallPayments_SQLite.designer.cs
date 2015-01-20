@@ -197,7 +197,7 @@ namespace SQLite.TheBall.Payments {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS GroupSubscriptionPlan(
+CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [PlanName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -282,7 +282,7 @@ CREATE TABLE IF NOT EXISTS GroupSubscriptionPlan(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS CustomerAccount(
+CREATE TABLE IF NOT EXISTS [CustomerAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [StripeID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 

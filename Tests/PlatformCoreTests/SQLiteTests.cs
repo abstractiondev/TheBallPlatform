@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLite.TheBall.Payments;
+using PAY=SQLite.TheBall.Payments;
+using TBC=SQLite.TheBall.CORE;
+using AGI=SQLite.AaltoGlobalImpact.OIP;
 
 namespace PlatformCoreTests
 {
@@ -35,9 +37,9 @@ namespace PlatformCoreTests
         [TestMethod]
         public void CreatePaymentDomainDataBaseFromScratchTest()
         {
-            var ctx = new TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
+            var ctx = new PAY.TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
             ctx.CreateDomainDatabaseTablesIfNotExists();
-            var testCustomer = new CustomerAccount
+            var testCustomer = new PAY.CustomerAccount
             {
                 ID = Guid.NewGuid().ToString(),
                 Description = "Test Description",
@@ -50,11 +52,44 @@ namespace PlatformCoreTests
         }
 
         [TestMethod]
+        public void CreateCoreDomainDataBaseFromScratchTest()
+        {
+            var ctx = new TBC.TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
+            ctx.CreateDomainDatabaseTablesIfNotExists();
+            var testItem = new TBC.NetworkUsage()
+            {
+                ID = Guid.NewGuid().ToString(),
+                AmountOfBytes = 112233,
+                UsageType = "test",
+            };
+            ctx.NetworkUsageTable.InsertOnSubmit(testItem);
+            ctx.SubmitChanges();
+            Assert.AreEqual(ctx.NetworkUsageTable.Count(), 1, "Insert confirmation failure");
+        }
+
+        [TestMethod]
+        public void CreateAGIDomainDataBaseFromScratchTest()
+        {
+            var ctx = new AGI.TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
+            ctx.CreateDomainDatabaseTablesIfNotExists();
+            var testItem = new AGI.TBEmailValidation()
+            {
+                ID = Guid.NewGuid().ToString(),
+                AccountID = "123",
+                Email = "testemail",
+            };
+            ctx.TBEmailValidationTable.InsertOnSubmit(testItem);
+            ctx.SubmitChanges();
+            Assert.AreEqual(ctx.TBEmailValidationTable.Count(), 1, "Insert confirmation failure");
+        }
+
+
+        [TestMethod]
         public void InsertAndRetrieveCollectionTest()
         {
-            var ctx = new TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
+            var ctx = new PAY.TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
             ctx.CreateDomainDatabaseTablesIfNotExists();
-            var testCustomer = new CustomerAccount
+            var testCustomer = new PAY.CustomerAccount
             {
                 ID = Guid.NewGuid().ToString(),
                 Description = "Test Description",

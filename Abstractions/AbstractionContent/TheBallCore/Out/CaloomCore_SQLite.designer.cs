@@ -337,7 +337,7 @@ namespace SQLite.Caloom.CORE {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Who(
+CREATE TABLE IF NOT EXISTS [Who](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS Who(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ProductForWhom(
+CREATE TABLE IF NOT EXISTS [ProductForWhom](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -435,7 +435,7 @@ CREATE TABLE IF NOT EXISTS ProductForWhom(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS Product(
+CREATE TABLE IF NOT EXISTS [Product](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -484,7 +484,7 @@ CREATE TABLE IF NOT EXISTS Product(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ProductUsage(
+CREATE TABLE IF NOT EXISTS [ProductUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [UsageAmountInDecimal] REAL NOT NULL
 )";
@@ -510,7 +510,7 @@ CREATE TABLE IF NOT EXISTS ProductUsage(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS RenderedNode(
+CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [TechnicalSource] TEXT NOT NULL, 
 [ImageBaseUrl] TEXT NOT NULL, 
@@ -580,7 +580,7 @@ CREATE TABLE IF NOT EXISTS RenderedNode(
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS ShortTextObject(
+CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [Content] TEXT NOT NULL
 )";
