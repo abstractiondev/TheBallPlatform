@@ -388,7 +388,7 @@ namespace WebInterface
                 bool redirectAfter = HandleOwnerClientTemplatePOST(containerOwner, request);
                 bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
                                        containerOwner.LocationPrefix == InstanceConfiguration.PaymentsGroupID;
-                if (isPaymentsGroup)
+                if (isPaymentsGroup && false)
                 {
                     SQLiteSyncOwnerData(containerOwner);
                 }
