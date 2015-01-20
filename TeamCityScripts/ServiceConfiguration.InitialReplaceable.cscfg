@@ -5,6 +5,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
+      <Setting name="UseSQLiteMasterDatabase" value="$UseSQLiteMasterDatabase$" />
       <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="AmazonSESAccessInfo" value="$AmazonSESAccessInfo$" />
@@ -26,6 +27,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
+      <Setting name="UseSQLiteMasterDatabase" value="$UseSQLiteMasterDatabase$" />
       <Setting name="StorageConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="DataConnectionString" value="DefaultEndpointsProtocol=http;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="AmazonSESAccessInfo" value="$AmazonSESAccessInfo$" />

@@ -6,6 +6,7 @@
       <Setting name="CoreFileShareAccountName" value=""/>
       <Setting name="CoreFileShareAccountKey" value=""/>
       <Setting name="StorageConnectionString" value="" />
+      <Setting name="UseSQLiteMasterDatabase" value="" />
       <Setting name="DataConnectionString" value="" />
       <Setting name="AmazonSESAccessInfo" value="" />
       <Setting name="WorkerRoleEntryPointContainerName" value="" />
@@ -26,6 +27,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value=""/>
       <Setting name="CoreFileShareAccountKey" value=""/>
+      <Setting name="UseSQLiteMasterDatabase" value="" />
       <Setting name="StorageConnectionString" value="" />
       <Setting name="DataConnectionString" value="" />
       <Setting name="AmazonSESAccessInfo" value="" />

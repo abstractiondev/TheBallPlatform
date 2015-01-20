@@ -44,6 +44,8 @@ namespace TheBall
         public static readonly string AdminGroupID;
         public static readonly string PaymentsGroupID;
         public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
+        public static readonly bool IsDeveloperMachine;
+        public static readonly bool UseSQLiteMasterDatabase;
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
@@ -62,7 +64,7 @@ namespace TheBall
             #region Data storage
 
             const string ConnStrFileName = @"D:\UserData\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";
-            bool isLocalDeveloperMachine = File.Exists(ConnStrFileName);
+            IsDeveloperMachine = File.Exists(ConnStrFileName);
 
             if (File.Exists(ConnStrFileName))
                 AzureStorageConnectionString = File.ReadAllText(ConnStrFileName);
@@ -76,7 +78,7 @@ namespace TheBall
             AzureAccountName = connStrSplits[1];
             CoreFileShareAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
             CoreFileShareAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-            if(isLocalDeveloperMachine)
+            if (IsDeveloperMachine)
                 CoreShareWithFolderName = String.Format(@"x:\{0}", "tbcore");
             else
                 CoreShareWithFolderName = String.Format(@"\\{0}.file.core.windows.net\{1}", CoreFileShareAccountName, "tbcore");
@@ -103,6 +105,8 @@ namespace TheBall
             GroupDefaultRedirect = CloudConfigurationManager.GetSetting("GroupDefaultRedirect");
             AdminGroupID = CloudConfigurationManager.GetSetting("AdminGroupID");
             PaymentsGroupID = CloudConfigurationManager.GetSetting("PaymentsGroupID");
+            UseSQLiteMasterDatabase = Convert.ToBoolean(CloudConfigurationManager.GetSetting("UseSQLiteMasterDatabase"));
+            
             #endregion
 
             #region Email

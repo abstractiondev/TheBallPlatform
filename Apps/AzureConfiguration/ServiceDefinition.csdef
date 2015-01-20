@@ -24,6 +24,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
+      <Setting name="UseSQLiteMasterDatabase" />
       <Setting name="DataConnectionString" />
       <Setting name="WorkerRoleEntryPointContainerName" />
       <Setting name="StorageConnectionString" />
@@ -80,6 +81,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
+      <Setting name="UseSQLiteMasterDatabase" />
       <Setting name="DataConnectionString" />
       <Setting name="StorageConnectionString" />
       <Setting name="SyncEnabled" />
