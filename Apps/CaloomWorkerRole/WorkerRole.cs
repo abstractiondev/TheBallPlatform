@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
@@ -257,6 +258,16 @@ namespace CaloomWorkerRole
             CurrQueue = QueueSupport.CurrDefaultQueue;
             tryToBecomeIndexingMaster();
             //prepareCoreShareForWorker();
+            var xmlBOMString = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            SQLiteSupport.ContentStorage.GetContentAsStringFunc = blobName =>
+            {
+                var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, blobName);
+                var text = blob.DownloadText();
+                if (text.StartsWith(xmlBOMString))
+                    text = text.Substring(xmlBOMString.Length);
+                return text;
+            };
+
             IsStopped = false;
             return base.OnStart();
         }
@@ -268,13 +279,6 @@ namespace CaloomWorkerRole
                 string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
                 if (!Directory.Exists(workerDirectory))
                     Directory.CreateDirectory(workerDirectory);
-                string sqliteDatabaseFile = String.Format(@"\\{0}\Worker.sqlite", workerDirectory);
-                using (
-                    var dbContext =
-                        SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqliteDatabaseFile))
-                {
-
-                }
             }
             catch (Exception ex)
             {
