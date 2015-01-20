@@ -84,6 +84,7 @@
     <Compile Include="InformationObjectMetaData.cs" />
     <Compile Include="MetaDataSync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionSupport.cs" />
     <Compile Include="SQLiteSync.cs" />
     <Compile Include="ContentStorage.cs" />
   </ItemGroup>

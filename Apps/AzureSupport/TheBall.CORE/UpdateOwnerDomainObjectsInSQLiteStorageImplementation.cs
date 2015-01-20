@@ -91,12 +91,13 @@ namespace TheBall.CORE
 
         public static string GetTarget_DataContextFullTypeName(string semanticDomain)
         {
-            return String.Format("SQLite.{0}.TheBallDataContext, SQLiteSupport", semanticDomain);
+            return String.Format("SQLite.{0}.TheBallDataContext", semanticDomain);
         }
 
         public static Type GetTarget_DataContextType(string dataContextFullTypeName)
         {
-            Type dataContextType = Type.GetType(dataContextFullTypeName);
+            //Type dataContextType = Type.GetType(dataContextFullTypeName);
+            Type dataContextType = ReflectionSupport.GetSQLiteDataContextType(dataContextFullTypeName);
             return dataContextType;
         }
 

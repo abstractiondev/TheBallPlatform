@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SQLiteSupport;
 using PAY=SQLite.TheBall.Payments;
 using TBC=SQLite.TheBall.CORE;
 using AGI=SQLite.AaltoGlobalImpact.OIP;
@@ -107,5 +108,53 @@ namespace PlatformCoreTests
             Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
             Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
         }
+
+
+        [TestMethod]
+        public void ReflectionInvokeAGIDatabase()
+        {
+            Type agiContextType = typeof (SQLite.AaltoGlobalImpact.OIP.TheBallDataContext);
+            string sqLiteDbLocationFileName = ":memory:";
+            using (
+                IStorageSyncableDataContext dbContext =
+                    (IStorageSyncableDataContext)
+                        agiContextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
+                            new object[] {sqLiteDbLocationFileName})
+                //SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqLiteDbLocationFileName)
+                )
+            {
+            }
+        }
+        [TestMethod]
+        public void ReflectionInvokeCoreDatabase()
+        {
+            Type contextType = typeof(SQLite.TheBall.CORE.TheBallDataContext);
+            string sqLiteDbLocationFileName = ":memory:";
+            using (
+                IStorageSyncableDataContext dbContext =
+                    (IStorageSyncableDataContext)
+                        contextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
+                            new object[] { sqLiteDbLocationFileName })
+                //SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqLiteDbLocationFileName)
+                )
+            {
+            }
+        }
+        [TestMethod]
+        public void ReflectionInvokePaymentDatabase()
+        {
+            Type contextType = typeof(SQLite.TheBall.CORE.TheBallDataContext);
+            string sqLiteDbLocationFileName = ":memory:";
+            using (
+                IStorageSyncableDataContext dbContext =
+                    (IStorageSyncableDataContext)
+                        contextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
+                            new object[] { sqLiteDbLocationFileName })
+                //SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqLiteDbLocationFileName)
+                )
+            {
+            }
+        }
+
     }
 }
