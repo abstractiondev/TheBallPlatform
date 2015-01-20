@@ -87,20 +87,20 @@ namespace SQLite.TheBall.Infrastructure {
 
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
-                if(updateData.SemanticDomain != "TheBall.Payments")
+                if(updateData.SemanticDomain != "TheBall.Infrastructure")
                     throw new InvalidDataException("Mismatch on domain data");
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
 		    {
-                if (insertData.SemanticDomain != "TheBall.Payments")
+                if (insertData.SemanticDomain != "TheBall.Infrastructure")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
             }
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
-                if (deleteData.SemanticDomain != "TheBall.Payments")
+                if (deleteData.SemanticDomain != "TheBall.Infrastructure")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		    }

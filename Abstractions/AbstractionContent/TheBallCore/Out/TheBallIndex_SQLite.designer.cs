@@ -90,13 +90,13 @@ namespace SQLite.TheBall.Index {
 
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
-                if(updateData.SemanticDomain != "TheBall.Payments")
+                if(updateData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
 		        if (updateData.ObjectType == "IndexingRequest")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.IndexingRequest.DeserializeFromXml(
+		                global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IndexName = serializedObject.IndexName;
@@ -110,7 +110,7 @@ namespace SQLite.TheBall.Index {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.QueryRequest.DeserializeFromXml(
+		                global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.QueryString = serializedObject.QueryString;
@@ -120,17 +120,13 @@ namespace SQLite.TheBall.Index {
 		            existingObject.LastRequestTime = serializedObject.LastRequestTime;
 		            existingObject.LastCompletionTime = serializedObject.LastCompletionTime;
 		            existingObject.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
-                    existingObject.QueryResultObjects.Clear();
-					if(serializedObject.QueryResultObjects != null)
-	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
-					
 		            return;
 		        } 
 		        if (updateData.ObjectType == "QueryResultItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.QueryResultItem.DeserializeFromXml(
+		                global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
@@ -143,14 +139,14 @@ namespace SQLite.TheBall.Index {
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
 		    {
-                if (insertData.SemanticDomain != "TheBall.Payments")
+                if (insertData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
                 if (insertData.ObjectType == "IndexingRequest")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.IndexingRequest.DeserializeFromXml(
+                        global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new IndexingRequest {ID = insertData.ObjectID};
 		            objectToAdd.IndexName = serializedObject.IndexName;
@@ -163,7 +159,7 @@ namespace SQLite.TheBall.Index {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.QueryRequest.DeserializeFromXml(
+                        global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryRequest {ID = insertData.ObjectID};
 		            objectToAdd.QueryString = serializedObject.QueryString;
@@ -173,8 +169,6 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.LastRequestTime = serializedObject.LastRequestTime;
 		            objectToAdd.LastCompletionTime = serializedObject.LastCompletionTime;
 		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
-					if(serializedObject.QueryResultObjects != null)
-						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
 					QueryRequestTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -182,7 +176,7 @@ namespace SQLite.TheBall.Index {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.QueryResultItem.DeserializeFromXml(
+                        global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryResultItem {ID = insertData.ObjectID};
 		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;
@@ -196,7 +190,7 @@ namespace SQLite.TheBall.Index {
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
-                if (deleteData.SemanticDomain != "TheBall.Payments")
+                if (deleteData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "IndexingRequest")
@@ -327,8 +321,7 @@ CREATE TABLE IF NOT EXISTS QueryRequest(
 [IsQueryCompleted] INTEGER NOT NULL, 
 [LastRequestTime] TEXT NOT NULL, 
 [LastCompletionTime] TEXT NOT NULL, 
-[LastCompletionDurationMs] INTEGER NOT NULL, 
-[QueryResultObjects] TEXT NOT NULL
+[LastCompletionDurationMs] INTEGER NOT NULL
 )";
         }
 
@@ -364,49 +357,6 @@ CREATE TABLE IF NOT EXISTS QueryRequest(
 		[Column]
 		public long LastCompletionDurationMs { get; set; }
 		// private long _unmodified_LastCompletionDurationMs;
-        [Column(Name = "QueryResultObjects")] public string QueryResultObjectsData;
-
-        private bool _IsQueryResultObjectsRetrieved = false;
-        private bool _IsQueryResultObjectsChanged = false;
-        private ObservableCollection<QueryResultItem> _QueryResultObjects = null;
-        public ObservableCollection<QueryResultItem> QueryResultObjects
-        {
-            get
-            {
-                if (!_IsQueryResultObjectsRetrieved)
-                {
-                    if (QueryResultObjectsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<QueryResultItem[]>(QueryResultObjectsData);
-                        _QueryResultObjects = new ObservableCollection<QueryResultItem>(arrayData);
-                    }
-                    else
-                    {
-                        _QueryResultObjects = new ObservableCollection<QueryResultItem>();
-						QueryResultObjectsData = Guid.NewGuid().ToString();
-						_IsQueryResultObjectsChanged = true;
-                    }
-                    _IsQueryResultObjectsRetrieved = true;
-                    _QueryResultObjects.CollectionChanged += (sender, args) =>
-						{
-							QueryResultObjectsData = Guid.NewGuid().ToString();
-							_IsQueryResultObjectsChanged = true;
-						};
-                }
-                return _QueryResultObjects;
-            }
-            set 
-			{ 
-				_QueryResultObjects = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsQueryResultObjectsRetrieved = true;
-                QueryResultObjectsData = Guid.NewGuid().ToString();
-                _IsQueryResultObjectsChanged = true;
-
-			}
-        }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -416,12 +366,6 @@ CREATE TABLE IF NOT EXISTS QueryRequest(
 				DefaultFieldName = string.Empty;
 			if(IndexName == null)
 				IndexName = string.Empty;
-            if (_IsQueryResultObjectsChanged || isInitialInsert)
-            {
-                var dataToStore = QueryResultObjects.ToArray();
-                QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
 		}
 	}
     [Table(Name = "QueryResultItem")]

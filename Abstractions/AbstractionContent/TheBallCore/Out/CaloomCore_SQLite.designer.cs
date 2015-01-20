@@ -94,13 +94,13 @@ namespace SQLite.Caloom.CORE {
 
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
-                if(updateData.SemanticDomain != "TheBall.Payments")
+                if(updateData.SemanticDomain != "Caloom.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 		        if (updateData.ObjectType == "Who")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.Who.DeserializeFromXml(
+		                global::SER.Caloom.CORE.Who.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WhoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -113,39 +113,35 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ProductForWhom.DeserializeFromXml(
+		                global::SER.Caloom.CORE.ProductForWhom.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductForWhomTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
-		            existingObject.Product = serializedObject.Product;
-		            existingObject.Who = serializedObject.Who;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Product")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.Product.DeserializeFromXml(
+		                global::SER.Caloom.CORE.Product.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
-		            existingObject.SubProducts = serializedObject.SubProducts;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProductUsage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ProductUsage.DeserializeFromXml(
+		                global::SER.Caloom.CORE.ProductUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.Product = serializedObject.Product;
 		            existingObject.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
 		            return;
 		        } 
@@ -153,18 +149,16 @@ namespace SQLite.Caloom.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+		                global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.Nodes = serializedObject.Nodes;
-		            existingObject.NodeSourceProducts = serializedObject.NodeSourceProducts;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RenderedNode")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
+		                global::SER.Caloom.CORE.RenderedNode.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
@@ -174,17 +168,13 @@ namespace SQLite.Caloom.CORE {
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.TimestampText = serializedObject.TimestampText;
 		            existingObject.MainSortableText = serializedObject.MainSortableText;
-		            existingObject.Categories = serializedObject.Categories;
-		            existingObject.Authors = serializedObject.Authors;
-		            existingObject.Locations = serializedObject.Locations;
-		            existingObject.Filters = serializedObject.Filters;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ShortTextObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
+		                global::SER.Caloom.CORE.ShortTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.Content = serializedObject.Content;
@@ -194,14 +184,14 @@ namespace SQLite.Caloom.CORE {
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
 		    {
-                if (insertData.SemanticDomain != "TheBall.Payments")
+                if (insertData.SemanticDomain != "Caloom.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
                 if (insertData.ObjectType == "Who")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.Who.DeserializeFromXml(
+                        global::SER.Caloom.CORE.Who.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Who {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -215,15 +205,13 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ProductForWhom.DeserializeFromXml(
+                        global::SER.Caloom.CORE.ProductForWhom.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProductForWhom {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
-		            objectToAdd.Product = serializedObject.Product;
-		            objectToAdd.Who = serializedObject.Who;
 					ProductForWhomTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -231,14 +219,13 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.Product.DeserializeFromXml(
+                        global::SER.Caloom.CORE.Product.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Product {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
-		            objectToAdd.SubProducts = serializedObject.SubProducts;
 					ProductTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -246,10 +233,9 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ProductUsage.DeserializeFromXml(
+                        global::SER.Caloom.CORE.ProductUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProductUsage {ID = insertData.ObjectID};
-		            objectToAdd.Product = serializedObject.Product;
 		            objectToAdd.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
 					ProductUsageTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -258,11 +244,9 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.NodeSummaryContainer.DeserializeFromXml(
+                        global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID};
-		            objectToAdd.Nodes = serializedObject.Nodes;
-		            objectToAdd.NodeSourceProducts = serializedObject.NodeSourceProducts;
 					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -270,7 +254,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.RenderedNode.DeserializeFromXml(
+                        global::SER.Caloom.CORE.RenderedNode.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
 		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
@@ -280,10 +264,6 @@ namespace SQLite.Caloom.CORE {
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.TimestampText = serializedObject.TimestampText;
 		            objectToAdd.MainSortableText = serializedObject.MainSortableText;
-		            objectToAdd.Categories = serializedObject.Categories;
-		            objectToAdd.Authors = serializedObject.Authors;
-		            objectToAdd.Locations = serializedObject.Locations;
-		            objectToAdd.Filters = serializedObject.Filters;
 					RenderedNodeTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -291,7 +271,7 @@ namespace SQLite.Caloom.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ShortTextObject.DeserializeFromXml(
+                        global::SER.Caloom.CORE.ShortTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
 		            objectToAdd.Content = serializedObject.Content;
@@ -302,7 +282,7 @@ namespace SQLite.Caloom.CORE {
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
-                if (deleteData.SemanticDomain != "TheBall.Payments")
+                if (deleteData.SemanticDomain != "Caloom.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "Who")
@@ -441,9 +421,7 @@ CREATE TABLE IF NOT EXISTS ProductForWhom(
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[Product] TEXT NOT NULL, 
-[Who] TEXT NOT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -467,14 +445,6 @@ CREATE TABLE IF NOT EXISTS ProductForWhom(
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-
-		[Column]
-		public Product Product { get; set; }
-		// private Product _unmodified_Product;
-
-		[Column]
-		public Who Who { get; set; }
-		// private Who _unmodified_Who;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -500,8 +470,7 @@ CREATE TABLE IF NOT EXISTS Product(
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[SubProducts] TEXT NOT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -525,10 +494,6 @@ CREATE TABLE IF NOT EXISTS Product(
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-
-		[Column]
-		public ProductUsageCollection SubProducts { get; set; }
-		// private ProductUsageCollection _unmodified_SubProducts;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -551,7 +516,6 @@ CREATE TABLE IF NOT EXISTS Product(
                 @"
 CREATE TABLE IF NOT EXISTS ProductUsage(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[Product] TEXT NOT NULL, 
 [UsageAmountInDecimal] REAL NOT NULL
 )";
         }
@@ -560,10 +524,6 @@ CREATE TABLE IF NOT EXISTS ProductUsage(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public Product Product { get; set; }
-		// private Product _unmodified_Product;
 
 		[Column]
 		public double UsageAmountInDecimal { get; set; }
@@ -582,8 +542,7 @@ CREATE TABLE IF NOT EXISTS ProductUsage(
                 @"
 CREATE TABLE IF NOT EXISTS NodeSummaryContainer(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[Nodes] TEXT NOT NULL, 
-[NodeSourceProducts] TEXT NOT NULL
+
 )";
         }
 
@@ -591,14 +550,6 @@ CREATE TABLE IF NOT EXISTS NodeSummaryContainer(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public RenderedNodeCollection Nodes { get; set; }
-		// private RenderedNodeCollection _unmodified_Nodes;
-
-		[Column]
-		public ProductCollection NodeSourceProducts { get; set; }
-		// private ProductCollection _unmodified_NodeSourceProducts;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -619,11 +570,7 @@ CREATE TABLE IF NOT EXISTS RenderedNode(
 [ActualContentUrl] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL, 
-[Categories] TEXT NOT NULL, 
-[Authors] TEXT NOT NULL, 
-[Locations] TEXT NOT NULL, 
-[Filters] TEXT NOT NULL
+[MainSortableText] TEXT NOT NULL
 )";
         }
 
@@ -659,22 +606,6 @@ CREATE TABLE IF NOT EXISTS RenderedNode(
 		[Column]
 		public string MainSortableText { get; set; }
 		// private string _unmodified_MainSortableText;
-
-		[Column]
-		public ShortTextCollection Categories { get; set; }
-		// private ShortTextCollection _unmodified_Categories;
-
-		[Column]
-		public ShortTextCollection Authors { get; set; }
-		// private ShortTextCollection _unmodified_Authors;
-
-		[Column]
-		public ShortTextCollection Locations { get; set; }
-		// private ShortTextCollection _unmodified_Locations;
-
-		[Column]
-		public ShortTextCollection Filters { get; set; }
-		// private ShortTextCollection _unmodified_Filters;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		

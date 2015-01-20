@@ -88,41 +88,39 @@ namespace SQLite.Caloom.Schools {
 
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
-                if(updateData.SemanticDomain != "TheBall.Payments")
+                if(updateData.SemanticDomain != "Caloom.Schools")
                     throw new InvalidDataException("Mismatch on domain data");
 		        if (updateData.ObjectType == "TrainingModule")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.TrainingModule.DeserializeFromXml(
+		                global::SER.Caloom.Schools.TrainingModule.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TrainingModuleTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
-		            existingObject.TrainingModules = serializedObject.TrainingModules;
 		            return;
 		        } 
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
 		    {
-                if (insertData.SemanticDomain != "TheBall.Payments")
+                if (insertData.SemanticDomain != "Caloom.Schools")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
                 if (insertData.ObjectType == "TrainingModule")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.TrainingModule.DeserializeFromXml(
+                        global::SER.Caloom.Schools.TrainingModule.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TrainingModule {ID = insertData.ObjectID};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
-		            objectToAdd.TrainingModules = serializedObject.TrainingModules;
 					TrainingModuleTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -130,7 +128,7 @@ namespace SQLite.Caloom.Schools {
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
-                if (deleteData.SemanticDomain != "TheBall.Payments")
+                if (deleteData.SemanticDomain != "Caloom.Schools")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "TrainingModule")
@@ -160,8 +158,7 @@ CREATE TABLE IF NOT EXISTS TrainingModule(
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[TrainingModules] TEXT NOT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -185,10 +182,6 @@ CREATE TABLE IF NOT EXISTS TrainingModule(
 		[Column]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-
-		[Column]
-		public TrainingModuleCollection TrainingModules { get; set; }
-		// private TrainingModuleCollection _unmodified_TrainingModules;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		

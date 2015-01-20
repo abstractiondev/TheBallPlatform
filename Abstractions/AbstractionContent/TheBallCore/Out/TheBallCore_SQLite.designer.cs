@@ -116,13 +116,13 @@ namespace SQLite.TheBall.CORE {
 
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
-                if(updateData.SemanticDomain != "TheBall.Payments")
+                if(updateData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 		        if (updateData.ObjectType == "ContentPackage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ContentPackage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.ContentPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContentPackageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.PackageType = serializedObject.PackageType;
@@ -136,7 +136,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InformationInput.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InformationInput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationInputTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.InputDescription = serializedObject.InputDescription;
@@ -150,7 +150,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InformationOutput.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InformationOutput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationOutputTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OutputDescription = serializedObject.OutputDescription;
@@ -165,7 +165,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.AuthenticatedAsActiveDevice.DeserializeFromXml(
+		                global::SER.TheBall.CORE.AuthenticatedAsActiveDevice.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AuthenticatedAsActiveDeviceTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.AuthenticationDescription = serializedObject.AuthenticationDescription;
@@ -181,7 +181,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.DeviceMembership.DeserializeFromXml(
+		                global::SER.TheBall.CORE.DeviceMembership.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeviceMembershipTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.DeviceDescription = serializedObject.DeviceDescription;
@@ -194,32 +194,27 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceFiscalExportSummary.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceFiscalExportSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceFiscalExportSummaryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            existingObject.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
-		            existingObject.ExportedInvoices = serializedObject.ExportedInvoices;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceSummaryContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceSummaryContainer.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.OpenInvoices = serializedObject.OpenInvoices;
-		            existingObject.PredictedInvoices = serializedObject.PredictedInvoices;
-		            existingObject.PaidInvoicesActiveYear = serializedObject.PaidInvoicesActiveYear;
-		            existingObject.PaidInvoicesLast12Months = serializedObject.PaidInvoicesLast12Months;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Invoice")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.Invoice.DeserializeFromXml(
+		                global::SER.TheBall.CORE.Invoice.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.InvoiceName = serializedObject.InvoiceName;
@@ -230,15 +225,13 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PaidAmount = serializedObject.PaidAmount;
 		            existingObject.FeesAndInterestAmount = serializedObject.FeesAndInterestAmount;
 		            existingObject.UnpaidAmount = serializedObject.UnpaidAmount;
-		            existingObject.InvoiceDetails = serializedObject.InvoiceDetails;
-		            existingObject.InvoiceUsers = serializedObject.InvoiceUsers;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceDetails")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceDetails.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceDetails.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceDetailsTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.MonthlyFeesTotal = serializedObject.MonthlyFeesTotal;
@@ -253,7 +246,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceUser.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceUser.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceUserTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.UserName = serializedObject.UserName;
@@ -261,40 +254,36 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.UserPhoneNumber = serializedObject.UserPhoneNumber;
 		            existingObject.UserSubscriptionNumber = serializedObject.UserSubscriptionNumber;
 		            existingObject.UserInvoiceTotalAmount = serializedObject.UserInvoiceTotalAmount;
-		            existingObject.InvoiceRowGroupCollection = serializedObject.InvoiceRowGroupCollection;
-		            existingObject.InvoiceEventDetailGroupCollection = serializedObject.InvoiceEventDetailGroupCollection;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceRowGroup")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceRowGroup.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceRowGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceRowGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupName = serializedObject.GroupName;
 		            existingObject.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            existingObject.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
 		            existingObject.GroupTotalPriceWithTaxes = serializedObject.GroupTotalPriceWithTaxes;
-		            existingObject.InvoiceRowCollection = serializedObject.InvoiceRowCollection;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceEventDetailGroup")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceEventDetailGroup.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceEventDetailGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceEventDetailGroupTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.GroupName = serializedObject.GroupName;
-		            existingObject.InvoiceEventDetailCollection = serializedObject.InvoiceEventDetailCollection;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceEventDetail")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceEventDetail.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceEventDetail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceEventDetailTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IndentMode = serializedObject.IndentMode;
@@ -313,7 +302,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InvoiceRow.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InvoiceRow.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceRowTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.IndentMode = serializedObject.IndentMode;
@@ -329,7 +318,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.Category.DeserializeFromXml(
+		                global::SER.TheBall.CORE.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.CategoryName = serializedObject.CategoryName;
@@ -339,7 +328,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ProcessContainer.DeserializeFromXml(
+		                global::SER.TheBall.CORE.ProcessContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessContainerTable.Single(item => item.ID == updateData.ObjectID);
                     existingObject.ProcessIDs.Clear();
@@ -352,43 +341,26 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.Process.DeserializeFromXml(
+		                global::SER.TheBall.CORE.Process.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ProcessDescription = serializedObject.ProcessDescription;
-		            existingObject.ExecutingOperation = serializedObject.ExecutingOperation;
-                    existingObject.InitialArguments.Clear();
-					if(serializedObject.InitialArguments != null)
-	                    serializedObject.InitialArguments.ForEach(item => existingObject.InitialArguments.Add(item));
-					
-                    existingObject.ProcessItems.Clear();
-					if(serializedObject.ProcessItems != null)
-	                    serializedObject.ProcessItems.ForEach(item => existingObject.ProcessItems.Add(item));
-					
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProcessItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ProcessItem.DeserializeFromXml(
+		                global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessItemTable.Single(item => item.ID == updateData.ObjectID);
-                    existingObject.Outputs.Clear();
-					if(serializedObject.Outputs != null)
-	                    serializedObject.Outputs.ForEach(item => existingObject.Outputs.Add(item));
-					
-                    existingObject.Inputs.Clear();
-					if(serializedObject.Inputs != null)
-	                    serializedObject.Inputs.ForEach(item => existingObject.Inputs.Add(item));
-					
 		            return;
 		        } 
 		        if (updateData.ObjectType == "SemanticInformationItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.SemanticInformationItem.DeserializeFromXml(
+		                global::SER.TheBall.CORE.SemanticInformationItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SemanticInformationItemTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.ItemFullType = serializedObject.ItemFullType;
@@ -399,7 +371,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.InformationOwnerInfo.DeserializeFromXml(
+		                global::SER.TheBall.CORE.InformationOwnerInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationOwnerInfoTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.OwnerType = serializedObject.OwnerType;
@@ -410,51 +382,38 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.UsageSummary.DeserializeFromXml(
+		                global::SER.TheBall.CORE.UsageSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageSummaryTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SummaryName = serializedObject.SummaryName;
-		            existingObject.SummaryMonitoringItem = serializedObject.SummaryMonitoringItem;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "UsageMonitorItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.UsageMonitorItem.DeserializeFromXml(
+		                global::SER.TheBall.CORE.UsageMonitorItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageMonitorItemTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.OwnerInfo = serializedObject.OwnerInfo;
-		            existingObject.TimeRangeInclusiveStartExclusiveEnd = serializedObject.TimeRangeInclusiveStartExclusiveEnd;
 		            existingObject.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
-		            existingObject.ProcessorUsages = serializedObject.ProcessorUsages;
-		            existingObject.StorageTransactionUsages = serializedObject.StorageTransactionUsages;
-		            existingObject.StorageUsages = serializedObject.StorageUsages;
-		            existingObject.NetworkUsages = serializedObject.NetworkUsages;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RequestResourceUsage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.RequestResourceUsage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RequestResourceUsageTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.OwnerInfo = serializedObject.OwnerInfo;
-		            existingObject.ProcessorUsage = serializedObject.ProcessorUsage;
-		            existingObject.StorageTransactionUsage = serializedObject.StorageTransactionUsage;
-		            existingObject.NetworkUsage = serializedObject.NetworkUsage;
-		            existingObject.RequestDetails = serializedObject.RequestDetails;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProcessorUsage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.ProcessorUsage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.ProcessorUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessorUsageTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.TimeRange = serializedObject.TimeRange;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTicks = serializedObject.AmountOfTicks;
 		            existingObject.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -465,10 +424,9 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.StorageTransactionUsage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.StorageTransactionUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StorageTransactionUsageTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.TimeRange = serializedObject.TimeRange;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTransactions = serializedObject.AmountOfTransactions;
 		            return;
@@ -477,7 +435,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.StorageUsage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.StorageUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StorageUsageTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.SnapshotTime = serializedObject.SnapshotTime;
@@ -490,10 +448,9 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.NetworkUsage.DeserializeFromXml(
+		                global::SER.TheBall.CORE.NetworkUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NetworkUsageTable.Single(item => item.ID == updateData.ObjectID);
-		            existingObject.TimeRange = serializedObject.TimeRange;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfBytes = serializedObject.AmountOfBytes;
 		            return;
@@ -502,7 +459,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.TimeRange.DeserializeFromXml(
+		                global::SER.TheBall.CORE.TimeRange.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TimeRangeTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.StartTime = serializedObject.StartTime;
@@ -513,7 +470,7 @@ namespace SQLite.TheBall.CORE {
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Payments.HTTPActivityDetails.DeserializeFromXml(
+		                global::SER.TheBall.CORE.HTTPActivityDetails.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = HTTPActivityDetailsTable.Single(item => item.ID == updateData.ObjectID);
 		            existingObject.RemoteIPAddress = serializedObject.RemoteIPAddress;
@@ -529,14 +486,14 @@ namespace SQLite.TheBall.CORE {
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
 		    {
-                if (insertData.SemanticDomain != "TheBall.Payments")
+                if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
                 if (insertData.ObjectType == "ContentPackage")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ContentPackage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.ContentPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ContentPackage {ID = insertData.ObjectID};
 		            objectToAdd.PackageType = serializedObject.PackageType;
@@ -551,7 +508,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InformationInput.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InformationInput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationInput {ID = insertData.ObjectID};
 		            objectToAdd.InputDescription = serializedObject.InputDescription;
@@ -566,7 +523,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InformationOutput.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InformationOutput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationOutput {ID = insertData.ObjectID};
 		            objectToAdd.OutputDescription = serializedObject.OutputDescription;
@@ -582,7 +539,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.AuthenticatedAsActiveDevice.DeserializeFromXml(
+                        global::SER.TheBall.CORE.AuthenticatedAsActiveDevice.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AuthenticatedAsActiveDevice {ID = insertData.ObjectID};
 		            objectToAdd.AuthenticationDescription = serializedObject.AuthenticationDescription;
@@ -599,7 +556,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.DeviceMembership.DeserializeFromXml(
+                        global::SER.TheBall.CORE.DeviceMembership.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DeviceMembership {ID = insertData.ObjectID};
 		            objectToAdd.DeviceDescription = serializedObject.DeviceDescription;
@@ -613,12 +570,11 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceFiscalExportSummary.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceFiscalExportSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceFiscalExportSummary {ID = insertData.ObjectID};
 		            objectToAdd.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            objectToAdd.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
-		            objectToAdd.ExportedInvoices = serializedObject.ExportedInvoices;
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -626,13 +582,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceSummaryContainer.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceSummaryContainer {ID = insertData.ObjectID};
-		            objectToAdd.OpenInvoices = serializedObject.OpenInvoices;
-		            objectToAdd.PredictedInvoices = serializedObject.PredictedInvoices;
-		            objectToAdd.PaidInvoicesActiveYear = serializedObject.PaidInvoicesActiveYear;
-		            objectToAdd.PaidInvoicesLast12Months = serializedObject.PaidInvoicesLast12Months;
 					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -640,7 +592,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.Invoice.DeserializeFromXml(
+                        global::SER.TheBall.CORE.Invoice.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Invoice {ID = insertData.ObjectID};
 		            objectToAdd.InvoiceName = serializedObject.InvoiceName;
@@ -651,8 +603,6 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PaidAmount = serializedObject.PaidAmount;
 		            objectToAdd.FeesAndInterestAmount = serializedObject.FeesAndInterestAmount;
 		            objectToAdd.UnpaidAmount = serializedObject.UnpaidAmount;
-		            objectToAdd.InvoiceDetails = serializedObject.InvoiceDetails;
-		            objectToAdd.InvoiceUsers = serializedObject.InvoiceUsers;
 					InvoiceTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -660,7 +610,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceDetails.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceDetails.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceDetails {ID = insertData.ObjectID};
 		            objectToAdd.MonthlyFeesTotal = serializedObject.MonthlyFeesTotal;
@@ -676,7 +626,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceUser.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceUser.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceUser {ID = insertData.ObjectID};
 		            objectToAdd.UserName = serializedObject.UserName;
@@ -684,8 +634,6 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UserPhoneNumber = serializedObject.UserPhoneNumber;
 		            objectToAdd.UserSubscriptionNumber = serializedObject.UserSubscriptionNumber;
 		            objectToAdd.UserInvoiceTotalAmount = serializedObject.UserInvoiceTotalAmount;
-		            objectToAdd.InvoiceRowGroupCollection = serializedObject.InvoiceRowGroupCollection;
-		            objectToAdd.InvoiceEventDetailGroupCollection = serializedObject.InvoiceEventDetailGroupCollection;
 					InvoiceUserTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -693,14 +641,13 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceRowGroup.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceRowGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceRowGroup {ID = insertData.ObjectID};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 		            objectToAdd.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            objectToAdd.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
 		            objectToAdd.GroupTotalPriceWithTaxes = serializedObject.GroupTotalPriceWithTaxes;
-		            objectToAdd.InvoiceRowCollection = serializedObject.InvoiceRowCollection;
 					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -708,11 +655,10 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceEventDetailGroup.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceEventDetailGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceEventDetailGroup {ID = insertData.ObjectID};
 		            objectToAdd.GroupName = serializedObject.GroupName;
-		            objectToAdd.InvoiceEventDetailCollection = serializedObject.InvoiceEventDetailCollection;
 					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -720,7 +666,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceEventDetail.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceEventDetail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceEventDetail {ID = insertData.ObjectID};
 		            objectToAdd.IndentMode = serializedObject.IndentMode;
@@ -740,7 +686,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InvoiceRow.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InvoiceRow.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceRow {ID = insertData.ObjectID};
 		            objectToAdd.IndentMode = serializedObject.IndentMode;
@@ -757,7 +703,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.Category.DeserializeFromXml(
+                        global::SER.TheBall.CORE.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
@@ -768,7 +714,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ProcessContainer.DeserializeFromXml(
+                        global::SER.TheBall.CORE.ProcessContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProcessContainer {ID = insertData.ObjectID};
 					if(serializedObject.ProcessIDs != null)
@@ -780,15 +726,10 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.Process.DeserializeFromXml(
+                        global::SER.TheBall.CORE.Process.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Process {ID = insertData.ObjectID};
 		            objectToAdd.ProcessDescription = serializedObject.ProcessDescription;
-		            objectToAdd.ExecutingOperation = serializedObject.ExecutingOperation;
-					if(serializedObject.InitialArguments != null)
-						serializedObject.InitialArguments.ForEach(item => objectToAdd.InitialArguments.Add(item));
-					if(serializedObject.ProcessItems != null)
-						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
 					ProcessTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -796,13 +737,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ProcessItem.DeserializeFromXml(
+                        global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProcessItem {ID = insertData.ObjectID};
-					if(serializedObject.Outputs != null)
-						serializedObject.Outputs.ForEach(item => objectToAdd.Outputs.Add(item));
-					if(serializedObject.Inputs != null)
-						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
 					ProcessItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -810,7 +747,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.SemanticInformationItem.DeserializeFromXml(
+                        global::SER.TheBall.CORE.SemanticInformationItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SemanticInformationItem {ID = insertData.ObjectID};
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
@@ -822,7 +759,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.InformationOwnerInfo.DeserializeFromXml(
+                        global::SER.TheBall.CORE.InformationOwnerInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationOwnerInfo {ID = insertData.ObjectID};
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
@@ -834,11 +771,10 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.UsageSummary.DeserializeFromXml(
+                        global::SER.TheBall.CORE.UsageSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UsageSummary {ID = insertData.ObjectID};
 		            objectToAdd.SummaryName = serializedObject.SummaryName;
-		            objectToAdd.SummaryMonitoringItem = serializedObject.SummaryMonitoringItem;
 					UsageSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -846,16 +782,10 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.UsageMonitorItem.DeserializeFromXml(
+                        global::SER.TheBall.CORE.UsageMonitorItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UsageMonitorItem {ID = insertData.ObjectID};
-		            objectToAdd.OwnerInfo = serializedObject.OwnerInfo;
-		            objectToAdd.TimeRangeInclusiveStartExclusiveEnd = serializedObject.TimeRangeInclusiveStartExclusiveEnd;
 		            objectToAdd.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
-		            objectToAdd.ProcessorUsages = serializedObject.ProcessorUsages;
-		            objectToAdd.StorageTransactionUsages = serializedObject.StorageTransactionUsages;
-		            objectToAdd.StorageUsages = serializedObject.StorageUsages;
-		            objectToAdd.NetworkUsages = serializedObject.NetworkUsages;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -863,14 +793,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.RequestResourceUsage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RequestResourceUsage {ID = insertData.ObjectID};
-		            objectToAdd.OwnerInfo = serializedObject.OwnerInfo;
-		            objectToAdd.ProcessorUsage = serializedObject.ProcessorUsage;
-		            objectToAdd.StorageTransactionUsage = serializedObject.StorageTransactionUsage;
-		            objectToAdd.NetworkUsage = serializedObject.NetworkUsage;
-		            objectToAdd.RequestDetails = serializedObject.RequestDetails;
 					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -878,10 +803,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.ProcessorUsage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.ProcessorUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProcessorUsage {ID = insertData.ObjectID};
-		            objectToAdd.TimeRange = serializedObject.TimeRange;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTicks = serializedObject.AmountOfTicks;
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -893,10 +817,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.StorageTransactionUsage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.StorageTransactionUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StorageTransactionUsage {ID = insertData.ObjectID};
-		            objectToAdd.TimeRange = serializedObject.TimeRange;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
 					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
@@ -906,7 +829,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.StorageUsage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.StorageUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StorageUsage {ID = insertData.ObjectID};
 		            objectToAdd.SnapshotTime = serializedObject.SnapshotTime;
@@ -920,10 +843,9 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.NetworkUsage.DeserializeFromXml(
+                        global::SER.TheBall.CORE.NetworkUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NetworkUsage {ID = insertData.ObjectID};
-		            objectToAdd.TimeRange = serializedObject.TimeRange;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
 					NetworkUsageTable.InsertOnSubmit(objectToAdd);
@@ -933,7 +855,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.TimeRange.DeserializeFromXml(
+                        global::SER.TheBall.CORE.TimeRange.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TimeRange {ID = insertData.ObjectID};
 		            objectToAdd.StartTime = serializedObject.StartTime;
@@ -945,7 +867,7 @@ namespace SQLite.TheBall.CORE {
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Payments.HTTPActivityDetails.DeserializeFromXml(
+                        global::SER.TheBall.CORE.HTTPActivityDetails.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new HTTPActivityDetails {ID = insertData.ObjectID};
 		            objectToAdd.RemoteIPAddress = serializedObject.RemoteIPAddress;
@@ -962,7 +884,7 @@ namespace SQLite.TheBall.CORE {
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
-                if (deleteData.SemanticDomain != "TheBall.Payments")
+                if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "ContentPackage")
@@ -1550,8 +1472,7 @@ CREATE TABLE IF NOT EXISTS DeviceMembership(
 CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [FiscalInclusiveStartDate] TEXT NOT NULL, 
-[FiscalInclusiveEndDate] TEXT NOT NULL, 
-[ExportedInvoices] TEXT NOT NULL
+[FiscalInclusiveEndDate] TEXT NOT NULL
 )";
         }
 
@@ -1567,10 +1488,6 @@ CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
 		[Column]
 		public DateTime FiscalInclusiveEndDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveEndDate;
-
-		[Column]
-		public InvoiceCollection ExportedInvoices { get; set; }
-		// private InvoiceCollection _unmodified_ExportedInvoices;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1585,10 +1502,7 @@ CREATE TABLE IF NOT EXISTS InvoiceFiscalExportSummary(
                 @"
 CREATE TABLE IF NOT EXISTS InvoiceSummaryContainer(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[OpenInvoices] TEXT NOT NULL, 
-[PredictedInvoices] TEXT NOT NULL, 
-[PaidInvoicesActiveYear] TEXT NOT NULL, 
-[PaidInvoicesLast12Months] TEXT NOT NULL
+
 )";
         }
 
@@ -1596,22 +1510,6 @@ CREATE TABLE IF NOT EXISTS InvoiceSummaryContainer(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public InvoiceCollection OpenInvoices { get; set; }
-		// private InvoiceCollection _unmodified_OpenInvoices;
-
-		[Column]
-		public InvoiceCollection PredictedInvoices { get; set; }
-		// private InvoiceCollection _unmodified_PredictedInvoices;
-
-		[Column]
-		public InvoiceCollection PaidInvoicesActiveYear { get; set; }
-		// private InvoiceCollection _unmodified_PaidInvoicesActiveYear;
-
-		[Column]
-		public InvoiceCollection PaidInvoicesLast12Months { get; set; }
-		// private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1633,9 +1531,7 @@ CREATE TABLE IF NOT EXISTS Invoice(
 [DueDate] TEXT NOT NULL, 
 [PaidAmount] TEXT NOT NULL, 
 [FeesAndInterestAmount] TEXT NOT NULL, 
-[UnpaidAmount] TEXT NOT NULL, 
-[InvoiceDetails] TEXT NOT NULL, 
-[InvoiceUsers] TEXT NOT NULL
+[UnpaidAmount] TEXT NOT NULL
 )";
         }
 
@@ -1675,14 +1571,6 @@ CREATE TABLE IF NOT EXISTS Invoice(
 		[Column]
 		public string UnpaidAmount { get; set; }
 		// private string _unmodified_UnpaidAmount;
-
-		[Column]
-		public InvoiceDetails InvoiceDetails { get; set; }
-		// private InvoiceDetails _unmodified_InvoiceDetails;
-
-		[Column]
-		public InvoiceUserCollection InvoiceUsers { get; set; }
-		// private InvoiceUserCollection _unmodified_InvoiceUsers;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1776,9 +1664,7 @@ CREATE TABLE IF NOT EXISTS InvoiceUser(
 [UserID] TEXT NOT NULL, 
 [UserPhoneNumber] TEXT NOT NULL, 
 [UserSubscriptionNumber] TEXT NOT NULL, 
-[UserInvoiceTotalAmount] TEXT NOT NULL, 
-[InvoiceRowGroupCollection] TEXT NOT NULL, 
-[InvoiceEventDetailGroupCollection] TEXT NOT NULL
+[UserInvoiceTotalAmount] TEXT NOT NULL
 )";
         }
 
@@ -1806,14 +1692,6 @@ CREATE TABLE IF NOT EXISTS InvoiceUser(
 		[Column]
 		public string UserInvoiceTotalAmount { get; set; }
 		// private string _unmodified_UserInvoiceTotalAmount;
-
-		[Column]
-		public InvoiceRowGroupCollection InvoiceRowGroupCollection { get; set; }
-		// private InvoiceRowGroupCollection _unmodified_InvoiceRowGroupCollection;
-
-		[Column]
-		public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection { get; set; }
-		// private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1841,8 +1719,7 @@ CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
 [GroupName] TEXT NOT NULL, 
 [GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
 [GroupTotalTaxes] TEXT NOT NULL, 
-[GroupTotalPriceWithTaxes] TEXT NOT NULL, 
-[InvoiceRowCollection] TEXT NOT NULL
+[GroupTotalPriceWithTaxes] TEXT NOT NULL
 )";
         }
 
@@ -1866,10 +1743,6 @@ CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
 		[Column]
 		public string GroupTotalPriceWithTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithTaxes;
-
-		[Column]
-		public InvoiceRowCollection InvoiceRowCollection { get; set; }
-		// private InvoiceRowCollection _unmodified_InvoiceRowCollection;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1892,8 +1765,7 @@ CREATE TABLE IF NOT EXISTS InvoiceRowGroup(
                 @"
 CREATE TABLE IF NOT EXISTS InvoiceEventDetailGroup(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[GroupName] TEXT NOT NULL, 
-[InvoiceEventDetailCollection] TEXT NOT NULL
+[GroupName] TEXT NOT NULL
 )";
         }
 
@@ -1905,10 +1777,6 @@ CREATE TABLE IF NOT EXISTS InvoiceEventDetailGroup(
 		[Column]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
-
-		[Column]
-		public InvoiceEventDetailCollection InvoiceEventDetailCollection { get; set; }
-		// private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2181,10 +2049,7 @@ CREATE TABLE IF NOT EXISTS ProcessContainer(
                 @"
 CREATE TABLE IF NOT EXISTS Process(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ProcessDescription] TEXT NOT NULL, 
-[ExecutingOperation] TEXT NOT NULL, 
-[InitialArguments] TEXT NOT NULL, 
-[ProcessItems] TEXT NOT NULL
+[ProcessDescription] TEXT NOT NULL
 )";
         }
 
@@ -2196,113 +2061,11 @@ CREATE TABLE IF NOT EXISTS Process(
 		[Column]
 		public string ProcessDescription { get; set; }
 		// private string _unmodified_ProcessDescription;
-
-		[Column]
-		public SemanticInformationItem ExecutingOperation { get; set; }
-		// private SemanticInformationItem _unmodified_ExecutingOperation;
-        [Column(Name = "InitialArguments")] public string InitialArgumentsData;
-
-        private bool _IsInitialArgumentsRetrieved = false;
-        private bool _IsInitialArgumentsChanged = false;
-        private ObservableCollection<SemanticInformationItem> _InitialArguments = null;
-        public ObservableCollection<SemanticInformationItem> InitialArguments
-        {
-            get
-            {
-                if (!_IsInitialArgumentsRetrieved)
-                {
-                    if (InitialArgumentsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InitialArgumentsData);
-                        _InitialArguments = new ObservableCollection<SemanticInformationItem>(arrayData);
-                    }
-                    else
-                    {
-                        _InitialArguments = new ObservableCollection<SemanticInformationItem>();
-						InitialArgumentsData = Guid.NewGuid().ToString();
-						_IsInitialArgumentsChanged = true;
-                    }
-                    _IsInitialArgumentsRetrieved = true;
-                    _InitialArguments.CollectionChanged += (sender, args) =>
-						{
-							InitialArgumentsData = Guid.NewGuid().ToString();
-							_IsInitialArgumentsChanged = true;
-						};
-                }
-                return _InitialArguments;
-            }
-            set 
-			{ 
-				_InitialArguments = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsInitialArgumentsRetrieved = true;
-                InitialArgumentsData = Guid.NewGuid().ToString();
-                _IsInitialArgumentsChanged = true;
-
-			}
-        }
-
-        [Column(Name = "ProcessItems")] public string ProcessItemsData;
-
-        private bool _IsProcessItemsRetrieved = false;
-        private bool _IsProcessItemsChanged = false;
-        private ObservableCollection<ProcessItem> _ProcessItems = null;
-        public ObservableCollection<ProcessItem> ProcessItems
-        {
-            get
-            {
-                if (!_IsProcessItemsRetrieved)
-                {
-                    if (ProcessItemsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<ProcessItem[]>(ProcessItemsData);
-                        _ProcessItems = new ObservableCollection<ProcessItem>(arrayData);
-                    }
-                    else
-                    {
-                        _ProcessItems = new ObservableCollection<ProcessItem>();
-						ProcessItemsData = Guid.NewGuid().ToString();
-						_IsProcessItemsChanged = true;
-                    }
-                    _IsProcessItemsRetrieved = true;
-                    _ProcessItems.CollectionChanged += (sender, args) =>
-						{
-							ProcessItemsData = Guid.NewGuid().ToString();
-							_IsProcessItemsChanged = true;
-						};
-                }
-                return _ProcessItems;
-            }
-            set 
-			{ 
-				_ProcessItems = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsProcessItemsRetrieved = true;
-                ProcessItemsData = Guid.NewGuid().ToString();
-                _IsProcessItemsChanged = true;
-
-			}
-        }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
 			if(ProcessDescription == null)
 				ProcessDescription = string.Empty;
-            if (_IsInitialArgumentsChanged || isInitialInsert)
-            {
-                var dataToStore = InitialArguments.ToArray();
-                InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
-            if (_IsProcessItemsChanged || isInitialInsert)
-            {
-                var dataToStore = ProcessItems.ToArray();
-                ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
 		}
 	}
     [Table(Name = "ProcessItem")]
@@ -2314,8 +2077,7 @@ CREATE TABLE IF NOT EXISTS Process(
                 @"
 CREATE TABLE IF NOT EXISTS ProcessItem(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[Outputs] TEXT NOT NULL, 
-[Inputs] TEXT NOT NULL
+
 )";
         }
 
@@ -2323,107 +2085,9 @@ CREATE TABLE IF NOT EXISTS ProcessItem(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-        [Column(Name = "Outputs")] public string OutputsData;
-
-        private bool _IsOutputsRetrieved = false;
-        private bool _IsOutputsChanged = false;
-        private ObservableCollection<SemanticInformationItem> _Outputs = null;
-        public ObservableCollection<SemanticInformationItem> Outputs
-        {
-            get
-            {
-                if (!_IsOutputsRetrieved)
-                {
-                    if (OutputsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(OutputsData);
-                        _Outputs = new ObservableCollection<SemanticInformationItem>(arrayData);
-                    }
-                    else
-                    {
-                        _Outputs = new ObservableCollection<SemanticInformationItem>();
-						OutputsData = Guid.NewGuid().ToString();
-						_IsOutputsChanged = true;
-                    }
-                    _IsOutputsRetrieved = true;
-                    _Outputs.CollectionChanged += (sender, args) =>
-						{
-							OutputsData = Guid.NewGuid().ToString();
-							_IsOutputsChanged = true;
-						};
-                }
-                return _Outputs;
-            }
-            set 
-			{ 
-				_Outputs = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsOutputsRetrieved = true;
-                OutputsData = Guid.NewGuid().ToString();
-                _IsOutputsChanged = true;
-
-			}
-        }
-
-        [Column(Name = "Inputs")] public string InputsData;
-
-        private bool _IsInputsRetrieved = false;
-        private bool _IsInputsChanged = false;
-        private ObservableCollection<SemanticInformationItem> _Inputs = null;
-        public ObservableCollection<SemanticInformationItem> Inputs
-        {
-            get
-            {
-                if (!_IsInputsRetrieved)
-                {
-                    if (InputsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<SemanticInformationItem[]>(InputsData);
-                        _Inputs = new ObservableCollection<SemanticInformationItem>(arrayData);
-                    }
-                    else
-                    {
-                        _Inputs = new ObservableCollection<SemanticInformationItem>();
-						InputsData = Guid.NewGuid().ToString();
-						_IsInputsChanged = true;
-                    }
-                    _IsInputsRetrieved = true;
-                    _Inputs.CollectionChanged += (sender, args) =>
-						{
-							InputsData = Guid.NewGuid().ToString();
-							_IsInputsChanged = true;
-						};
-                }
-                return _Inputs;
-            }
-            set 
-			{ 
-				_Inputs = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsInputsRetrieved = true;
-                InputsData = Guid.NewGuid().ToString();
-                _IsInputsChanged = true;
-
-			}
-        }
-
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsOutputsChanged || isInitialInsert)
-            {
-                var dataToStore = Outputs.ToArray();
-                OutputsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
-            if (_IsInputsChanged || isInitialInsert)
-            {
-                var dataToStore = Inputs.ToArray();
-                InputsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
 		}
 	}
     [Table(Name = "SemanticInformationItem")]
@@ -2505,8 +2169,7 @@ CREATE TABLE IF NOT EXISTS InformationOwnerInfo(
                 @"
 CREATE TABLE IF NOT EXISTS UsageSummary(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[SummaryName] TEXT NOT NULL, 
-[SummaryMonitoringItem] TEXT NOT NULL
+[SummaryName] TEXT NOT NULL
 )";
         }
 
@@ -2518,10 +2181,6 @@ CREATE TABLE IF NOT EXISTS UsageSummary(
 		[Column]
 		public string SummaryName { get; set; }
 		// private string _unmodified_SummaryName;
-
-		[Column]
-		public UsageMonitorItem SummaryMonitoringItem { get; set; }
-		// private UsageMonitorItem _unmodified_SummaryMonitoringItem;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2538,13 +2197,7 @@ CREATE TABLE IF NOT EXISTS UsageSummary(
                 @"
 CREATE TABLE IF NOT EXISTS UsageMonitorItem(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[OwnerInfo] TEXT NOT NULL, 
-[TimeRangeInclusiveStartExclusiveEnd] TEXT NOT NULL, 
-[StepSizeInMinutes] INTEGER NOT NULL, 
-[ProcessorUsages] TEXT NOT NULL, 
-[StorageTransactionUsages] TEXT NOT NULL, 
-[StorageUsages] TEXT NOT NULL, 
-[NetworkUsages] TEXT NOT NULL
+[StepSizeInMinutes] INTEGER NOT NULL
 )";
         }
 
@@ -2554,32 +2207,8 @@ CREATE TABLE IF NOT EXISTS UsageMonitorItem(
 
 
 		[Column]
-		public InformationOwnerInfo OwnerInfo { get; set; }
-		// private InformationOwnerInfo _unmodified_OwnerInfo;
-
-		[Column]
-		public TimeRange TimeRangeInclusiveStartExclusiveEnd { get; set; }
-		// private TimeRange _unmodified_TimeRangeInclusiveStartExclusiveEnd;
-
-		[Column]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
-
-		[Column]
-		public ProcessorUsageCollection ProcessorUsages { get; set; }
-		// private ProcessorUsageCollection _unmodified_ProcessorUsages;
-
-		[Column]
-		public StorageTransactionUsageCollection StorageTransactionUsages { get; set; }
-		// private StorageTransactionUsageCollection _unmodified_StorageTransactionUsages;
-
-		[Column]
-		public StorageUsageCollection StorageUsages { get; set; }
-		// private StorageUsageCollection _unmodified_StorageUsages;
-
-		[Column]
-		public NetworkUsageCollection NetworkUsages { get; set; }
-		// private NetworkUsageCollection _unmodified_NetworkUsages;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2594,11 +2223,7 @@ CREATE TABLE IF NOT EXISTS UsageMonitorItem(
                 @"
 CREATE TABLE IF NOT EXISTS RequestResourceUsage(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[OwnerInfo] TEXT NOT NULL, 
-[ProcessorUsage] TEXT NOT NULL, 
-[StorageTransactionUsage] TEXT NOT NULL, 
-[NetworkUsage] TEXT NOT NULL, 
-[RequestDetails] TEXT NOT NULL
+
 )";
         }
 
@@ -2606,26 +2231,6 @@ CREATE TABLE IF NOT EXISTS RequestResourceUsage(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public InformationOwnerInfo OwnerInfo { get; set; }
-		// private InformationOwnerInfo _unmodified_OwnerInfo;
-
-		[Column]
-		public ProcessorUsage ProcessorUsage { get; set; }
-		// private ProcessorUsage _unmodified_ProcessorUsage;
-
-		[Column]
-		public StorageTransactionUsage StorageTransactionUsage { get; set; }
-		// private StorageTransactionUsage _unmodified_StorageTransactionUsage;
-
-		[Column]
-		public NetworkUsage NetworkUsage { get; set; }
-		// private NetworkUsage _unmodified_NetworkUsage;
-
-		[Column]
-		public HTTPActivityDetails RequestDetails { get; set; }
-		// private HTTPActivityDetails _unmodified_RequestDetails;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2640,7 +2245,6 @@ CREATE TABLE IF NOT EXISTS RequestResourceUsage(
                 @"
 CREATE TABLE IF NOT EXISTS ProcessorUsage(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[TimeRange] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTicks] REAL NOT NULL, 
 [FrequencyTicksPerSecond] REAL NOT NULL, 
@@ -2652,10 +2256,6 @@ CREATE TABLE IF NOT EXISTS ProcessorUsage(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public TimeRange TimeRange { get; set; }
-		// private TimeRange _unmodified_TimeRange;
 
 		[Column]
 		public string UsageType { get; set; }
@@ -2688,7 +2288,6 @@ CREATE TABLE IF NOT EXISTS ProcessorUsage(
                 @"
 CREATE TABLE IF NOT EXISTS StorageTransactionUsage(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[TimeRange] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTransactions] INTEGER NOT NULL
 )";
@@ -2698,10 +2297,6 @@ CREATE TABLE IF NOT EXISTS StorageTransactionUsage(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public TimeRange TimeRange { get; set; }
-		// private TimeRange _unmodified_TimeRange;
 
 		[Column]
 		public string UsageType { get; set; }
@@ -2771,7 +2366,6 @@ CREATE TABLE IF NOT EXISTS StorageUsage(
                 @"
 CREATE TABLE IF NOT EXISTS NetworkUsage(
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[TimeRange] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfBytes] INTEGER NOT NULL
 )";
@@ -2781,10 +2375,6 @@ CREATE TABLE IF NOT EXISTS NetworkUsage(
 		[Column(IsPrimaryKey = true)]
 		public string ID { get; set; }
 
-
-		[Column]
-		public TimeRange TimeRange { get; set; }
-		// private TimeRange _unmodified_TimeRange;
 
 		[Column]
 		public string UsageType { get; set; }

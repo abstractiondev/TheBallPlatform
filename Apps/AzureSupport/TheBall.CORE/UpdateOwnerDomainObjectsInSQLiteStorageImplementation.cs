@@ -23,8 +23,9 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_PerformSyncing(Type dataContextType, string databaseAttachOrCreateMethodName, string sqLiteDbLocationFileName, string ownerRootPath, CloudBlockBlob[] blobsToSync)
         {
-            if(dataContextType == null)
-                throw new ArgumentNullException("dataContextType");
+            // For now clear the datacontext type
+            if (dataContextType == null)
+                return;
             if(databaseAttachOrCreateMethodName == null)
                 throw new ArgumentNullException("databaseAttachOrCreateMethodName");
             if (sqLiteDbLocationFileName == null) throw new ArgumentNullException("sqLiteDbLocationFileName");
