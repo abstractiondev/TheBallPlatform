@@ -3,7 +3,7 @@
   <LoadBalancerProbes>
     <LoadBalancerProbe name="WebDeploy" protocol="http" port="80" path="Probe.aspx" intervalInSeconds="5" timeoutInSeconds="100" />
   </LoadBalancerProbes>
-  <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="ExtraSmall">
+  <WorkerRole name="WorkerRoleAccelerator.Core" vmsize="Small">
     <Startup>
       <Task commandLine="WorkerStartupTasks.cmd" executionContext="limited" taskType="simple">
         <Environment>
