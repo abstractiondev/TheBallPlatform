@@ -133,7 +133,9 @@ namespace SQLite.Caloom.Housing {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "House")
 		        {
-                    HouseTable.DeleteOnSubmit(new House { ID = deleteData.ObjectID });
+		            var objectToDelete = new House {ID = deleteData.ID};
+                    HouseTable.Attach(objectToDelete);
+                    HouseTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }

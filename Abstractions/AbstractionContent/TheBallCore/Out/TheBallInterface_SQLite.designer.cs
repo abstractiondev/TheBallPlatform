@@ -437,52 +437,72 @@ namespace SQLite.TheBall.Interface {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "WizardTask")
 		        {
-                    WizardTaskTable.DeleteOnSubmit(new WizardTask { ID = deleteData.ObjectID });
+		            var objectToDelete = new WizardTask {ID = deleteData.ID};
+                    WizardTaskTable.Attach(objectToDelete);
+                    WizardTaskTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "Connection")
 		        {
-                    ConnectionTable.DeleteOnSubmit(new Connection { ID = deleteData.ObjectID });
+		            var objectToDelete = new Connection {ID = deleteData.ID};
+                    ConnectionTable.Attach(objectToDelete);
+                    ConnectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "TransferPackage")
 		        {
-                    TransferPackageTable.DeleteOnSubmit(new TransferPackage { ID = deleteData.ObjectID });
+		            var objectToDelete = new TransferPackage {ID = deleteData.ID};
+                    TransferPackageTable.Attach(objectToDelete);
+                    TransferPackageTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "CategoryLink")
 		        {
-                    CategoryLinkTable.DeleteOnSubmit(new CategoryLink { ID = deleteData.ObjectID });
+		            var objectToDelete = new CategoryLink {ID = deleteData.ID};
+                    CategoryLinkTable.Attach(objectToDelete);
+                    CategoryLinkTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "Category")
 		        {
-                    CategoryTable.DeleteOnSubmit(new Category { ID = deleteData.ObjectID });
+		            var objectToDelete = new Category {ID = deleteData.ID};
+                    CategoryTable.Attach(objectToDelete);
+                    CategoryTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "StatusSummary")
 		        {
-                    StatusSummaryTable.DeleteOnSubmit(new StatusSummary { ID = deleteData.ObjectID });
+		            var objectToDelete = new StatusSummary {ID = deleteData.ID};
+                    StatusSummaryTable.Attach(objectToDelete);
+                    StatusSummaryTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "InformationChangeItem")
 		        {
-                    InformationChangeItemTable.DeleteOnSubmit(new InformationChangeItem { ID = deleteData.ObjectID });
+		            var objectToDelete = new InformationChangeItem {ID = deleteData.ID};
+                    InformationChangeItemTable.Attach(objectToDelete);
+                    InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "OperationExecutionItem")
 		        {
-                    OperationExecutionItemTable.DeleteOnSubmit(new OperationExecutionItem { ID = deleteData.ObjectID });
+		            var objectToDelete = new OperationExecutionItem {ID = deleteData.ID};
+                    OperationExecutionItemTable.Attach(objectToDelete);
+                    OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "GenericObject")
 		        {
-                    GenericObjectTable.DeleteOnSubmit(new GenericObject { ID = deleteData.ObjectID });
+		            var objectToDelete = new GenericObject {ID = deleteData.ID};
+                    GenericObjectTable.Attach(objectToDelete);
+                    GenericObjectTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "GenericValue")
 		        {
-                    GenericValueTable.DeleteOnSubmit(new GenericValue { ID = deleteData.ObjectID });
+		            var objectToDelete = new GenericValue {ID = deleteData.ID};
+                    GenericValueTable.Attach(objectToDelete);
+                    GenericValueTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }

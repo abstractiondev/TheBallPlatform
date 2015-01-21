@@ -195,17 +195,23 @@ namespace SQLite.TheBall.Index {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "IndexingRequest")
 		        {
-                    IndexingRequestTable.DeleteOnSubmit(new IndexingRequest { ID = deleteData.ObjectID });
+		            var objectToDelete = new IndexingRequest {ID = deleteData.ID};
+                    IndexingRequestTable.Attach(objectToDelete);
+                    IndexingRequestTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "QueryRequest")
 		        {
-                    QueryRequestTable.DeleteOnSubmit(new QueryRequest { ID = deleteData.ObjectID });
+		            var objectToDelete = new QueryRequest {ID = deleteData.ID};
+                    QueryRequestTable.Attach(objectToDelete);
+                    QueryRequestTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "QueryResultItem")
 		        {
-                    QueryResultItemTable.DeleteOnSubmit(new QueryResultItem { ID = deleteData.ObjectID });
+		            var objectToDelete = new QueryResultItem {ID = deleteData.ID};
+                    QueryResultItemTable.Attach(objectToDelete);
+                    QueryResultItemTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }

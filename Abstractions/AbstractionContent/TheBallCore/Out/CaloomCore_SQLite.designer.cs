@@ -267,32 +267,44 @@ namespace SQLite.Caloom.CORE {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "Who")
 		        {
-                    WhoTable.DeleteOnSubmit(new Who { ID = deleteData.ObjectID });
+		            var objectToDelete = new Who {ID = deleteData.ID};
+                    WhoTable.Attach(objectToDelete);
+                    WhoTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ProductForWhom")
 		        {
-                    ProductForWhomTable.DeleteOnSubmit(new ProductForWhom { ID = deleteData.ObjectID });
+		            var objectToDelete = new ProductForWhom {ID = deleteData.ID};
+                    ProductForWhomTable.Attach(objectToDelete);
+                    ProductForWhomTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "Product")
 		        {
-                    ProductTable.DeleteOnSubmit(new Product { ID = deleteData.ObjectID });
+		            var objectToDelete = new Product {ID = deleteData.ID};
+                    ProductTable.Attach(objectToDelete);
+                    ProductTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ProductUsage")
 		        {
-                    ProductUsageTable.DeleteOnSubmit(new ProductUsage { ID = deleteData.ObjectID });
+		            var objectToDelete = new ProductUsage {ID = deleteData.ID};
+                    ProductUsageTable.Attach(objectToDelete);
+                    ProductUsageTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "RenderedNode")
 		        {
-                    RenderedNodeTable.DeleteOnSubmit(new RenderedNode { ID = deleteData.ObjectID });
+		            var objectToDelete = new RenderedNode {ID = deleteData.ID};
+                    RenderedNodeTable.Attach(objectToDelete);
+                    RenderedNodeTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ShortTextObject")
 		        {
-                    ShortTextObjectTable.DeleteOnSubmit(new ShortTextObject { ID = deleteData.ObjectID });
+		            var objectToDelete = new ShortTextObject {ID = deleteData.ID};
+                    ShortTextObjectTable.Attach(objectToDelete);
+                    ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }

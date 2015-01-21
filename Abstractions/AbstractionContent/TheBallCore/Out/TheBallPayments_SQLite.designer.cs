@@ -167,12 +167,16 @@ namespace SQLite.TheBall.Payments {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
 		        {
-                    GroupSubscriptionPlanTable.DeleteOnSubmit(new GroupSubscriptionPlan { ID = deleteData.ObjectID });
+		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
+                    GroupSubscriptionPlanTable.Attach(objectToDelete);
+                    GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "CustomerAccount")
 		        {
-                    CustomerAccountTable.DeleteOnSubmit(new CustomerAccount { ID = deleteData.ObjectID });
+		            var objectToDelete = new CustomerAccount {ID = deleteData.ID};
+                    CustomerAccountTable.Attach(objectToDelete);
+                    CustomerAccountTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }

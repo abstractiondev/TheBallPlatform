@@ -133,7 +133,9 @@ namespace SQLite.Caloom.Schools {
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "TrainingModule")
 		        {
-                    TrainingModuleTable.DeleteOnSubmit(new TrainingModule { ID = deleteData.ObjectID });
+		            var objectToDelete = new TrainingModule {ID = deleteData.ID};
+                    TrainingModuleTable.Attach(objectToDelete);
+                    TrainingModuleTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		    }
