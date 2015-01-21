@@ -51,6 +51,7 @@ namespace SQLiteSupport
                         existingObject.LastWriteTime = currentData.LastWriteTime;
                         existingObject.FileLength = currentData.FileLength;
                         existingObject.CurrentChangeAction = ChangeAction.Update;
+                        existingObject.CurrentStoragePath = currentData.CurrentStoragePath;
                     }
                     else 
                         existingObject.CurrentChangeAction = ChangeAction.None;
