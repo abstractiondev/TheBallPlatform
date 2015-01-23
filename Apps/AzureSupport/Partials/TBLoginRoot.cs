@@ -44,6 +44,26 @@ namespace AaltoGlobalImpact.OIP
                             AccountID = accountID,
                             EmailAddress = emailAddress
                         });
+                        if (InstanceConfiguration.PlatformDefaultGroupIDList != null)
+                        {
+                            foreach (var groupToJoinID in InstanceConfiguration.PlatformDefaultGroupIDList)
+                            {
+                                try
+                                {
+                                    JoinUserToGroup.Execute(new JoinUserToGroupParameters
+                                    {
+                                        GroupID = groupToJoinID,
+                                        UserEmailAddress = emailAddress,
+                                        MemberRole = TBCollaboratorRole.ViewerRoleValue
+                                    });
+                                }
+                                catch
+                                {
+                                    
+                                }
+                                
+                            }
+                        }
                     }
                     catch (Exception)
                     {

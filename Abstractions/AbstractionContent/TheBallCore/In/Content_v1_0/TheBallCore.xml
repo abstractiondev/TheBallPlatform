@@ -1070,6 +1070,26 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+
+      <Operation name="JoinUserToGroup">
+        <OperationSpec>
+          <Description>Joins user to group with given membership level</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="UserEmailAddress" dataType="string" designDesc="Email address of user" state="implemented"/>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID to join to" state="implemented"/>
+          <Parameter name="MemberRole" dataType="string" designDesc="Role of group" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="JoinUserToGroup" designDesc="Join user to group using AGI namespace operations in chain" state="implemented">
+              <Parameter name="UserEmailAddress"/>
+              <Parameter name="GroupID"/>
+              <Parameter name="MemberRole"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
     
       <Operation name="FetchInputInformation">
         <OperationSpec>

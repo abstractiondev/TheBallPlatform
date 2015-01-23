@@ -522,7 +522,26 @@ using System.IO;
 				CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.InformationInput, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
-				public class FetchInputInformationParameters 
+				public class JoinUserToGroupParameters 
+		{
+				public string UserEmailAddress ;
+				public string GroupID ;
+				public string MemberRole ;
+				}
+		
+		public class JoinUserToGroup 
+		{
+				private static void PrepareParameters(JoinUserToGroupParameters parameters)
+		{
+					}
+				public static void Execute(JoinUserToGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					JoinUserToGroupImplementation.ExecuteMethod_JoinUserToGroup(parameters.UserEmailAddress, parameters.GroupID, parameters.MemberRole);		
+				}
+				}
+
+		    public class FetchInputInformationParameters 
 		{
 				public IContainerOwner Owner ;
 				public string InformationInputID ;

@@ -2278,6 +2278,68 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="JoinUserToGroup (UserEmailAddress, GroupID, MemberRole)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Joins user to group with given membership level</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>UserEmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address of user</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to join to</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberRole</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Role of group</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: JoinUserToGroup ( UserEmailAddress, GroupID, MemberRole )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Join user to group using AGI namespace operations in chain</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="MergeAccountsDestructively (PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

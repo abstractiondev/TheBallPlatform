@@ -2323,6 +2323,70 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fix relative locations of objects
 		</div>
+		</p><h1>JoinUserToGroup (UserEmailAddress, GroupID, MemberRole)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Joins user to group with given membership level
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		UserEmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address of user
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to join to
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MemberRole
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Role of group
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: JoinUserToGroup ( UserEmailAddress, GroupID, MemberRole )</h2>
+		<p>		<div class="MsoNormal" >
+		Join user to group using AGI namespace operations in chain
+		</div>
 		</p><h1>MergeAccountsDestructively (PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

@@ -36,6 +36,7 @@ namespace TheBall
         public static readonly string AccountDefaultRedirect;
         public static readonly string[] DefaultGroupTemplateList;
         public static readonly string GroupDefaultRedirect;
+        public static readonly string[] PlatformDefaultGroupIDList;
         public static readonly string AzureStorageKey;
         public static readonly string AzureAccountName;
         public static readonly string CoreFileShareAccountName;
@@ -183,6 +184,9 @@ The link is valid for 14 days, after which you need to request new invitation.";
             if(defaultGroupTemplateList != null)
                 DefaultGroupTemplateList = defaultGroupTemplateList.Split(',');
 
+            var platformDefaultGroupIDList = CloudConfigurationManager.GetSetting("PlatformDefaultGroupIDList");
+            if (platformDefaultGroupIDList != null)
+                PlatformDefaultGroupIDList = platformDefaultGroupIDList.Split(',');
 
         }
     }
