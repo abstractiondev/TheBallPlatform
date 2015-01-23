@@ -102,7 +102,7 @@ namespace AaltoGlobalImpact.OIP
                 if (isAccountRequest)
                 {
                     // Sleep a bit to compensate async blob.Copy above, so that all of them area "likely" copied
-                    Thread.Sleep(3000);
+                    Thread.Sleep(5000);
                 }
             }
             loginRoot = RetrieveFromDefaultLocation(loginRootID);
