@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
+using System.Threading;
 using System.Web;
 using TheBall;
 using TheBall.CORE;
@@ -98,6 +99,11 @@ namespace AaltoGlobalImpact.OIP
                     RenderWebSupport.RefreshAccountTemplate(accountID, templateName, useBackgroundWorker: useBackgroundWorker);
                 }
                 accountRoot.Account.InitializeAndConnectMastersAndCollections();
+                if (isAccountRequest)
+                {
+                    // Sleep a bit to compensate async blob.Copy above, so that all of them area "likely" copied
+                    Thread.Sleep(3000);
+                }
             }
             loginRoot = RetrieveFromDefaultLocation(loginRootID);
             return loginRoot;
