@@ -522,26 +522,43 @@ using System.IO;
 				CreateAndSendEmailValidationForInformationInputConfirmationImplementation.ExecuteMethod_SendEmailConfirmation(parameters.InformationInput, EmailValidation, OwnerEmailAddresses);		
 				}
 				}
-				public class JoinUserToGroupParameters 
+				public class JoinAccountToGroupParameters 
 		{
-				public string UserEmailAddress ;
+				public string AccountEmailAddress ;
 				public string GroupID ;
 				public string MemberRole ;
 				}
 		
-		public class JoinUserToGroup 
+		public class JoinAccountToGroup 
 		{
-				private static void PrepareParameters(JoinUserToGroupParameters parameters)
+				private static void PrepareParameters(JoinAccountToGroupParameters parameters)
 		{
 					}
-				public static void Execute(JoinUserToGroupParameters parameters)
+				public static void Execute(JoinAccountToGroupParameters parameters)
 		{
 						PrepareParameters(parameters);
-					JoinUserToGroupImplementation.ExecuteMethod_JoinUserToGroup(parameters.UserEmailAddress, parameters.GroupID, parameters.MemberRole);		
+					JoinAccountToGroupImplementation.ExecuteMethod_JoinAccountToGroup(parameters.AccountEmailAddress, parameters.GroupID, parameters.MemberRole);		
 				}
 				}
-
-		    public class FetchInputInformationParameters 
+				public class RemoveAccountFromGroupParameters 
+		{
+				public string AccountEmailAddress ;
+				public string AccountID ;
+				public string GroupID ;
+				}
+		
+		public class RemoveAccountFromGroup 
+		{
+				private static void PrepareParameters(RemoveAccountFromGroupParameters parameters)
+		{
+					}
+				public static void Execute(RemoveAccountFromGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					RemoveAccountFromGroupImplementation.ExecuteMethod_RemoveAccountFromGroup(parameters.AccountEmailAddress, parameters.AccountID, parameters.GroupID);		
+				}
+				}
+				public class FetchInputInformationParameters 
 		{
 				public IContainerOwner Owner ;
 				public string InformationInputID ;

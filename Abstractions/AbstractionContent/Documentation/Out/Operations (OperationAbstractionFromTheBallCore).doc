@@ -2323,7 +2323,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fix relative locations of objects
 		</div>
-		</p><h1>JoinUserToGroup (UserEmailAddress, GroupID, MemberRole)</h1>
+		</p><h1>JoinAccountToGroup (AccountEmailAddress, GroupID, MemberRole)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Joins user to group with given membership level
@@ -2334,7 +2334,7 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		UserEmailAddress
+		AccountEmailAddress
 		</div>
 				</td>
 				<td>
@@ -2344,7 +2344,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Email address of user
+		Email address of an account
 		</div>
 				</td>
 				</tr>
@@ -2383,9 +2383,9 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: JoinUserToGroup ( UserEmailAddress, GroupID, MemberRole )</h2>
+		</p><h2>Method Call: JoinAccountToGroup ( AccountEmailAddress, GroupID, MemberRole )</h2>
 		<p>		<div class="MsoNormal" >
-		Join user to group using AGI namespace operations in chain
+		Join account to group using AGI namespace operations in chain
 		</div>
 		</p><h1>MergeAccountsDestructively (PrimaryAccountToStayID, AccountToBeMergedAndDestroyedID)</h1>
 		<h2>Specifications</h2>
@@ -3288,6 +3288,70 @@ div.WordSection1
 		</p><h2>Method Call: SerializeDeviceOperationDataToOutput ( DeviceOperationData, OutputStream )</h2>
 		<p>		<div class="MsoNormal" >
 		Serialize result to output
+		</div>
+		</p><h1>RemoveAccountFromGroup (AccountEmailAddress, AccountID, GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Remove account from group
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountEmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address of an account
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID to remove
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to remove from
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: RemoveAccountFromGroup ( AccountEmailAddress, AccountID, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove account from group using AGI namespace operation(s)
 		</div>
 		</p><h1>RequestProcessExecution (ProcessID, Owner)</h1>
 		<h2>Specifications</h2>

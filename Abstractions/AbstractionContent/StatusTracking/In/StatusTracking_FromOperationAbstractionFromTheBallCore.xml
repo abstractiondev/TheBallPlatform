@@ -475,16 +475,28 @@
     <StatusItem name="CreateAndSendEmailValidationForInformationInputConfirmation_SendEmailConfirmation" displayName="MethodExecuteType: SendEmailConfirmation" description="Create and send email confirmation for joining the devices">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="JoinUserToGroup_UserEmailAddress" displayName="VariableType: UserEmailAddress" description="Email address of user">
+    <StatusItem name="JoinAccountToGroup_AccountEmailAddress" displayName="VariableType: AccountEmailAddress" description="Email address of an account">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="JoinUserToGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to join to">
+    <StatusItem name="JoinAccountToGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to join to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="JoinUserToGroup_MemberRole" displayName="VariableType: MemberRole" description="Role of group">
+    <StatusItem name="JoinAccountToGroup_MemberRole" displayName="VariableType: MemberRole" description="Role of group">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="JoinUserToGroup_JoinUserToGroup" displayName="MethodExecuteType: JoinUserToGroup" description="Join user to group using AGI namespace operations in chain">
+    <StatusItem name="JoinAccountToGroup_JoinAccountToGroup" displayName="MethodExecuteType: JoinAccountToGroup" description="Join account to group using AGI namespace operations in chain">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveAccountFromGroup_AccountEmailAddress" displayName="VariableType: AccountEmailAddress" description="Email address of an account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveAccountFromGroup_AccountID" displayName="VariableType: AccountID" description="Account ID to remove">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveAccountFromGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to remove from">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveAccountFromGroup_RemoveAccountFromGroup" displayName="MethodExecuteType: RemoveAccountFromGroup" description="Remove account from group using AGI namespace operation(s)">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="FetchInputInformation_Owner" displayName="VariableType: Owner" description="Security context owner">
@@ -1279,11 +1291,17 @@
       <ItemRef itemName="CreateAndSendEmailValidationForInformationInputConfirmation_StoreObject" />
       <ItemRef itemName="CreateAndSendEmailValidationForInformationInputConfirmation_SendEmailConfirmation" />
     </Group>
-    <Group name="JoinUserToGroup">
-      <ItemRef itemName="JoinUserToGroup_UserEmailAddress" />
-      <ItemRef itemName="JoinUserToGroup_GroupID" />
-      <ItemRef itemName="JoinUserToGroup_MemberRole" />
-      <ItemRef itemName="JoinUserToGroup_JoinUserToGroup" />
+    <Group name="JoinAccountToGroup">
+      <ItemRef itemName="JoinAccountToGroup_AccountEmailAddress" />
+      <ItemRef itemName="JoinAccountToGroup_GroupID" />
+      <ItemRef itemName="JoinAccountToGroup_MemberRole" />
+      <ItemRef itemName="JoinAccountToGroup_JoinAccountToGroup" />
+    </Group>
+    <Group name="RemoveAccountFromGroup">
+      <ItemRef itemName="RemoveAccountFromGroup_AccountEmailAddress" />
+      <ItemRef itemName="RemoveAccountFromGroup_AccountID" />
+      <ItemRef itemName="RemoveAccountFromGroup_GroupID" />
+      <ItemRef itemName="RemoveAccountFromGroup_RemoveAccountFromGroup" />
     </Group>
     <Group name="FetchInputInformation">
       <ItemRef itemName="FetchInputInformation_Owner" />

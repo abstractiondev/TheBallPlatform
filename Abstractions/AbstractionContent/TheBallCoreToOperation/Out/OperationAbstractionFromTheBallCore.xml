@@ -708,21 +708,40 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="JoinUserToGroup">
+    <Operation name="JoinAccountToGroup">
       <OperationSpec>
         <Description>Joins user to group with given membership level</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="UserEmailAddress" dataType="string" designDesc="Email address of user" state="implemented" />
+        <Parameter name="AccountEmailAddress" dataType="string" designDesc="Email address of an account" state="implemented" />
         <Parameter name="GroupID" dataType="string" designDesc="Group ID to join to" state="implemented" />
         <Parameter name="MemberRole" dataType="string" designDesc="Role of group" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="JoinUserToGroup" designDesc="Join user to group using AGI namespace operations in chain" state="implemented">
-            <Parameter name="UserEmailAddress" />
+          <MethodExecute name="JoinAccountToGroup" designDesc="Join account to group using AGI namespace operations in chain" state="implemented">
+            <Parameter name="AccountEmailAddress" />
             <Parameter name="GroupID" />
             <Parameter name="MemberRole" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="RemoveAccountFromGroup">
+      <OperationSpec>
+        <Description>Remove account from group</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountEmailAddress" dataType="string" designDesc="Email address of an account" state="implemented" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID to remove" state="implemented" />
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to remove from" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="RemoveAccountFromGroup" designDesc="Remove account from group using AGI namespace operation(s)" state="implemented">
+            <Parameter name="AccountEmailAddress" />
+            <Parameter name="AccountID" />
+            <Parameter name="GroupID" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

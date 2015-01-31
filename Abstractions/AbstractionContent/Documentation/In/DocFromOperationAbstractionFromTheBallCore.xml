@@ -2278,7 +2278,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="JoinUserToGroup (UserEmailAddress, GroupID, MemberRole)" level="1">
+          <Header text="JoinAccountToGroup (AccountEmailAddress, GroupID, MemberRole)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -2297,13 +2297,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>UserEmailAddress</TextContent>
+                        <TextContent>AccountEmailAddress</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>string</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Email address of user</TextContent>
+                        <TextContent>Email address of an account</TextContent>
                       </ColumnData>
                     </Row>
                     <Row>
@@ -2332,10 +2332,10 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: JoinUserToGroup ( UserEmailAddress, GroupID, MemberRole )" level="2">
+            <Header text="Method Call: JoinAccountToGroup ( AccountEmailAddress, GroupID, MemberRole )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Join user to group using AGI namespace operations in chain</TextContent>
+                  <TextContent>Join account to group using AGI namespace operations in chain</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -3411,6 +3411,68 @@
               <Paragraph>
                 <Text>
                   <TextContent>Serialize result to output</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RemoveAccountFromGroup (AccountEmailAddress, AccountID, GroupID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove account from group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountEmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address of an account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID to remove</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to remove from</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveAccountFromGroup ( AccountEmailAddress, AccountID, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove account from group using AGI namespace operation(s)</TextContent>
                 </Text>
               </Paragraph>
             </Header>

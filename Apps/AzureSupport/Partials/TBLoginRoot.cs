@@ -51,10 +51,10 @@ namespace AaltoGlobalImpact.OIP
                             {
                                 try
                                 {
-                                    JoinUserToGroup.Execute(new JoinUserToGroupParameters
+                                    JoinAccountToGroup.Execute(new JoinAccountToGroupParameters
                                     {
                                         GroupID = groupToJoinID,
-                                        UserEmailAddress = emailAddress,
+                                        AccountEmailAddress = emailAddress,
                                         MemberRole = TBCollaboratorRole.ViewerRoleValue
                                     });
                                 }

@@ -194,7 +194,7 @@
     <Compile Include="TheBall.CORE\ExtProcessItem.cs" />
     <Compile Include="TheBall.CORE\InitiateAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
-    <Compile Include="TheBall.CORE\JoinUserToGroupImplementation.cs" />
+    <Compile Include="TheBall.CORE\JoinAccountToGroupImplementation.cs" />
     <Compile Include="TheBall.CORE\MergeAccountsDestructivelyImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />
@@ -209,6 +209,7 @@
     <Compile Include="Partials\ImageCollection.cs" />
     <Compile Include="TheBall.CORE\RegisterEmailAddressImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
+    <Compile Include="TheBall.CORE\RemoveAccountFromGroupImplementation.cs" />
     <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />
     <Compile Include="TheBall.CORE\SemanticInformationItem.cs" />
     <Compile Include="TheBall.CORE\SetObjectTreeValuesImplementation.cs" />
