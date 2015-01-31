@@ -2,24 +2,66 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data.Linq.Mapping;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
+using System.Web.ModelBinding;
+using System.Web.Routing;
+using System.Web.DynamicData;
 using System.Web.Security;
 using System.Web.SessionState;
+using System.Web.UI;
 using AzureSupport;
 using Microsoft.WindowsAzure;
+using SQLite.TheBall.Payments;
 using Stripe;
 using TheBall;
+using MetaModel = System.Web.DynamicData.MetaModel;
 
 namespace WebInterface
 {
     public class Global : System.Web.HttpApplication
     {
+        private static MetaModel defaultModel = new MetaModel();
+        private static SQLite.TheBall.Payments.TheBallDataContext CurrentDataContext;
+
+        public static MetaModel DefaultModel
+        {
+            get { return defaultModel; }
+        }
+
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            CurrentDataContext = TheBallDataContext.CreateOrAttachToExistingDB(@"x:\tbcore\grp\e370760e-fde1-47e6-81ce-bc5ec12f6eff\TheBall.Payments.sqlite");
+            TheBallDataContext.CurrentConnection = (SQLiteConnection) CurrentDataContext.Connection;
+            DefaultModel.RegisterContext(typeof (SQLite.TheBall.Payments.TheBallDataContext),
+                new ContextConfiguration() {ScaffoldAllTables = true});
+        }
+
+        private static void RegisterScripts()
+        {
+            ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition
+            {
+                //Path = "~/Scripts/jquery-1.7.1.min.js",
+                //DebugPath = "~/Scripts/jquery-1.7.1.js",
+                Path = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js",
+                DebugPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.js",
+                CdnPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js",
+                CdnDebugPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.js",
+                CdnSupportsSecureConnection = true
+            });
+        }
+
+
         protected void Application_Start(object sender, EventArgs e)
         {
+            RegisterRoutes(RouteTable.Routes);
+            RegisterScripts();
+
             string connStr;
             connStr = InstanceConfiguration.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);

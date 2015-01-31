@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.Caloom.CORE { 
@@ -37,6 +38,13 @@ namespace SQLite.Caloom.CORE {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -360,22 +368,33 @@ CREATE TABLE IF NOT EXISTS [Who](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Who() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
         public void PrepareForStoring(bool isInitialInsert)
@@ -409,22 +428,33 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public ProductForWhom() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
         public void PrepareForStoring(bool isInitialInsert)
@@ -458,22 +488,33 @@ CREATE TABLE IF NOT EXISTS [Product](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Product() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
         public void PrepareForStoring(bool isInitialInsert)
@@ -504,10 +545,18 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public ProductUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double UsageAmountInDecimal { get; set; }
 		// private double _unmodified_UsageAmountInDecimal;
         public void PrepareForStoring(bool isInitialInsert)
@@ -536,34 +585,48 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public RenderedNode() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string TechnicalSource { get; set; }
 		// private string _unmodified_TechnicalSource;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ActualContentUrl { get; set; }
 		// private string _unmodified_ActualContentUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string TimestampText { get; set; }
 		// private string _unmodified_TimestampText;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string MainSortableText { get; set; }
 		// private string _unmodified_MainSortableText;
         public void PrepareForStoring(bool isInitialInsert)
@@ -600,10 +663,18 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public ShortTextObject() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Content { get; set; }
 		// private string _unmodified_Content;
         public void PrepareForStoring(bool isInitialInsert)

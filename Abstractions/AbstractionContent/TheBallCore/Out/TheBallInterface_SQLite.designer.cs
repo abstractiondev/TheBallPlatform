@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.TheBall.Interface { 
@@ -37,6 +38,13 @@ namespace SQLite.TheBall.Interface {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -577,18 +585,28 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public WizardTask() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string TaskName { get; set; }
 		// private string _unmodified_TaskName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InputType { get; set; }
 		// private string _unmodified_InputType;
         public void PrepareForStoring(bool isInitialInsert)
@@ -627,50 +645,68 @@ CREATE TABLE IF NOT EXISTS [Connection](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Connection() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OutputInformationID { get; set; }
 		// private string _unmodified_OutputInformationID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string DeviceID { get; set; }
 		// private string _unmodified_DeviceID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsActiveParty { get; set; }
 		// private bool _unmodified_IsActiveParty;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OtherSideConnectionID { get; set; }
 		// private string _unmodified_OtherSideConnectionID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationNameToListPackageContents { get; set; }
 		// private string _unmodified_OperationNameToListPackageContents;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationNameToProcessReceived { get; set; }
 		// private string _unmodified_OperationNameToProcessReceived;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationNameToUpdateThisSideCategories { get; set; }
 		// private string _unmodified_OperationNameToUpdateThisSideCategories;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ProcessIDToListPackageContents { get; set; }
 		// private string _unmodified_ProcessIDToListPackageContents;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ProcessIDToProcessReceived { get; set; }
 		// private string _unmodified_ProcessIDToProcessReceived;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ProcessIDToUpdateThisSideCategories { get; set; }
 		// private string _unmodified_ProcessIDToUpdateThisSideCategories;
         public void PrepareForStoring(bool isInitialInsert)
@@ -717,25 +753,38 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public TransferPackage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ConnectionID { get; set; }
 		// private string _unmodified_ConnectionID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PackageDirection { get; set; }
 		// private string _unmodified_PackageDirection;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PackageType { get; set; }
 		// private string _unmodified_PackageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsProcessed { get; set; }
 		// private bool _unmodified_IsProcessed;
-        [Column(Name = "PackageContentBlobs")] public string PackageContentBlobsData;
+        [Column(Name = "PackageContentBlobs")] 
+        [ScaffoldColumn(true)]
+		public string PackageContentBlobsData { get; set; }
 
         private bool _IsPackageContentBlobsRetrieved = false;
         private bool _IsPackageContentBlobsChanged = false;
@@ -812,18 +861,28 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public CategoryLink() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string SourceCategoryID { get; set; }
 		// private string _unmodified_SourceCategoryID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string TargetCategoryID { get; set; }
 		// private string _unmodified_TargetCategoryID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string LinkingType { get; set; }
 		// private string _unmodified_LinkingType;
         public void PrepareForStoring(bool isInitialInsert)
@@ -857,30 +916,43 @@ CREATE TABLE IF NOT EXISTS [Category](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Category() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string NativeCategoryID { get; set; }
 		// private string _unmodified_NativeCategoryID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string NativeCategoryDomainName { get; set; }
 		// private string _unmodified_NativeCategoryDomainName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string NativeCategoryObjectName { get; set; }
 		// private string _unmodified_NativeCategoryObjectName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string NativeCategoryTitle { get; set; }
 		// private string _unmodified_NativeCategoryTitle;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IdentifyingCategoryName { get; set; }
 		// private string _unmodified_IdentifyingCategoryName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ParentCategoryID { get; set; }
 		// private string _unmodified_ParentCategoryID;
         public void PrepareForStoring(bool isInitialInsert)
@@ -915,9 +987,18 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
 
-        [Column(Name = "ChangeItemTrackingList")] public string ChangeItemTrackingListData;
+		public StatusSummary() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
+
+        [Column(Name = "ChangeItemTrackingList")] 
+        [ScaffoldColumn(true)]
+		public string ChangeItemTrackingListData { get; set; }
 
         private bool _IsChangeItemTrackingListRetrieved = false;
         private bool _IsChangeItemTrackingListChanged = false;
@@ -988,17 +1069,28 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InformationChangeItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime StartTimeUTC { get; set; }
 		// private DateTime _unmodified_StartTimeUTC;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime EndTimeUTC { get; set; }
 		// private DateTime _unmodified_EndTimeUTC;
-        [Column(Name = "ChangedObjectIDList")] public string ChangedObjectIDListData;
+        [Column(Name = "ChangedObjectIDList")] 
+        [ScaffoldColumn(true)]
+		public string ChangedObjectIDListData { get; set; }
 
         private bool _IsChangedObjectIDListRetrieved = false;
         private bool _IsChangedObjectIDListChanged = false;
@@ -1074,38 +1166,53 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public OperationExecutionItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationName { get; set; }
 		// private string _unmodified_OperationName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationDomain { get; set; }
 		// private string _unmodified_OperationDomain;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OperationID { get; set; }
 		// private string _unmodified_OperationID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string CallerProvidedInfo { get; set; }
 		// private string _unmodified_CallerProvidedInfo;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime ExecutionBeginTime { get; set; }
 		// private DateTime _unmodified_ExecutionBeginTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime ExecutionCompletedTime { get; set; }
 		// private DateTime _unmodified_ExecutionCompletedTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ExecutionStatus { get; set; }
 		// private string _unmodified_ExecutionStatus;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1139,14 +1246,23 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public GenericObject() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IncludeInCollection { get; set; }
 		// private bool _unmodified_IncludeInCollection;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OptionalCollectionName { get; set; }
 		// private string _unmodified_OptionalCollectionName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1180,17 +1296,28 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public GenericValue() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ValueName { get; set; }
 		// private string _unmodified_ValueName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string String { get; set; }
 		// private string _unmodified_String;
-        [Column(Name = "StringArray")] public string StringArrayData;
+        [Column(Name = "StringArray")] 
+        [ScaffoldColumn(true)]
+		public string StringArrayData { get; set; }
 
         private bool _IsStringArrayRetrieved = false;
         private bool _IsStringArrayChanged = false;
@@ -1235,9 +1362,12 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double Number { get; set; }
 		// private double _unmodified_Number;
-        [Column(Name = "NumberArray")] public string NumberArrayData;
+        [Column(Name = "NumberArray")] 
+        [ScaffoldColumn(true)]
+		public string NumberArrayData { get; set; }
 
         private bool _IsNumberArrayRetrieved = false;
         private bool _IsNumberArrayChanged = false;
@@ -1282,9 +1412,12 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool Boolean { get; set; }
 		// private bool _unmodified_Boolean;
-        [Column(Name = "BooleanArray")] public string BooleanArrayData;
+        [Column(Name = "BooleanArray")] 
+        [ScaffoldColumn(true)]
+		public string BooleanArrayData { get; set; }
 
         private bool _IsBooleanArrayRetrieved = false;
         private bool _IsBooleanArrayChanged = false;
@@ -1329,9 +1462,12 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime DateTime { get; set; }
 		// private DateTime _unmodified_DateTime;
-        [Column(Name = "DateTimeArray")] public string DateTimeArrayData;
+        [Column(Name = "DateTimeArray")] 
+        [ScaffoldColumn(true)]
+		public string DateTimeArrayData { get; set; }
 
         private bool _IsDateTimeArrayRetrieved = false;
         private bool _IsDateTimeArrayChanged = false;
@@ -1376,6 +1512,7 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IndexingInfo { get; set; }
 		// private string _unmodified_IndexingInfo;
         public void PrepareForStoring(bool isInitialInsert)

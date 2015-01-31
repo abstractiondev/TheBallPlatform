@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 
@@ -19,6 +21,7 @@ namespace SQLiteSupport
     }
 
     [Table]
+    [ReadOnly(true)]
     public class InformationObjectMetaData
     {
         public InformationObjectMetaData()
@@ -28,27 +31,43 @@ namespace SQLiteSupport
         }
 
         [Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string ID { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string SemanticDomain { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string ObjectType { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string ObjectID { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string MD5 { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string LastWriteTime { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public long FileLength { get; set; }
 
         [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public SerializationType SerializationType { get; set; }
 
         public ChangeAction CurrentChangeAction { get; set; }

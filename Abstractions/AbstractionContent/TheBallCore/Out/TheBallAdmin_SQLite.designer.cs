@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.TheBall.Admin { 
@@ -37,6 +38,13 @@ namespace SQLite.TheBall.Admin {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)

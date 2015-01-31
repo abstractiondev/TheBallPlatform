@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
 using System.Data.Linq;
@@ -16,6 +17,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.TheBall.Payments { 
@@ -37,6 +39,13 @@ namespace SQLite.TheBall.Payments {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -211,17 +220,28 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public GroupSubscriptionPlan() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PlanName { get; set; }
 		// private string _unmodified_PlanName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "GroupIDs")] public string GroupIDsData;
+        [Column(Name = "GroupIDs")] 
+        [ScaffoldColumn(true)]
+		public string GroupIDsData { get; set; }
 
         private bool _IsGroupIDsRetrieved = false;
         private bool _IsGroupIDsChanged = false;
@@ -297,21 +317,33 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public CustomerAccount() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string StripeID { get; set; }
 		// private string _unmodified_StripeID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string EmailAddress { get; set; }
 		// private string _unmodified_EmailAddress;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "ActivePlans")] public string ActivePlansData;
+        [Column(Name = "ActivePlans")] 
+        [ScaffoldColumn(true)]
+		public string ActivePlansData { get; set; }
 
         private bool _IsActivePlansRetrieved = false;
         private bool _IsActivePlansChanged = false;

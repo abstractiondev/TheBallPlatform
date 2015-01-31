@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.TheBall.CORE { 
@@ -37,6 +38,13 @@ namespace SQLite.TheBall.CORE {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -1163,26 +1171,38 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public ContentPackage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PackageType { get; set; }
 		// private string _unmodified_PackageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PackageName { get; set; }
 		// private string _unmodified_PackageName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PackageRootFolder { get; set; }
 		// private string _unmodified_PackageRootFolder;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime CreationTime { get; set; }
 		// private DateTime _unmodified_CreationTime;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1217,26 +1237,38 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InformationInput() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InputDescription { get; set; }
 		// private string _unmodified_InputDescription;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string LocationURL { get; set; }
 		// private string _unmodified_LocationURL;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string LocalContentName { get; set; }
 		// private string _unmodified_LocalContentName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string AuthenticatedDeviceID { get; set; }
 		// private string _unmodified_AuthenticatedDeviceID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1272,30 +1304,43 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InformationOutput() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OutputDescription { get; set; }
 		// private string _unmodified_OutputDescription;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string DestinationURL { get; set; }
 		// private string _unmodified_DestinationURL;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string DestinationContentName { get; set; }
 		// private string _unmodified_DestinationContentName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string LocalContentURL { get; set; }
 		// private string _unmodified_LocalContentURL;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string AuthenticatedDeviceID { get; set; }
 		// private string _unmodified_AuthenticatedDeviceID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1334,34 +1379,48 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public AuthenticatedAsActiveDevice() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string AuthenticationDescription { get; set; }
 		// private string _unmodified_AuthenticationDescription;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string SharedSecret { get; set; }
 		// private string _unmodified_SharedSecret;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public byte[] ActiveSymmetricAESKey { get; set; }
 		// private byte[] _unmodified_ActiveSymmetricAESKey;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string EstablishedTrustID { get; set; }
 		// private string _unmodified_EstablishedTrustID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string NegotiationURL { get; set; }
 		// private string _unmodified_NegotiationURL;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ConnectionURL { get; set; }
 		// private string _unmodified_ConnectionURL;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1397,22 +1456,33 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public DeviceMembership() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string DeviceDescription { get; set; }
 		// private string _unmodified_DeviceDescription;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string SharedSecret { get; set; }
 		// private string _unmodified_SharedSecret;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public byte[] ActiveSymmetricAESKey { get; set; }
 		// private byte[] _unmodified_ActiveSymmetricAESKey;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsValidatedAndActive { get; set; }
 		// private bool _unmodified_IsValidatedAndActive;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1440,14 +1510,23 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceFiscalExportSummary() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime FiscalInclusiveStartDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveStartDate;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime FiscalInclusiveEndDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveEndDate;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1477,38 +1556,53 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Invoice() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InvoiceName { get; set; }
 		// private string _unmodified_InvoiceName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InvoiceID { get; set; }
 		// private string _unmodified_InvoiceID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InvoicedAmount { get; set; }
 		// private string _unmodified_InvoicedAmount;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime CreateDate { get; set; }
 		// private DateTime _unmodified_CreateDate;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime DueDate { get; set; }
 		// private DateTime _unmodified_DueDate;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PaidAmount { get; set; }
 		// private string _unmodified_PaidAmount;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string FeesAndInterestAmount { get; set; }
 		// private string _unmodified_FeesAndInterestAmount;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UnpaidAmount { get; set; }
 		// private string _unmodified_UnpaidAmount;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1548,30 +1642,43 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceDetails() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string MonthlyFeesTotal { get; set; }
 		// private string _unmodified_MonthlyFeesTotal;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OneTimeFeesTotal { get; set; }
 		// private string _unmodified_OneTimeFeesTotal;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageFeesTotal { get; set; }
 		// private string _unmodified_UsageFeesTotal;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string InterestFeesTotal { get; set; }
 		// private string _unmodified_InterestFeesTotal;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PenaltyFeesTotal { get; set; }
 		// private string _unmodified_PenaltyFeesTotal;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string TotalFeesTotal { get; set; }
 		// private string _unmodified_TotalFeesTotal;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1610,26 +1717,38 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceUser() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserName { get; set; }
 		// private string _unmodified_UserName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserID { get; set; }
 		// private string _unmodified_UserID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserPhoneNumber { get; set; }
 		// private string _unmodified_UserPhoneNumber;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserSubscriptionNumber { get; set; }
 		// private string _unmodified_UserSubscriptionNumber;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserInvoiceTotalAmount { get; set; }
 		// private string _unmodified_UserInvoiceTotalAmount;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1665,22 +1784,33 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceRowGroup() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string GroupTotalPriceWithoutTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithoutTaxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string GroupTotalTaxes { get; set; }
 		// private string _unmodified_GroupTotalTaxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string GroupTotalPriceWithTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithTaxes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1711,10 +1841,18 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceEventDetailGroup() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1748,46 +1886,63 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceEventDetail() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IndentMode { get; set; }
 		// private string _unmodified_IndentMode;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime EventStartDateTime { get; set; }
 		// private DateTime _unmodified_EventStartDateTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime EventEndDateTime { get; set; }
 		// private DateTime _unmodified_EventEndDateTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ReceivingParty { get; set; }
 		// private string _unmodified_ReceivingParty;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string AmountOfUnits { get; set; }
 		// private string _unmodified_AmountOfUnits;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Duration { get; set; }
 		// private string _unmodified_Duration;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UnitPrice { get; set; }
 		// private string _unmodified_UnitPrice;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PriceWithoutTaxes { get; set; }
 		// private string _unmodified_PriceWithoutTaxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Taxes { get; set; }
 		// private string _unmodified_Taxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1832,34 +1987,48 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InvoiceRow() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IndentMode { get; set; }
 		// private string _unmodified_IndentMode;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string AmountOfUnits { get; set; }
 		// private string _unmodified_AmountOfUnits;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Duration { get; set; }
 		// private string _unmodified_Duration;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UnitPrice { get; set; }
 		// private string _unmodified_UnitPrice;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PriceWithoutTaxes { get; set; }
 		// private string _unmodified_PriceWithoutTaxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Taxes { get; set; }
 		// private string _unmodified_Taxes;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string PriceWithTaxes { get; set; }
 		// private string _unmodified_PriceWithTaxes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1896,10 +2065,18 @@ CREATE TABLE IF NOT EXISTS [Category](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Category() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -1924,9 +2101,18 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
 
-        [Column(Name = "ProcessIDs")] public string ProcessIDsData;
+		public ProcessContainer() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
+
+        [Column(Name = "ProcessIDs")] 
+        [ScaffoldColumn(true)]
+		public string ProcessIDsData { get; set; }
 
         private bool _IsProcessIDsRetrieved = false;
         private bool _IsProcessIDsChanged = false;
@@ -1995,10 +2181,18 @@ CREATE TABLE IF NOT EXISTS [Process](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public Process() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ProcessDescription { get; set; }
 		// private string _unmodified_ProcessDescription;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2024,14 +2218,23 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public SemanticInformationItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ItemFullType { get; set; }
 		// private string _unmodified_ItemFullType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ItemValue { get; set; }
 		// private string _unmodified_ItemValue;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2059,14 +2262,23 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public InformationOwnerInfo() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OwnerType { get; set; }
 		// private string _unmodified_OwnerType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string OwnerIdentifier { get; set; }
 		// private string _unmodified_OwnerIdentifier;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2093,10 +2305,18 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public UsageSummary() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string SummaryName { get; set; }
 		// private string _unmodified_SummaryName;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2121,10 +2341,18 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public UsageMonitorItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2150,22 +2378,33 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public ProcessorUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double AmountOfTicks { get; set; }
 		// private double _unmodified_AmountOfTicks;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double FrequencyTicksPerSecond { get; set; }
 		// private double _unmodified_FrequencyTicksPerSecond;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long Milliseconds { get; set; }
 		// private long _unmodified_Milliseconds;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2191,14 +2430,23 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public StorageTransactionUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long AmountOfTransactions { get; set; }
 		// private long _unmodified_AmountOfTransactions;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2226,22 +2474,33 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public StorageUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime SnapshotTime { get; set; }
 		// private DateTime _unmodified_SnapshotTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageUnit { get; set; }
 		// private string _unmodified_UsageUnit;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double AmountOfUnits { get; set; }
 		// private double _unmodified_AmountOfUnits;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2269,14 +2528,23 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public NetworkUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UsageType { get; set; }
 		// private string _unmodified_UsageType;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long AmountOfBytes { get; set; }
 		// private long _unmodified_AmountOfBytes;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2302,14 +2570,23 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public TimeRange() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime StartTime { get; set; }
 		// private DateTime _unmodified_StartTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime EndTime { get; set; }
 		// private DateTime _unmodified_EndTime;
         public void PrepareForStoring(bool isInitialInsert)
@@ -2338,34 +2615,48 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public HTTPActivityDetails() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string RemoteIPAddress { get; set; }
 		// private string _unmodified_RemoteIPAddress;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string RemoteEndpointUserName { get; set; }
 		// private string _unmodified_RemoteEndpointUserName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string UserID { get; set; }
 		// private string _unmodified_UserID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime UTCDateTime { get; set; }
 		// private DateTime _unmodified_UTCDateTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string RequestLine { get; set; }
 		// private string _unmodified_RequestLine;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long HTTPStatusCode { get; set; }
 		// private long _unmodified_HTTPStatusCode;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long ReturnedContentLength { get; set; }
 		// private long _unmodified_ReturnedContentLength;
         public void PrepareForStoring(bool isInitialInsert)

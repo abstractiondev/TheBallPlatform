@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.TheBall.Index { 
@@ -37,6 +38,13 @@ namespace SQLite.TheBall.Index {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -250,13 +258,23 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public IndexingRequest() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IndexName { get; set; }
 		// private string _unmodified_IndexName;
-        [Column(Name = "ObjectLocations")] public string ObjectLocationsData;
+        [Column(Name = "ObjectLocations")] 
+        [ScaffoldColumn(true)]
+		public string ObjectLocationsData { get; set; }
 
         private bool _IsObjectLocationsRetrieved = false;
         private bool _IsObjectLocationsChanged = false;
@@ -333,34 +351,48 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public QueryRequest() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string QueryString { get; set; }
 		// private string _unmodified_QueryString;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string DefaultFieldName { get; set; }
 		// private string _unmodified_DefaultFieldName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string IndexName { get; set; }
 		// private string _unmodified_IndexName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public bool IsQueryCompleted { get; set; }
 		// private bool _unmodified_IsQueryCompleted;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime LastRequestTime { get; set; }
 		// private DateTime _unmodified_LastRequestTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public DateTime LastCompletionTime { get; set; }
 		// private DateTime _unmodified_LastCompletionTime;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public long LastCompletionDurationMs { get; set; }
 		// private long _unmodified_LastCompletionDurationMs;
         public void PrepareForStoring(bool isInitialInsert)
@@ -392,22 +424,33 @@ CREATE TABLE IF NOT EXISTS [QueryResultItem](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public QueryResultItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ObjectDomainName { get; set; }
 		// private string _unmodified_ObjectDomainName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ObjectName { get; set; }
 		// private string _unmodified_ObjectName;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ObjectID { get; set; }
 		// private string _unmodified_ObjectID;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public double Rank { get; set; }
 		// private double _unmodified_Rank;
         public void PrepareForStoring(bool isInitialInsert)

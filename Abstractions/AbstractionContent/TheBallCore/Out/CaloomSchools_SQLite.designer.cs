@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace SQLite.Caloom.Schools { 
@@ -37,6 +38,13 @@ namespace SQLite.Caloom.Schools {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
 		        disposed = true;
+		    }
+
+		    public static SQLiteConnection CurrentConnection { get; set; }
+
+		    public TheBallDataContext() : base(CurrentConnection)
+		    {
+		        
 		    }
 
 		    public static TheBallDataContext CreateOrAttachToExistingDB(string pathToDBFile)
@@ -166,22 +174,33 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
 
 
 		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
 		public string ID { get; set; }
+
+		public TrainingModule() 
+		{
+			ID = Guid.NewGuid().ToString();
+		}
 
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string ImageBaseUrl { get; set; }
 		// private string _unmodified_ImageBaseUrl;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Excerpt { get; set; }
 		// private string _unmodified_Excerpt;
 
 		[Column]
+        [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
         public void PrepareForStoring(bool isInitialInsert)
