@@ -212,21 +212,30 @@
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default.ascx.cs">
       <DependentUpon>Default.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default.ascx.designer.cs">
       <DependentUpon>Default.ascx</DependentUpon>
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default_Edit.ascx.cs">
       <DependentUpon>Default_Edit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default_Edit.ascx.designer.cs">
       <DependentUpon>Default_Edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default_Insert.ascx.cs">
       <DependentUpon>Default_Insert.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DynamicData\EntityTemplates\Default_Insert.ascx.designer.cs">
       <DependentUpon>Default_Insert.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicData\EntityTemplates\TheBallEditableEntityTemplate.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\EntityTemplates\TheBallEntityTemplate.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Boolean.ascx.cs">
       <DependentUpon>Boolean.ascx</DependentUpon>

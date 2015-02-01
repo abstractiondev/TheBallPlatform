@@ -11,14 +11,5 @@ namespace DynamicDataWebApp {
     
     
     public partial class Default_EditEntityTemplate {
-        
-        /// <summary>
-        /// EntityTemplate1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.DynamicData.EntityTemplate EntityTemplate1;
     }
 }

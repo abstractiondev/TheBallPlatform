@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" CodeBehind="Default.ascx.cs" Inherits="DynamicDataWebApp.DefaultEntityTemplate" %>
 
-<asp:EntityTemplate runat="server" ID="EntityTemplate1">
+<asp:EntityTemplate runat="server" ID="EntityTemplate">
     <ItemTemplate>
         <tr class="td">
             <td class="DDLightHeader">

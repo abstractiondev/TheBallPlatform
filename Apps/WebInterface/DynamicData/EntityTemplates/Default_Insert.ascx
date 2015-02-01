@@ -2,7 +2,7 @@
 
 <%@ Reference Control="~/DynamicData/EntityTemplates/Default.ascx" %>
 
-<asp:EntityTemplate runat="server" ID="EntityTemplate1">
+<asp:EntityTemplate runat="server" ID="EntityTemplate">
     <ItemTemplate>
         <tr class="td">
             <td class="DDLightHeader">
