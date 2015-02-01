@@ -7,7 +7,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.Expressions;
 
-namespace LINQtoSQLDynamicWebApp
+namespace DynamicDataWebApp
 {
     public partial class List : System.Web.UI.Page
     {

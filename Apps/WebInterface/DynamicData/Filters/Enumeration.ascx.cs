@@ -9,7 +9,7 @@ using System.Web.DynamicData;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace LINQtoSQLDynamicWebApp
+namespace DynamicDataWebApp
 {
     public partial class EnumerationFilter : System.Web.DynamicData.QueryableFilterUserControl
     {

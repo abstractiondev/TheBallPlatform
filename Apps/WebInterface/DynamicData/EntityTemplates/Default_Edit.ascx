@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="Default_Edit.ascx.cs" Inherits="LINQtoSQLDynamicWebApp.Default_EditEntityTemplate" %>
+﻿<%@ Control Language="C#" CodeBehind="Default_Edit.ascx.cs" Inherits="DynamicDataWebApp.Default_EditEntityTemplate" %>
 
 <%@ Reference Control="~/DynamicData/EntityTemplates/Default.ascx" %>
 <asp:EntityTemplate runat="server" ID="EntityTemplate1">

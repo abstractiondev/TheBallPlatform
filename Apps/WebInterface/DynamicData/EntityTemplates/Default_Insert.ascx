@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="Default_Insert.ascx.cs" Inherits="LINQtoSQLDynamicWebApp.Default_InsertEntityTemplate" %>
+﻿<%@ Control Language="C#" CodeBehind="Default_Insert.ascx.cs" Inherits="DynamicDataWebApp.Default_InsertEntityTemplate" %>
 
 <%@ Reference Control="~/DynamicData/EntityTemplates/Default.ascx" %>
 

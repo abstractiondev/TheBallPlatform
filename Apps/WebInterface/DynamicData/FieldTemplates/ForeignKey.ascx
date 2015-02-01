@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="ForeignKey.ascx.cs" Inherits="LINQtoSQLDynamicWebApp.ForeignKeyField" %>
+﻿<%@ Control Language="C#" CodeBehind="ForeignKey.ascx.cs" Inherits="DynamicDataWebApp.ForeignKeyField" %>
 
 <asp:HyperLink ID="HyperLink1" runat="server"
     Text="<%# GetDisplayString() %>"

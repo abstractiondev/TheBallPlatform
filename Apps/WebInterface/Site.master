@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" CodeBehind="Site.master.cs" Inherits="LINQtoSQLDynamicWebApp.Site" %>
+﻿<%@ Master Language="C#" CodeBehind="Site.master.cs" Inherits="DynamicDataWebApp.Site" %>
 
 <!DOCTYPE html>
 

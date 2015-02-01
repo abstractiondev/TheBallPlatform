@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace LINQtoSQLDynamicWebApp
+namespace DynamicDataWebApp
 {
     public partial class Integer_EditField : System.Web.DynamicData.FieldTemplateUserControl
     {

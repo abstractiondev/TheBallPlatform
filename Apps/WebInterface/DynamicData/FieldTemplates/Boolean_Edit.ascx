@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="Boolean_Edit.ascx.cs" Inherits="LINQtoSQLDynamicWebApp.Boolean_EditField" %>
+﻿<%@ Control Language="C#" CodeBehind="Boolean_Edit.ascx.cs" Inherits="DynamicDataWebApp.Boolean_EditField" %>
 
 <asp:CheckBox runat="server" ID="CheckBox1" />
 

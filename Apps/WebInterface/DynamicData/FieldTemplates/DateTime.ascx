@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" CodeBehind="DateTime.ascx.cs" Inherits="LINQtoSQLDynamicWebApp.DateTimeField" %>
+﻿<%@ Control Language="C#" CodeBehind="DateTime.ascx.cs" Inherits="DynamicDataWebApp.DateTimeField" %>
 
 <asp:Literal runat="server" ID="Literal1" Text="<%# FieldValueString %>" />
 
