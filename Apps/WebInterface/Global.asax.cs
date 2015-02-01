@@ -88,7 +88,7 @@ namespace WebInterface
                     Constraints = new RouteValueDictionary(new
                     {
                         action = "List|Details|Edit|Insert",
-                        httpMethod = new HttpMethodConstraint("GET")
+                        //httpMethod = new HttpMethodConstraint("GET")
                         //groupID = "xyz"
                     }),
                     Model = currentModel,
