@@ -145,7 +145,7 @@ namespace SQLite.TheBall.Payments {
                     var serializedObject =
                         global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID};
+                    var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PlanName = serializedObject.PlanName;
 		            objectToAdd.Description = serializedObject.Description;
 					if(serializedObject.GroupIDs != null)
@@ -159,7 +159,7 @@ namespace SQLite.TheBall.Payments {
                     var serializedObject =
                         global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CustomerAccount {ID = insertData.ObjectID};
+                    var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;

@@ -125,7 +125,7 @@ namespace SQLite.Caloom.Housing {
                     var serializedObject =
                         global::SER.Caloom.Housing.House.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new House {ID = insertData.ObjectID};
+                    var objectToAdd = new House {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;

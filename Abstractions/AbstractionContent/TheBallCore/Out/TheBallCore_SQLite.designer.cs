@@ -499,7 +499,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.ContentPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContentPackage {ID = insertData.ObjectID};
+                    var objectToAdd = new ContentPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PackageType = serializedObject.PackageType;
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.Description = serializedObject.Description;
@@ -514,7 +514,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InformationInput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InformationInput {ID = insertData.ObjectID};
+                    var objectToAdd = new InformationInput {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InputDescription = serializedObject.InputDescription;
 		            objectToAdd.LocationURL = serializedObject.LocationURL;
 		            objectToAdd.LocalContentName = serializedObject.LocalContentName;
@@ -529,7 +529,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InformationOutput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InformationOutput {ID = insertData.ObjectID};
+                    var objectToAdd = new InformationOutput {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OutputDescription = serializedObject.OutputDescription;
 		            objectToAdd.DestinationURL = serializedObject.DestinationURL;
 		            objectToAdd.DestinationContentName = serializedObject.DestinationContentName;
@@ -545,7 +545,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.AuthenticatedAsActiveDevice.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AuthenticatedAsActiveDevice {ID = insertData.ObjectID};
+                    var objectToAdd = new AuthenticatedAsActiveDevice {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AuthenticationDescription = serializedObject.AuthenticationDescription;
 		            objectToAdd.SharedSecret = serializedObject.SharedSecret;
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
@@ -562,7 +562,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.DeviceMembership.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new DeviceMembership {ID = insertData.ObjectID};
+                    var objectToAdd = new DeviceMembership {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.DeviceDescription = serializedObject.DeviceDescription;
 		            objectToAdd.SharedSecret = serializedObject.SharedSecret;
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
@@ -576,7 +576,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceFiscalExportSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceFiscalExportSummary {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceFiscalExportSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            objectToAdd.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
@@ -588,7 +588,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.Invoice.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Invoice {ID = insertData.ObjectID};
+                    var objectToAdd = new Invoice {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InvoiceName = serializedObject.InvoiceName;
 		            objectToAdd.InvoiceID = serializedObject.InvoiceID;
 		            objectToAdd.InvoicedAmount = serializedObject.InvoicedAmount;
@@ -606,7 +606,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceDetails.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceDetails {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceDetails {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.MonthlyFeesTotal = serializedObject.MonthlyFeesTotal;
 		            objectToAdd.OneTimeFeesTotal = serializedObject.OneTimeFeesTotal;
 		            objectToAdd.UsageFeesTotal = serializedObject.UsageFeesTotal;
@@ -622,7 +622,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceUser.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceUser {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceUser {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.UserName = serializedObject.UserName;
 		            objectToAdd.UserID = serializedObject.UserID;
 		            objectToAdd.UserPhoneNumber = serializedObject.UserPhoneNumber;
@@ -637,7 +637,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceRowGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceRowGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceRowGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 		            objectToAdd.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            objectToAdd.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
@@ -651,7 +651,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceEventDetailGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceEventDetailGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceEventDetailGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -662,7 +662,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceEventDetail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceEventDetail {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceEventDetail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IndentMode = serializedObject.IndentMode;
 		            objectToAdd.EventStartDateTime = serializedObject.EventStartDateTime;
 		            objectToAdd.EventEndDateTime = serializedObject.EventEndDateTime;
@@ -682,7 +682,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InvoiceRow.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InvoiceRow {ID = insertData.ObjectID};
+                    var objectToAdd = new InvoiceRow {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IndentMode = serializedObject.IndentMode;
 		            objectToAdd.AmountOfUnits = serializedObject.AmountOfUnits;
 		            objectToAdd.Duration = serializedObject.Duration;
@@ -699,7 +699,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Category {ID = insertData.ObjectID};
+                    var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					CategoryTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -710,7 +710,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.ProcessContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProcessContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new ProcessContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ProcessIDs != null)
 						serializedObject.ProcessIDs.ForEach(item => objectToAdd.ProcessIDs.Add(item));
 					ProcessContainerTable.InsertOnSubmit(objectToAdd);
@@ -722,7 +722,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.Process.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Process {ID = insertData.ObjectID};
+                    var objectToAdd = new Process {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ProcessDescription = serializedObject.ProcessDescription;
 					ProcessTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -733,7 +733,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.SemanticInformationItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SemanticInformationItem {ID = insertData.ObjectID};
+                    var objectToAdd = new SemanticInformationItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
 		            objectToAdd.ItemValue = serializedObject.ItemValue;
 					SemanticInformationItemTable.InsertOnSubmit(objectToAdd);
@@ -745,7 +745,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.InformationOwnerInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InformationOwnerInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new InformationOwnerInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
 		            objectToAdd.OwnerIdentifier = serializedObject.OwnerIdentifier;
 					InformationOwnerInfoTable.InsertOnSubmit(objectToAdd);
@@ -757,7 +757,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.UsageSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new UsageSummary {ID = insertData.ObjectID};
+                    var objectToAdd = new UsageSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SummaryName = serializedObject.SummaryName;
 					UsageSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -768,7 +768,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.UsageMonitorItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new UsageMonitorItem {ID = insertData.ObjectID};
+                    var objectToAdd = new UsageMonitorItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -779,7 +779,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.ProcessorUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProcessorUsage {ID = insertData.ObjectID};
+                    var objectToAdd = new ProcessorUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTicks = serializedObject.AmountOfTicks;
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -793,7 +793,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.StorageTransactionUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new StorageTransactionUsage {ID = insertData.ObjectID};
+                    var objectToAdd = new StorageTransactionUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
 					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
@@ -805,7 +805,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.StorageUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new StorageUsage {ID = insertData.ObjectID};
+                    var objectToAdd = new StorageUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SnapshotTime = serializedObject.SnapshotTime;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.UsageUnit = serializedObject.UsageUnit;
@@ -819,7 +819,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.NetworkUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new NetworkUsage {ID = insertData.ObjectID};
+                    var objectToAdd = new NetworkUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
 					NetworkUsageTable.InsertOnSubmit(objectToAdd);
@@ -831,7 +831,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.TimeRange.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TimeRange {ID = insertData.ObjectID};
+                    var objectToAdd = new TimeRange {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StartTime = serializedObject.StartTime;
 		            objectToAdd.EndTime = serializedObject.EndTime;
 					TimeRangeTable.InsertOnSubmit(objectToAdd);
@@ -843,7 +843,7 @@ namespace SQLite.TheBall.CORE {
                     var serializedObject =
                         global::SER.TheBall.CORE.HTTPActivityDetails.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new HTTPActivityDetails {ID = insertData.ObjectID};
+                    var objectToAdd = new HTTPActivityDetails {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.RemoteIPAddress = serializedObject.RemoteIPAddress;
 		            objectToAdd.RemoteEndpointUserName = serializedObject.RemoteEndpointUserName;
 		            objectToAdd.UserID = serializedObject.UserID;

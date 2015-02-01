@@ -159,7 +159,7 @@ namespace SQLite.TheBall.Index {
                     var serializedObject =
                         global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new IndexingRequest {ID = insertData.ObjectID};
+                    var objectToAdd = new IndexingRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IndexName = serializedObject.IndexName;
 					if(serializedObject.ObjectLocations != null)
 						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
@@ -172,7 +172,7 @@ namespace SQLite.TheBall.Index {
                     var serializedObject =
                         global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new QueryRequest {ID = insertData.ObjectID};
+                    var objectToAdd = new QueryRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.QueryString = serializedObject.QueryString;
 		            objectToAdd.DefaultFieldName = serializedObject.DefaultFieldName;
 		            objectToAdd.IndexName = serializedObject.IndexName;
@@ -189,7 +189,7 @@ namespace SQLite.TheBall.Index {
                     var serializedObject =
                         global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new QueryResultItem {ID = insertData.ObjectID};
+                    var objectToAdd = new QueryResultItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;
 		            objectToAdd.ObjectName = serializedObject.ObjectName;
 		            objectToAdd.ObjectID = serializedObject.ObjectID;

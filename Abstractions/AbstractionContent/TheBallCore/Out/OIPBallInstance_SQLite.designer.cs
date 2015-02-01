@@ -1552,7 +1552,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBSystem {ID = insertData.ObjectID};
+                    var objectToAdd = new TBSystem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
 					TBSystemTable.InsertOnSubmit(objectToAdd);
@@ -1564,7 +1564,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new WebPublishInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new WebPublishInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PublishType = serializedObject.PublishType;
 		            objectToAdd.PublishContainer = serializedObject.PublishContainer;
 					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
@@ -1576,7 +1576,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new PublicationPackage {ID = insertData.ObjectID};
+                    var objectToAdd = new PublicationPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
 					PublicationPackageTable.InsertOnSubmit(objectToAdd);
@@ -1588,7 +1588,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBRLoginRoot {ID = insertData.ObjectID};
+                    var objectToAdd = new TBRLoginRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.DomainName = serializedObject.DomainName;
 					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1599,7 +1599,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID};
+                    var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
 					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
@@ -1611,7 +1611,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBAccountCollaborationGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new TBAccountCollaborationGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
@@ -1624,7 +1624,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
 					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1635,7 +1635,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBEmail {ID = insertData.ObjectID};
+                    var objectToAdd = new TBEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
 					TBEmailTable.InsertOnSubmit(objectToAdd);
@@ -1647,7 +1647,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBCollaboratorRole {ID = insertData.ObjectID};
+                    var objectToAdd = new TBCollaboratorRole {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
 					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
@@ -1659,7 +1659,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1670,7 +1670,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBEmailValidation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBEmailValidation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Email = serializedObject.Email;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
@@ -1684,7 +1684,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
 					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
@@ -1696,7 +1696,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
 					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
@@ -1708,7 +1708,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBDeviceJoinConfirmation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBDeviceJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
@@ -1721,7 +1721,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBInformationInputConfirmation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBInformationInputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
@@ -1734,7 +1734,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBInformationOutputConfirmation {ID = insertData.ObjectID};
+                    var objectToAdd = new TBInformationOutputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
@@ -1747,7 +1747,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRegisterContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBRegisterContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new TBRegisterContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
 					TBRegisterContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1758,7 +1758,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new LoginProvider {ID = insertData.ObjectID};
+                    var objectToAdd = new LoginProvider {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ProviderName = serializedObject.ProviderName;
 		            objectToAdd.ProviderIconClass = serializedObject.ProviderIconClass;
 		            objectToAdd.ProviderType = serializedObject.ProviderType;
@@ -1773,7 +1773,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ContactOipContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContactOipContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new ContactOipContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
 					ContactOipContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1784,7 +1784,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID};
+                    var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1795,7 +1795,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.JavaScriptContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new JavaScriptContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new JavaScriptContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
 					JavaScriptContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1806,7 +1806,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.JavascriptContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new JavascriptContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new JavascriptContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
 					JavascriptContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1817,7 +1817,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.FooterContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new FooterContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new FooterContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
 					FooterContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1828,7 +1828,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.NavigationContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new NavigationContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new NavigationContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Dummy = serializedObject.Dummy;
 					NavigationContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1839,7 +1839,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountIndex {ID = insertData.ObjectID};
+                    var objectToAdd = new AccountIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
@@ -1852,7 +1852,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new StreetAddress {ID = insertData.ObjectID};
+                    var objectToAdd = new StreetAddress {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Street = serializedObject.Street;
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
 		            objectToAdd.Town = serializedObject.Town;
@@ -1866,7 +1866,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountContent {ID = insertData.ObjectID};
+                    var objectToAdd = new AccountContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Dummy = serializedObject.Dummy;
 					AccountContentTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1877,7 +1877,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountProfile {ID = insertData.ObjectID};
+                    var objectToAdd = new AccountProfile {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.FirstName = serializedObject.FirstName;
 		            objectToAdd.LastName = serializedObject.LastName;
 		            objectToAdd.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
@@ -1892,7 +1892,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountRoles {ID = insertData.ObjectID};
+                    var objectToAdd = new AccountRoles {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 					AccountRolesTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1903,7 +1903,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID};
+                    var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
 					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1914,7 +1914,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupedInformation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GroupedInformation {ID = insertData.ObjectID};
+                    var objectToAdd = new GroupedInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					GroupedInformationTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1925,7 +1925,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID};
+                    var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
 					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
@@ -1937,7 +1937,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
+                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OriginalContentID = serializedObject.OriginalContentID;
 		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -1958,7 +1958,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
+                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1969,7 +1969,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new LongTextObject {ID = insertData.ObjectID};
+                    var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					LongTextObjectTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -1980,7 +1980,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new MapMarker {ID = insertData.ObjectID};
+                    var objectToAdd = new MapMarker {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IconUrl = serializedObject.IconUrl;
 		            objectToAdd.MarkerSource = serializedObject.MarkerSource;
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
@@ -1996,7 +1996,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AboutContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AboutContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new AboutContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
 		            objectToAdd.Published = serializedObject.Published;
@@ -2010,7 +2010,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ContainerHeader.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContainerHeader {ID = insertData.ObjectID};
+                    var objectToAdd = new ContainerHeader {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 					ContainerHeaderTable.InsertOnSubmit(objectToAdd);
@@ -2022,7 +2022,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ActivitySummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ActivitySummaryContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new ActivitySummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
 					ActivitySummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2033,7 +2033,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ActivityIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ActivityIndex {ID = insertData.ObjectID};
+                    var objectToAdd = new ActivityIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
@@ -2046,7 +2046,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Activity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Activity {ID = insertData.ObjectID};
+                    var objectToAdd = new Activity {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
 		            objectToAdd.ContactPerson = serializedObject.ContactPerson;
 		            objectToAdd.StartingTime = serializedObject.StartingTime;
@@ -2062,7 +2062,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Moderator {ID = insertData.ObjectID};
+                    var objectToAdd = new Moderator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
 					ModeratorTable.InsertOnSubmit(objectToAdd);
@@ -2074,7 +2074,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Collaborator {ID = insertData.ObjectID};
+                    var objectToAdd = new Collaborator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.CollaboratorName = serializedObject.CollaboratorName;
@@ -2089,7 +2089,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID};
+                    var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
 					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2100,7 +2100,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GroupIndex {ID = insertData.ObjectID};
+                    var objectToAdd = new GroupIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
@@ -2113,7 +2113,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2124,7 +2124,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddImageInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
 					AddImageInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2135,7 +2135,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
 					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2146,7 +2146,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2157,7 +2157,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2168,7 +2168,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
 					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2179,7 +2179,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2190,7 +2190,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID};
+                    var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2201,7 +2201,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Group {ID = insertData.ObjectID};
+                    var objectToAdd = new Group {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
@@ -2215,7 +2215,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Introduction {ID = insertData.ObjectID};
+                    var objectToAdd = new Introduction {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
 					IntroductionTable.InsertOnSubmit(objectToAdd);
@@ -2227,7 +2227,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContentCategoryRank {ID = insertData.ObjectID};
+                    var objectToAdd = new ContentCategoryRank {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ContentID = serializedObject.ContentID;
 		            objectToAdd.ContentSemanticType = serializedObject.ContentSemanticType;
 		            objectToAdd.CategoryID = serializedObject.CategoryID;
@@ -2242,7 +2242,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new LinkToContent {ID = insertData.ObjectID};
+                    var objectToAdd = new LinkToContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.URL = serializedObject.URL;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
@@ -2257,7 +2257,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new EmbeddedContent {ID = insertData.ObjectID};
+                    var objectToAdd = new EmbeddedContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IFrameTagContents = serializedObject.IFrameTagContents;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Published = serializedObject.Published;
@@ -2272,7 +2272,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new DynamicContentGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new DynamicContentGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HostName = serializedObject.HostName;
 		            objectToAdd.GroupHeader = serializedObject.GroupHeader;
 		            objectToAdd.SortValue = serializedObject.SortValue;
@@ -2287,7 +2287,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new DynamicContent {ID = insertData.ObjectID};
+                    var objectToAdd = new DynamicContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HostName = serializedObject.HostName;
 		            objectToAdd.ContentName = serializedObject.ContentName;
 		            objectToAdd.Title = serializedObject.Title;
@@ -2308,7 +2308,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AttachedToObject {ID = insertData.ObjectID};
+                    var objectToAdd = new AttachedToObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceObjectID = serializedObject.SourceObjectID;
 		            objectToAdd.SourceObjectName = serializedObject.SourceObjectName;
 		            objectToAdd.SourceObjectDomain = serializedObject.SourceObjectDomain;
@@ -2324,7 +2324,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Comment {ID = insertData.ObjectID};
+                    var objectToAdd = new Comment {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
@@ -2346,7 +2346,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Selection {ID = insertData.ObjectID};
+                    var objectToAdd = new Selection {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
@@ -2363,7 +2363,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TextContent {ID = insertData.ObjectID};
+                    var objectToAdd = new TextContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
@@ -2382,7 +2382,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Blog.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Blog {ID = insertData.ObjectID};
+                    var objectToAdd = new Blog {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
@@ -2399,7 +2399,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.BlogIndexGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new BlogIndexGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new BlogIndexGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
@@ -2412,7 +2412,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.CalendarIndex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CalendarIndex {ID = insertData.ObjectID};
+                    var objectToAdd = new CalendarIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
@@ -2425,7 +2425,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Filter.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Filter {ID = insertData.ObjectID};
+                    var objectToAdd = new Filter {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					FilterTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2436,7 +2436,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Calendar.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Calendar {ID = insertData.ObjectID};
+                    var objectToAdd = new Calendar {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					CalendarTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2447,7 +2447,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Map {ID = insertData.ObjectID};
+                    var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					MapTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2458,7 +2458,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Video {ID = insertData.ObjectID};
+                    var objectToAdd = new Video {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 					VideoTable.InsertOnSubmit(objectToAdd);
@@ -2470,7 +2470,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Image {ID = insertData.ObjectID};
+                    var objectToAdd = new Image {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 		            objectToAdd.Description = serializedObject.Description;
@@ -2483,7 +2483,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new BinaryFile {ID = insertData.ObjectID};
+                    var objectToAdd = new BinaryFile {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OriginalFileName = serializedObject.OriginalFileName;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
@@ -2496,7 +2496,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ImageGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ImageGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new ImageGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
 					ImageGroupTable.InsertOnSubmit(objectToAdd);
@@ -2508,7 +2508,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.VideoGroup.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new VideoGroup {ID = insertData.ObjectID};
+                    var objectToAdd = new VideoGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
 					VideoGroupTable.InsertOnSubmit(objectToAdd);
@@ -2520,7 +2520,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Tooltip.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Tooltip {ID = insertData.ObjectID};
+                    var objectToAdd = new Tooltip {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TooltipText = serializedObject.TooltipText;
 					TooltipTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2531,7 +2531,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Longitude {ID = insertData.ObjectID};
+                    var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LongitudeTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2542,7 +2542,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Latitude {ID = insertData.ObjectID};
+                    var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LatitudeTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2553,7 +2553,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Location {ID = insertData.ObjectID};
+                    var objectToAdd = new Location {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					LocationTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2564,7 +2564,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Date {ID = insertData.ObjectID};
+                    var objectToAdd = new Date {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Day = serializedObject.Day;
 		            objectToAdd.Week = serializedObject.Week;
 		            objectToAdd.Month = serializedObject.Month;
@@ -2578,7 +2578,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Sex.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Sex {ID = insertData.ObjectID};
+                    var objectToAdd = new Sex {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SexText = serializedObject.SexText;
 					SexTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2589,7 +2589,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.OBSAddress.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new OBSAddress {ID = insertData.ObjectID};
+                    var objectToAdd = new OBSAddress {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StreetName = serializedObject.StreetName;
 		            objectToAdd.BuildingNumber = serializedObject.BuildingNumber;
 		            objectToAdd.PostOfficeBox = serializedObject.PostOfficeBox;
@@ -2609,7 +2609,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Identity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Identity {ID = insertData.ObjectID};
+                    var objectToAdd = new Identity {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.FirstName = serializedObject.FirstName;
 		            objectToAdd.LastName = serializedObject.LastName;
 		            objectToAdd.Initials = serializedObject.Initials;
@@ -2622,7 +2622,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ImageVideoSoundVectorRaw.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ImageVideoSoundVectorRaw {ID = insertData.ObjectID};
+                    var objectToAdd = new ImageVideoSoundVectorRaw {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Image = serializedObject.Image;
 		            objectToAdd.Video = serializedObject.Video;
 		            objectToAdd.Sound = serializedObject.Sound;
@@ -2637,7 +2637,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Category {ID = insertData.ObjectID};
+                    var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
@@ -2651,7 +2651,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Subscription.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Subscription {ID = insertData.ObjectID};
+                    var objectToAdd = new Subscription {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Priority = serializedObject.Priority;
 		            objectToAdd.TargetRelativeLocation = serializedObject.TargetRelativeLocation;
 		            objectToAdd.TargetInformationObjectType = serializedObject.TargetInformationObjectType;
@@ -2667,7 +2667,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.QueueEnvelope.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new QueueEnvelope {ID = insertData.ObjectID};
+                    var objectToAdd = new QueueEnvelope {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActiveContainerName = serializedObject.ActiveContainerName;
 		            objectToAdd.OwnerPrefix = serializedObject.OwnerPrefix;
 		            objectToAdd.CurrentRetryCount = serializedObject.CurrentRetryCount;
@@ -2680,7 +2680,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.OperationRequest.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new OperationRequest {ID = insertData.ObjectID};
+                    var objectToAdd = new OperationRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ProcessIDToExecute = serializedObject.ProcessIDToExecute;
 					OperationRequestTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2691,7 +2691,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SubscriptionChainRequestMessage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SubscriptionChainRequestMessage {ID = insertData.ObjectID};
+                    var objectToAdd = new SubscriptionChainRequestMessage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ContentItemID = serializedObject.ContentItemID;
 					SubscriptionChainRequestMessageTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2702,7 +2702,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SubscriptionChainRequestContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SubscriptionChainRequestContent {ID = insertData.ObjectID};
+                    var objectToAdd = new SubscriptionChainRequestContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SubmitTime = serializedObject.SubmitTime;
 		            objectToAdd.ProcessingStartTime = serializedObject.ProcessingStartTime;
 		            objectToAdd.ProcessingEndTimeInformationObjects = serializedObject.ProcessingEndTimeInformationObjects;
@@ -2717,7 +2717,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SubscriptionTarget.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SubscriptionTarget {ID = insertData.ObjectID};
+                    var objectToAdd = new SubscriptionTarget {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.BlobLocation = serializedObject.BlobLocation;
 					SubscriptionTargetTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2728,7 +2728,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DeleteEntireOwnerOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new DeleteEntireOwnerOperation {ID = insertData.ObjectID};
+                    var objectToAdd = new DeleteEntireOwnerOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ContainerName = serializedObject.ContainerName;
 		            objectToAdd.LocationPrefix = serializedObject.LocationPrefix;
 					DeleteEntireOwnerOperationTable.InsertOnSubmit(objectToAdd);
@@ -2740,7 +2740,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DeleteOwnerContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new DeleteOwnerContentOperation {ID = insertData.ObjectID};
+                    var objectToAdd = new DeleteOwnerContentOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ContainerName = serializedObject.ContainerName;
 		            objectToAdd.LocationPrefix = serializedObject.LocationPrefix;
 					DeleteOwnerContentOperationTable.InsertOnSubmit(objectToAdd);
@@ -2752,7 +2752,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SystemError.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SystemError {ID = insertData.ObjectID};
+                    var objectToAdd = new SystemError {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ErrorTitle = serializedObject.ErrorTitle;
 		            objectToAdd.OccurredAt = serializedObject.OccurredAt;
 					SystemErrorTable.InsertOnSubmit(objectToAdd);
@@ -2764,7 +2764,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SystemErrorItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SystemErrorItem {ID = insertData.ObjectID};
+                    var objectToAdd = new SystemErrorItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ShortDescription = serializedObject.ShortDescription;
 		            objectToAdd.LongDescription = serializedObject.LongDescription;
 					SystemErrorItemTable.InsertOnSubmit(objectToAdd);
@@ -2776,7 +2776,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.InformationSource.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InformationSource {ID = insertData.ObjectID};
+                    var objectToAdd = new InformationSource {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceName = serializedObject.SourceName;
 		            objectToAdd.SourceLocation = serializedObject.SourceLocation;
 		            objectToAdd.SourceType = serializedObject.SourceType;
@@ -2794,7 +2794,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.RefreshDefaultViewsOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new RefreshDefaultViewsOperation {ID = insertData.ObjectID};
+                    var objectToAdd = new RefreshDefaultViewsOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ViewLocation = serializedObject.ViewLocation;
 		            objectToAdd.TypeNameToRefresh = serializedObject.TypeNameToRefresh;
 					RefreshDefaultViewsOperationTable.InsertOnSubmit(objectToAdd);
@@ -2806,7 +2806,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new UpdateWebContentOperation {ID = insertData.ObjectID};
+                    var objectToAdd = new UpdateWebContentOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
 		            objectToAdd.SourcePathRoot = serializedObject.SourcePathRoot;
 		            objectToAdd.TargetContainerName = serializedObject.TargetContainerName;
@@ -2821,7 +2821,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID};
+                    var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
 					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
@@ -2833,7 +2833,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.PublishWebContentOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new PublishWebContentOperation {ID = insertData.ObjectID};
+                    var objectToAdd = new PublishWebContentOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
 		            objectToAdd.SourcePathRoot = serializedObject.SourcePathRoot;
 		            objectToAdd.SourceOwner = serializedObject.SourceOwner;
@@ -2847,7 +2847,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.SubscriberInput.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SubscriberInput {ID = insertData.ObjectID};
+                    var objectToAdd = new SubscriberInput {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InputRelativeLocation = serializedObject.InputRelativeLocation;
 		            objectToAdd.InformationObjectName = serializedObject.InformationObjectName;
 		            objectToAdd.InformationItemName = serializedObject.InformationItemName;
@@ -2861,7 +2861,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Monitor.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Monitor {ID = insertData.ObjectID};
+                    var objectToAdd = new Monitor {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetItemName = serializedObject.TargetItemName;
 		            objectToAdd.MonitoringUtcTimeStampToStart = serializedObject.MonitoringUtcTimeStampToStart;
@@ -2878,7 +2878,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.IconTitleDescription.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new IconTitleDescription {ID = insertData.ObjectID};
+                    var objectToAdd = new IconTitleDescription {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Icon = serializedObject.Icon;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;

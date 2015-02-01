@@ -125,7 +125,7 @@ namespace SQLite.Caloom.Schools {
                     var serializedObject =
                         global::SER.Caloom.Schools.TrainingModule.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TrainingModule {ID = insertData.ObjectID};
+                    var objectToAdd = new TrainingModule {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;

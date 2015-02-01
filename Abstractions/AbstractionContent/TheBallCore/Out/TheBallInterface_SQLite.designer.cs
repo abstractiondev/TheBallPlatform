@@ -293,7 +293,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.WizardTask.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new WizardTask {ID = insertData.ObjectID};
+                    var objectToAdd = new WizardTask {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TaskName = serializedObject.TaskName;
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.InputType = serializedObject.InputType;
@@ -306,7 +306,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.Connection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Connection {ID = insertData.ObjectID};
+                    var objectToAdd = new Connection {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OutputInformationID = serializedObject.OutputInformationID;
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.DeviceID = serializedObject.DeviceID;
@@ -327,7 +327,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TransferPackage {ID = insertData.ObjectID};
+                    var objectToAdd = new TransferPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ConnectionID = serializedObject.ConnectionID;
 		            objectToAdd.PackageDirection = serializedObject.PackageDirection;
 		            objectToAdd.PackageType = serializedObject.PackageType;
@@ -343,7 +343,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CategoryLink {ID = insertData.ObjectID};
+                    var objectToAdd = new CategoryLink {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
 		            objectToAdd.LinkingType = serializedObject.LinkingType;
@@ -356,7 +356,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.Category.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Category {ID = insertData.ObjectID};
+                    var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NativeCategoryID = serializedObject.NativeCategoryID;
 		            objectToAdd.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
 		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
@@ -372,7 +372,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new StatusSummary {ID = insertData.ObjectID};
+                    var objectToAdd = new StatusSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
 					StatusSummaryTable.InsertOnSubmit(objectToAdd);
@@ -384,7 +384,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID};
+                    var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StartTimeUTC = serializedObject.StartTimeUTC;
 		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
 					if(serializedObject.ChangedObjectIDList != null)
@@ -398,7 +398,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID};
+                    var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OperationName = serializedObject.OperationName;
 		            objectToAdd.OperationDomain = serializedObject.OperationDomain;
 		            objectToAdd.OperationID = serializedObject.OperationID;
@@ -416,7 +416,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GenericObject {ID = insertData.ObjectID};
+                    var objectToAdd = new GenericObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
 					GenericObjectTable.InsertOnSubmit(objectToAdd);
@@ -428,7 +428,7 @@ namespace SQLite.TheBall.Interface {
                     var serializedObject =
                         global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GenericValue {ID = insertData.ObjectID};
+                    var objectToAdd = new GenericValue {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ValueName = serializedObject.ValueName;
 		            objectToAdd.String = serializedObject.String;
 					if(serializedObject.StringArray != null)

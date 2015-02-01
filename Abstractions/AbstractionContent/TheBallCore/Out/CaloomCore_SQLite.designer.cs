@@ -197,7 +197,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.Who.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Who {ID = insertData.ObjectID};
+                    var objectToAdd = new Who {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
@@ -211,7 +211,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.ProductForWhom.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProductForWhom {ID = insertData.ObjectID};
+                    var objectToAdd = new ProductForWhom {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
@@ -225,7 +225,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.Product.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Product {ID = insertData.ObjectID};
+                    var objectToAdd = new Product {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
@@ -239,7 +239,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.ProductUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProductUsage {ID = insertData.ObjectID};
+                    var objectToAdd = new ProductUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
 					ProductUsageTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -250,7 +250,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.RenderedNode.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID};
+                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.Title = serializedObject.Title;
@@ -267,7 +267,7 @@ namespace SQLite.Caloom.CORE {
                     var serializedObject =
                         global::SER.Caloom.CORE.ShortTextObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID};
+                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
                     return;
