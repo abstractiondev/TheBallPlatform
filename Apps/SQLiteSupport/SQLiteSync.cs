@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ namespace SQLiteSupport
         void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData);
         void PerformInsert(string storageRootPath, InformationObjectMetaData insertData);
         void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData);
+        DbConnection Connection { get; }
         void SubmitChanges();
     }
 

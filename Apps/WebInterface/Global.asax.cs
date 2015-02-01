@@ -6,6 +6,7 @@ using System.Data.Linq.Mapping;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
@@ -18,29 +19,104 @@ using System.Web.UI;
 using AzureSupport;
 using Microsoft.WindowsAzure;
 using SQLite.TheBall.Payments;
+using SQLiteSupport;
 using Stripe;
 using TheBall;
 using MetaModel = System.Web.DynamicData.MetaModel;
+using MetaTable = System.Web.DynamicData.MetaTable;
 
 namespace WebInterface
 {
     public class Global : System.Web.HttpApplication
     {
-        private static MetaModel defaultModel = new MetaModel();
-        private static SQLite.TheBall.Payments.TheBallDataContext CurrentDataContext;
-
-        public static MetaModel DefaultModel
+        public class CustomRouteHandler : DynamicDataRouteHandler
         {
-            get { return defaultModel; }
+            protected override string GetCustomPageVirtualPath(MetaTable table, string viewName)
+            {
+                return base.GetCustomPageVirtualPath(table, viewName);
+            }
+
+            protected override string GetScaffoldPageVirtualPath(MetaTable table, string viewName)
+            {
+                return base.GetScaffoldPageVirtualPath(table, viewName);
+            }
+
+            public override IHttpHandler CreateHandler(DynamicDataRoute route, MetaTable table, string action)
+            {
+                return base.CreateHandler(route, table, action);
+            }
         }
 
-        public static void RegisterRoutes(RouteCollection routes)
+
+        static Dictionary<string, MetaModel> ModelDict = new Dictionary<string, MetaModel>();
+        static Dictionary<string, object> DataContextDictionary = new Dictionary<string, object>();
+
+        public static void RegisterRoutes(RouteCollection routes, string[] dataContextDomains)
         {
-            CurrentDataContext = TheBallDataContext.CreateOrAttachToExistingDB(@"x:\tbcore\grp\e370760e-fde1-47e6-81ce-bc5ec12f6eff\TheBall.Payments.sqlite");
-            TheBallDataContext.CurrentConnection = (SQLiteConnection) CurrentDataContext.Connection;
-            DefaultModel.RegisterContext(typeof (SQLite.TheBall.Payments.TheBallDataContext),
-                new ContextConfiguration() {ScaffoldAllTables = true});
+
+            //                    IMPORTANT: DATA MODEL REGISTRATION 
+            // Uncomment this line to register a LINQ to SQL model for ASP.NET Dynamic Data.
+            // Set ScaffoldAllTables = true only if you are sure that you want all tables in the
+            // data model to support a scaffold (i.e. templates) view. To control scaffolding for
+            // individual tables, create a partial class for the table and apply the
+            // [ScaffoldTable(true)] attribute to the partial class.
+            // Note: Make sure that you change "YourDataContextType" to the name of the data context
+            // class in your application.
+
+            foreach (string dataContextDomain in dataContextDomains)
+            {
+                string dataContextTypeName = "SQLite." + dataContextDomain + ".TheBallDataContext";
+                var dataContextType = SQLiteSupport.ReflectionSupport.GetSQLiteDataContextType(dataContextTypeName);
+                var currentDataContext =
+                    (IStorageSyncableDataContext)
+                        dataContextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
+                            new object[] { ":memory:" });
+                dataContextType.GetProperty("CurrentConnection").SetValue(null, currentDataContext.Connection, null);
+                var currentModel = new MetaModel();
+
+                DataContextDictionary.Add(dataContextTypeName, currentDataContext);
+                ModelDict.Add(dataContextTypeName, currentModel);
+
+                currentModel.RegisterContext(dataContextType, new ContextConfiguration() { ScaffoldAllTables = true });
+
+                //DefaultModel.RegisterContext(myDataModelProvider);
+                // The following statement supports separate-page mode, where the List, Detail, Insert, and 
+                // Update tasks are performed by using separate pages. To enable this mode, uncomment the following 
+                // route definition, and comment out the route definitions in the combined-page mode section that follows.
+                routes.Add(new DynamicDataRoute(String.Format("auth/grp/{{groupID}}/DDCRUD/{0}/{{table}}/{{action}}.aspx", dataContextDomain))
+                {
+                    Constraints = new RouteValueDictionary(new
+                    {
+                        action = "List|Details|Edit|Insert",
+                        httpMethod = new HttpMethodConstraint("GET")
+                        //groupID = "xyz"
+                    }),
+                    Model = currentModel,
+                    RouteHandler = new CustomRouteHandler()
+                });
+
+            }
+
+            // The following statements support combined-page mode, where the List, Detail, Insert, and
+            // Update tasks are performed by using the same page. To enable this mode, uncomment the
+            // following routes and comment out the route definition in the separate-page mode section above.
+            /*
+            routes.Add(new DynamicDataRoute("auth/{groupID}/DDR/{table}/ListDetails.aspx")
+            {
+                Action = PageAction.List,
+                ViewName = "ListDetails",
+                Model = DefaultModel
+            });
+
+            routes.Add(new DynamicDataRoute("auth/{groupID}/DDR/{table}/ListDetails.aspx")
+            {
+                Action = PageAction.Details,
+                ViewName = "ListDetails",
+                Model = DefaultModel
+            });
+             * */
         }
+
 
         private static void RegisterScripts()
         {
@@ -59,8 +135,11 @@ namespace WebInterface
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            RegisterRoutes(RouteTable.Routes);
-            RegisterScripts();
+            if (InstanceConfiguration.DynamicDataCRUDDomains.Length > 0)
+            {
+                RegisterRoutes(RouteTable.Routes, InstanceConfiguration.DynamicDataCRUDDomains);
+                RegisterScripts();
+            }
 
             string connStr;
             connStr = InstanceConfiguration.AzureStorageConnectionString;

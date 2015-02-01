@@ -47,6 +47,7 @@ namespace TheBall
         public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
         public static readonly bool IsDeveloperMachine;
         public static readonly bool UseSQLiteMasterDatabase;
+        public static readonly string[] DynamicDataCRUDDomains;
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
@@ -107,6 +108,12 @@ namespace TheBall
             AdminGroupID = CloudConfigurationManager.GetSetting("AdminGroupID");
             PaymentsGroupID = CloudConfigurationManager.GetSetting("PaymentsGroupID");
             UseSQLiteMasterDatabase = Convert.ToBoolean(CloudConfigurationManager.GetSetting("UseSQLiteMasterDatabase"));
+            string dynamicDataDomains = CloudConfigurationManager.GetSetting("DynamicDataCRUDDomains");
+            if(string.IsNullOrEmpty(dynamicDataDomains))
+                DynamicDataCRUDDomains = new string[] {};
+            else
+                DynamicDataCRUDDomains = dynamicDataDomains.Split(',');
+
             
             #endregion
 
