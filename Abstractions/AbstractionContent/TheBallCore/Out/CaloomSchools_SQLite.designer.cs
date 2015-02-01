@@ -105,6 +105,7 @@ namespace SQLite.Caloom.Schools {
 		                global::SER.Caloom.Schools.TrainingModule.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TrainingModuleTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -165,6 +166,7 @@ namespace SQLite.Caloom.Schools {
                 @"
 CREATE TABLE IF NOT EXISTS [TrainingModule](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -178,9 +180,16 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TrainingModule() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

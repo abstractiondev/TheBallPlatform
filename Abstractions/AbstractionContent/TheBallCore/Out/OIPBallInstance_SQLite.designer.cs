@@ -207,6 +207,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBSystemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.InstanceName = serializedObject.InstanceName;
 		            existingObject.AdminGroupID = serializedObject.AdminGroupID;
 		            return;
@@ -218,6 +219,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WebPublishInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.PublishType = serializedObject.PublishType;
 		            existingObject.PublishContainer = serializedObject.PublishContainer;
 		            return;
@@ -229,6 +231,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PublicationPackageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.PackageName = serializedObject.PackageName;
 		            existingObject.PublicationTime = serializedObject.PublicationTime;
 		            return;
@@ -240,6 +243,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.DomainName = serializedObject.DomainName;
 		            return;
 		        } 
@@ -250,6 +254,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginGroupRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            return;
@@ -261,6 +266,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountCollaborationGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.GroupRole = serializedObject.GroupRole;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
@@ -273,6 +279,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
 		            return;
 		        } 
@@ -283,6 +290,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.ValidatedAt = serializedObject.ValidatedAt;
 		            return;
@@ -294,6 +302,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratorRoleTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
 		            return;
@@ -305,6 +314,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratingGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            return;
 		        } 
@@ -315,6 +325,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailValidationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Email = serializedObject.Email;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.ValidUntil = serializedObject.ValidUntil;
@@ -328,6 +339,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBMergeAccountConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            existingObject.AccountToMergeToID = serializedObject.AccountToMergeToID;
 		            return;
@@ -339,6 +351,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBGroupJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.InvitationMode = serializedObject.InvitationMode;
 		            return;
@@ -350,6 +363,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBDeviceJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.DeviceMembershipID = serializedObject.DeviceMembershipID;
@@ -362,6 +376,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationInputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationInputID = serializedObject.InformationInputID;
@@ -374,6 +389,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationOutputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationOutputID = serializedObject.InformationOutputID;
@@ -386,6 +402,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBRegisterContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRegisterContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
 		            return;
 		        } 
@@ -396,6 +413,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LoginProviderTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ProviderName = serializedObject.ProviderName;
 		            existingObject.ProviderIconClass = serializedObject.ProviderIconClass;
 		            existingObject.ProviderType = serializedObject.ProviderType;
@@ -410,6 +428,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ContactOipContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContactOipContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
 		            return;
 		        } 
@@ -420,6 +439,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            return;
 		        } 
@@ -430,6 +450,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.JavaScriptContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = JavaScriptContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
 		            return;
 		        } 
@@ -440,6 +461,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.JavascriptContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = JavascriptContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
 		            return;
 		        } 
@@ -450,6 +472,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.FooterContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = FooterContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.HtmlContent = serializedObject.HtmlContent;
 		            return;
 		        } 
@@ -460,6 +483,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.NavigationContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NavigationContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Dummy = serializedObject.Dummy;
 		            return;
 		        } 
@@ -470,6 +494,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AccountIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountIndexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
@@ -482,6 +507,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StreetAddressTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Street = serializedObject.Street;
 		            existingObject.ZipCode = serializedObject.ZipCode;
 		            existingObject.Town = serializedObject.Town;
@@ -495,6 +521,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AccountContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Dummy = serializedObject.Dummy;
 		            return;
 		        } 
@@ -505,6 +532,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountProfileTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.FirstName = serializedObject.FirstName;
 		            existingObject.LastName = serializedObject.LastName;
 		            existingObject.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
@@ -519,6 +547,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountRolesTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 		            return;
 		        } 
@@ -529,6 +558,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
 		            return;
 		        } 
@@ -539,6 +569,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.GroupedInformation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupedInformationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
 		            return;
 		        } 
@@ -549,6 +580,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ReferenceToInformationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.URL = serializedObject.URL;
 		            return;
@@ -560,6 +592,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OriginalContentID = serializedObject.OriginalContentID;
 		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
@@ -580,6 +613,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
 		            return;
 		        } 
@@ -590,6 +624,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
 		            return;
 		        } 
@@ -600,6 +635,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapMarkerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IconUrl = serializedObject.IconUrl;
 		            existingObject.MarkerSource = serializedObject.MarkerSource;
 		            existingObject.CategoryName = serializedObject.CategoryName;
@@ -615,6 +651,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AboutContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AboutContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
 		            existingObject.Published = serializedObject.Published;
@@ -628,6 +665,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ContainerHeader.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContainerHeaderTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            return;
@@ -639,6 +677,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ActivitySummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivitySummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SummaryBody = serializedObject.SummaryBody;
 		            return;
 		        } 
@@ -649,6 +688,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ActivityIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivityIndexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
@@ -661,6 +701,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Activity.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ActivityTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ActivityName = serializedObject.ActivityName;
 		            existingObject.ContactPerson = serializedObject.ContactPerson;
 		            existingObject.StartingTime = serializedObject.StartingTime;
@@ -676,6 +717,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ModeratorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ModeratorName = serializedObject.ModeratorName;
 		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
 		            return;
@@ -687,6 +729,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CollaboratorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.CollaboratorName = serializedObject.CollaboratorName;
@@ -701,6 +744,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SummaryBody = serializedObject.SummaryBody;
 		            return;
 		        } 
@@ -711,6 +755,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupIndexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
@@ -723,6 +768,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
 		            return;
 		        } 
@@ -733,6 +779,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageTitle = serializedObject.ImageTitle;
 		            return;
 		        } 
@@ -743,6 +790,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
 		            return;
 		        } 
@@ -753,6 +801,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            return;
 		        } 
@@ -763,6 +812,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
 		            return;
 		        } 
@@ -773,6 +823,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ActivityName = serializedObject.ActivityName;
 		            return;
 		        } 
@@ -783,6 +834,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            return;
 		        } 
@@ -793,6 +845,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
 		            return;
 		        } 
@@ -803,6 +856,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
@@ -816,6 +870,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IntroductionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Body = serializedObject.Body;
 		            return;
@@ -827,6 +882,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContentCategoryRankTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ContentID = serializedObject.ContentID;
 		            existingObject.ContentSemanticType = serializedObject.ContentSemanticType;
 		            existingObject.CategoryID = serializedObject.CategoryID;
@@ -841,6 +897,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LinkToContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.URL = serializedObject.URL;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
@@ -855,6 +912,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = EmbeddedContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IFrameTagContents = serializedObject.IFrameTagContents;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Published = serializedObject.Published;
@@ -869,6 +927,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.HostName = serializedObject.HostName;
 		            existingObject.GroupHeader = serializedObject.GroupHeader;
 		            existingObject.SortValue = serializedObject.SortValue;
@@ -883,6 +942,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.HostName = serializedObject.HostName;
 		            existingObject.ContentName = serializedObject.ContentName;
 		            existingObject.Title = serializedObject.Title;
@@ -903,6 +963,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AttachedToObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceObjectID = serializedObject.SourceObjectID;
 		            existingObject.SourceObjectName = serializedObject.SourceObjectName;
 		            existingObject.SourceObjectDomain = serializedObject.SourceObjectDomain;
@@ -918,6 +979,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CommentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
 		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
@@ -939,6 +1001,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SelectionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
 		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
@@ -955,6 +1018,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TextContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
@@ -973,6 +1037,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Blog.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BlogTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
@@ -989,6 +1054,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.BlogIndexGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BlogIndexGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
@@ -1001,6 +1067,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.CalendarIndex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CalendarIndexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
@@ -1013,6 +1080,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Filter.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = FilterTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            return;
 		        } 
@@ -1023,6 +1091,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Calendar.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CalendarTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            return;
 		        } 
@@ -1033,6 +1102,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            return;
 		        } 
@@ -1043,6 +1113,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
 		            return;
@@ -1054,6 +1125,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
 		            existingObject.Description = serializedObject.Description;
@@ -1066,6 +1138,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BinaryFileTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OriginalFileName = serializedObject.OriginalFileName;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
@@ -1078,6 +1151,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ImageGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
 		            return;
@@ -1089,6 +1163,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.VideoGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
 		            return;
@@ -1100,6 +1175,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Tooltip.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TooltipTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TooltipText = serializedObject.TooltipText;
 		            return;
 		        } 
@@ -1110,6 +1186,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
 		            return;
 		        } 
@@ -1120,6 +1197,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
 		            return;
 		        } 
@@ -1130,6 +1208,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
 		            return;
 		        } 
@@ -1140,6 +1219,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DateTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Day = serializedObject.Day;
 		            existingObject.Week = serializedObject.Week;
 		            existingObject.Month = serializedObject.Month;
@@ -1153,6 +1233,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Sex.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SexText = serializedObject.SexText;
 		            return;
 		        } 
@@ -1163,6 +1244,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.OBSAddress.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OBSAddressTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.StreetName = serializedObject.StreetName;
 		            existingObject.BuildingNumber = serializedObject.BuildingNumber;
 		            existingObject.PostOfficeBox = serializedObject.PostOfficeBox;
@@ -1182,6 +1264,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Identity.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IdentityTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.FirstName = serializedObject.FirstName;
 		            existingObject.LastName = serializedObject.LastName;
 		            existingObject.Initials = serializedObject.Initials;
@@ -1194,6 +1277,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.ImageVideoSoundVectorRaw.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageVideoSoundVectorRawTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Image = serializedObject.Image;
 		            existingObject.Video = serializedObject.Video;
 		            existingObject.Sound = serializedObject.Sound;
@@ -1208,6 +1292,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -1221,6 +1306,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Subscription.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Priority = serializedObject.Priority;
 		            existingObject.TargetRelativeLocation = serializedObject.TargetRelativeLocation;
 		            existingObject.TargetInformationObjectType = serializedObject.TargetInformationObjectType;
@@ -1236,6 +1322,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.QueueEnvelope.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueueEnvelopeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ActiveContainerName = serializedObject.ActiveContainerName;
 		            existingObject.OwnerPrefix = serializedObject.OwnerPrefix;
 		            existingObject.CurrentRetryCount = serializedObject.CurrentRetryCount;
@@ -1248,6 +1335,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.OperationRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OperationRequestTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ProcessIDToExecute = serializedObject.ProcessIDToExecute;
 		            return;
 		        } 
@@ -1258,6 +1346,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SubscriptionChainRequestMessage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionChainRequestMessageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ContentItemID = serializedObject.ContentItemID;
 		            return;
 		        } 
@@ -1268,6 +1357,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SubscriptionChainRequestContent.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionChainRequestContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SubmitTime = serializedObject.SubmitTime;
 		            existingObject.ProcessingStartTime = serializedObject.ProcessingStartTime;
 		            existingObject.ProcessingEndTimeInformationObjects = serializedObject.ProcessingEndTimeInformationObjects;
@@ -1282,6 +1372,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SubscriptionTarget.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionTargetTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.BlobLocation = serializedObject.BlobLocation;
 		            return;
 		        } 
@@ -1292,6 +1383,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.DeleteEntireOwnerOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeleteEntireOwnerOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ContainerName = serializedObject.ContainerName;
 		            existingObject.LocationPrefix = serializedObject.LocationPrefix;
 		            return;
@@ -1303,6 +1395,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.DeleteOwnerContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeleteOwnerContentOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ContainerName = serializedObject.ContainerName;
 		            existingObject.LocationPrefix = serializedObject.LocationPrefix;
 		            return;
@@ -1314,6 +1407,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SystemError.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SystemErrorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ErrorTitle = serializedObject.ErrorTitle;
 		            existingObject.OccurredAt = serializedObject.OccurredAt;
 		            return;
@@ -1325,6 +1419,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SystemErrorItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SystemErrorItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ShortDescription = serializedObject.ShortDescription;
 		            existingObject.LongDescription = serializedObject.LongDescription;
 		            return;
@@ -1336,6 +1431,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.InformationSource.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationSourceTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceName = serializedObject.SourceName;
 		            existingObject.SourceLocation = serializedObject.SourceLocation;
 		            existingObject.SourceType = serializedObject.SourceType;
@@ -1353,6 +1449,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.RefreshDefaultViewsOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RefreshDefaultViewsOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ViewLocation = serializedObject.ViewLocation;
 		            existingObject.TypeNameToRefresh = serializedObject.TypeNameToRefresh;
 		            return;
@@ -1364,6 +1461,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UpdateWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
 		            existingObject.SourcePathRoot = serializedObject.SourcePathRoot;
 		            existingObject.TargetContainerName = serializedObject.TargetContainerName;
@@ -1378,6 +1476,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UpdateWebContentHandlerItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
 		            existingObject.OptionName = serializedObject.OptionName;
 		            return;
@@ -1389,6 +1488,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.PublishWebContentOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PublishWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
 		            existingObject.SourcePathRoot = serializedObject.SourcePathRoot;
 		            existingObject.SourceOwner = serializedObject.SourceOwner;
@@ -1402,6 +1502,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.SubscriberInput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriberInputTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.InputRelativeLocation = serializedObject.InputRelativeLocation;
 		            existingObject.InformationObjectName = serializedObject.InformationObjectName;
 		            existingObject.InformationItemName = serializedObject.InformationItemName;
@@ -1415,6 +1516,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.Monitor.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MonitorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
 		            existingObject.TargetItemName = serializedObject.TargetItemName;
 		            existingObject.MonitoringUtcTimeStampToStart = serializedObject.MonitoringUtcTimeStampToStart;
@@ -1431,6 +1533,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                global::SER.AaltoGlobalImpact.OIP.IconTitleDescription.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IconTitleDescriptionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Icon = serializedObject.Icon;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
@@ -4039,6 +4142,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 @"
 CREATE TABLE IF NOT EXISTS [TBSystem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [InstanceName] TEXT NOT NULL, 
 [AdminGroupID] TEXT NOT NULL
 )";
@@ -4050,9 +4154,16 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBSystem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4083,6 +4194,7 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
                 @"
 CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [PublishType] TEXT NOT NULL, 
 [PublishContainer] TEXT NOT NULL
 )";
@@ -4094,9 +4206,16 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public WebPublishInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4127,6 +4246,7 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [PublicationPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [PackageName] TEXT NOT NULL, 
 [PublicationTime] TEXT NOT NULL
 )";
@@ -4138,9 +4258,16 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public PublicationPackage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4169,6 +4296,7 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [DomainName] TEXT NOT NULL
 )";
         }
@@ -4179,9 +4307,16 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBRLoginRoot() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4205,6 +4340,7 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Role] TEXT NOT NULL, 
 [GroupID] TEXT NOT NULL
 )";
@@ -4216,9 +4352,16 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBRLoginGroupRoot() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4249,6 +4392,7 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupID] TEXT NOT NULL, 
 [GroupRole] TEXT NOT NULL, 
 [RoleStatus] TEXT NOT NULL
@@ -4261,9 +4405,16 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBAccountCollaborationGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4301,6 +4452,7 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OpenIDUrl] TEXT NOT NULL
 )";
         }
@@ -4311,9 +4463,16 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBLoginInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4337,6 +4496,7 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [TBEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [EmailAddress] TEXT NOT NULL, 
 [ValidatedAt] TEXT NOT NULL
 )";
@@ -4348,9 +4508,16 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBEmail() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4379,6 +4546,7 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
                 @"
 CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Role] TEXT NOT NULL, 
 [RoleStatus] TEXT NOT NULL
 )";
@@ -4390,9 +4558,16 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBCollaboratorRole() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4423,6 +4598,7 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
                 @"
 CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL
 )";
         }
@@ -4433,9 +4609,16 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBCollaboratingGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4459,6 +4642,7 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Email] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [ValidUntil] TEXT NOT NULL, 
@@ -4472,9 +4656,16 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBEmailValidation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4517,6 +4708,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [AccountToBeMergedID] TEXT NOT NULL, 
 [AccountToMergeToID] TEXT NOT NULL
 )";
@@ -4528,9 +4720,16 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBMergeAccountConfirmation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4561,6 +4760,7 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupID] TEXT NOT NULL, 
 [InvitationMode] TEXT NOT NULL
 )";
@@ -4572,9 +4772,16 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBGroupJoinConfirmation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4605,6 +4812,7 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [DeviceMembershipID] TEXT NOT NULL
@@ -4617,9 +4825,16 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBDeviceJoinConfirmation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4657,6 +4872,7 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [InformationInputID] TEXT NOT NULL
@@ -4669,9 +4885,16 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBInformationInputConfirmation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4709,6 +4932,7 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [InformationOutputID] TEXT NOT NULL
@@ -4721,9 +4945,16 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBInformationOutputConfirmation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4761,6 +4992,7 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ReturnUrl] TEXT NOT NULL
 )";
         }
@@ -4771,9 +5003,16 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBRegisterContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4797,6 +5036,7 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [LoginProvider](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ProviderName] TEXT NOT NULL, 
 [ProviderIconClass] TEXT NOT NULL, 
 [ProviderType] TEXT NOT NULL, 
@@ -4811,9 +5051,16 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public LoginProvider() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4865,6 +5112,7 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
                 @"
 CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OIPModeratorGroupID] TEXT NOT NULL
 )";
         }
@@ -4875,9 +5123,16 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ContactOipContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4901,6 +5156,7 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [EmailAddress] TEXT NOT NULL
 )";
         }
@@ -4911,9 +5167,16 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TBPRegisterEmail() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4937,6 +5200,7 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
                 @"
 CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -4947,9 +5211,16 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public JavaScriptContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -4973,6 +5244,7 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -4983,9 +5255,16 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public JavascriptContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5009,6 +5288,7 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [FooterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -5019,9 +5299,16 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public FooterContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5045,6 +5332,7 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [NavigationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Dummy] TEXT NOT NULL
 )";
         }
@@ -5055,9 +5343,16 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public NavigationContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5081,6 +5376,7 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
 [Summary] TEXT NOT NULL
@@ -5093,9 +5389,16 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AccountIndex() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5133,6 +5436,7 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [StreetAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Street] TEXT NOT NULL, 
 [ZipCode] TEXT NOT NULL, 
 [Town] TEXT NOT NULL, 
@@ -5146,9 +5450,16 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public StreetAddress() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5193,6 +5504,7 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Dummy] TEXT NOT NULL
 )";
         }
@@ -5203,9 +5515,16 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AccountContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5229,6 +5548,7 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountProfile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
 [IsSimplifiedAccount] INTEGER NOT NULL, 
@@ -5243,9 +5563,16 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AccountProfile() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5295,6 +5622,7 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountRoles](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OrganizationsImPartOf] TEXT NOT NULL
 )";
         }
@@ -5305,9 +5633,16 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AccountRoles() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5331,6 +5666,7 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
                 @"
 CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [NoOne_Network_All] TEXT NOT NULL
 )";
         }
@@ -5341,9 +5677,16 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public PersonalInfoVisibility() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5367,6 +5710,7 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupedInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupName] TEXT NOT NULL
 )";
         }
@@ -5377,9 +5721,16 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GroupedInformation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5403,6 +5754,7 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
                 @"
 CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [URL] TEXT NOT NULL
 )";
@@ -5414,9 +5766,16 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ReferenceToInformation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5447,6 +5806,7 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OriginalContentID] TEXT NOT NULL, 
 [TechnicalSource] TEXT NOT NULL, 
 [ImageBaseUrl] TEXT NOT NULL, 
@@ -5467,9 +5827,16 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public RenderedNode() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5561,6 +5928,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Content] TEXT NOT NULL
 )";
         }
@@ -5571,9 +5939,16 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ShortTextObject() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5597,6 +5972,7 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
                 @"
 CREATE TABLE IF NOT EXISTS [LongTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Content] TEXT NOT NULL
 )";
         }
@@ -5607,9 +5983,16 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public LongTextObject() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5633,6 +6016,7 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
                 @"
 CREATE TABLE IF NOT EXISTS [MapMarker](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IconUrl] TEXT NOT NULL, 
 [MarkerSource] TEXT NOT NULL, 
 [CategoryName] TEXT NOT NULL, 
@@ -5648,9 +6032,16 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public MapMarker() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5709,6 +6100,7 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
                 @"
 CREATE TABLE IF NOT EXISTS [AboutContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
@@ -5722,9 +6114,16 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AboutContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5767,6 +6166,7 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [ContainerHeader](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL
 )";
@@ -5778,9 +6178,16 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ContainerHeader() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5811,6 +6218,7 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
                 @"
 CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SummaryBody] TEXT NOT NULL
 )";
         }
@@ -5821,9 +6229,16 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ActivitySummaryContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5847,6 +6262,7 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [ActivityIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
 [Summary] TEXT NOT NULL
@@ -5859,9 +6275,16 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ActivityIndex() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5899,6 +6322,7 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [Activity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ActivityName] TEXT NOT NULL, 
 [ContactPerson] TEXT NOT NULL, 
 [StartingTime] TEXT NOT NULL, 
@@ -5914,9 +6338,16 @@ CREATE TABLE IF NOT EXISTS [Activity](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Activity() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -5973,6 +6404,7 @@ CREATE TABLE IF NOT EXISTS [Activity](
                 @"
 CREATE TABLE IF NOT EXISTS [Moderator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ModeratorName] TEXT NOT NULL, 
 [ProfileUrl] TEXT NOT NULL
 )";
@@ -5984,9 +6416,16 @@ CREATE TABLE IF NOT EXISTS [Moderator](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Moderator() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6017,6 +6456,7 @@ CREATE TABLE IF NOT EXISTS [Moderator](
                 @"
 CREATE TABLE IF NOT EXISTS [Collaborator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [AccountID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
 [CollaboratorName] TEXT NOT NULL, 
@@ -6031,9 +6471,16 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Collaborator() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6085,6 +6532,7 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SummaryBody] TEXT NOT NULL
 )";
         }
@@ -6095,9 +6543,16 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GroupSummaryContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6121,6 +6576,7 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
 [Summary] TEXT NOT NULL
@@ -6133,9 +6589,16 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GroupIndex() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6173,6 +6636,7 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [LocationName] TEXT NOT NULL
 )";
         }
@@ -6183,9 +6647,16 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddAddressAndLocationInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6209,6 +6680,7 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddImageInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageTitle] TEXT NOT NULL
 )";
         }
@@ -6219,9 +6691,16 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddImageInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6245,6 +6724,7 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageGroupTitle] TEXT NOT NULL
 )";
         }
@@ -6255,9 +6735,16 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddImageGroupInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6281,6 +6768,7 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [EmailAddress] TEXT NOT NULL
 )";
         }
@@ -6291,9 +6779,16 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddEmailAddressInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6317,6 +6812,7 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupName] TEXT NOT NULL
 )";
         }
@@ -6327,9 +6823,16 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public CreateGroupInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6353,6 +6856,7 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ActivityName] TEXT NOT NULL
 )";
         }
@@ -6363,9 +6867,16 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddActivityInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6389,6 +6900,7 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL
 )";
         }
@@ -6399,9 +6911,16 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddBlogPostInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6425,6 +6944,7 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [CategoryName] TEXT NOT NULL
 )";
         }
@@ -6435,9 +6955,16 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AddCategoryInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6461,6 +6988,7 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [Group](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
@@ -6474,9 +7002,16 @@ CREATE TABLE IF NOT EXISTS [Group](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Group() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6521,6 +7056,7 @@ CREATE TABLE IF NOT EXISTS [Group](
                 @"
 CREATE TABLE IF NOT EXISTS [Introduction](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Body] TEXT NOT NULL
 )";
@@ -6532,9 +7068,16 @@ CREATE TABLE IF NOT EXISTS [Introduction](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Introduction() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6565,6 +7108,7 @@ CREATE TABLE IF NOT EXISTS [Introduction](
                 @"
 CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ContentID] TEXT NOT NULL, 
 [ContentSemanticType] TEXT NOT NULL, 
 [CategoryID] TEXT NOT NULL, 
@@ -6579,9 +7123,16 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ContentCategoryRank() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6633,6 +7184,7 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
                 @"
 CREATE TABLE IF NOT EXISTS [LinkToContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [URL] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -6647,9 +7199,16 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public LinkToContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6699,6 +7258,7 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
                 @"
 CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IFrameTagContents] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
@@ -6713,9 +7273,16 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public EmbeddedContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6765,6 +7332,7 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [HostName] TEXT NOT NULL, 
 [GroupHeader] TEXT NOT NULL, 
 [SortValue] TEXT NOT NULL, 
@@ -6779,9 +7347,16 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public DynamicContentGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6833,6 +7408,7 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [HostName] TEXT NOT NULL, 
 [ContentName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -6853,9 +7429,16 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public DynamicContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -6945,6 +7528,7 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
                 @"
 CREATE TABLE IF NOT EXISTS [AttachedToObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SourceObjectID] TEXT NOT NULL, 
 [SourceObjectName] TEXT NOT NULL, 
 [SourceObjectDomain] TEXT NOT NULL, 
@@ -6960,9 +7544,16 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AttachedToObject() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7021,6 +7612,7 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
                 @"
 CREATE TABLE IF NOT EXISTS [Comment](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetObjectDomain] TEXT NOT NULL, 
@@ -7042,9 +7634,16 @@ CREATE TABLE IF NOT EXISTS [Comment](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Comment() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7141,6 +7740,7 @@ CREATE TABLE IF NOT EXISTS [Comment](
                 @"
 CREATE TABLE IF NOT EXISTS [Selection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetObjectDomain] TEXT NOT NULL, 
@@ -7157,9 +7757,16 @@ CREATE TABLE IF NOT EXISTS [Selection](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Selection() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7221,6 +7828,7 @@ CREATE TABLE IF NOT EXISTS [Selection](
                 @"
 CREATE TABLE IF NOT EXISTS [TextContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
@@ -7239,9 +7847,16 @@ CREATE TABLE IF NOT EXISTS [TextContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TextContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7317,6 +7932,7 @@ CREATE TABLE IF NOT EXISTS [TextContent](
                 @"
 CREATE TABLE IF NOT EXISTS [Blog](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
@@ -7333,9 +7949,16 @@ CREATE TABLE IF NOT EXISTS [Blog](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Blog() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7399,6 +8022,7 @@ CREATE TABLE IF NOT EXISTS [Blog](
                 @"
 CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
 [Summary] TEXT NOT NULL
@@ -7411,9 +8035,16 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public BlogIndexGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7451,6 +8082,7 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [CalendarIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
 [Summary] TEXT NOT NULL
@@ -7463,9 +8095,16 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public CalendarIndex() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7503,6 +8142,7 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [Filter](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL
 )";
         }
@@ -7513,9 +8153,16 @@ CREATE TABLE IF NOT EXISTS [Filter](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Filter() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7539,6 +8186,7 @@ CREATE TABLE IF NOT EXISTS [Filter](
                 @"
 CREATE TABLE IF NOT EXISTS [Calendar](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL
 )";
         }
@@ -7549,9 +8197,16 @@ CREATE TABLE IF NOT EXISTS [Calendar](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Calendar() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7575,6 +8230,7 @@ CREATE TABLE IF NOT EXISTS [Calendar](
                 @"
 CREATE TABLE IF NOT EXISTS [Map](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL
 )";
         }
@@ -7585,9 +8241,16 @@ CREATE TABLE IF NOT EXISTS [Map](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Map() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7611,6 +8274,7 @@ CREATE TABLE IF NOT EXISTS [Map](
                 @"
 CREATE TABLE IF NOT EXISTS [Video](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL
 )";
@@ -7622,9 +8286,16 @@ CREATE TABLE IF NOT EXISTS [Video](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Video() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7655,6 +8326,7 @@ CREATE TABLE IF NOT EXISTS [Video](
                 @"
 CREATE TABLE IF NOT EXISTS [Image](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -7667,9 +8339,16 @@ CREATE TABLE IF NOT EXISTS [Image](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Image() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7707,6 +8386,7 @@ CREATE TABLE IF NOT EXISTS [Image](
                 @"
 CREATE TABLE IF NOT EXISTS [BinaryFile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OriginalFileName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -7719,9 +8399,16 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public BinaryFile() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7759,6 +8446,7 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
                 @"
 CREATE TABLE IF NOT EXISTS [ImageGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
 )";
@@ -7770,9 +8458,16 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ImageGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7803,6 +8498,7 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [VideoGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
 )";
@@ -7814,9 +8510,16 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public VideoGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7847,6 +8550,7 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [Tooltip](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TooltipText] TEXT NOT NULL
 )";
         }
@@ -7857,9 +8561,16 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Tooltip() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7883,6 +8594,7 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
                 @"
 CREATE TABLE IF NOT EXISTS [Longitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TextValue] TEXT NOT NULL
 )";
         }
@@ -7893,9 +8605,16 @@ CREATE TABLE IF NOT EXISTS [Longitude](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Longitude() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7919,6 +8638,7 @@ CREATE TABLE IF NOT EXISTS [Longitude](
                 @"
 CREATE TABLE IF NOT EXISTS [Latitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TextValue] TEXT NOT NULL
 )";
         }
@@ -7929,9 +8649,16 @@ CREATE TABLE IF NOT EXISTS [Latitude](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Latitude() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7955,6 +8682,7 @@ CREATE TABLE IF NOT EXISTS [Latitude](
                 @"
 CREATE TABLE IF NOT EXISTS [Location](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [LocationName] TEXT NOT NULL
 )";
         }
@@ -7965,9 +8693,16 @@ CREATE TABLE IF NOT EXISTS [Location](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Location() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -7991,6 +8726,7 @@ CREATE TABLE IF NOT EXISTS [Location](
                 @"
 CREATE TABLE IF NOT EXISTS [Date](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Day] TEXT NOT NULL, 
 [Week] TEXT NOT NULL, 
 [Month] TEXT NOT NULL, 
@@ -8004,9 +8740,16 @@ CREATE TABLE IF NOT EXISTS [Date](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Date() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8043,6 +8786,7 @@ CREATE TABLE IF NOT EXISTS [Date](
                 @"
 CREATE TABLE IF NOT EXISTS [Sex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SexText] TEXT NOT NULL
 )";
         }
@@ -8053,9 +8797,16 @@ CREATE TABLE IF NOT EXISTS [Sex](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Sex() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8079,6 +8830,7 @@ CREATE TABLE IF NOT EXISTS [Sex](
                 @"
 CREATE TABLE IF NOT EXISTS [OBSAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [StreetName] TEXT NOT NULL, 
 [BuildingNumber] TEXT NOT NULL, 
 [PostOfficeBox] TEXT NOT NULL, 
@@ -8098,9 +8850,16 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public OBSAddress() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8187,6 +8946,7 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
                 @"
 CREATE TABLE IF NOT EXISTS [Identity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
 [Initials] TEXT NOT NULL
@@ -8199,9 +8959,16 @@ CREATE TABLE IF NOT EXISTS [Identity](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Identity() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8239,6 +9006,7 @@ CREATE TABLE IF NOT EXISTS [Identity](
                 @"
 CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Image] BLOB NOT NULL, 
 [Video] BLOB NOT NULL, 
 [Sound] BLOB NOT NULL, 
@@ -8253,9 +9021,16 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ImageVideoSoundVectorRaw() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8299,6 +9074,7 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [CategoryName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -8312,9 +9088,16 @@ CREATE TABLE IF NOT EXISTS [Category](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Category() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8359,6 +9142,7 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [Subscription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Priority] INTEGER NOT NULL, 
 [TargetRelativeLocation] TEXT NOT NULL, 
 [TargetInformationObjectType] TEXT NOT NULL, 
@@ -8374,9 +9158,16 @@ CREATE TABLE IF NOT EXISTS [Subscription](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Subscription() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8433,6 +9224,7 @@ CREATE TABLE IF NOT EXISTS [Subscription](
                 @"
 CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ActiveContainerName] TEXT NOT NULL, 
 [OwnerPrefix] TEXT NOT NULL, 
 [CurrentRetryCount] INTEGER NOT NULL
@@ -8445,9 +9237,16 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public QueueEnvelope() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8483,6 +9282,7 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
                 @"
 CREATE TABLE IF NOT EXISTS [OperationRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ProcessIDToExecute] TEXT NOT NULL
 )";
         }
@@ -8493,9 +9293,16 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public OperationRequest() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8519,6 +9326,7 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ContentItemID] TEXT NOT NULL
 )";
         }
@@ -8529,9 +9337,16 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SubscriptionChainRequestMessage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8555,6 +9370,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SubmitTime] TEXT NOT NULL, 
 [ProcessingStartTime] TEXT NOT NULL, 
 [ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
@@ -8569,9 +9385,16 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SubscriptionChainRequestContent() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8613,6 +9436,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [BlobLocation] TEXT NOT NULL
 )";
         }
@@ -8623,9 +9447,16 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SubscriptionTarget() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8649,6 +9480,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
                 @"
 CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
 )";
@@ -8660,9 +9492,16 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public DeleteEntireOwnerOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8693,6 +9532,7 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
 )";
@@ -8704,9 +9544,16 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public DeleteOwnerContentOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8737,6 +9584,7 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [SystemError](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ErrorTitle] TEXT NOT NULL, 
 [OccurredAt] TEXT NOT NULL
 )";
@@ -8748,9 +9596,16 @@ CREATE TABLE IF NOT EXISTS [SystemError](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SystemError() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8779,6 +9634,7 @@ CREATE TABLE IF NOT EXISTS [SystemError](
                 @"
 CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ShortDescription] TEXT NOT NULL, 
 [LongDescription] TEXT NOT NULL
 )";
@@ -8790,9 +9646,16 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SystemErrorItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8823,6 +9686,7 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationSource](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SourceName] TEXT NOT NULL, 
 [SourceLocation] TEXT NOT NULL, 
 [SourceType] TEXT NOT NULL, 
@@ -8840,9 +9704,16 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InformationSource() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8911,6 +9782,7 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
                 @"
 CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ViewLocation] TEXT NOT NULL, 
 [TypeNameToRefresh] TEXT NOT NULL
 )";
@@ -8922,9 +9794,16 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public RefreshDefaultViewsOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -8955,6 +9834,7 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
 [TargetContainerName] TEXT NOT NULL, 
@@ -8969,9 +9849,16 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public UpdateWebContentOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -9021,6 +9908,7 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [InformationTypeName] TEXT NOT NULL, 
 [OptionName] TEXT NOT NULL
 )";
@@ -9032,9 +9920,16 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public UpdateWebContentHandlerItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -9065,6 +9960,7 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
                 @"
 CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
 [SourceOwner] TEXT NOT NULL, 
@@ -9078,9 +9974,16 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public PublishWebContentOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -9125,6 +10028,7 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriberInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [InputRelativeLocation] TEXT NOT NULL, 
 [InformationObjectName] TEXT NOT NULL, 
 [InformationItemName] TEXT NOT NULL, 
@@ -9138,9 +10042,16 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SubscriberInput() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -9185,6 +10096,7 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
                 @"
 CREATE TABLE IF NOT EXISTS [Monitor](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TargetObjectName] TEXT NOT NULL, 
 [TargetItemName] TEXT NOT NULL, 
 [MonitoringUtcTimeStampToStart] TEXT NOT NULL, 
@@ -9201,9 +10113,16 @@ CREATE TABLE IF NOT EXISTS [Monitor](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Monitor() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -9265,6 +10184,7 @@ CREATE TABLE IF NOT EXISTS [Monitor](
                 @"
 CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Icon] BLOB NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -9277,9 +10197,16 @@ CREATE TABLE IF NOT EXISTS [IconTitleDescription](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public IconTitleDescription() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

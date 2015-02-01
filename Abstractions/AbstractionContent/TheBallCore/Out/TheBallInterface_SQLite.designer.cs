@@ -114,6 +114,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.WizardTask.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WizardTaskTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TaskName = serializedObject.TaskName;
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.InputType = serializedObject.InputType;
@@ -126,6 +127,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.Connection.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ConnectionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OutputInformationID = serializedObject.OutputInformationID;
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.DeviceID = serializedObject.DeviceID;
@@ -146,6 +148,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TransferPackageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ConnectionID = serializedObject.ConnectionID;
 		            existingObject.PackageDirection = serializedObject.PackageDirection;
 		            existingObject.PackageType = serializedObject.PackageType;
@@ -163,6 +166,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryLinkTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
 		            existingObject.TargetCategoryID = serializedObject.TargetCategoryID;
 		            existingObject.LinkingType = serializedObject.LinkingType;
@@ -175,6 +179,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.NativeCategoryID = serializedObject.NativeCategoryID;
 		            existingObject.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
 		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
@@ -190,6 +195,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
                     existingObject.ChangeItemTrackingList.Clear();
 					if(serializedObject.ChangeItemTrackingList != null)
 	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
@@ -203,6 +209,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationChangeItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.StartTimeUTC = serializedObject.StartTimeUTC;
 		            existingObject.EndTimeUTC = serializedObject.EndTimeUTC;
                     existingObject.ChangedObjectIDList.Clear();
@@ -218,6 +225,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OperationExecutionItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OperationName = serializedObject.OperationName;
 		            existingObject.OperationDomain = serializedObject.OperationDomain;
 		            existingObject.OperationID = serializedObject.OperationID;
@@ -235,6 +243,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
 		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
 		            return;
@@ -246,6 +255,7 @@ namespace SQLite.TheBall.Interface {
 		                global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericValueTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ValueName = serializedObject.ValueName;
 		            existingObject.String = serializedObject.String;
                     existingObject.StringArray.Clear();
@@ -577,6 +587,7 @@ namespace SQLite.TheBall.Interface {
                 @"
 CREATE TABLE IF NOT EXISTS [WizardTask](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TaskName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [InputType] TEXT NOT NULL
@@ -589,9 +600,16 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public WizardTask() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -629,6 +647,7 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
                 @"
 CREATE TABLE IF NOT EXISTS [Connection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OutputInformationID] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [DeviceID] TEXT NOT NULL, 
@@ -649,9 +668,16 @@ CREATE TABLE IF NOT EXISTS [Connection](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Connection() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -743,6 +769,7 @@ CREATE TABLE IF NOT EXISTS [Connection](
                 @"
 CREATE TABLE IF NOT EXISTS [TransferPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ConnectionID] TEXT NOT NULL, 
 [PackageDirection] TEXT NOT NULL, 
 [PackageType] TEXT NOT NULL, 
@@ -757,9 +784,16 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TransferPackage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -853,6 +887,7 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [CategoryLink](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SourceCategoryID] TEXT NOT NULL, 
 [TargetCategoryID] TEXT NOT NULL, 
 [LinkingType] TEXT NOT NULL
@@ -865,9 +900,16 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public CategoryLink() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -905,6 +947,7 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [NativeCategoryID] TEXT NOT NULL, 
 [NativeCategoryDomainName] TEXT NOT NULL, 
 [NativeCategoryObjectName] TEXT NOT NULL, 
@@ -920,9 +963,16 @@ CREATE TABLE IF NOT EXISTS [Category](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Category() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -981,6 +1031,7 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ChangeItemTrackingList] TEXT NOT NULL
 )";
         }
@@ -991,9 +1042,16 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public StatusSummary() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
         [Column(Name = "ChangeItemTrackingList")] 
@@ -1061,6 +1119,7 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [StartTimeUTC] TEXT NOT NULL, 
 [EndTimeUTC] TEXT NOT NULL, 
 [ChangedObjectIDList] TEXT NOT NULL
@@ -1073,9 +1132,16 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InformationChangeItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1153,6 +1219,7 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
                 @"
 CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OperationName] TEXT NOT NULL, 
 [OperationDomain] TEXT NOT NULL, 
 [OperationID] TEXT NOT NULL, 
@@ -1170,9 +1237,16 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public OperationExecutionItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1239,6 +1313,7 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
                 @"
 CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IncludeInCollection] INTEGER NOT NULL, 
 [OptionalCollectionName] TEXT NOT NULL
 )";
@@ -1250,9 +1325,16 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GenericObject() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1281,6 +1363,7 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
                 @"
 CREATE TABLE IF NOT EXISTS [GenericValue](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ValueName] TEXT NOT NULL, 
 [String] TEXT NOT NULL, 
 [StringArray] TEXT NOT NULL, 
@@ -1300,9 +1383,16 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GenericValue() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

@@ -110,6 +110,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.Who.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WhoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -123,6 +124,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.ProductForWhom.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductForWhomTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -136,6 +138,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.Product.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -149,6 +152,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.ProductUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
 		            return;
 		        } 
@@ -159,6 +163,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.RenderedNode.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
@@ -175,6 +180,7 @@ namespace SQLite.Caloom.CORE {
 		                global::SER.Caloom.CORE.ShortTextObject.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
 		            return;
 		        } 
@@ -359,6 +365,7 @@ namespace SQLite.Caloom.CORE {
                 @"
 CREATE TABLE IF NOT EXISTS [Who](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -372,9 +379,16 @@ CREATE TABLE IF NOT EXISTS [Who](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Who() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -419,6 +433,7 @@ CREATE TABLE IF NOT EXISTS [Who](
                 @"
 CREATE TABLE IF NOT EXISTS [ProductForWhom](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -432,9 +447,16 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ProductForWhom() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -479,6 +501,7 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
                 @"
 CREATE TABLE IF NOT EXISTS [Product](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -492,9 +515,16 @@ CREATE TABLE IF NOT EXISTS [Product](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Product() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -539,6 +569,7 @@ CREATE TABLE IF NOT EXISTS [Product](
                 @"
 CREATE TABLE IF NOT EXISTS [ProductUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [UsageAmountInDecimal] REAL NOT NULL
 )";
         }
@@ -549,9 +580,16 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ProductUsage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -573,6 +611,7 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [TechnicalSource] TEXT NOT NULL, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -589,9 +628,16 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public RenderedNode() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -657,6 +703,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [Content] TEXT NOT NULL
 )";
         }
@@ -667,9 +714,16 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ShortTextObject() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

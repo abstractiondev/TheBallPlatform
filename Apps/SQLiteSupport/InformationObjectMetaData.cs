@@ -28,6 +28,7 @@ namespace SQLiteSupport
         {
             ID = Guid.NewGuid().ToString();
             MD5 = String.Empty;
+            ETag = String.Empty;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -58,6 +59,12 @@ namespace SQLiteSupport
         [Column]
         [ScaffoldColumn(true)]
         [Editable(false)]
+        public string ETag { get; set; }
+
+
+        [Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
         public string LastWriteTime { get; set; }
 
         [Column]
@@ -84,6 +91,7 @@ CREATE TABLE IF NOT EXISTS InformationObjectMetaData(
 [ObjectType] TEXT NOT NULL, 
 [ObjectID] TEXT NOT NULL,
 [MD5] TEXT NOT NULL,
+[ETag] TEXT NOT NULL,
 [LastWriteTime] TEXT NOT NULL,
 [FileLength] INTEGER NOT NULL,
 [SerializationType] INTEGER NOT NULL

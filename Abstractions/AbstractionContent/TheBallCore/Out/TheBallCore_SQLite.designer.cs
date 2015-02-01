@@ -130,6 +130,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.ContentPackage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContentPackageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.PackageType = serializedObject.PackageType;
 		            existingObject.PackageName = serializedObject.PackageName;
 		            existingObject.Description = serializedObject.Description;
@@ -144,6 +145,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InformationInput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationInputTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.InputDescription = serializedObject.InputDescription;
 		            existingObject.LocationURL = serializedObject.LocationURL;
 		            existingObject.LocalContentName = serializedObject.LocalContentName;
@@ -158,6 +160,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InformationOutput.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationOutputTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OutputDescription = serializedObject.OutputDescription;
 		            existingObject.DestinationURL = serializedObject.DestinationURL;
 		            existingObject.DestinationContentName = serializedObject.DestinationContentName;
@@ -173,6 +176,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.AuthenticatedAsActiveDevice.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AuthenticatedAsActiveDeviceTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.AuthenticationDescription = serializedObject.AuthenticationDescription;
 		            existingObject.SharedSecret = serializedObject.SharedSecret;
 		            existingObject.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
@@ -189,6 +193,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.DeviceMembership.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DeviceMembershipTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.DeviceDescription = serializedObject.DeviceDescription;
 		            existingObject.SharedSecret = serializedObject.SharedSecret;
 		            existingObject.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
@@ -202,6 +207,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceFiscalExportSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceFiscalExportSummaryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            existingObject.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
 		            return;
@@ -213,6 +219,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.Invoice.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.InvoiceName = serializedObject.InvoiceName;
 		            existingObject.InvoiceID = serializedObject.InvoiceID;
 		            existingObject.InvoicedAmount = serializedObject.InvoicedAmount;
@@ -230,6 +237,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceDetails.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceDetailsTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.MonthlyFeesTotal = serializedObject.MonthlyFeesTotal;
 		            existingObject.OneTimeFeesTotal = serializedObject.OneTimeFeesTotal;
 		            existingObject.UsageFeesTotal = serializedObject.UsageFeesTotal;
@@ -245,6 +253,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceUser.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceUserTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.UserName = serializedObject.UserName;
 		            existingObject.UserID = serializedObject.UserID;
 		            existingObject.UserPhoneNumber = serializedObject.UserPhoneNumber;
@@ -259,6 +268,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceRowGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceRowGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
 		            existingObject.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            existingObject.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
@@ -272,6 +282,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceEventDetailGroup.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceEventDetailGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
 		            return;
 		        } 
@@ -282,6 +293,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceEventDetail.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceEventDetailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IndentMode = serializedObject.IndentMode;
 		            existingObject.EventStartDateTime = serializedObject.EventStartDateTime;
 		            existingObject.EventEndDateTime = serializedObject.EventEndDateTime;
@@ -301,6 +313,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InvoiceRow.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceRowTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IndentMode = serializedObject.IndentMode;
 		            existingObject.AmountOfUnits = serializedObject.AmountOfUnits;
 		            existingObject.Duration = serializedObject.Duration;
@@ -317,6 +330,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.Category.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
 		            return;
 		        } 
@@ -327,6 +341,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.ProcessContainer.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
                     existingObject.ProcessIDs.Clear();
 					if(serializedObject.ProcessIDs != null)
 	                    serializedObject.ProcessIDs.ForEach(item => existingObject.ProcessIDs.Add(item));
@@ -340,6 +355,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.Process.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ProcessDescription = serializedObject.ProcessDescription;
 		            return;
 		        } 
@@ -350,6 +366,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.SemanticInformationItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SemanticInformationItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ItemFullType = serializedObject.ItemFullType;
 		            existingObject.ItemValue = serializedObject.ItemValue;
 		            return;
@@ -361,6 +378,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.InformationOwnerInfo.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationOwnerInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.OwnerType = serializedObject.OwnerType;
 		            existingObject.OwnerIdentifier = serializedObject.OwnerIdentifier;
 		            return;
@@ -372,6 +390,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.UsageSummary.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageSummaryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SummaryName = serializedObject.SummaryName;
 		            return;
 		        } 
@@ -382,6 +401,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.UsageMonitorItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageMonitorItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
 		            return;
 		        } 
@@ -392,6 +412,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.ProcessorUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessorUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTicks = serializedObject.AmountOfTicks;
 		            existingObject.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -405,6 +426,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.StorageTransactionUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StorageTransactionUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTransactions = serializedObject.AmountOfTransactions;
 		            return;
@@ -416,6 +438,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.StorageUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StorageUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.SnapshotTime = serializedObject.SnapshotTime;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.UsageUnit = serializedObject.UsageUnit;
@@ -429,6 +452,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.NetworkUsage.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NetworkUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfBytes = serializedObject.AmountOfBytes;
 		            return;
@@ -440,6 +464,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.TimeRange.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TimeRangeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.StartTime = serializedObject.StartTime;
 		            existingObject.EndTime = serializedObject.EndTime;
 		            return;
@@ -451,6 +476,7 @@ namespace SQLite.TheBall.CORE {
 		                global::SER.TheBall.CORE.HTTPActivityDetails.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = HTTPActivityDetailsTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.RemoteIPAddress = serializedObject.RemoteIPAddress;
 		            existingObject.RemoteEndpointUserName = serializedObject.RemoteEndpointUserName;
 		            existingObject.UserID = serializedObject.UserID;
@@ -1161,6 +1187,7 @@ namespace SQLite.TheBall.CORE {
                 @"
 CREATE TABLE IF NOT EXISTS [ContentPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [PackageType] TEXT NOT NULL, 
 [PackageName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -1175,9 +1202,16 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ContentPackage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1227,6 +1261,7 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [InputDescription] TEXT NOT NULL, 
 [LocationURL] TEXT NOT NULL, 
 [LocalContentName] TEXT NOT NULL, 
@@ -1241,9 +1276,16 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InformationInput() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1293,6 +1335,7 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationOutput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OutputDescription] TEXT NOT NULL, 
 [DestinationURL] TEXT NOT NULL, 
 [DestinationContentName] TEXT NOT NULL, 
@@ -1308,9 +1351,16 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InformationOutput() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1367,6 +1417,7 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
                 @"
 CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [AuthenticationDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
 [ActiveSymmetricAESKey] BLOB NOT NULL, 
@@ -1383,9 +1434,16 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public AuthenticatedAsActiveDevice() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1447,6 +1505,7 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
                 @"
 CREATE TABLE IF NOT EXISTS [DeviceMembership](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [DeviceDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
 [ActiveSymmetricAESKey] BLOB NOT NULL, 
@@ -1460,9 +1519,16 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public DeviceMembership() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1503,6 +1569,7 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [FiscalInclusiveStartDate] TEXT NOT NULL, 
 [FiscalInclusiveEndDate] TEXT NOT NULL
 )";
@@ -1514,9 +1581,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceFiscalExportSummary() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1543,6 +1617,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [Invoice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [InvoiceName] TEXT NOT NULL, 
 [InvoiceID] TEXT NOT NULL, 
 [InvoicedAmount] TEXT NOT NULL, 
@@ -1560,9 +1635,16 @@ CREATE TABLE IF NOT EXISTS [Invoice](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Invoice() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1631,6 +1713,7 @@ CREATE TABLE IF NOT EXISTS [Invoice](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [MonthlyFeesTotal] TEXT NOT NULL, 
 [OneTimeFeesTotal] TEXT NOT NULL, 
 [UsageFeesTotal] TEXT NOT NULL, 
@@ -1646,9 +1729,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceDetails() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1707,6 +1797,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceUser](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [UserName] TEXT NOT NULL, 
 [UserID] TEXT NOT NULL, 
 [UserPhoneNumber] TEXT NOT NULL, 
@@ -1721,9 +1812,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceUser() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1775,6 +1873,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupName] TEXT NOT NULL, 
 [GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
 [GroupTotalTaxes] TEXT NOT NULL, 
@@ -1788,9 +1887,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceRowGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1835,6 +1941,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [GroupName] TEXT NOT NULL
 )";
         }
@@ -1845,9 +1952,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceEventDetailGroup() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1871,6 +1985,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IndentMode] TEXT NOT NULL, 
 [EventStartDateTime] TEXT NOT NULL, 
 [EventEndDateTime] TEXT NOT NULL, 
@@ -1890,9 +2005,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceEventDetail() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -1975,6 +2097,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceRow](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IndentMode] TEXT NOT NULL, 
 [AmountOfUnits] TEXT NOT NULL, 
 [Duration] TEXT NOT NULL, 
@@ -1991,9 +2114,16 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InvoiceRow() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2059,6 +2189,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [CategoryName] TEXT NOT NULL
 )";
         }
@@ -2069,9 +2200,16 @@ CREATE TABLE IF NOT EXISTS [Category](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Category() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2095,6 +2233,7 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [ProcessContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ProcessIDs] TEXT NOT NULL
 )";
         }
@@ -2105,9 +2244,16 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ProcessContainer() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
         [Column(Name = "ProcessIDs")] 
@@ -2175,6 +2321,7 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [Process](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ProcessDescription] TEXT NOT NULL
 )";
         }
@@ -2185,9 +2332,16 @@ CREATE TABLE IF NOT EXISTS [Process](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public Process() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2211,6 +2365,7 @@ CREATE TABLE IF NOT EXISTS [Process](
                 @"
 CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ItemFullType] TEXT NOT NULL, 
 [ItemValue] TEXT NOT NULL
 )";
@@ -2222,9 +2377,16 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public SemanticInformationItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2255,6 +2417,7 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [OwnerType] TEXT NOT NULL, 
 [OwnerIdentifier] TEXT NOT NULL
 )";
@@ -2266,9 +2429,16 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public InformationOwnerInfo() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2299,6 +2469,7 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [UsageSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SummaryName] TEXT NOT NULL
 )";
         }
@@ -2309,9 +2480,16 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public UsageSummary() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2335,6 +2513,7 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [StepSizeInMinutes] INTEGER NOT NULL
 )";
         }
@@ -2345,9 +2524,16 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public UsageMonitorItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2369,6 +2555,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
                 @"
 CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [UsageType] TEXT NOT NULL, 
 [AmountOfTicks] REAL NOT NULL, 
 [FrequencyTicksPerSecond] REAL NOT NULL, 
@@ -2382,9 +2569,16 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public ProcessorUsage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2423,6 +2617,7 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [UsageType] TEXT NOT NULL, 
 [AmountOfTransactions] INTEGER NOT NULL
 )";
@@ -2434,9 +2629,16 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public StorageTransactionUsage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2465,6 +2667,7 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [StorageUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [SnapshotTime] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
 [UsageUnit] TEXT NOT NULL, 
@@ -2478,9 +2681,16 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public StorageUsage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2521,6 +2731,7 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [NetworkUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [UsageType] TEXT NOT NULL, 
 [AmountOfBytes] INTEGER NOT NULL
 )";
@@ -2532,9 +2743,16 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public NetworkUsage() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2563,6 +2781,7 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [TimeRange](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [StartTime] TEXT NOT NULL, 
 [EndTime] TEXT NOT NULL
 )";
@@ -2574,9 +2793,16 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public TimeRange() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -2603,6 +2829,7 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
                 @"
 CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [RemoteIPAddress] TEXT NOT NULL, 
 [RemoteEndpointUserName] TEXT NOT NULL, 
 [UserID] TEXT NOT NULL, 
@@ -2619,9 +2846,16 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public HTTPActivityDetails() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

@@ -105,6 +105,7 @@ namespace SQLite.Caloom.Housing {
 		                global::SER.Caloom.Housing.House.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = HouseTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
@@ -165,6 +166,7 @@ namespace SQLite.Caloom.Housing {
                 @"
 CREATE TABLE IF NOT EXISTS [House](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -178,9 +180,16 @@ CREATE TABLE IF NOT EXISTS [House](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public House() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

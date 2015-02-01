@@ -106,6 +106,7 @@ namespace SQLite.TheBall.Payments {
 		                global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSubscriptionPlanTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.PlanName = serializedObject.PlanName;
 		            existingObject.Description = serializedObject.Description;
                     existingObject.GroupIDs.Clear();
@@ -121,6 +122,7 @@ namespace SQLite.TheBall.Payments {
 		                global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
@@ -211,6 +213,7 @@ namespace SQLite.TheBall.Payments {
                 @"
 CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [PlanName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [GroupIDs] TEXT NOT NULL
@@ -223,9 +226,16 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public GroupSubscriptionPlan() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -307,6 +317,7 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
                 @"
 CREATE TABLE IF NOT EXISTS [CustomerAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [StripeID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -320,9 +331,16 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public CustomerAccount() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 

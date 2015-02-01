@@ -48,6 +48,7 @@ namespace SQLiteSupport
                     if (isChanged)
                     {
                         existingObject.MD5 = currentData.MD5;
+                        existingObject.ETag = currentData.ETag;
                         existingObject.LastWriteTime = currentData.LastWriteTime;
                         existingObject.FileLength = currentData.FileLength;
                         existingObject.CurrentChangeAction = ChangeAction.Update;

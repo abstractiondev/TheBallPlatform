@@ -56,6 +56,7 @@ namespace TheBall.CORE
                                 FileLength = blob.Properties.Length,
                                 LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
                                 MD5 = blob.Properties.ContentMD5,
+                                ETag = blob.Properties.ETag,
                                 SemanticDomain = semanticDomain,
                                 ObjectType = objectType,
                                 ObjectID = objectID

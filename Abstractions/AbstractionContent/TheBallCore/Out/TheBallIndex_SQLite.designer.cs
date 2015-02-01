@@ -107,6 +107,7 @@ namespace SQLite.TheBall.Index {
 		                global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.IndexName = serializedObject.IndexName;
                     existingObject.ObjectLocations.Clear();
 					if(serializedObject.ObjectLocations != null)
@@ -121,6 +122,7 @@ namespace SQLite.TheBall.Index {
 		                global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.QueryString = serializedObject.QueryString;
 		            existingObject.DefaultFieldName = serializedObject.DefaultFieldName;
 		            existingObject.IndexName = serializedObject.IndexName;
@@ -137,6 +139,7 @@ namespace SQLite.TheBall.Index {
 		                global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
 		            existingObject.ObjectName = serializedObject.ObjectName;
 		            existingObject.ObjectID = serializedObject.ObjectID;
@@ -251,6 +254,7 @@ namespace SQLite.TheBall.Index {
                 @"
 CREATE TABLE IF NOT EXISTS [IndexingRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [IndexName] TEXT NOT NULL, 
 [ObjectLocations] TEXT NOT NULL
 )";
@@ -262,9 +266,16 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public IndexingRequest() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -339,6 +350,7 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [QueryRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [QueryString] TEXT NOT NULL, 
 [DefaultFieldName] TEXT NOT NULL, 
 [IndexName] TEXT NOT NULL, 
@@ -355,9 +367,16 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public QueryRequest() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
@@ -415,6 +434,7 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [QueryResultItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
 [ObjectDomainName] TEXT NOT NULL, 
 [ObjectName] TEXT NOT NULL, 
 [ObjectID] TEXT NOT NULL, 
@@ -428,9 +448,16 @@ CREATE TABLE IF NOT EXISTS [QueryResultItem](
         [Editable(false)]
 		public string ID { get; set; }
 
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
 		public QueryResultItem() 
 		{
 			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
 		}
 
 
