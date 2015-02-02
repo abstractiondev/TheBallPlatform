@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.Caloom.Housing {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -158,6 +159,7 @@ namespace SQLite.Caloom.Housing {
         }
 
     [Table(Name = "House")]
+	[ScaffoldTable(true)]
 	public class House : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()

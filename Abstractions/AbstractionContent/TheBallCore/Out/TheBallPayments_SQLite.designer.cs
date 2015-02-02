@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.TheBall.Payments {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -88,6 +89,11 @@ namespace SQLite.TheBall.Payments {
 			        command.ExecuteNonQuery();
 			    }
 			}
+
+		    Table<InformationObjectMetaData> IStorageSyncableDataContext.InformationObjectMetaDataTable
+		    {
+		        get { return InformationObjectMetaDataTable; }
+		    } 
 
 			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
@@ -174,7 +180,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+                InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
 		        {
 		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
@@ -205,6 +211,7 @@ namespace SQLite.TheBall.Payments {
         }
 
     [Table(Name = "GroupSubscriptionPlan")]
+	[ScaffoldTable(true)]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -309,6 +316,7 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 		}
 	}
     [Table(Name = "CustomerAccount")]
+	[ScaffoldTable(true)]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()

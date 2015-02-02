@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.Caloom.CORE {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -357,6 +358,7 @@ namespace SQLite.Caloom.CORE {
         }
 
     [Table(Name = "Who")]
+	[ScaffoldTable(true)]
 	public class Who : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -425,6 +427,7 @@ CREATE TABLE IF NOT EXISTS [Who](
 		}
 	}
     [Table(Name = "ProductForWhom")]
+	[ScaffoldTable(true)]
 	public class ProductForWhom : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -493,6 +496,7 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 		}
 	}
     [Table(Name = "Product")]
+	[ScaffoldTable(true)]
 	public class Product : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -561,6 +565,7 @@ CREATE TABLE IF NOT EXISTS [Product](
 		}
 	}
     [Table(Name = "ProductUsage")]
+	[ScaffoldTable(true)]
 	public class ProductUsage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -603,6 +608,7 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 		}
 	}
     [Table(Name = "RenderedNode")]
+	[ScaffoldTable(true)]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -695,6 +701,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 		}
 	}
     [Table(Name = "ShortTextObject")]
+	[ScaffoldTable(true)]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()

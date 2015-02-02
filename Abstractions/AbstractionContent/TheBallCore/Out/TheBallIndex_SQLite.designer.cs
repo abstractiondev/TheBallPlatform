@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.TheBall.Index {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -246,6 +247,7 @@ namespace SQLite.TheBall.Index {
         }
 
     [Table(Name = "IndexingRequest")]
+	[ScaffoldTable(true)]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -342,6 +344,7 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 		}
 	}
     [Table(Name = "QueryRequest")]
+	[ScaffoldTable(true)]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -426,6 +429,7 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 		}
 	}
     [Table(Name = "QueryResultItem")]
+	[ScaffoldTable(true)]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()

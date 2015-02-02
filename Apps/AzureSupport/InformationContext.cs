@@ -284,6 +284,7 @@ namespace TheBall
         }
 
         private IContainerOwner _owner;
+        public bool IsOwnerDefined { get { return _owner != null; } }
         public IContainerOwner Owner
         {
             set { _owner = value; }

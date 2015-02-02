@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.TheBall.Interface {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -579,6 +580,7 @@ namespace SQLite.TheBall.Interface {
         }
 
     [Table(Name = "WizardTask")]
+	[ScaffoldTable(true)]
 	public class WizardTask : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -639,6 +641,7 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
 		}
 	}
     [Table(Name = "Connection")]
+	[ScaffoldTable(true)]
 	public class Connection : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -761,6 +764,7 @@ CREATE TABLE IF NOT EXISTS [Connection](
 		}
 	}
     [Table(Name = "TransferPackage")]
+	[ScaffoldTable(true)]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -879,6 +883,7 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 		}
 	}
     [Table(Name = "CategoryLink")]
+	[ScaffoldTable(true)]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -939,6 +944,7 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 		}
 	}
     [Table(Name = "Category")]
+	[ScaffoldTable(true)]
 	public class Category : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1023,6 +1029,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 		}
 	}
     [Table(Name = "StatusSummary")]
+	[ScaffoldTable(true)]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1111,6 +1118,7 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 		}
 	}
     [Table(Name = "InformationChangeItem")]
+	[ScaffoldTable(true)]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1211,6 +1219,7 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 		}
 	}
     [Table(Name = "OperationExecutionItem")]
+	[ScaffoldTable(true)]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1305,6 +1314,7 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 		}
 	}
     [Table(Name = "GenericObject")]
+	[ScaffoldTable(true)]
 	public class GenericObject : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1355,6 +1365,7 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 		}
 	}
     [Table(Name = "GenericValue")]
+	[ScaffoldTable(true)]
 	public class GenericValue : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()

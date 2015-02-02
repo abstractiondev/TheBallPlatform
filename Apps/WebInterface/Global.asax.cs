@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data.Common;
 using System.Data.Linq.Mapping;
 using System.Data.SQLite;
 using System.IO;
@@ -22,6 +23,7 @@ using SQLite.TheBall.Payments;
 using SQLiteSupport;
 using Stripe;
 using TheBall;
+using TheBall.CORE;
 using MetaModel = System.Web.DynamicData.MetaModel;
 using MetaTable = System.Web.DynamicData.MetaTable;
 
@@ -43,6 +45,9 @@ namespace WebInterface
 
             public override IHttpHandler CreateHandler(DynamicDataRoute route, MetaTable table, string action)
             {
+                var requestPath = HttpContext.Current.Request.Path;
+                var currentOwner = VirtualOwner.FigureOwner(requestPath.Replace("/auth/", ""));
+                InformationContext.Current.Owner = currentOwner;
                 return base.CreateHandler(route, table, action);
             }
         }
@@ -71,7 +76,23 @@ namespace WebInterface
                     (IStorageSyncableDataContext)
                         dataContextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
                             new object[] { ":memory:" });
-                dataContextType.GetProperty("CurrentConnection").SetValue(null, currentDataContext.Connection, null);
+                Func<DbConnection> getConnectionFunc = () =>
+                {
+                    var inMemoryConnection = currentDataContext.Connection;
+                    if (InformationContext.Current.IsOwnerDefined)
+                    {
+                        var owner = InformationContext.CurrentOwner;
+                        var dbDirectory = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationDirectory(owner);
+                        var urlPathParts = HttpContext.Current.Request.Path.Split('/');
+                        string semanticDomainName = urlPathParts[5];
+                        var dbFileName =
+                            UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationFileName(
+                                semanticDomainName, dbDirectory);
+                        return new SQLiteConnection(String.Format("Data Source={0}", dbFileName));
+                    }
+                    return inMemoryConnection;
+                };
+                dataContextType.GetProperty("GetCurrentConnectionFunc").SetValue(null, getConnectionFunc , null);
                 var currentModel = new MetaModel();
 
                 DataContextDictionary.Add(dataContextTypeName, currentDataContext);
@@ -135,7 +156,7 @@ namespace WebInterface
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            if (InstanceConfiguration.DynamicDataCRUDDomains.Length > 0)
+            if (InstanceConfiguration.DynamicDataCRUDDomains.Length > 0 && InstanceConfiguration.UseSQLiteMasterDatabase)
             {
                 RegisterRoutes(RouteTable.Routes, InstanceConfiguration.DynamicDataCRUDDomains);
                 RegisterScripts();

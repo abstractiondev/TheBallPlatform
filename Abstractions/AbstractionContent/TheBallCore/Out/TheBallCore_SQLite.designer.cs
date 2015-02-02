@@ -4,6 +4,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -40,9 +41,9 @@ namespace SQLite.TheBall.CORE {
 		        disposed = true;
 		    }
 
-		    public static SQLiteConnection CurrentConnection { get; set; }
+            public static Func<DbConnection> GetCurrentConnectionFunc { get; set; }
 
-		    public TheBallDataContext() : base(CurrentConnection)
+		    public TheBallDataContext() : base(GetCurrentConnectionFunc())
 		    {
 		        
 		    }
@@ -1179,6 +1180,7 @@ namespace SQLite.TheBall.CORE {
         }
 
     [Table(Name = "ContentPackage")]
+	[ScaffoldTable(true)]
 	public class ContentPackage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1253,6 +1255,7 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
 		}
 	}
     [Table(Name = "InformationInput")]
+	[ScaffoldTable(true)]
 	public class InformationInput : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1327,6 +1330,7 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
 		}
 	}
     [Table(Name = "InformationOutput")]
+	[ScaffoldTable(true)]
 	public class InformationOutput : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1409,6 +1413,7 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
 		}
 	}
     [Table(Name = "AuthenticatedAsActiveDevice")]
+	[ScaffoldTable(true)]
 	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1497,6 +1502,7 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 		}
 	}
     [Table(Name = "DeviceMembership")]
+	[ScaffoldTable(true)]
 	public class DeviceMembership : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1561,6 +1567,7 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
 		}
 	}
     [Table(Name = "InvoiceFiscalExportSummary")]
+	[ScaffoldTable(true)]
 	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1609,6 +1616,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 		}
 	}
     [Table(Name = "Invoice")]
+	[ScaffoldTable(true)]
 	public class Invoice : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1705,6 +1713,7 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 		}
 	}
     [Table(Name = "InvoiceDetails")]
+	[ScaffoldTable(true)]
 	public class InvoiceDetails : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1789,6 +1798,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 		}
 	}
     [Table(Name = "InvoiceUser")]
+	[ScaffoldTable(true)]
 	public class InvoiceUser : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1865,6 +1875,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 		}
 	}
     [Table(Name = "InvoiceRowGroup")]
+	[ScaffoldTable(true)]
 	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1933,6 +1944,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 		}
 	}
     [Table(Name = "InvoiceEventDetailGroup")]
+	[ScaffoldTable(true)]
 	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -1977,6 +1989,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 		}
 	}
     [Table(Name = "InvoiceEventDetail")]
+	[ScaffoldTable(true)]
 	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2089,6 +2102,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 		}
 	}
     [Table(Name = "InvoiceRow")]
+	[ScaffoldTable(true)]
 	public class InvoiceRow : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2181,6 +2195,7 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
 		}
 	}
     [Table(Name = "Category")]
+	[ScaffoldTable(true)]
 	public class Category : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2225,6 +2240,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 		}
 	}
     [Table(Name = "ProcessContainer")]
+	[ScaffoldTable(true)]
 	public class ProcessContainer : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2313,6 +2329,7 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 		}
 	}
     [Table(Name = "Process")]
+	[ScaffoldTable(true)]
 	public class Process : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2357,6 +2374,7 @@ CREATE TABLE IF NOT EXISTS [Process](
 		}
 	}
     [Table(Name = "SemanticInformationItem")]
+	[ScaffoldTable(true)]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2409,6 +2427,7 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 		}
 	}
     [Table(Name = "InformationOwnerInfo")]
+	[ScaffoldTable(true)]
 	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2461,6 +2480,7 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 		}
 	}
     [Table(Name = "UsageSummary")]
+	[ScaffoldTable(true)]
 	public class UsageSummary : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2505,6 +2525,7 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 		}
 	}
     [Table(Name = "UsageMonitorItem")]
+	[ScaffoldTable(true)]
 	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2547,6 +2568,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 		}
 	}
     [Table(Name = "ProcessorUsage")]
+	[ScaffoldTable(true)]
 	public class ProcessorUsage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2609,6 +2631,7 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 		}
 	}
     [Table(Name = "StorageTransactionUsage")]
+	[ScaffoldTable(true)]
 	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2659,6 +2682,7 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 		}
 	}
     [Table(Name = "StorageUsage")]
+	[ScaffoldTable(true)]
 	public class StorageUsage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2723,6 +2747,7 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 		}
 	}
     [Table(Name = "NetworkUsage")]
+	[ScaffoldTable(true)]
 	public class NetworkUsage : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2773,6 +2798,7 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 		}
 	}
     [Table(Name = "TimeRange")]
+	[ScaffoldTable(true)]
 	public class TimeRange : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -2821,6 +2847,7 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
 		}
 	}
     [Table(Name = "HTTPActivityDetails")]
+	[ScaffoldTable(true)]
 	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
