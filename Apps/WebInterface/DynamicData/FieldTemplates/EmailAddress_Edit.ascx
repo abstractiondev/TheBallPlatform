@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="EmailAddress_Edit.ascx.cs" Inherits="DynamicDataWebApp.EmailAddress_EditField" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EmailAddress_Edit.ascx.cs" Inherits="DynamicDataWebApp.EmailAddress_EditField" %>
 
 
 <asp:TextBox ID="TextBox1" runat="server" CssClass="DDTextBox" Text='<%# FieldValueEditString %>'></asp:TextBox>
