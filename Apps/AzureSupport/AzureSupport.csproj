@@ -109,6 +109,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs">
       <Link>AaltoGlobalImpact.OIP\OperationAbstractionFromOIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromPersonalWebDiosphere.designer.cs">
+      <Link>PersonalWeb.Diosphere\OperationAbstractionFromPersonalWebDiosphere.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs">
       <Link>Abstractions\OperationAbstractionFromTheBallAdmin.designer.cs</Link>
     </Compile>
@@ -138,6 +141,9 @@
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>AaltoGlobalImpact.OIP\OIPBallInstance.designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\PersonalWebDiosphere.designer.cs">
+      <Link>PersonalWeb.Diosphere\PersonalWebDiosphere.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallAdmin.designer.cs">
       <Link>Abstractions\TheBallAdmin.designer.cs</Link>
@@ -184,6 +190,7 @@
     <Compile Include="Partials\DynamicContentGroupCollection.cs" />
     <Compile Include="Partials\EmbeddedContent.cs" />
     <Compile Include="Partials\LinkToContent.cs" />
+    <Compile Include="PersonalWeb.Diosphere\SaveRoomDataImplementation.cs" />
     <Compile Include="SyncSupport.cs" />
     <Compile Include="TheBall.CORE\ConfirmAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />

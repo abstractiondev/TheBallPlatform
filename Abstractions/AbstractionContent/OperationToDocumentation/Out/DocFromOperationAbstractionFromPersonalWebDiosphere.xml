@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromPersonalWebDiosphere)" title="Operations (OperationAbstractionFromPersonalWebDiosphere)">
+        <Content>
+          <Header text="SaveRoomData (JSONData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save room data as default root room</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>JSONData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>JSON data as string</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerRootRoomBlobName" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get owner based root-room blob name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SaveJSONContentToBlob ( OwnerRootRoomBlobName, JSONData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save JSON content to blob</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

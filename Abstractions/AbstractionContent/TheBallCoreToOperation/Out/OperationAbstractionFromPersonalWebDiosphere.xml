@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="PersonalWeb.Diosphere">
+    <Operation name="SaveRoomData">
+      <OperationSpec>
+        <Description>Save room data as default root room</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="JSONData" dataType="string" designDesc="JSON data as string" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="OwnerRootRoomBlobName" dataType="string" designDesc="Get owner based root-room blob name" state="implemented" />
+          <MethodExecute name="SaveJSONContentToBlob" designDesc="Save JSON content to blob" state="implemented">
+            <Parameter name="JSONData" />
+            <Target name="OwnerRootRoomBlobName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

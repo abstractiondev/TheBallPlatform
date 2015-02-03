@@ -11,6 +11,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 //using System.Web.Helpers;
 using System.Web.Security;
@@ -764,6 +765,12 @@ namespace WebInterface
             var refererPath = urlReferrer != null && urlReferrer.Host == request.Url.Host ? urlReferrer.AbsolutePath : "";
             bool refererIsAccount = refererPath.StartsWith("/auth/account/");
             bool refererIsGroup = refererPath.StartsWith("/auth/grp/");
+
+            if (String.IsNullOrEmpty(InstanceConfiguration.AllowDirectServingRegexp) == false)
+            {
+                if (Regex.IsMatch(contentPath, InstanceConfiguration.AllowDirectServingRegexp, RegexOptions.Compiled))
+                    return;
+            }
 
             if (isGroupRequest)
             {

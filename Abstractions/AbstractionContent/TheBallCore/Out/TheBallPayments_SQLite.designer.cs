@@ -90,11 +90,6 @@ namespace SQLite.TheBall.Payments {
 			    }
 			}
 
-		    Table<InformationObjectMetaData> IStorageSyncableDataContext.InformationObjectMetaDataTable
-		    {
-		        get { return InformationObjectMetaDataTable; }
-		    } 
-
 			public Table<InformationObjectMetaData> InformationObjectMetaDataTable {
 				get {
 					return this.GetTable<InformationObjectMetaData>();
@@ -180,7 +175,7 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-                InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
 		        {
 		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Web;
+using PersonalWeb.Diosphere;
 using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
@@ -126,6 +127,15 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD"};
             switch (operationName)
             {
+                case "PersonalWeb.Diosphere.SaveRoomData":
+                {
+                    PersonalWeb.Diosphere.SaveRoomData.Execute(new SaveRoomDataParameters
+                    {
+                        JSONData = form["JSONData"]
+                    });
+                    break;
+                }
+
                 case "SetGroupAsDefaultForAccount":
                 {
                     SetGroupAsDefaultForAccountParameters parameters = new SetGroupAsDefaultForAccountParameters

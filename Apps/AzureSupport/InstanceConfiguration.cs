@@ -48,6 +48,7 @@ namespace TheBall
         public static readonly bool IsDeveloperMachine;
         public static readonly bool UseSQLiteMasterDatabase;
         public static readonly string[] DynamicDataCRUDDomains;
+        public static readonly string AllowDirectServingRegexp;
 
         // Infrastructure content/fields
         public static readonly string CloudDriveContainerName;
@@ -113,7 +114,7 @@ namespace TheBall
                 DynamicDataCRUDDomains = new string[] {};
             else
                 DynamicDataCRUDDomains = dynamicDataDomains.Split(',');
-
+            AllowDirectServingRegexp = CloudConfigurationManager.GetSetting("AllowDirectServingRegexp");
             
             #endregion
 
