@@ -204,6 +204,7 @@
   <ItemGroup>
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
+    <Compile Include="AuthorizedRouteHandler.cs" />
     <Compile Include="DynamicData\Content\GridViewPager.ascx.cs">
       <DependentUpon>GridViewPager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -427,6 +428,7 @@
     <Compile Include="DynamicData\PageTemplates\ListDetails.aspx.designer.cs">
       <DependentUpon>ListDetails.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ExtRequest.cs" />
     <Compile Include="FileUploadHandler.cs" />
     <Compile Include="InformationContextManagerModule.cs" />
     <Compile Include="RESTForwarderModule.cs" />

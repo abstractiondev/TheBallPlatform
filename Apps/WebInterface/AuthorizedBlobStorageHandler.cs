@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
@@ -21,7 +20,6 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using SecuritySupport;
-using SQLiteSupport;
 using TheBall;
 using TheBall.CORE;
 using Process = TheBall.CORE.Process;
@@ -44,28 +42,6 @@ namespace WebInterface
             get { return true; }
         }
 
-        private const string AuthPersonalPrefix = "/auth/account/";
-        private const string AuthGroupPrefix = "/auth/grp/";
-        private const string AuthAccountPrefix = "/auth/acc/";
-        private const string AuthPrefix = "/auth/";
-        private const string AboutPrefix = "/about/";
-        private int AuthGroupPrefixLen;
-        private int AuthPersonalPrefixLen;
-        private int AuthAccountPrefixLen;
-        private int AuthProcPrefixLen;
-        private int AuthPrefixLen;
-        private int GuidIDLen;
-
-
-        public AuthorizedBlobStorageHandler()
-        {
-            AuthGroupPrefixLen = AuthGroupPrefix.Length;
-            AuthPersonalPrefixLen = AuthPersonalPrefix.Length;
-            AuthAccountPrefixLen = AuthAccountPrefix.Length;
-            AuthPrefixLen = AuthPrefix.Length;
-            GuidIDLen = Guid.Empty.ToString().Length;
-        }
-
         public void ProcessRequest(HttpContext context)
         {
             string user = context.User.Identity.Name;
@@ -73,7 +49,7 @@ namespace WebInterface
             bool isAuthenticated = String.IsNullOrEmpty(user) == false;
             var request = context.Request;
             var response = context.Response;
-            if (request.Path.StartsWith(AboutPrefix))
+            if (request.IsAboutRequest())
             {
                 HandleAboutGetRequest(context, request.Path);
                 return;
@@ -89,15 +65,15 @@ namespace WebInterface
                 {
                     HandleEncryptedDeviceRequest(context);
                 }
-                else if (request.Path.StartsWith(AuthPersonalPrefix))
+                else if (request.IsPersonalRequest())
                 {
                     HandlePersonalRequest(context);
                 }
-                else if (request.Path.StartsWith(AuthGroupPrefix))
+                else if (request.IsGroupRequest())
                 {
                     HandleGroupRequest(context);
                 }
-                else if (request.Path.StartsWith(AuthAccountPrefix))
+                else if (request.IsAccountRequest())
                 {
                     HandleAccountRequest(context);
                 }
@@ -116,10 +92,10 @@ namespace WebInterface
             var authorization = request.Headers["Authorization"];
             var authTokens = authorization.Split(':');
             IContainerOwner owner = null;
-            if (request.Path.StartsWith("/auth/grp/"))
+            if (request.IsGroupRequest())
             {
-                string groupID = GetGroupID(context.Request.Path);
-                owner = new VirtualOwner("grp", groupID);
+                string groupID = request.GetGroupID();
+                owner = request.GetGroupAsOwner();
             }
             else
                 throw new NotSupportedException("Account device requests not yet supported");
@@ -135,7 +111,7 @@ namespace WebInterface
             InformationContext.Current.ExecutingForDevice = deviceMembership;
             if (request.RequestType == "GET")
             {
-                string contentPath = request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+                string contentPath = request.GetOwnerContentPath();
                 if(contentPath.Contains("TheBall.CORE"))
                     throw new SecurityException("Invalid request location");
                 var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
@@ -225,16 +201,10 @@ namespace WebInterface
 
         }
 
-        private static TBRegisterContainer GetRegistrationInfo(string returnUrl)
-        {
-            TBRegisterContainer registerContainer = TBRegisterContainer.CreateWithLoginProviders(returnUrl, title: "Sign in", subtitle: "... or register", absoluteLoginUrl:null);
-            return registerContainer;
-        }
-
         private static string GetBlobPath(HttpRequest request)
         {
             string contentPath = request.Path;
-            if (contentPath.StartsWith(AboutPrefix) == false)
+            if (!request.IsAboutRequest())
                 throw new NotSupportedException("Content path for other than about/ is not supported");
             return contentPath.Substring(1);
         }
@@ -246,8 +216,8 @@ namespace WebInterface
 
         private void HandleGroupRequest(HttpContext context)
         {
-            string requestPath = context.Request.Path;
-            string groupID = GetGroupID(context.Request.Path);
+            var request = context.Request;
+            string groupID = request.GetGroupID();
             string loginUrl = WebSupport.GetLoginUrl(context);
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
@@ -259,19 +229,8 @@ namespace WebInterface
                 return;
             }
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
-            var contentPath = GetGroupContentPath(requestPath);
+            var contentPath = request.GetOwnerContentPath();
             HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
-        }
-
-        private string GetGroupContentPath(string requestPath)
-        {
-            string contentPath = requestPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            return contentPath;
-        }
-
-        private string GetGroupID(string path)
-        {
-            return path.Substring(AuthGroupPrefixLen, GuidIDLen);
         }
 
         private void HandlePersonalRequest(HttpContext context)
@@ -286,15 +245,9 @@ namespace WebInterface
                 return;
             }
             TBAccount account = loginRoot.Account;
-            string requestPath = context.Request.Path;
-            var contentPath = GetAccountContentPath(requestPath);
+            var request = context.Request;
+            var contentPath = request.GetOwnerContentPath();
             HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
-        }
-
-        private string GetAccountContentPath(string requestPath)
-        {
-            string contentPath = requestPath.Substring(AuthPersonalPrefixLen);
-            return contentPath;
         }
 
         private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
@@ -495,56 +448,6 @@ namespace WebInterface
                 Owner = containerOwner,
                 SemanticDomain = "TheBall.Payments"
             });
-        }
-        
-        private static void SQLiteSyncOwnerData_obsolete(IContainerOwner containerOwner)
-        {
-            try
-            {
-                //string dbDirectory = "X:\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                string dbDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName +  "\\" + containerOwner.ContainerName + "\\" + containerOwner.LocationPrefix;
-                if (!Directory.Exists(dbDirectory))
-                    Directory.CreateDirectory(dbDirectory);
-                string dbName = dbDirectory + "\\Intermediate.sqlite";
-                using (
-                    var dbContext = SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(dbName)
-                    )
-                {
-                    string ownerRootPath = StorageSupport.GetOwnerRootAddress(containerOwner);
-                    bool anyChangesApplied = SQLiteSync.ApplyStorageChangesToSQLiteDB(ownerRootPath, dbContext,
-                        rootPath =>
-                        {
-                            var blobListing = containerOwner.GetOwnerBlobListing("TheBall.Payments", true);
-                            List<InformationObjectMetaData> metaDatas = new List<InformationObjectMetaData>();
-                            foreach (CloudBlockBlob blob in blobListing)
-                            {
-                                if (Path.GetExtension(blob.Name) != String.Empty)
-                                    continue;
-                                var nameComponents = blob.Name.Split('/');
-                                string objectID = nameComponents[nameComponents.Length - 1];
-                                string objectType = nameComponents[nameComponents.Length - 2];
-                                string semanticDomain = nameComponents[nameComponents.Length - 3];
-                                var metaData = new InformationObjectMetaData
-                                {
-                                    CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
-                                    FileLength = blob.Properties.Length,
-                                    LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
-                                    MD5 = blob.Properties.ContentMD5,
-                                    ETag = blob.Properties.ETag,
-                                    SemanticDomain = semanticDomain,
-                                    ObjectType = objectType,
-                                    ObjectID = objectID
-                                };
-                                metaDatas.Add(metaData);
-                            }
-                            return metaDatas.ToArray();
-                        });
-                }
-            }
-            catch // Quiet regardless of what
-            {
-                throw;
-            }
         }
 
         private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
@@ -801,9 +704,7 @@ namespace WebInterface
                     return;
                 throw new SecurityException("Url referring outside the platform is not allowed except for .html files");
             }
-            string refererOwnerPath = refererIsAccount
-                                          ? GetAccountContentPath(refererPath)
-                                          : GetGroupContentPath(refererPath);
+            string refererOwnerPath = request.GetOwnerContentPath();
             // Accept account and group referers of default templates
             if (refererIsAccount && accountTemplates.Any(refererOwnerPath.StartsWith))
                 return;
@@ -818,7 +719,7 @@ namespace WebInterface
             {
                 if(isAccountRequest)
                     throw new SecurityException("Non-default group referer accessing account content");
-                string refererGroupID = GetGroupID(refererPath);
+                string refererGroupID = request.GetGroupID();
                 if(refererGroupID != requestGroupID)
                     throw new SecurityException("Non-default group referer accessing other group content");
             }
