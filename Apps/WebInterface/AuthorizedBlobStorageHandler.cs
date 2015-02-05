@@ -217,17 +217,7 @@ namespace WebInterface
         private void HandleGroupRequest(HttpContext context)
         {
             var request = context.Request;
-            string groupID = request.GetGroupID();
-            string loginUrl = WebSupport.GetLoginUrl(context);
-            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
-            TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
-            if(loginGroupRoot == null)
-            {
-                // TODO: Polite invitation request
-                throw new SecurityException("No access to requested group: TODO - Polite landing page for the group");
-                return;
-            }
+            var loginGroupRoot = request.RequireAndRetrieveGroupAccessRole();
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             var contentPath = request.GetOwnerContentPath();
             HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);

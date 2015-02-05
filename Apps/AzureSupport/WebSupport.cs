@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Security.Principal;
+using System.Text;
 using System.Web;
 using TheBall;
 
@@ -6,9 +7,14 @@ namespace AzureSupport
 {
     public static class WebSupport
     {
+        public static string GetLoginUrl(IPrincipal identityPrincipal)
+        {
+            return identityPrincipal.Identity.Name;
+        }
+
         public static string GetLoginUrl(HttpContext context)
         {
-            return context.User.Identity.Name;
+            return GetLoginUrl(context.User);
         }
 
         static string GetContainerName(HttpRequest request)
