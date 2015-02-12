@@ -174,6 +174,7 @@
     <Content Include="DynamicData\FieldTemplates\ForeignKey_Edit.ascx" />
     <Content Include="DynamicData\FieldTemplates\Integer_Edit.ascx" />
     <Content Include="DynamicData\FieldTemplates\MultilineText_Edit.ascx" />
+    <Content Include="DynamicData\FieldTemplates\CustomMetaField.ascx" />
     <Content Include="DynamicData\FieldTemplates\Text.ascx" />
     <Content Include="DynamicData\FieldTemplates\Text_Edit.ascx" />
     <Content Include="DynamicData\FieldTemplates\Url.ascx" />
@@ -343,6 +344,13 @@
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\MultilineText_Edit.ascx.designer.cs">
       <DependentUpon>MultilineText_Edit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\CustomMetaField.ascx.cs">
+      <DependentUpon>CustomMetaField.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DynamicData\FieldTemplates\CustomMetaField.ascx.designer.cs">
+      <DependentUpon>CustomMetaField.ascx</DependentUpon>
     </Compile>
     <Compile Include="DynamicData\FieldTemplates\Text.ascx.cs">
       <DependentUpon>Text.ascx</DependentUpon>

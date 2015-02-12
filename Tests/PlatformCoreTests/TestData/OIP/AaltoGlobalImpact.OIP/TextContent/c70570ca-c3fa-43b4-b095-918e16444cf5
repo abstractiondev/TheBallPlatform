@@ -1,0 +1,103 @@
+﻿<TextContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <Author>Kalle Launiala</Author>
+  <Body>Piloting of various verticals is ongoing. Business, universities and elementary school collaboration is aiming to bring all kinds of verticals together.
+
+Joining motives of modern ICT development, and accelerating the common goals can open up whole new kind of community-driven industry-ecosystem.</Body>
+  <Categories>
+    <CollectionContent>
+      <Category>
+        <CategoryName>catProducts</CategoryName>
+        <Excerpt>Productized parts that the solutions are built on top of</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>663dcb05-5f4e-47e0-b57e-19d7996789d7</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>14921</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>d0e16b3d-ab65-4024-9ec2-7ac48588d123</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/d0e16b3d-ab65-4024-9ec2-7ac48588d123.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>69f65952-b4b0-46a2-bbf3-c3b8d639e445</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/663dcb05-5f4e-47e0-b57e-19d7996789d7</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>Products</Title>
+      </Category>
+      <Category>
+        <CategoryName>catAboutTheBall</CategoryName>
+        <Excerpt>About "The Ball" - whatever it might relate to...</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>e400ecb5-650c-4837-a18f-a5b77c8722fd</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>53763</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>cacfab91-76cc-4a02-ab6a-7b835e8bc0fc</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/cacfab91-76cc-4a02-ab6a-7b835e8bc0fc.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/e400ecb5-650c-4837-a18f-a5b77c8722fd</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>About "The Ball"</Title>
+      </Category>
+    </CollectionContent>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>c8ccc363-65fd-4cb1-99f1-cefeb59c314c</ID>
+    <IsCollectionFiltered>false</IsCollectionFiltered>
+    <MasterETag i:nil="true" />
+    <Name>CategoryCollection</Name>
+    <OrderFilterIDList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/CategoryCollection/c8ccc363-65fd-4cb1-99f1-cefeb59c314c</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </Categories>
+  <Excerpt>Open platform, developed with most liberate public license. Openly auditable to provide the most valuable feature of information management: total uncompromised individual privacy.</Excerpt>
+  <GeneratedByProcessID i:nil="true" />
+  <ID>c70570ca-c3fa-43b4-b095-918e16444cf5</ID>
+  <IFrameSources i:nil="true" />
+  <ImageData>
+    <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+    <ContentLength>219074</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>394a3b86-26dd-4e89-9190-75cf0026b05a</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/394a3b86-26dd-4e89-9190-75cf0026b05a.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <Locations i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>TextContent</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <Published>0001-01-01T00:00:00</Published>
+  <RawHtmlContent i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/TextContent/c70570ca-c3fa-43b4-b095-918e16444cf5</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <SortOrderNumber>0</SortOrderNumber>
+  <SubTitle>Open. Completely open.</SubTitle>
+  <Title>The Ball - Platform</Title>
+</TextContent>

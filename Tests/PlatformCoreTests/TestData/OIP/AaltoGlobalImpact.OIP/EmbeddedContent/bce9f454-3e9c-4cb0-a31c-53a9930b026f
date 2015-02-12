@@ -1,0 +1,56 @@
+﻿<EmbeddedContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <Author i:nil="true" />
+  <Categories>
+    <CollectionContent>
+      <Category>
+        <CategoryName>catSolutions</CategoryName>
+        <Excerpt>The end user/customer/citizen approaching value-adding solutions</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>95c40a72-4430-4e25-8bfb-d1c62a81521e</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>348837</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>e9cc5c8b-2ba2-4521-a2d3-972b78ab1e56</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/e9cc5c8b-2ba2-4521-a2d3-972b78ab1e56.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>69f65952-b4b0-46a2-bbf3-c3b8d639e445</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/95c40a72-4430-4e25-8bfb-d1c62a81521e</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>Solutions</Title>
+      </Category>
+    </CollectionContent>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>3e124b3b-c209-4851-be5b-365fad0c6bf8</ID>
+    <IsCollectionFiltered>false</IsCollectionFiltered>
+    <MasterETag i:nil="true" />
+    <Name>CategoryCollection</Name>
+    <OrderFilterIDList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/CategoryCollection/3e124b3b-c209-4851-be5b-365fad0c6bf8</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </Categories>
+  <Description>Playlist including the innovation price winner "Smart City Ecosystem" and community-driven open data app infrastructure accelerator.</Description>
+  <GeneratedByProcessID i:nil="true" />
+  <ID>bce9f454-3e9c-4cb0-a31c-53a9930b026f</ID>
+  <IFrameTagContents>width="560" height="315" src="//www.youtube.com/embed/videoseries?list=PL1fg6ZOaV4mN4rsLxJvMj5ZcIzt2_5wLv" frameborder="0" allowfullscreen</IFrameTagContents>
+  <Locations i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>EmbeddedContent</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <Published>0001-01-01T00:00:00</Published>
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/EmbeddedContent/bce9f454-3e9c-4cb0-a31c-53a9930b026f</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <Title>Information Ecosystem Videos</Title>
+</EmbeddedContent>

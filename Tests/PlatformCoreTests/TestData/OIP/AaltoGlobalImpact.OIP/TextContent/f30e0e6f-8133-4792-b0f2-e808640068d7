@@ -1,0 +1,111 @@
+﻿<TextContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <Author>Kalle Launiala</Author>
+  <Body>- One of the main innovators behind "The Ball - The Information Ecosystem"
+
+- The Innovator of the ADM (Abstraction Design Methodology)
+
+- Solid 10+ year experience on high-end developer focused tooling - through hands-on practical approach on the field
+- Productizing of the early stage O/R Mappers in .NET (from the beginning of .NET)
+- Advanced architectures from data-centric to information centric approaches on various languages and platforms
+- Incremental invention-to-innovation path from modern domain-specific-languages to mainstream development that lead to the breakthrough of the ADM innovation
+
+- Fundamental information modeling theory focused approach on any practical real world process or collaboration model
+- Business model strategy planning focusing on the ADM caused rapid disruption to become</Body>
+  <Categories>
+    <CollectionContent>
+      <Category>
+        <CategoryName>catAboutTheBall</CategoryName>
+        <Excerpt>About "The Ball" - whatever it might relate to...</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>e400ecb5-650c-4837-a18f-a5b77c8722fd</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>53763</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>cacfab91-76cc-4a02-ab6a-7b835e8bc0fc</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/cacfab91-76cc-4a02-ab6a-7b835e8bc0fc.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/e400ecb5-650c-4837-a18f-a5b77c8722fd</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>About "The Ball"</Title>
+      </Category>
+      <Category>
+        <CategoryName>catAboutTheCompany</CategoryName>
+        <Excerpt>About the ProtonIT company and its goals.</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>0d90f937-014d-4d79-84c5-3067aa7a1040</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.png</AdditionalFormatFileExt>
+          <ContentLength>5542</ContentLength>
+          <FileExt>.png</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>54669ff1-5571-42a4-8b42-b4bb6689e1fc</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/54669ff1-5571-42a4-8b42-b4bb6689e1fc.png</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/0d90f937-014d-4d79-84c5-3067aa7a1040</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>About The Company</Title>
+      </Category>
+    </CollectionContent>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>428ed691-d9b2-42e7-a05f-f01cb4031964</ID>
+    <IsCollectionFiltered>false</IsCollectionFiltered>
+    <MasterETag i:nil="true" />
+    <Name>CategoryCollection</Name>
+    <OrderFilterIDList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/CategoryCollection/428ed691-d9b2-42e7-a05f-f01cb4031964</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </Categories>
+  <Excerpt>Kalle Launiala CEO of ProtonIT, co-innovator of "The Ball"</Excerpt>
+  <GeneratedByProcessID i:nil="true" />
+  <ID>f30e0e6f-8133-4792-b0f2-e808640068d7</ID>
+  <IFrameSources i:nil="true" />
+  <ImageData>
+    <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+    <ContentLength>14692</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>870e1ea6-697c-49d1-9596-7f17eb35d28a</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/870e1ea6-697c-49d1-9596-7f17eb35d28a.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <Locations i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>TextContent</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <Published>0001-01-01T00:00:00</Published>
+  <RawHtmlContent i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/TextContent/f30e0e6f-8133-4792-b0f2-e808640068d7</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <SortOrderNumber>0</SortOrderNumber>
+  <SubTitle>CEO, Innovator</SubTitle>
+  <Title>About Kalle Launiala</Title>
+</TextContent>

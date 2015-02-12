@@ -1,0 +1,61 @@
+﻿<TextContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <Author>Kalle Launiala</Author>
+  <Body>More details to follow with concrete links to active parties and example showcases. Discussions are on the way...</Body>
+  <Categories>
+    <CollectionContent>
+      <Category>
+        <CategoryName>catDemosHacking</CategoryName>
+        <Excerpt />
+        <GeneratedByProcessID i:nil="true" />
+        <ID>e164e7fc-8404-414f-851e-30d283f6aa30</ID>
+        <ImageData i:nil="true" />
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID i:nil="true" />
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/e164e7fc-8404-414f-851e-30d283f6aa30</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>Demos &amp; Hacking</Title>
+      </Category>
+    </CollectionContent>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>b042f1c2-630e-468b-995d-a7b70a6a8b96</ID>
+    <IsCollectionFiltered>false</IsCollectionFiltered>
+    <MasterETag i:nil="true" />
+    <Name>CategoryCollection</Name>
+    <OrderFilterIDList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/CategoryCollection/b042f1c2-630e-468b-995d-a7b70a6a8b96</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </Categories>
+  <Excerpt>Active collaboration with [Hack the Hackathon](http://www.hackthehackathon.com). Community enabled and accelerated.</Excerpt>
+  <GeneratedByProcessID i:nil="true" />
+  <ID>4cc7349d-1423-4eeb-bfdf-8f440415ac92</ID>
+  <IFrameSources />
+  <ImageData>
+    <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+    <ContentLength>92668</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>bf246239-7e61-4be5-bb5a-e77682d7e46a</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/bf246239-7e61-4be5-bb5a-e77682d7e46a.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <Locations i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>TextContent</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <Published>2013-11-01T00:00:00</Published>
+  <RawHtmlContent i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/TextContent/4cc7349d-1423-4eeb-bfdf-8f440415ac92</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <SortOrderNumber>0</SortOrderNumber>
+  <SubTitle>Community Enabled</SubTitle>
+  <Title>Co-Operative Global Hacking</Title>
+</TextContent>

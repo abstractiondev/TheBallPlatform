@@ -1,0 +1,25 @@
+﻿<Category xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <CategoryName>catAboutTheCompany</CategoryName>
+  <Excerpt>About the ProtonIT company and its goals.</Excerpt>
+  <ID>0d90f937-014d-4d79-84c5-3067aa7a1040</ID>
+  <ImageData>
+    <ContentLength>5542</ContentLength>
+    <FileExt>.png</FileExt>
+    <ID>54669ff1-5571-42a4-8b42-b4bb6689e1fc</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/54669ff1-5571-42a4-8b42-b4bb6689e1fc.png</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <MasterETag i:nil="true" />
+  <Name>Category</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <ParentCategory i:nil="true" />
+  <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+  <ReferenceToInformation i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/0d90f937-014d-4d79-84c5-3067aa7a1040</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <Title>About The Company</Title>
+</Category>

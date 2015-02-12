@@ -1,0 +1,15 @@
+﻿<Category xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <CategoryName>catProductsAndSolutions</CategoryName>
+  <Excerpt />
+  <ID>69f65952-b4b0-46a2-bbf3-c3b8d639e445</ID>
+  <ImageData i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>Category</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <ParentCategory i:nil="true" />
+  <ParentCategoryID i:nil="true" />
+  <ReferenceToInformation i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/69f65952-b4b0-46a2-bbf3-c3b8d639e445</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <Title>Products And Solutions</Title>
+</Category>

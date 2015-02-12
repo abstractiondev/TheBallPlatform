@@ -1,0 +1,26 @@
+﻿<Category xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <CategoryName>catProducts</CategoryName>
+  <Excerpt>Productized parts that the solutions are built on top of</Excerpt>
+  <ID>663dcb05-5f4e-47e0-b57e-19d7996789d7</ID>
+  <ImageData>
+    <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+    <ContentLength>14921</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <ID>d0e16b3d-ab65-4024-9ec2-7ac48588d123</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/d0e16b3d-ab65-4024-9ec2-7ac48588d123.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <MasterETag i:nil="true" />
+  <Name>Category</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <ParentCategory i:nil="true" />
+  <ParentCategoryID>69f65952-b4b0-46a2-bbf3-c3b8d639e445</ParentCategoryID>
+  <ReferenceToInformation i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/663dcb05-5f4e-47e0-b57e-19d7996789d7</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <Title>Products</Title>
+</Category>

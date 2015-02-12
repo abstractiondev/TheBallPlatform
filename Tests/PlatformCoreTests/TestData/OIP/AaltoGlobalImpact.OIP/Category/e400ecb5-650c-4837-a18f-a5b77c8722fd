@@ -1,0 +1,25 @@
+﻿<Category xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <CategoryName>catAboutTheBall</CategoryName>
+  <Excerpt>About "The Ball" - whatever it might relate to...</Excerpt>
+  <ID>e400ecb5-650c-4837-a18f-a5b77c8722fd</ID>
+  <ImageData>
+    <ContentLength>53763</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <ID>cacfab91-76cc-4a02-ab6a-7b835e8bc0fc</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/cacfab91-76cc-4a02-ab6a-7b835e8bc0fc.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <MasterETag i:nil="true" />
+  <Name>Category</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <ParentCategory i:nil="true" />
+  <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+  <ReferenceToInformation i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/e400ecb5-650c-4837-a18f-a5b77c8722fd</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <Title>About "The Ball"</Title>
+</Category>

@@ -1,0 +1,12 @@
+﻿<ContentCategoryRankCollection xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <CollectionContent />
+  <GeneratedByProcessID i:nil="true" />
+  <ID>f5acb785-3ec6-43d8-8762-a8752c32fdcf</ID>
+  <IsCollectionFiltered>false</IsCollectionFiltered>
+  <MasterETag i:nil="true" />
+  <Name>ContentCategoryRankCollection</Name>
+  <OrderFilterIDList xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/ContentCategoryRankCollection/MasterCollection</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+</ContentCategoryRankCollection>

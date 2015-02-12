@@ -1,0 +1,103 @@
+﻿<TextContent xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP">
+  <Author>Kalle Launiala</Author>
+  <Body>The active and available Caloom platforms feature already the connectivity of devices. The demonstrational cases are presented in the [tech blog](http://abstractiondev.wordpress.com) and through [videos for "Windows Phone" connectability](http://www.youtube.com/playlist?list=PL1fg6ZOaV4mNxQogkfMPHfYJ6968nRBV2).
+
+The technical interface is very straightforward and features connection secure key negotiation and connection-specific strong encryption.</Body>
+  <Categories>
+    <CollectionContent>
+      <Category>
+        <CategoryName>catSolutions</CategoryName>
+        <Excerpt>The end user/customer/citizen approaching value-adding solutions</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>95c40a72-4430-4e25-8bfb-d1c62a81521e</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>348837</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>e9cc5c8b-2ba2-4521-a2d3-972b78ab1e56</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/e9cc5c8b-2ba2-4521-a2d3-972b78ab1e56.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>69f65952-b4b0-46a2-bbf3-c3b8d639e445</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/95c40a72-4430-4e25-8bfb-d1c62a81521e</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>Solutions</Title>
+      </Category>
+      <Category>
+        <CategoryName>catAboutTheBall</CategoryName>
+        <Excerpt>About "The Ball" - whatever it might relate to...</Excerpt>
+        <GeneratedByProcessID i:nil="true" />
+        <ID>e400ecb5-650c-4837-a18f-a5b77c8722fd</ID>
+        <ImageData>
+          <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+          <ContentLength>53763</ContentLength>
+          <FileExt>.jpg</FileExt>
+          <GeneratedByProcessID i:nil="true" />
+          <ID>cacfab91-76cc-4a02-ab6a-7b835e8bc0fc</ID>
+          <MasterETag i:nil="true" />
+          <Name>MediaContent</Name>
+          <OriginalFileName i:nil="true" />
+          <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+          <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/cacfab91-76cc-4a02-ab6a-7b835e8bc0fc.jpg</RelativeLocation>
+          <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        </ImageData>
+        <MasterETag i:nil="true" />
+        <Name>Category</Name>
+        <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+        <ParentCategory i:nil="true" />
+        <ParentCategoryID>184cdf14-5c48-4d30-a2f6-3570185e3667</ParentCategoryID>
+        <ReferenceToInformation i:nil="true" />
+        <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/Category/e400ecb5-650c-4837-a18f-a5b77c8722fd</RelativeLocation>
+        <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+        <Title>About "The Ball"</Title>
+      </Category>
+    </CollectionContent>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>cab4d3b9-ba4d-4874-bd57-7965d9fc945e</ID>
+    <IsCollectionFiltered>false</IsCollectionFiltered>
+    <MasterETag i:nil="true" />
+    <Name>CategoryCollection</Name>
+    <OrderFilterIDList xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/CategoryCollection/cab4d3b9-ba4d-4874-bd57-7965d9fc945e</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </Categories>
+  <Excerpt>Every device, cross connected - through native protocol interface </Excerpt>
+  <GeneratedByProcessID i:nil="true" />
+  <ID>4247b843-5424-4799-a9ca-e60de31b7f3d</ID>
+  <IFrameSources i:nil="true" />
+  <ImageData>
+    <AdditionalFormatFileExt>.jpg</AdditionalFormatFileExt>
+    <ContentLength>29710</ContentLength>
+    <FileExt>.jpg</FileExt>
+    <GeneratedByProcessID i:nil="true" />
+    <ID>11396eba-d378-4dc7-9404-4de3d17793f9</ID>
+    <MasterETag i:nil="true" />
+    <Name>MediaContent</Name>
+    <OriginalFileName i:nil="true" />
+    <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+    <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/MediaContent/11396eba-d378-4dc7-9404-4de3d17793f9.jpg</RelativeLocation>
+    <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  </ImageData>
+  <Locations i:nil="true" />
+  <MasterETag i:nil="true" />
+  <Name>TextContent</Name>
+  <OwnerID>00000000-0000-0000-0000-000000000000</OwnerID>
+  <Published>0001-01-01T00:00:00</Published>
+  <RawHtmlContent i:nil="true" />
+  <RelativeLocation>grp/90eb1c69-169c-491c-a75f-ce883b840a9b/AaltoGlobalImpact.OIP/TextContent/4247b843-5424-4799-a9ca-e60de31b7f3d</RelativeLocation>
+  <SemanticDomainName>AaltoGlobalImpact.OIP</SemanticDomainName>
+  <SortOrderNumber>0</SortOrderNumber>
+  <SubTitle>Internet of everything</SubTitle>
+  <Title>Internet of Things</Title>
+</TextContent>

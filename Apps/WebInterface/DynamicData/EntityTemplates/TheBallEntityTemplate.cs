@@ -22,19 +22,6 @@ namespace DynamicDataWebApp
                 EntityTemplate.ItemTemplate.InstantiateIn(item);
                 EntityTemplate.Controls.Add(item);
             }
-
-            HiddenField domainName = new HiddenField
-            {
-                ID = "SemanticDomainName",
-                Value = Table.Name,
-                //ClientIDMode = ClientIDMode.Static
-            };
-            EntityTemplate.Controls.Add(domainName);
-
-            HiddenField rootNamingContainer = new HiddenField();
-            rootNamingContainer.ID = "RootNamingContainer";
-            rootNamingContainer.Value = NamingContainer.UniqueID;
-            EntityTemplate.Controls.Add(rootNamingContainer);
         }
 
         protected void Label_Init(object sender, EventArgs e)
