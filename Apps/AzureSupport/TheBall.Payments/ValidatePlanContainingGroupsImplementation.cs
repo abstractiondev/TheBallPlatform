@@ -16,8 +16,8 @@ namespace TheBall.Payments
 
             if (planName == "ONLINE")
             {
-                //result.GroupIDs.Add("e710a1f8-94a3-4d38-85df-193936624ce4");
-                result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc");
+                result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4");
+                //result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc");
             } 
 
             return result;
