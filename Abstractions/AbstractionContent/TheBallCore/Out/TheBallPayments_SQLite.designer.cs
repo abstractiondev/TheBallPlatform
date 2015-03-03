@@ -331,14 +331,12 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
-        //[Editable(false)]
-        [UIHint("CustomMetaField")]
+        [Editable(false)]
 		public string ID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
-        [UIHint("CustomMetaField")]
-        //[Editable(false)]
+        [Editable(false)]
 		public string ETag { get; set; }
 
 

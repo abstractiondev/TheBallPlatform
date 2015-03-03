@@ -43,8 +43,8 @@ namespace TheBall
             if (emailAddress != null)
             {
                 HttpCookie emailCookie = new HttpCookie(EmailCookieName, emailAddress);
-                cookie.HttpOnly = false;
-                cookie.Secure = true;
+                emailCookie.HttpOnly = false;
+                emailCookie.Secure = true;
                 HttpContext.Current.Response.Cookies.Add(emailCookie);
             }
         }

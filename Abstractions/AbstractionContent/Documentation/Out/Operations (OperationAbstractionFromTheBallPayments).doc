@@ -249,19 +249,51 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Customer account object based accountID. Created if missing
 		</div>
+		</p><h2>Target Definition: PaymentTokenID ( PaymentToken )</h2>
+		<p>		<div class="MsoNormal" >
+		Payment token ID for Stripe payment
+		</div>
+		</p><h2>Target Definition: StripeCustomerID ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe customer ID
+		</div>
 		</p><h2>Target Definition: PlanName ( PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
 		Plan name from the payment token
 		</div>
-		</p><h2>Operation Call: ValidatePlan ( PlanName )</h2>
+		</p><h2>Operation Call: ValidatePlanGroups ( PlanName )</h2>
 		<p>		<div class="MsoNormal" >
 		Validate plan before charging for payment
 		</div>
-		</p><h2>Method Call: ProcessPayment ( PaymentToken, CustomerAccount )</h2>
+		</p><h2>Method Call: ValidateStripePlanName ( PlanName )</h2>
 		<p>		<div class="MsoNormal" >
-		Process payment to Stripe
+		Validate plan name from Stripe
 		</div>
-		</p><h2>Operation Call: GrantAccessToPaidPlan ( PlanName, AccountID )</h2>
+		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )</h2>
+		<p>		<div class="MsoNormal" >
+		Active Stripe subscriptions of customer
+		</div>
+		</p><h2>Target Definition: CustomersActivePlanNames ( CustomersActiveSubscriptions )</h2>
+		<p>		<div class="MsoNormal" >
+		Customer's active plan names
+		</div>
+		</p><h2>Method Call: SyncCurrentCustomerActivePlans ( CustomerAccount, CustomersActivePlanNames )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync current plans to customer account
+		</div>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID )</h2>
+		<p>		<div class="MsoNormal" >
+		Process payment to Stripe, if lacking with current plan/subscription
+		</div>
+		</p><h2>Method Call: AddPlanAsActiveToCustomer ( CustomerAccount, PlanName )</h2>
+		<p>		<div class="MsoNormal" >
+		Add plan to customer if missing (and thus payment was processed)
+		</div>
+		</p><h2>Method Call: StoreObjects ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Store processed object(s)
+		</div>
+		</p><h2>Operation Call: GrantAccessToPaidPlan ( CustomerAccount, PlanName )</h2>
 		<p>		<div class="MsoNormal" >
 		Grant access to paid plan
 		</div>

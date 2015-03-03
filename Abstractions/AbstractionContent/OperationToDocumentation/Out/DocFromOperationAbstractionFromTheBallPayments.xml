@@ -40,6 +40,20 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Target Definition: PaymentTokenID ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Payment token ID for Stripe payment</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StripeCustomerID ( CustomerAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe customer ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: PlanName ( PaymentToken )" level="2">
               <Paragraph>
                 <Text>
@@ -47,21 +61,63 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Operation Call: ValidatePlan ( PlanName )" level="2">
+            <Header text="Operation Call: ValidatePlanGroups ( PlanName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Validate plan before charging for payment</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( PaymentToken, CustomerAccount )" level="2">
+            <Header text="Method Call: ValidateStripePlanName ( PlanName )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Process payment to Stripe</TextContent>
+                  <TextContent>Validate plan name from Stripe</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Operation Call: GrantAccessToPaidPlan ( PlanName, AccountID )" level="2">
+            <Header text="Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Active Stripe subscriptions of customer</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomersActivePlanNames ( CustomersActiveSubscriptions )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer's active plan names</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SyncCurrentCustomerActivePlans ( CustomerAccount, CustomersActivePlanNames )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync current plans to customer account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process payment to Stripe, if lacking with current plan/subscription</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddPlanAsActiveToCustomer ( CustomerAccount, PlanName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add plan to customer if missing (and thus payment was processed)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( CustomerAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed object(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: GrantAccessToPaidPlan ( CustomerAccount, PlanName )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Grant access to paid plan</TextContent>

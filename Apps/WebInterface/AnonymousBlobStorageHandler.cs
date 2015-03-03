@@ -119,10 +119,6 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localdev")
-            {
-                hostName = "www.protonit.net";
-            }
             string containerName = hostName.Replace('.', '-');
             string currServingFolder = "";
             try

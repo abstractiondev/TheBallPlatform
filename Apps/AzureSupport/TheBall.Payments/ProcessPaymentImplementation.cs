@@ -23,9 +23,6 @@ namespace TheBall.Payments
             //var customerService = new StripeCustomerService();
             //var customer = customerService.Get(customerID);
 
-            bool isAllInclusive = paymentToken.currentproduct == "ALLINCLUSIVE";
-            int chargeAmount = isAllInclusive ? 7500 : 999;
-            string description = isAllInclusive ? "All Inclusive Training by iZENZEi" : "Online Taekwondo by iZENZEi";
             /*
             var myCharge = new StripeChargeCreateOptions
             {
@@ -48,6 +45,7 @@ namespace TheBall.Payments
             {
                 TokenId = paymentToken.id
             });
+            customerAccount.ActivePlans.Add(paymentToken.currentproduct);
             HttpContext.Current.Response.Write("{}");
         }
 

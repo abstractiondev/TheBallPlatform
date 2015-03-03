@@ -22,13 +22,37 @@
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_CustomerAccount" displayName="TargetDefinitionType: CustomerAccount" description="Customer account object based accountID. Created if missing">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_PaymentTokenID" displayName="TargetDefinitionType: PaymentTokenID" description="Payment token ID for Stripe payment">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_StripeCustomerID" displayName="TargetDefinitionType: StripeCustomerID" description="Stripe customer ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_PlanName" displayName="TargetDefinitionType: PlanName" description="Plan name from the payment token">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ValidatePlan" displayName="OperationExecuteType: ValidatePlan" description="Validate plan before charging for payment">
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ValidatePlanGroups" displayName="OperationExecuteType: ValidatePlanGroups" description="Validate plan before charging for payment">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe">
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ValidateStripePlanName" displayName="MethodExecuteType: ValidateStripePlanName" description="Validate plan name from Stripe">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_CustomersActiveSubscriptions" displayName="TargetDefinitionType: CustomersActiveSubscriptions" description="Active Stripe subscriptions of customer">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_CustomersActivePlanNames" displayName="TargetDefinitionType: CustomersActivePlanNames" description="Customer's active plan names">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_SyncCurrentCustomerActivePlans" displayName="MethodExecuteType: SyncCurrentCustomerActivePlans" description="Sync current plans to customer account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe, if lacking with current plan/subscription">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_AddPlanAsActiveToCustomer" displayName="MethodExecuteType: AddPlanAsActiveToCustomer" description="Add plan to customer if missing (and thus payment was processed)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAndPayGroupSubscriptionPlan_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store processed object(s)">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_GrantAccessToPaidPlan" displayName="OperationExecuteType: GrantAccessToPaidPlan" description="Grant access to paid plan">
@@ -142,9 +166,17 @@
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidateMatchingEmail" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_AccountID" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_CustomerAccount" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_PaymentTokenID" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_StripeCustomerID" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_PlanName" />
-      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidatePlan" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidatePlanGroups" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ValidateStripePlanName" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_CustomersActiveSubscriptions" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_CustomersActivePlanNames" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_SyncCurrentCustomerActivePlans" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_ProcessPayment" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_AddPlanAsActiveToCustomer" />
+      <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_StoreObjects" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_GrantAccessToPaidPlan" />
       <GroupRef groupName="ValidatePlanContainingGroups" />
       <GroupRef groupName="GrantPlanAccessToAccount" />

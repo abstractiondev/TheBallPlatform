@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Linq;
 using System.Security;
 using System.Web;
 using AzureSupport;
@@ -58,7 +60,28 @@ namespace TheBall.Payments
             return paymentToken.currentproduct;
         }
 
-        public static void ExecuteMethod_ProcessPayment(PaymentToken paymentToken, CustomerAccount customerAccount)
+
+        public static ValidatePlanContainingGroupsParameters ValidatePlanGroups_GetParameters(string planName)
+        {
+            return new ValidatePlanContainingGroupsParameters { PlanName = planName };
+        }
+
+        public static void ExecuteMethod_ValidateStripePlanName(string planName)
+        {
+            var planService = new StripePlanService();
+            var stripePlan = planService.Get(planName);
+            if(stripePlan == null)
+                throw new InvalidDataException("Stripe plan not found: " + planName);
+        }
+
+        public static StripeSubscription[] GetTarget_CustomersActiveSubscriptions(string stripeCustomerID)
+        {
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService();
+            return subscriptionService.List(stripeCustomerID).ToArray();
+        }
+
+        /*
+        public static void ExecuteMethod_ProcessPayment(CustomerAccount customerAccount)
         {
             var customerID = customerAccount.StripeID;
             var subscriptionService = new StripeSubscriptionService();
@@ -68,15 +91,58 @@ namespace TheBall.Payments
             });
             HttpContext.Current.Response.Write("{}");
         }
+         * */
 
-        public static ValidatePlanContainingGroupsParameters ValidatePlan_GetParameters(string planName)
+        public static string GetTarget_PaymentTokenID(PaymentToken paymentToken)
         {
-            return new ValidatePlanContainingGroupsParameters {PlanName = planName};
+            return paymentToken.id;
         }
 
-        public static GrantPlanAccessToAccountParameters GrantAccessToPaidPlan_GetParameters(string planName, string accountId)
+        public static string GetTarget_StripeCustomerID(CustomerAccount customerAccount)
         {
-            return new GrantPlanAccessToAccountParameters {AccountID = accountId, PlanName = planName};
+            return customerAccount.StripeID;
         }
+
+        public static void ExecuteMethod_AddPlanAsActiveToCustomer(CustomerAccount customerAccount, string planName)
+        {
+            if(!customerAccount.ActivePlans.Contains(planName))
+                customerAccount.ActivePlans.Add(planName);
+        }
+
+        public static void ExecuteMethod_StoreObjects(CustomerAccount customerAccount)
+        {
+            customerAccount.StoreInformation();
+        }
+
+        public static string[] GetTarget_CustomersActivePlanNames(StripeSubscription[] customersActiveSubscriptions)
+        {
+            return customersActiveSubscriptions.Select(sub => sub.StripePlan.Id).ToArray();
+        }
+
+        public static void ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount customerAccount, string[] customersActivePlanNames)
+        {
+            customerAccount.ActivePlans = customersActivePlanNames.ToList();
+        }
+
+        public static void ExecuteMethod_ProcessPayment(string stripeCustomerId, string planName, string[] customersActivePlanNames, string paymentTokenId)
+        {
+            bool customerHasPlanAlready = customersActivePlanNames.Contains(planName);
+            if (!customerHasPlanAlready)
+            {
+                var customerID = stripeCustomerId;
+                var subscriptionService = new StripeSubscriptionService();
+                var subscription = subscriptionService.Create(customerID, planName, new StripeSubscriptionCreateOptions
+                {
+                    TokenId = paymentTokenId
+                });
+            }
+            HttpContext.Current.Response.Write("{}");
+        }
+
+        public static GrantPlanAccessToAccountParameters GrantAccessToPaidPlan_GetParameters(CustomerAccount customerAccount, string planName)
+        {
+            return new GrantPlanAccessToAccountParameters { AccountID = customerAccount.ID, PlanName = planName };
+        }
+
     }
 }

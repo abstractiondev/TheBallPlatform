@@ -34,17 +34,25 @@ using System.IO;
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
 				string AccountID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
+				string PaymentTokenID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PaymentTokenID(PaymentToken);	
+				string StripeCustomerID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				string PlanName = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PlanName(PaymentToken);	
 				
 		{ // Local block to allow local naming
-			ValidatePlanContainingGroupsParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.ValidatePlan_GetParameters(PlanName);
+			ValidatePlanContainingGroupsParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.ValidatePlanGroups_GetParameters(PlanName);
 			ValidatePlanContainingGroups.Execute(operationParameters);
 									
 		} // Local block closing
-				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ProcessPayment(PaymentToken, CustomerAccount);		
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ValidateStripePlanName(PlanName);		
+				Stripe.StripeSubscription[] CustomersActiveSubscriptions = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomersActiveSubscriptions(StripeCustomerID);	
+				string[] CustomersActivePlanNames = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomersActivePlanNames(CustomersActiveSubscriptions);	
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount, CustomersActivePlanNames);		
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ProcessPayment(StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID);		
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_AddPlanAsActiveToCustomer(CustomerAccount, PlanName);		
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_StoreObjects(CustomerAccount);		
 				
 		{ // Local block to allow local naming
-			GrantPlanAccessToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(PlanName, AccountID);
+			GrantPlanAccessToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(CustomerAccount, PlanName);
 			GrantPlanAccessToAccount.Execute(operationParameters);
 									
 		} // Local block closing
