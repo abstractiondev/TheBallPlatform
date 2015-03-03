@@ -40,10 +40,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: PaymentTokenID ( PaymentToken )" level="2">
+            <Header text="Method Call: UpdateStripeCustomerData ( CustomerAccount, PaymentToken )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Payment token ID for Stripe payment</TextContent>
+                  <TextContent>Update Stripe customer data from payment info</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -96,7 +96,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID )" level="2">
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentToken )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe, if lacking with current plan/subscription</TextContent>

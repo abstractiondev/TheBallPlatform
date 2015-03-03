@@ -34,7 +34,7 @@ using System.IO;
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
 				string AccountID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
-				string PaymentTokenID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PaymentTokenID(PaymentToken);	
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_UpdateStripeCustomerData(CustomerAccount, PaymentToken);		
 				string StripeCustomerID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				string PlanName = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PlanName(PaymentToken);	
 				
@@ -47,7 +47,7 @@ using System.IO;
 				Stripe.StripeSubscription[] CustomersActiveSubscriptions = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomersActiveSubscriptions(StripeCustomerID);	
 				string[] CustomersActivePlanNames = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomersActivePlanNames(CustomersActiveSubscriptions);	
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount, CustomersActivePlanNames);		
-				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ProcessPayment(StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID);		
+				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ProcessPayment(StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentToken);		
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_AddPlanAsActiveToCustomer(CustomerAccount, PlanName);		
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_StoreObjects(CustomerAccount);		
 				

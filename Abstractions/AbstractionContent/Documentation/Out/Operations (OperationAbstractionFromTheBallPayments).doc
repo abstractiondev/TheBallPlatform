@@ -249,9 +249,9 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Customer account object based accountID. Created if missing
 		</div>
-		</p><h2>Target Definition: PaymentTokenID ( PaymentToken )</h2>
+		</p><h2>Method Call: UpdateStripeCustomerData ( CustomerAccount, PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
-		Payment token ID for Stripe payment
+		Update Stripe customer data from payment info
 		</div>
 		</p><h2>Target Definition: StripeCustomerID ( CustomerAccount )</h2>
 		<p>		<div class="MsoNormal" >
@@ -281,7 +281,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Sync current plans to customer account
 		</div>
-		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentTokenID )</h2>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe, if lacking with current plan/subscription
 		</div>

@@ -8,6 +8,22 @@
             <InterfaceItem name="id" logicalDataType="Text_Short"/>
             <InterfaceItem name="currentproduct" logicalDataType="Text_Short"/>
             <InterfaceItem name="email" logicalDataType="Text_Short"/>
+            <ObjectInstance name="card" interfaceObjectName="BillingAddress"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="BillingAddress" designDesc="Stripe billing address relevant fields">
+          <InterfaceItems>
+            <InterfaceItem name="name" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_city" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_country" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_line1" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_line1_check" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_zip" logicalDataType="Text_Short"/>
+            <InterfaceItem name="address_zip_check" logicalDataType="Text_Short"/>
+            <InterfaceItem name="cvc_check" logicalDataType="Text_Short"/>
+            <InterfaceItem name="exp_month" logicalDataType="Text_Short"/>
+            <InterfaceItem name="exp_year" logicalDataType="Text_Short"/>
+            <InterfaceItem name="last4" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
       </InterfaceModel>
@@ -104,9 +120,10 @@
             <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
               <Target name="AccountID"/>
             </TargetDefinition>
-            <TargetDefinition name="PaymentTokenID" dataType="string" designDesc="Payment token ID for Stripe payment" state="implemented">
+            <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
+              <Target name="CustomerAccount"/>
               <Target name="PaymentToken"/>
-            </TargetDefinition>
+            </MethodExecute>
             <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
               <Target name="CustomerAccount"/>
             </TargetDefinition>
@@ -133,7 +150,7 @@
               <Target name="StripeCustomerID"/>
               <Target name="PlanName"/>
               <Target name="CustomersActivePlanNames"/>
-              <Target name="PaymentTokenID"/>
+              <Target name="PaymentToken"/>
             </MethodExecute>
             <MethodExecute name="AddPlanAsActiveToCustomer" designDesc="Add plan to customer if missing (and thus payment was processed)" state="implemented">
               <Target name="CustomerAccount"/>

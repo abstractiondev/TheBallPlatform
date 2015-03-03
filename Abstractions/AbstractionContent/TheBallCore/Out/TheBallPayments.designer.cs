@@ -39,6 +39,35 @@ namespace INT {
 				public string currentproduct { get; set; }
 				[DataMember]
 				public string email { get; set; }
+				[DataMember]
+				public BillingAddress card { get; set; }
+			}
+
+			[DataContract]
+			public partial class BillingAddress
+			{
+				[DataMember]
+				public string name { get; set; }
+				[DataMember]
+				public string address_city { get; set; }
+				[DataMember]
+				public string address_country { get; set; }
+				[DataMember]
+				public string address_line1 { get; set; }
+				[DataMember]
+				public string address_line1_check { get; set; }
+				[DataMember]
+				public string address_zip { get; set; }
+				[DataMember]
+				public string address_zip_check { get; set; }
+				[DataMember]
+				public string cvc_check { get; set; }
+				[DataMember]
+				public string exp_month { get; set; }
+				[DataMember]
+				public string exp_year { get; set; }
+				[DataMember]
+				public string last4 { get; set; }
 			}
 
  } 		public static class DomainInformationSupport

@@ -31,6 +31,53 @@ using System.Runtime.Serialization;
 			[DataMember]
 			public string email;
 
+			[DataMember]
+			public BillingAddress card;
+
+			
+			}
+			[DataContract]
+			public partial class BillingAddress 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string name;
+
+			[DataMember]
+			public string address_city;
+
+			[DataMember]
+			public string address_country;
+
+			[DataMember]
+			public string address_line1;
+
+			[DataMember]
+			public string address_line1_check;
+
+			[DataMember]
+			public string address_zip;
+
+			[DataMember]
+			public string address_zip_check;
+
+			[DataMember]
+			public string cvc_check;
+
+			[DataMember]
+			public string exp_month;
+
+			[DataMember]
+			public string exp_year;
+
+			[DataMember]
+			public string last4;
+
 			
 			}
  } 

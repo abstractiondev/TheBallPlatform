@@ -124,16 +124,24 @@ namespace TheBall.Payments
             customerAccount.ActivePlans = customersActivePlanNames.ToList();
         }
 
-        public static void ExecuteMethod_ProcessPayment(string stripeCustomerId, string planName, string[] customersActivePlanNames, string paymentTokenId)
+        public static void ExecuteMethod_ProcessPayment(string stripeCustomerId, string planName, string[] customersActivePlanNames, PaymentToken paymentToken)
         {
             bool customerHasPlanAlready = customersActivePlanNames.Contains(planName);
             if (!customerHasPlanAlready)
             {
                 var customerID = stripeCustomerId;
                 var subscriptionService = new StripeSubscriptionService();
+                var cardInfo = paymentToken.card;
                 var subscription = subscriptionService.Create(customerID, planName, new StripeSubscriptionCreateOptions
                 {
-                    TokenId = paymentTokenId
+                    CardName = cardInfo.name,
+                    CardAddressCity = cardInfo.address_city,
+                    CardAddressCountry = cardInfo.address_country,
+                    CardAddressLine1 = cardInfo.address_line1,
+                    CardAddressZip = cardInfo.address_zip,
+                    CardExpirationMonth = cardInfo.exp_month,
+                    CardExpirationYear = cardInfo.exp_year,
+                    TokenId = paymentToken.id,
                 });
             }
             HttpContext.Current.Response.Write("{}");
@@ -144,5 +152,18 @@ namespace TheBall.Payments
             return new GrantPlanAccessToAccountParameters { AccountID = customerAccount.ID, PlanName = planName };
         }
 
+        public static void ExecuteMethod_UpdateStripeCustomerData(CustomerAccount customerAccount, PaymentToken paymentToken)
+        {
+            StripeCustomerService customerService = new StripeCustomerService();
+            var customer = customerService.Get(customerAccount.StripeID);
+            if(!customer.Metadata.ContainsKey("business_type"))
+                customer.Metadata.Add("business_type", "B2C");
+            var cardInfo = paymentToken.card;
+            customerService.Update(customer.Id, new StripeCustomerUpdateOptions
+            {
+                Metadata = customer.Metadata,
+                Description = paymentToken.card.name
+            });
+        }
     }
 }
