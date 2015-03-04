@@ -17,7 +17,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using System.ComponentModel.DataAnnotations;
+using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
+using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 
 
 namespace SQLite.TheBall.Interface { 
@@ -78,6 +80,7 @@ namespace SQLite.TheBall.Interface {
 			{
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
+				tableCreationCommands.Add(WizardContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(WizardTask.GetCreateTableSQL());
 				tableCreationCommands.Add(Connection.GetCreateTableSQL());
 				tableCreationCommands.Add(TransferPackage.GetCreateTableSQL());
@@ -86,6 +89,7 @@ namespace SQLite.TheBall.Interface {
 				tableCreationCommands.Add(StatusSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationChangeItem.GetCreateTableSQL());
 				tableCreationCommands.Add(OperationExecutionItem.GetCreateTableSQL());
+				tableCreationCommands.Add(GenericCollectionableObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericValue.GetCreateTableSQL());
 			    var connection = this.Connection;
@@ -108,6 +112,20 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "WizardContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = WizardContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    existingObject.ActiveTasks.Clear();
+					if(serializedObject.ActiveTasks != null)
+	                    serializedObject.ActiveTasks.ForEach(item => existingObject.ActiveTasks.Add(item));
+					
+		            return;
+		        } 
 		        if (updateData.ObjectType == "WizardTask")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -134,6 +152,26 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.DeviceID = serializedObject.DeviceID;
 		            existingObject.IsActiveParty = serializedObject.IsActiveParty;
 		            existingObject.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+                    existingObject.ThisSideCategories.Clear();
+					if(serializedObject.ThisSideCategories != null)
+	                    serializedObject.ThisSideCategories.ForEach(item => existingObject.ThisSideCategories.Add(item));
+					
+                    existingObject.OtherSideCategories.Clear();
+					if(serializedObject.OtherSideCategories != null)
+	                    serializedObject.OtherSideCategories.ForEach(item => existingObject.OtherSideCategories.Add(item));
+					
+                    existingObject.CategoryLinks.Clear();
+					if(serializedObject.CategoryLinks != null)
+	                    serializedObject.CategoryLinks.ForEach(item => existingObject.CategoryLinks.Add(item));
+					
+                    existingObject.IncomingPackages.Clear();
+					if(serializedObject.IncomingPackages != null)
+	                    serializedObject.IncomingPackages.ForEach(item => existingObject.IncomingPackages.Add(item));
+					
+                    existingObject.OutgoingPackages.Clear();
+					if(serializedObject.OutgoingPackages != null)
+	                    serializedObject.OutgoingPackages.ForEach(item => existingObject.OutgoingPackages.Add(item));
+					
 		            existingObject.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
 		            existingObject.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
 		            existingObject.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
@@ -186,7 +224,6 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            existingObject.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            existingObject.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-		            existingObject.ParentCategoryID = serializedObject.ParentCategoryID;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "StatusSummary")
@@ -197,6 +234,18 @@ namespace SQLite.TheBall.Interface {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+                    existingObject.PendingOperations.Clear();
+					if(serializedObject.PendingOperations != null)
+	                    serializedObject.PendingOperations.ForEach(item => existingObject.PendingOperations.Add(item));
+					
+                    existingObject.ExecutingOperations.Clear();
+					if(serializedObject.ExecutingOperations != null)
+	                    serializedObject.ExecutingOperations.ForEach(item => existingObject.ExecutingOperations.Add(item));
+					
+                    existingObject.RecentCompletedOperations.Clear();
+					if(serializedObject.RecentCompletedOperations != null)
+	                    serializedObject.RecentCompletedOperations.ForEach(item => existingObject.RecentCompletedOperations.Add(item));
+					
                     existingObject.ChangeItemTrackingList.Clear();
 					if(serializedObject.ChangeItemTrackingList != null)
 	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
@@ -237,6 +286,20 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
 		            return;
 		        } 
+		        if (updateData.ObjectType == "GenericCollectionableObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ValueObject != null)
+						existingObject.ValueObjectID = serializedObject.ValueObject.ID;
+					else
+						existingObject.ValueObjectID = null;
+		            return;
+		        } 
 		        if (updateData.ObjectType == "GenericObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -245,6 +308,10 @@ namespace SQLite.TheBall.Interface {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+                    existingObject.Values.Clear();
+					if(serializedObject.Values != null)
+	                    serializedObject.Values.ForEach(item => existingObject.Values.Add(item));
+					
 		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
 		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
 		            return;
@@ -278,6 +345,14 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.DateTimeArray != null)
 	                    serializedObject.DateTimeArray.ForEach(item => existingObject.DateTimeArray.Add(item));
 					
+					if(serializedObject.Object != null)
+						existingObject.ObjectID = serializedObject.Object.ID;
+					else
+						existingObject.ObjectID = null;
+                    existingObject.ObjectArray.Clear();
+					if(serializedObject.ObjectArray != null)
+	                    serializedObject.ObjectArray.ForEach(item => existingObject.ObjectArray.Add(item));
+					
 		            existingObject.IndexingInfo = serializedObject.IndexingInfo;
 		            return;
 		        } 
@@ -288,6 +363,18 @@ namespace SQLite.TheBall.Interface {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "WizardContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new WizardContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ActiveTasks != null)
+						serializedObject.ActiveTasks.ForEach(item => objectToAdd.ActiveTasks.Add(item));
+					WizardContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
                 if (insertData.ObjectType == "WizardTask")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -313,6 +400,16 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.DeviceID = serializedObject.DeviceID;
 		            objectToAdd.IsActiveParty = serializedObject.IsActiveParty;
 		            objectToAdd.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+					if(serializedObject.ThisSideCategories != null)
+						serializedObject.ThisSideCategories.ForEach(item => objectToAdd.ThisSideCategories.Add(item));
+					if(serializedObject.OtherSideCategories != null)
+						serializedObject.OtherSideCategories.ForEach(item => objectToAdd.OtherSideCategories.Add(item));
+					if(serializedObject.CategoryLinks != null)
+						serializedObject.CategoryLinks.ForEach(item => objectToAdd.CategoryLinks.Add(item));
+					if(serializedObject.IncomingPackages != null)
+						serializedObject.IncomingPackages.ForEach(item => objectToAdd.IncomingPackages.Add(item));
+					if(serializedObject.OutgoingPackages != null)
+						serializedObject.OutgoingPackages.ForEach(item => objectToAdd.OutgoingPackages.Add(item));
 		            objectToAdd.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
 		            objectToAdd.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
 		            objectToAdd.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
@@ -363,7 +460,6 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-		            objectToAdd.ParentCategoryID = serializedObject.ParentCategoryID;
 					CategoryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -374,6 +470,12 @@ namespace SQLite.TheBall.Interface {
                         global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StatusSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.PendingOperations != null)
+						serializedObject.PendingOperations.ForEach(item => objectToAdd.PendingOperations.Add(item));
+					if(serializedObject.ExecutingOperations != null)
+						serializedObject.ExecutingOperations.ForEach(item => objectToAdd.ExecutingOperations.Add(item));
+					if(serializedObject.RecentCompletedOperations != null)
+						serializedObject.RecentCompletedOperations.ForEach(item => objectToAdd.RecentCompletedOperations.Add(item));
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
 					StatusSummaryTable.InsertOnSubmit(objectToAdd);
@@ -411,6 +513,20 @@ namespace SQLite.TheBall.Interface {
 					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
+                if (insertData.ObjectType == "GenericCollectionableObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ValueObject != null)
+						objectToAdd.ValueObjectID = serializedObject.ValueObject.ID;
+					else
+						objectToAdd.ValueObjectID = null;
+					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
                 if (insertData.ObjectType == "GenericObject")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -418,6 +534,8 @@ namespace SQLite.TheBall.Interface {
                         global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Values != null)
+						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
 					GenericObjectTable.InsertOnSubmit(objectToAdd);
@@ -443,6 +561,12 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.DateTime = serializedObject.DateTime;
 					if(serializedObject.DateTimeArray != null)
 						serializedObject.DateTimeArray.ForEach(item => objectToAdd.DateTimeArray.Add(item));
+					if(serializedObject.Object != null)
+						objectToAdd.ObjectID = serializedObject.Object.ID;
+					else
+						objectToAdd.ObjectID = null;
+					if(serializedObject.ObjectArray != null)
+						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
 		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
 					GenericValueTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -454,6 +578,13 @@ namespace SQLite.TheBall.Interface {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "WizardContainer")
+		        {
+		            var objectToDelete = new WizardContainer {ID = deleteData.ID};
+                    WizardContainerTable.Attach(objectToDelete);
+                    WizardContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "WizardTask")
 		        {
 		            var objectToDelete = new WizardTask {ID = deleteData.ID};
@@ -510,6 +641,13 @@ namespace SQLite.TheBall.Interface {
                     OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "GenericCollectionableObject")
+		        {
+		            var objectToDelete = new GenericCollectionableObject {ID = deleteData.ID};
+                    GenericCollectionableObjectTable.Attach(objectToDelete);
+                    GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "GenericObject")
 		        {
 		            var objectToDelete = new GenericObject {ID = deleteData.ID};
@@ -527,6 +665,11 @@ namespace SQLite.TheBall.Interface {
 		    }
 
 
+			public Table<WizardContainer> WizardContainerTable {
+				get {
+					return this.GetTable<WizardContainer>();
+				}
+			}
 			public Table<WizardTask> WizardTaskTable {
 				get {
 					return this.GetTable<WizardTask>();
@@ -567,6 +710,11 @@ namespace SQLite.TheBall.Interface {
 					return this.GetTable<OperationExecutionItem>();
 				}
 			}
+			public Table<GenericCollectionableObject> GenericCollectionableObjectTable {
+				get {
+					return this.GetTable<GenericCollectionableObject>();
+				}
+			}
 			public Table<GenericObject> GenericObjectTable {
 				get {
 					return this.GetTable<GenericObject>();
@@ -579,6 +727,95 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
+    [Table(Name = "WizardContainer")]
+	[ScaffoldTable(true)]
+	public class WizardContainer : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [WizardContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[ActiveTasksID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public WizardContainer() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        [Column(Name = "ActiveTasks")] 
+        [ScaffoldColumn(true)]
+		public string ActiveTasksData { get; set; }
+
+        private bool _IsActiveTasksRetrieved = false;
+        private bool _IsActiveTasksChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.WizardTask> _ActiveTasks = null;
+        public ObservableCollection<SER.TheBall.Interface.WizardTask> ActiveTasks
+        {
+            get
+            {
+                if (!_IsActiveTasksRetrieved)
+                {
+                    if (ActiveTasksData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.WizardTask[]>(ActiveTasksData);
+                        _ActiveTasks = new ObservableCollection<SER.TheBall.Interface.WizardTask>(arrayData);
+                    }
+                    else
+                    {
+                        _ActiveTasks = new ObservableCollection<SER.TheBall.Interface.WizardTask>();
+						ActiveTasksData = Guid.NewGuid().ToString();
+						_IsActiveTasksChanged = true;
+                    }
+                    _IsActiveTasksRetrieved = true;
+                    _ActiveTasks.CollectionChanged += (sender, args) =>
+						{
+							ActiveTasksData = Guid.NewGuid().ToString();
+							_IsActiveTasksChanged = true;
+						};
+                }
+                return _ActiveTasks;
+            }
+            set 
+			{ 
+				_ActiveTasks = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsActiveTasksRetrieved = true;
+                ActiveTasksData = Guid.NewGuid().ToString();
+                _IsActiveTasksChanged = true;
+
+			}
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+            if (_IsActiveTasksChanged || isInitialInsert)
+            {
+                var dataToStore = ActiveTasks.ToArray();
+                ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+		}
+	}
     [Table(Name = "WizardTask")]
 	[ScaffoldTable(true)]
 	public class WizardTask : ITheBallDataContextStorable
@@ -656,6 +893,11 @@ CREATE TABLE IF NOT EXISTS [Connection](
 [DeviceID] TEXT NOT NULL, 
 [IsActiveParty] INTEGER NOT NULL, 
 [OtherSideConnectionID] TEXT NOT NULL, 
+[ThisSideCategoriesID] TEXT NULL, 
+[OtherSideCategoriesID] TEXT NULL, 
+[CategoryLinksID] TEXT NULL, 
+[IncomingPackagesID] TEXT NULL, 
+[OutgoingPackagesID] TEXT NULL, 
 [OperationNameToListPackageContents] TEXT NOT NULL, 
 [OperationNameToProcessReceived] TEXT NOT NULL, 
 [OperationNameToUpdateThisSideCategories] TEXT NOT NULL, 
@@ -708,6 +950,231 @@ CREATE TABLE IF NOT EXISTS [Connection](
         [ScaffoldColumn(true)]
 		public string OtherSideConnectionID { get; set; }
 		// private string _unmodified_OtherSideConnectionID;
+        [Column(Name = "ThisSideCategories")] 
+        [ScaffoldColumn(true)]
+		public string ThisSideCategoriesData { get; set; }
+
+        private bool _IsThisSideCategoriesRetrieved = false;
+        private bool _IsThisSideCategoriesChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.Category> _ThisSideCategories = null;
+        public ObservableCollection<SER.TheBall.Interface.Category> ThisSideCategories
+        {
+            get
+            {
+                if (!_IsThisSideCategoriesRetrieved)
+                {
+                    if (ThisSideCategoriesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.Category[]>(ThisSideCategoriesData);
+                        _ThisSideCategories = new ObservableCollection<SER.TheBall.Interface.Category>(arrayData);
+                    }
+                    else
+                    {
+                        _ThisSideCategories = new ObservableCollection<SER.TheBall.Interface.Category>();
+						ThisSideCategoriesData = Guid.NewGuid().ToString();
+						_IsThisSideCategoriesChanged = true;
+                    }
+                    _IsThisSideCategoriesRetrieved = true;
+                    _ThisSideCategories.CollectionChanged += (sender, args) =>
+						{
+							ThisSideCategoriesData = Guid.NewGuid().ToString();
+							_IsThisSideCategoriesChanged = true;
+						};
+                }
+                return _ThisSideCategories;
+            }
+            set 
+			{ 
+				_ThisSideCategories = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsThisSideCategoriesRetrieved = true;
+                ThisSideCategoriesData = Guid.NewGuid().ToString();
+                _IsThisSideCategoriesChanged = true;
+
+			}
+        }
+
+        [Column(Name = "OtherSideCategories")] 
+        [ScaffoldColumn(true)]
+		public string OtherSideCategoriesData { get; set; }
+
+        private bool _IsOtherSideCategoriesRetrieved = false;
+        private bool _IsOtherSideCategoriesChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.Category> _OtherSideCategories = null;
+        public ObservableCollection<SER.TheBall.Interface.Category> OtherSideCategories
+        {
+            get
+            {
+                if (!_IsOtherSideCategoriesRetrieved)
+                {
+                    if (OtherSideCategoriesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.Category[]>(OtherSideCategoriesData);
+                        _OtherSideCategories = new ObservableCollection<SER.TheBall.Interface.Category>(arrayData);
+                    }
+                    else
+                    {
+                        _OtherSideCategories = new ObservableCollection<SER.TheBall.Interface.Category>();
+						OtherSideCategoriesData = Guid.NewGuid().ToString();
+						_IsOtherSideCategoriesChanged = true;
+                    }
+                    _IsOtherSideCategoriesRetrieved = true;
+                    _OtherSideCategories.CollectionChanged += (sender, args) =>
+						{
+							OtherSideCategoriesData = Guid.NewGuid().ToString();
+							_IsOtherSideCategoriesChanged = true;
+						};
+                }
+                return _OtherSideCategories;
+            }
+            set 
+			{ 
+				_OtherSideCategories = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOtherSideCategoriesRetrieved = true;
+                OtherSideCategoriesData = Guid.NewGuid().ToString();
+                _IsOtherSideCategoriesChanged = true;
+
+			}
+        }
+
+        [Column(Name = "CategoryLinks")] 
+        [ScaffoldColumn(true)]
+		public string CategoryLinksData { get; set; }
+
+        private bool _IsCategoryLinksRetrieved = false;
+        private bool _IsCategoryLinksChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.CategoryLink> _CategoryLinks = null;
+        public ObservableCollection<SER.TheBall.Interface.CategoryLink> CategoryLinks
+        {
+            get
+            {
+                if (!_IsCategoryLinksRetrieved)
+                {
+                    if (CategoryLinksData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.CategoryLink[]>(CategoryLinksData);
+                        _CategoryLinks = new ObservableCollection<SER.TheBall.Interface.CategoryLink>(arrayData);
+                    }
+                    else
+                    {
+                        _CategoryLinks = new ObservableCollection<SER.TheBall.Interface.CategoryLink>();
+						CategoryLinksData = Guid.NewGuid().ToString();
+						_IsCategoryLinksChanged = true;
+                    }
+                    _IsCategoryLinksRetrieved = true;
+                    _CategoryLinks.CollectionChanged += (sender, args) =>
+						{
+							CategoryLinksData = Guid.NewGuid().ToString();
+							_IsCategoryLinksChanged = true;
+						};
+                }
+                return _CategoryLinks;
+            }
+            set 
+			{ 
+				_CategoryLinks = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsCategoryLinksRetrieved = true;
+                CategoryLinksData = Guid.NewGuid().ToString();
+                _IsCategoryLinksChanged = true;
+
+			}
+        }
+
+        [Column(Name = "IncomingPackages")] 
+        [ScaffoldColumn(true)]
+		public string IncomingPackagesData { get; set; }
+
+        private bool _IsIncomingPackagesRetrieved = false;
+        private bool _IsIncomingPackagesChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.TransferPackage> _IncomingPackages = null;
+        public ObservableCollection<SER.TheBall.Interface.TransferPackage> IncomingPackages
+        {
+            get
+            {
+                if (!_IsIncomingPackagesRetrieved)
+                {
+                    if (IncomingPackagesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.TransferPackage[]>(IncomingPackagesData);
+                        _IncomingPackages = new ObservableCollection<SER.TheBall.Interface.TransferPackage>(arrayData);
+                    }
+                    else
+                    {
+                        _IncomingPackages = new ObservableCollection<SER.TheBall.Interface.TransferPackage>();
+						IncomingPackagesData = Guid.NewGuid().ToString();
+						_IsIncomingPackagesChanged = true;
+                    }
+                    _IsIncomingPackagesRetrieved = true;
+                    _IncomingPackages.CollectionChanged += (sender, args) =>
+						{
+							IncomingPackagesData = Guid.NewGuid().ToString();
+							_IsIncomingPackagesChanged = true;
+						};
+                }
+                return _IncomingPackages;
+            }
+            set 
+			{ 
+				_IncomingPackages = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsIncomingPackagesRetrieved = true;
+                IncomingPackagesData = Guid.NewGuid().ToString();
+                _IsIncomingPackagesChanged = true;
+
+			}
+        }
+
+        [Column(Name = "OutgoingPackages")] 
+        [ScaffoldColumn(true)]
+		public string OutgoingPackagesData { get; set; }
+
+        private bool _IsOutgoingPackagesRetrieved = false;
+        private bool _IsOutgoingPackagesChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.TransferPackage> _OutgoingPackages = null;
+        public ObservableCollection<SER.TheBall.Interface.TransferPackage> OutgoingPackages
+        {
+            get
+            {
+                if (!_IsOutgoingPackagesRetrieved)
+                {
+                    if (OutgoingPackagesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.TransferPackage[]>(OutgoingPackagesData);
+                        _OutgoingPackages = new ObservableCollection<SER.TheBall.Interface.TransferPackage>(arrayData);
+                    }
+                    else
+                    {
+                        _OutgoingPackages = new ObservableCollection<SER.TheBall.Interface.TransferPackage>();
+						OutgoingPackagesData = Guid.NewGuid().ToString();
+						_IsOutgoingPackagesChanged = true;
+                    }
+                    _IsOutgoingPackagesRetrieved = true;
+                    _OutgoingPackages.CollectionChanged += (sender, args) =>
+						{
+							OutgoingPackagesData = Guid.NewGuid().ToString();
+							_IsOutgoingPackagesChanged = true;
+						};
+                }
+                return _OutgoingPackages;
+            }
+            set 
+			{ 
+				_OutgoingPackages = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOutgoingPackagesRetrieved = true;
+                OutgoingPackagesData = Guid.NewGuid().ToString();
+                _IsOutgoingPackagesChanged = true;
+
+			}
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -761,6 +1228,36 @@ CREATE TABLE IF NOT EXISTS [Connection](
 				ProcessIDToProcessReceived = string.Empty;
 			if(ProcessIDToUpdateThisSideCategories == null)
 				ProcessIDToUpdateThisSideCategories = string.Empty;
+            if (_IsThisSideCategoriesChanged || isInitialInsert)
+            {
+                var dataToStore = ThisSideCategories.ToArray();
+                ThisSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsOtherSideCategoriesChanged || isInitialInsert)
+            {
+                var dataToStore = OtherSideCategories.ToArray();
+                OtherSideCategoriesData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsCategoryLinksChanged || isInitialInsert)
+            {
+                var dataToStore = CategoryLinks.ToArray();
+                CategoryLinksData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsIncomingPackagesChanged || isInitialInsert)
+            {
+                var dataToStore = IncomingPackages.ToArray();
+                IncomingPackagesData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsOutgoingPackagesChanged || isInitialInsert)
+            {
+                var dataToStore = OutgoingPackages.ToArray();
+                OutgoingPackagesData = JsonConvert.SerializeObject(dataToStore);
+            }
+
 		}
 	}
     [Table(Name = "TransferPackage")]
@@ -958,8 +1455,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 [NativeCategoryDomainName] TEXT NOT NULL, 
 [NativeCategoryObjectName] TEXT NOT NULL, 
 [NativeCategoryTitle] TEXT NOT NULL, 
-[IdentifyingCategoryName] TEXT NOT NULL, 
-[ParentCategoryID] TEXT NOT NULL
+[IdentifyingCategoryName] TEXT NOT NULL
 )";
         }
 
@@ -1006,11 +1502,6 @@ CREATE TABLE IF NOT EXISTS [Category](
         [ScaffoldColumn(true)]
 		public string IdentifyingCategoryName { get; set; }
 		// private string _unmodified_IdentifyingCategoryName;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string ParentCategoryID { get; set; }
-		// private string _unmodified_ParentCategoryID;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1024,8 +1515,6 @@ CREATE TABLE IF NOT EXISTS [Category](
 				NativeCategoryTitle = string.Empty;
 			if(IdentifyingCategoryName == null)
 				IdentifyingCategoryName = string.Empty;
-			if(ParentCategoryID == null)
-				ParentCategoryID = string.Empty;
 		}
 	}
     [Table(Name = "StatusSummary")]
@@ -1039,6 +1528,9 @@ CREATE TABLE IF NOT EXISTS [Category](
 CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[PendingOperationsID] TEXT NULL, 
+[ExecutingOperationsID] TEXT NULL, 
+[RecentCompletedOperationsID] TEXT NULL, 
 [ChangeItemTrackingList] TEXT NOT NULL
 )";
         }
@@ -1060,6 +1552,141 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        [Column(Name = "PendingOperations")] 
+        [ScaffoldColumn(true)]
+		public string PendingOperationsData { get; set; }
+
+        private bool _IsPendingOperationsRetrieved = false;
+        private bool _IsPendingOperationsChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _PendingOperations = null;
+        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> PendingOperations
+        {
+            get
+            {
+                if (!_IsPendingOperationsRetrieved)
+                {
+                    if (PendingOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.OperationExecutionItem[]>(PendingOperationsData);
+                        _PendingOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _PendingOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>();
+						PendingOperationsData = Guid.NewGuid().ToString();
+						_IsPendingOperationsChanged = true;
+                    }
+                    _IsPendingOperationsRetrieved = true;
+                    _PendingOperations.CollectionChanged += (sender, args) =>
+						{
+							PendingOperationsData = Guid.NewGuid().ToString();
+							_IsPendingOperationsChanged = true;
+						};
+                }
+                return _PendingOperations;
+            }
+            set 
+			{ 
+				_PendingOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsPendingOperationsRetrieved = true;
+                PendingOperationsData = Guid.NewGuid().ToString();
+                _IsPendingOperationsChanged = true;
+
+			}
+        }
+
+        [Column(Name = "ExecutingOperations")] 
+        [ScaffoldColumn(true)]
+		public string ExecutingOperationsData { get; set; }
+
+        private bool _IsExecutingOperationsRetrieved = false;
+        private bool _IsExecutingOperationsChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _ExecutingOperations = null;
+        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> ExecutingOperations
+        {
+            get
+            {
+                if (!_IsExecutingOperationsRetrieved)
+                {
+                    if (ExecutingOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.OperationExecutionItem[]>(ExecutingOperationsData);
+                        _ExecutingOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _ExecutingOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>();
+						ExecutingOperationsData = Guid.NewGuid().ToString();
+						_IsExecutingOperationsChanged = true;
+                    }
+                    _IsExecutingOperationsRetrieved = true;
+                    _ExecutingOperations.CollectionChanged += (sender, args) =>
+						{
+							ExecutingOperationsData = Guid.NewGuid().ToString();
+							_IsExecutingOperationsChanged = true;
+						};
+                }
+                return _ExecutingOperations;
+            }
+            set 
+			{ 
+				_ExecutingOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsExecutingOperationsRetrieved = true;
+                ExecutingOperationsData = Guid.NewGuid().ToString();
+                _IsExecutingOperationsChanged = true;
+
+			}
+        }
+
+        [Column(Name = "RecentCompletedOperations")] 
+        [ScaffoldColumn(true)]
+		public string RecentCompletedOperationsData { get; set; }
+
+        private bool _IsRecentCompletedOperationsRetrieved = false;
+        private bool _IsRecentCompletedOperationsChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> _RecentCompletedOperations = null;
+        public ObservableCollection<SER.TheBall.Interface.OperationExecutionItem> RecentCompletedOperations
+        {
+            get
+            {
+                if (!_IsRecentCompletedOperationsRetrieved)
+                {
+                    if (RecentCompletedOperationsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.OperationExecutionItem[]>(RecentCompletedOperationsData);
+                        _RecentCompletedOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>(arrayData);
+                    }
+                    else
+                    {
+                        _RecentCompletedOperations = new ObservableCollection<SER.TheBall.Interface.OperationExecutionItem>();
+						RecentCompletedOperationsData = Guid.NewGuid().ToString();
+						_IsRecentCompletedOperationsChanged = true;
+                    }
+                    _IsRecentCompletedOperationsRetrieved = true;
+                    _RecentCompletedOperations.CollectionChanged += (sender, args) =>
+						{
+							RecentCompletedOperationsData = Guid.NewGuid().ToString();
+							_IsRecentCompletedOperationsChanged = true;
+						};
+                }
+                return _RecentCompletedOperations;
+            }
+            set 
+			{ 
+				_RecentCompletedOperations = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsRecentCompletedOperationsRetrieved = true;
+                RecentCompletedOperationsData = Guid.NewGuid().ToString();
+                _IsRecentCompletedOperationsChanged = true;
+
+			}
+        }
 
         [Column(Name = "ChangeItemTrackingList")] 
         [ScaffoldColumn(true)]
@@ -1109,6 +1736,24 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+            if (_IsPendingOperationsChanged || isInitialInsert)
+            {
+                var dataToStore = PendingOperations.ToArray();
+                PendingOperationsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsExecutingOperationsChanged || isInitialInsert)
+            {
+                var dataToStore = ExecutingOperations.ToArray();
+                ExecutingOperationsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsRecentCompletedOperationsChanged || isInitialInsert)
+            {
+                var dataToStore = RecentCompletedOperations.ToArray();
+                RecentCompletedOperationsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
             if (_IsChangeItemTrackingListChanged || isInitialInsert)
             {
                 var dataToStore = ChangeItemTrackingList.ToArray();
@@ -1313,6 +1958,54 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 				ExecutionStatus = string.Empty;
 		}
 	}
+    [Table(Name = "GenericCollectionableObject")]
+	[ScaffoldTable(true)]
+	public class GenericCollectionableObject : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[ValueObjectID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GenericCollectionableObject() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+			[Column]
+			public string ValueObjectID { get; set; }
+			private EntityRef< GenericObject > _ValueObject;
+			[Association(Storage = "_ValueObject", ThisKey = "ValueObjectID")]
+			public GenericObject ValueObject
+			{
+				get { return this._ValueObject.Entity; }
+				set { this._ValueObject.Entity = value; }
+			}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+		}
+	}
     [Table(Name = "GenericObject")]
 	[ScaffoldTable(true)]
 	public class GenericObject : ITheBallDataContextStorable
@@ -1324,6 +2017,7 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[ValuesID] TEXT NULL, 
 [IncludeInCollection] INTEGER NOT NULL, 
 [OptionalCollectionName] TEXT NOT NULL
 )";
@@ -1347,6 +2041,51 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 			ETag = String.Empty;
 		}
 
+        [Column(Name = "Values")] 
+        [ScaffoldColumn(true)]
+		public string ValuesData { get; set; }
+
+        private bool _IsValuesRetrieved = false;
+        private bool _IsValuesChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.GenericValue> _Values = null;
+        public ObservableCollection<SER.TheBall.Interface.GenericValue> Values
+        {
+            get
+            {
+                if (!_IsValuesRetrieved)
+                {
+                    if (ValuesData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.GenericValue[]>(ValuesData);
+                        _Values = new ObservableCollection<SER.TheBall.Interface.GenericValue>(arrayData);
+                    }
+                    else
+                    {
+                        _Values = new ObservableCollection<SER.TheBall.Interface.GenericValue>();
+						ValuesData = Guid.NewGuid().ToString();
+						_IsValuesChanged = true;
+                    }
+                    _IsValuesRetrieved = true;
+                    _Values.CollectionChanged += (sender, args) =>
+						{
+							ValuesData = Guid.NewGuid().ToString();
+							_IsValuesChanged = true;
+						};
+                }
+                return _Values;
+            }
+            set 
+			{ 
+				_Values = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsValuesRetrieved = true;
+                ValuesData = Guid.NewGuid().ToString();
+                _IsValuesChanged = true;
+
+			}
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -1362,6 +2101,12 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 		
 			if(OptionalCollectionName == null)
 				OptionalCollectionName = string.Empty;
+            if (_IsValuesChanged || isInitialInsert)
+            {
+                var dataToStore = Values.ToArray();
+                ValuesData = JsonConvert.SerializeObject(dataToStore);
+            }
+
 		}
 	}
     [Table(Name = "GenericValue")]
@@ -1384,6 +2129,8 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 [BooleanArray] TEXT NOT NULL, 
 [DateTime] TEXT NOT NULL, 
 [DateTimeArray] TEXT NOT NULL, 
+[ObjectID] TEXT NULL, 
+[ObjectArrayID] TEXT NULL, 
 [IndexingInfo] TEXT NOT NULL
 )";
         }
@@ -1611,6 +2358,61 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 			}
         }
 
+			[Column]
+			public string ObjectID { get; set; }
+			private EntityRef< GenericObject > _Object;
+			[Association(Storage = "_Object", ThisKey = "ObjectID")]
+			public GenericObject Object
+			{
+				get { return this._Object.Entity; }
+				set { this._Object.Entity = value; }
+			}
+
+        [Column(Name = "ObjectArray")] 
+        [ScaffoldColumn(true)]
+		public string ObjectArrayData { get; set; }
+
+        private bool _IsObjectArrayRetrieved = false;
+        private bool _IsObjectArrayChanged = false;
+        private ObservableCollection<SER.TheBall.Interface.GenericObject> _ObjectArray = null;
+        public ObservableCollection<SER.TheBall.Interface.GenericObject> ObjectArray
+        {
+            get
+            {
+                if (!_IsObjectArrayRetrieved)
+                {
+                    if (ObjectArrayData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.GenericObject[]>(ObjectArrayData);
+                        _ObjectArray = new ObservableCollection<SER.TheBall.Interface.GenericObject>(arrayData);
+                    }
+                    else
+                    {
+                        _ObjectArray = new ObservableCollection<SER.TheBall.Interface.GenericObject>();
+						ObjectArrayData = Guid.NewGuid().ToString();
+						_IsObjectArrayChanged = true;
+                    }
+                    _IsObjectArrayRetrieved = true;
+                    _ObjectArray.CollectionChanged += (sender, args) =>
+						{
+							ObjectArrayData = Guid.NewGuid().ToString();
+							_IsObjectArrayChanged = true;
+						};
+                }
+                return _ObjectArray;
+            }
+            set 
+			{ 
+				_ObjectArray = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsObjectArrayRetrieved = true;
+                ObjectArrayData = Guid.NewGuid().ToString();
+                _IsObjectArrayChanged = true;
+
+			}
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -1647,6 +2449,12 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
             {
                 var dataToStore = DateTimeArray.ToArray();
                 DateTimeArrayData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsObjectArrayChanged || isInitialInsert)
+            {
+                var dataToStore = ObjectArray.ToArray();
+                ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
 		}

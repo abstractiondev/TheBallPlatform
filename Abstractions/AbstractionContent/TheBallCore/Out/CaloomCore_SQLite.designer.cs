@@ -17,7 +17,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using System.ComponentModel.DataAnnotations;
+using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
+using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 
 
 namespace SQLite.Caloom.CORE { 
@@ -82,6 +84,7 @@ namespace SQLite.Caloom.CORE {
 				tableCreationCommands.Add(ProductForWhom.GetCreateTableSQL());
 				tableCreationCommands.Add(Product.GetCreateTableSQL());
 				tableCreationCommands.Add(ProductUsage.GetCreateTableSQL());
+				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
 				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
 			    var connection = this.Connection;
@@ -130,6 +133,14 @@ namespace SQLite.Caloom.CORE {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Product != null)
+						existingObject.ProductID = serializedObject.Product.ID;
+					else
+						existingObject.ProductID = null;
+					if(serializedObject.Who != null)
+						existingObject.WhoID = serializedObject.Who.ID;
+					else
+						existingObject.WhoID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Product")
@@ -154,7 +165,21 @@ namespace SQLite.Caloom.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProductUsageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Product != null)
+						existingObject.ProductID = serializedObject.Product.ID;
+					else
+						existingObject.ProductID = null;
 		            existingObject.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "NodeSummaryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RenderedNode")
@@ -217,6 +242,14 @@ namespace SQLite.Caloom.CORE {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Product != null)
+						objectToAdd.ProductID = serializedObject.Product.ID;
+					else
+						objectToAdd.ProductID = null;
+					if(serializedObject.Who != null)
+						objectToAdd.WhoID = serializedObject.Who.ID;
+					else
+						objectToAdd.WhoID = null;
 					ProductForWhomTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -241,8 +274,22 @@ namespace SQLite.Caloom.CORE {
                         global::SER.Caloom.CORE.ProductUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProductUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Product != null)
+						objectToAdd.ProductID = serializedObject.Product.ID;
+					else
+						objectToAdd.ProductID = null;
 		            objectToAdd.UsageAmountInDecimal = serializedObject.UsageAmountInDecimal;
 					ProductUsageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "NodeSummaryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "RenderedNode")
@@ -308,6 +355,13 @@ namespace SQLite.Caloom.CORE {
                     ProductUsageTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "NodeSummaryContainer")
+		        {
+		            var objectToDelete = new NodeSummaryContainer {ID = deleteData.ID};
+                    NodeSummaryContainerTable.Attach(objectToDelete);
+                    NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "RenderedNode")
 		        {
 		            var objectToDelete = new RenderedNode {ID = deleteData.ID};
@@ -343,6 +397,11 @@ namespace SQLite.Caloom.CORE {
 			public Table<ProductUsage> ProductUsageTable {
 				get {
 					return this.GetTable<ProductUsage>();
+				}
+			}
+			public Table<NodeSummaryContainer> NodeSummaryContainerTable {
+				get {
+					return this.GetTable<NodeSummaryContainer>();
 				}
 			}
 			public Table<RenderedNode> RenderedNodeTable {
@@ -440,7 +499,9 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[ProductID] TEXT NULL, 
+[WhoID] TEXT NULL
 )";
         }
 
@@ -482,6 +543,26 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string ProductID { get; set; }
+			private EntityRef< Product > _Product;
+			[Association(Storage = "_Product", ThisKey = "ProductID")]
+			public Product Product
+			{
+				get { return this._Product.Entity; }
+				set { this._Product.Entity = value; }
+			}
+
+			[Column]
+			public string WhoID { get; set; }
+			private EntityRef< Who > _Who;
+			[Association(Storage = "_Who", ThisKey = "WhoID")]
+			public Who Who
+			{
+				get { return this._Who.Entity; }
+				set { this._Who.Entity = value; }
+			}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -509,7 +590,8 @@ CREATE TABLE IF NOT EXISTS [Product](
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[SubProductsID] TEXT NULL
 )";
         }
 
@@ -575,6 +657,7 @@ CREATE TABLE IF NOT EXISTS [Product](
 CREATE TABLE IF NOT EXISTS [ProductUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[ProductID] TEXT NULL, 
 [UsageAmountInDecimal] REAL NOT NULL
 )";
         }
@@ -597,11 +680,60 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 			ETag = String.Empty;
 		}
 
+			[Column]
+			public string ProductID { get; set; }
+			private EntityRef< Product > _Product;
+			[Association(Storage = "_Product", ThisKey = "ProductID")]
+			public Product Product
+			{
+				get { return this._Product.Entity; }
+				set { this._Product.Entity = value; }
+			}
+
 
 		[Column]
         [ScaffoldColumn(true)]
 		public double UsageAmountInDecimal { get; set; }
 		// private double _unmodified_UsageAmountInDecimal;
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+		}
+	}
+    [Table(Name = "NodeSummaryContainer")]
+	[ScaffoldTable(true)]
+	public class NodeSummaryContainer : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[NodesID] TEXT NULL, 
+[NodeSourceProductsID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public NodeSummaryContainer() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -624,7 +756,11 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ActualContentUrl] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL
+[MainSortableText] TEXT NOT NULL, 
+[CategoriesID] TEXT NULL, 
+[AuthorsID] TEXT NULL, 
+[LocationsID] TEXT NULL, 
+[FiltersID] TEXT NULL
 )";
         }
 

@@ -17,7 +17,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using System.ComponentModel.DataAnnotations;
+using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
+using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 
 
 namespace SQLite.TheBall.CORE { 
@@ -84,6 +86,7 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(AuthenticatedAsActiveDevice.GetCreateTableSQL());
 				tableCreationCommands.Add(DeviceMembership.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceFiscalExportSummary.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(Invoice.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceDetails.GetCreateTableSQL());
 				tableCreationCommands.Add(InvoiceUser.GetCreateTableSQL());
@@ -94,10 +97,12 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(Category.GetCreateTableSQL());
 				tableCreationCommands.Add(ProcessContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(Process.GetCreateTableSQL());
+				tableCreationCommands.Add(ProcessItem.GetCreateTableSQL());
 				tableCreationCommands.Add(SemanticInformationItem.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationOwnerInfo.GetCreateTableSQL());
 				tableCreationCommands.Add(UsageSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(UsageMonitorItem.GetCreateTableSQL());
+				tableCreationCommands.Add(RequestResourceUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(ProcessorUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(StorageTransactionUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(StorageUsage.GetCreateTableSQL());
@@ -213,6 +218,16 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
 		            return;
 		        } 
+		        if (updateData.ObjectType == "InvoiceSummaryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = InvoiceSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            return;
+		        } 
 		        if (updateData.ObjectType == "Invoice")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -229,6 +244,10 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PaidAmount = serializedObject.PaidAmount;
 		            existingObject.FeesAndInterestAmount = serializedObject.FeesAndInterestAmount;
 		            existingObject.UnpaidAmount = serializedObject.UnpaidAmount;
+					if(serializedObject.InvoiceDetails != null)
+						existingObject.InvoiceDetailsID = serializedObject.InvoiceDetails.ID;
+					else
+						existingObject.InvoiceDetailsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceDetails")
@@ -358,6 +377,36 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = ProcessTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ProcessDescription = serializedObject.ProcessDescription;
+					if(serializedObject.ExecutingOperation != null)
+						existingObject.ExecutingOperationID = serializedObject.ExecutingOperation.ID;
+					else
+						existingObject.ExecutingOperationID = null;
+                    existingObject.InitialArguments.Clear();
+					if(serializedObject.InitialArguments != null)
+	                    serializedObject.InitialArguments.ForEach(item => existingObject.InitialArguments.Add(item));
+					
+                    existingObject.ProcessItems.Clear();
+					if(serializedObject.ProcessItems != null)
+	                    serializedObject.ProcessItems.ForEach(item => existingObject.ProcessItems.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ProcessItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = ProcessItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    existingObject.Outputs.Clear();
+					if(serializedObject.Outputs != null)
+	                    serializedObject.Outputs.ForEach(item => existingObject.Outputs.Add(item));
+					
+                    existingObject.Inputs.Clear();
+					if(serializedObject.Inputs != null)
+	                    serializedObject.Inputs.ForEach(item => existingObject.Inputs.Add(item));
+					
 		            return;
 		        } 
 		        if (updateData.ObjectType == "SemanticInformationItem")
@@ -393,6 +442,10 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = UsageSummaryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.SummaryName = serializedObject.SummaryName;
+					if(serializedObject.SummaryMonitoringItem != null)
+						existingObject.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
+					else
+						existingObject.SummaryMonitoringItemID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "UsageMonitorItem")
@@ -403,7 +456,45 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UsageMonitorItemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.OwnerInfo != null)
+						existingObject.OwnerInfoID = serializedObject.OwnerInfo.ID;
+					else
+						existingObject.OwnerInfoID = null;
+					if(serializedObject.TimeRangeInclusiveStartExclusiveEnd != null)
+						existingObject.TimeRangeInclusiveStartExclusiveEndID = serializedObject.TimeRangeInclusiveStartExclusiveEnd.ID;
+					else
+						existingObject.TimeRangeInclusiveStartExclusiveEndID = null;
 		            existingObject.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "RequestResourceUsage")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = RequestResourceUsageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.OwnerInfo != null)
+						existingObject.OwnerInfoID = serializedObject.OwnerInfo.ID;
+					else
+						existingObject.OwnerInfoID = null;
+					if(serializedObject.ProcessorUsage != null)
+						existingObject.ProcessorUsageID = serializedObject.ProcessorUsage.ID;
+					else
+						existingObject.ProcessorUsageID = null;
+					if(serializedObject.StorageTransactionUsage != null)
+						existingObject.StorageTransactionUsageID = serializedObject.StorageTransactionUsage.ID;
+					else
+						existingObject.StorageTransactionUsageID = null;
+					if(serializedObject.NetworkUsage != null)
+						existingObject.NetworkUsageID = serializedObject.NetworkUsage.ID;
+					else
+						existingObject.NetworkUsageID = null;
+					if(serializedObject.RequestDetails != null)
+						existingObject.RequestDetailsID = serializedObject.RequestDetails.ID;
+					else
+						existingObject.RequestDetailsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProcessorUsage")
@@ -414,6 +505,10 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ProcessorUsageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.TimeRange != null)
+						existingObject.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTicks = serializedObject.AmountOfTicks;
 		            existingObject.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -428,6 +523,10 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StorageTransactionUsageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.TimeRange != null)
+						existingObject.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTransactions = serializedObject.AmountOfTransactions;
 		            return;
@@ -454,6 +553,10 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NetworkUsageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.TimeRange != null)
+						existingObject.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfBytes = serializedObject.AmountOfBytes;
 		            return;
@@ -583,6 +686,16 @@ namespace SQLite.TheBall.CORE {
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
+                if (insertData.ObjectType == "InvoiceSummaryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new InvoiceSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
                 if (insertData.ObjectType == "Invoice")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -598,6 +711,10 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PaidAmount = serializedObject.PaidAmount;
 		            objectToAdd.FeesAndInterestAmount = serializedObject.FeesAndInterestAmount;
 		            objectToAdd.UnpaidAmount = serializedObject.UnpaidAmount;
+					if(serializedObject.InvoiceDetails != null)
+						objectToAdd.InvoiceDetailsID = serializedObject.InvoiceDetails.ID;
+					else
+						objectToAdd.InvoiceDetailsID = null;
 					InvoiceTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -725,7 +842,29 @@ namespace SQLite.TheBall.CORE {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Process {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ProcessDescription = serializedObject.ProcessDescription;
+					if(serializedObject.ExecutingOperation != null)
+						objectToAdd.ExecutingOperationID = serializedObject.ExecutingOperation.ID;
+					else
+						objectToAdd.ExecutingOperationID = null;
+					if(serializedObject.InitialArguments != null)
+						serializedObject.InitialArguments.ForEach(item => objectToAdd.InitialArguments.Add(item));
+					if(serializedObject.ProcessItems != null)
+						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
 					ProcessTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ProcessItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.ProcessItem.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new ProcessItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Outputs != null)
+						serializedObject.Outputs.ForEach(item => objectToAdd.Outputs.Add(item));
+					if(serializedObject.Inputs != null)
+						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
+					ProcessItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "SemanticInformationItem")
@@ -760,6 +899,10 @@ namespace SQLite.TheBall.CORE {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UsageSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SummaryName = serializedObject.SummaryName;
+					if(serializedObject.SummaryMonitoringItem != null)
+						objectToAdd.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
+					else
+						objectToAdd.SummaryMonitoringItemID = null;
 					UsageSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -770,8 +913,46 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.UsageMonitorItem.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UsageMonitorItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.OwnerInfo != null)
+						objectToAdd.OwnerInfoID = serializedObject.OwnerInfo.ID;
+					else
+						objectToAdd.OwnerInfoID = null;
+					if(serializedObject.TimeRangeInclusiveStartExclusiveEnd != null)
+						objectToAdd.TimeRangeInclusiveStartExclusiveEndID = serializedObject.TimeRangeInclusiveStartExclusiveEnd.ID;
+					else
+						objectToAdd.TimeRangeInclusiveStartExclusiveEndID = null;
 		            objectToAdd.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "RequestResourceUsage")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.RequestResourceUsage.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new RequestResourceUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.OwnerInfo != null)
+						objectToAdd.OwnerInfoID = serializedObject.OwnerInfo.ID;
+					else
+						objectToAdd.OwnerInfoID = null;
+					if(serializedObject.ProcessorUsage != null)
+						objectToAdd.ProcessorUsageID = serializedObject.ProcessorUsage.ID;
+					else
+						objectToAdd.ProcessorUsageID = null;
+					if(serializedObject.StorageTransactionUsage != null)
+						objectToAdd.StorageTransactionUsageID = serializedObject.StorageTransactionUsage.ID;
+					else
+						objectToAdd.StorageTransactionUsageID = null;
+					if(serializedObject.NetworkUsage != null)
+						objectToAdd.NetworkUsageID = serializedObject.NetworkUsage.ID;
+					else
+						objectToAdd.NetworkUsageID = null;
+					if(serializedObject.RequestDetails != null)
+						objectToAdd.RequestDetailsID = serializedObject.RequestDetails.ID;
+					else
+						objectToAdd.RequestDetailsID = null;
+					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "ProcessorUsage")
@@ -781,6 +962,10 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.ProcessorUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ProcessorUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.TimeRange != null)
+						objectToAdd.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTicks = serializedObject.AmountOfTicks;
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
@@ -795,6 +980,10 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.StorageTransactionUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StorageTransactionUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.TimeRange != null)
+						objectToAdd.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
 					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
@@ -821,6 +1010,10 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.NetworkUsage.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NetworkUsage {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.TimeRange != null)
+						objectToAdd.TimeRangeID = serializedObject.TimeRange.ID;
+					else
+						objectToAdd.TimeRangeID = null;
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
 					NetworkUsageTable.InsertOnSubmit(objectToAdd);
@@ -904,6 +1097,13 @@ namespace SQLite.TheBall.CORE {
                     InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "InvoiceSummaryContainer")
+		        {
+		            var objectToDelete = new InvoiceSummaryContainer {ID = deleteData.ID};
+                    InvoiceSummaryContainerTable.Attach(objectToDelete);
+                    InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "Invoice")
 		        {
 		            var objectToDelete = new Invoice {ID = deleteData.ID};
@@ -974,6 +1174,13 @@ namespace SQLite.TheBall.CORE {
                     ProcessTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "ProcessItem")
+		        {
+		            var objectToDelete = new ProcessItem {ID = deleteData.ID};
+                    ProcessItemTable.Attach(objectToDelete);
+                    ProcessItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "SemanticInformationItem")
 		        {
 		            var objectToDelete = new SemanticInformationItem {ID = deleteData.ID};
@@ -1000,6 +1207,13 @@ namespace SQLite.TheBall.CORE {
 		            var objectToDelete = new UsageMonitorItem {ID = deleteData.ID};
                     UsageMonitorItemTable.Attach(objectToDelete);
                     UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RequestResourceUsage")
+		        {
+		            var objectToDelete = new RequestResourceUsage {ID = deleteData.ID};
+                    RequestResourceUsageTable.Attach(objectToDelete);
+                    RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ProcessorUsage")
@@ -1077,6 +1291,11 @@ namespace SQLite.TheBall.CORE {
 					return this.GetTable<InvoiceFiscalExportSummary>();
 				}
 			}
+			public Table<InvoiceSummaryContainer> InvoiceSummaryContainerTable {
+				get {
+					return this.GetTable<InvoiceSummaryContainer>();
+				}
+			}
 			public Table<Invoice> InvoiceTable {
 				get {
 					return this.GetTable<Invoice>();
@@ -1127,6 +1346,11 @@ namespace SQLite.TheBall.CORE {
 					return this.GetTable<Process>();
 				}
 			}
+			public Table<ProcessItem> ProcessItemTable {
+				get {
+					return this.GetTable<ProcessItem>();
+				}
+			}
 			public Table<SemanticInformationItem> SemanticInformationItemTable {
 				get {
 					return this.GetTable<SemanticInformationItem>();
@@ -1145,6 +1369,11 @@ namespace SQLite.TheBall.CORE {
 			public Table<UsageMonitorItem> UsageMonitorItemTable {
 				get {
 					return this.GetTable<UsageMonitorItem>();
+				}
+			}
+			public Table<RequestResourceUsage> RequestResourceUsageTable {
+				get {
+					return this.GetTable<RequestResourceUsage>();
 				}
 			}
 			public Table<ProcessorUsage> ProcessorUsageTable {
@@ -1578,7 +1807,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
 [FiscalInclusiveStartDate] TEXT NOT NULL, 
-[FiscalInclusiveEndDate] TEXT NOT NULL
+[FiscalInclusiveEndDate] TEXT NOT NULL, 
+[ExportedInvoicesID] TEXT NULL
 )";
         }
 
@@ -1615,6 +1845,47 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 		
 		}
 	}
+    [Table(Name = "InvoiceSummaryContainer")]
+	[ScaffoldTable(true)]
+	public class InvoiceSummaryContainer : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[OpenInvoicesID] TEXT NULL, 
+[PredictedInvoicesID] TEXT NULL, 
+[PaidInvoicesActiveYearID] TEXT NULL, 
+[PaidInvoicesLast12MonthsID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceSummaryContainer() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+		}
+	}
     [Table(Name = "Invoice")]
 	[ScaffoldTable(true)]
 	public class Invoice : ITheBallDataContextStorable
@@ -1633,7 +1904,9 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 [DueDate] TEXT NOT NULL, 
 [PaidAmount] TEXT NOT NULL, 
 [FeesAndInterestAmount] TEXT NOT NULL, 
-[UnpaidAmount] TEXT NOT NULL
+[UnpaidAmount] TEXT NOT NULL, 
+[InvoiceDetailsID] TEXT NULL, 
+[InvoiceUsersID] TEXT NULL
 )";
         }
 
@@ -1695,6 +1968,16 @@ CREATE TABLE IF NOT EXISTS [Invoice](
         [ScaffoldColumn(true)]
 		public string UnpaidAmount { get; set; }
 		// private string _unmodified_UnpaidAmount;
+			[Column]
+			public string InvoiceDetailsID { get; set; }
+			private EntityRef< InvoiceDetails > _InvoiceDetails;
+			[Association(Storage = "_InvoiceDetails", ThisKey = "InvoiceDetailsID")]
+			public InvoiceDetails InvoiceDetails
+			{
+				get { return this._InvoiceDetails.Entity; }
+				set { this._InvoiceDetails.Entity = value; }
+			}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1812,7 +2095,9 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 [UserID] TEXT NOT NULL, 
 [UserPhoneNumber] TEXT NOT NULL, 
 [UserSubscriptionNumber] TEXT NOT NULL, 
-[UserInvoiceTotalAmount] TEXT NOT NULL
+[UserInvoiceTotalAmount] TEXT NOT NULL, 
+[InvoiceRowGroupCollectionID] TEXT NULL, 
+[InvoiceEventDetailGroupCollectionID] TEXT NULL
 )";
         }
 
@@ -1888,7 +2173,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 [GroupName] TEXT NOT NULL, 
 [GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
 [GroupTotalTaxes] TEXT NOT NULL, 
-[GroupTotalPriceWithTaxes] TEXT NOT NULL
+[GroupTotalPriceWithTaxes] TEXT NOT NULL, 
+[InvoiceRowCollectionID] TEXT NULL
 )";
         }
 
@@ -1954,7 +2240,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
-[GroupName] TEXT NOT NULL
+[GroupName] TEXT NOT NULL, 
+[InvoiceEventDetailCollectionID] TEXT NULL
 )";
         }
 
@@ -2339,7 +2626,10 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 CREATE TABLE IF NOT EXISTS [Process](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
-[ProcessDescription] TEXT NOT NULL
+[ProcessDescription] TEXT NOT NULL, 
+[ExecutingOperationID] TEXT NULL, 
+[InitialArgumentsID] TEXT NULL, 
+[ProcessItemsID] TEXT NULL
 )";
         }
 
@@ -2366,11 +2656,264 @@ CREATE TABLE IF NOT EXISTS [Process](
         [ScaffoldColumn(true)]
 		public string ProcessDescription { get; set; }
 		// private string _unmodified_ProcessDescription;
+			[Column]
+			public string ExecutingOperationID { get; set; }
+			private EntityRef< SemanticInformationItem > _ExecutingOperation;
+			[Association(Storage = "_ExecutingOperation", ThisKey = "ExecutingOperationID")]
+			public SemanticInformationItem ExecutingOperation
+			{
+				get { return this._ExecutingOperation.Entity; }
+				set { this._ExecutingOperation.Entity = value; }
+			}
+
+        [Column(Name = "InitialArguments")] 
+        [ScaffoldColumn(true)]
+		public string InitialArgumentsData { get; set; }
+
+        private bool _IsInitialArgumentsRetrieved = false;
+        private bool _IsInitialArgumentsChanged = false;
+        private ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> _InitialArguments = null;
+        public ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> InitialArguments
+        {
+            get
+            {
+                if (!_IsInitialArgumentsRetrieved)
+                {
+                    if (InitialArgumentsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.CORE.SemanticInformationItem[]>(InitialArgumentsData);
+                        _InitialArguments = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _InitialArguments = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>();
+						InitialArgumentsData = Guid.NewGuid().ToString();
+						_IsInitialArgumentsChanged = true;
+                    }
+                    _IsInitialArgumentsRetrieved = true;
+                    _InitialArguments.CollectionChanged += (sender, args) =>
+						{
+							InitialArgumentsData = Guid.NewGuid().ToString();
+							_IsInitialArgumentsChanged = true;
+						};
+                }
+                return _InitialArguments;
+            }
+            set 
+			{ 
+				_InitialArguments = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsInitialArgumentsRetrieved = true;
+                InitialArgumentsData = Guid.NewGuid().ToString();
+                _IsInitialArgumentsChanged = true;
+
+			}
+        }
+
+        [Column(Name = "ProcessItems")] 
+        [ScaffoldColumn(true)]
+		public string ProcessItemsData { get; set; }
+
+        private bool _IsProcessItemsRetrieved = false;
+        private bool _IsProcessItemsChanged = false;
+        private ObservableCollection<SER.TheBall.CORE.ProcessItem> _ProcessItems = null;
+        public ObservableCollection<SER.TheBall.CORE.ProcessItem> ProcessItems
+        {
+            get
+            {
+                if (!_IsProcessItemsRetrieved)
+                {
+                    if (ProcessItemsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.CORE.ProcessItem[]>(ProcessItemsData);
+                        _ProcessItems = new ObservableCollection<SER.TheBall.CORE.ProcessItem>(arrayData);
+                    }
+                    else
+                    {
+                        _ProcessItems = new ObservableCollection<SER.TheBall.CORE.ProcessItem>();
+						ProcessItemsData = Guid.NewGuid().ToString();
+						_IsProcessItemsChanged = true;
+                    }
+                    _IsProcessItemsRetrieved = true;
+                    _ProcessItems.CollectionChanged += (sender, args) =>
+						{
+							ProcessItemsData = Guid.NewGuid().ToString();
+							_IsProcessItemsChanged = true;
+						};
+                }
+                return _ProcessItems;
+            }
+            set 
+			{ 
+				_ProcessItems = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsProcessItemsRetrieved = true;
+                ProcessItemsData = Guid.NewGuid().ToString();
+                _IsProcessItemsChanged = true;
+
+			}
+        }
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
 			if(ProcessDescription == null)
 				ProcessDescription = string.Empty;
+            if (_IsInitialArgumentsChanged || isInitialInsert)
+            {
+                var dataToStore = InitialArguments.ToArray();
+                InitialArgumentsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsProcessItemsChanged || isInitialInsert)
+            {
+                var dataToStore = ProcessItems.ToArray();
+                ProcessItemsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+		}
+	}
+    [Table(Name = "ProcessItem")]
+	[ScaffoldTable(true)]
+	public class ProcessItem : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProcessItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[OutputsID] TEXT NULL, 
+[InputsID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ProcessItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        [Column(Name = "Outputs")] 
+        [ScaffoldColumn(true)]
+		public string OutputsData { get; set; }
+
+        private bool _IsOutputsRetrieved = false;
+        private bool _IsOutputsChanged = false;
+        private ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> _Outputs = null;
+        public ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> Outputs
+        {
+            get
+            {
+                if (!_IsOutputsRetrieved)
+                {
+                    if (OutputsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.CORE.SemanticInformationItem[]>(OutputsData);
+                        _Outputs = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _Outputs = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>();
+						OutputsData = Guid.NewGuid().ToString();
+						_IsOutputsChanged = true;
+                    }
+                    _IsOutputsRetrieved = true;
+                    _Outputs.CollectionChanged += (sender, args) =>
+						{
+							OutputsData = Guid.NewGuid().ToString();
+							_IsOutputsChanged = true;
+						};
+                }
+                return _Outputs;
+            }
+            set 
+			{ 
+				_Outputs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsOutputsRetrieved = true;
+                OutputsData = Guid.NewGuid().ToString();
+                _IsOutputsChanged = true;
+
+			}
+        }
+
+        [Column(Name = "Inputs")] 
+        [ScaffoldColumn(true)]
+		public string InputsData { get; set; }
+
+        private bool _IsInputsRetrieved = false;
+        private bool _IsInputsChanged = false;
+        private ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> _Inputs = null;
+        public ObservableCollection<SER.TheBall.CORE.SemanticInformationItem> Inputs
+        {
+            get
+            {
+                if (!_IsInputsRetrieved)
+                {
+                    if (InputsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.CORE.SemanticInformationItem[]>(InputsData);
+                        _Inputs = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>(arrayData);
+                    }
+                    else
+                    {
+                        _Inputs = new ObservableCollection<SER.TheBall.CORE.SemanticInformationItem>();
+						InputsData = Guid.NewGuid().ToString();
+						_IsInputsChanged = true;
+                    }
+                    _IsInputsRetrieved = true;
+                    _Inputs.CollectionChanged += (sender, args) =>
+						{
+							InputsData = Guid.NewGuid().ToString();
+							_IsInputsChanged = true;
+						};
+                }
+                return _Inputs;
+            }
+            set 
+			{ 
+				_Inputs = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsInputsRetrieved = true;
+                InputsData = Guid.NewGuid().ToString();
+                _IsInputsChanged = true;
+
+			}
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+            if (_IsOutputsChanged || isInitialInsert)
+            {
+                var dataToStore = Outputs.ToArray();
+                OutputsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsInputsChanged || isInitialInsert)
+            {
+                var dataToStore = Inputs.ToArray();
+                InputsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
 		}
 	}
     [Table(Name = "SemanticInformationItem")]
@@ -2490,7 +3033,8 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 CREATE TABLE IF NOT EXISTS [UsageSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
-[SummaryName] TEXT NOT NULL
+[SummaryName] TEXT NOT NULL, 
+[SummaryMonitoringItemID] TEXT NULL
 )";
         }
 
@@ -2517,6 +3061,16 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
         [ScaffoldColumn(true)]
 		public string SummaryName { get; set; }
 		// private string _unmodified_SummaryName;
+			[Column]
+			public string SummaryMonitoringItemID { get; set; }
+			private EntityRef< UsageMonitorItem > _SummaryMonitoringItem;
+			[Association(Storage = "_SummaryMonitoringItem", ThisKey = "SummaryMonitoringItemID")]
+			public UsageMonitorItem SummaryMonitoringItem
+			{
+				get { return this._SummaryMonitoringItem.Entity; }
+				set { this._SummaryMonitoringItem.Entity = value; }
+			}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2535,7 +3089,13 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
-[StepSizeInMinutes] INTEGER NOT NULL
+[OwnerInfoID] TEXT NULL, 
+[TimeRangeInclusiveStartExclusiveEndID] TEXT NULL, 
+[StepSizeInMinutes] INTEGER NOT NULL, 
+[ProcessorUsagesID] TEXT NULL, 
+[StorageTransactionUsagesID] TEXT NULL, 
+[StorageUsagesID] TEXT NULL, 
+[NetworkUsagesID] TEXT NULL
 )";
         }
 
@@ -2557,11 +3117,123 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 			ETag = String.Empty;
 		}
 
+			[Column]
+			public string OwnerInfoID { get; set; }
+			private EntityRef< InformationOwnerInfo > _OwnerInfo;
+			[Association(Storage = "_OwnerInfo", ThisKey = "OwnerInfoID")]
+			public InformationOwnerInfo OwnerInfo
+			{
+				get { return this._OwnerInfo.Entity; }
+				set { this._OwnerInfo.Entity = value; }
+			}
+
+			[Column]
+			public string TimeRangeInclusiveStartExclusiveEndID { get; set; }
+			private EntityRef< TimeRange > _TimeRangeInclusiveStartExclusiveEnd;
+			[Association(Storage = "_TimeRangeInclusiveStartExclusiveEnd", ThisKey = "TimeRangeInclusiveStartExclusiveEndID")]
+			public TimeRange TimeRangeInclusiveStartExclusiveEnd
+			{
+				get { return this._TimeRangeInclusiveStartExclusiveEnd.Entity; }
+				set { this._TimeRangeInclusiveStartExclusiveEnd.Entity = value; }
+			}
+
 
 		[Column]
         [ScaffoldColumn(true)]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+		}
+	}
+    [Table(Name = "RequestResourceUsage")]
+	[ScaffoldTable(true)]
+	public class RequestResourceUsage : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL,
+[OwnerInfoID] TEXT NULL, 
+[ProcessorUsageID] TEXT NULL, 
+[StorageTransactionUsageID] TEXT NULL, 
+[NetworkUsageID] TEXT NULL, 
+[RequestDetailsID] TEXT NULL
+)";
+        }
+
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public RequestResourceUsage() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+			[Column]
+			public string OwnerInfoID { get; set; }
+			private EntityRef< InformationOwnerInfo > _OwnerInfo;
+			[Association(Storage = "_OwnerInfo", ThisKey = "OwnerInfoID")]
+			public InformationOwnerInfo OwnerInfo
+			{
+				get { return this._OwnerInfo.Entity; }
+				set { this._OwnerInfo.Entity = value; }
+			}
+
+			[Column]
+			public string ProcessorUsageID { get; set; }
+			private EntityRef< ProcessorUsage > _ProcessorUsage;
+			[Association(Storage = "_ProcessorUsage", ThisKey = "ProcessorUsageID")]
+			public ProcessorUsage ProcessorUsage
+			{
+				get { return this._ProcessorUsage.Entity; }
+				set { this._ProcessorUsage.Entity = value; }
+			}
+
+			[Column]
+			public string StorageTransactionUsageID { get; set; }
+			private EntityRef< StorageTransactionUsage > _StorageTransactionUsage;
+			[Association(Storage = "_StorageTransactionUsage", ThisKey = "StorageTransactionUsageID")]
+			public StorageTransactionUsage StorageTransactionUsage
+			{
+				get { return this._StorageTransactionUsage.Entity; }
+				set { this._StorageTransactionUsage.Entity = value; }
+			}
+
+			[Column]
+			public string NetworkUsageID { get; set; }
+			private EntityRef< NetworkUsage > _NetworkUsage;
+			[Association(Storage = "_NetworkUsage", ThisKey = "NetworkUsageID")]
+			public NetworkUsage NetworkUsage
+			{
+				get { return this._NetworkUsage.Entity; }
+				set { this._NetworkUsage.Entity = value; }
+			}
+
+			[Column]
+			public string RequestDetailsID { get; set; }
+			private EntityRef< HTTPActivityDetails > _RequestDetails;
+			[Association(Storage = "_RequestDetails", ThisKey = "RequestDetailsID")]
+			public HTTPActivityDetails RequestDetails
+			{
+				get { return this._RequestDetails.Entity; }
+				set { this._RequestDetails.Entity = value; }
+			}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2578,6 +3250,7 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTicks] REAL NOT NULL, 
 [FrequencyTicksPerSecond] REAL NOT NULL, 
@@ -2602,6 +3275,16 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+			[Column]
+			public string TimeRangeID { get; set; }
+			private EntityRef< TimeRange > _TimeRange;
+			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
+			public TimeRange TimeRange
+			{
+				get { return this._TimeRange.Entity; }
+				set { this._TimeRange.Entity = value; }
+			}
 
 
 		[Column]
@@ -2641,6 +3324,7 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTransactions] INTEGER NOT NULL
 )";
@@ -2663,6 +3347,16 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+			[Column]
+			public string TimeRangeID { get; set; }
+			private EntityRef< TimeRange > _TimeRange;
+			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
+			public TimeRange TimeRange
+			{
+				get { return this._TimeRange.Entity; }
+				set { this._TimeRange.Entity = value; }
+			}
 
 
 		[Column]
@@ -2757,6 +3451,7 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 CREATE TABLE IF NOT EXISTS [NetworkUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL,
+[TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfBytes] INTEGER NOT NULL
 )";
@@ -2779,6 +3474,16 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+			[Column]
+			public string TimeRangeID { get; set; }
+			private EntityRef< TimeRange > _TimeRange;
+			[Association(Storage = "_TimeRange", ThisKey = "TimeRangeID")]
+			public TimeRange TimeRange
+			{
+				get { return this._TimeRange.Entity; }
+				set { this._TimeRange.Entity = value; }
+			}
 
 
 		[Column]

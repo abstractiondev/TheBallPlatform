@@ -17,7 +17,9 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Newtonsoft.Json;
 using SQLiteSupport;
-using System.ComponentModel.DataAnnotations;
+using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
+using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
+using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 
 
 namespace SQLite.TheBall.Index { 
@@ -131,6 +133,10 @@ namespace SQLite.TheBall.Index {
 		            existingObject.LastRequestTime = serializedObject.LastRequestTime;
 		            existingObject.LastCompletionTime = serializedObject.LastCompletionTime;
 		            existingObject.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+                    existingObject.QueryResultObjects.Clear();
+					if(serializedObject.QueryResultObjects != null)
+	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
+					
 		            return;
 		        } 
 		        if (updateData.ObjectType == "QueryResultItem")
@@ -181,6 +187,8 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.LastRequestTime = serializedObject.LastRequestTime;
 		            objectToAdd.LastCompletionTime = serializedObject.LastCompletionTime;
 		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+					if(serializedObject.QueryResultObjects != null)
+						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
 					QueryRequestTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -360,7 +368,8 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 [IsQueryCompleted] INTEGER NOT NULL, 
 [LastRequestTime] TEXT NOT NULL, 
 [LastCompletionTime] TEXT NOT NULL, 
-[LastCompletionDurationMs] INTEGER NOT NULL
+[LastCompletionDurationMs] INTEGER NOT NULL, 
+[QueryResultObjectsID] TEXT NULL
 )";
         }
 
@@ -417,6 +426,51 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
         [ScaffoldColumn(true)]
 		public long LastCompletionDurationMs { get; set; }
 		// private long _unmodified_LastCompletionDurationMs;
+        [Column(Name = "QueryResultObjects")] 
+        [ScaffoldColumn(true)]
+		public string QueryResultObjectsData { get; set; }
+
+        private bool _IsQueryResultObjectsRetrieved = false;
+        private bool _IsQueryResultObjectsChanged = false;
+        private ObservableCollection<SER.TheBall.Index.QueryResultItem> _QueryResultObjects = null;
+        public ObservableCollection<SER.TheBall.Index.QueryResultItem> QueryResultObjects
+        {
+            get
+            {
+                if (!_IsQueryResultObjectsRetrieved)
+                {
+                    if (QueryResultObjectsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Index.QueryResultItem[]>(QueryResultObjectsData);
+                        _QueryResultObjects = new ObservableCollection<SER.TheBall.Index.QueryResultItem>(arrayData);
+                    }
+                    else
+                    {
+                        _QueryResultObjects = new ObservableCollection<SER.TheBall.Index.QueryResultItem>();
+						QueryResultObjectsData = Guid.NewGuid().ToString();
+						_IsQueryResultObjectsChanged = true;
+                    }
+                    _IsQueryResultObjectsRetrieved = true;
+                    _QueryResultObjects.CollectionChanged += (sender, args) =>
+						{
+							QueryResultObjectsData = Guid.NewGuid().ToString();
+							_IsQueryResultObjectsChanged = true;
+						};
+                }
+                return _QueryResultObjects;
+            }
+            set 
+			{ 
+				_QueryResultObjects = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsQueryResultObjectsRetrieved = true;
+                QueryResultObjectsData = Guid.NewGuid().ToString();
+                _IsQueryResultObjectsChanged = true;
+
+			}
+        }
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -426,6 +480,12 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 				DefaultFieldName = string.Empty;
 			if(IndexName == null)
 				IndexName = string.Empty;
+            if (_IsQueryResultObjectsChanged || isInitialInsert)
+            {
+                var dataToStore = QueryResultObjects.ToArray();
+                QueryResultObjectsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
 		}
 	}
     [Table(Name = "QueryResultItem")]

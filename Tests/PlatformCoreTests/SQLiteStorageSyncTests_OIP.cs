@@ -22,7 +22,8 @@ namespace PlatformCoreTests
         [TestInitialize]
         public void SetupForTest()
         {
-            CurrentDBFileName = Path.GetTempFileName();
+            //CurrentDBFileName = Path.GetTempFileName();
+            CurrentDBFileName = @"d:\tmp\testdata.sqlite";
             //CurrentDBFileName = ":memory:";
             CurrentContext = TheBallDataContext.CreateOrAttachToExistingDB(CurrentDBFileName);
             CurrentContext.CreateDomainDatabaseTablesIfNotExists();
@@ -33,8 +34,8 @@ namespace PlatformCoreTests
         {
             CurrentContext.Dispose();
             CurrentContext = null;
-            if(CurrentDBFileName != ":memory:")
-                File.Delete(CurrentDBFileName);
+            //if(CurrentDBFileName != ":memory:")
+            //    File.Delete(CurrentDBFileName);
         }
 
         [TestMethod]

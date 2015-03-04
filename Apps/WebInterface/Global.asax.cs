@@ -47,6 +47,8 @@ namespace WebInterface
             // Note: Make sure that you change "YourDataContextType" to the name of the data context
             // class in your application.
 
+            //return;
+
             foreach (string dataContextDomain in dataContextDomains)
             {
                 string dataContextTypeName = "SQLite." + dataContextDomain + ".TheBallDataContext";
