@@ -54,8 +54,12 @@ namespace SQLite.TheBall.Interface {
 		    {
 		        SQLiteConnection connection = new SQLiteConnection(String.Format("Data Source={0}", pathToDBFile));
                 var dataContext = new TheBallDataContext(connection);
-				dataContext.CreateDomainDatabaseTablesIfNotExists();
-				return dataContext;
+		        using (var transaction = connection.BeginTransaction())
+		        {
+                    dataContext.CreateDomainDatabaseTablesIfNotExists();
+                    transaction.Commit();
+		        }
+                return dataContext;
 		    }
 
             public TheBallDataContext(SQLiteConnection connection) : base(connection)
