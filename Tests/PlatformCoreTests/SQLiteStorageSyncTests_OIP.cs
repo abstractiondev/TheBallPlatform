@@ -34,8 +34,8 @@ namespace PlatformCoreTests
         {
             CurrentContext.Dispose();
             CurrentContext = null;
-            //if(CurrentDBFileName != ":memory:")
-            //    File.Delete(CurrentDBFileName);
+            if(CurrentDBFileName != ":memory:")
+                File.Delete(CurrentDBFileName);
         }
 
         [TestMethod]

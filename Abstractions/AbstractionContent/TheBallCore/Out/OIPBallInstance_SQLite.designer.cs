@@ -946,6 +946,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.MapFeaturedID = serializedObject.MapFeatured.ID;
 					else
 						existingObject.MapFeaturedID = null;
+					if(serializedObject.MapIndexCollection != null)
+						existingObject.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
+					else
+						existingObject.MapIndexCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "MapMarker")
@@ -1431,6 +1435,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "EmbeddedContent")
@@ -1478,6 +1486,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ElementQuery = serializedObject.ElementQuery;
 		            existingObject.Content = serializedObject.Content;
 		            existingObject.RawContent = serializedObject.RawContent;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
 		            existingObject.IsEnabled = serializedObject.IsEnabled;
 		            existingObject.ApplyActively = serializedObject.ApplyActively;
 		            existingObject.EditType = serializedObject.EditType;
@@ -1547,6 +1559,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TextContentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
@@ -1708,6 +1724,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.VideoData != null)
+						existingObject.VideoDataID = serializedObject.VideoData.ID;
+					else
+						existingObject.VideoDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
 		            return;
@@ -1724,6 +1744,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
 					else
 						existingObject.ReferenceToInformationID = null;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
 		            existingObject.Description = serializedObject.Description;
@@ -1738,6 +1762,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = BinaryFileTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OriginalFileName = serializedObject.OriginalFileName;
+					if(serializedObject.Data != null)
+						existingObject.DataID = serializedObject.Data.ID;
+					else
+						existingObject.DataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
 		            return;
@@ -1944,6 +1972,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.ReferenceToInformationID = null;
 		            existingObject.CategoryName = serializedObject.CategoryName;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 					if(serializedObject.ParentCategory != null)
@@ -2972,6 +3004,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MapFeaturedID = serializedObject.MapFeatured.ID;
 					else
 						objectToAdd.MapFeaturedID = null;
+					if(serializedObject.MapIndexCollection != null)
+						objectToAdd.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
+					else
+						objectToAdd.MapIndexCollectionID = null;
 					MapContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3457,6 +3493,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
 					LinkToContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3504,6 +3544,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ElementQuery = serializedObject.ElementQuery;
 		            objectToAdd.Content = serializedObject.Content;
 		            objectToAdd.RawContent = serializedObject.RawContent;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
 		            objectToAdd.IsEnabled = serializedObject.IsEnabled;
 		            objectToAdd.ApplyActively = serializedObject.ApplyActively;
 		            objectToAdd.EditType = serializedObject.EditType;
@@ -3573,6 +3617,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TextContent {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
@@ -3734,6 +3782,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Video {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.VideoData != null)
+						objectToAdd.VideoDataID = serializedObject.VideoData.ID;
+					else
+						objectToAdd.VideoDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 					VideoTable.InsertOnSubmit(objectToAdd);
@@ -3750,6 +3802,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
 					else
 						objectToAdd.ReferenceToInformationID = null;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 		            objectToAdd.Description = serializedObject.Description;
@@ -3764,6 +3820,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new BinaryFile {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OriginalFileName = serializedObject.OriginalFileName;
+					if(serializedObject.Data != null)
+						objectToAdd.DataID = serializedObject.Data.ID;
+					else
+						objectToAdd.DataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
 					BinaryFileTable.InsertOnSubmit(objectToAdd);
@@ -3970,6 +4030,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ReferenceToInformationID = null;
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 					if(serializedObject.ParentCategory != null)
@@ -5859,7 +5923,8 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 @"
 CREATE TABLE IF NOT EXISTS [TBSystem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [InstanceName] TEXT NOT NULL, 
 [AdminGroupID] TEXT NOT NULL
 )";
@@ -5912,11 +5977,11 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
                 @"
 CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [PublishType] TEXT NOT NULL, 
 [PublishContainer] TEXT NOT NULL, 
-[ActivePublicationID] TEXT NULL, 
-[PublicationsID] TEXT NULL
+[ActivePublicationID] TEXT NULL
 )";
         }
 
@@ -5977,7 +6042,8 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [PublicationPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [PackageName] TEXT NOT NULL, 
 [PublicationTime] TEXT NOT NULL
 )";
@@ -6028,7 +6094,8 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [DomainName] TEXT NOT NULL, 
 [AccountID] TEXT NULL
 )";
@@ -6084,7 +6151,8 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AccountID] TEXT NULL
 )";
         }
@@ -6132,7 +6200,8 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NULL
 )";
         }
@@ -6180,7 +6249,8 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Role] TEXT NOT NULL, 
 [GroupID] TEXT NOT NULL
 )";
@@ -6233,7 +6303,8 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AccountID] TEXT NULL
 )";
         }
@@ -6281,10 +6352,8 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
                 @"
 CREATE TABLE IF NOT EXISTS [TBAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[EmailsID] TEXT NULL, 
-[LoginsID] TEXT NULL, 
-[GroupRoleCollectionID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -6321,7 +6390,8 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
                 @"
 CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NOT NULL, 
 [GroupRole] TEXT NOT NULL, 
 [RoleStatus] TEXT NOT NULL
@@ -6382,7 +6452,8 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OpenIDUrl] TEXT NOT NULL
 )";
         }
@@ -6427,7 +6498,8 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [TBEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [EmailAddress] TEXT NOT NULL, 
 [ValidatedAt] TEXT NOT NULL
 )";
@@ -6478,7 +6550,8 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
                 @"
 CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [EmailID] TEXT NULL, 
 [Role] TEXT NOT NULL, 
 [RoleStatus] TEXT NOT NULL
@@ -6542,9 +6615,9 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
                 @"
 CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[Title] TEXT NOT NULL, 
-[RolesID] TEXT NULL
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
 )";
         }
 
@@ -6588,7 +6661,8 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Email] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [ValidUntil] TEXT NOT NULL, 
@@ -6710,7 +6784,8 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AccountToBeMergedID] TEXT NOT NULL, 
 [AccountToMergeToID] TEXT NOT NULL
 )";
@@ -6763,7 +6838,8 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NOT NULL, 
 [InvitationMode] TEXT NOT NULL
 )";
@@ -6816,7 +6892,8 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [DeviceMembershipID] TEXT NOT NULL
@@ -6877,7 +6954,8 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [InformationInputID] TEXT NOT NULL
@@ -6938,7 +7016,8 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupID] TEXT NOT NULL, 
 [AccountID] TEXT NOT NULL, 
 [InformationOutputID] TEXT NOT NULL
@@ -6999,10 +7078,10 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
                 @"
 CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
-[ReturnUrl] TEXT NOT NULL, 
-[LoginProviderCollectionID] TEXT NULL
+[ReturnUrl] TEXT NOT NULL
 )";
         }
 
@@ -7056,7 +7135,8 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [LoginProvider](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProviderName] TEXT NOT NULL, 
 [ProviderIconClass] TEXT NOT NULL, 
 [ProviderType] TEXT NOT NULL, 
@@ -7133,7 +7213,8 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
                 @"
 CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OIPModeratorGroupID] TEXT NOT NULL
 )";
         }
@@ -7178,7 +7259,8 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [EmailAddress] TEXT NOT NULL
 )";
         }
@@ -7223,7 +7305,8 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
                 @"
 CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -7268,7 +7351,8 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -7313,7 +7397,8 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [FooterContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HtmlContent] TEXT NOT NULL
 )";
         }
@@ -7358,7 +7443,8 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [NavigationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Dummy] TEXT NOT NULL
 )";
         }
@@ -7403,7 +7489,8 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IntroductionID] TEXT NULL, 
 [ActivitySummaryID] TEXT NULL, 
 [GroupSummaryID] TEXT NULL
@@ -7473,7 +7560,8 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [AccountIndexID] TEXT NULL, 
 [AccountModuleID] TEXT NULL, 
@@ -7554,7 +7642,8 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -7626,11 +7715,11 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountModule](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProfileID] TEXT NULL, 
 [SecurityID] TEXT NULL, 
-[RolesID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL
+[RolesID] TEXT NULL
 )";
         }
 
@@ -7697,8 +7786,8 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
                 @"
 CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[ImageGroupsID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -7735,8 +7824,8 @@ CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [LocationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[LocationsID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -7773,7 +7862,8 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [AddressID] TEXT NULL, 
 [LocationID] TEXT NULL
@@ -7843,7 +7933,8 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
                 @"
 CREATE TABLE IF NOT EXISTS [StreetAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Street] TEXT NOT NULL, 
 [ZipCode] TEXT NOT NULL, 
 [Town] TEXT NOT NULL, 
@@ -7912,7 +8003,8 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Dummy] TEXT NOT NULL
 )";
         }
@@ -7957,7 +8049,8 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountProfile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProfileImageID] TEXT NULL, 
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
@@ -8054,9 +8147,8 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountSecurity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[LoginInfoCollectionID] TEXT NULL, 
-[EmailCollectionID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -8093,9 +8185,8 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
                 @"
 CREATE TABLE IF NOT EXISTS [AccountRoles](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[ModeratorInGroupsID] TEXT NULL, 
-[MemberInGroupsID] TEXT NULL, 
+[ETag] TEXT NOT NULL
+, 
 [OrganizationsImPartOf] TEXT NOT NULL
 )";
         }
@@ -8140,7 +8231,8 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
                 @"
 CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [NoOne_Network_All] TEXT NOT NULL
 )";
         }
@@ -8185,9 +8277,9 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupedInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[GroupName] TEXT NOT NULL, 
-[ReferenceCollectionID] TEXT NULL
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL
 )";
         }
 
@@ -8231,7 +8323,8 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
                 @"
 CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL, 
 [URL] TEXT NOT NULL
 )";
@@ -8284,7 +8377,8 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
                 @"
 CREATE TABLE IF NOT EXISTS [BlogContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [FeaturedBlogID] TEXT NULL, 
 [RecentBlogSummaryID] TEXT NULL, 
@@ -8365,9 +8459,9 @@ CREATE TABLE IF NOT EXISTS [BlogContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[IntroductionID] TEXT NULL, 
-[RecentBlogCollectionID] TEXT NULL
+[ETag] TEXT NOT NULL
+, 
+[IntroductionID] TEXT NULL
 )";
         }
 
@@ -8414,16 +8508,8 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[NodesID] TEXT NULL, 
-[NodeSourceBlogsID] TEXT NULL, 
-[NodeSourceActivitiesID] TEXT NULL, 
-[NodeSourceTextContentID] TEXT NULL, 
-[NodeSourceLinkToContentID] TEXT NULL, 
-[NodeSourceEmbeddedContentID] TEXT NULL, 
-[NodeSourceImagesID] TEXT NULL, 
-[NodeSourceBinaryFilesID] TEXT NULL, 
-[NodeSourceCategoriesID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -8460,7 +8546,8 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OriginalContentID] TEXT NOT NULL, 
 [TechnicalSource] TEXT NOT NULL, 
 [ImageBaseUrl] TEXT NOT NULL, 
@@ -8471,12 +8558,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [TimestampText] TEXT NOT NULL, 
 [MainSortableText] TEXT NOT NULL, 
 [IsCategoryFilteringNode] INTEGER NOT NULL, 
-[CategoryFiltersID] TEXT NULL, 
-[CategoryNamesID] TEXT NULL, 
-[CategoriesID] TEXT NULL, 
-[CategoryIDList] TEXT NOT NULL, 
-[AuthorsID] TEXT NULL, 
-[LocationsID] TEXT NULL
+[CategoryIDList] TEXT NOT NULL
 )";
         }
 
@@ -8588,7 +8670,8 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Content] TEXT NOT NULL
 )";
         }
@@ -8633,7 +8716,8 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
                 @"
 CREATE TABLE IF NOT EXISTS [LongTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Content] TEXT NOT NULL
 )";
         }
@@ -8678,16 +8762,11 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
                 @"
 CREATE TABLE IF NOT EXISTS [MapContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [MapFeaturedID] TEXT NULL, 
-[MapCollectionID] TEXT NULL, 
-[MapResultCollectionID] TEXT NULL, 
-[MapIndexCollectionID] TEXT NULL, 
-[MarkerSourceLocationsID] TEXT NULL, 
-[MarkerSourceBlogsID] TEXT NULL, 
-[MarkerSourceActivitiesID] TEXT NULL, 
-[MapMarkersID] TEXT NULL
+[MapIndexCollectionID] TEXT NULL
 )";
         }
 
@@ -8729,6 +8808,16 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 				set { this._MapFeatured.Entity = value; }
 			}
 
+			[Column]
+			public string MapIndexCollectionID { get; set; }
+			private EntityRef< MapIndexCollection > _MapIndexCollection;
+			[Association(Storage = "_MapIndexCollection", ThisKey = "MapIndexCollectionID")]
+			public MapIndexCollection MapIndexCollection
+			{
+				get { return this._MapIndexCollection.Entity; }
+				set { this._MapIndexCollection.Entity = value; }
+			}
+
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8744,7 +8833,8 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [MapMarker](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconUrl] TEXT NOT NULL, 
 [MarkerSource] TEXT NOT NULL, 
 [CategoryName] TEXT NOT NULL, 
@@ -8840,10 +8930,10 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
                 @"
 CREATE TABLE IF NOT EXISTS [CalendarContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [CalendarContainerHeaderID] TEXT NULL, 
 [CalendarFeaturedID] TEXT NULL, 
-[CalendarCollectionID] TEXT NULL, 
 [CalendarIndexCollectionID] TEXT NULL
 )";
         }
@@ -8911,7 +9001,8 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [AboutContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [MainImageID] TEXT NULL, 
 [HeaderID] TEXT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -9011,10 +9102,10 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AccountContainerHeaderID] TEXT NULL, 
 [AccountFeaturedID] TEXT NULL, 
-[AccountCollectionID] TEXT NULL, 
 [AccountIndexCollectionID] TEXT NULL
 )";
         }
@@ -9082,10 +9173,10 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [ProjectContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProjectContainerHeaderID] TEXT NULL, 
 [ProjectFeaturedID] TEXT NULL, 
-[ProjectCollectionID] TEXT NULL, 
 [ProjectIndexCollectionID] TEXT NULL
 )";
         }
@@ -9153,10 +9244,10 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [CourseContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [CourseContainerHeaderID] TEXT NULL, 
 [CourseFeaturedID] TEXT NULL, 
-[CourseCollectionID] TEXT NULL, 
 [CourseIndexCollectionID] TEXT NULL
 )";
         }
@@ -9224,7 +9315,8 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [ContainerHeader](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL
 )";
@@ -9277,12 +9369,12 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
                 @"
 CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [SummaryBody] TEXT NOT NULL, 
 [IntroductionID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL, 
-[ActivityCollectionID] TEXT NULL
+[ActivityIndexID] TEXT NULL
 )";
         }
 
@@ -9356,7 +9448,8 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [ActivityIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -9428,7 +9521,8 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [ActivityContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [ActivityIndexID] TEXT NULL, 
 [ActivityModuleID] TEXT NULL
@@ -9498,7 +9592,8 @@ CREATE TABLE IF NOT EXISTS [ActivityContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [Activity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [ProfileImageID] TEXT NULL, 
 [IconImageID] TEXT NULL, 
@@ -9508,11 +9603,7 @@ CREATE TABLE IF NOT EXISTS [Activity](
 [StartingTime] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL, 
-[CollaboratorsID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL
+[IFrameSources] TEXT NOT NULL
 )";
         }
 
@@ -9629,7 +9720,8 @@ CREATE TABLE IF NOT EXISTS [Activity](
                 @"
 CREATE TABLE IF NOT EXISTS [Moderator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ModeratorName] TEXT NOT NULL, 
 [ProfileUrl] TEXT NOT NULL
 )";
@@ -9682,7 +9774,8 @@ CREATE TABLE IF NOT EXISTS [Moderator](
                 @"
 CREATE TABLE IF NOT EXISTS [Collaborator](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AccountID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
 [CollaboratorName] TEXT NOT NULL, 
@@ -9759,12 +9852,12 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [SummaryBody] TEXT NOT NULL, 
 [IntroductionID] TEXT NULL, 
-[GroupSummaryIndexID] TEXT NULL, 
-[GroupCollectionID] TEXT NULL
+[GroupSummaryIndexID] TEXT NULL
 )";
         }
 
@@ -9838,15 +9931,11 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HeaderID] TEXT NULL, 
 [GroupIndexID] TEXT NULL, 
-[GroupProfileID] TEXT NULL, 
-[CollaboratorsID] TEXT NULL, 
-[PendingCollaboratorsID] TEXT NULL, 
-[ActivitiesID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL
+[GroupProfileID] TEXT NULL
 )";
         }
 
@@ -9913,7 +10002,8 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [GroupIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -9985,7 +10075,8 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [LocationName] TEXT NOT NULL
 )";
         }
@@ -10030,7 +10121,8 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddImageInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageTitle] TEXT NOT NULL
 )";
         }
@@ -10075,7 +10167,8 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageGroupTitle] TEXT NOT NULL
 )";
         }
@@ -10120,7 +10213,8 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [EmailAddress] TEXT NOT NULL
 )";
         }
@@ -10165,7 +10259,8 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupName] TEXT NOT NULL
 )";
         }
@@ -10210,7 +10305,8 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ActivityName] TEXT NOT NULL
 )";
         }
@@ -10255,7 +10351,8 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL
 )";
         }
@@ -10300,7 +10397,8 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [CategoryName] TEXT NOT NULL
 )";
         }
@@ -10345,17 +10443,15 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [Group](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [ProfileImageID] TEXT NULL, 
 [IconImageID] TEXT NULL, 
 [GroupName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
-[WwwSiteToPublishTo] TEXT NOT NULL, 
-[CustomUICollectionID] TEXT NULL, 
-[ModeratorsID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL
+[WwwSiteToPublishTo] TEXT NOT NULL
 )";
         }
 
@@ -10450,7 +10546,8 @@ CREATE TABLE IF NOT EXISTS [Group](
                 @"
 CREATE TABLE IF NOT EXISTS [Introduction](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL, 
 [Body] TEXT NOT NULL
 )";
@@ -10503,7 +10600,8 @@ CREATE TABLE IF NOT EXISTS [Introduction](
                 @"
 CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ContentID] TEXT NOT NULL, 
 [ContentSemanticType] TEXT NOT NULL, 
 [CategoryID] TEXT NOT NULL, 
@@ -10580,14 +10678,14 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
                 @"
 CREATE TABLE IF NOT EXISTS [LinkToContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [URL] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[ImageDataID] TEXT NULL
 )";
         }
 
@@ -10634,6 +10732,8 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
         [ScaffoldColumn(true)]
 		public string Author { get; set; }
 		// private string _unmodified_Author;
+			[Column]
+			public string ImageDataID { get; set; }
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -10657,14 +10757,13 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
                 @"
 CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IFrameTagContents] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -10734,7 +10833,8 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HostName] TEXT NOT NULL, 
 [GroupHeader] TEXT NOT NULL, 
 [SortValue] TEXT NOT NULL, 
@@ -10811,7 +10911,8 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [HostName] TEXT NOT NULL, 
 [ContentName] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
@@ -10819,6 +10920,7 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 [ElementQuery] TEXT NOT NULL, 
 [Content] TEXT NOT NULL, 
 [RawContent] TEXT NOT NULL, 
+[ImageDataID] TEXT NULL, 
 [IsEnabled] INTEGER NOT NULL, 
 [ApplyActively] INTEGER NOT NULL, 
 [EditType] TEXT NOT NULL, 
@@ -10879,6 +10981,8 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
         [ScaffoldColumn(true)]
 		public string RawContent { get; set; }
 		// private string _unmodified_RawContent;
+			[Column]
+			public string ImageDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10932,7 +11036,8 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
                 @"
 CREATE TABLE IF NOT EXISTS [AttachedToObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SourceObjectID] TEXT NOT NULL, 
 [SourceObjectName] TEXT NOT NULL, 
 [SourceObjectDomain] TEXT NOT NULL, 
@@ -11017,7 +11122,8 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
                 @"
 CREATE TABLE IF NOT EXISTS [Comment](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetObjectDomain] TEXT NOT NULL, 
@@ -11146,7 +11252,8 @@ CREATE TABLE IF NOT EXISTS [Comment](
                 @"
 CREATE TABLE IF NOT EXISTS [Selection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TargetObjectID] TEXT NOT NULL, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetObjectDomain] TEXT NOT NULL, 
@@ -11235,15 +11342,15 @@ CREATE TABLE IF NOT EXISTS [Selection](
                 @"
 CREATE TABLE IF NOT EXISTS [TextContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
+[ImageDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL, 
 [SortOrderNumber] REAL NOT NULL, 
 [IFrameSources] TEXT NOT NULL, 
 [RawHtmlContent] TEXT NOT NULL
@@ -11268,6 +11375,8 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 			ETag = String.Empty;
 		}
 
+			[Column]
+			public string ImageDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11342,7 +11451,8 @@ CREATE TABLE IF NOT EXISTS [TextContent](
                 @"
 CREATE TABLE IF NOT EXISTS [Blog](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [ProfileImageID] TEXT NULL, 
 [IconImageID] TEXT NULL, 
@@ -11352,14 +11462,10 @@ CREATE TABLE IF NOT EXISTS [Blog](
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
 [FeaturedImageID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
 [VideoGroupID] TEXT NULL, 
 [Body] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL, 
-[LocationCollectionID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL, 
-[SocialPanelID] TEXT NULL
+[IFrameSources] TEXT NOT NULL
 )";
         }
 
@@ -11503,16 +11609,11 @@ CREATE TABLE IF NOT EXISTS [Blog](
                 @"
 CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
-[GroupedByDateID] TEXT NULL, 
-[GroupedByLocationID] TEXT NULL, 
-[GroupedByAuthorID] TEXT NULL, 
-[GroupedByCategoryID] TEXT NULL, 
-[FullBlogArchiveID] TEXT NULL, 
-[BlogSourceForSummaryID] TEXT NULL, 
 [Summary] TEXT NOT NULL
 )";
         }
@@ -11581,7 +11682,8 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [CalendarIndex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
@@ -11653,7 +11755,8 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
                 @"
 CREATE TABLE IF NOT EXISTS [Filter](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL
 )";
         }
@@ -11698,7 +11801,8 @@ CREATE TABLE IF NOT EXISTS [Filter](
                 @"
 CREATE TABLE IF NOT EXISTS [Calendar](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL
 )";
         }
@@ -11743,7 +11847,8 @@ CREATE TABLE IF NOT EXISTS [Calendar](
                 @"
 CREATE TABLE IF NOT EXISTS [Map](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL
 )";
         }
@@ -11788,11 +11893,8 @@ CREATE TABLE IF NOT EXISTS [Map](
                 @"
 CREATE TABLE IF NOT EXISTS [MapIndexCollection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[MapByDateID] TEXT NULL, 
-[MapByLocationID] TEXT NULL, 
-[MapByAuthorID] TEXT NULL, 
-[MapByCategoryID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -11829,7 +11931,8 @@ CREATE TABLE IF NOT EXISTS [MapIndexCollection](
                 @"
 CREATE TABLE IF NOT EXISTS [MapResult](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [LocationID] TEXT NULL
 )";
         }
@@ -11877,10 +11980,8 @@ CREATE TABLE IF NOT EXISTS [MapResult](
                 @"
 CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[ResultByDateID] TEXT NULL, 
-[ResultByAuthorID] TEXT NULL, 
-[ResultByProximityID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -11917,7 +12018,9 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
                 @"
 CREATE TABLE IF NOT EXISTS [Video](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
+[VideoDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL
 )";
@@ -11941,6 +12044,8 @@ CREATE TABLE IF NOT EXISTS [Video](
 			ETag = String.Empty;
 		}
 
+			[Column]
+			public string VideoDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11970,13 +12075,13 @@ CREATE TABLE IF NOT EXISTS [Video](
                 @"
 CREATE TABLE IF NOT EXISTS [Image](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
+[ImageDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[LocationsID] TEXT NULL, 
-[CategoriesID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -12008,6 +12113,8 @@ CREATE TABLE IF NOT EXISTS [Image](
 				set { this._ReferenceToInformation.Entity = value; }
 			}
 
+			[Column]
+			public string ImageDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12044,11 +12151,12 @@ CREATE TABLE IF NOT EXISTS [Image](
                 @"
 CREATE TABLE IF NOT EXISTS [BinaryFile](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OriginalFileName] TEXT NOT NULL, 
+[DataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[CategoriesID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -12075,6 +12183,8 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
         [ScaffoldColumn(true)]
 		public string OriginalFileName { get; set; }
 		// private string _unmodified_OriginalFileName;
+			[Column]
+			public string DataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12106,12 +12216,12 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
                 @"
 CREATE TABLE IF NOT EXISTS [ImageGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
-[FeaturedImageID] TEXT NULL, 
-[ImagesCollectionID] TEXT NULL
+[FeaturedImageID] TEXT NULL
 )";
         }
 
@@ -12182,10 +12292,10 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [VideoGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[VideoCollectionID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -12236,7 +12346,8 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [Tooltip](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TooltipText] TEXT NOT NULL
 )";
         }
@@ -12281,7 +12392,8 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
                 @"
 CREATE TABLE IF NOT EXISTS [SocialPanel](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SocialFilterID] TEXT NULL
 )";
         }
@@ -12329,7 +12441,8 @@ CREATE TABLE IF NOT EXISTS [SocialPanel](
                 @"
 CREATE TABLE IF NOT EXISTS [Longitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TextValue] TEXT NOT NULL
 )";
         }
@@ -12374,7 +12487,8 @@ CREATE TABLE IF NOT EXISTS [Longitude](
                 @"
 CREATE TABLE IF NOT EXISTS [Latitude](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TextValue] TEXT NOT NULL
 )";
         }
@@ -12419,7 +12533,8 @@ CREATE TABLE IF NOT EXISTS [Latitude](
                 @"
 CREATE TABLE IF NOT EXISTS [Location](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [LocationName] TEXT NOT NULL, 
 [LongitudeID] TEXT NULL, 
 [LatitudeID] TEXT NULL
@@ -12486,7 +12601,8 @@ CREATE TABLE IF NOT EXISTS [Location](
                 @"
 CREATE TABLE IF NOT EXISTS [Date](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Day] TEXT NOT NULL, 
 [Week] TEXT NOT NULL, 
 [Month] TEXT NOT NULL, 
@@ -12547,7 +12663,8 @@ CREATE TABLE IF NOT EXISTS [Date](
                 @"
 CREATE TABLE IF NOT EXISTS [Sex](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SexText] TEXT NOT NULL
 )";
         }
@@ -12592,7 +12709,8 @@ CREATE TABLE IF NOT EXISTS [Sex](
                 @"
 CREATE TABLE IF NOT EXISTS [OBSAddress](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [StreetName] TEXT NOT NULL, 
 [BuildingNumber] TEXT NOT NULL, 
 [PostOfficeBox] TEXT NOT NULL, 
@@ -12709,7 +12827,8 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
                 @"
 CREATE TABLE IF NOT EXISTS [Identity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [FirstName] TEXT NOT NULL, 
 [LastName] TEXT NOT NULL, 
 [Initials] TEXT NOT NULL, 
@@ -12792,7 +12911,8 @@ CREATE TABLE IF NOT EXISTS [Identity](
                 @"
 CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Image] BLOB NOT NULL, 
 [Video] BLOB NOT NULL, 
 [Sound] BLOB NOT NULL, 
@@ -12861,8 +12981,8 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
                 @"
 CREATE TABLE IF NOT EXISTS [CategoryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[CategoriesID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -12899,9 +13019,11 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ReferenceToInformationID] TEXT NULL, 
 [CategoryName] TEXT NOT NULL, 
+[ImageDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [ParentCategoryID] TEXT NULL
@@ -12941,6 +13063,8 @@ CREATE TABLE IF NOT EXISTS [Category](
         [ScaffoldColumn(true)]
 		public string CategoryName { get; set; }
 		// private string _unmodified_CategoryName;
+			[Column]
+			public string ImageDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12982,7 +13106,8 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [Subscription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Priority] INTEGER NOT NULL, 
 [TargetRelativeLocation] TEXT NOT NULL, 
 [TargetInformationObjectType] TEXT NOT NULL, 
@@ -13065,12 +13190,12 @@ CREATE TABLE IF NOT EXISTS [Subscription](
                 @"
 CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ActiveContainerName] TEXT NOT NULL, 
 [OwnerPrefix] TEXT NOT NULL, 
 [CurrentRetryCount] INTEGER NOT NULL, 
 [SingleOperationID] TEXT NULL, 
-[OrderDependentOperationSequenceID] TEXT NULL, 
 [ErrorContentID] TEXT NULL
 )";
         }
@@ -13147,7 +13272,8 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
                 @"
 CREATE TABLE IF NOT EXISTS [OperationRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SubscriberNotificationID] TEXT NULL, 
 [SubscriptionChainRequestID] TEXT NULL, 
 [UpdateWebContentOperationID] TEXT NULL, 
@@ -13269,7 +13395,8 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ContentItemID] TEXT NOT NULL
 )";
         }
@@ -13314,13 +13441,13 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SubmitTime] TEXT NOT NULL, 
 [ProcessingStartTime] TEXT NOT NULL, 
 [ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
 [ProcessingEndTimeWebTemplatesRendering] TEXT NOT NULL, 
-[ProcessingEndTime] TEXT NOT NULL, 
-[SubscriptionTargetCollectionID] TEXT NULL
+[ProcessingEndTime] TEXT NOT NULL
 )";
         }
 
@@ -13382,7 +13509,8 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [BlobLocation] TEXT NOT NULL
 )";
         }
@@ -13427,7 +13555,8 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
                 @"
 CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
 )";
@@ -13480,7 +13609,8 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ContainerName] TEXT NOT NULL, 
 [LocationPrefix] TEXT NOT NULL
 )";
@@ -13533,10 +13663,10 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [SystemError](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ErrorTitle] TEXT NOT NULL, 
 [OccurredAt] TEXT NOT NULL, 
-[SystemErrorItemsID] TEXT NULL, 
 [MessageContentID] TEXT NULL
 )";
         }
@@ -13596,7 +13726,8 @@ CREATE TABLE IF NOT EXISTS [SystemError](
                 @"
 CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ShortDescription] TEXT NOT NULL, 
 [LongDescription] TEXT NOT NULL
 )";
@@ -13649,7 +13780,8 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationSource](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SourceName] TEXT NOT NULL, 
 [SourceLocation] TEXT NOT NULL, 
 [SourceType] TEXT NOT NULL, 
@@ -13746,7 +13878,8 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
                 @"
 CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ViewLocation] TEXT NOT NULL, 
 [TypeNameToRefresh] TEXT NOT NULL
 )";
@@ -13799,13 +13932,13 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
 [TargetContainerName] TEXT NOT NULL, 
 [TargetPathRoot] TEXT NOT NULL, 
-[RenderWhileSync] INTEGER NOT NULL, 
-[HandlersID] TEXT NULL
+[RenderWhileSync] INTEGER NOT NULL
 )";
         }
 
@@ -13875,7 +14008,8 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [InformationTypeName] TEXT NOT NULL, 
 [OptionName] TEXT NOT NULL
 )";
@@ -13928,7 +14062,8 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
                 @"
 CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SourceContainerName] TEXT NOT NULL, 
 [SourcePathRoot] TEXT NOT NULL, 
 [SourceOwner] TEXT NOT NULL, 
@@ -13997,7 +14132,8 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriberInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [InputRelativeLocation] TEXT NOT NULL, 
 [InformationObjectName] TEXT NOT NULL, 
 [InformationItemName] TEXT NOT NULL, 
@@ -14066,7 +14202,8 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
                 @"
 CREATE TABLE IF NOT EXISTS [Monitor](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TargetObjectName] TEXT NOT NULL, 
 [TargetItemName] TEXT NOT NULL, 
 [MonitoringUtcTimeStampToStart] TEXT NOT NULL, 
@@ -14155,7 +14292,8 @@ CREATE TABLE IF NOT EXISTS [Monitor](
                 @"
 CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Icon] BLOB NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
@@ -14214,7 +14352,8 @@ CREATE TABLE IF NOT EXISTS [IconTitleDescription](
                 @"
 CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [BuiltForAnybodyID] TEXT NULL, 
 [ForAllPeopleID] TEXT NULL
 )";

@@ -1418,7 +1418,8 @@ namespace SQLite.TheBall.CORE {
                 @"
 CREATE TABLE IF NOT EXISTS [ContentPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [PackageType] TEXT NOT NULL, 
 [PackageName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
@@ -1493,7 +1494,8 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationInput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [InputDescription] TEXT NOT NULL, 
 [LocationURL] TEXT NOT NULL, 
 [LocalContentName] TEXT NOT NULL, 
@@ -1568,7 +1570,8 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationOutput](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OutputDescription] TEXT NOT NULL, 
 [DestinationURL] TEXT NOT NULL, 
 [DestinationContentName] TEXT NOT NULL, 
@@ -1651,7 +1654,8 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
                 @"
 CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [AuthenticationDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
 [ActiveSymmetricAESKey] BLOB NOT NULL, 
@@ -1740,7 +1744,8 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
                 @"
 CREATE TABLE IF NOT EXISTS [DeviceMembership](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [DeviceDescription] TEXT NOT NULL, 
 [SharedSecret] TEXT NOT NULL, 
 [ActiveSymmetricAESKey] BLOB NOT NULL, 
@@ -1805,10 +1810,10 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [FiscalInclusiveStartDate] TEXT NOT NULL, 
-[FiscalInclusiveEndDate] TEXT NOT NULL, 
-[ExportedInvoicesID] TEXT NULL
+[FiscalInclusiveEndDate] TEXT NOT NULL
 )";
         }
 
@@ -1855,11 +1860,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[OpenInvoicesID] TEXT NULL, 
-[PredictedInvoicesID] TEXT NULL, 
-[PaidInvoicesActiveYearID] TEXT NULL, 
-[PaidInvoicesLast12MonthsID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -1896,7 +1898,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [Invoice](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [InvoiceName] TEXT NOT NULL, 
 [InvoiceID] TEXT NOT NULL, 
 [InvoicedAmount] TEXT NOT NULL, 
@@ -1905,8 +1908,7 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 [PaidAmount] TEXT NOT NULL, 
 [FeesAndInterestAmount] TEXT NOT NULL, 
 [UnpaidAmount] TEXT NOT NULL, 
-[InvoiceDetailsID] TEXT NULL, 
-[InvoiceUsersID] TEXT NULL
+[InvoiceDetailsID] TEXT NULL
 )";
         }
 
@@ -2005,7 +2007,8 @@ CREATE TABLE IF NOT EXISTS [Invoice](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [MonthlyFeesTotal] TEXT NOT NULL, 
 [OneTimeFeesTotal] TEXT NOT NULL, 
 [UsageFeesTotal] TEXT NOT NULL, 
@@ -2090,14 +2093,13 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceUser](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [UserName] TEXT NOT NULL, 
 [UserID] TEXT NOT NULL, 
 [UserPhoneNumber] TEXT NOT NULL, 
 [UserSubscriptionNumber] TEXT NOT NULL, 
-[UserInvoiceTotalAmount] TEXT NOT NULL, 
-[InvoiceRowGroupCollectionID] TEXT NULL, 
-[InvoiceEventDetailGroupCollectionID] TEXT NULL
+[UserInvoiceTotalAmount] TEXT NOT NULL
 )";
         }
 
@@ -2169,12 +2171,12 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [GroupName] TEXT NOT NULL, 
 [GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
 [GroupTotalTaxes] TEXT NOT NULL, 
-[GroupTotalPriceWithTaxes] TEXT NOT NULL, 
-[InvoiceRowCollectionID] TEXT NULL
+[GroupTotalPriceWithTaxes] TEXT NOT NULL
 )";
         }
 
@@ -2239,9 +2241,9 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[GroupName] TEXT NOT NULL, 
-[InvoiceEventDetailCollectionID] TEXT NULL
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL
 )";
         }
 
@@ -2285,7 +2287,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IndentMode] TEXT NOT NULL, 
 [EventStartDateTime] TEXT NOT NULL, 
 [EventEndDateTime] TEXT NOT NULL, 
@@ -2398,7 +2401,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
                 @"
 CREATE TABLE IF NOT EXISTS [InvoiceRow](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IndentMode] TEXT NOT NULL, 
 [AmountOfUnits] TEXT NOT NULL, 
 [Duration] TEXT NOT NULL, 
@@ -2491,7 +2495,8 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [CategoryName] TEXT NOT NULL
 )";
         }
@@ -2536,7 +2541,8 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [ProcessContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProcessIDs] TEXT NOT NULL
 )";
         }
@@ -2625,7 +2631,8 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [Process](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProcessDescription] TEXT NOT NULL, 
 [ExecutingOperationID] TEXT NULL, 
 [InitialArgumentsID] TEXT NULL, 
@@ -2785,7 +2792,8 @@ CREATE TABLE IF NOT EXISTS [Process](
                 @"
 CREATE TABLE IF NOT EXISTS [ProcessItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OutputsID] TEXT NULL, 
 [InputsID] TEXT NULL
 )";
@@ -2926,7 +2934,8 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
                 @"
 CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ItemFullType] TEXT NOT NULL, 
 [ItemValue] TEXT NOT NULL
 )";
@@ -2979,7 +2988,8 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OwnerType] TEXT NOT NULL, 
 [OwnerIdentifier] TEXT NOT NULL
 )";
@@ -3032,7 +3042,8 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
                 @"
 CREATE TABLE IF NOT EXISTS [UsageSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SummaryName] TEXT NOT NULL, 
 [SummaryMonitoringItemID] TEXT NULL
 )";
@@ -3088,14 +3099,11 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OwnerInfoID] TEXT NULL, 
 [TimeRangeInclusiveStartExclusiveEndID] TEXT NULL, 
-[StepSizeInMinutes] INTEGER NOT NULL, 
-[ProcessorUsagesID] TEXT NULL, 
-[StorageTransactionUsagesID] TEXT NULL, 
-[StorageUsagesID] TEXT NULL, 
-[NetworkUsagesID] TEXT NULL
+[StepSizeInMinutes] INTEGER NOT NULL
 )";
         }
 
@@ -3157,7 +3165,8 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
                 @"
 CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OwnerInfoID] TEXT NULL, 
 [ProcessorUsageID] TEXT NULL, 
 [StorageTransactionUsageID] TEXT NULL, 
@@ -3249,7 +3258,8 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTicks] REAL NOT NULL, 
@@ -3323,7 +3333,8 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfTransactions] INTEGER NOT NULL
@@ -3385,7 +3396,8 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [StorageUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SnapshotTime] TEXT NOT NULL, 
 [UsageType] TEXT NOT NULL, 
 [UsageUnit] TEXT NOT NULL, 
@@ -3450,7 +3462,8 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [NetworkUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TimeRangeID] TEXT NULL, 
 [UsageType] TEXT NOT NULL, 
 [AmountOfBytes] INTEGER NOT NULL
@@ -3512,7 +3525,8 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [TimeRange](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [StartTime] TEXT NOT NULL, 
 [EndTime] TEXT NOT NULL
 )";
@@ -3561,7 +3575,8 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
                 @"
 CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [RemoteIPAddress] TEXT NOT NULL, 
 [RemoteEndpointUserName] TEXT NOT NULL, 
 [UserID] TEXT NOT NULL, 

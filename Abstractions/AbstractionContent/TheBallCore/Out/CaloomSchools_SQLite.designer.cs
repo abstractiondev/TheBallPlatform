@@ -170,12 +170,12 @@ namespace SQLite.Caloom.Schools {
                 @"
 CREATE TABLE IF NOT EXISTS [TrainingModule](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[TrainingModulesID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 

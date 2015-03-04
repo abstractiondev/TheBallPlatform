@@ -264,7 +264,8 @@ namespace SQLite.TheBall.Index {
                 @"
 CREATE TABLE IF NOT EXISTS [IndexingRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [IndexName] TEXT NOT NULL, 
 [ObjectLocations] TEXT NOT NULL
 )";
@@ -361,7 +362,8 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [QueryRequest](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [QueryString] TEXT NOT NULL, 
 [DefaultFieldName] TEXT NOT NULL, 
 [IndexName] TEXT NOT NULL, 
@@ -498,7 +500,8 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
                 @"
 CREATE TABLE IF NOT EXISTS [QueryResultItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ObjectDomainName] TEXT NOT NULL, 
 [ObjectName] TEXT NOT NULL, 
 [ObjectID] TEXT NOT NULL, 

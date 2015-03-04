@@ -737,7 +737,8 @@ namespace SQLite.TheBall.Interface {
                 @"
 CREATE TABLE IF NOT EXISTS [WizardContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ActiveTasksID] TEXT NULL
 )";
         }
@@ -826,7 +827,8 @@ CREATE TABLE IF NOT EXISTS [WizardContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [WizardTask](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TaskName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [InputType] TEXT NOT NULL
@@ -887,7 +889,8 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
                 @"
 CREATE TABLE IF NOT EXISTS [Connection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OutputInformationID] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [DeviceID] TEXT NOT NULL, 
@@ -1270,7 +1273,8 @@ CREATE TABLE IF NOT EXISTS [Connection](
                 @"
 CREATE TABLE IF NOT EXISTS [TransferPackage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ConnectionID] TEXT NOT NULL, 
 [PackageDirection] TEXT NOT NULL, 
 [PackageType] TEXT NOT NULL, 
@@ -1389,7 +1393,8 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
                 @"
 CREATE TABLE IF NOT EXISTS [CategoryLink](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [SourceCategoryID] TEXT NOT NULL, 
 [TargetCategoryID] TEXT NOT NULL, 
 [LinkingType] TEXT NOT NULL
@@ -1450,7 +1455,8 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
                 @"
 CREATE TABLE IF NOT EXISTS [Category](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [NativeCategoryID] TEXT NOT NULL, 
 [NativeCategoryDomainName] TEXT NOT NULL, 
 [NativeCategoryObjectName] TEXT NOT NULL, 
@@ -1527,7 +1533,8 @@ CREATE TABLE IF NOT EXISTS [Category](
                 @"
 CREATE TABLE IF NOT EXISTS [StatusSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [PendingOperationsID] TEXT NULL, 
 [ExecutingOperationsID] TEXT NULL, 
 [RecentCompletedOperationsID] TEXT NULL, 
@@ -1772,7 +1779,8 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
                 @"
 CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [StartTimeUTC] TEXT NOT NULL, 
 [EndTimeUTC] TEXT NOT NULL, 
 [ChangedObjectIDList] TEXT NOT NULL
@@ -1873,7 +1881,8 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
                 @"
 CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [OperationName] TEXT NOT NULL, 
 [OperationDomain] TEXT NOT NULL, 
 [OperationID] TEXT NOT NULL, 
@@ -1968,7 +1977,8 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
                 @"
 CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ValueObjectID] TEXT NULL
 )";
         }
@@ -2016,7 +2026,8 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
                 @"
 CREATE TABLE IF NOT EXISTS [GenericObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ValuesID] TEXT NULL, 
 [IncludeInCollection] INTEGER NOT NULL, 
 [OptionalCollectionName] TEXT NOT NULL
@@ -2119,7 +2130,8 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
                 @"
 CREATE TABLE IF NOT EXISTS [GenericValue](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ValueName] TEXT NOT NULL, 
 [String] TEXT NOT NULL, 
 [StringArray] TEXT NOT NULL, 

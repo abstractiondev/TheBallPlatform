@@ -426,7 +426,8 @@ namespace SQLite.Caloom.CORE {
                 @"
 CREATE TABLE IF NOT EXISTS [Who](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -495,7 +496,8 @@ CREATE TABLE IF NOT EXISTS [Who](
                 @"
 CREATE TABLE IF NOT EXISTS [ProductForWhom](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
@@ -586,12 +588,12 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
                 @"
 CREATE TABLE IF NOT EXISTS [Product](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[SubProductsID] TEXT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -656,7 +658,8 @@ CREATE TABLE IF NOT EXISTS [Product](
                 @"
 CREATE TABLE IF NOT EXISTS [ProductUsage](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [ProductID] TEXT NULL, 
 [UsageAmountInDecimal] REAL NOT NULL
 )";
@@ -710,9 +713,8 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
                 @"
 CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
-[NodesID] TEXT NULL, 
-[NodeSourceProductsID] TEXT NULL
+[ETag] TEXT NOT NULL
+
 )";
         }
 
@@ -749,18 +751,15 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [TechnicalSource] TEXT NOT NULL, 
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [ActualContentUrl] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL, 
-[CategoriesID] TEXT NULL, 
-[AuthorsID] TEXT NULL, 
-[LocationsID] TEXT NULL, 
-[FiltersID] TEXT NULL
+[MainSortableText] TEXT NOT NULL
 )";
         }
 
@@ -846,7 +845,8 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextObject](
 [ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL,
+[ETag] TEXT NOT NULL
+, 
 [Content] TEXT NOT NULL
 )";
         }
