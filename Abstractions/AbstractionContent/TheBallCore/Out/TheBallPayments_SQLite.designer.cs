@@ -86,6 +86,8 @@ namespace SQLite.TheBall.Payments {
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(GroupSubscriptionPlan.GetCreateTableSQL());
 				tableCreationCommands.Add(CustomerAccount.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupSubscriptionPlanCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CustomerAccountCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -196,6 +198,20 @@ namespace SQLite.TheBall.Payments {
                     CustomerAccountTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "GroupSubscriptionPlanCollection")
+		        {
+		            var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ID};
+                    GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
+                    GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CustomerAccountCollection")
+		        {
+		            var objectToDelete = new CustomerAccountCollection {ID = deleteData.ID};
+                    CustomerAccountCollectionTable.Attach(objectToDelete);
+                    CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -209,26 +225,22 @@ namespace SQLite.TheBall.Payments {
 					return this.GetTable<CustomerAccount>();
 				}
 			}
+			public Table<GroupSubscriptionPlanCollection> GroupSubscriptionPlanCollectionTable {
+				get {
+					return this.GetTable<GroupSubscriptionPlanCollection>();
+				}
+			}
+			public Table<CustomerAccountCollection> CustomerAccountCollectionTable {
+				get {
+					return this.GetTable<CustomerAccountCollection>();
+				}
+			}
         }
 
     [Table(Name = "GroupSubscriptionPlan")]
 	[ScaffoldTable(true)]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[PlanName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[GroupIDs] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -246,6 +258,20 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[PlanName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[GroupIDs] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -321,21 +347,6 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 	[ScaffoldTable(true)]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CustomerAccount](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[StripeID] TEXT NOT NULL, 
-[EmailAddress] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[ActivePlans] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -353,6 +364,21 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CustomerAccount](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[StripeID] TEXT NOT NULL, 
+[EmailAddress] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[ActivePlans] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -429,6 +455,78 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
                 ActivePlansData = JsonConvert.SerializeObject(dataToStore);
             }
 
+		}
+	}
+    [Table(Name = "GroupSubscriptionPlanCollection")]
+	[ScaffoldTable(true)]
+	public class GroupSubscriptionPlanCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GroupSubscriptionPlanCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CustomerAccountCollection")]
+	[ScaffoldTable(true)]
+	public class CustomerAccountCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CustomerAccountCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 

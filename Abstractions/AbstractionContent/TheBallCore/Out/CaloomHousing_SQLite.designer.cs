@@ -168,21 +168,6 @@ namespace SQLite.Caloom.Housing {
 	[ScaffoldTable(true)]
 	public class House : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [House](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -200,6 +185,21 @@ CREATE TABLE IF NOT EXISTS [House](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [House](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]

@@ -85,6 +85,7 @@ namespace SQLite.Caloom.Schools {
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(TrainingModule.GetCreateTableSQL());
+				tableCreationCommands.Add(TrainingModuleCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -117,6 +118,10 @@ namespace SQLite.Caloom.Schools {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.TrainingModules != null)
+						existingObject.TrainingModulesID = serializedObject.TrainingModules.ID;
+					else
+						existingObject.TrainingModulesID = null;
 		            return;
 		        } 
 		    }
@@ -137,6 +142,10 @@ namespace SQLite.Caloom.Schools {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.TrainingModules != null)
+						objectToAdd.TrainingModulesID = serializedObject.TrainingModules.ID;
+					else
+						objectToAdd.TrainingModulesID = null;
 					TrainingModuleTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -154,6 +163,13 @@ namespace SQLite.Caloom.Schools {
                     TrainingModuleTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "TrainingModuleCollection")
+		        {
+		            var objectToDelete = new TrainingModuleCollection {ID = deleteData.ID};
+                    TrainingModuleCollectionTable.Attach(objectToDelete);
+                    TrainingModuleCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -162,27 +178,17 @@ namespace SQLite.Caloom.Schools {
 					return this.GetTable<TrainingModule>();
 				}
 			}
+			public Table<TrainingModuleCollection> TrainingModuleCollectionTable {
+				get {
+					return this.GetTable<TrainingModuleCollection>();
+				}
+			}
         }
 
     [Table(Name = "TrainingModule")]
 	[ScaffoldTable(true)]
 	public class TrainingModule : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TrainingModule](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -200,6 +206,21 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TrainingModule](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -221,6 +242,15 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string TrainingModulesID { get; set; }
+			private EntityRef< TrainingModuleCollection > _TrainingModules;
+			[Association(Storage = "_TrainingModules", ThisKey = "TrainingModulesID")]
+			public TrainingModuleCollection TrainingModules
+			{
+				get { return this._TrainingModules.Entity; }
+				set { this._TrainingModules.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -232,6 +262,42 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
 				Excerpt = string.Empty;
 			if(Description == null)
 				Description = string.Empty;
+		}
+	}
+    [Table(Name = "TrainingModuleCollection")]
+	[ScaffoldTable(true)]
+	public class TrainingModuleCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TrainingModuleCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TrainingModuleCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 

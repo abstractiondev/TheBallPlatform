@@ -113,6 +113,24 @@ namespace SQLite.TheBall.CORE {
 				tableCreationCommands.Add(NetworkUsage.GetCreateTableSQL());
 				tableCreationCommands.Add(TimeRange.GetCreateTableSQL());
 				tableCreationCommands.Add(HTTPActivityDetails.GetCreateTableSQL());
+				tableCreationCommands.Add(ContentPackageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationInputCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationOutputCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(AuthenticatedAsActiveDeviceCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(DeviceMembershipCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceUserCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceRowGroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceEventDetailGroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceEventDetailCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InvoiceRowCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CategoryCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(RequestResourceUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ProcessorUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(StorageTransactionUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(StorageUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(NetworkUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(HTTPActivityDetailsCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -220,6 +238,10 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            existingObject.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
+					if(serializedObject.ExportedInvoices != null)
+						existingObject.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
+					else
+						existingObject.ExportedInvoicesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceSummaryContainer")
@@ -230,6 +252,22 @@ namespace SQLite.TheBall.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InvoiceSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.OpenInvoices != null)
+						existingObject.OpenInvoicesID = serializedObject.OpenInvoices.ID;
+					else
+						existingObject.OpenInvoicesID = null;
+					if(serializedObject.PredictedInvoices != null)
+						existingObject.PredictedInvoicesID = serializedObject.PredictedInvoices.ID;
+					else
+						existingObject.PredictedInvoicesID = null;
+					if(serializedObject.PaidInvoicesActiveYear != null)
+						existingObject.PaidInvoicesActiveYearID = serializedObject.PaidInvoicesActiveYear.ID;
+					else
+						existingObject.PaidInvoicesActiveYearID = null;
+					if(serializedObject.PaidInvoicesLast12Months != null)
+						existingObject.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
+					else
+						existingObject.PaidInvoicesLast12MonthsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Invoice")
@@ -252,6 +290,10 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceDetailsID = serializedObject.InvoiceDetails.ID;
 					else
 						existingObject.InvoiceDetailsID = null;
+					if(serializedObject.InvoiceUsers != null)
+						existingObject.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
+					else
+						existingObject.InvoiceUsersID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceDetails")
@@ -283,6 +325,14 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.UserPhoneNumber = serializedObject.UserPhoneNumber;
 		            existingObject.UserSubscriptionNumber = serializedObject.UserSubscriptionNumber;
 		            existingObject.UserInvoiceTotalAmount = serializedObject.UserInvoiceTotalAmount;
+					if(serializedObject.InvoiceRowGroupCollection != null)
+						existingObject.InvoiceRowGroupCollectionID = serializedObject.InvoiceRowGroupCollection.ID;
+					else
+						existingObject.InvoiceRowGroupCollectionID = null;
+					if(serializedObject.InvoiceEventDetailGroupCollection != null)
+						existingObject.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
+					else
+						existingObject.InvoiceEventDetailGroupCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceRowGroup")
@@ -297,6 +347,10 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            existingObject.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
 		            existingObject.GroupTotalPriceWithTaxes = serializedObject.GroupTotalPriceWithTaxes;
+					if(serializedObject.InvoiceRowCollection != null)
+						existingObject.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
+					else
+						existingObject.InvoiceRowCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceEventDetailGroup")
@@ -308,6 +362,10 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = InvoiceEventDetailGroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
+					if(serializedObject.InvoiceEventDetailCollection != null)
+						existingObject.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
+					else
+						existingObject.InvoiceEventDetailCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "InvoiceEventDetail")
@@ -469,6 +527,22 @@ namespace SQLite.TheBall.CORE {
 					else
 						existingObject.TimeRangeInclusiveStartExclusiveEndID = null;
 		            existingObject.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
+					if(serializedObject.ProcessorUsages != null)
+						existingObject.ProcessorUsagesID = serializedObject.ProcessorUsages.ID;
+					else
+						existingObject.ProcessorUsagesID = null;
+					if(serializedObject.StorageTransactionUsages != null)
+						existingObject.StorageTransactionUsagesID = serializedObject.StorageTransactionUsages.ID;
+					else
+						existingObject.StorageTransactionUsagesID = null;
+					if(serializedObject.StorageUsages != null)
+						existingObject.StorageUsagesID = serializedObject.StorageUsages.ID;
+					else
+						existingObject.StorageUsagesID = null;
+					if(serializedObject.NetworkUsages != null)
+						existingObject.NetworkUsagesID = serializedObject.NetworkUsages.ID;
+					else
+						existingObject.NetworkUsagesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RequestResourceUsage")
@@ -687,6 +761,10 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new InvoiceFiscalExportSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.FiscalInclusiveStartDate = serializedObject.FiscalInclusiveStartDate;
 		            objectToAdd.FiscalInclusiveEndDate = serializedObject.FiscalInclusiveEndDate;
+					if(serializedObject.ExportedInvoices != null)
+						objectToAdd.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
+					else
+						objectToAdd.ExportedInvoicesID = null;
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -697,6 +775,22 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.InvoiceSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.OpenInvoices != null)
+						objectToAdd.OpenInvoicesID = serializedObject.OpenInvoices.ID;
+					else
+						objectToAdd.OpenInvoicesID = null;
+					if(serializedObject.PredictedInvoices != null)
+						objectToAdd.PredictedInvoicesID = serializedObject.PredictedInvoices.ID;
+					else
+						objectToAdd.PredictedInvoicesID = null;
+					if(serializedObject.PaidInvoicesActiveYear != null)
+						objectToAdd.PaidInvoicesActiveYearID = serializedObject.PaidInvoicesActiveYear.ID;
+					else
+						objectToAdd.PaidInvoicesActiveYearID = null;
+					if(serializedObject.PaidInvoicesLast12Months != null)
+						objectToAdd.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
+					else
+						objectToAdd.PaidInvoicesLast12MonthsID = null;
 					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -719,6 +813,10 @@ namespace SQLite.TheBall.CORE {
 						objectToAdd.InvoiceDetailsID = serializedObject.InvoiceDetails.ID;
 					else
 						objectToAdd.InvoiceDetailsID = null;
+					if(serializedObject.InvoiceUsers != null)
+						objectToAdd.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
+					else
+						objectToAdd.InvoiceUsersID = null;
 					InvoiceTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -750,6 +848,14 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UserPhoneNumber = serializedObject.UserPhoneNumber;
 		            objectToAdd.UserSubscriptionNumber = serializedObject.UserSubscriptionNumber;
 		            objectToAdd.UserInvoiceTotalAmount = serializedObject.UserInvoiceTotalAmount;
+					if(serializedObject.InvoiceRowGroupCollection != null)
+						objectToAdd.InvoiceRowGroupCollectionID = serializedObject.InvoiceRowGroupCollection.ID;
+					else
+						objectToAdd.InvoiceRowGroupCollectionID = null;
+					if(serializedObject.InvoiceEventDetailGroupCollection != null)
+						objectToAdd.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
+					else
+						objectToAdd.InvoiceEventDetailGroupCollectionID = null;
 					InvoiceUserTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -764,6 +870,10 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.GroupTotalPriceWithoutTaxes = serializedObject.GroupTotalPriceWithoutTaxes;
 		            objectToAdd.GroupTotalTaxes = serializedObject.GroupTotalTaxes;
 		            objectToAdd.GroupTotalPriceWithTaxes = serializedObject.GroupTotalPriceWithTaxes;
+					if(serializedObject.InvoiceRowCollection != null)
+						objectToAdd.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
+					else
+						objectToAdd.InvoiceRowCollectionID = null;
 					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -775,6 +885,10 @@ namespace SQLite.TheBall.CORE {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InvoiceEventDetailGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
+					if(serializedObject.InvoiceEventDetailCollection != null)
+						objectToAdd.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
+					else
+						objectToAdd.InvoiceEventDetailCollectionID = null;
 					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -926,6 +1040,22 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.TimeRangeInclusiveStartExclusiveEndID = null;
 		            objectToAdd.StepSizeInMinutes = serializedObject.StepSizeInMinutes;
+					if(serializedObject.ProcessorUsages != null)
+						objectToAdd.ProcessorUsagesID = serializedObject.ProcessorUsages.ID;
+					else
+						objectToAdd.ProcessorUsagesID = null;
+					if(serializedObject.StorageTransactionUsages != null)
+						objectToAdd.StorageTransactionUsagesID = serializedObject.StorageTransactionUsages.ID;
+					else
+						objectToAdd.StorageTransactionUsagesID = null;
+					if(serializedObject.StorageUsages != null)
+						objectToAdd.StorageUsagesID = serializedObject.StorageUsages.ID;
+					else
+						objectToAdd.StorageUsagesID = null;
+					if(serializedObject.NetworkUsages != null)
+						objectToAdd.NetworkUsagesID = serializedObject.NetworkUsages.ID;
+					else
+						objectToAdd.NetworkUsagesID = null;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -1262,6 +1392,132 @@ namespace SQLite.TheBall.CORE {
                     HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "ContentPackageCollection")
+		        {
+		            var objectToDelete = new ContentPackageCollection {ID = deleteData.ID};
+                    ContentPackageCollectionTable.Attach(objectToDelete);
+                    ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InformationInputCollection")
+		        {
+		            var objectToDelete = new InformationInputCollection {ID = deleteData.ID};
+                    InformationInputCollectionTable.Attach(objectToDelete);
+                    InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InformationOutputCollection")
+		        {
+		            var objectToDelete = new InformationOutputCollection {ID = deleteData.ID};
+                    InformationOutputCollectionTable.Attach(objectToDelete);
+                    InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AuthenticatedAsActiveDeviceCollection")
+		        {
+		            var objectToDelete = new AuthenticatedAsActiveDeviceCollection {ID = deleteData.ID};
+                    AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
+                    AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DeviceMembershipCollection")
+		        {
+		            var objectToDelete = new DeviceMembershipCollection {ID = deleteData.ID};
+                    DeviceMembershipCollectionTable.Attach(objectToDelete);
+                    DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceCollection")
+		        {
+		            var objectToDelete = new InvoiceCollection {ID = deleteData.ID};
+                    InvoiceCollectionTable.Attach(objectToDelete);
+                    InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceUserCollection")
+		        {
+		            var objectToDelete = new InvoiceUserCollection {ID = deleteData.ID};
+                    InvoiceUserCollectionTable.Attach(objectToDelete);
+                    InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceRowGroupCollection")
+		        {
+		            var objectToDelete = new InvoiceRowGroupCollection {ID = deleteData.ID};
+                    InvoiceRowGroupCollectionTable.Attach(objectToDelete);
+                    InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceEventDetailGroupCollection")
+		        {
+		            var objectToDelete = new InvoiceEventDetailGroupCollection {ID = deleteData.ID};
+                    InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
+                    InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceEventDetailCollection")
+		        {
+		            var objectToDelete = new InvoiceEventDetailCollection {ID = deleteData.ID};
+                    InvoiceEventDetailCollectionTable.Attach(objectToDelete);
+                    InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InvoiceRowCollection")
+		        {
+		            var objectToDelete = new InvoiceRowCollection {ID = deleteData.ID};
+                    InvoiceRowCollectionTable.Attach(objectToDelete);
+                    InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryCollection")
+		        {
+		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
+                    CategoryCollectionTable.Attach(objectToDelete);
+                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RequestResourceUsageCollection")
+		        {
+		            var objectToDelete = new RequestResourceUsageCollection {ID = deleteData.ID};
+                    RequestResourceUsageCollectionTable.Attach(objectToDelete);
+                    RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ProcessorUsageCollection")
+		        {
+		            var objectToDelete = new ProcessorUsageCollection {ID = deleteData.ID};
+                    ProcessorUsageCollectionTable.Attach(objectToDelete);
+                    ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "StorageTransactionUsageCollection")
+		        {
+		            var objectToDelete = new StorageTransactionUsageCollection {ID = deleteData.ID};
+                    StorageTransactionUsageCollectionTable.Attach(objectToDelete);
+                    StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "StorageUsageCollection")
+		        {
+		            var objectToDelete = new StorageUsageCollection {ID = deleteData.ID};
+                    StorageUsageCollectionTable.Attach(objectToDelete);
+                    StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "NetworkUsageCollection")
+		        {
+		            var objectToDelete = new NetworkUsageCollection {ID = deleteData.ID};
+                    NetworkUsageCollectionTable.Attach(objectToDelete);
+                    NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "HTTPActivityDetailsCollection")
+		        {
+		            var objectToDelete = new HTTPActivityDetailsCollection {ID = deleteData.ID};
+                    HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
+                    HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -1410,28 +1666,102 @@ namespace SQLite.TheBall.CORE {
 					return this.GetTable<HTTPActivityDetails>();
 				}
 			}
+			public Table<ContentPackageCollection> ContentPackageCollectionTable {
+				get {
+					return this.GetTable<ContentPackageCollection>();
+				}
+			}
+			public Table<InformationInputCollection> InformationInputCollectionTable {
+				get {
+					return this.GetTable<InformationInputCollection>();
+				}
+			}
+			public Table<InformationOutputCollection> InformationOutputCollectionTable {
+				get {
+					return this.GetTable<InformationOutputCollection>();
+				}
+			}
+			public Table<AuthenticatedAsActiveDeviceCollection> AuthenticatedAsActiveDeviceCollectionTable {
+				get {
+					return this.GetTable<AuthenticatedAsActiveDeviceCollection>();
+				}
+			}
+			public Table<DeviceMembershipCollection> DeviceMembershipCollectionTable {
+				get {
+					return this.GetTable<DeviceMembershipCollection>();
+				}
+			}
+			public Table<InvoiceCollection> InvoiceCollectionTable {
+				get {
+					return this.GetTable<InvoiceCollection>();
+				}
+			}
+			public Table<InvoiceUserCollection> InvoiceUserCollectionTable {
+				get {
+					return this.GetTable<InvoiceUserCollection>();
+				}
+			}
+			public Table<InvoiceRowGroupCollection> InvoiceRowGroupCollectionTable {
+				get {
+					return this.GetTable<InvoiceRowGroupCollection>();
+				}
+			}
+			public Table<InvoiceEventDetailGroupCollection> InvoiceEventDetailGroupCollectionTable {
+				get {
+					return this.GetTable<InvoiceEventDetailGroupCollection>();
+				}
+			}
+			public Table<InvoiceEventDetailCollection> InvoiceEventDetailCollectionTable {
+				get {
+					return this.GetTable<InvoiceEventDetailCollection>();
+				}
+			}
+			public Table<InvoiceRowCollection> InvoiceRowCollectionTable {
+				get {
+					return this.GetTable<InvoiceRowCollection>();
+				}
+			}
+			public Table<CategoryCollection> CategoryCollectionTable {
+				get {
+					return this.GetTable<CategoryCollection>();
+				}
+			}
+			public Table<RequestResourceUsageCollection> RequestResourceUsageCollectionTable {
+				get {
+					return this.GetTable<RequestResourceUsageCollection>();
+				}
+			}
+			public Table<ProcessorUsageCollection> ProcessorUsageCollectionTable {
+				get {
+					return this.GetTable<ProcessorUsageCollection>();
+				}
+			}
+			public Table<StorageTransactionUsageCollection> StorageTransactionUsageCollectionTable {
+				get {
+					return this.GetTable<StorageTransactionUsageCollection>();
+				}
+			}
+			public Table<StorageUsageCollection> StorageUsageCollectionTable {
+				get {
+					return this.GetTable<StorageUsageCollection>();
+				}
+			}
+			public Table<NetworkUsageCollection> NetworkUsageCollectionTable {
+				get {
+					return this.GetTable<NetworkUsageCollection>();
+				}
+			}
+			public Table<HTTPActivityDetailsCollection> HTTPActivityDetailsCollectionTable {
+				get {
+					return this.GetTable<HTTPActivityDetailsCollection>();
+				}
+			}
         }
 
     [Table(Name = "ContentPackage")]
 	[ScaffoldTable(true)]
 	public class ContentPackage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContentPackage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[PackageType] TEXT NOT NULL, 
-[PackageName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[PackageRootFolder] TEXT NOT NULL, 
-[CreationTime] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1449,6 +1779,22 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContentPackage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[PackageType] TEXT NOT NULL, 
+[PackageName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[PackageRootFolder] TEXT NOT NULL, 
+[CreationTime] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1492,22 +1838,6 @@ CREATE TABLE IF NOT EXISTS [ContentPackage](
 	[ScaffoldTable(true)]
 	public class InformationInput : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InformationInput](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[InputDescription] TEXT NOT NULL, 
-[LocationURL] TEXT NOT NULL, 
-[LocalContentName] TEXT NOT NULL, 
-[AuthenticatedDeviceID] TEXT NOT NULL, 
-[IsValidatedAndActive] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1525,6 +1855,22 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationInput](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[InputDescription] TEXT NOT NULL, 
+[LocationURL] TEXT NOT NULL, 
+[LocalContentName] TEXT NOT NULL, 
+[AuthenticatedDeviceID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1568,23 +1914,6 @@ CREATE TABLE IF NOT EXISTS [InformationInput](
 	[ScaffoldTable(true)]
 	public class InformationOutput : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InformationOutput](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OutputDescription] TEXT NOT NULL, 
-[DestinationURL] TEXT NOT NULL, 
-[DestinationContentName] TEXT NOT NULL, 
-[LocalContentURL] TEXT NOT NULL, 
-[AuthenticatedDeviceID] TEXT NOT NULL, 
-[IsValidatedAndActive] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1602,6 +1931,23 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationOutput](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OutputDescription] TEXT NOT NULL, 
+[DestinationURL] TEXT NOT NULL, 
+[DestinationContentName] TEXT NOT NULL, 
+[LocalContentURL] TEXT NOT NULL, 
+[AuthenticatedDeviceID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1652,24 +1998,6 @@ CREATE TABLE IF NOT EXISTS [InformationOutput](
 	[ScaffoldTable(true)]
 	public class AuthenticatedAsActiveDevice : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AuthenticationDescription] TEXT NOT NULL, 
-[SharedSecret] TEXT NOT NULL, 
-[ActiveSymmetricAESKey] BLOB NOT NULL, 
-[EstablishedTrustID] TEXT NOT NULL, 
-[IsValidatedAndActive] INTEGER NOT NULL, 
-[NegotiationURL] TEXT NOT NULL, 
-[ConnectionURL] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1687,6 +2015,24 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AuthenticationDescription] TEXT NOT NULL, 
+[SharedSecret] TEXT NOT NULL, 
+[ActiveSymmetricAESKey] BLOB NOT NULL, 
+[EstablishedTrustID] TEXT NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL, 
+[NegotiationURL] TEXT NOT NULL, 
+[ConnectionURL] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1742,21 +2088,6 @@ CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDevice](
 	[ScaffoldTable(true)]
 	public class DeviceMembership : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [DeviceMembership](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[DeviceDescription] TEXT NOT NULL, 
-[SharedSecret] TEXT NOT NULL, 
-[ActiveSymmetricAESKey] BLOB NOT NULL, 
-[IsValidatedAndActive] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1774,6 +2105,21 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DeviceMembership](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[DeviceDescription] TEXT NOT NULL, 
+[SharedSecret] TEXT NOT NULL, 
+[ActiveSymmetricAESKey] BLOB NOT NULL, 
+[IsValidatedAndActive] INTEGER NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1808,19 +2154,6 @@ CREATE TABLE IF NOT EXISTS [DeviceMembership](
 	[ScaffoldTable(true)]
 	public class InvoiceFiscalExportSummary : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[FiscalInclusiveStartDate] TEXT NOT NULL, 
-[FiscalInclusiveEndDate] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1839,6 +2172,19 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[FiscalInclusiveStartDate] TEXT NOT NULL, 
+[FiscalInclusiveEndDate] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -1849,6 +2195,15 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
         [ScaffoldColumn(true)]
 		public DateTime FiscalInclusiveEndDate { get; set; }
 		// private DateTime _unmodified_FiscalInclusiveEndDate;
+			[Column]
+			public string ExportedInvoicesID { get; set; }
+			private EntityRef< InvoiceCollection > _ExportedInvoices;
+			[Association(Storage = "_ExportedInvoices", ThisKey = "ExportedInvoicesID")]
+			public InvoiceCollection ExportedInvoices
+			{
+				get { return this._ExportedInvoices.Entity; }
+				set { this._ExportedInvoices.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1858,17 +2213,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceFiscalExportSummary](
 	[ScaffoldTable(true)]
 	public class InvoiceSummaryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1887,6 +2231,53 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string OpenInvoicesID { get; set; }
+			private EntityRef< InvoiceCollection > _OpenInvoices;
+			[Association(Storage = "_OpenInvoices", ThisKey = "OpenInvoicesID")]
+			public InvoiceCollection OpenInvoices
+			{
+				get { return this._OpenInvoices.Entity; }
+				set { this._OpenInvoices.Entity = value; }
+			}
+			[Column]
+			public string PredictedInvoicesID { get; set; }
+			private EntityRef< InvoiceCollection > _PredictedInvoices;
+			[Association(Storage = "_PredictedInvoices", ThisKey = "PredictedInvoicesID")]
+			public InvoiceCollection PredictedInvoices
+			{
+				get { return this._PredictedInvoices.Entity; }
+				set { this._PredictedInvoices.Entity = value; }
+			}
+			[Column]
+			public string PaidInvoicesActiveYearID { get; set; }
+			private EntityRef< InvoiceCollection > _PaidInvoicesActiveYear;
+			[Association(Storage = "_PaidInvoicesActiveYear", ThisKey = "PaidInvoicesActiveYearID")]
+			public InvoiceCollection PaidInvoicesActiveYear
+			{
+				get { return this._PaidInvoicesActiveYear.Entity; }
+				set { this._PaidInvoicesActiveYear.Entity = value; }
+			}
+			[Column]
+			public string PaidInvoicesLast12MonthsID { get; set; }
+			private EntityRef< InvoiceCollection > _PaidInvoicesLast12Months;
+			[Association(Storage = "_PaidInvoicesLast12Months", ThisKey = "PaidInvoicesLast12MonthsID")]
+			public InvoiceCollection PaidInvoicesLast12Months
+			{
+				get { return this._PaidInvoicesLast12Months.Entity; }
+				set { this._PaidInvoicesLast12Months.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -1896,6 +2287,24 @@ CREATE TABLE IF NOT EXISTS [InvoiceSummaryContainer](
 	[ScaffoldTable(true)]
 	public class Invoice : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Invoice() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -1915,24 +2324,6 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 [InvoiceDetailsID] TEXT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Invoice() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -1984,6 +2375,15 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 				set { this._InvoiceDetails.Entity = value; }
 			}
 
+			[Column]
+			public string InvoiceUsersID { get; set; }
+			private EntityRef< InvoiceUserCollection > _InvoiceUsers;
+			[Association(Storage = "_InvoiceUsers", ThisKey = "InvoiceUsersID")]
+			public InvoiceUserCollection InvoiceUsers
+			{
+				get { return this._InvoiceUsers.Entity; }
+				set { this._InvoiceUsers.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2005,23 +2405,6 @@ CREATE TABLE IF NOT EXISTS [Invoice](
 	[ScaffoldTable(true)]
 	public class InvoiceDetails : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceDetails](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[MonthlyFeesTotal] TEXT NOT NULL, 
-[OneTimeFeesTotal] TEXT NOT NULL, 
-[UsageFeesTotal] TEXT NOT NULL, 
-[InterestFeesTotal] TEXT NOT NULL, 
-[PenaltyFeesTotal] TEXT NOT NULL, 
-[TotalFeesTotal] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2039,6 +2422,23 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceDetails](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[MonthlyFeesTotal] TEXT NOT NULL, 
+[OneTimeFeesTotal] TEXT NOT NULL, 
+[UsageFeesTotal] TEXT NOT NULL, 
+[InterestFeesTotal] TEXT NOT NULL, 
+[PenaltyFeesTotal] TEXT NOT NULL, 
+[TotalFeesTotal] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -2091,22 +2491,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceDetails](
 	[ScaffoldTable(true)]
 	public class InvoiceUser : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceUser](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[UserName] TEXT NOT NULL, 
-[UserID] TEXT NOT NULL, 
-[UserPhoneNumber] TEXT NOT NULL, 
-[UserSubscriptionNumber] TEXT NOT NULL, 
-[UserInvoiceTotalAmount] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2124,6 +2508,22 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceUser](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[UserName] TEXT NOT NULL, 
+[UserID] TEXT NOT NULL, 
+[UserPhoneNumber] TEXT NOT NULL, 
+[UserSubscriptionNumber] TEXT NOT NULL, 
+[UserInvoiceTotalAmount] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -2150,6 +2550,24 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
         [ScaffoldColumn(true)]
 		public string UserInvoiceTotalAmount { get; set; }
 		// private string _unmodified_UserInvoiceTotalAmount;
+			[Column]
+			public string InvoiceRowGroupCollectionID { get; set; }
+			private EntityRef< InvoiceRowGroupCollection > _InvoiceRowGroupCollection;
+			[Association(Storage = "_InvoiceRowGroupCollection", ThisKey = "InvoiceRowGroupCollectionID")]
+			public InvoiceRowGroupCollection InvoiceRowGroupCollection
+			{
+				get { return this._InvoiceRowGroupCollection.Entity; }
+				set { this._InvoiceRowGroupCollection.Entity = value; }
+			}
+			[Column]
+			public string InvoiceEventDetailGroupCollectionID { get; set; }
+			private EntityRef< InvoiceEventDetailGroupCollection > _InvoiceEventDetailGroupCollection;
+			[Association(Storage = "_InvoiceEventDetailGroupCollection", ThisKey = "InvoiceEventDetailGroupCollectionID")]
+			public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection
+			{
+				get { return this._InvoiceEventDetailGroupCollection.Entity; }
+				set { this._InvoiceEventDetailGroupCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2169,21 +2587,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceUser](
 	[ScaffoldTable(true)]
 	public class InvoiceRowGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupName] TEXT NOT NULL, 
-[GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
-[GroupTotalTaxes] TEXT NOT NULL, 
-[GroupTotalPriceWithTaxes] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2201,6 +2604,21 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL, 
+[GroupTotalPriceWithoutTaxes] TEXT NOT NULL, 
+[GroupTotalTaxes] TEXT NOT NULL, 
+[GroupTotalPriceWithTaxes] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -2222,6 +2640,15 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
         [ScaffoldColumn(true)]
 		public string GroupTotalPriceWithTaxes { get; set; }
 		// private string _unmodified_GroupTotalPriceWithTaxes;
+			[Column]
+			public string InvoiceRowCollectionID { get; set; }
+			private EntityRef< InvoiceRowCollection > _InvoiceRowCollection;
+			[Association(Storage = "_InvoiceRowCollection", ThisKey = "InvoiceRowCollectionID")]
+			public InvoiceRowCollection InvoiceRowCollection
+			{
+				get { return this._InvoiceRowCollection.Entity; }
+				set { this._InvoiceRowCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2239,18 +2666,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceRowGroup](
 	[ScaffoldTable(true)]
 	public class InvoiceEventDetailGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2269,11 +2684,32 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
+			[Column]
+			public string InvoiceEventDetailCollectionID { get; set; }
+			private EntityRef< InvoiceEventDetailCollection > _InvoiceEventDetailCollection;
+			[Association(Storage = "_InvoiceEventDetailCollection", ThisKey = "InvoiceEventDetailCollectionID")]
+			public InvoiceEventDetailCollection InvoiceEventDetailCollection
+			{
+				get { return this._InvoiceEventDetailCollection.Entity; }
+				set { this._InvoiceEventDetailCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -2285,6 +2721,24 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroup](
 	[ScaffoldTable(true)]
 	public class InvoiceEventDetail : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceEventDetail() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -2305,24 +2759,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 [PriceWithTaxes] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public InvoiceEventDetail() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -2399,24 +2835,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceEventDetail](
 	[ScaffoldTable(true)]
 	public class InvoiceRow : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InvoiceRow](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IndentMode] TEXT NOT NULL, 
-[AmountOfUnits] TEXT NOT NULL, 
-[Duration] TEXT NOT NULL, 
-[UnitPrice] TEXT NOT NULL, 
-[PriceWithoutTaxes] TEXT NOT NULL, 
-[Taxes] TEXT NOT NULL, 
-[PriceWithTaxes] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2434,6 +2852,24 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceRow](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IndentMode] TEXT NOT NULL, 
+[AmountOfUnits] TEXT NOT NULL, 
+[Duration] TEXT NOT NULL, 
+[UnitPrice] TEXT NOT NULL, 
+[PriceWithoutTaxes] TEXT NOT NULL, 
+[Taxes] TEXT NOT NULL, 
+[PriceWithTaxes] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -2493,18 +2929,6 @@ CREATE TABLE IF NOT EXISTS [InvoiceRow](
 	[ScaffoldTable(true)]
 	public class Category : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Category](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CategoryName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2523,6 +2947,18 @@ CREATE TABLE IF NOT EXISTS [Category](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Category](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[CategoryName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -2539,18 +2975,6 @@ CREATE TABLE IF NOT EXISTS [Category](
 	[ScaffoldTable(true)]
 	public class ProcessContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProcessContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProcessIDs] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2568,6 +2992,18 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProcessContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProcessIDs] TEXT NOT NULL
+)";
+        }
 
         [Column(Name = "ProcessIDs")] 
         [ScaffoldColumn(true)]
@@ -2629,21 +3065,6 @@ CREATE TABLE IF NOT EXISTS [ProcessContainer](
 	[ScaffoldTable(true)]
 	public class Process : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Process](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProcessDescription] TEXT NOT NULL, 
-[ExecutingOperationID] TEXT NULL, 
-[InitialArgumentsID] TEXT NULL, 
-[ProcessItemsID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2661,6 +3082,21 @@ CREATE TABLE IF NOT EXISTS [Process](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Process](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProcessDescription] TEXT NOT NULL, 
+[ExecutingOperationID] TEXT NULL, 
+[InitialArgumentsID] TEXT NULL, 
+[ProcessItemsID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -2790,19 +3226,6 @@ CREATE TABLE IF NOT EXISTS [Process](
 	[ScaffoldTable(true)]
 	public class ProcessItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProcessItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OutputsID] TEXT NULL, 
-[InputsID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2820,6 +3243,19 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProcessItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OutputsID] TEXT NULL, 
+[InputsID] TEXT NULL
+)";
+        }
 
         [Column(Name = "Outputs")] 
         [ScaffoldColumn(true)]
@@ -2932,19 +3368,6 @@ CREATE TABLE IF NOT EXISTS [ProcessItem](
 	[ScaffoldTable(true)]
 	public class SemanticInformationItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ItemFullType] TEXT NOT NULL, 
-[ItemValue] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2962,6 +3385,19 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ItemFullType] TEXT NOT NULL, 
+[ItemValue] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -2986,19 +3422,6 @@ CREATE TABLE IF NOT EXISTS [SemanticInformationItem](
 	[ScaffoldTable(true)]
 	public class InformationOwnerInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OwnerType] TEXT NOT NULL, 
-[OwnerIdentifier] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3016,6 +3439,19 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OwnerType] TEXT NOT NULL, 
+[OwnerIdentifier] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -3040,19 +3476,6 @@ CREATE TABLE IF NOT EXISTS [InformationOwnerInfo](
 	[ScaffoldTable(true)]
 	public class UsageSummary : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [UsageSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SummaryName] TEXT NOT NULL, 
-[SummaryMonitoringItemID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3070,6 +3493,19 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [UsageSummary](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SummaryName] TEXT NOT NULL, 
+[SummaryMonitoringItemID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -3097,20 +3533,6 @@ CREATE TABLE IF NOT EXISTS [UsageSummary](
 	[ScaffoldTable(true)]
 	public class UsageMonitorItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OwnerInfoID] TEXT NULL, 
-[TimeRangeInclusiveStartExclusiveEndID] TEXT NULL, 
-[StepSizeInMinutes] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3128,6 +3550,20 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OwnerInfoID] TEXT NULL, 
+[TimeRangeInclusiveStartExclusiveEndID] TEXT NULL, 
+[StepSizeInMinutes] INTEGER NOT NULL
+)";
+        }
 
 			[Column]
 			public string OwnerInfoID { get; set; }
@@ -3154,6 +3590,42 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
         [ScaffoldColumn(true)]
 		public long StepSizeInMinutes { get; set; }
 		// private long _unmodified_StepSizeInMinutes;
+			[Column]
+			public string ProcessorUsagesID { get; set; }
+			private EntityRef< ProcessorUsageCollection > _ProcessorUsages;
+			[Association(Storage = "_ProcessorUsages", ThisKey = "ProcessorUsagesID")]
+			public ProcessorUsageCollection ProcessorUsages
+			{
+				get { return this._ProcessorUsages.Entity; }
+				set { this._ProcessorUsages.Entity = value; }
+			}
+			[Column]
+			public string StorageTransactionUsagesID { get; set; }
+			private EntityRef< StorageTransactionUsageCollection > _StorageTransactionUsages;
+			[Association(Storage = "_StorageTransactionUsages", ThisKey = "StorageTransactionUsagesID")]
+			public StorageTransactionUsageCollection StorageTransactionUsages
+			{
+				get { return this._StorageTransactionUsages.Entity; }
+				set { this._StorageTransactionUsages.Entity = value; }
+			}
+			[Column]
+			public string StorageUsagesID { get; set; }
+			private EntityRef< StorageUsageCollection > _StorageUsages;
+			[Association(Storage = "_StorageUsages", ThisKey = "StorageUsagesID")]
+			public StorageUsageCollection StorageUsages
+			{
+				get { return this._StorageUsages.Entity; }
+				set { this._StorageUsages.Entity = value; }
+			}
+			[Column]
+			public string NetworkUsagesID { get; set; }
+			private EntityRef< NetworkUsageCollection > _NetworkUsages;
+			[Association(Storage = "_NetworkUsages", ThisKey = "NetworkUsagesID")]
+			public NetworkUsageCollection NetworkUsages
+			{
+				get { return this._NetworkUsages.Entity; }
+				set { this._NetworkUsages.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -3163,22 +3635,6 @@ CREATE TABLE IF NOT EXISTS [UsageMonitorItem](
 	[ScaffoldTable(true)]
 	public class RequestResourceUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OwnerInfoID] TEXT NULL, 
-[ProcessorUsageID] TEXT NULL, 
-[StorageTransactionUsageID] TEXT NULL, 
-[NetworkUsageID] TEXT NULL, 
-[RequestDetailsID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3196,6 +3652,22 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OwnerInfoID] TEXT NULL, 
+[ProcessorUsageID] TEXT NULL, 
+[StorageTransactionUsageID] TEXT NULL, 
+[NetworkUsageID] TEXT NULL, 
+[RequestDetailsID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string OwnerInfoID { get; set; }
@@ -3256,22 +3728,6 @@ CREATE TABLE IF NOT EXISTS [RequestResourceUsage](
 	[ScaffoldTable(true)]
 	public class ProcessorUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProcessorUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TimeRangeID] TEXT NULL, 
-[UsageType] TEXT NOT NULL, 
-[AmountOfTicks] REAL NOT NULL, 
-[FrequencyTicksPerSecond] REAL NOT NULL, 
-[Milliseconds] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3289,6 +3745,22 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProcessorUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TimeRangeID] TEXT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfTicks] REAL NOT NULL, 
+[FrequencyTicksPerSecond] REAL NOT NULL, 
+[Milliseconds] INTEGER NOT NULL
+)";
+        }
 
 			[Column]
 			public string TimeRangeID { get; set; }
@@ -3331,20 +3803,6 @@ CREATE TABLE IF NOT EXISTS [ProcessorUsage](
 	[ScaffoldTable(true)]
 	public class StorageTransactionUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TimeRangeID] TEXT NULL, 
-[UsageType] TEXT NOT NULL, 
-[AmountOfTransactions] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3362,6 +3820,20 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TimeRangeID] TEXT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfTransactions] INTEGER NOT NULL
+)";
+        }
 
 			[Column]
 			public string TimeRangeID { get; set; }
@@ -3394,21 +3866,6 @@ CREATE TABLE IF NOT EXISTS [StorageTransactionUsage](
 	[ScaffoldTable(true)]
 	public class StorageUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [StorageUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SnapshotTime] TEXT NOT NULL, 
-[UsageType] TEXT NOT NULL, 
-[UsageUnit] TEXT NOT NULL, 
-[AmountOfUnits] REAL NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3426,6 +3883,21 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StorageUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SnapshotTime] TEXT NOT NULL, 
+[UsageType] TEXT NOT NULL, 
+[UsageUnit] TEXT NOT NULL, 
+[AmountOfUnits] REAL NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -3460,20 +3932,6 @@ CREATE TABLE IF NOT EXISTS [StorageUsage](
 	[ScaffoldTable(true)]
 	public class NetworkUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [NetworkUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TimeRangeID] TEXT NULL, 
-[UsageType] TEXT NOT NULL, 
-[AmountOfBytes] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3491,6 +3949,20 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NetworkUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TimeRangeID] TEXT NULL, 
+[UsageType] TEXT NOT NULL, 
+[AmountOfBytes] INTEGER NOT NULL
+)";
+        }
 
 			[Column]
 			public string TimeRangeID { get; set; }
@@ -3523,19 +3995,6 @@ CREATE TABLE IF NOT EXISTS [NetworkUsage](
 	[ScaffoldTable(true)]
 	public class TimeRange : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TimeRange](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[StartTime] TEXT NOT NULL, 
-[EndTime] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3553,6 +4012,19 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TimeRange](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[StartTime] TEXT NOT NULL, 
+[EndTime] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -3573,24 +4045,6 @@ CREATE TABLE IF NOT EXISTS [TimeRange](
 	[ScaffoldTable(true)]
 	public class HTTPActivityDetails : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[RemoteIPAddress] TEXT NOT NULL, 
-[RemoteEndpointUserName] TEXT NOT NULL, 
-[UserID] TEXT NOT NULL, 
-[UTCDateTime] TEXT NOT NULL, 
-[RequestLine] TEXT NOT NULL, 
-[HTTPStatusCode] INTEGER NOT NULL, 
-[ReturnedContentLength] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -3608,6 +4062,24 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[RemoteIPAddress] TEXT NOT NULL, 
+[RemoteEndpointUserName] TEXT NOT NULL, 
+[UserID] TEXT NOT NULL, 
+[UTCDateTime] TEXT NOT NULL, 
+[RequestLine] TEXT NOT NULL, 
+[HTTPStatusCode] INTEGER NOT NULL, 
+[ReturnedContentLength] INTEGER NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -3655,6 +4127,654 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetails](
 				UserID = string.Empty;
 			if(RequestLine == null)
 				RequestLine = string.Empty;
+		}
+	}
+    [Table(Name = "ContentPackageCollection")]
+	[ScaffoldTable(true)]
+	public class ContentPackageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ContentPackageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContentPackageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InformationInputCollection")]
+	[ScaffoldTable(true)]
+	public class InformationInputCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InformationInputCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationInputCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InformationOutputCollection")]
+	[ScaffoldTable(true)]
+	public class InformationOutputCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InformationOutputCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationOutputCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "AuthenticatedAsActiveDeviceCollection")]
+	[ScaffoldTable(true)]
+	public class AuthenticatedAsActiveDeviceCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public AuthenticatedAsActiveDeviceCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AuthenticatedAsActiveDeviceCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "DeviceMembershipCollection")]
+	[ScaffoldTable(true)]
+	public class DeviceMembershipCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public DeviceMembershipCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DeviceMembershipCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceUserCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceUserCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceUserCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceUserCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceRowGroupCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceRowGroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceRowGroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceRowGroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceEventDetailGroupCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceEventDetailGroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceEventDetailGroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceEventDetailGroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceEventDetailCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceEventDetailCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceEventDetailCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceEventDetailCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InvoiceRowCollection")]
+	[ScaffoldTable(true)]
+	public class InvoiceRowCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InvoiceRowCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InvoiceRowCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CategoryCollection")]
+	[ScaffoldTable(true)]
+	public class CategoryCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CategoryCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CategoryCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "RequestResourceUsageCollection")]
+	[ScaffoldTable(true)]
+	public class RequestResourceUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public RequestResourceUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RequestResourceUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ProcessorUsageCollection")]
+	[ScaffoldTable(true)]
+	public class ProcessorUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ProcessorUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProcessorUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "StorageTransactionUsageCollection")]
+	[ScaffoldTable(true)]
+	public class StorageTransactionUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public StorageTransactionUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StorageTransactionUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "StorageUsageCollection")]
+	[ScaffoldTable(true)]
+	public class StorageUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public StorageUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StorageUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "NetworkUsageCollection")]
+	[ScaffoldTable(true)]
+	public class NetworkUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public NetworkUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NetworkUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "HTTPActivityDetailsCollection")]
+	[ScaffoldTable(true)]
+	public class HTTPActivityDetailsCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public HTTPActivityDetailsCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [HTTPActivityDetailsCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 

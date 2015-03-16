@@ -679,10 +679,12 @@ namespace WebInterface
             }
             if (urlReferrer == null)
             {
-                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("DEV_") || contentPath.StartsWith("webview/") || contentPath.StartsWith("wwwsite/") || 
+                if (contentPath.StartsWith("customui_") || contentPath.StartsWith("DEV_") ||
+                    contentPath.StartsWith("webview/") || contentPath.StartsWith("wwwsite/") ||
                     contentPath.EndsWith(".html"))
                     return;
-                throw new SecurityException("Url referer required for non-default template requests, that target other than customui_ folder");
+                throw new SecurityException(
+                    "Url referer required for non-default template requests, that target other than customui_ folder");
             }
             if (refererIsAccount && isAccountRequest)
                 return;
@@ -694,6 +696,9 @@ namespace WebInterface
                     return;
                 throw new SecurityException("Url referring outside the platform is not allowed except for .html files");
             }
+            // At this point we have referer either account or group, accept any plain html request
+            if (contentPath.EndsWith(".html"))
+                return;
             string refererOwnerPath = request.GetOwnerContentPath();
             // Accept account and group referers of default templates
             if (refererIsAccount && accountTemplates.Any(refererOwnerPath.StartsWith))

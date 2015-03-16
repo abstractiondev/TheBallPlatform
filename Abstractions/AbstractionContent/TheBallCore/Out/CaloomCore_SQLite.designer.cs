@@ -91,6 +91,10 @@ namespace SQLite.Caloom.CORE {
 				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
 				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
+				tableCreationCommands.Add(ProductUsageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ProductCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(RenderedNodeCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ShortTextCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -159,6 +163,10 @@ namespace SQLite.Caloom.CORE {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.SubProducts != null)
+						existingObject.SubProductsID = serializedObject.SubProducts.ID;
+					else
+						existingObject.SubProductsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ProductUsage")
@@ -184,6 +192,14 @@ namespace SQLite.Caloom.CORE {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Nodes != null)
+						existingObject.NodesID = serializedObject.Nodes.ID;
+					else
+						existingObject.NodesID = null;
+					if(serializedObject.NodeSourceProducts != null)
+						existingObject.NodeSourceProductsID = serializedObject.NodeSourceProducts.ID;
+					else
+						existingObject.NodeSourceProductsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RenderedNode")
@@ -201,6 +217,22 @@ namespace SQLite.Caloom.CORE {
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.TimestampText = serializedObject.TimestampText;
 		            existingObject.MainSortableText = serializedObject.MainSortableText;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+					if(serializedObject.Authors != null)
+						existingObject.AuthorsID = serializedObject.Authors.ID;
+					else
+						existingObject.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Filters != null)
+						existingObject.FiltersID = serializedObject.Filters.ID;
+					else
+						existingObject.FiltersID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ShortTextObject")
@@ -268,6 +300,10 @@ namespace SQLite.Caloom.CORE {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.SubProducts != null)
+						objectToAdd.SubProductsID = serializedObject.SubProducts.ID;
+					else
+						objectToAdd.SubProductsID = null;
 					ProductTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -293,6 +329,14 @@ namespace SQLite.Caloom.CORE {
                         global::SER.Caloom.CORE.NodeSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Nodes != null)
+						objectToAdd.NodesID = serializedObject.Nodes.ID;
+					else
+						objectToAdd.NodesID = null;
+					if(serializedObject.NodeSourceProducts != null)
+						objectToAdd.NodeSourceProductsID = serializedObject.NodeSourceProducts.ID;
+					else
+						objectToAdd.NodeSourceProductsID = null;
 					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -310,6 +354,22 @@ namespace SQLite.Caloom.CORE {
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.TimestampText = serializedObject.TimestampText;
 		            objectToAdd.MainSortableText = serializedObject.MainSortableText;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					if(serializedObject.Authors != null)
+						objectToAdd.AuthorsID = serializedObject.Authors.ID;
+					else
+						objectToAdd.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Filters != null)
+						objectToAdd.FiltersID = serializedObject.Filters.ID;
+					else
+						objectToAdd.FiltersID = null;
 					RenderedNodeTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -380,6 +440,34 @@ namespace SQLite.Caloom.CORE {
                     ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "ProductUsageCollection")
+		        {
+		            var objectToDelete = new ProductUsageCollection {ID = deleteData.ID};
+                    ProductUsageCollectionTable.Attach(objectToDelete);
+                    ProductUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ProductCollection")
+		        {
+		            var objectToDelete = new ProductCollection {ID = deleteData.ID};
+                    ProductCollectionTable.Attach(objectToDelete);
+                    ProductCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RenderedNodeCollection")
+		        {
+		            var objectToDelete = new RenderedNodeCollection {ID = deleteData.ID};
+                    RenderedNodeCollectionTable.Attach(objectToDelete);
+                    RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ShortTextCollection")
+		        {
+		            var objectToDelete = new ShortTextCollection {ID = deleteData.ID};
+                    ShortTextCollectionTable.Attach(objectToDelete);
+                    ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -418,27 +506,32 @@ namespace SQLite.Caloom.CORE {
 					return this.GetTable<ShortTextObject>();
 				}
 			}
+			public Table<ProductUsageCollection> ProductUsageCollectionTable {
+				get {
+					return this.GetTable<ProductUsageCollection>();
+				}
+			}
+			public Table<ProductCollection> ProductCollectionTable {
+				get {
+					return this.GetTable<ProductCollection>();
+				}
+			}
+			public Table<RenderedNodeCollection> RenderedNodeCollectionTable {
+				get {
+					return this.GetTable<RenderedNodeCollection>();
+				}
+			}
+			public Table<ShortTextCollection> ShortTextCollectionTable {
+				get {
+					return this.GetTable<ShortTextCollection>();
+				}
+			}
         }
 
     [Table(Name = "Who")]
 	[ScaffoldTable(true)]
 	public class Who : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Who](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -456,6 +549,21 @@ CREATE TABLE IF NOT EXISTS [Who](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Who](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -494,23 +602,6 @@ CREATE TABLE IF NOT EXISTS [Who](
 	[ScaffoldTable(true)]
 	public class ProductForWhom : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProductForWhom](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[ProductID] TEXT NULL, 
-[WhoID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -528,6 +619,23 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProductForWhom](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[ProductID] TEXT NULL, 
+[WhoID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -586,21 +694,6 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 	[ScaffoldTable(true)]
 	public class Product : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Product](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -618,6 +711,21 @@ CREATE TABLE IF NOT EXISTS [Product](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Product](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -639,6 +747,15 @@ CREATE TABLE IF NOT EXISTS [Product](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string SubProductsID { get; set; }
+			private EntityRef< ProductUsageCollection > _SubProducts;
+			[Association(Storage = "_SubProducts", ThisKey = "SubProductsID")]
+			public ProductUsageCollection SubProducts
+			{
+				get { return this._SubProducts.Entity; }
+				set { this._SubProducts.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -656,19 +773,6 @@ CREATE TABLE IF NOT EXISTS [Product](
 	[ScaffoldTable(true)]
 	public class ProductUsage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProductUsage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProductID] TEXT NULL, 
-[UsageAmountInDecimal] REAL NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -686,6 +790,19 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProductUsage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProductID] TEXT NULL, 
+[UsageAmountInDecimal] REAL NOT NULL
+)";
+        }
 
 			[Column]
 			public string ProductID { get; set; }
@@ -711,17 +828,6 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 	[ScaffoldTable(true)]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -740,6 +846,35 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string NodesID { get; set; }
+			private EntityRef< RenderedNodeCollection > _Nodes;
+			[Association(Storage = "_Nodes", ThisKey = "NodesID")]
+			public RenderedNodeCollection Nodes
+			{
+				get { return this._Nodes.Entity; }
+				set { this._Nodes.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceProductsID { get; set; }
+			private EntityRef< ProductCollection > _NodeSourceProducts;
+			[Association(Storage = "_NodeSourceProducts", ThisKey = "NodeSourceProductsID")]
+			public ProductCollection NodeSourceProducts
+			{
+				get { return this._NodeSourceProducts.Entity; }
+				set { this._NodeSourceProducts.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -749,24 +884,6 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 	[ScaffoldTable(true)]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [RenderedNode](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TechnicalSource] TEXT NOT NULL, 
-[ImageBaseUrl] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[ActualContentUrl] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -784,6 +901,24 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RenderedNode](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TechnicalSource] TEXT NOT NULL, 
+[ImageBaseUrl] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[ActualContentUrl] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[TimestampText] TEXT NOT NULL, 
+[MainSortableText] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -820,6 +955,42 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         [ScaffoldColumn(true)]
 		public string MainSortableText { get; set; }
 		// private string _unmodified_MainSortableText;
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< ShortTextCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public ShortTextCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
+			[Column]
+			public string AuthorsID { get; set; }
+			private EntityRef< ShortTextCollection > _Authors;
+			[Association(Storage = "_Authors", ThisKey = "AuthorsID")]
+			public ShortTextCollection Authors
+			{
+				get { return this._Authors.Entity; }
+				set { this._Authors.Entity = value; }
+			}
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< ShortTextCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public ShortTextCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
+			[Column]
+			public string FiltersID { get; set; }
+			private EntityRef< ShortTextCollection > _Filters;
+			[Association(Storage = "_Filters", ThisKey = "FiltersID")]
+			public ShortTextCollection Filters
+			{
+				get { return this._Filters.Entity; }
+				set { this._Filters.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -843,18 +1014,6 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 	[ScaffoldTable(true)]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ShortTextObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Content] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -873,6 +1032,18 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ShortTextObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Content] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -883,6 +1054,150 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 		
 			if(Content == null)
 				Content = string.Empty;
+		}
+	}
+    [Table(Name = "ProductUsageCollection")]
+	[ScaffoldTable(true)]
+	public class ProductUsageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ProductUsageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProductUsageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ProductCollection")]
+	[ScaffoldTable(true)]
+	public class ProductCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ProductCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProductCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "RenderedNodeCollection")]
+	[ScaffoldTable(true)]
+	public class RenderedNodeCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public RenderedNodeCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ShortTextCollection")]
+	[ScaffoldTable(true)]
+	public class ShortTextCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ShortTextCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ShortTextCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 

@@ -262,19 +262,6 @@ namespace SQLite.TheBall.Index {
 	[ScaffoldTable(true)]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [IndexingRequest](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IndexName] TEXT NOT NULL, 
-[ObjectLocations] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -292,6 +279,19 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [IndexingRequest](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IndexName] TEXT NOT NULL, 
+[ObjectLocations] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -360,6 +360,24 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 	[ScaffoldTable(true)]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public QueryRequest() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -378,24 +396,6 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 [QueryResultObjectsID] TEXT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public QueryRequest() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -498,21 +498,6 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 	[ScaffoldTable(true)]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [QueryResultItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ObjectDomainName] TEXT NOT NULL, 
-[ObjectName] TEXT NOT NULL, 
-[ObjectID] TEXT NOT NULL, 
-[Rank] REAL NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -530,6 +515,21 @@ CREATE TABLE IF NOT EXISTS [QueryResultItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [QueryResultItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ObjectDomainName] TEXT NOT NULL, 
+[ObjectName] TEXT NOT NULL, 
+[ObjectID] TEXT NOT NULL, 
+[Rank] REAL NOT NULL
+)";
+        }
 
 
 		[Column]

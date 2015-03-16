@@ -214,6 +214,49 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(Monitor.GetCreateTableSQL());
 				tableCreationCommands.Add(IconTitleDescription.GetCreateTableSQL());
 				tableCreationCommands.Add(AboutAGIApplications.GetCreateTableSQL());
+				tableCreationCommands.Add(PublicationPackageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TBAccountCollaborationGroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TBLoginInfoCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TBEmailCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TBCollaboratorRoleCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(LoginProviderCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(AddressAndLocationCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupedInformationCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ReferenceCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(RenderedNodeCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ShortTextCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(LongTextCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(MapMarkerCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ActivityCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ModeratorCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CollaboratorCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ContentCategoryRankCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(LinkToContentCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(EmbeddedContentCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(DynamicContentGroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(DynamicContentCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(AttachedToObjectCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CommentCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SelectionCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TextContentCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(BlogCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CalendarCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(MapCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(MapResultCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ImageCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(BinaryFileCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(ImageGroupCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(VideoCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SocialPanelCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(LocationCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(CategoryCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(OperationRequestCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionTargetCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SystemErrorItemCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(InformationSourceCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(UpdateWebContentHandlerCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -260,6 +303,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ActivePublicationID = serializedObject.ActivePublication.ID;
 					else
 						existingObject.ActivePublicationID = null;
+					if(serializedObject.Publications != null)
+						existingObject.PublicationsID = serializedObject.Publications.ID;
+					else
+						existingObject.PublicationsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "PublicationPackage")
@@ -351,6 +398,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Emails != null)
+						existingObject.EmailsID = serializedObject.Emails.ID;
+					else
+						existingObject.EmailsID = null;
+					if(serializedObject.Logins != null)
+						existingObject.LoginsID = serializedObject.Logins.ID;
+					else
+						existingObject.LoginsID = null;
+					if(serializedObject.GroupRoleCollection != null)
+						existingObject.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
+					else
+						existingObject.GroupRoleCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "TBAccountCollaborationGroup")
@@ -414,6 +473,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = TBCollaboratingGroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
+					if(serializedObject.Roles != null)
+						existingObject.RolesID = serializedObject.Roles.ID;
+					else
+						existingObject.RolesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "TBEmailValidation")
@@ -526,6 +589,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.HeaderID = null;
 		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
+					if(serializedObject.LoginProviderCollection != null)
+						existingObject.LoginProviderCollectionID = serializedObject.LoginProviderCollection.ID;
+					else
+						existingObject.LoginProviderCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "LoginProvider")
@@ -694,6 +761,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.RolesID = serializedObject.Roles.ID;
 					else
 						existingObject.RolesID = null;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ImageGroupContainer")
@@ -704,6 +775,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageGroupContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ImageGroups != null)
+						existingObject.ImageGroupsID = serializedObject.ImageGroups.ID;
+					else
+						existingObject.ImageGroupsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "LocationContainer")
@@ -714,6 +789,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "AddressAndLocation")
@@ -794,6 +873,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSecurityTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.LoginInfoCollection != null)
+						existingObject.LoginInfoCollectionID = serializedObject.LoginInfoCollection.ID;
+					else
+						existingObject.LoginInfoCollectionID = null;
+					if(serializedObject.EmailCollection != null)
+						existingObject.EmailCollectionID = serializedObject.EmailCollection.ID;
+					else
+						existingObject.EmailCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "AccountRoles")
@@ -804,6 +891,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountRolesTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ModeratorInGroups != null)
+						existingObject.ModeratorInGroupsID = serializedObject.ModeratorInGroups.ID;
+					else
+						existingObject.ModeratorInGroupsID = null;
+					if(serializedObject.MemberInGroups != null)
+						existingObject.MemberInGroupsID = serializedObject.MemberInGroups.ID;
+					else
+						existingObject.MemberInGroupsID = null;
 		            existingObject.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 		            return;
 		        } 
@@ -827,6 +922,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = GroupedInformationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
+					if(serializedObject.ReferenceCollection != null)
+						existingObject.ReferenceCollectionID = serializedObject.ReferenceCollection.ID;
+					else
+						existingObject.ReferenceCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ReferenceToInformation")
@@ -879,6 +978,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.IntroductionID = serializedObject.Introduction.ID;
 					else
 						existingObject.IntroductionID = null;
+					if(serializedObject.RecentBlogCollection != null)
+						existingObject.RecentBlogCollectionID = serializedObject.RecentBlogCollection.ID;
+					else
+						existingObject.RecentBlogCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "NodeSummaryContainer")
@@ -889,6 +992,42 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Nodes != null)
+						existingObject.NodesID = serializedObject.Nodes.ID;
+					else
+						existingObject.NodesID = null;
+					if(serializedObject.NodeSourceBlogs != null)
+						existingObject.NodeSourceBlogsID = serializedObject.NodeSourceBlogs.ID;
+					else
+						existingObject.NodeSourceBlogsID = null;
+					if(serializedObject.NodeSourceActivities != null)
+						existingObject.NodeSourceActivitiesID = serializedObject.NodeSourceActivities.ID;
+					else
+						existingObject.NodeSourceActivitiesID = null;
+					if(serializedObject.NodeSourceTextContent != null)
+						existingObject.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
+					else
+						existingObject.NodeSourceTextContentID = null;
+					if(serializedObject.NodeSourceLinkToContent != null)
+						existingObject.NodeSourceLinkToContentID = serializedObject.NodeSourceLinkToContent.ID;
+					else
+						existingObject.NodeSourceLinkToContentID = null;
+					if(serializedObject.NodeSourceEmbeddedContent != null)
+						existingObject.NodeSourceEmbeddedContentID = serializedObject.NodeSourceEmbeddedContent.ID;
+					else
+						existingObject.NodeSourceEmbeddedContentID = null;
+					if(serializedObject.NodeSourceImages != null)
+						existingObject.NodeSourceImagesID = serializedObject.NodeSourceImages.ID;
+					else
+						existingObject.NodeSourceImagesID = null;
+					if(serializedObject.NodeSourceBinaryFiles != null)
+						existingObject.NodeSourceBinaryFilesID = serializedObject.NodeSourceBinaryFiles.ID;
+					else
+						existingObject.NodeSourceBinaryFilesID = null;
+					if(serializedObject.NodeSourceCategories != null)
+						existingObject.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
+					else
+						existingObject.NodeSourceCategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "RenderedNode")
@@ -909,7 +1048,27 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TimestampText = serializedObject.TimestampText;
 		            existingObject.MainSortableText = serializedObject.MainSortableText;
 		            existingObject.IsCategoryFilteringNode = serializedObject.IsCategoryFilteringNode;
+					if(serializedObject.CategoryFilters != null)
+						existingObject.CategoryFiltersID = serializedObject.CategoryFilters.ID;
+					else
+						existingObject.CategoryFiltersID = null;
+					if(serializedObject.CategoryNames != null)
+						existingObject.CategoryNamesID = serializedObject.CategoryNames.ID;
+					else
+						existingObject.CategoryNamesID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            existingObject.CategoryIDList = serializedObject.CategoryIDList;
+					if(serializedObject.Authors != null)
+						existingObject.AuthorsID = serializedObject.Authors.ID;
+					else
+						existingObject.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ShortTextObject")
@@ -950,10 +1109,34 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.MapFeaturedID = serializedObject.MapFeatured.ID;
 					else
 						existingObject.MapFeaturedID = null;
+					if(serializedObject.MapCollection != null)
+						existingObject.MapCollectionID = serializedObject.MapCollection.ID;
+					else
+						existingObject.MapCollectionID = null;
+					if(serializedObject.MapResultCollection != null)
+						existingObject.MapResultCollectionID = serializedObject.MapResultCollection.ID;
+					else
+						existingObject.MapResultCollectionID = null;
 					if(serializedObject.MapIndexCollection != null)
 						existingObject.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
 					else
 						existingObject.MapIndexCollectionID = null;
+					if(serializedObject.MarkerSourceLocations != null)
+						existingObject.MarkerSourceLocationsID = serializedObject.MarkerSourceLocations.ID;
+					else
+						existingObject.MarkerSourceLocationsID = null;
+					if(serializedObject.MarkerSourceBlogs != null)
+						existingObject.MarkerSourceBlogsID = serializedObject.MarkerSourceBlogs.ID;
+					else
+						existingObject.MarkerSourceBlogsID = null;
+					if(serializedObject.MarkerSourceActivities != null)
+						existingObject.MarkerSourceActivitiesID = serializedObject.MarkerSourceActivities.ID;
+					else
+						existingObject.MarkerSourceActivitiesID = null;
+					if(serializedObject.MapMarkers != null)
+						existingObject.MapMarkersID = serializedObject.MapMarkers.ID;
+					else
+						existingObject.MapMarkersID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "MapMarker")
@@ -992,6 +1175,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CalendarFeaturedID = serializedObject.CalendarFeatured.ID;
 					else
 						existingObject.CalendarFeaturedID = null;
+					if(serializedObject.CalendarCollection != null)
+						existingObject.CalendarCollectionID = serializedObject.CalendarCollection.ID;
+					else
+						existingObject.CalendarCollectionID = null;
 					if(serializedObject.CalendarIndexCollection != null)
 						existingObject.CalendarIndexCollectionID = serializedObject.CalendarIndexCollection.ID;
 					else
@@ -1040,6 +1227,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountFeaturedID = serializedObject.AccountFeatured.ID;
 					else
 						existingObject.AccountFeaturedID = null;
+					if(serializedObject.AccountCollection != null)
+						existingObject.AccountCollectionID = serializedObject.AccountCollection.ID;
+					else
+						existingObject.AccountCollectionID = null;
 					if(serializedObject.AccountIndexCollection != null)
 						existingObject.AccountIndexCollectionID = serializedObject.AccountIndexCollection.ID;
 					else
@@ -1062,6 +1253,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ProjectFeaturedID = serializedObject.ProjectFeatured.ID;
 					else
 						existingObject.ProjectFeaturedID = null;
+					if(serializedObject.ProjectCollection != null)
+						existingObject.ProjectCollectionID = serializedObject.ProjectCollection.ID;
+					else
+						existingObject.ProjectCollectionID = null;
 					if(serializedObject.ProjectIndexCollection != null)
 						existingObject.ProjectIndexCollectionID = serializedObject.ProjectIndexCollection.ID;
 					else
@@ -1084,6 +1279,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CourseFeaturedID = serializedObject.CourseFeatured.ID;
 					else
 						existingObject.CourseFeaturedID = null;
+					if(serializedObject.CourseCollection != null)
+						existingObject.CourseCollectionID = serializedObject.CourseCollection.ID;
+					else
+						existingObject.CourseCollectionID = null;
 					if(serializedObject.CourseIndexCollection != null)
 						existingObject.CourseIndexCollectionID = serializedObject.CourseIndexCollection.ID;
 					else
@@ -1123,6 +1322,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ActivityIndexID = serializedObject.ActivityIndex.ID;
 					else
 						existingObject.ActivityIndexID = null;
+					if(serializedObject.ActivityCollection != null)
+						existingObject.ActivityCollectionID = serializedObject.ActivityCollection.ID;
+					else
+						existingObject.ActivityCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ActivityIndex")
@@ -1194,6 +1397,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.IFrameSources = serializedObject.IFrameSources;
+					if(serializedObject.Collaborators != null)
+						existingObject.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						existingObject.CollaboratorsID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						existingObject.ImageGroupCollectionID = null;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
+					if(serializedObject.CategoryCollection != null)
+						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						existingObject.CategoryCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Moderator")
@@ -1244,6 +1463,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupSummaryIndexID = serializedObject.GroupSummaryIndex.ID;
 					else
 						existingObject.GroupSummaryIndexID = null;
+					if(serializedObject.GroupCollection != null)
+						existingObject.GroupCollectionID = serializedObject.GroupCollection.ID;
+					else
+						existingObject.GroupCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "GroupContainer")
@@ -1266,6 +1489,26 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupProfileID = serializedObject.GroupProfile.ID;
 					else
 						existingObject.GroupProfileID = null;
+					if(serializedObject.Collaborators != null)
+						existingObject.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						existingObject.CollaboratorsID = null;
+					if(serializedObject.PendingCollaborators != null)
+						existingObject.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
+					else
+						existingObject.PendingCollaboratorsID = null;
+					if(serializedObject.Activities != null)
+						existingObject.ActivitiesID = serializedObject.Activities.ID;
+					else
+						existingObject.ActivitiesID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						existingObject.ImageGroupCollectionID = null;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "GroupIndex")
@@ -1397,6 +1640,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
 		            existingObject.WwwSiteToPublishTo = serializedObject.WwwSiteToPublishTo;
+					if(serializedObject.CustomUICollection != null)
+						existingObject.CustomUICollectionID = serializedObject.CustomUICollection.ID;
+					else
+						existingObject.CustomUICollectionID = null;
+					if(serializedObject.Moderators != null)
+						existingObject.ModeratorsID = serializedObject.Moderators.ID;
+					else
+						existingObject.ModeratorsID = null;
+					if(serializedObject.CategoryCollection != null)
+						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						existingObject.CategoryCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Introduction")
@@ -1443,6 +1698,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ImageDataID = serializedObject.ImageData.ID;
 					else
 						existingObject.ImageDataID = null;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "EmbeddedContent")
@@ -1458,6 +1721,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "DynamicContentGroup")
@@ -1573,6 +1844,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Author = serializedObject.Author;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            existingObject.SortOrderNumber = serializedObject.SortOrderNumber;
 		            existingObject.IFrameSources = serializedObject.IFrameSources;
 		            existingObject.RawHtmlContent = serializedObject.RawHtmlContent;
@@ -1610,6 +1889,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.FeaturedImageID = serializedObject.FeaturedImage.ID;
 					else
 						existingObject.FeaturedImageID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						existingObject.ImageGroupCollectionID = null;
 					if(serializedObject.VideoGroup != null)
 						existingObject.VideoGroupID = serializedObject.VideoGroup.ID;
 					else
@@ -1617,6 +1900,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Body = serializedObject.Body;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.IFrameSources = serializedObject.IFrameSources;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
+					if(serializedObject.CategoryCollection != null)
+						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						existingObject.CategoryCollectionID = null;
+					if(serializedObject.SocialPanel != null)
+						existingObject.SocialPanelID = serializedObject.SocialPanel.ID;
+					else
+						existingObject.SocialPanelID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "BlogIndexGroup")
@@ -1633,6 +1928,30 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.IconID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
+					if(serializedObject.GroupedByDate != null)
+						existingObject.GroupedByDateID = serializedObject.GroupedByDate.ID;
+					else
+						existingObject.GroupedByDateID = null;
+					if(serializedObject.GroupedByLocation != null)
+						existingObject.GroupedByLocationID = serializedObject.GroupedByLocation.ID;
+					else
+						existingObject.GroupedByLocationID = null;
+					if(serializedObject.GroupedByAuthor != null)
+						existingObject.GroupedByAuthorID = serializedObject.GroupedByAuthor.ID;
+					else
+						existingObject.GroupedByAuthorID = null;
+					if(serializedObject.GroupedByCategory != null)
+						existingObject.GroupedByCategoryID = serializedObject.GroupedByCategory.ID;
+					else
+						existingObject.GroupedByCategoryID = null;
+					if(serializedObject.FullBlogArchive != null)
+						existingObject.FullBlogArchiveID = serializedObject.FullBlogArchive.ID;
+					else
+						existingObject.FullBlogArchiveID = null;
+					if(serializedObject.BlogSourceForSummary != null)
+						existingObject.BlogSourceForSummaryID = serializedObject.BlogSourceForSummary.ID;
+					else
+						existingObject.BlogSourceForSummaryID = null;
 		            existingObject.Summary = serializedObject.Summary;
 		            return;
 		        } 
@@ -1694,6 +2013,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapIndexCollectionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.MapByDate != null)
+						existingObject.MapByDateID = serializedObject.MapByDate.ID;
+					else
+						existingObject.MapByDateID = null;
+					if(serializedObject.MapByLocation != null)
+						existingObject.MapByLocationID = serializedObject.MapByLocation.ID;
+					else
+						existingObject.MapByLocationID = null;
+					if(serializedObject.MapByAuthor != null)
+						existingObject.MapByAuthorID = serializedObject.MapByAuthor.ID;
+					else
+						existingObject.MapByAuthorID = null;
+					if(serializedObject.MapByCategory != null)
+						existingObject.MapByCategoryID = serializedObject.MapByCategory.ID;
+					else
+						existingObject.MapByCategoryID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "MapResult")
@@ -1718,6 +2053,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapResultsCollectionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ResultByDate != null)
+						existingObject.ResultByDateID = serializedObject.ResultByDate.ID;
+					else
+						existingObject.ResultByDateID = null;
+					if(serializedObject.ResultByAuthor != null)
+						existingObject.ResultByAuthorID = serializedObject.ResultByAuthor.ID;
+					else
+						existingObject.ResultByAuthorID = null;
+					if(serializedObject.ResultByProximity != null)
+						existingObject.ResultByProximityID = serializedObject.ResultByProximity.ID;
+					else
+						existingObject.ResultByProximityID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Video")
@@ -1755,6 +2102,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "BinaryFile")
@@ -1772,6 +2127,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.DataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "ImageGroup")
@@ -1792,6 +2151,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.FeaturedImageID = serializedObject.FeaturedImage.ID;
 					else
 						existingObject.FeaturedImageID = null;
+					if(serializedObject.ImagesCollection != null)
+						existingObject.ImagesCollectionID = serializedObject.ImagesCollection.ID;
+					else
+						existingObject.ImagesCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "VideoGroup")
@@ -1804,6 +2167,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.VideoCollection != null)
+						existingObject.VideoCollectionID = serializedObject.VideoCollection.ID;
+					else
+						existingObject.VideoCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Tooltip")
@@ -1961,6 +2328,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Category")
@@ -2019,6 +2390,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.SingleOperationID = serializedObject.SingleOperation.ID;
 					else
 						existingObject.SingleOperationID = null;
+					if(serializedObject.OrderDependentOperationSequence != null)
+						existingObject.OrderDependentOperationSequenceID = serializedObject.OrderDependentOperationSequence.ID;
+					else
+						existingObject.OrderDependentOperationSequenceID = null;
 					if(serializedObject.ErrorContent != null)
 						existingObject.ErrorContentID = serializedObject.ErrorContent.ID;
 					else
@@ -2088,6 +2463,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ProcessingEndTimeInformationObjects = serializedObject.ProcessingEndTimeInformationObjects;
 		            existingObject.ProcessingEndTimeWebTemplatesRendering = serializedObject.ProcessingEndTimeWebTemplatesRendering;
 		            existingObject.ProcessingEndTime = serializedObject.ProcessingEndTime;
+					if(serializedObject.SubscriptionTargetCollection != null)
+						existingObject.SubscriptionTargetCollectionID = serializedObject.SubscriptionTargetCollection.ID;
+					else
+						existingObject.SubscriptionTargetCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "SubscriptionTarget")
@@ -2135,6 +2514,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ErrorTitle = serializedObject.ErrorTitle;
 		            existingObject.OccurredAt = serializedObject.OccurredAt;
+					if(serializedObject.SystemErrorItems != null)
+						existingObject.SystemErrorItemsID = serializedObject.SystemErrorItems.ID;
+					else
+						existingObject.SystemErrorItemsID = null;
 					if(serializedObject.MessageContent != null)
 						existingObject.MessageContentID = serializedObject.MessageContent.ID;
 					else
@@ -2196,6 +2579,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TargetContainerName = serializedObject.TargetContainerName;
 		            existingObject.TargetPathRoot = serializedObject.TargetPathRoot;
 		            existingObject.RenderWhileSync = serializedObject.RenderWhileSync;
+					if(serializedObject.Handlers != null)
+						existingObject.HandlersID = serializedObject.Handlers.ID;
+					else
+						existingObject.HandlersID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "UpdateWebContentHandlerItem")
@@ -2318,6 +2705,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ActivePublicationID = serializedObject.ActivePublication.ID;
 					else
 						objectToAdd.ActivePublicationID = null;
+					if(serializedObject.Publications != null)
+						objectToAdd.PublicationsID = serializedObject.Publications.ID;
+					else
+						objectToAdd.PublicationsID = null;
 					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2409,6 +2800,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.TBAccount.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Emails != null)
+						objectToAdd.EmailsID = serializedObject.Emails.ID;
+					else
+						objectToAdd.EmailsID = null;
+					if(serializedObject.Logins != null)
+						objectToAdd.LoginsID = serializedObject.Logins.ID;
+					else
+						objectToAdd.LoginsID = null;
+					if(serializedObject.GroupRoleCollection != null)
+						objectToAdd.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
+					else
+						objectToAdd.GroupRoleCollectionID = null;
 					TBAccountTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2472,6 +2875,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
+					if(serializedObject.Roles != null)
+						objectToAdd.RolesID = serializedObject.Roles.ID;
+					else
+						objectToAdd.RolesID = null;
 					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2584,6 +2991,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.HeaderID = null;
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
+					if(serializedObject.LoginProviderCollection != null)
+						objectToAdd.LoginProviderCollectionID = serializedObject.LoginProviderCollection.ID;
+					else
+						objectToAdd.LoginProviderCollectionID = null;
 					TBRegisterContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2752,6 +3163,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.RolesID = serializedObject.Roles.ID;
 					else
 						objectToAdd.RolesID = null;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
 					AccountModuleTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2762,6 +3177,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.ImageGroupContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ImageGroupContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ImageGroups != null)
+						objectToAdd.ImageGroupsID = serializedObject.ImageGroups.ID;
+					else
+						objectToAdd.ImageGroupsID = null;
 					ImageGroupContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2772,6 +3191,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.LocationContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LocationContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
 					LocationContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2852,6 +3275,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.AccountSecurity.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSecurity {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.LoginInfoCollection != null)
+						objectToAdd.LoginInfoCollectionID = serializedObject.LoginInfoCollection.ID;
+					else
+						objectToAdd.LoginInfoCollectionID = null;
+					if(serializedObject.EmailCollection != null)
+						objectToAdd.EmailCollectionID = serializedObject.EmailCollection.ID;
+					else
+						objectToAdd.EmailCollectionID = null;
 					AccountSecurityTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2862,6 +3293,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountRoles {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ModeratorInGroups != null)
+						objectToAdd.ModeratorInGroupsID = serializedObject.ModeratorInGroups.ID;
+					else
+						objectToAdd.ModeratorInGroupsID = null;
+					if(serializedObject.MemberInGroups != null)
+						objectToAdd.MemberInGroupsID = serializedObject.MemberInGroups.ID;
+					else
+						objectToAdd.MemberInGroupsID = null;
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 					AccountRolesTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -2885,6 +3324,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupedInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
+					if(serializedObject.ReferenceCollection != null)
+						objectToAdd.ReferenceCollectionID = serializedObject.ReferenceCollection.ID;
+					else
+						objectToAdd.ReferenceCollectionID = null;
 					GroupedInformationTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2937,6 +3380,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
 					else
 						objectToAdd.IntroductionID = null;
+					if(serializedObject.RecentBlogCollection != null)
+						objectToAdd.RecentBlogCollectionID = serializedObject.RecentBlogCollection.ID;
+					else
+						objectToAdd.RecentBlogCollectionID = null;
 					RecentBlogSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2947,6 +3394,42 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.NodeSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Nodes != null)
+						objectToAdd.NodesID = serializedObject.Nodes.ID;
+					else
+						objectToAdd.NodesID = null;
+					if(serializedObject.NodeSourceBlogs != null)
+						objectToAdd.NodeSourceBlogsID = serializedObject.NodeSourceBlogs.ID;
+					else
+						objectToAdd.NodeSourceBlogsID = null;
+					if(serializedObject.NodeSourceActivities != null)
+						objectToAdd.NodeSourceActivitiesID = serializedObject.NodeSourceActivities.ID;
+					else
+						objectToAdd.NodeSourceActivitiesID = null;
+					if(serializedObject.NodeSourceTextContent != null)
+						objectToAdd.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
+					else
+						objectToAdd.NodeSourceTextContentID = null;
+					if(serializedObject.NodeSourceLinkToContent != null)
+						objectToAdd.NodeSourceLinkToContentID = serializedObject.NodeSourceLinkToContent.ID;
+					else
+						objectToAdd.NodeSourceLinkToContentID = null;
+					if(serializedObject.NodeSourceEmbeddedContent != null)
+						objectToAdd.NodeSourceEmbeddedContentID = serializedObject.NodeSourceEmbeddedContent.ID;
+					else
+						objectToAdd.NodeSourceEmbeddedContentID = null;
+					if(serializedObject.NodeSourceImages != null)
+						objectToAdd.NodeSourceImagesID = serializedObject.NodeSourceImages.ID;
+					else
+						objectToAdd.NodeSourceImagesID = null;
+					if(serializedObject.NodeSourceBinaryFiles != null)
+						objectToAdd.NodeSourceBinaryFilesID = serializedObject.NodeSourceBinaryFiles.ID;
+					else
+						objectToAdd.NodeSourceBinaryFilesID = null;
+					if(serializedObject.NodeSourceCategories != null)
+						objectToAdd.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
+					else
+						objectToAdd.NodeSourceCategoriesID = null;
 					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -2967,7 +3450,27 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TimestampText = serializedObject.TimestampText;
 		            objectToAdd.MainSortableText = serializedObject.MainSortableText;
 		            objectToAdd.IsCategoryFilteringNode = serializedObject.IsCategoryFilteringNode;
+					if(serializedObject.CategoryFilters != null)
+						objectToAdd.CategoryFiltersID = serializedObject.CategoryFilters.ID;
+					else
+						objectToAdd.CategoryFiltersID = null;
+					if(serializedObject.CategoryNames != null)
+						objectToAdd.CategoryNamesID = serializedObject.CategoryNames.ID;
+					else
+						objectToAdd.CategoryNamesID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 		            objectToAdd.CategoryIDList = serializedObject.CategoryIDList;
+					if(serializedObject.Authors != null)
+						objectToAdd.AuthorsID = serializedObject.Authors.ID;
+					else
+						objectToAdd.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
 					RenderedNodeTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3008,10 +3511,34 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MapFeaturedID = serializedObject.MapFeatured.ID;
 					else
 						objectToAdd.MapFeaturedID = null;
+					if(serializedObject.MapCollection != null)
+						objectToAdd.MapCollectionID = serializedObject.MapCollection.ID;
+					else
+						objectToAdd.MapCollectionID = null;
+					if(serializedObject.MapResultCollection != null)
+						objectToAdd.MapResultCollectionID = serializedObject.MapResultCollection.ID;
+					else
+						objectToAdd.MapResultCollectionID = null;
 					if(serializedObject.MapIndexCollection != null)
 						objectToAdd.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
 					else
 						objectToAdd.MapIndexCollectionID = null;
+					if(serializedObject.MarkerSourceLocations != null)
+						objectToAdd.MarkerSourceLocationsID = serializedObject.MarkerSourceLocations.ID;
+					else
+						objectToAdd.MarkerSourceLocationsID = null;
+					if(serializedObject.MarkerSourceBlogs != null)
+						objectToAdd.MarkerSourceBlogsID = serializedObject.MarkerSourceBlogs.ID;
+					else
+						objectToAdd.MarkerSourceBlogsID = null;
+					if(serializedObject.MarkerSourceActivities != null)
+						objectToAdd.MarkerSourceActivitiesID = serializedObject.MarkerSourceActivities.ID;
+					else
+						objectToAdd.MarkerSourceActivitiesID = null;
+					if(serializedObject.MapMarkers != null)
+						objectToAdd.MapMarkersID = serializedObject.MapMarkers.ID;
+					else
+						objectToAdd.MapMarkersID = null;
 					MapContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3050,6 +3577,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CalendarFeaturedID = serializedObject.CalendarFeatured.ID;
 					else
 						objectToAdd.CalendarFeaturedID = null;
+					if(serializedObject.CalendarCollection != null)
+						objectToAdd.CalendarCollectionID = serializedObject.CalendarCollection.ID;
+					else
+						objectToAdd.CalendarCollectionID = null;
 					if(serializedObject.CalendarIndexCollection != null)
 						objectToAdd.CalendarIndexCollectionID = serializedObject.CalendarIndexCollection.ID;
 					else
@@ -3098,6 +3629,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.AccountFeaturedID = serializedObject.AccountFeatured.ID;
 					else
 						objectToAdd.AccountFeaturedID = null;
+					if(serializedObject.AccountCollection != null)
+						objectToAdd.AccountCollectionID = serializedObject.AccountCollection.ID;
+					else
+						objectToAdd.AccountCollectionID = null;
 					if(serializedObject.AccountIndexCollection != null)
 						objectToAdd.AccountIndexCollectionID = serializedObject.AccountIndexCollection.ID;
 					else
@@ -3120,6 +3655,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ProjectFeaturedID = serializedObject.ProjectFeatured.ID;
 					else
 						objectToAdd.ProjectFeaturedID = null;
+					if(serializedObject.ProjectCollection != null)
+						objectToAdd.ProjectCollectionID = serializedObject.ProjectCollection.ID;
+					else
+						objectToAdd.ProjectCollectionID = null;
 					if(serializedObject.ProjectIndexCollection != null)
 						objectToAdd.ProjectIndexCollectionID = serializedObject.ProjectIndexCollection.ID;
 					else
@@ -3142,6 +3681,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.CourseFeaturedID = serializedObject.CourseFeatured.ID;
 					else
 						objectToAdd.CourseFeaturedID = null;
+					if(serializedObject.CourseCollection != null)
+						objectToAdd.CourseCollectionID = serializedObject.CourseCollection.ID;
+					else
+						objectToAdd.CourseCollectionID = null;
 					if(serializedObject.CourseIndexCollection != null)
 						objectToAdd.CourseIndexCollectionID = serializedObject.CourseIndexCollection.ID;
 					else
@@ -3181,6 +3724,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ActivityIndexID = serializedObject.ActivityIndex.ID;
 					else
 						objectToAdd.ActivityIndexID = null;
+					if(serializedObject.ActivityCollection != null)
+						objectToAdd.ActivityCollectionID = serializedObject.ActivityCollection.ID;
+					else
+						objectToAdd.ActivityCollectionID = null;
 					ActivitySummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3252,6 +3799,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
+					if(serializedObject.Collaborators != null)
+						objectToAdd.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						objectToAdd.CollaboratorsID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						objectToAdd.ImageGroupCollectionID = null;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
+					if(serializedObject.CategoryCollection != null)
+						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						objectToAdd.CategoryCollectionID = null;
 					ActivityTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3302,6 +3865,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupSummaryIndexID = serializedObject.GroupSummaryIndex.ID;
 					else
 						objectToAdd.GroupSummaryIndexID = null;
+					if(serializedObject.GroupCollection != null)
+						objectToAdd.GroupCollectionID = serializedObject.GroupCollection.ID;
+					else
+						objectToAdd.GroupCollectionID = null;
 					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3324,6 +3891,26 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.GroupProfileID = serializedObject.GroupProfile.ID;
 					else
 						objectToAdd.GroupProfileID = null;
+					if(serializedObject.Collaborators != null)
+						objectToAdd.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						objectToAdd.CollaboratorsID = null;
+					if(serializedObject.PendingCollaborators != null)
+						objectToAdd.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
+					else
+						objectToAdd.PendingCollaboratorsID = null;
+					if(serializedObject.Activities != null)
+						objectToAdd.ActivitiesID = serializedObject.Activities.ID;
+					else
+						objectToAdd.ActivitiesID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						objectToAdd.ImageGroupCollectionID = null;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
 					GroupContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3455,6 +4042,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Description = serializedObject.Description;
 		            objectToAdd.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
 		            objectToAdd.WwwSiteToPublishTo = serializedObject.WwwSiteToPublishTo;
+					if(serializedObject.CustomUICollection != null)
+						objectToAdd.CustomUICollectionID = serializedObject.CustomUICollection.ID;
+					else
+						objectToAdd.CustomUICollectionID = null;
+					if(serializedObject.Moderators != null)
+						objectToAdd.ModeratorsID = serializedObject.Moderators.ID;
+					else
+						objectToAdd.ModeratorsID = null;
+					if(serializedObject.CategoryCollection != null)
+						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						objectToAdd.CategoryCollectionID = null;
 					GroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3501,6 +4100,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
 					else
 						objectToAdd.ImageDataID = null;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 					LinkToContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3516,6 +4123,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3631,6 +4246,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Author = serializedObject.Author;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 		            objectToAdd.SortOrderNumber = serializedObject.SortOrderNumber;
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
 		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
@@ -3668,6 +4291,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.FeaturedImageID = serializedObject.FeaturedImage.ID;
 					else
 						objectToAdd.FeaturedImageID = null;
+					if(serializedObject.ImageGroupCollection != null)
+						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
+					else
+						objectToAdd.ImageGroupCollectionID = null;
 					if(serializedObject.VideoGroup != null)
 						objectToAdd.VideoGroupID = serializedObject.VideoGroup.ID;
 					else
@@ -3675,6 +4302,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Body = serializedObject.Body;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
+					if(serializedObject.CategoryCollection != null)
+						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						objectToAdd.CategoryCollectionID = null;
+					if(serializedObject.SocialPanel != null)
+						objectToAdd.SocialPanelID = serializedObject.SocialPanel.ID;
+					else
+						objectToAdd.SocialPanelID = null;
 					BlogTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3691,6 +4330,30 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.IconID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Introduction = serializedObject.Introduction;
+					if(serializedObject.GroupedByDate != null)
+						objectToAdd.GroupedByDateID = serializedObject.GroupedByDate.ID;
+					else
+						objectToAdd.GroupedByDateID = null;
+					if(serializedObject.GroupedByLocation != null)
+						objectToAdd.GroupedByLocationID = serializedObject.GroupedByLocation.ID;
+					else
+						objectToAdd.GroupedByLocationID = null;
+					if(serializedObject.GroupedByAuthor != null)
+						objectToAdd.GroupedByAuthorID = serializedObject.GroupedByAuthor.ID;
+					else
+						objectToAdd.GroupedByAuthorID = null;
+					if(serializedObject.GroupedByCategory != null)
+						objectToAdd.GroupedByCategoryID = serializedObject.GroupedByCategory.ID;
+					else
+						objectToAdd.GroupedByCategoryID = null;
+					if(serializedObject.FullBlogArchive != null)
+						objectToAdd.FullBlogArchiveID = serializedObject.FullBlogArchive.ID;
+					else
+						objectToAdd.FullBlogArchiveID = null;
+					if(serializedObject.BlogSourceForSummary != null)
+						objectToAdd.BlogSourceForSummaryID = serializedObject.BlogSourceForSummary.ID;
+					else
+						objectToAdd.BlogSourceForSummaryID = null;
 		            objectToAdd.Summary = serializedObject.Summary;
 					BlogIndexGroupTable.InsertOnSubmit(objectToAdd);
                     return;
@@ -3752,6 +4415,22 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.MapIndexCollection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapIndexCollection {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.MapByDate != null)
+						objectToAdd.MapByDateID = serializedObject.MapByDate.ID;
+					else
+						objectToAdd.MapByDateID = null;
+					if(serializedObject.MapByLocation != null)
+						objectToAdd.MapByLocationID = serializedObject.MapByLocation.ID;
+					else
+						objectToAdd.MapByLocationID = null;
+					if(serializedObject.MapByAuthor != null)
+						objectToAdd.MapByAuthorID = serializedObject.MapByAuthor.ID;
+					else
+						objectToAdd.MapByAuthorID = null;
+					if(serializedObject.MapByCategory != null)
+						objectToAdd.MapByCategoryID = serializedObject.MapByCategory.ID;
+					else
+						objectToAdd.MapByCategoryID = null;
 					MapIndexCollectionTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3776,6 +4455,18 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.MapResultsCollection.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapResultsCollection {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ResultByDate != null)
+						objectToAdd.ResultByDateID = serializedObject.ResultByDate.ID;
+					else
+						objectToAdd.ResultByDateID = null;
+					if(serializedObject.ResultByAuthor != null)
+						objectToAdd.ResultByAuthorID = serializedObject.ResultByAuthor.ID;
+					else
+						objectToAdd.ResultByAuthorID = null;
+					if(serializedObject.ResultByProximity != null)
+						objectToAdd.ResultByProximityID = serializedObject.ResultByProximity.ID;
+					else
+						objectToAdd.ResultByProximityID = null;
 					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3813,6 +4504,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 					ImageTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3830,6 +4529,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.DataID = null;
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 					BinaryFileTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3850,6 +4553,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.FeaturedImageID = serializedObject.FeaturedImage.ID;
 					else
 						objectToAdd.FeaturedImageID = null;
+					if(serializedObject.ImagesCollection != null)
+						objectToAdd.ImagesCollectionID = serializedObject.ImagesCollection.ID;
+					else
+						objectToAdd.ImagesCollectionID = null;
 					ImageGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -3862,6 +4569,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new VideoGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.VideoCollection != null)
+						objectToAdd.VideoCollectionID = serializedObject.VideoCollection.ID;
+					else
+						objectToAdd.VideoCollectionID = null;
 					VideoGroupTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -4019,6 +4730,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.CategoryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CategoryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
 					CategoryContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -4077,6 +4792,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.SingleOperationID = serializedObject.SingleOperation.ID;
 					else
 						objectToAdd.SingleOperationID = null;
+					if(serializedObject.OrderDependentOperationSequence != null)
+						objectToAdd.OrderDependentOperationSequenceID = serializedObject.OrderDependentOperationSequence.ID;
+					else
+						objectToAdd.OrderDependentOperationSequenceID = null;
 					if(serializedObject.ErrorContent != null)
 						objectToAdd.ErrorContentID = serializedObject.ErrorContent.ID;
 					else
@@ -4146,6 +4865,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ProcessingEndTimeInformationObjects = serializedObject.ProcessingEndTimeInformationObjects;
 		            objectToAdd.ProcessingEndTimeWebTemplatesRendering = serializedObject.ProcessingEndTimeWebTemplatesRendering;
 		            objectToAdd.ProcessingEndTime = serializedObject.ProcessingEndTime;
+					if(serializedObject.SubscriptionTargetCollection != null)
+						objectToAdd.SubscriptionTargetCollectionID = serializedObject.SubscriptionTargetCollection.ID;
+					else
+						objectToAdd.SubscriptionTargetCollectionID = null;
 					SubscriptionChainRequestContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -4193,6 +4916,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new SystemError {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ErrorTitle = serializedObject.ErrorTitle;
 		            objectToAdd.OccurredAt = serializedObject.OccurredAt;
+					if(serializedObject.SystemErrorItems != null)
+						objectToAdd.SystemErrorItemsID = serializedObject.SystemErrorItems.ID;
+					else
+						objectToAdd.SystemErrorItemsID = null;
 					if(serializedObject.MessageContent != null)
 						objectToAdd.MessageContentID = serializedObject.MessageContent.ID;
 					else
@@ -4254,6 +4981,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TargetContainerName = serializedObject.TargetContainerName;
 		            objectToAdd.TargetPathRoot = serializedObject.TargetPathRoot;
 		            objectToAdd.RenderWhileSync = serializedObject.RenderWhileSync;
+					if(serializedObject.Handlers != null)
+						objectToAdd.HandlersID = serializedObject.Handlers.ID;
+					else
+						objectToAdd.HandlersID = null;
 					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -5262,6 +5993,307 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     AboutAGIApplicationsTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "PublicationPackageCollection")
+		        {
+		            var objectToDelete = new PublicationPackageCollection {ID = deleteData.ID};
+                    PublicationPackageCollectionTable.Attach(objectToDelete);
+                    PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBAccountCollaborationGroupCollection")
+		        {
+		            var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ID};
+                    TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
+                    TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBLoginInfoCollection")
+		        {
+		            var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ID};
+                    TBLoginInfoCollectionTable.Attach(objectToDelete);
+                    TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBEmailCollection")
+		        {
+		            var objectToDelete = new TBEmailCollection {ID = deleteData.ID};
+                    TBEmailCollectionTable.Attach(objectToDelete);
+                    TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBCollaboratorRoleCollection")
+		        {
+		            var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ID};
+                    TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
+                    TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LoginProviderCollection")
+		        {
+		            var objectToDelete = new LoginProviderCollection {ID = deleteData.ID};
+                    LoginProviderCollectionTable.Attach(objectToDelete);
+                    LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddressAndLocationCollection")
+		        {
+		            var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ID};
+                    AddressAndLocationCollectionTable.Attach(objectToDelete);
+                    AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupedInformationCollection")
+		        {
+		            var objectToDelete = new GroupedInformationCollection {ID = deleteData.ID};
+                    GroupedInformationCollectionTable.Attach(objectToDelete);
+                    GroupedInformationCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ReferenceCollection")
+		        {
+		            var objectToDelete = new ReferenceCollection {ID = deleteData.ID};
+                    ReferenceCollectionTable.Attach(objectToDelete);
+                    ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RenderedNodeCollection")
+		        {
+		            var objectToDelete = new RenderedNodeCollection {ID = deleteData.ID};
+                    RenderedNodeCollectionTable.Attach(objectToDelete);
+                    RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ShortTextCollection")
+		        {
+		            var objectToDelete = new ShortTextCollection {ID = deleteData.ID};
+                    ShortTextCollectionTable.Attach(objectToDelete);
+                    ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LongTextCollection")
+		        {
+		            var objectToDelete = new LongTextCollection {ID = deleteData.ID};
+                    LongTextCollectionTable.Attach(objectToDelete);
+                    LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapMarkerCollection")
+		        {
+		            var objectToDelete = new MapMarkerCollection {ID = deleteData.ID};
+                    MapMarkerCollectionTable.Attach(objectToDelete);
+                    MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ActivityCollection")
+		        {
+		            var objectToDelete = new ActivityCollection {ID = deleteData.ID};
+                    ActivityCollectionTable.Attach(objectToDelete);
+                    ActivityCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ModeratorCollection")
+		        {
+		            var objectToDelete = new ModeratorCollection {ID = deleteData.ID};
+                    ModeratorCollectionTable.Attach(objectToDelete);
+                    ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CollaboratorCollection")
+		        {
+		            var objectToDelete = new CollaboratorCollection {ID = deleteData.ID};
+                    CollaboratorCollectionTable.Attach(objectToDelete);
+                    CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupCollection")
+		        {
+		            var objectToDelete = new GroupCollection {ID = deleteData.ID};
+                    GroupCollectionTable.Attach(objectToDelete);
+                    GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ContentCategoryRankCollection")
+		        {
+		            var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ID};
+                    ContentCategoryRankCollectionTable.Attach(objectToDelete);
+                    ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LinkToContentCollection")
+		        {
+		            var objectToDelete = new LinkToContentCollection {ID = deleteData.ID};
+                    LinkToContentCollectionTable.Attach(objectToDelete);
+                    LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "EmbeddedContentCollection")
+		        {
+		            var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ID};
+                    EmbeddedContentCollectionTable.Attach(objectToDelete);
+                    EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContentGroupCollection")
+		        {
+		            var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ID};
+                    DynamicContentGroupCollectionTable.Attach(objectToDelete);
+                    DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContentCollection")
+		        {
+		            var objectToDelete = new DynamicContentCollection {ID = deleteData.ID};
+                    DynamicContentCollectionTable.Attach(objectToDelete);
+                    DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AttachedToObjectCollection")
+		        {
+		            var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ID};
+                    AttachedToObjectCollectionTable.Attach(objectToDelete);
+                    AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CommentCollection")
+		        {
+		            var objectToDelete = new CommentCollection {ID = deleteData.ID};
+                    CommentCollectionTable.Attach(objectToDelete);
+                    CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SelectionCollection")
+		        {
+		            var objectToDelete = new SelectionCollection {ID = deleteData.ID};
+                    SelectionCollectionTable.Attach(objectToDelete);
+                    SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TextContentCollection")
+		        {
+		            var objectToDelete = new TextContentCollection {ID = deleteData.ID};
+                    TextContentCollectionTable.Attach(objectToDelete);
+                    TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "BlogCollection")
+		        {
+		            var objectToDelete = new BlogCollection {ID = deleteData.ID};
+                    BlogCollectionTable.Attach(objectToDelete);
+                    BlogCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CalendarCollection")
+		        {
+		            var objectToDelete = new CalendarCollection {ID = deleteData.ID};
+                    CalendarCollectionTable.Attach(objectToDelete);
+                    CalendarCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapCollection")
+		        {
+		            var objectToDelete = new MapCollection {ID = deleteData.ID};
+                    MapCollectionTable.Attach(objectToDelete);
+                    MapCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapResultCollection")
+		        {
+		            var objectToDelete = new MapResultCollection {ID = deleteData.ID};
+                    MapResultCollectionTable.Attach(objectToDelete);
+                    MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ImageCollection")
+		        {
+		            var objectToDelete = new ImageCollection {ID = deleteData.ID};
+                    ImageCollectionTable.Attach(objectToDelete);
+                    ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "BinaryFileCollection")
+		        {
+		            var objectToDelete = new BinaryFileCollection {ID = deleteData.ID};
+                    BinaryFileCollectionTable.Attach(objectToDelete);
+                    BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ImageGroupCollection")
+		        {
+		            var objectToDelete = new ImageGroupCollection {ID = deleteData.ID};
+                    ImageGroupCollectionTable.Attach(objectToDelete);
+                    ImageGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "VideoCollection")
+		        {
+		            var objectToDelete = new VideoCollection {ID = deleteData.ID};
+                    VideoCollectionTable.Attach(objectToDelete);
+                    VideoCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SocialPanelCollection")
+		        {
+		            var objectToDelete = new SocialPanelCollection {ID = deleteData.ID};
+                    SocialPanelCollectionTable.Attach(objectToDelete);
+                    SocialPanelCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LocationCollection")
+		        {
+		            var objectToDelete = new LocationCollection {ID = deleteData.ID};
+                    LocationCollectionTable.Attach(objectToDelete);
+                    LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryCollection")
+		        {
+		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
+                    CategoryCollectionTable.Attach(objectToDelete);
+                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SubscriptionCollection")
+		        {
+		            var objectToDelete = new SubscriptionCollection {ID = deleteData.ID};
+                    SubscriptionCollectionTable.Attach(objectToDelete);
+                    SubscriptionCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "OperationRequestCollection")
+		        {
+		            var objectToDelete = new OperationRequestCollection {ID = deleteData.ID};
+                    OperationRequestCollectionTable.Attach(objectToDelete);
+                    OperationRequestCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SubscriptionTargetCollection")
+		        {
+		            var objectToDelete = new SubscriptionTargetCollection {ID = deleteData.ID};
+                    SubscriptionTargetCollectionTable.Attach(objectToDelete);
+                    SubscriptionTargetCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SystemErrorItemCollection")
+		        {
+		            var objectToDelete = new SystemErrorItemCollection {ID = deleteData.ID};
+                    SystemErrorItemCollectionTable.Attach(objectToDelete);
+                    SystemErrorItemCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InformationSourceCollection")
+		        {
+		            var objectToDelete = new InformationSourceCollection {ID = deleteData.ID};
+                    InformationSourceCollectionTable.Attach(objectToDelete);
+                    InformationSourceCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "UpdateWebContentHandlerCollection")
+		        {
+		            var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ID};
+                    UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
+                    UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -5915,25 +6947,227 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<AboutAGIApplications>();
 				}
 			}
+			public Table<PublicationPackageCollection> PublicationPackageCollectionTable {
+				get {
+					return this.GetTable<PublicationPackageCollection>();
+				}
+			}
+			public Table<TBAccountCollaborationGroupCollection> TBAccountCollaborationGroupCollectionTable {
+				get {
+					return this.GetTable<TBAccountCollaborationGroupCollection>();
+				}
+			}
+			public Table<TBLoginInfoCollection> TBLoginInfoCollectionTable {
+				get {
+					return this.GetTable<TBLoginInfoCollection>();
+				}
+			}
+			public Table<TBEmailCollection> TBEmailCollectionTable {
+				get {
+					return this.GetTable<TBEmailCollection>();
+				}
+			}
+			public Table<TBCollaboratorRoleCollection> TBCollaboratorRoleCollectionTable {
+				get {
+					return this.GetTable<TBCollaboratorRoleCollection>();
+				}
+			}
+			public Table<LoginProviderCollection> LoginProviderCollectionTable {
+				get {
+					return this.GetTable<LoginProviderCollection>();
+				}
+			}
+			public Table<AddressAndLocationCollection> AddressAndLocationCollectionTable {
+				get {
+					return this.GetTable<AddressAndLocationCollection>();
+				}
+			}
+			public Table<GroupedInformationCollection> GroupedInformationCollectionTable {
+				get {
+					return this.GetTable<GroupedInformationCollection>();
+				}
+			}
+			public Table<ReferenceCollection> ReferenceCollectionTable {
+				get {
+					return this.GetTable<ReferenceCollection>();
+				}
+			}
+			public Table<RenderedNodeCollection> RenderedNodeCollectionTable {
+				get {
+					return this.GetTable<RenderedNodeCollection>();
+				}
+			}
+			public Table<ShortTextCollection> ShortTextCollectionTable {
+				get {
+					return this.GetTable<ShortTextCollection>();
+				}
+			}
+			public Table<LongTextCollection> LongTextCollectionTable {
+				get {
+					return this.GetTable<LongTextCollection>();
+				}
+			}
+			public Table<MapMarkerCollection> MapMarkerCollectionTable {
+				get {
+					return this.GetTable<MapMarkerCollection>();
+				}
+			}
+			public Table<ActivityCollection> ActivityCollectionTable {
+				get {
+					return this.GetTable<ActivityCollection>();
+				}
+			}
+			public Table<ModeratorCollection> ModeratorCollectionTable {
+				get {
+					return this.GetTable<ModeratorCollection>();
+				}
+			}
+			public Table<CollaboratorCollection> CollaboratorCollectionTable {
+				get {
+					return this.GetTable<CollaboratorCollection>();
+				}
+			}
+			public Table<GroupCollection> GroupCollectionTable {
+				get {
+					return this.GetTable<GroupCollection>();
+				}
+			}
+			public Table<ContentCategoryRankCollection> ContentCategoryRankCollectionTable {
+				get {
+					return this.GetTable<ContentCategoryRankCollection>();
+				}
+			}
+			public Table<LinkToContentCollection> LinkToContentCollectionTable {
+				get {
+					return this.GetTable<LinkToContentCollection>();
+				}
+			}
+			public Table<EmbeddedContentCollection> EmbeddedContentCollectionTable {
+				get {
+					return this.GetTable<EmbeddedContentCollection>();
+				}
+			}
+			public Table<DynamicContentGroupCollection> DynamicContentGroupCollectionTable {
+				get {
+					return this.GetTable<DynamicContentGroupCollection>();
+				}
+			}
+			public Table<DynamicContentCollection> DynamicContentCollectionTable {
+				get {
+					return this.GetTable<DynamicContentCollection>();
+				}
+			}
+			public Table<AttachedToObjectCollection> AttachedToObjectCollectionTable {
+				get {
+					return this.GetTable<AttachedToObjectCollection>();
+				}
+			}
+			public Table<CommentCollection> CommentCollectionTable {
+				get {
+					return this.GetTable<CommentCollection>();
+				}
+			}
+			public Table<SelectionCollection> SelectionCollectionTable {
+				get {
+					return this.GetTable<SelectionCollection>();
+				}
+			}
+			public Table<TextContentCollection> TextContentCollectionTable {
+				get {
+					return this.GetTable<TextContentCollection>();
+				}
+			}
+			public Table<BlogCollection> BlogCollectionTable {
+				get {
+					return this.GetTable<BlogCollection>();
+				}
+			}
+			public Table<CalendarCollection> CalendarCollectionTable {
+				get {
+					return this.GetTable<CalendarCollection>();
+				}
+			}
+			public Table<MapCollection> MapCollectionTable {
+				get {
+					return this.GetTable<MapCollection>();
+				}
+			}
+			public Table<MapResultCollection> MapResultCollectionTable {
+				get {
+					return this.GetTable<MapResultCollection>();
+				}
+			}
+			public Table<ImageCollection> ImageCollectionTable {
+				get {
+					return this.GetTable<ImageCollection>();
+				}
+			}
+			public Table<BinaryFileCollection> BinaryFileCollectionTable {
+				get {
+					return this.GetTable<BinaryFileCollection>();
+				}
+			}
+			public Table<ImageGroupCollection> ImageGroupCollectionTable {
+				get {
+					return this.GetTable<ImageGroupCollection>();
+				}
+			}
+			public Table<VideoCollection> VideoCollectionTable {
+				get {
+					return this.GetTable<VideoCollection>();
+				}
+			}
+			public Table<SocialPanelCollection> SocialPanelCollectionTable {
+				get {
+					return this.GetTable<SocialPanelCollection>();
+				}
+			}
+			public Table<LocationCollection> LocationCollectionTable {
+				get {
+					return this.GetTable<LocationCollection>();
+				}
+			}
+			public Table<CategoryCollection> CategoryCollectionTable {
+				get {
+					return this.GetTable<CategoryCollection>();
+				}
+			}
+			public Table<SubscriptionCollection> SubscriptionCollectionTable {
+				get {
+					return this.GetTable<SubscriptionCollection>();
+				}
+			}
+			public Table<OperationRequestCollection> OperationRequestCollectionTable {
+				get {
+					return this.GetTable<OperationRequestCollection>();
+				}
+			}
+			public Table<SubscriptionTargetCollection> SubscriptionTargetCollectionTable {
+				get {
+					return this.GetTable<SubscriptionTargetCollection>();
+				}
+			}
+			public Table<SystemErrorItemCollection> SystemErrorItemCollectionTable {
+				get {
+					return this.GetTable<SystemErrorItemCollection>();
+				}
+			}
+			public Table<InformationSourceCollection> InformationSourceCollectionTable {
+				get {
+					return this.GetTable<InformationSourceCollection>();
+				}
+			}
+			public Table<UpdateWebContentHandlerCollection> UpdateWebContentHandlerCollectionTable {
+				get {
+					return this.GetTable<UpdateWebContentHandlerCollection>();
+				}
+			}
         }
 
     [Table(Name = "TBSystem")]
 	[ScaffoldTable(true)]
 	public class TBSystem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBSystem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[InstanceName] TEXT NOT NULL, 
-[AdminGroupID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -5951,6 +7185,19 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBSystem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[InstanceName] TEXT NOT NULL, 
+[AdminGroupID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -5975,20 +7222,6 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 	[ScaffoldTable(true)]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [WebPublishInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[PublishType] TEXT NOT NULL, 
-[PublishContainer] TEXT NOT NULL, 
-[ActivePublicationID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6006,6 +7239,20 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [WebPublishInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[PublishType] TEXT NOT NULL, 
+[PublishContainer] TEXT NOT NULL, 
+[ActivePublicationID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -6027,6 +7274,15 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 				set { this._ActivePublication.Entity = value; }
 			}
 
+			[Column]
+			public string PublicationsID { get; set; }
+			private EntityRef< PublicationPackageCollection > _Publications;
+			[Association(Storage = "_Publications", ThisKey = "PublicationsID")]
+			public PublicationPackageCollection Publications
+			{
+				get { return this._Publications.Entity; }
+				set { this._Publications.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -6040,19 +7296,6 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 	[ScaffoldTable(true)]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [PublicationPackage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[PackageName] TEXT NOT NULL, 
-[PublicationTime] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6070,6 +7313,19 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [PublicationPackage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[PackageName] TEXT NOT NULL, 
+[PublicationTime] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6092,19 +7348,6 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 	[ScaffoldTable(true)]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[DomainName] TEXT NOT NULL, 
-[AccountID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6122,6 +7365,19 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[DomainName] TEXT NOT NULL, 
+[AccountID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -6149,18 +7405,6 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 	[ScaffoldTable(true)]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6178,6 +7422,18 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AccountID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string AccountID { get; set; }
@@ -6198,18 +7454,6 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 	[ScaffoldTable(true)]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6227,6 +7471,18 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string GroupID { get; set; }
@@ -6247,19 +7503,6 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 	[ScaffoldTable(true)]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Role] TEXT NOT NULL, 
-[GroupID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6277,6 +7520,19 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Role] TEXT NOT NULL, 
+[GroupID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6301,18 +7557,6 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 	[ScaffoldTable(true)]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBREmailRoot](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6330,6 +7574,18 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBREmailRoot](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AccountID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string AccountID { get; set; }
@@ -6350,17 +7606,6 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 	[ScaffoldTable(true)]
 	public class TBAccount : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBAccount](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6379,6 +7624,44 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBAccount](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string EmailsID { get; set; }
+			private EntityRef< TBEmailCollection > _Emails;
+			[Association(Storage = "_Emails", ThisKey = "EmailsID")]
+			public TBEmailCollection Emails
+			{
+				get { return this._Emails.Entity; }
+				set { this._Emails.Entity = value; }
+			}
+			[Column]
+			public string LoginsID { get; set; }
+			private EntityRef< TBLoginInfoCollection > _Logins;
+			[Association(Storage = "_Logins", ThisKey = "LoginsID")]
+			public TBLoginInfoCollection Logins
+			{
+				get { return this._Logins.Entity; }
+				set { this._Logins.Entity = value; }
+			}
+			[Column]
+			public string GroupRoleCollectionID { get; set; }
+			private EntityRef< TBAccountCollaborationGroupCollection > _GroupRoleCollection;
+			[Association(Storage = "_GroupRoleCollection", ThisKey = "GroupRoleCollectionID")]
+			public TBAccountCollaborationGroupCollection GroupRoleCollection
+			{
+				get { return this._GroupRoleCollection.Entity; }
+				set { this._GroupRoleCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -6388,20 +7671,6 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 	[ScaffoldTable(true)]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NOT NULL, 
-[GroupRole] TEXT NOT NULL, 
-[RoleStatus] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6419,6 +7688,20 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NOT NULL, 
+[GroupRole] TEXT NOT NULL, 
+[RoleStatus] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6450,18 +7733,6 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 	[ScaffoldTable(true)]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBLoginInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OpenIDUrl] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6480,6 +7751,18 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBLoginInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OpenIDUrl] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -6496,19 +7779,6 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 	[ScaffoldTable(true)]
 	public class TBEmail : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBEmail](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[EmailAddress] TEXT NOT NULL, 
-[ValidatedAt] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6526,6 +7796,19 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBEmail](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[EmailAddress] TEXT NOT NULL, 
+[ValidatedAt] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6548,20 +7831,6 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 	[ScaffoldTable(true)]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[EmailID] TEXT NULL, 
-[Role] TEXT NOT NULL, 
-[RoleStatus] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6579,6 +7848,20 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[EmailID] TEXT NULL, 
+[Role] TEXT NOT NULL, 
+[RoleStatus] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string EmailID { get; set; }
@@ -6613,18 +7896,6 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 	[ScaffoldTable(true)]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6643,11 +7914,32 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+			[Column]
+			public string RolesID { get; set; }
+			private EntityRef< TBCollaboratorRoleCollection > _Roles;
+			[Association(Storage = "_Roles", ThisKey = "RolesID")]
+			public TBCollaboratorRoleCollection Roles
+			{
+				get { return this._Roles.Entity; }
+				set { this._Roles.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -6659,6 +7951,24 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 	[ScaffoldTable(true)]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TBEmailValidation() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -6678,24 +7988,6 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 [RedirectUrlAfterValidation] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public TBEmailValidation() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -6782,19 +8074,6 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 	[ScaffoldTable(true)]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountToBeMergedID] TEXT NOT NULL, 
-[AccountToMergeToID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6812,6 +8091,19 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AccountToBeMergedID] TEXT NOT NULL, 
+[AccountToMergeToID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6836,19 +8128,6 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 	[ScaffoldTable(true)]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NOT NULL, 
-[InvitationMode] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6866,6 +8145,19 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NOT NULL, 
+[InvitationMode] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6890,20 +8182,6 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 	[ScaffoldTable(true)]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[DeviceMembershipID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6921,6 +8199,20 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[DeviceMembershipID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -6952,20 +8244,6 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 	[ScaffoldTable(true)]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[InformationInputID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -6983,6 +8261,20 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[InformationInputID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -7014,20 +8306,6 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 	[ScaffoldTable(true)]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupID] TEXT NOT NULL, 
-[AccountID] TEXT NOT NULL, 
-[InformationOutputID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7045,6 +8323,20 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL, 
+[InformationOutputID] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -7076,19 +8368,6 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 	[ScaffoldTable(true)]
 	public class TBRegisterContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[ReturnUrl] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7107,6 +8386,19 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[ReturnUrl] TEXT NOT NULL
+)";
+        }
+
 			[Column]
 			public string HeaderID { get; set; }
 			private EntityRef< ContainerHeader > _Header;
@@ -7122,6 +8414,15 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
         [ScaffoldColumn(true)]
 		public string ReturnUrl { get; set; }
 		// private string _unmodified_ReturnUrl;
+			[Column]
+			public string LoginProviderCollectionID { get; set; }
+			private EntityRef< LoginProviderCollection > _LoginProviderCollection;
+			[Association(Storage = "_LoginProviderCollection", ThisKey = "LoginProviderCollectionID")]
+			public LoginProviderCollection LoginProviderCollection
+			{
+				get { return this._LoginProviderCollection.Entity; }
+				set { this._LoginProviderCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -7133,22 +8434,6 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 	[ScaffoldTable(true)]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [LoginProvider](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProviderName] TEXT NOT NULL, 
-[ProviderIconClass] TEXT NOT NULL, 
-[ProviderType] TEXT NOT NULL, 
-[ProviderUrl] TEXT NOT NULL, 
-[ReturnUrl] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7166,6 +8451,22 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LoginProvider](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProviderName] TEXT NOT NULL, 
+[ProviderIconClass] TEXT NOT NULL, 
+[ProviderType] TEXT NOT NULL, 
+[ProviderUrl] TEXT NOT NULL, 
+[ReturnUrl] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -7211,18 +8512,6 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 	[ScaffoldTable(true)]
 	public class ContactOipContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContactOipContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OIPModeratorGroupID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7241,6 +8530,18 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContactOipContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OIPModeratorGroupID] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7257,18 +8558,6 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 	[ScaffoldTable(true)]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[EmailAddress] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7287,6 +8576,18 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[EmailAddress] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7303,18 +8604,6 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 	[ScaffoldTable(true)]
 	public class JavaScriptContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7333,6 +8622,18 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7349,18 +8650,6 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 	[ScaffoldTable(true)]
 	public class JavascriptContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [JavascriptContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7379,6 +8668,18 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [JavascriptContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7395,18 +8696,6 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 	[ScaffoldTable(true)]
 	public class FooterContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [FooterContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7425,6 +8714,18 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [FooterContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HtmlContent] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7441,18 +8742,6 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
 	[ScaffoldTable(true)]
 	public class NavigationContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [NavigationContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Dummy] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7471,6 +8760,18 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NavigationContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Dummy] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -7487,20 +8788,6 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
 	[ScaffoldTable(true)]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IntroductionID] TEXT NULL, 
-[ActivitySummaryID] TEXT NULL, 
-[GroupSummaryID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7518,6 +8805,20 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountSummary](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IntroductionID] TEXT NULL, 
+[ActivitySummaryID] TEXT NULL, 
+[GroupSummaryID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string IntroductionID { get; set; }
@@ -7558,21 +8859,6 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 	[ScaffoldTable(true)]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[AccountIndexID] TEXT NULL, 
-[AccountModuleID] TEXT NULL, 
-[AccountSummaryID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7590,6 +8876,21 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[AccountIndexID] TEXT NULL, 
+[AccountModuleID] TEXT NULL, 
+[AccountSummaryID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -7640,21 +8941,6 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 	[ScaffoldTable(true)]
 	public class AccountIndex : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7672,6 +8958,21 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountIndex](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string IconID { get; set; }
@@ -7713,20 +9014,6 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
 	[ScaffoldTable(true)]
 	public class AccountModule : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountModule](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProfileID] TEXT NULL, 
-[SecurityID] TEXT NULL, 
-[RolesID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7744,6 +9031,20 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountModule](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProfileID] TEXT NULL, 
+[SecurityID] TEXT NULL, 
+[RolesID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ProfileID { get; set; }
@@ -7775,6 +9076,15 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 				set { this._Roles.Entity = value; }
 			}
 
+			[Column]
+			public string LocationCollectionID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _LocationCollection;
+			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
+			public AddressAndLocationCollection LocationCollection
+			{
+				get { return this._LocationCollection.Entity; }
+				set { this._LocationCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -7784,17 +9094,6 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 	[ScaffoldTable(true)]
 	public class ImageGroupContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7813,6 +9112,26 @@ CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string ImageGroupsID { get; set; }
+			private EntityRef< ImageGroupCollection > _ImageGroups;
+			[Association(Storage = "_ImageGroups", ThisKey = "ImageGroupsID")]
+			public ImageGroupCollection ImageGroups
+			{
+				get { return this._ImageGroups.Entity; }
+				set { this._ImageGroups.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -7822,17 +9141,6 @@ CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 	[ScaffoldTable(true)]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [LocationContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7851,6 +9159,26 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LocationContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public AddressAndLocationCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -7860,20 +9188,6 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 	[ScaffoldTable(true)]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddressAndLocation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[AddressID] TEXT NULL, 
-[LocationID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7891,6 +9205,20 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddressAndLocation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ReferenceToInformationID] TEXT NULL, 
+[AddressID] TEXT NULL, 
+[LocationID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -7931,21 +9259,6 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 	[ScaffoldTable(true)]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [StreetAddress](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Street] TEXT NOT NULL, 
-[ZipCode] TEXT NOT NULL, 
-[Town] TEXT NOT NULL, 
-[Country] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -7963,6 +9276,21 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StreetAddress](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Street] TEXT NOT NULL, 
+[ZipCode] TEXT NOT NULL, 
+[Town] TEXT NOT NULL, 
+[Country] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -8001,18 +9329,6 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 	[ScaffoldTable(true)]
 	public class AccountContent : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountContent](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Dummy] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8031,6 +9347,18 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountContent](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Dummy] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -8047,24 +9375,6 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
 	[ScaffoldTable(true)]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountProfile](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProfileImageID] TEXT NULL, 
-[FirstName] TEXT NOT NULL, 
-[LastName] TEXT NOT NULL, 
-[AddressID] TEXT NULL, 
-[IsSimplifiedAccount] INTEGER NOT NULL, 
-[SimplifiedAccountEmail] TEXT NOT NULL, 
-[SimplifiedAccountGroupID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8082,6 +9392,24 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountProfile](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProfileImageID] TEXT NULL, 
+[FirstName] TEXT NOT NULL, 
+[LastName] TEXT NOT NULL, 
+[AddressID] TEXT NULL, 
+[IsSimplifiedAccount] INTEGER NOT NULL, 
+[SimplifiedAccountEmail] TEXT NOT NULL, 
+[SimplifiedAccountGroupID] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string ProfileImageID { get; set; }
@@ -8145,17 +9473,6 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 	[ScaffoldTable(true)]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountSecurity](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8174,6 +9491,35 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountSecurity](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string LoginInfoCollectionID { get; set; }
+			private EntityRef< TBLoginInfoCollection > _LoginInfoCollection;
+			[Association(Storage = "_LoginInfoCollection", ThisKey = "LoginInfoCollectionID")]
+			public TBLoginInfoCollection LoginInfoCollection
+			{
+				get { return this._LoginInfoCollection.Entity; }
+				set { this._LoginInfoCollection.Entity = value; }
+			}
+			[Column]
+			public string EmailCollectionID { get; set; }
+			private EntityRef< TBEmailCollection > _EmailCollection;
+			[Association(Storage = "_EmailCollection", ThisKey = "EmailCollectionID")]
+			public TBEmailCollection EmailCollection
+			{
+				get { return this._EmailCollection.Entity; }
+				set { this._EmailCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8183,18 +9529,6 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 	[ScaffoldTable(true)]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountRoles](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OrganizationsImPartOf] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8213,6 +9547,36 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountRoles](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OrganizationsImPartOf] TEXT NOT NULL
+)";
+        }
+
+			[Column]
+			public string ModeratorInGroupsID { get; set; }
+			private EntityRef< ReferenceCollection > _ModeratorInGroups;
+			[Association(Storage = "_ModeratorInGroups", ThisKey = "ModeratorInGroupsID")]
+			public ReferenceCollection ModeratorInGroups
+			{
+				get { return this._ModeratorInGroups.Entity; }
+				set { this._ModeratorInGroups.Entity = value; }
+			}
+			[Column]
+			public string MemberInGroupsID { get; set; }
+			private EntityRef< ReferenceCollection > _MemberInGroups;
+			[Association(Storage = "_MemberInGroups", ThisKey = "MemberInGroupsID")]
+			public ReferenceCollection MemberInGroups
+			{
+				get { return this._MemberInGroups.Entity; }
+				set { this._MemberInGroups.Entity = value; }
+			}
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -8229,18 +9593,6 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 	[ScaffoldTable(true)]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[NoOne_Network_All] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8259,6 +9611,18 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[NoOne_Network_All] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -8275,18 +9639,6 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 	[ScaffoldTable(true)]
 	public class GroupedInformation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupedInformation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8305,11 +9657,32 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupedInformation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
 		public string GroupName { get; set; }
 		// private string _unmodified_GroupName;
+			[Column]
+			public string ReferenceCollectionID { get; set; }
+			private EntityRef< ReferenceCollection > _ReferenceCollection;
+			[Association(Storage = "_ReferenceCollection", ThisKey = "ReferenceCollectionID")]
+			public ReferenceCollection ReferenceCollection
+			{
+				get { return this._ReferenceCollection.Entity; }
+				set { this._ReferenceCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8321,19 +9694,6 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
 	[ScaffoldTable(true)]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[URL] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8351,6 +9711,19 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL, 
+[URL] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -8375,21 +9748,6 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 	[ScaffoldTable(true)]
 	public class BlogContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BlogContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[FeaturedBlogID] TEXT NULL, 
-[RecentBlogSummaryID] TEXT NULL, 
-[BlogIndexGroupID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8407,6 +9765,21 @@ CREATE TABLE IF NOT EXISTS [BlogContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [BlogContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[FeaturedBlogID] TEXT NULL, 
+[RecentBlogSummaryID] TEXT NULL, 
+[BlogIndexGroupID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -8457,18 +9830,6 @@ CREATE TABLE IF NOT EXISTS [BlogContainer](
 	[ScaffoldTable(true)]
 	public class RecentBlogSummary : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IntroductionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8487,6 +9848,18 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IntroductionID] TEXT NULL
+)";
+        }
+
 			[Column]
 			public string IntroductionID { get; set; }
 			private EntityRef< Introduction > _Introduction;
@@ -8497,6 +9870,15 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 				set { this._Introduction.Entity = value; }
 			}
 
+			[Column]
+			public string RecentBlogCollectionID { get; set; }
+			private EntityRef< BlogCollection > _RecentBlogCollection;
+			[Association(Storage = "_RecentBlogCollection", ThisKey = "RecentBlogCollectionID")]
+			public BlogCollection RecentBlogCollection
+			{
+				get { return this._RecentBlogCollection.Entity; }
+				set { this._RecentBlogCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8506,17 +9888,6 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 	[ScaffoldTable(true)]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8535,6 +9906,98 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string NodesID { get; set; }
+			private EntityRef< RenderedNodeCollection > _Nodes;
+			[Association(Storage = "_Nodes", ThisKey = "NodesID")]
+			public RenderedNodeCollection Nodes
+			{
+				get { return this._Nodes.Entity; }
+				set { this._Nodes.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceBlogsID { get; set; }
+			private EntityRef< BlogCollection > _NodeSourceBlogs;
+			[Association(Storage = "_NodeSourceBlogs", ThisKey = "NodeSourceBlogsID")]
+			public BlogCollection NodeSourceBlogs
+			{
+				get { return this._NodeSourceBlogs.Entity; }
+				set { this._NodeSourceBlogs.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceActivitiesID { get; set; }
+			private EntityRef< ActivityCollection > _NodeSourceActivities;
+			[Association(Storage = "_NodeSourceActivities", ThisKey = "NodeSourceActivitiesID")]
+			public ActivityCollection NodeSourceActivities
+			{
+				get { return this._NodeSourceActivities.Entity; }
+				set { this._NodeSourceActivities.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceTextContentID { get; set; }
+			private EntityRef< TextContentCollection > _NodeSourceTextContent;
+			[Association(Storage = "_NodeSourceTextContent", ThisKey = "NodeSourceTextContentID")]
+			public TextContentCollection NodeSourceTextContent
+			{
+				get { return this._NodeSourceTextContent.Entity; }
+				set { this._NodeSourceTextContent.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceLinkToContentID { get; set; }
+			private EntityRef< LinkToContentCollection > _NodeSourceLinkToContent;
+			[Association(Storage = "_NodeSourceLinkToContent", ThisKey = "NodeSourceLinkToContentID")]
+			public LinkToContentCollection NodeSourceLinkToContent
+			{
+				get { return this._NodeSourceLinkToContent.Entity; }
+				set { this._NodeSourceLinkToContent.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceEmbeddedContentID { get; set; }
+			private EntityRef< EmbeddedContentCollection > _NodeSourceEmbeddedContent;
+			[Association(Storage = "_NodeSourceEmbeddedContent", ThisKey = "NodeSourceEmbeddedContentID")]
+			public EmbeddedContentCollection NodeSourceEmbeddedContent
+			{
+				get { return this._NodeSourceEmbeddedContent.Entity; }
+				set { this._NodeSourceEmbeddedContent.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceImagesID { get; set; }
+			private EntityRef< ImageCollection > _NodeSourceImages;
+			[Association(Storage = "_NodeSourceImages", ThisKey = "NodeSourceImagesID")]
+			public ImageCollection NodeSourceImages
+			{
+				get { return this._NodeSourceImages.Entity; }
+				set { this._NodeSourceImages.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceBinaryFilesID { get; set; }
+			private EntityRef< BinaryFileCollection > _NodeSourceBinaryFiles;
+			[Association(Storage = "_NodeSourceBinaryFiles", ThisKey = "NodeSourceBinaryFilesID")]
+			public BinaryFileCollection NodeSourceBinaryFiles
+			{
+				get { return this._NodeSourceBinaryFiles.Entity; }
+				set { this._NodeSourceBinaryFiles.Entity = value; }
+			}
+			[Column]
+			public string NodeSourceCategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _NodeSourceCategories;
+			[Association(Storage = "_NodeSourceCategories", ThisKey = "NodeSourceCategoriesID")]
+			public CategoryCollection NodeSourceCategories
+			{
+				get { return this._NodeSourceCategories.Entity; }
+				set { this._NodeSourceCategories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8544,6 +10007,24 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 	[ScaffoldTable(true)]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public RenderedNode() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -8565,24 +10046,6 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [CategoryIDList] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public RenderedNode() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -8634,11 +10097,56 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         [ScaffoldColumn(true)]
 		public bool IsCategoryFilteringNode { get; set; }
 		// private bool _unmodified_IsCategoryFilteringNode;
+			[Column]
+			public string CategoryFiltersID { get; set; }
+			private EntityRef< ShortTextCollection > _CategoryFilters;
+			[Association(Storage = "_CategoryFilters", ThisKey = "CategoryFiltersID")]
+			public ShortTextCollection CategoryFilters
+			{
+				get { return this._CategoryFilters.Entity; }
+				set { this._CategoryFilters.Entity = value; }
+			}
+			[Column]
+			public string CategoryNamesID { get; set; }
+			private EntityRef< ShortTextCollection > _CategoryNames;
+			[Association(Storage = "_CategoryNames", ThisKey = "CategoryNamesID")]
+			public ShortTextCollection CategoryNames
+			{
+				get { return this._CategoryNames.Entity; }
+				set { this._CategoryNames.Entity = value; }
+			}
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< ShortTextCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public ShortTextCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
 
 		[Column]
         [ScaffoldColumn(true)]
 		public string CategoryIDList { get; set; }
 		// private string _unmodified_CategoryIDList;
+			[Column]
+			public string AuthorsID { get; set; }
+			private EntityRef< ShortTextCollection > _Authors;
+			[Association(Storage = "_Authors", ThisKey = "AuthorsID")]
+			public ShortTextCollection Authors
+			{
+				get { return this._Authors.Entity; }
+				set { this._Authors.Entity = value; }
+			}
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< ShortTextCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public ShortTextCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8668,18 +10176,6 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 	[ScaffoldTable(true)]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ShortTextObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Content] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8698,6 +10194,18 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ShortTextObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Content] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -8714,18 +10222,6 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 	[ScaffoldTable(true)]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [LongTextObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Content] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8744,6 +10240,18 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LongTextObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Content] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -8760,20 +10268,6 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 	[ScaffoldTable(true)]
 	public class MapContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[MapFeaturedID] TEXT NULL, 
-[MapIndexCollectionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8791,6 +10285,20 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[MapFeaturedID] TEXT NULL, 
+[MapIndexCollectionID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -8813,6 +10321,24 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 			}
 
 			[Column]
+			public string MapCollectionID { get; set; }
+			private EntityRef< MapCollection > _MapCollection;
+			[Association(Storage = "_MapCollection", ThisKey = "MapCollectionID")]
+			public MapCollection MapCollection
+			{
+				get { return this._MapCollection.Entity; }
+				set { this._MapCollection.Entity = value; }
+			}
+			[Column]
+			public string MapResultCollectionID { get; set; }
+			private EntityRef< MapResultCollection > _MapResultCollection;
+			[Association(Storage = "_MapResultCollection", ThisKey = "MapResultCollectionID")]
+			public MapResultCollection MapResultCollection
+			{
+				get { return this._MapResultCollection.Entity; }
+				set { this._MapResultCollection.Entity = value; }
+			}
+			[Column]
 			public string MapIndexCollectionID { get; set; }
 			private EntityRef< MapIndexCollection > _MapIndexCollection;
 			[Association(Storage = "_MapIndexCollection", ThisKey = "MapIndexCollectionID")]
@@ -8822,6 +10348,42 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 				set { this._MapIndexCollection.Entity = value; }
 			}
 
+			[Column]
+			public string MarkerSourceLocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _MarkerSourceLocations;
+			[Association(Storage = "_MarkerSourceLocations", ThisKey = "MarkerSourceLocationsID")]
+			public AddressAndLocationCollection MarkerSourceLocations
+			{
+				get { return this._MarkerSourceLocations.Entity; }
+				set { this._MarkerSourceLocations.Entity = value; }
+			}
+			[Column]
+			public string MarkerSourceBlogsID { get; set; }
+			private EntityRef< BlogCollection > _MarkerSourceBlogs;
+			[Association(Storage = "_MarkerSourceBlogs", ThisKey = "MarkerSourceBlogsID")]
+			public BlogCollection MarkerSourceBlogs
+			{
+				get { return this._MarkerSourceBlogs.Entity; }
+				set { this._MarkerSourceBlogs.Entity = value; }
+			}
+			[Column]
+			public string MarkerSourceActivitiesID { get; set; }
+			private EntityRef< ActivityCollection > _MarkerSourceActivities;
+			[Association(Storage = "_MarkerSourceActivities", ThisKey = "MarkerSourceActivitiesID")]
+			public ActivityCollection MarkerSourceActivities
+			{
+				get { return this._MarkerSourceActivities.Entity; }
+				set { this._MarkerSourceActivities.Entity = value; }
+			}
+			[Column]
+			public string MapMarkersID { get; set; }
+			private EntityRef< MapMarkerCollection > _MapMarkers;
+			[Association(Storage = "_MapMarkers", ThisKey = "MapMarkersID")]
+			public MapMarkerCollection MapMarkers
+			{
+				get { return this._MapMarkers.Entity; }
+				set { this._MapMarkers.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -8831,24 +10393,6 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 	[ScaffoldTable(true)]
 	public class MapMarker : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapMarker](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconUrl] TEXT NOT NULL, 
-[MarkerSource] TEXT NOT NULL, 
-[CategoryName] TEXT NOT NULL, 
-[LocationText] TEXT NOT NULL, 
-[PopupTitle] TEXT NOT NULL, 
-[PopupContent] TEXT NOT NULL, 
-[LocationID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8866,6 +10410,24 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapMarker](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconUrl] TEXT NOT NULL, 
+[MarkerSource] TEXT NOT NULL, 
+[CategoryName] TEXT NOT NULL, 
+[LocationText] TEXT NOT NULL, 
+[PopupTitle] TEXT NOT NULL, 
+[PopupContent] TEXT NOT NULL, 
+[LocationID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -8928,20 +10490,6 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 	[ScaffoldTable(true)]
 	public class CalendarContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CalendarContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CalendarContainerHeaderID] TEXT NULL, 
-[CalendarFeaturedID] TEXT NULL, 
-[CalendarIndexCollectionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -8959,6 +10507,20 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CalendarContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[CalendarContainerHeaderID] TEXT NULL, 
+[CalendarFeaturedID] TEXT NULL, 
+[CalendarIndexCollectionID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string CalendarContainerHeaderID { get; set; }
@@ -8981,6 +10543,15 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
 			}
 
 			[Column]
+			public string CalendarCollectionID { get; set; }
+			private EntityRef< CalendarCollection > _CalendarCollection;
+			[Association(Storage = "_CalendarCollection", ThisKey = "CalendarCollectionID")]
+			public CalendarCollection CalendarCollection
+			{
+				get { return this._CalendarCollection.Entity; }
+				set { this._CalendarCollection.Entity = value; }
+			}
+			[Column]
 			public string CalendarIndexCollectionID { get; set; }
 			private EntityRef< CalendarIndex > _CalendarIndexCollection;
 			[Association(Storage = "_CalendarIndexCollection", ThisKey = "CalendarIndexCollectionID")]
@@ -8999,24 +10570,6 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
 	[ScaffoldTable(true)]
 	public class AboutContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AboutContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[MainImageID] TEXT NULL, 
-[HeaderID] TEXT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Body] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[ImageGroupID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9034,6 +10587,24 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AboutContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[MainImageID] TEXT NULL, 
+[HeaderID] TEXT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[Body] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[ImageGroupID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string MainImageID { get; set; }
@@ -9100,20 +10671,6 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
 	[ScaffoldTable(true)]
 	public class OBSAccountContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountContainerHeaderID] TEXT NULL, 
-[AccountFeaturedID] TEXT NULL, 
-[AccountIndexCollectionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9131,6 +10688,20 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AccountContainerHeaderID] TEXT NULL, 
+[AccountFeaturedID] TEXT NULL, 
+[AccountIndexCollectionID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string AccountContainerHeaderID { get; set; }
@@ -9153,6 +10724,15 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 			}
 
 			[Column]
+			public string AccountCollectionID { get; set; }
+			private EntityRef< CalendarCollection > _AccountCollection;
+			[Association(Storage = "_AccountCollection", ThisKey = "AccountCollectionID")]
+			public CalendarCollection AccountCollection
+			{
+				get { return this._AccountCollection.Entity; }
+				set { this._AccountCollection.Entity = value; }
+			}
+			[Column]
 			public string AccountIndexCollectionID { get; set; }
 			private EntityRef< CalendarIndex > _AccountIndexCollection;
 			[Association(Storage = "_AccountIndexCollection", ThisKey = "AccountIndexCollectionID")]
@@ -9171,20 +10751,6 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 	[ScaffoldTable(true)]
 	public class ProjectContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProjectContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProjectContainerHeaderID] TEXT NULL, 
-[ProjectFeaturedID] TEXT NULL, 
-[ProjectIndexCollectionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9202,6 +10768,20 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ProjectContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ProjectContainerHeaderID] TEXT NULL, 
+[ProjectFeaturedID] TEXT NULL, 
+[ProjectIndexCollectionID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ProjectContainerHeaderID { get; set; }
@@ -9224,6 +10804,15 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
 			}
 
 			[Column]
+			public string ProjectCollectionID { get; set; }
+			private EntityRef< CalendarCollection > _ProjectCollection;
+			[Association(Storage = "_ProjectCollection", ThisKey = "ProjectCollectionID")]
+			public CalendarCollection ProjectCollection
+			{
+				get { return this._ProjectCollection.Entity; }
+				set { this._ProjectCollection.Entity = value; }
+			}
+			[Column]
 			public string ProjectIndexCollectionID { get; set; }
 			private EntityRef< CalendarIndex > _ProjectIndexCollection;
 			[Association(Storage = "_ProjectIndexCollection", ThisKey = "ProjectIndexCollectionID")]
@@ -9242,20 +10831,6 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
 	[ScaffoldTable(true)]
 	public class CourseContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CourseContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CourseContainerHeaderID] TEXT NULL, 
-[CourseFeaturedID] TEXT NULL, 
-[CourseIndexCollectionID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9273,6 +10848,20 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CourseContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[CourseContainerHeaderID] TEXT NULL, 
+[CourseFeaturedID] TEXT NULL, 
+[CourseIndexCollectionID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string CourseContainerHeaderID { get; set; }
@@ -9295,6 +10884,15 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
 			}
 
 			[Column]
+			public string CourseCollectionID { get; set; }
+			private EntityRef< CalendarCollection > _CourseCollection;
+			[Association(Storage = "_CourseCollection", ThisKey = "CourseCollectionID")]
+			public CalendarCollection CourseCollection
+			{
+				get { return this._CourseCollection.Entity; }
+				set { this._CourseCollection.Entity = value; }
+			}
+			[Column]
 			public string CourseIndexCollectionID { get; set; }
 			private EntityRef< CalendarIndex > _CourseIndexCollection;
 			[Association(Storage = "_CourseIndexCollection", ThisKey = "CourseIndexCollectionID")]
@@ -9313,19 +10911,6 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
 	[ScaffoldTable(true)]
 	public class ContainerHeader : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContainerHeader](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[SubTitle] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9343,6 +10928,19 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContainerHeader](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL, 
+[SubTitle] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -9367,21 +10965,6 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
 	[ScaffoldTable(true)]
 	public class ActivitySummaryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[SummaryBody] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9399,6 +10982,21 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[SummaryBody] TEXT NOT NULL, 
+[IntroductionID] TEXT NULL, 
+[ActivityIndexID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -9435,6 +11033,15 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 				set { this._ActivityIndex.Entity = value; }
 			}
 
+			[Column]
+			public string ActivityCollectionID { get; set; }
+			private EntityRef< ActivityCollection > _ActivityCollection;
+			[Association(Storage = "_ActivityCollection", ThisKey = "ActivityCollectionID")]
+			public ActivityCollection ActivityCollection
+			{
+				get { return this._ActivityCollection.Entity; }
+				set { this._ActivityCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -9446,21 +11053,6 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 	[ScaffoldTable(true)]
 	public class ActivityIndex : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivityIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9478,6 +11070,21 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ActivityIndex](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string IconID { get; set; }
@@ -9519,20 +11126,6 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
 	[ScaffoldTable(true)]
 	public class ActivityContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivityContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL, 
-[ActivityModuleID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9550,6 +11143,20 @@ CREATE TABLE IF NOT EXISTS [ActivityContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ActivityContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[ActivityIndexID] TEXT NULL, 
+[ActivityModuleID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -9590,6 +11197,24 @@ CREATE TABLE IF NOT EXISTS [ActivityContainer](
 	[ScaffoldTable(true)]
 	public class Activity : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Activity() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -9610,24 +11235,6 @@ CREATE TABLE IF NOT EXISTS [Activity](
 [IFrameSources] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Activity() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -9699,6 +11306,42 @@ CREATE TABLE IF NOT EXISTS [Activity](
         [ScaffoldColumn(true)]
 		public string IFrameSources { get; set; }
 		// private string _unmodified_IFrameSources;
+			[Column]
+			public string CollaboratorsID { get; set; }
+			private EntityRef< CollaboratorCollection > _Collaborators;
+			[Association(Storage = "_Collaborators", ThisKey = "CollaboratorsID")]
+			public CollaboratorCollection Collaborators
+			{
+				get { return this._Collaborators.Entity; }
+				set { this._Collaborators.Entity = value; }
+			}
+			[Column]
+			public string ImageGroupCollectionID { get; set; }
+			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
+			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
+			public ImageGroupCollection ImageGroupCollection
+			{
+				get { return this._ImageGroupCollection.Entity; }
+				set { this._ImageGroupCollection.Entity = value; }
+			}
+			[Column]
+			public string LocationCollectionID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _LocationCollection;
+			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
+			public AddressAndLocationCollection LocationCollection
+			{
+				get { return this._LocationCollection.Entity; }
+				set { this._LocationCollection.Entity = value; }
+			}
+			[Column]
+			public string CategoryCollectionID { get; set; }
+			private EntityRef< CategoryCollection > _CategoryCollection;
+			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
+			public CategoryCollection CategoryCollection
+			{
+				get { return this._CategoryCollection.Entity; }
+				set { this._CategoryCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -9718,19 +11361,6 @@ CREATE TABLE IF NOT EXISTS [Activity](
 	[ScaffoldTable(true)]
 	public class Moderator : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Moderator](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ModeratorName] TEXT NOT NULL, 
-[ProfileUrl] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9748,6 +11378,19 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Moderator](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ModeratorName] TEXT NOT NULL, 
+[ProfileUrl] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -9772,22 +11415,6 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 	[ScaffoldTable(true)]
 	public class Collaborator : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Collaborator](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountID] TEXT NOT NULL, 
-[EmailAddress] TEXT NOT NULL, 
-[CollaboratorName] TEXT NOT NULL, 
-[Role] TEXT NOT NULL, 
-[ProfileUrl] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9805,6 +11432,22 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Collaborator](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[AccountID] TEXT NOT NULL, 
+[EmailAddress] TEXT NOT NULL, 
+[CollaboratorName] TEXT NOT NULL, 
+[Role] TEXT NOT NULL, 
+[ProfileUrl] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -9850,21 +11493,6 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 	[ScaffoldTable(true)]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[SummaryBody] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[GroupSummaryIndexID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9882,6 +11510,21 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[SummaryBody] TEXT NOT NULL, 
+[IntroductionID] TEXT NULL, 
+[GroupSummaryIndexID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -9918,6 +11561,15 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 				set { this._GroupSummaryIndex.Entity = value; }
 			}
 
+			[Column]
+			public string GroupCollectionID { get; set; }
+			private EntityRef< GroupCollection > _GroupCollection;
+			[Association(Storage = "_GroupCollection", ThisKey = "GroupCollectionID")]
+			public GroupCollection GroupCollection
+			{
+				get { return this._GroupCollection.Entity; }
+				set { this._GroupCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -9929,20 +11581,6 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 	[ScaffoldTable(true)]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[GroupIndexID] TEXT NULL, 
-[GroupProfileID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -9960,6 +11598,20 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HeaderID] TEXT NULL, 
+[GroupIndexID] TEXT NULL, 
+[GroupProfileID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string HeaderID { get; set; }
@@ -9991,6 +11643,51 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 				set { this._GroupProfile.Entity = value; }
 			}
 
+			[Column]
+			public string CollaboratorsID { get; set; }
+			private EntityRef< CollaboratorCollection > _Collaborators;
+			[Association(Storage = "_Collaborators", ThisKey = "CollaboratorsID")]
+			public CollaboratorCollection Collaborators
+			{
+				get { return this._Collaborators.Entity; }
+				set { this._Collaborators.Entity = value; }
+			}
+			[Column]
+			public string PendingCollaboratorsID { get; set; }
+			private EntityRef< CollaboratorCollection > _PendingCollaborators;
+			[Association(Storage = "_PendingCollaborators", ThisKey = "PendingCollaboratorsID")]
+			public CollaboratorCollection PendingCollaborators
+			{
+				get { return this._PendingCollaborators.Entity; }
+				set { this._PendingCollaborators.Entity = value; }
+			}
+			[Column]
+			public string ActivitiesID { get; set; }
+			private EntityRef< ActivityCollection > _Activities;
+			[Association(Storage = "_Activities", ThisKey = "ActivitiesID")]
+			public ActivityCollection Activities
+			{
+				get { return this._Activities.Entity; }
+				set { this._Activities.Entity = value; }
+			}
+			[Column]
+			public string ImageGroupCollectionID { get; set; }
+			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
+			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
+			public ImageGroupCollection ImageGroupCollection
+			{
+				get { return this._ImageGroupCollection.Entity; }
+				set { this._ImageGroupCollection.Entity = value; }
+			}
+			[Column]
+			public string LocationCollectionID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _LocationCollection;
+			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
+			public AddressAndLocationCollection LocationCollection
+			{
+				get { return this._LocationCollection.Entity; }
+				set { this._LocationCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -10000,21 +11697,6 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 	[ScaffoldTable(true)]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10032,6 +11714,21 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupIndex](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string IconID { get; set; }
@@ -10073,18 +11770,6 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 	[ScaffoldTable(true)]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[LocationName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10103,6 +11788,18 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[LocationName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10119,18 +11816,6 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 	[ScaffoldTable(true)]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddImageInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageTitle] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10149,6 +11834,18 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddImageInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageTitle] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10165,18 +11862,6 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 	[ScaffoldTable(true)]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageGroupTitle] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10195,6 +11880,18 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ImageGroupTitle] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10211,18 +11908,6 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 	[ScaffoldTable(true)]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[EmailAddress] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10241,6 +11926,18 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[EmailAddress] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10257,18 +11954,6 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 	[ScaffoldTable(true)]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10287,6 +11972,18 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[GroupName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10303,18 +12000,6 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 	[ScaffoldTable(true)]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddActivityInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ActivityName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10333,6 +12018,18 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddActivityInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ActivityName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10349,18 +12046,6 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 	[ScaffoldTable(true)]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10379,6 +12064,18 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10395,18 +12092,6 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 	[ScaffoldTable(true)]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CategoryName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10425,6 +12110,18 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[CategoryName] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10441,24 +12138,6 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 	[ScaffoldTable(true)]
 	public class Group : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Group](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[ProfileImageID] TEXT NULL, 
-[IconImageID] TEXT NULL, 
-[GroupName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
-[WwwSiteToPublishTo] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10476,6 +12155,24 @@ CREATE TABLE IF NOT EXISTS [Group](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Group](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ReferenceToInformationID] TEXT NULL, 
+[ProfileImageID] TEXT NULL, 
+[IconImageID] TEXT NULL, 
+[GroupName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
+[WwwSiteToPublishTo] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -10527,6 +12224,33 @@ CREATE TABLE IF NOT EXISTS [Group](
         [ScaffoldColumn(true)]
 		public string WwwSiteToPublishTo { get; set; }
 		// private string _unmodified_WwwSiteToPublishTo;
+			[Column]
+			public string CustomUICollectionID { get; set; }
+			private EntityRef< ShortTextCollection > _CustomUICollection;
+			[Association(Storage = "_CustomUICollection", ThisKey = "CustomUICollectionID")]
+			public ShortTextCollection CustomUICollection
+			{
+				get { return this._CustomUICollection.Entity; }
+				set { this._CustomUICollection.Entity = value; }
+			}
+			[Column]
+			public string ModeratorsID { get; set; }
+			private EntityRef< ModeratorCollection > _Moderators;
+			[Association(Storage = "_Moderators", ThisKey = "ModeratorsID")]
+			public ModeratorCollection Moderators
+			{
+				get { return this._Moderators.Entity; }
+				set { this._Moderators.Entity = value; }
+			}
+			[Column]
+			public string CategoryCollectionID { get; set; }
+			private EntityRef< CategoryCollection > _CategoryCollection;
+			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
+			public CategoryCollection CategoryCollection
+			{
+				get { return this._CategoryCollection.Entity; }
+				set { this._CategoryCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -10544,19 +12268,6 @@ CREATE TABLE IF NOT EXISTS [Group](
 	[ScaffoldTable(true)]
 	public class Introduction : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Introduction](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[Body] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10574,6 +12285,19 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Introduction](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL, 
+[Body] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -10598,22 +12322,6 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 	[ScaffoldTable(true)]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ContentID] TEXT NOT NULL, 
-[ContentSemanticType] TEXT NOT NULL, 
-[CategoryID] TEXT NOT NULL, 
-[RankName] TEXT NOT NULL, 
-[RankValue] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10631,6 +12339,22 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ContentID] TEXT NOT NULL, 
+[ContentSemanticType] TEXT NOT NULL, 
+[CategoryID] TEXT NOT NULL, 
+[RankName] TEXT NOT NULL, 
+[RankValue] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -10676,23 +12400,6 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 	[ScaffoldTable(true)]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [LinkToContent](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[URL] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10710,6 +12417,23 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LinkToContent](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[URL] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[ImageDataID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -10738,6 +12462,24 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 		// private string _unmodified_Author;
 			[Column]
 			public string ImageDataID { get; set; }
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public AddressAndLocationCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -10755,22 +12497,6 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 	[ScaffoldTable(true)]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [EmbeddedContent](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IFrameTagContents] TEXT NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10788,6 +12514,22 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [EmbeddedContent](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IFrameTagContents] TEXT NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Published] TEXT NOT NULL, 
+[Author] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -10814,6 +12556,24 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public AddressAndLocationCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -10831,22 +12591,6 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 	[ScaffoldTable(true)]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HostName] TEXT NOT NULL, 
-[GroupHeader] TEXT NOT NULL, 
-[SortValue] TEXT NOT NULL, 
-[PageLocation] TEXT NOT NULL, 
-[ContentItemNames] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -10864,6 +12608,22 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[HostName] TEXT NOT NULL, 
+[GroupHeader] TEXT NOT NULL, 
+[SortValue] TEXT NOT NULL, 
+[PageLocation] TEXT NOT NULL, 
+[ContentItemNames] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -10909,6 +12669,24 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 	[ScaffoldTable(true)]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public DynamicContent() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -10931,24 +12709,6 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 [PageLocation] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public DynamicContent() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -11034,23 +12794,6 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 	[ScaffoldTable(true)]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AttachedToObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SourceObjectID] TEXT NOT NULL, 
-[SourceObjectName] TEXT NOT NULL, 
-[SourceObjectDomain] TEXT NOT NULL, 
-[TargetObjectID] TEXT NOT NULL, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetObjectDomain] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11068,6 +12811,23 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AttachedToObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SourceObjectID] TEXT NOT NULL, 
+[SourceObjectName] TEXT NOT NULL, 
+[SourceObjectDomain] TEXT NOT NULL, 
+[TargetObjectID] TEXT NOT NULL, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetObjectDomain] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -11120,6 +12880,24 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 	[ScaffoldTable(true)]
 	public class Comment : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Comment() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -11142,24 +12920,6 @@ CREATE TABLE IF NOT EXISTS [Comment](
 [LastAuthorAccountID] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Comment() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -11250,24 +13010,6 @@ CREATE TABLE IF NOT EXISTS [Comment](
 	[ScaffoldTable(true)]
 	public class Selection : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Selection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TargetObjectID] TEXT NOT NULL, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetObjectDomain] TEXT NOT NULL, 
-[SelectionCategory] TEXT NOT NULL, 
-[TextValue] TEXT NOT NULL, 
-[BooleanValue] INTEGER NOT NULL, 
-[DoubleValue] REAL NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11285,6 +13027,24 @@ CREATE TABLE IF NOT EXISTS [Selection](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Selection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TargetObjectID] TEXT NOT NULL, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetObjectDomain] TEXT NOT NULL, 
+[SelectionCategory] TEXT NOT NULL, 
+[TextValue] TEXT NOT NULL, 
+[BooleanValue] INTEGER NOT NULL, 
+[DoubleValue] REAL NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -11340,6 +13100,24 @@ CREATE TABLE IF NOT EXISTS [Selection](
 	[ScaffoldTable(true)]
 	public class TextContent : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TextContent() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -11360,24 +13138,6 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 [RawHtmlContent] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public TextContent() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 			[Column]
 			public string ImageDataID { get; set; }
@@ -11411,6 +13171,24 @@ CREATE TABLE IF NOT EXISTS [TextContent](
         [ScaffoldColumn(true)]
 		public string Body { get; set; }
 		// private string _unmodified_Body;
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public AddressAndLocationCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11449,6 +13227,24 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 	[ScaffoldTable(true)]
 	public class Blog : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Blog() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -11472,24 +13268,6 @@ CREATE TABLE IF NOT EXISTS [Blog](
 [IFrameSources] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Blog() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -11562,6 +13340,15 @@ CREATE TABLE IF NOT EXISTS [Blog](
 			}
 
 			[Column]
+			public string ImageGroupCollectionID { get; set; }
+			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
+			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
+			public ImageGroupCollection ImageGroupCollection
+			{
+				get { return this._ImageGroupCollection.Entity; }
+				set { this._ImageGroupCollection.Entity = value; }
+			}
+			[Column]
 			public string VideoGroupID { get; set; }
 			private EntityRef< VideoGroup > _VideoGroup;
 			[Association(Storage = "_VideoGroup", ThisKey = "VideoGroupID")]
@@ -11586,6 +13373,33 @@ CREATE TABLE IF NOT EXISTS [Blog](
         [ScaffoldColumn(true)]
 		public string IFrameSources { get; set; }
 		// private string _unmodified_IFrameSources;
+			[Column]
+			public string LocationCollectionID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _LocationCollection;
+			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
+			public AddressAndLocationCollection LocationCollection
+			{
+				get { return this._LocationCollection.Entity; }
+				set { this._LocationCollection.Entity = value; }
+			}
+			[Column]
+			public string CategoryCollectionID { get; set; }
+			private EntityRef< CategoryCollection > _CategoryCollection;
+			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
+			public CategoryCollection CategoryCollection
+			{
+				get { return this._CategoryCollection.Entity; }
+				set { this._CategoryCollection.Entity = value; }
+			}
+			[Column]
+			public string SocialPanelID { get; set; }
+			private EntityRef< SocialPanelCollection > _SocialPanel;
+			[Association(Storage = "_SocialPanel", ThisKey = "SocialPanelID")]
+			public SocialPanelCollection SocialPanel
+			{
+				get { return this._SocialPanel.Entity; }
+				set { this._SocialPanel.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -11607,21 +13421,6 @@ CREATE TABLE IF NOT EXISTS [Blog](
 	[ScaffoldTable(true)]
 	public class BlogIndexGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11639,6 +13438,21 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string IconID { get; set; }
@@ -11660,6 +13474,60 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
         [ScaffoldColumn(true)]
 		public string Introduction { get; set; }
 		// private string _unmodified_Introduction;
+			[Column]
+			public string GroupedByDateID { get; set; }
+			private EntityRef< GroupedInformationCollection > _GroupedByDate;
+			[Association(Storage = "_GroupedByDate", ThisKey = "GroupedByDateID")]
+			public GroupedInformationCollection GroupedByDate
+			{
+				get { return this._GroupedByDate.Entity; }
+				set { this._GroupedByDate.Entity = value; }
+			}
+			[Column]
+			public string GroupedByLocationID { get; set; }
+			private EntityRef< GroupedInformationCollection > _GroupedByLocation;
+			[Association(Storage = "_GroupedByLocation", ThisKey = "GroupedByLocationID")]
+			public GroupedInformationCollection GroupedByLocation
+			{
+				get { return this._GroupedByLocation.Entity; }
+				set { this._GroupedByLocation.Entity = value; }
+			}
+			[Column]
+			public string GroupedByAuthorID { get; set; }
+			private EntityRef< GroupedInformationCollection > _GroupedByAuthor;
+			[Association(Storage = "_GroupedByAuthor", ThisKey = "GroupedByAuthorID")]
+			public GroupedInformationCollection GroupedByAuthor
+			{
+				get { return this._GroupedByAuthor.Entity; }
+				set { this._GroupedByAuthor.Entity = value; }
+			}
+			[Column]
+			public string GroupedByCategoryID { get; set; }
+			private EntityRef< GroupedInformationCollection > _GroupedByCategory;
+			[Association(Storage = "_GroupedByCategory", ThisKey = "GroupedByCategoryID")]
+			public GroupedInformationCollection GroupedByCategory
+			{
+				get { return this._GroupedByCategory.Entity; }
+				set { this._GroupedByCategory.Entity = value; }
+			}
+			[Column]
+			public string FullBlogArchiveID { get; set; }
+			private EntityRef< ReferenceCollection > _FullBlogArchive;
+			[Association(Storage = "_FullBlogArchive", ThisKey = "FullBlogArchiveID")]
+			public ReferenceCollection FullBlogArchive
+			{
+				get { return this._FullBlogArchive.Entity; }
+				set { this._FullBlogArchive.Entity = value; }
+			}
+			[Column]
+			public string BlogSourceForSummaryID { get; set; }
+			private EntityRef< BlogCollection > _BlogSourceForSummary;
+			[Association(Storage = "_BlogSourceForSummary", ThisKey = "BlogSourceForSummaryID")]
+			public BlogCollection BlogSourceForSummary
+			{
+				get { return this._BlogSourceForSummary.Entity; }
+				set { this._BlogSourceForSummary.Entity = value; }
+			}
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11680,21 +13548,6 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 	[ScaffoldTable(true)]
 	public class CalendarIndex : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CalendarIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11712,6 +13565,21 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CalendarIndex](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[IconID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Introduction] TEXT NOT NULL, 
+[Summary] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string IconID { get; set; }
@@ -11753,18 +13621,6 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
 	[ScaffoldTable(true)]
 	public class Filter : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Filter](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11783,6 +13639,18 @@ CREATE TABLE IF NOT EXISTS [Filter](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Filter](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11799,18 +13667,6 @@ CREATE TABLE IF NOT EXISTS [Filter](
 	[ScaffoldTable(true)]
 	public class Calendar : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Calendar](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11829,6 +13685,18 @@ CREATE TABLE IF NOT EXISTS [Calendar](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Calendar](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11845,18 +13713,6 @@ CREATE TABLE IF NOT EXISTS [Calendar](
 	[ScaffoldTable(true)]
 	public class Map : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Map](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11875,6 +13731,18 @@ CREATE TABLE IF NOT EXISTS [Map](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Map](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -11891,17 +13759,6 @@ CREATE TABLE IF NOT EXISTS [Map](
 	[ScaffoldTable(true)]
 	public class MapIndexCollection : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapIndexCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11920,6 +13777,53 @@ CREATE TABLE IF NOT EXISTS [MapIndexCollection](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapIndexCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string MapByDateID { get; set; }
+			private EntityRef< MapCollection > _MapByDate;
+			[Association(Storage = "_MapByDate", ThisKey = "MapByDateID")]
+			public MapCollection MapByDate
+			{
+				get { return this._MapByDate.Entity; }
+				set { this._MapByDate.Entity = value; }
+			}
+			[Column]
+			public string MapByLocationID { get; set; }
+			private EntityRef< MapCollection > _MapByLocation;
+			[Association(Storage = "_MapByLocation", ThisKey = "MapByLocationID")]
+			public MapCollection MapByLocation
+			{
+				get { return this._MapByLocation.Entity; }
+				set { this._MapByLocation.Entity = value; }
+			}
+			[Column]
+			public string MapByAuthorID { get; set; }
+			private EntityRef< MapCollection > _MapByAuthor;
+			[Association(Storage = "_MapByAuthor", ThisKey = "MapByAuthorID")]
+			public MapCollection MapByAuthor
+			{
+				get { return this._MapByAuthor.Entity; }
+				set { this._MapByAuthor.Entity = value; }
+			}
+			[Column]
+			public string MapByCategoryID { get; set; }
+			private EntityRef< MapCollection > _MapByCategory;
+			[Association(Storage = "_MapByCategory", ThisKey = "MapByCategoryID")]
+			public MapCollection MapByCategory
+			{
+				get { return this._MapByCategory.Entity; }
+				set { this._MapByCategory.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -11929,18 +13833,6 @@ CREATE TABLE IF NOT EXISTS [MapIndexCollection](
 	[ScaffoldTable(true)]
 	public class MapResult : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapResult](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[LocationID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -11958,6 +13850,18 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapResult](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[LocationID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string LocationID { get; set; }
@@ -11978,17 +13882,6 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 	[ScaffoldTable(true)]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapResultsCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12007,6 +13900,44 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapResultsCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string ResultByDateID { get; set; }
+			private EntityRef< MapResultCollection > _ResultByDate;
+			[Association(Storage = "_ResultByDate", ThisKey = "ResultByDateID")]
+			public MapResultCollection ResultByDate
+			{
+				get { return this._ResultByDate.Entity; }
+				set { this._ResultByDate.Entity = value; }
+			}
+			[Column]
+			public string ResultByAuthorID { get; set; }
+			private EntityRef< MapResultCollection > _ResultByAuthor;
+			[Association(Storage = "_ResultByAuthor", ThisKey = "ResultByAuthorID")]
+			public MapResultCollection ResultByAuthor
+			{
+				get { return this._ResultByAuthor.Entity; }
+				set { this._ResultByAuthor.Entity = value; }
+			}
+			[Column]
+			public string ResultByProximityID { get; set; }
+			private EntityRef< MapResultCollection > _ResultByProximity;
+			[Association(Storage = "_ResultByProximity", ThisKey = "ResultByProximityID")]
+			public MapResultCollection ResultByProximity
+			{
+				get { return this._ResultByProximity.Entity; }
+				set { this._ResultByProximity.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -12016,20 +13947,6 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 	[ScaffoldTable(true)]
 	public class Video : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Video](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[VideoDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Caption] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12047,6 +13964,20 @@ CREATE TABLE IF NOT EXISTS [Video](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Video](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[VideoDataID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Caption] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string VideoDataID { get; set; }
@@ -12073,22 +14004,6 @@ CREATE TABLE IF NOT EXISTS [Video](
 	[ScaffoldTable(true)]
 	public class Image : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Image](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[ImageDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Caption] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12106,6 +14021,22 @@ CREATE TABLE IF NOT EXISTS [Image](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Image](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ReferenceToInformationID] TEXT NULL, 
+[ImageDataID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Caption] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -12134,6 +14065,24 @@ CREATE TABLE IF NOT EXISTS [Image](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string LocationsID { get; set; }
+			private EntityRef< AddressAndLocationCollection > _Locations;
+			[Association(Storage = "_Locations", ThisKey = "LocationsID")]
+			public AddressAndLocationCollection Locations
+			{
+				get { return this._Locations.Entity; }
+				set { this._Locations.Entity = value; }
+			}
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -12149,21 +14098,6 @@ CREATE TABLE IF NOT EXISTS [Image](
 	[ScaffoldTable(true)]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BinaryFile](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OriginalFileName] TEXT NOT NULL, 
-[DataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12182,6 +14116,21 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [BinaryFile](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[OriginalFileName] TEXT NOT NULL, 
+[DataID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12199,6 +14148,15 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -12214,21 +14172,6 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 	[ScaffoldTable(true)]
 	public class ImageGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[FeaturedImageID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12246,6 +14189,21 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ImageGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ReferenceToInformationID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[FeaturedImageID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -12277,6 +14235,15 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
 				set { this._FeaturedImage.Entity = value; }
 			}
 
+			[Column]
+			public string ImagesCollectionID { get; set; }
+			private EntityRef< ImageCollection > _ImagesCollection;
+			[Association(Storage = "_ImagesCollection", ThisKey = "ImagesCollectionID")]
+			public ImageCollection ImagesCollection
+			{
+				get { return this._ImagesCollection.Entity; }
+				set { this._ImagesCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -12290,19 +14257,6 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
 	[ScaffoldTable(true)]
 	public class VideoGroup : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [VideoGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12321,6 +14275,19 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [VideoGroup](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12331,6 +14298,15 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+			[Column]
+			public string VideoCollectionID { get; set; }
+			private EntityRef< VideoCollection > _VideoCollection;
+			[Association(Storage = "_VideoCollection", ThisKey = "VideoCollectionID")]
+			public VideoCollection VideoCollection
+			{
+				get { return this._VideoCollection.Entity; }
+				set { this._VideoCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -12344,18 +14320,6 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
 	[ScaffoldTable(true)]
 	public class Tooltip : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Tooltip](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TooltipText] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12374,6 +14338,18 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Tooltip](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TooltipText] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12390,18 +14366,6 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
 	[ScaffoldTable(true)]
 	public class SocialPanel : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SocialPanel](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SocialFilterID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12419,6 +14383,18 @@ CREATE TABLE IF NOT EXISTS [SocialPanel](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SocialPanel](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SocialFilterID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string SocialFilterID { get; set; }
@@ -12439,18 +14415,6 @@ CREATE TABLE IF NOT EXISTS [SocialPanel](
 	[ScaffoldTable(true)]
 	public class Longitude : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Longitude](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TextValue] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12469,6 +14433,18 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Longitude](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TextValue] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12485,18 +14461,6 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 	[ScaffoldTable(true)]
 	public class Latitude : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Latitude](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TextValue] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12515,6 +14479,18 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Latitude](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TextValue] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12531,20 +14507,6 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 	[ScaffoldTable(true)]
 	public class Location : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Location](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[LocationName] TEXT NOT NULL, 
-[LongitudeID] TEXT NULL, 
-[LatitudeID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12562,6 +14524,20 @@ CREATE TABLE IF NOT EXISTS [Location](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Location](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[LocationName] TEXT NOT NULL, 
+[LongitudeID] TEXT NULL, 
+[LatitudeID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -12599,21 +14575,6 @@ CREATE TABLE IF NOT EXISTS [Location](
 	[ScaffoldTable(true)]
 	public class Date : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Date](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Day] TEXT NOT NULL, 
-[Week] TEXT NOT NULL, 
-[Month] TEXT NOT NULL, 
-[Year] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12631,6 +14592,21 @@ CREATE TABLE IF NOT EXISTS [Date](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Date](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Day] TEXT NOT NULL, 
+[Week] TEXT NOT NULL, 
+[Month] TEXT NOT NULL, 
+[Year] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -12661,18 +14637,6 @@ CREATE TABLE IF NOT EXISTS [Date](
 	[ScaffoldTable(true)]
 	public class Sex : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Sex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SexText] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12691,6 +14655,18 @@ CREATE TABLE IF NOT EXISTS [Sex](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Sex](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SexText] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12707,6 +14683,24 @@ CREATE TABLE IF NOT EXISTS [Sex](
 	[ScaffoldTable(true)]
 	public class OBSAddress : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public OBSAddress() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -12727,24 +14721,6 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
 [Continent] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public OBSAddress() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -12825,22 +14801,6 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
 	[ScaffoldTable(true)]
 	public class Identity : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Identity](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[FirstName] TEXT NOT NULL, 
-[LastName] TEXT NOT NULL, 
-[Initials] TEXT NOT NULL, 
-[SexID] TEXT NULL, 
-[BirthdayID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12858,6 +14818,22 @@ CREATE TABLE IF NOT EXISTS [Identity](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Identity](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[FirstName] TEXT NOT NULL, 
+[LastName] TEXT NOT NULL, 
+[Initials] TEXT NOT NULL, 
+[SexID] TEXT NULL, 
+[BirthdayID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -12909,22 +14885,6 @@ CREATE TABLE IF NOT EXISTS [Identity](
 	[ScaffoldTable(true)]
 	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Image] BLOB NOT NULL, 
-[Video] BLOB NOT NULL, 
-[Sound] BLOB NOT NULL, 
-[Vector] TEXT NOT NULL, 
-[Raw] BLOB NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -12942,6 +14902,22 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Image] BLOB NOT NULL, 
+[Video] BLOB NOT NULL, 
+[Sound] BLOB NOT NULL, 
+[Vector] TEXT NOT NULL, 
+[Raw] BLOB NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -12979,17 +14955,6 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 	[ScaffoldTable(true)]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CategoryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13008,6 +14973,26 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CategoryContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+			[Column]
+			public string CategoriesID { get; set; }
+			private EntityRef< CategoryCollection > _Categories;
+			[Association(Storage = "_Categories", ThisKey = "CategoriesID")]
+			public CategoryCollection Categories
+			{
+				get { return this._Categories.Entity; }
+				set { this._Categories.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -13017,23 +15002,6 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 	[ScaffoldTable(true)]
 	public class Category : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Category](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[CategoryName] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[ParentCategoryID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13051,6 +15019,23 @@ CREATE TABLE IF NOT EXISTS [Category](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Category](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ReferenceToInformationID] TEXT NULL, 
+[CategoryName] TEXT NOT NULL, 
+[ImageDataID] TEXT NULL, 
+[Title] TEXT NOT NULL, 
+[Excerpt] TEXT NOT NULL, 
+[ParentCategoryID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ReferenceToInformationID { get; set; }
@@ -13104,23 +15089,6 @@ CREATE TABLE IF NOT EXISTS [Category](
 	[ScaffoldTable(true)]
 	public class Subscription : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Subscription](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Priority] INTEGER NOT NULL, 
-[TargetRelativeLocation] TEXT NOT NULL, 
-[TargetInformationObjectType] TEXT NOT NULL, 
-[SubscriberRelativeLocation] TEXT NOT NULL, 
-[SubscriberInformationObjectType] TEXT NOT NULL, 
-[SubscriptionType] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13138,6 +15106,23 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Subscription](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Priority] INTEGER NOT NULL, 
+[TargetRelativeLocation] TEXT NOT NULL, 
+[TargetInformationObjectType] TEXT NOT NULL, 
+[SubscriberRelativeLocation] TEXT NOT NULL, 
+[SubscriberInformationObjectType] TEXT NOT NULL, 
+[SubscriptionType] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13188,22 +15173,6 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 	[ScaffoldTable(true)]
 	public class QueueEnvelope : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [QueueEnvelope](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ActiveContainerName] TEXT NOT NULL, 
-[OwnerPrefix] TEXT NOT NULL, 
-[CurrentRetryCount] INTEGER NOT NULL, 
-[SingleOperationID] TEXT NULL, 
-[ErrorContentID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13221,6 +15190,22 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [QueueEnvelope](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ActiveContainerName] TEXT NOT NULL, 
+[OwnerPrefix] TEXT NOT NULL, 
+[CurrentRetryCount] INTEGER NOT NULL, 
+[SingleOperationID] TEXT NULL, 
+[ErrorContentID] TEXT NULL
+)";
+        }
 
 
 		[Column]
@@ -13248,6 +15233,15 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 			}
 
 			[Column]
+			public string OrderDependentOperationSequenceID { get; set; }
+			private EntityRef< OperationRequestCollection > _OrderDependentOperationSequence;
+			[Association(Storage = "_OrderDependentOperationSequence", ThisKey = "OrderDependentOperationSequenceID")]
+			public OperationRequestCollection OrderDependentOperationSequence
+			{
+				get { return this._OrderDependentOperationSequence.Entity; }
+				set { this._OrderDependentOperationSequence.Entity = value; }
+			}
+			[Column]
 			public string ErrorContentID { get; set; }
 			private EntityRef< SystemError > _ErrorContent;
 			[Association(Storage = "_ErrorContent", ThisKey = "ErrorContentID")]
@@ -13270,6 +15264,24 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 	[ScaffoldTable(true)]
 	public class OperationRequest : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public OperationRequest() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -13288,24 +15300,6 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
 [ProcessIDToExecute] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public OperationRequest() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 			[Column]
 			public string SubscriberNotificationID { get; set; }
@@ -13393,18 +15387,6 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
 	[ScaffoldTable(true)]
 	public class SubscriptionChainRequestMessage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ContentItemID] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13423,6 +15405,18 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ContentItemID] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -13439,22 +15433,6 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 	[ScaffoldTable(true)]
 	public class SubscriptionChainRequestContent : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SubmitTime] TEXT NOT NULL, 
-[ProcessingStartTime] TEXT NOT NULL, 
-[ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
-[ProcessingEndTimeWebTemplatesRendering] TEXT NOT NULL, 
-[ProcessingEndTime] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13472,6 +15450,22 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SubmitTime] TEXT NOT NULL, 
+[ProcessingStartTime] TEXT NOT NULL, 
+[ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
+[ProcessingEndTimeWebTemplatesRendering] TEXT NOT NULL, 
+[ProcessingEndTime] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13498,6 +15492,15 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
         [ScaffoldColumn(true)]
 		public DateTime ProcessingEndTime { get; set; }
 		// private DateTime _unmodified_ProcessingEndTime;
+			[Column]
+			public string SubscriptionTargetCollectionID { get; set; }
+			private EntityRef< SubscriptionTargetCollection > _SubscriptionTargetCollection;
+			[Association(Storage = "_SubscriptionTargetCollection", ThisKey = "SubscriptionTargetCollectionID")]
+			public SubscriptionTargetCollection SubscriptionTargetCollection
+			{
+				get { return this._SubscriptionTargetCollection.Entity; }
+				set { this._SubscriptionTargetCollection.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -13507,18 +15510,6 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 	[ScaffoldTable(true)]
 	public class SubscriptionTarget : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[BlobLocation] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13537,6 +15528,18 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[BlobLocation] TEXT NOT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -13553,19 +15556,6 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 	[ScaffoldTable(true)]
 	public class DeleteEntireOwnerOperation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ContainerName] TEXT NOT NULL, 
-[LocationPrefix] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13583,6 +15573,19 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ContainerName] TEXT NOT NULL, 
+[LocationPrefix] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13607,19 +15610,6 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 	[ScaffoldTable(true)]
 	public class DeleteOwnerContentOperation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ContainerName] TEXT NOT NULL, 
-[LocationPrefix] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13637,6 +15627,19 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ContainerName] TEXT NOT NULL, 
+[LocationPrefix] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13661,20 +15664,6 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 	[ScaffoldTable(true)]
 	public class SystemError : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SystemError](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ErrorTitle] TEXT NOT NULL, 
-[OccurredAt] TEXT NOT NULL, 
-[MessageContentID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13693,6 +15682,20 @@ CREATE TABLE IF NOT EXISTS [SystemError](
 			ETag = String.Empty;
 		}
 
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SystemError](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ErrorTitle] TEXT NOT NULL, 
+[OccurredAt] TEXT NOT NULL, 
+[MessageContentID] TEXT NULL
+)";
+        }
+
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -13703,6 +15706,15 @@ CREATE TABLE IF NOT EXISTS [SystemError](
         [ScaffoldColumn(true)]
 		public DateTime OccurredAt { get; set; }
 		// private DateTime _unmodified_OccurredAt;
+			[Column]
+			public string SystemErrorItemsID { get; set; }
+			private EntityRef< SystemErrorItemCollection > _SystemErrorItems;
+			[Association(Storage = "_SystemErrorItems", ThisKey = "SystemErrorItemsID")]
+			public SystemErrorItemCollection SystemErrorItems
+			{
+				get { return this._SystemErrorItems.Entity; }
+				set { this._SystemErrorItems.Entity = value; }
+			}
 			[Column]
 			public string MessageContentID { get; set; }
 			private EntityRef< QueueEnvelope > _MessageContent;
@@ -13724,19 +15736,6 @@ CREATE TABLE IF NOT EXISTS [SystemError](
 	[ScaffoldTable(true)]
 	public class SystemErrorItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SystemErrorItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ShortDescription] TEXT NOT NULL, 
-[LongDescription] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13754,6 +15753,19 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SystemErrorItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ShortDescription] TEXT NOT NULL, 
+[LongDescription] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13778,6 +15790,24 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 	[ScaffoldTable(true)]
 	public class InformationSource : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InformationSource() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -13796,24 +15826,6 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
 [SourceLastModified] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public InformationSource() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -13876,19 +15888,6 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
 	[ScaffoldTable(true)]
 	public class RefreshDefaultViewsOperation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ViewLocation] TEXT NOT NULL, 
-[TypeNameToRefresh] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13906,6 +15905,19 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ViewLocation] TEXT NOT NULL, 
+[TypeNameToRefresh] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13930,22 +15942,6 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 	[ScaffoldTable(true)]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SourceContainerName] TEXT NOT NULL, 
-[SourcePathRoot] TEXT NOT NULL, 
-[TargetContainerName] TEXT NOT NULL, 
-[TargetPathRoot] TEXT NOT NULL, 
-[RenderWhileSync] INTEGER NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -13963,6 +15959,22 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SourceContainerName] TEXT NOT NULL, 
+[SourcePathRoot] TEXT NOT NULL, 
+[TargetContainerName] TEXT NOT NULL, 
+[TargetPathRoot] TEXT NOT NULL, 
+[RenderWhileSync] INTEGER NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -13989,6 +16001,15 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
         [ScaffoldColumn(true)]
 		public bool RenderWhileSync { get; set; }
 		// private bool _unmodified_RenderWhileSync;
+			[Column]
+			public string HandlersID { get; set; }
+			private EntityRef< UpdateWebContentHandlerCollection > _Handlers;
+			[Association(Storage = "_Handlers", ThisKey = "HandlersID")]
+			public UpdateWebContentHandlerCollection Handlers
+			{
+				get { return this._Handlers.Entity; }
+				set { this._Handlers.Entity = value; }
+			}
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
@@ -14006,19 +16027,6 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 	[ScaffoldTable(true)]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[InformationTypeName] TEXT NOT NULL, 
-[OptionName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14036,6 +16044,19 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[InformationTypeName] TEXT NOT NULL, 
+[OptionName] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -14060,21 +16081,6 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 	[ScaffoldTable(true)]
 	public class PublishWebContentOperation : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SourceContainerName] TEXT NOT NULL, 
-[SourcePathRoot] TEXT NOT NULL, 
-[SourceOwner] TEXT NOT NULL, 
-[TargetContainerName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14092,6 +16098,21 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SourceContainerName] TEXT NOT NULL, 
+[SourcePathRoot] TEXT NOT NULL, 
+[SourceOwner] TEXT NOT NULL, 
+[TargetContainerName] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -14130,21 +16151,6 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 	[ScaffoldTable(true)]
 	public class SubscriberInput : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SubscriberInput](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[InputRelativeLocation] TEXT NOT NULL, 
-[InformationObjectName] TEXT NOT NULL, 
-[InformationItemName] TEXT NOT NULL, 
-[SubscriberRelativeLocation] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14162,6 +16168,21 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriberInput](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[InputRelativeLocation] TEXT NOT NULL, 
+[InformationObjectName] TEXT NOT NULL, 
+[InformationItemName] TEXT NOT NULL, 
+[SubscriberRelativeLocation] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -14200,24 +16221,6 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
 	[ScaffoldTable(true)]
 	public class Monitor : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Monitor](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TargetObjectName] TEXT NOT NULL, 
-[TargetItemName] TEXT NOT NULL, 
-[MonitoringUtcTimeStampToStart] TEXT NOT NULL, 
-[MonitoringCycleFrequencyUnit] TEXT NOT NULL, 
-[MonitoringCycleEveryXthOfUnit] INTEGER NOT NULL, 
-[CustomMonitoringCycleOperationName] TEXT NOT NULL, 
-[OperationActionName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14235,6 +16238,24 @@ CREATE TABLE IF NOT EXISTS [Monitor](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Monitor](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TargetObjectName] TEXT NOT NULL, 
+[TargetItemName] TEXT NOT NULL, 
+[MonitoringUtcTimeStampToStart] TEXT NOT NULL, 
+[MonitoringCycleFrequencyUnit] TEXT NOT NULL, 
+[MonitoringCycleEveryXthOfUnit] INTEGER NOT NULL, 
+[CustomMonitoringCycleOperationName] TEXT NOT NULL, 
+[OperationActionName] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -14290,20 +16311,6 @@ CREATE TABLE IF NOT EXISTS [Monitor](
 	[ScaffoldTable(true)]
 	public class IconTitleDescription : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [IconTitleDescription](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Icon] BLOB NOT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14321,6 +16328,20 @@ CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [IconTitleDescription](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Icon] BLOB NOT NULL, 
+[Title] TEXT NOT NULL, 
+[Description] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -14350,19 +16371,6 @@ CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 	[ScaffoldTable(true)]
 	public class AboutAGIApplications : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[BuiltForAnybodyID] TEXT NULL, 
-[ForAllPeopleID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -14380,6 +16388,19 @@ CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[BuiltForAnybodyID] TEXT NULL, 
+[ForAllPeopleID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string BuiltForAnybodyID { get; set; }
@@ -14404,6 +16425,1554 @@ CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+		}
+	}
+    [Table(Name = "PublicationPackageCollection")]
+	[ScaffoldTable(true)]
+	public class PublicationPackageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public PublicationPackageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [PublicationPackageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "TBAccountCollaborationGroupCollection")]
+	[ScaffoldTable(true)]
+	public class TBAccountCollaborationGroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TBAccountCollaborationGroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "TBLoginInfoCollection")]
+	[ScaffoldTable(true)]
+	public class TBLoginInfoCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TBLoginInfoCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBLoginInfoCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "TBEmailCollection")]
+	[ScaffoldTable(true)]
+	public class TBEmailCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TBEmailCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBEmailCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "TBCollaboratorRoleCollection")]
+	[ScaffoldTable(true)]
+	public class TBCollaboratorRoleCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TBCollaboratorRoleCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TBCollaboratorRoleCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "LoginProviderCollection")]
+	[ScaffoldTable(true)]
+	public class LoginProviderCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public LoginProviderCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LoginProviderCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "AddressAndLocationCollection")]
+	[ScaffoldTable(true)]
+	public class AddressAndLocationCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public AddressAndLocationCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "GroupedInformationCollection")]
+	[ScaffoldTable(true)]
+	public class GroupedInformationCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GroupedInformationCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupedInformationCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ReferenceCollection")]
+	[ScaffoldTable(true)]
+	public class ReferenceCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ReferenceCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ReferenceCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "RenderedNodeCollection")]
+	[ScaffoldTable(true)]
+	public class RenderedNodeCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public RenderedNodeCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ShortTextCollection")]
+	[ScaffoldTable(true)]
+	public class ShortTextCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ShortTextCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ShortTextCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "LongTextCollection")]
+	[ScaffoldTable(true)]
+	public class LongTextCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public LongTextCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LongTextCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "MapMarkerCollection")]
+	[ScaffoldTable(true)]
+	public class MapMarkerCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public MapMarkerCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ActivityCollection")]
+	[ScaffoldTable(true)]
+	public class ActivityCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ActivityCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ActivityCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ModeratorCollection")]
+	[ScaffoldTable(true)]
+	public class ModeratorCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ModeratorCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ModeratorCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CollaboratorCollection")]
+	[ScaffoldTable(true)]
+	public class CollaboratorCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CollaboratorCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CollaboratorCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "GroupCollection")]
+	[ScaffoldTable(true)]
+	public class GroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ContentCategoryRankCollection")]
+	[ScaffoldTable(true)]
+	public class ContentCategoryRankCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ContentCategoryRankCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ContentCategoryRankCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "LinkToContentCollection")]
+	[ScaffoldTable(true)]
+	public class LinkToContentCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public LinkToContentCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LinkToContentCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "EmbeddedContentCollection")]
+	[ScaffoldTable(true)]
+	public class EmbeddedContentCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public EmbeddedContentCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [EmbeddedContentCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "DynamicContentGroupCollection")]
+	[ScaffoldTable(true)]
+	public class DynamicContentGroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public DynamicContentGroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DynamicContentGroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "DynamicContentCollection")]
+	[ScaffoldTable(true)]
+	public class DynamicContentCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public DynamicContentCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [DynamicContentCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "AttachedToObjectCollection")]
+	[ScaffoldTable(true)]
+	public class AttachedToObjectCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public AttachedToObjectCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AttachedToObjectCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CommentCollection")]
+	[ScaffoldTable(true)]
+	public class CommentCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CommentCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CommentCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "SelectionCollection")]
+	[ScaffoldTable(true)]
+	public class SelectionCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SelectionCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SelectionCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "TextContentCollection")]
+	[ScaffoldTable(true)]
+	public class TextContentCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TextContentCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TextContentCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "BlogCollection")]
+	[ScaffoldTable(true)]
+	public class BlogCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public BlogCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [BlogCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CalendarCollection")]
+	[ScaffoldTable(true)]
+	public class CalendarCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CalendarCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CalendarCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "MapCollection")]
+	[ScaffoldTable(true)]
+	public class MapCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public MapCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "MapResultCollection")]
+	[ScaffoldTable(true)]
+	public class MapResultCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public MapResultCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MapResultCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ImageCollection")]
+	[ScaffoldTable(true)]
+	public class ImageCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ImageCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ImageCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "BinaryFileCollection")]
+	[ScaffoldTable(true)]
+	public class BinaryFileCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public BinaryFileCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "ImageGroupCollection")]
+	[ScaffoldTable(true)]
+	public class ImageGroupCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ImageGroupCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ImageGroupCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "VideoCollection")]
+	[ScaffoldTable(true)]
+	public class VideoCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public VideoCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [VideoCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "SocialPanelCollection")]
+	[ScaffoldTable(true)]
+	public class SocialPanelCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SocialPanelCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SocialPanelCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "LocationCollection")]
+	[ScaffoldTable(true)]
+	public class LocationCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public LocationCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LocationCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "CategoryCollection")]
+	[ScaffoldTable(true)]
+	public class CategoryCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public CategoryCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CategoryCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "SubscriptionCollection")]
+	[ScaffoldTable(true)]
+	public class SubscriptionCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SubscriptionCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "OperationRequestCollection")]
+	[ScaffoldTable(true)]
+	public class OperationRequestCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public OperationRequestCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [OperationRequestCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "SubscriptionTargetCollection")]
+	[ScaffoldTable(true)]
+	public class SubscriptionTargetCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SubscriptionTargetCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionTargetCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "SystemErrorItemCollection")]
+	[ScaffoldTable(true)]
+	public class SystemErrorItemCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SystemErrorItemCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SystemErrorItemCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "InformationSourceCollection")]
+	[ScaffoldTable(true)]
+	public class InformationSourceCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public InformationSourceCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationSourceCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "UpdateWebContentHandlerCollection")]
+	[ScaffoldTable(true)]
+	public class UpdateWebContentHandlerCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public UpdateWebContentHandlerCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 

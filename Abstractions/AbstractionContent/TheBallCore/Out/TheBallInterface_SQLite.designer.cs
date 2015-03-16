@@ -96,6 +96,8 @@ namespace SQLite.TheBall.Interface {
 				tableCreationCommands.Add(GenericCollectionableObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericObject.GetCreateTableSQL());
 				tableCreationCommands.Add(GenericValue.GetCreateTableSQL());
+				tableCreationCommands.Add(ConnectionCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(GenericObjectCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -666,6 +668,20 @@ namespace SQLite.TheBall.Interface {
                     GenericValueTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
+		        if (deleteData.ObjectType == "ConnectionCollection")
+		        {
+		            var objectToDelete = new ConnectionCollection {ID = deleteData.ID};
+                    ConnectionCollectionTable.Attach(objectToDelete);
+                    ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericObjectCollection")
+		        {
+		            var objectToDelete = new GenericObjectCollection {ID = deleteData.ID};
+                    GenericObjectCollectionTable.Attach(objectToDelete);
+                    GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		    }
 
 
@@ -729,24 +745,22 @@ namespace SQLite.TheBall.Interface {
 					return this.GetTable<GenericValue>();
 				}
 			}
+			public Table<ConnectionCollection> ConnectionCollectionTable {
+				get {
+					return this.GetTable<ConnectionCollection>();
+				}
+			}
+			public Table<GenericObjectCollection> GenericObjectCollectionTable {
+				get {
+					return this.GetTable<GenericObjectCollection>();
+				}
+			}
         }
 
     [Table(Name = "WizardContainer")]
 	[ScaffoldTable(true)]
 	public class WizardContainer : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [WizardContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ActiveTasksID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -764,6 +778,18 @@ CREATE TABLE IF NOT EXISTS [WizardContainer](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [WizardContainer](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ActiveTasksID] TEXT NULL
+)";
+        }
 
         [Column(Name = "ActiveTasks")] 
         [ScaffoldColumn(true)]
@@ -825,20 +851,6 @@ CREATE TABLE IF NOT EXISTS [WizardContainer](
 	[ScaffoldTable(true)]
 	public class WizardTask : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [WizardTask](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TaskName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[InputType] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -856,6 +868,20 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [WizardTask](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[TaskName] TEXT NOT NULL, 
+[Description] TEXT NOT NULL, 
+[InputType] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -887,6 +913,24 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
 	[ScaffoldTable(true)]
 	public class Connection : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Connection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -913,24 +957,6 @@ CREATE TABLE IF NOT EXISTS [Connection](
 [ProcessIDToUpdateThisSideCategories] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Connection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -1271,22 +1297,6 @@ CREATE TABLE IF NOT EXISTS [Connection](
 	[ScaffoldTable(true)]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TransferPackage](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ConnectionID] TEXT NOT NULL, 
-[PackageDirection] TEXT NOT NULL, 
-[PackageType] TEXT NOT NULL, 
-[IsProcessed] INTEGER NOT NULL, 
-[PackageContentBlobs] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1304,6 +1314,22 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TransferPackage](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ConnectionID] TEXT NOT NULL, 
+[PackageDirection] TEXT NOT NULL, 
+[PackageType] TEXT NOT NULL, 
+[IsProcessed] INTEGER NOT NULL, 
+[PackageContentBlobs] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1391,20 +1417,6 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 	[ScaffoldTable(true)]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CategoryLink](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SourceCategoryID] TEXT NOT NULL, 
-[TargetCategoryID] TEXT NOT NULL, 
-[LinkingType] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1422,6 +1434,20 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CategoryLink](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SourceCategoryID] TEXT NOT NULL, 
+[TargetCategoryID] TEXT NOT NULL, 
+[LinkingType] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1453,22 +1479,6 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 	[ScaffoldTable(true)]
 	public class Category : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Category](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[NativeCategoryID] TEXT NOT NULL, 
-[NativeCategoryDomainName] TEXT NOT NULL, 
-[NativeCategoryObjectName] TEXT NOT NULL, 
-[NativeCategoryTitle] TEXT NOT NULL, 
-[IdentifyingCategoryName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1486,6 +1496,22 @@ CREATE TABLE IF NOT EXISTS [Category](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Category](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[NativeCategoryID] TEXT NOT NULL, 
+[NativeCategoryDomainName] TEXT NOT NULL, 
+[NativeCategoryObjectName] TEXT NOT NULL, 
+[NativeCategoryTitle] TEXT NOT NULL, 
+[IdentifyingCategoryName] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1531,21 +1557,6 @@ CREATE TABLE IF NOT EXISTS [Category](
 	[ScaffoldTable(true)]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [StatusSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[PendingOperationsID] TEXT NULL, 
-[ExecutingOperationsID] TEXT NULL, 
-[RecentCompletedOperationsID] TEXT NULL, 
-[ChangeItemTrackingList] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1563,6 +1574,21 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [StatusSummary](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[PendingOperationsID] TEXT NULL, 
+[ExecutingOperationsID] TEXT NULL, 
+[RecentCompletedOperationsID] TEXT NULL, 
+[ChangeItemTrackingList] TEXT NOT NULL
+)";
+        }
 
         [Column(Name = "PendingOperations")] 
         [ScaffoldColumn(true)]
@@ -1777,20 +1803,6 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 	[ScaffoldTable(true)]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [InformationChangeItem](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[StartTimeUTC] TEXT NOT NULL, 
-[EndTimeUTC] TEXT NOT NULL, 
-[ChangedObjectIDList] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -1808,6 +1820,20 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [InformationChangeItem](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[StartTimeUTC] TEXT NOT NULL, 
+[EndTimeUTC] TEXT NOT NULL, 
+[ChangedObjectIDList] TEXT NOT NULL
+)";
+        }
 
 
 		[Column]
@@ -1879,6 +1905,24 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 	[ScaffoldTable(true)]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public OperationExecutionItem() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -1897,24 +1941,6 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 [ExecutionStatus] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public OperationExecutionItem() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -1975,18 +2001,6 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 	[ScaffoldTable(true)]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ValueObjectID] TEXT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2004,6 +2018,18 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ValueObjectID] TEXT NULL
+)";
+        }
 
 			[Column]
 			public string ValueObjectID { get; set; }
@@ -2024,20 +2050,6 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 	[ScaffoldTable(true)]
 	public class GenericObject : ITheBallDataContextStorable
 	{
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GenericObject](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ValuesID] TEXT NULL, 
-[IncludeInCollection] INTEGER NOT NULL, 
-[OptionalCollectionName] TEXT NOT NULL
-)";
-        }
-
 
 		[Column(IsPrimaryKey = true)]
         [ScaffoldColumn(true)]
@@ -2055,6 +2067,20 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
 		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GenericObject](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[ValuesID] TEXT NULL, 
+[IncludeInCollection] INTEGER NOT NULL, 
+[OptionalCollectionName] TEXT NOT NULL
+)";
+        }
 
         [Column(Name = "Values")] 
         [ScaffoldColumn(true)]
@@ -2128,6 +2154,24 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 	[ScaffoldTable(true)]
 	public class GenericValue : ITheBallDataContextStorable
 	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GenericValue() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
         public static string GetCreateTableSQL()
         {
             return
@@ -2150,24 +2194,6 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 [IndexingInfo] TEXT NOT NULL
 )";
         }
-
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public GenericValue() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
 
 
 		[Column]
@@ -2473,6 +2499,78 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
                 ObjectArrayData = JsonConvert.SerializeObject(dataToStore);
             }
 
+		}
+	}
+    [Table(Name = "ConnectionCollection")]
+	[ScaffoldTable(true)]
+	public class ConnectionCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public ConnectionCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [ConnectionCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+	}
+    [Table(Name = "GenericObjectCollection")]
+	[ScaffoldTable(true)]
+	public class GenericObjectCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GenericObjectCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GenericObjectCollection](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL)";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
 		}
 	}
  } 
