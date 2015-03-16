@@ -12,7 +12,7 @@ using AGI=SQLite.AaltoGlobalImpact.OIP;
 
 namespace PlatformCoreTests
 {
-    [TestClass]
+    //[TestClass]
     public class SQLiteTests
     {
 

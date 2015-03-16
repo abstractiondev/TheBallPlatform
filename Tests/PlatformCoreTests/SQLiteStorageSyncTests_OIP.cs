@@ -11,7 +11,7 @@ using SQLiteSupport;
 
 namespace PlatformCoreTests
 {
-    [TestClass]
+    //[TestClass]
     public class SQLiteStorageSyncTests_OIP
     {
         private readonly string PathRoot = TestSupport.OIPPath;
