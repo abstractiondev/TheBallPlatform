@@ -28,37 +28,51 @@ namespace TheBall.Interface
         {
             var owner = VirtualOwner.FigureOwner(binaryFile);
             var mediaContent = new MediaContent();
-            mediaContent.SetLocationAsOwnerContent(owner, mediaContent.ID);
+            string fileExt = Path.GetExtension(binaryFile.OriginalFileName);
+            mediaContent.SetLocationAsOwnerContent(owner, mediaContent.ID + fileExt);
             mediaContent.FileExt = Path.GetExtension(binaryFile.OriginalFileName);
             mediaContent.OriginalFileName = binaryFile.OriginalFileName;
             binaryFile.Data = mediaContent;
             HttpWebRequest request = WebRequest.CreateHttp(dataUrl);
             var response = request.GetResponse();
-            var readStream = response.GetResponseStream();
-            string blobName = mediaContent.RelativeLocation + mediaContent.FileExt;
-            var storageBlob = StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
-            var writeStream = storageBlob.OpenWrite();
-            int bufferSize = 1024*1024;
-            byte[] dataBuffer = new byte[bufferSize];
-
-            int totalLength = 0;
-            int actualReadLength = 0;
-            Task writeTask = null;
-            do
+            Stream responseStream = null;
+            try
             {
-                Task<int> readTask = readStream.ReadAsync(dataBuffer, 0, dataBuffer.Length);
-                if (writeTask != null)
-                    Task.WaitAll(readTask, writeTask);
-                else 
-                    readTask.Wait();
-                actualReadLength = readTask.Result;
-                writeTask = writeStream.WriteAsync(dataBuffer, 0, actualReadLength);
-                if(actualReadLength < bufferSize)
-                    writeTask.Wait();
-                totalLength += actualReadLength;
-            } while (actualReadLength < bufferSize);
-            binaryFile.Data.ContentLength = totalLength;
-            binaryFile.StoreInformation();
+                responseStream = response.GetResponseStream();
+                string blobName = mediaContent.RelativeLocation;
+                var storageBlob = StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
+                int totalLength = 0;
+                using (var writeStream = storageBlob.OpenWrite())
+                {
+                    int bufferSize = 1024*1024;
+                    byte[] dataBuffer = new byte[bufferSize];
+
+                    int actualReadLength = 0;
+                    Task writeTask = null;
+                    do
+                    {
+                        Task<int> readTask = responseStream.ReadAsync(dataBuffer, 0, dataBuffer.Length);
+                        if (writeTask != null)
+                            Task.WaitAll(readTask, writeTask);
+                        else
+                            readTask.Wait();
+                        actualReadLength = readTask.Result;
+                        writeTask = writeStream.WriteAsync(dataBuffer, 0, actualReadLength);
+                        if (actualReadLength < bufferSize)
+                            writeTask.Wait();
+                        totalLength += actualReadLength;
+                    } while (actualReadLength > 0);
+                    writeStream.Flush();
+                    writeStream.Close();
+                }
+                binaryFile.Data.ContentLength = totalLength;
+                binaryFile.StoreInformation();
+            }
+            finally
+            {
+                responseStream.Close();
+            }
+
         }
 
 

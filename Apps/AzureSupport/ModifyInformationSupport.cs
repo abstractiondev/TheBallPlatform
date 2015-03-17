@@ -127,6 +127,19 @@ namespace TheBall
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD"};
             switch (operationName)
             {
+                case "FetchURLAsGroupContent":
+                {
+                    if(containerOwner.IsGroupContainer() == false)
+                        throw new NotSupportedException("CreateOrUpdateCustomUI is only supported for groups");
+                    var groupID = containerOwner.LocationPrefix;
+                    FetchURLAsGroupContent.Execute(new FetchURLAsGroupContentParameters
+                    {
+                        DataURL = form["DataURL"],
+                        FileName = form["FileName"],
+                        GroupID = groupID
+                    });
+                    break;
+                }
                 case "PersonalWeb.Diosphere.SaveRoomData":
                 {
                     PersonalWeb.Diosphere.SaveRoomData.Execute(new SaveRoomDataParameters
