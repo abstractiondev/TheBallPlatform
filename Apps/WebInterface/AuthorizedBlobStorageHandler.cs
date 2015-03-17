@@ -609,6 +609,8 @@ namespace WebInterface
         {
             // Set the cache request properties as IIS will include them regardless for now
             // even when we wouldn't want them on 304 response...
+            //var request = context.Request;
+            //request.
             response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
             response.Cache.SetCacheability(HttpCacheability.Private);
             var request = context.Request;

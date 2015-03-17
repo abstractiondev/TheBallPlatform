@@ -1,3 +1,4 @@
+using System;
 using System.Data.Linq;
 using System.IO;
 using System.Net;
@@ -44,22 +45,24 @@ namespace TheBall.Interface
                 int totalLength = 0;
                 using (var writeStream = storageBlob.OpenWrite())
                 {
-                    int bufferSize = 1024*1024;
-                    byte[] dataBuffer = new byte[bufferSize];
+                    byte[] readBuffer = new byte[128 * 1024];
+                    byte[] writeBuffer = new byte[128 * 1024];
 
                     int actualReadLength = 0;
                     Task writeTask = null;
                     do
                     {
-                        Task<int> readTask = responseStream.ReadAsync(dataBuffer, 0, dataBuffer.Length);
+                        Task<int> readTask = responseStream.ReadAsync(readBuffer, 0, readBuffer.Length);
                         if (writeTask != null)
                             Task.WaitAll(readTask, writeTask);
                         else
                             readTask.Wait();
                         actualReadLength = readTask.Result;
-                        writeTask = writeStream.WriteAsync(dataBuffer, 0, actualReadLength);
-                        if (actualReadLength < bufferSize)
-                            writeTask.Wait();
+                        if (actualReadLength > 0)
+                        {
+                            Array.Copy(readBuffer, writeBuffer, actualReadLength);
+                            writeTask = writeStream.WriteAsync(writeBuffer, 0, actualReadLength);
+                        }
                         totalLength += actualReadLength;
                     } while (actualReadLength > 0);
                     writeStream.Flush();
