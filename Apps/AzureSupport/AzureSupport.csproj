@@ -391,6 +391,7 @@
     <Compile Include="TheBall.Interface\CreateReceivingConnectionStructuresImplementation.cs" />
     <Compile Include="TheBall.Interface\DeleteConnectionWithStructuresImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteConnectionProcessImplementation.cs" />
+    <Compile Include="TheBall.Interface\FetchURLAsGroupContentImplementation.cs" />
     <Compile Include="TheBall.Interface\FinalizeConnectionAfterGroupAuthorizationImplementation.cs" />
     <Compile Include="TheBall.Interface\GenericObject.cs" />
     <Compile Include="TheBall.Interface\GenericObjectCollection.cs" />

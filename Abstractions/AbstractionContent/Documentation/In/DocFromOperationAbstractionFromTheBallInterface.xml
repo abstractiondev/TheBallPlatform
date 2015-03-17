@@ -530,6 +530,82 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="FetchURLAsGroupContent (GroupID, FileName, DataURL)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fetch URL data as group BinaryFile/MediaContent</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID to fetch data as for</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>FileName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>File name of data to be fetched</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DataURL</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>URL from where to fetch the data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Owner ( GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>GroupID as owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: BinaryFile ( Owner, FileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Binary file to attach the mediacontent to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: FetchDataAndAttachToFile ( BinaryFile, DataURL )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fetch data from URL and attach to file</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="FinalizeConnectionAfterGroupAuthorization (ConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

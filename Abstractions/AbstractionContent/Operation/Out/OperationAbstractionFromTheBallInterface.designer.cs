@@ -326,4 +326,24 @@ using System.IO;
 				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-		 } 
+				public class FetchURLAsGroupContentParameters 
+		{
+				public string GroupID ;
+				public string FileName ;
+				public string DataURL ;
+				}
+		
+		public class FetchURLAsGroupContent 
+		{
+				private static void PrepareParameters(FetchURLAsGroupContentParameters parameters)
+		{
+					}
+				public static void Execute(FetchURLAsGroupContentParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner Owner = FetchURLAsGroupContentImplementation.GetTarget_Owner(parameters.GroupID);	
+				AaltoGlobalImpact.OIP.BinaryFile BinaryFile = FetchURLAsGroupContentImplementation.GetTarget_BinaryFile(parameters.FileName, Owner);	
+				FetchURLAsGroupContentImplementation.ExecuteMethod_FetchDataAndAttachToFile(parameters.DataURL, BinaryFile);		
+				}
+				}
+		} 

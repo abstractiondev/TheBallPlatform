@@ -432,5 +432,30 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="FetchURLAsGroupContent">
+      <OperationSpec>
+        <Description>Fetch URL data as group BinaryFile/MediaContent</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID to fetch data as for" state="implemented" />
+        <Parameter name="FileName" dataType="string" designDesc="File name of data to be fetched" state="implemented" />
+        <Parameter name="DataURL" dataType="string" designDesc="URL from where to fetch the data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="GroupID as owner" state="implemented">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="BinaryFile" dataType="AaltoGlobalImpact.OIP.BinaryFile" designDesc="Binary file to attach the mediacontent to" state="implemented">
+            <Parameter name="FileName" />
+            <Target name="Owner" />
+          </TargetDefinition>
+          <MethodExecute name="FetchDataAndAttachToFile" designDesc="Fetch data from URL and attach to file" state="implemented">
+            <Parameter name="DataURL" />
+            <Target name="BinaryFile" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

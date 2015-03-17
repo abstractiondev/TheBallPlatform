@@ -684,6 +684,78 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Serialize communication data to output
 		</div>
+		</p><h1>FetchURLAsGroupContent (GroupID, FileName, DataURL)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Fetch URL data as group BinaryFile/MediaContent
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID to fetch data as for
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		FileName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		File name of data to be fetched
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DataURL
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		URL from where to fetch the data
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Owner ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		GroupID as owner
+		</div>
+		</p><h2>Target Definition: BinaryFile ( Owner, FileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Binary file to attach the mediacontent to
+		</div>
+		</p><h2>Method Call: FetchDataAndAttachToFile ( BinaryFile, DataURL )</h2>
+		<p>		<div class="MsoNormal" >
+		Fetch data from URL and attach to file
+		</div>
 		</p><h1>FinalizeConnectionAfterGroupAuthorization (ConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
