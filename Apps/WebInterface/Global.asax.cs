@@ -188,6 +188,8 @@ namespace WebInterface
                              Request.Url.DnsSafeHost.StartsWith("apps.") ||
                              Request.Url.DnsSafeHost.StartsWith("newglobal.") ||
                              Request.Url.DnsSafeHost.StartsWith("ptt-") ||
+                             Request.Url.DnsSafeHost.StartsWith("ams.welearnit.org") ||
+                             Request.Url.DnsSafeHost.StartsWith("ams-2015.welearnit.org") ||
                              Request.Url.DnsSafeHost.StartsWith("izenzei.probroz.info");
                 if (isWebSocket == false && isIndexAspx == false && isWww == false)
                 {
