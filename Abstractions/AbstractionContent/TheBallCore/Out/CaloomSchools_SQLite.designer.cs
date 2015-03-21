@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.Caloom.Schools { 
@@ -187,6 +188,7 @@ namespace SQLite.Caloom.Schools {
 
     [Table(Name = "TrainingModule")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TrainingModule: {ID}")]
 	public class TrainingModule : ITheBallDataContextStorable
 	{
 
@@ -218,7 +220,8 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[TrainingModulesID] TEXT NULL
 )";
         }
 
@@ -266,6 +269,7 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
 	}
     [Table(Name = "TrainingModuleCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TrainingModuleCollection: {ID}")]
 	public class TrainingModuleCollection : ITheBallDataContextStorable
 	{
 
@@ -291,13 +295,18 @@ CREATE TABLE IF NOT EXISTS [TrainingModule](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TrainingModuleCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
  } 

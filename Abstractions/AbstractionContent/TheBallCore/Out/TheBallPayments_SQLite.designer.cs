@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.TheBall.Payments { 
@@ -239,6 +240,7 @@ namespace SQLite.TheBall.Payments {
 
     [Table(Name = "GroupSubscriptionPlan")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupSubscriptionPlan: {ID}")]
 	public class GroupSubscriptionPlan : ITheBallDataContextStorable
 	{
 
@@ -345,6 +347,7 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
 	}
     [Table(Name = "CustomerAccount")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CustomerAccount: {ID}")]
 	public class CustomerAccount : ITheBallDataContextStorable
 	{
 
@@ -459,6 +462,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 	}
     [Table(Name = "GroupSubscriptionPlanCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupSubscriptionPlanCollection: {ID}")]
 	public class GroupSubscriptionPlanCollection : ITheBallDataContextStorable
 	{
 
@@ -484,17 +488,23 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "CustomerAccountCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CustomerAccountCollection: {ID}")]
 	public class CustomerAccountCollection : ITheBallDataContextStorable
 	{
 
@@ -520,13 +530,18 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlanCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
  } 

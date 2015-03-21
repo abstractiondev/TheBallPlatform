@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Diagnostics;
 
 namespace SQLite
 {
@@ -22,6 +23,7 @@ namespace SQLiteSupport
 
     [Table]
     [ReadOnly(true)]
+    [DebuggerDisplay("Metadata: {SemanticDomain}.{ObjectType}.{ObjectID}")]
     public class InformationObjectMetaData
     {
         public InformationObjectMetaData()

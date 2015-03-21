@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.AaltoGlobalImpact.OIP { 
@@ -7166,6 +7167,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 
     [Table(Name = "TBSystem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBSystem: {ID}")]
 	public class TBSystem : ITheBallDataContextStorable
 	{
 
@@ -7220,6 +7222,7 @@ CREATE TABLE IF NOT EXISTS [TBSystem](
 	}
     [Table(Name = "WebPublishInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("WebPublishInfo: {ID}")]
 	public class WebPublishInfo : ITheBallDataContextStorable
 	{
 
@@ -7250,7 +7253,8 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 , 
 [PublishType] TEXT NOT NULL, 
 [PublishContainer] TEXT NOT NULL, 
-[ActivePublicationID] TEXT NULL
+[ActivePublicationID] TEXT NULL, 
+[PublicationsID] TEXT NULL
 )";
         }
 
@@ -7294,6 +7298,7 @@ CREATE TABLE IF NOT EXISTS [WebPublishInfo](
 	}
     [Table(Name = "PublicationPackage")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("PublicationPackage: {ID}")]
 	public class PublicationPackage : ITheBallDataContextStorable
 	{
 
@@ -7346,6 +7351,7 @@ CREATE TABLE IF NOT EXISTS [PublicationPackage](
 	}
     [Table(Name = "TBRLoginRoot")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBRLoginRoot: {ID}")]
 	public class TBRLoginRoot : ITheBallDataContextStorable
 	{
 
@@ -7403,6 +7409,7 @@ CREATE TABLE IF NOT EXISTS [TBRLoginRoot](
 	}
     [Table(Name = "TBRAccountRoot")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBRAccountRoot: {ID}")]
 	public class TBRAccountRoot : ITheBallDataContextStorable
 	{
 
@@ -7452,6 +7459,7 @@ CREATE TABLE IF NOT EXISTS [TBRAccountRoot](
 	}
     [Table(Name = "TBRGroupRoot")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBRGroupRoot: {ID}")]
 	public class TBRGroupRoot : ITheBallDataContextStorable
 	{
 
@@ -7501,6 +7509,7 @@ CREATE TABLE IF NOT EXISTS [TBRGroupRoot](
 	}
     [Table(Name = "TBRLoginGroupRoot")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBRLoginGroupRoot: {ID}")]
 	public class TBRLoginGroupRoot : ITheBallDataContextStorable
 	{
 
@@ -7555,6 +7564,7 @@ CREATE TABLE IF NOT EXISTS [TBRLoginGroupRoot](
 	}
     [Table(Name = "TBREmailRoot")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBREmailRoot: {ID}")]
 	public class TBREmailRoot : ITheBallDataContextStorable
 	{
 
@@ -7604,6 +7614,7 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 	}
     [Table(Name = "TBAccount")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBAccount: {ID}")]
 	public class TBAccount : ITheBallDataContextStorable
 	{
 
@@ -7631,7 +7642,10 @@ CREATE TABLE IF NOT EXISTS [TBREmailRoot](
 CREATE TABLE IF NOT EXISTS [TBAccount](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[EmailsID] TEXT NULL, 
+[LoginsID] TEXT NULL, 
+[GroupRoleCollectionID] TEXT NULL
 )";
         }
 
@@ -7669,6 +7683,7 @@ CREATE TABLE IF NOT EXISTS [TBAccount](
 	}
     [Table(Name = "TBAccountCollaborationGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBAccountCollaborationGroup: {ID}")]
 	public class TBAccountCollaborationGroup : ITheBallDataContextStorable
 	{
 
@@ -7731,6 +7746,7 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroup](
 	}
     [Table(Name = "TBLoginInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBLoginInfo: {ID}")]
 	public class TBLoginInfo : ITheBallDataContextStorable
 	{
 
@@ -7777,6 +7793,7 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfo](
 	}
     [Table(Name = "TBEmail")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBEmail: {ID}")]
 	public class TBEmail : ITheBallDataContextStorable
 	{
 
@@ -7829,6 +7846,7 @@ CREATE TABLE IF NOT EXISTS [TBEmail](
 	}
     [Table(Name = "TBCollaboratorRole")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBCollaboratorRole: {ID}")]
 	public class TBCollaboratorRole : ITheBallDataContextStorable
 	{
 
@@ -7894,6 +7912,7 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRole](
 	}
     [Table(Name = "TBCollaboratingGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBCollaboratingGroup: {ID}")]
 	public class TBCollaboratingGroup : ITheBallDataContextStorable
 	{
 
@@ -7922,7 +7941,8 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[Title] TEXT NOT NULL
+[Title] TEXT NOT NULL, 
+[RolesID] TEXT NULL
 )";
         }
 
@@ -7949,6 +7969,7 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratingGroup](
 	}
     [Table(Name = "TBEmailValidation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBEmailValidation: {ID}")]
 	public class TBEmailValidation : ITheBallDataContextStorable
 	{
 
@@ -8072,6 +8093,7 @@ CREATE TABLE IF NOT EXISTS [TBEmailValidation](
 	}
     [Table(Name = "TBMergeAccountConfirmation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBMergeAccountConfirmation: {ID}")]
 	public class TBMergeAccountConfirmation : ITheBallDataContextStorable
 	{
 
@@ -8126,6 +8148,7 @@ CREATE TABLE IF NOT EXISTS [TBMergeAccountConfirmation](
 	}
     [Table(Name = "TBGroupJoinConfirmation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBGroupJoinConfirmation: {ID}")]
 	public class TBGroupJoinConfirmation : ITheBallDataContextStorable
 	{
 
@@ -8180,6 +8203,7 @@ CREATE TABLE IF NOT EXISTS [TBGroupJoinConfirmation](
 	}
     [Table(Name = "TBDeviceJoinConfirmation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBDeviceJoinConfirmation: {ID}")]
 	public class TBDeviceJoinConfirmation : ITheBallDataContextStorable
 	{
 
@@ -8242,6 +8266,7 @@ CREATE TABLE IF NOT EXISTS [TBDeviceJoinConfirmation](
 	}
     [Table(Name = "TBInformationInputConfirmation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBInformationInputConfirmation: {ID}")]
 	public class TBInformationInputConfirmation : ITheBallDataContextStorable
 	{
 
@@ -8304,6 +8329,7 @@ CREATE TABLE IF NOT EXISTS [TBInformationInputConfirmation](
 	}
     [Table(Name = "TBInformationOutputConfirmation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBInformationOutputConfirmation: {ID}")]
 	public class TBInformationOutputConfirmation : ITheBallDataContextStorable
 	{
 
@@ -8366,6 +8392,7 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 	}
     [Table(Name = "TBRegisterContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBRegisterContainer: {ID}")]
 	public class TBRegisterContainer : ITheBallDataContextStorable
 	{
 
@@ -8395,7 +8422,8 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 [ETag] TEXT NOT NULL
 , 
 [HeaderID] TEXT NULL, 
-[ReturnUrl] TEXT NOT NULL
+[ReturnUrl] TEXT NOT NULL, 
+[LoginProviderCollectionID] TEXT NULL
 )";
         }
 
@@ -8432,6 +8460,7 @@ CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
 	}
     [Table(Name = "LoginProvider")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LoginProvider: {ID}")]
 	public class LoginProvider : ITheBallDataContextStorable
 	{
 
@@ -8510,6 +8539,7 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 	}
     [Table(Name = "ContactOipContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ContactOipContainer: {ID}")]
 	public class ContactOipContainer : ITheBallDataContextStorable
 	{
 
@@ -8556,6 +8586,7 @@ CREATE TABLE IF NOT EXISTS [ContactOipContainer](
 	}
     [Table(Name = "TBPRegisterEmail")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBPRegisterEmail: {ID}")]
 	public class TBPRegisterEmail : ITheBallDataContextStorable
 	{
 
@@ -8602,6 +8633,7 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 	}
     [Table(Name = "JavaScriptContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("JavaScriptContainer: {ID}")]
 	public class JavaScriptContainer : ITheBallDataContextStorable
 	{
 
@@ -8648,6 +8680,7 @@ CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
 	}
     [Table(Name = "JavascriptContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("JavascriptContainer: {ID}")]
 	public class JavascriptContainer : ITheBallDataContextStorable
 	{
 
@@ -8694,6 +8727,7 @@ CREATE TABLE IF NOT EXISTS [JavascriptContainer](
 	}
     [Table(Name = "FooterContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("FooterContainer: {ID}")]
 	public class FooterContainer : ITheBallDataContextStorable
 	{
 
@@ -8740,6 +8774,7 @@ CREATE TABLE IF NOT EXISTS [FooterContainer](
 	}
     [Table(Name = "NavigationContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("NavigationContainer: {ID}")]
 	public class NavigationContainer : ITheBallDataContextStorable
 	{
 
@@ -8786,6 +8821,7 @@ CREATE TABLE IF NOT EXISTS [NavigationContainer](
 	}
     [Table(Name = "AccountSummary")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountSummary: {ID}")]
 	public class AccountSummary : ITheBallDataContextStorable
 	{
 
@@ -8857,6 +8893,7 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 	}
     [Table(Name = "AccountContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountContainer: {ID}")]
 	public class AccountContainer : ITheBallDataContextStorable
 	{
 
@@ -8939,6 +8976,7 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 	}
     [Table(Name = "AccountIndex")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountIndex: {ID}")]
 	public class AccountIndex : ITheBallDataContextStorable
 	{
 
@@ -9012,6 +9050,7 @@ CREATE TABLE IF NOT EXISTS [AccountIndex](
 	}
     [Table(Name = "AccountModule")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountModule: {ID}")]
 	public class AccountModule : ITheBallDataContextStorable
 	{
 
@@ -9042,7 +9081,8 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 , 
 [ProfileID] TEXT NULL, 
 [SecurityID] TEXT NULL, 
-[RolesID] TEXT NULL
+[RolesID] TEXT NULL, 
+[LocationCollectionID] TEXT NULL
 )";
         }
 
@@ -9092,6 +9132,7 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 	}
     [Table(Name = "ImageGroupContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ImageGroupContainer: {ID}")]
 	public class ImageGroupContainer : ITheBallDataContextStorable
 	{
 
@@ -9119,7 +9160,8 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[ImageGroupsID] TEXT NULL
 )";
         }
 
@@ -9139,6 +9181,7 @@ CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 	}
     [Table(Name = "LocationContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LocationContainer: {ID}")]
 	public class LocationContainer : ITheBallDataContextStorable
 	{
 
@@ -9166,7 +9209,8 @@ CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
 CREATE TABLE IF NOT EXISTS [LocationContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[LocationsID] TEXT NULL
 )";
         }
 
@@ -9186,6 +9230,7 @@ CREATE TABLE IF NOT EXISTS [LocationContainer](
 	}
     [Table(Name = "AddressAndLocation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddressAndLocation: {ID}")]
 	public class AddressAndLocation : ITheBallDataContextStorable
 	{
 
@@ -9257,6 +9302,7 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocation](
 	}
     [Table(Name = "StreetAddress")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("StreetAddress: {ID}")]
 	public class StreetAddress : ITheBallDataContextStorable
 	{
 
@@ -9327,6 +9373,7 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 	}
     [Table(Name = "AccountContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountContent: {ID}")]
 	public class AccountContent : ITheBallDataContextStorable
 	{
 
@@ -9373,6 +9420,7 @@ CREATE TABLE IF NOT EXISTS [AccountContent](
 	}
     [Table(Name = "AccountProfile")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountProfile: {ID}")]
 	public class AccountProfile : ITheBallDataContextStorable
 	{
 
@@ -9471,6 +9519,7 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 	}
     [Table(Name = "AccountSecurity")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountSecurity: {ID}")]
 	public class AccountSecurity : ITheBallDataContextStorable
 	{
 
@@ -9498,7 +9547,9 @@ CREATE TABLE IF NOT EXISTS [AccountProfile](
 CREATE TABLE IF NOT EXISTS [AccountSecurity](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[LoginInfoCollectionID] TEXT NULL, 
+[EmailCollectionID] TEXT NULL
 )";
         }
 
@@ -9527,6 +9578,7 @@ CREATE TABLE IF NOT EXISTS [AccountSecurity](
 	}
     [Table(Name = "AccountRoles")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountRoles: {ID}")]
 	public class AccountRoles : ITheBallDataContextStorable
 	{
 
@@ -9555,6 +9607,8 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
+[ModeratorInGroupsID] TEXT NULL, 
+[MemberInGroupsID] TEXT NULL, 
 [OrganizationsImPartOf] TEXT NOT NULL
 )";
         }
@@ -9591,6 +9645,7 @@ CREATE TABLE IF NOT EXISTS [AccountRoles](
 	}
     [Table(Name = "PersonalInfoVisibility")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("PersonalInfoVisibility: {ID}")]
 	public class PersonalInfoVisibility : ITheBallDataContextStorable
 	{
 
@@ -9637,6 +9692,7 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 	}
     [Table(Name = "GroupedInformation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupedInformation: {ID}")]
 	public class GroupedInformation : ITheBallDataContextStorable
 	{
 
@@ -9665,7 +9721,8 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[GroupName] TEXT NOT NULL
+[GroupName] TEXT NOT NULL, 
+[ReferenceCollectionID] TEXT NULL
 )";
         }
 
@@ -9692,6 +9749,7 @@ CREATE TABLE IF NOT EXISTS [GroupedInformation](
 	}
     [Table(Name = "ReferenceToInformation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ReferenceToInformation: {ID}")]
 	public class ReferenceToInformation : ITheBallDataContextStorable
 	{
 
@@ -9746,6 +9804,7 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 	}
     [Table(Name = "BlogContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("BlogContainer: {ID}")]
 	public class BlogContainer : ITheBallDataContextStorable
 	{
 
@@ -9828,6 +9887,7 @@ CREATE TABLE IF NOT EXISTS [BlogContainer](
 	}
     [Table(Name = "RecentBlogSummary")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RecentBlogSummary: {ID}")]
 	public class RecentBlogSummary : ITheBallDataContextStorable
 	{
 
@@ -9856,7 +9916,8 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IntroductionID] TEXT NULL
+[IntroductionID] TEXT NULL, 
+[RecentBlogCollectionID] TEXT NULL
 )";
         }
 
@@ -9886,6 +9947,7 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 	}
     [Table(Name = "NodeSummaryContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("NodeSummaryContainer: {ID}")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
 
@@ -9913,7 +9975,16 @@ CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
 CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[NodesID] TEXT NULL, 
+[NodeSourceBlogsID] TEXT NULL, 
+[NodeSourceActivitiesID] TEXT NULL, 
+[NodeSourceTextContentID] TEXT NULL, 
+[NodeSourceLinkToContentID] TEXT NULL, 
+[NodeSourceEmbeddedContentID] TEXT NULL, 
+[NodeSourceImagesID] TEXT NULL, 
+[NodeSourceBinaryFilesID] TEXT NULL, 
+[NodeSourceCategoriesID] TEXT NULL
 )";
         }
 
@@ -10005,6 +10076,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 	}
     [Table(Name = "RenderedNode")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RenderedNode: {ID}")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
 
@@ -10043,7 +10115,12 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [TimestampText] TEXT NOT NULL, 
 [MainSortableText] TEXT NOT NULL, 
 [IsCategoryFilteringNode] INTEGER NOT NULL, 
-[CategoryIDList] TEXT NOT NULL
+[CategoryFiltersID] TEXT NULL, 
+[CategoryNamesID] TEXT NULL, 
+[CategoriesID] TEXT NULL, 
+[CategoryIDList] TEXT NOT NULL, 
+[AuthorsID] TEXT NULL, 
+[LocationsID] TEXT NULL
 )";
         }
 
@@ -10174,6 +10251,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 	}
     [Table(Name = "ShortTextObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ShortTextObject: {ID}")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
 
@@ -10220,6 +10298,7 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 	}
     [Table(Name = "LongTextObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LongTextObject: {ID}")]
 	public class LongTextObject : ITheBallDataContextStorable
 	{
 
@@ -10266,6 +10345,7 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 	}
     [Table(Name = "MapContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapContainer: {ID}")]
 	public class MapContainer : ITheBallDataContextStorable
 	{
 
@@ -10296,7 +10376,13 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 , 
 [HeaderID] TEXT NULL, 
 [MapFeaturedID] TEXT NULL, 
-[MapIndexCollectionID] TEXT NULL
+[MapCollectionID] TEXT NULL, 
+[MapResultCollectionID] TEXT NULL, 
+[MapIndexCollectionID] TEXT NULL, 
+[MarkerSourceLocationsID] TEXT NULL, 
+[MarkerSourceBlogsID] TEXT NULL, 
+[MarkerSourceActivitiesID] TEXT NULL, 
+[MapMarkersID] TEXT NULL
 )";
         }
 
@@ -10391,6 +10477,7 @@ CREATE TABLE IF NOT EXISTS [MapContainer](
 	}
     [Table(Name = "MapMarker")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapMarker: {ID}")]
 	public class MapMarker : ITheBallDataContextStorable
 	{
 
@@ -10488,6 +10575,7 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 	}
     [Table(Name = "CalendarContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CalendarContainer: {ID}")]
 	public class CalendarContainer : ITheBallDataContextStorable
 	{
 
@@ -10518,6 +10606,7 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
 , 
 [CalendarContainerHeaderID] TEXT NULL, 
 [CalendarFeaturedID] TEXT NULL, 
+[CalendarCollectionID] TEXT NULL, 
 [CalendarIndexCollectionID] TEXT NULL
 )";
         }
@@ -10568,6 +10657,7 @@ CREATE TABLE IF NOT EXISTS [CalendarContainer](
 	}
     [Table(Name = "AboutContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AboutContainer: {ID}")]
 	public class AboutContainer : ITheBallDataContextStorable
 	{
 
@@ -10669,6 +10759,7 @@ CREATE TABLE IF NOT EXISTS [AboutContainer](
 	}
     [Table(Name = "OBSAccountContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("OBSAccountContainer: {ID}")]
 	public class OBSAccountContainer : ITheBallDataContextStorable
 	{
 
@@ -10699,6 +10790,7 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 , 
 [AccountContainerHeaderID] TEXT NULL, 
 [AccountFeaturedID] TEXT NULL, 
+[AccountCollectionID] TEXT NULL, 
 [AccountIndexCollectionID] TEXT NULL
 )";
         }
@@ -10749,6 +10841,7 @@ CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
 	}
     [Table(Name = "ProjectContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ProjectContainer: {ID}")]
 	public class ProjectContainer : ITheBallDataContextStorable
 	{
 
@@ -10779,6 +10872,7 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
 , 
 [ProjectContainerHeaderID] TEXT NULL, 
 [ProjectFeaturedID] TEXT NULL, 
+[ProjectCollectionID] TEXT NULL, 
 [ProjectIndexCollectionID] TEXT NULL
 )";
         }
@@ -10829,6 +10923,7 @@ CREATE TABLE IF NOT EXISTS [ProjectContainer](
 	}
     [Table(Name = "CourseContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CourseContainer: {ID}")]
 	public class CourseContainer : ITheBallDataContextStorable
 	{
 
@@ -10859,6 +10954,7 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
 , 
 [CourseContainerHeaderID] TEXT NULL, 
 [CourseFeaturedID] TEXT NULL, 
+[CourseCollectionID] TEXT NULL, 
 [CourseIndexCollectionID] TEXT NULL
 )";
         }
@@ -10909,6 +11005,7 @@ CREATE TABLE IF NOT EXISTS [CourseContainer](
 	}
     [Table(Name = "ContainerHeader")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ContainerHeader: {ID}")]
 	public class ContainerHeader : ITheBallDataContextStorable
 	{
 
@@ -10963,6 +11060,7 @@ CREATE TABLE IF NOT EXISTS [ContainerHeader](
 	}
     [Table(Name = "ActivitySummaryContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ActivitySummaryContainer: {ID}")]
 	public class ActivitySummaryContainer : ITheBallDataContextStorable
 	{
 
@@ -10994,7 +11092,8 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 [HeaderID] TEXT NULL, 
 [SummaryBody] TEXT NOT NULL, 
 [IntroductionID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL
+[ActivityIndexID] TEXT NULL, 
+[ActivityCollectionID] TEXT NULL
 )";
         }
 
@@ -11051,6 +11150,7 @@ CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
 	}
     [Table(Name = "ActivityIndex")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ActivityIndex: {ID}")]
 	public class ActivityIndex : ITheBallDataContextStorable
 	{
 
@@ -11124,6 +11224,7 @@ CREATE TABLE IF NOT EXISTS [ActivityIndex](
 	}
     [Table(Name = "ActivityContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ActivityContainer: {ID}")]
 	public class ActivityContainer : ITheBallDataContextStorable
 	{
 
@@ -11195,6 +11296,7 @@ CREATE TABLE IF NOT EXISTS [ActivityContainer](
 	}
     [Table(Name = "Activity")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Activity: {ID}")]
 	public class Activity : ITheBallDataContextStorable
 	{
 
@@ -11232,7 +11334,11 @@ CREATE TABLE IF NOT EXISTS [Activity](
 [StartingTime] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL
+[IFrameSources] TEXT NOT NULL, 
+[CollaboratorsID] TEXT NULL, 
+[ImageGroupCollectionID] TEXT NULL, 
+[LocationCollectionID] TEXT NULL, 
+[CategoryCollectionID] TEXT NULL
 )";
         }
 
@@ -11359,6 +11465,7 @@ CREATE TABLE IF NOT EXISTS [Activity](
 	}
     [Table(Name = "Moderator")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Moderator: {ID}")]
 	public class Moderator : ITheBallDataContextStorable
 	{
 
@@ -11413,6 +11520,7 @@ CREATE TABLE IF NOT EXISTS [Moderator](
 	}
     [Table(Name = "Collaborator")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Collaborator: {ID}")]
 	public class Collaborator : ITheBallDataContextStorable
 	{
 
@@ -11491,6 +11599,7 @@ CREATE TABLE IF NOT EXISTS [Collaborator](
 	}
     [Table(Name = "GroupSummaryContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupSummaryContainer: {ID}")]
 	public class GroupSummaryContainer : ITheBallDataContextStorable
 	{
 
@@ -11522,7 +11631,8 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [HeaderID] TEXT NULL, 
 [SummaryBody] TEXT NOT NULL, 
 [IntroductionID] TEXT NULL, 
-[GroupSummaryIndexID] TEXT NULL
+[GroupSummaryIndexID] TEXT NULL, 
+[GroupCollectionID] TEXT NULL
 )";
         }
 
@@ -11579,6 +11689,7 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 	}
     [Table(Name = "GroupContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupContainer: {ID}")]
 	public class GroupContainer : ITheBallDataContextStorable
 	{
 
@@ -11609,7 +11720,12 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 , 
 [HeaderID] TEXT NULL, 
 [GroupIndexID] TEXT NULL, 
-[GroupProfileID] TEXT NULL
+[GroupProfileID] TEXT NULL, 
+[CollaboratorsID] TEXT NULL, 
+[PendingCollaboratorsID] TEXT NULL, 
+[ActivitiesID] TEXT NULL, 
+[ImageGroupCollectionID] TEXT NULL, 
+[LocationCollectionID] TEXT NULL
 )";
         }
 
@@ -11695,6 +11811,7 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 	}
     [Table(Name = "GroupIndex")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupIndex: {ID}")]
 	public class GroupIndex : ITheBallDataContextStorable
 	{
 
@@ -11768,6 +11885,7 @@ CREATE TABLE IF NOT EXISTS [GroupIndex](
 	}
     [Table(Name = "AddAddressAndLocationInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddAddressAndLocationInfo: {ID}")]
 	public class AddAddressAndLocationInfo : ITheBallDataContextStorable
 	{
 
@@ -11814,6 +11932,7 @@ CREATE TABLE IF NOT EXISTS [AddAddressAndLocationInfo](
 	}
     [Table(Name = "AddImageInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddImageInfo: {ID}")]
 	public class AddImageInfo : ITheBallDataContextStorable
 	{
 
@@ -11860,6 +11979,7 @@ CREATE TABLE IF NOT EXISTS [AddImageInfo](
 	}
     [Table(Name = "AddImageGroupInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddImageGroupInfo: {ID}")]
 	public class AddImageGroupInfo : ITheBallDataContextStorable
 	{
 
@@ -11906,6 +12026,7 @@ CREATE TABLE IF NOT EXISTS [AddImageGroupInfo](
 	}
     [Table(Name = "AddEmailAddressInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddEmailAddressInfo: {ID}")]
 	public class AddEmailAddressInfo : ITheBallDataContextStorable
 	{
 
@@ -11952,6 +12073,7 @@ CREATE TABLE IF NOT EXISTS [AddEmailAddressInfo](
 	}
     [Table(Name = "CreateGroupInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CreateGroupInfo: {ID}")]
 	public class CreateGroupInfo : ITheBallDataContextStorable
 	{
 
@@ -11998,6 +12120,7 @@ CREATE TABLE IF NOT EXISTS [CreateGroupInfo](
 	}
     [Table(Name = "AddActivityInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddActivityInfo: {ID}")]
 	public class AddActivityInfo : ITheBallDataContextStorable
 	{
 
@@ -12044,6 +12167,7 @@ CREATE TABLE IF NOT EXISTS [AddActivityInfo](
 	}
     [Table(Name = "AddBlogPostInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddBlogPostInfo: {ID}")]
 	public class AddBlogPostInfo : ITheBallDataContextStorable
 	{
 
@@ -12090,6 +12214,7 @@ CREATE TABLE IF NOT EXISTS [AddBlogPostInfo](
 	}
     [Table(Name = "AddCategoryInfo")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddCategoryInfo: {ID}")]
 	public class AddCategoryInfo : ITheBallDataContextStorable
 	{
 
@@ -12136,6 +12261,7 @@ CREATE TABLE IF NOT EXISTS [AddCategoryInfo](
 	}
     [Table(Name = "Group")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Group: {ID}")]
 	public class Group : ITheBallDataContextStorable
 	{
 
@@ -12170,7 +12296,10 @@ CREATE TABLE IF NOT EXISTS [Group](
 [GroupName] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
 [OrganizationsAndGroupsLinkedToUs] TEXT NOT NULL, 
-[WwwSiteToPublishTo] TEXT NOT NULL
+[WwwSiteToPublishTo] TEXT NOT NULL, 
+[CustomUICollectionID] TEXT NULL, 
+[ModeratorsID] TEXT NULL, 
+[CategoryCollectionID] TEXT NULL
 )";
         }
 
@@ -12266,6 +12395,7 @@ CREATE TABLE IF NOT EXISTS [Group](
 	}
     [Table(Name = "Introduction")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Introduction: {ID}")]
 	public class Introduction : ITheBallDataContextStorable
 	{
 
@@ -12320,6 +12450,7 @@ CREATE TABLE IF NOT EXISTS [Introduction](
 	}
     [Table(Name = "ContentCategoryRank")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ContentCategoryRank: {ID}")]
 	public class ContentCategoryRank : ITheBallDataContextStorable
 	{
 
@@ -12398,6 +12529,7 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRank](
 	}
     [Table(Name = "LinkToContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LinkToContent: {ID}")]
 	public class LinkToContent : ITheBallDataContextStorable
 	{
 
@@ -12431,7 +12563,9 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 [Description] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
-[ImageDataID] TEXT NULL
+[ImageDataID] TEXT NULL, 
+[LocationsID] TEXT NULL, 
+[CategoriesID] TEXT NULL
 )";
         }
 
@@ -12495,6 +12629,7 @@ CREATE TABLE IF NOT EXISTS [LinkToContent](
 	}
     [Table(Name = "EmbeddedContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("EmbeddedContent: {ID}")]
 	public class EmbeddedContent : ITheBallDataContextStorable
 	{
 
@@ -12527,7 +12662,9 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 [Title] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[LocationsID] TEXT NULL, 
+[CategoriesID] TEXT NULL
 )";
         }
 
@@ -12589,6 +12726,7 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContent](
 	}
     [Table(Name = "DynamicContentGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DynamicContentGroup: {ID}")]
 	public class DynamicContentGroup : ITheBallDataContextStorable
 	{
 
@@ -12667,6 +12805,7 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroup](
 	}
     [Table(Name = "DynamicContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DynamicContent: {ID}")]
 	public class DynamicContent : ITheBallDataContextStorable
 	{
 
@@ -12792,6 +12931,7 @@ CREATE TABLE IF NOT EXISTS [DynamicContent](
 	}
     [Table(Name = "AttachedToObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AttachedToObject: {ID}")]
 	public class AttachedToObject : ITheBallDataContextStorable
 	{
 
@@ -12878,6 +13018,7 @@ CREATE TABLE IF NOT EXISTS [AttachedToObject](
 	}
     [Table(Name = "Comment")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Comment: {ID}")]
 	public class Comment : ITheBallDataContextStorable
 	{
 
@@ -13008,6 +13149,7 @@ CREATE TABLE IF NOT EXISTS [Comment](
 	}
     [Table(Name = "Selection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Selection: {ID}")]
 	public class Selection : ITheBallDataContextStorable
 	{
 
@@ -13098,6 +13240,7 @@ CREATE TABLE IF NOT EXISTS [Selection](
 	}
     [Table(Name = "TextContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TextContent: {ID}")]
 	public class TextContent : ITheBallDataContextStorable
 	{
 
@@ -13133,6 +13276,8 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 [Author] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
+[LocationsID] TEXT NULL, 
+[CategoriesID] TEXT NULL, 
 [SortOrderNumber] REAL NOT NULL, 
 [IFrameSources] TEXT NOT NULL, 
 [RawHtmlContent] TEXT NOT NULL
@@ -13225,6 +13370,7 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 	}
     [Table(Name = "Blog")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Blog: {ID}")]
 	public class Blog : ITheBallDataContextStorable
 	{
 
@@ -13262,10 +13408,14 @@ CREATE TABLE IF NOT EXISTS [Blog](
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
 [FeaturedImageID] TEXT NULL, 
+[ImageGroupCollectionID] TEXT NULL, 
 [VideoGroupID] TEXT NULL, 
 [Body] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL
+[IFrameSources] TEXT NOT NULL, 
+[LocationCollectionID] TEXT NULL, 
+[CategoryCollectionID] TEXT NULL, 
+[SocialPanelID] TEXT NULL
 )";
         }
 
@@ -13419,6 +13569,7 @@ CREATE TABLE IF NOT EXISTS [Blog](
 	}
     [Table(Name = "BlogIndexGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("BlogIndexGroup: {ID}")]
 	public class BlogIndexGroup : ITheBallDataContextStorable
 	{
 
@@ -13450,6 +13601,12 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 [IconID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Introduction] TEXT NOT NULL, 
+[GroupedByDateID] TEXT NULL, 
+[GroupedByLocationID] TEXT NULL, 
+[GroupedByAuthorID] TEXT NULL, 
+[GroupedByCategoryID] TEXT NULL, 
+[FullBlogArchiveID] TEXT NULL, 
+[BlogSourceForSummaryID] TEXT NULL, 
 [Summary] TEXT NOT NULL
 )";
         }
@@ -13546,6 +13703,7 @@ CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
 	}
     [Table(Name = "CalendarIndex")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CalendarIndex: {ID}")]
 	public class CalendarIndex : ITheBallDataContextStorable
 	{
 
@@ -13619,6 +13777,7 @@ CREATE TABLE IF NOT EXISTS [CalendarIndex](
 	}
     [Table(Name = "Filter")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Filter: {ID}")]
 	public class Filter : ITheBallDataContextStorable
 	{
 
@@ -13665,6 +13824,7 @@ CREATE TABLE IF NOT EXISTS [Filter](
 	}
     [Table(Name = "Calendar")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Calendar: {ID}")]
 	public class Calendar : ITheBallDataContextStorable
 	{
 
@@ -13711,6 +13871,7 @@ CREATE TABLE IF NOT EXISTS [Calendar](
 	}
     [Table(Name = "Map")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Map: {ID}")]
 	public class Map : ITheBallDataContextStorable
 	{
 
@@ -13757,6 +13918,7 @@ CREATE TABLE IF NOT EXISTS [Map](
 	}
     [Table(Name = "MapIndexCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapIndexCollection: {ID}")]
 	public class MapIndexCollection : ITheBallDataContextStorable
 	{
 
@@ -13784,7 +13946,11 @@ CREATE TABLE IF NOT EXISTS [Map](
 CREATE TABLE IF NOT EXISTS [MapIndexCollection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[MapByDateID] TEXT NULL, 
+[MapByLocationID] TEXT NULL, 
+[MapByAuthorID] TEXT NULL, 
+[MapByCategoryID] TEXT NULL
 )";
         }
 
@@ -13831,6 +13997,7 @@ CREATE TABLE IF NOT EXISTS [MapIndexCollection](
 	}
     [Table(Name = "MapResult")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapResult: {ID}")]
 	public class MapResult : ITheBallDataContextStorable
 	{
 
@@ -13880,6 +14047,7 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 	}
     [Table(Name = "MapResultsCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapResultsCollection: {ID}")]
 	public class MapResultsCollection : ITheBallDataContextStorable
 	{
 
@@ -13907,7 +14075,10 @@ CREATE TABLE IF NOT EXISTS [MapResult](
 CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[ResultByDateID] TEXT NULL, 
+[ResultByAuthorID] TEXT NULL, 
+[ResultByProximityID] TEXT NULL
 )";
         }
 
@@ -13945,6 +14116,7 @@ CREATE TABLE IF NOT EXISTS [MapResultsCollection](
 	}
     [Table(Name = "Video")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Video: {ID}")]
 	public class Video : ITheBallDataContextStorable
 	{
 
@@ -14002,6 +14174,7 @@ CREATE TABLE IF NOT EXISTS [Video](
 	}
     [Table(Name = "Image")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Image: {ID}")]
 	public class Image : ITheBallDataContextStorable
 	{
 
@@ -14034,7 +14207,9 @@ CREATE TABLE IF NOT EXISTS [Image](
 [ImageDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Caption] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[LocationsID] TEXT NULL, 
+[CategoriesID] TEXT NULL
 )";
         }
 
@@ -14096,6 +14271,7 @@ CREATE TABLE IF NOT EXISTS [Image](
 	}
     [Table(Name = "BinaryFile")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("BinaryFile: {ID}")]
 	public class BinaryFile : ITheBallDataContextStorable
 	{
 
@@ -14127,7 +14303,8 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 [OriginalFileName] TEXT NOT NULL, 
 [DataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[CategoriesID] TEXT NULL
 )";
         }
 
@@ -14170,6 +14347,7 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 	}
     [Table(Name = "ImageGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ImageGroup: {ID}")]
 	public class ImageGroup : ITheBallDataContextStorable
 	{
 
@@ -14201,7 +14379,8 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
 [ReferenceToInformationID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
 [Description] TEXT NOT NULL, 
-[FeaturedImageID] TEXT NULL
+[FeaturedImageID] TEXT NULL, 
+[ImagesCollectionID] TEXT NULL
 )";
         }
 
@@ -14255,6 +14434,7 @@ CREATE TABLE IF NOT EXISTS [ImageGroup](
 	}
     [Table(Name = "VideoGroup")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("VideoGroup: {ID}")]
 	public class VideoGroup : ITheBallDataContextStorable
 	{
 
@@ -14284,7 +14464,8 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
 [ETag] TEXT NOT NULL
 , 
 [Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[VideoCollectionID] TEXT NULL
 )";
         }
 
@@ -14318,6 +14499,7 @@ CREATE TABLE IF NOT EXISTS [VideoGroup](
 	}
     [Table(Name = "Tooltip")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Tooltip: {ID}")]
 	public class Tooltip : ITheBallDataContextStorable
 	{
 
@@ -14364,6 +14546,7 @@ CREATE TABLE IF NOT EXISTS [Tooltip](
 	}
     [Table(Name = "SocialPanel")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SocialPanel: {ID}")]
 	public class SocialPanel : ITheBallDataContextStorable
 	{
 
@@ -14413,6 +14596,7 @@ CREATE TABLE IF NOT EXISTS [SocialPanel](
 	}
     [Table(Name = "Longitude")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Longitude: {ID}")]
 	public class Longitude : ITheBallDataContextStorable
 	{
 
@@ -14459,6 +14643,7 @@ CREATE TABLE IF NOT EXISTS [Longitude](
 	}
     [Table(Name = "Latitude")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Latitude: {ID}")]
 	public class Latitude : ITheBallDataContextStorable
 	{
 
@@ -14505,6 +14690,7 @@ CREATE TABLE IF NOT EXISTS [Latitude](
 	}
     [Table(Name = "Location")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Location: {ID}")]
 	public class Location : ITheBallDataContextStorable
 	{
 
@@ -14573,6 +14759,7 @@ CREATE TABLE IF NOT EXISTS [Location](
 	}
     [Table(Name = "Date")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Date: {ID}")]
 	public class Date : ITheBallDataContextStorable
 	{
 
@@ -14635,6 +14822,7 @@ CREATE TABLE IF NOT EXISTS [Date](
 	}
     [Table(Name = "Sex")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Sex: {ID}")]
 	public class Sex : ITheBallDataContextStorable
 	{
 
@@ -14681,6 +14869,7 @@ CREATE TABLE IF NOT EXISTS [Sex](
 	}
     [Table(Name = "OBSAddress")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("OBSAddress: {ID}")]
 	public class OBSAddress : ITheBallDataContextStorable
 	{
 
@@ -14799,6 +14988,7 @@ CREATE TABLE IF NOT EXISTS [OBSAddress](
 	}
     [Table(Name = "Identity")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Identity: {ID}")]
 	public class Identity : ITheBallDataContextStorable
 	{
 
@@ -14883,6 +15073,7 @@ CREATE TABLE IF NOT EXISTS [Identity](
 	}
     [Table(Name = "ImageVideoSoundVectorRaw")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ImageVideoSoundVectorRaw: {ID}")]
 	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
 	{
 
@@ -14953,6 +15144,7 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 	}
     [Table(Name = "CategoryContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CategoryContainer: {ID}")]
 	public class CategoryContainer : ITheBallDataContextStorable
 	{
 
@@ -14980,7 +15172,8 @@ CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
 CREATE TABLE IF NOT EXISTS [CategoryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[CategoriesID] TEXT NULL
 )";
         }
 
@@ -15000,6 +15193,7 @@ CREATE TABLE IF NOT EXISTS [CategoryContainer](
 	}
     [Table(Name = "Category")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
 
@@ -15087,6 +15281,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 	}
     [Table(Name = "Subscription")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Subscription: {ID}")]
 	public class Subscription : ITheBallDataContextStorable
 	{
 
@@ -15171,6 +15366,7 @@ CREATE TABLE IF NOT EXISTS [Subscription](
 	}
     [Table(Name = "QueueEnvelope")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("QueueEnvelope: {ID}")]
 	public class QueueEnvelope : ITheBallDataContextStorable
 	{
 
@@ -15203,6 +15399,7 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 [OwnerPrefix] TEXT NOT NULL, 
 [CurrentRetryCount] INTEGER NOT NULL, 
 [SingleOperationID] TEXT NULL, 
+[OrderDependentOperationSequenceID] TEXT NULL, 
 [ErrorContentID] TEXT NULL
 )";
         }
@@ -15262,6 +15459,7 @@ CREATE TABLE IF NOT EXISTS [QueueEnvelope](
 	}
     [Table(Name = "OperationRequest")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("OperationRequest: {ID}")]
 	public class OperationRequest : ITheBallDataContextStorable
 	{
 
@@ -15385,6 +15583,7 @@ CREATE TABLE IF NOT EXISTS [OperationRequest](
 	}
     [Table(Name = "SubscriptionChainRequestMessage")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionChainRequestMessage: {ID}")]
 	public class SubscriptionChainRequestMessage : ITheBallDataContextStorable
 	{
 
@@ -15431,6 +15630,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestMessage](
 	}
     [Table(Name = "SubscriptionChainRequestContent")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionChainRequestContent: {ID}")]
 	public class SubscriptionChainRequestContent : ITheBallDataContextStorable
 	{
 
@@ -15463,7 +15663,8 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 [ProcessingStartTime] TEXT NOT NULL, 
 [ProcessingEndTimeInformationObjects] TEXT NOT NULL, 
 [ProcessingEndTimeWebTemplatesRendering] TEXT NOT NULL, 
-[ProcessingEndTime] TEXT NOT NULL
+[ProcessingEndTime] TEXT NOT NULL, 
+[SubscriptionTargetCollectionID] TEXT NULL
 )";
         }
 
@@ -15508,6 +15709,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionChainRequestContent](
 	}
     [Table(Name = "SubscriptionTarget")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionTarget: {ID}")]
 	public class SubscriptionTarget : ITheBallDataContextStorable
 	{
 
@@ -15554,6 +15756,7 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTarget](
 	}
     [Table(Name = "DeleteEntireOwnerOperation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DeleteEntireOwnerOperation: {ID}")]
 	public class DeleteEntireOwnerOperation : ITheBallDataContextStorable
 	{
 
@@ -15608,6 +15811,7 @@ CREATE TABLE IF NOT EXISTS [DeleteEntireOwnerOperation](
 	}
     [Table(Name = "DeleteOwnerContentOperation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DeleteOwnerContentOperation: {ID}")]
 	public class DeleteOwnerContentOperation : ITheBallDataContextStorable
 	{
 
@@ -15662,6 +15866,7 @@ CREATE TABLE IF NOT EXISTS [DeleteOwnerContentOperation](
 	}
     [Table(Name = "SystemError")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SystemError: {ID}")]
 	public class SystemError : ITheBallDataContextStorable
 	{
 
@@ -15692,6 +15897,7 @@ CREATE TABLE IF NOT EXISTS [SystemError](
 , 
 [ErrorTitle] TEXT NOT NULL, 
 [OccurredAt] TEXT NOT NULL, 
+[SystemErrorItemsID] TEXT NULL, 
 [MessageContentID] TEXT NULL
 )";
         }
@@ -15734,6 +15940,7 @@ CREATE TABLE IF NOT EXISTS [SystemError](
 	}
     [Table(Name = "SystemErrorItem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SystemErrorItem: {ID}")]
 	public class SystemErrorItem : ITheBallDataContextStorable
 	{
 
@@ -15788,6 +15995,7 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItem](
 	}
     [Table(Name = "InformationSource")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("InformationSource: {ID}")]
 	public class InformationSource : ITheBallDataContextStorable
 	{
 
@@ -15886,6 +16094,7 @@ CREATE TABLE IF NOT EXISTS [InformationSource](
 	}
     [Table(Name = "RefreshDefaultViewsOperation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RefreshDefaultViewsOperation: {ID}")]
 	public class RefreshDefaultViewsOperation : ITheBallDataContextStorable
 	{
 
@@ -15940,6 +16149,7 @@ CREATE TABLE IF NOT EXISTS [RefreshDefaultViewsOperation](
 	}
     [Table(Name = "UpdateWebContentOperation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("UpdateWebContentOperation: {ID}")]
 	public class UpdateWebContentOperation : ITheBallDataContextStorable
 	{
 
@@ -15972,7 +16182,8 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 [SourcePathRoot] TEXT NOT NULL, 
 [TargetContainerName] TEXT NOT NULL, 
 [TargetPathRoot] TEXT NOT NULL, 
-[RenderWhileSync] INTEGER NOT NULL
+[RenderWhileSync] INTEGER NOT NULL, 
+[HandlersID] TEXT NULL
 )";
         }
 
@@ -16025,6 +16236,7 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentOperation](
 	}
     [Table(Name = "UpdateWebContentHandlerItem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("UpdateWebContentHandlerItem: {ID}")]
 	public class UpdateWebContentHandlerItem : ITheBallDataContextStorable
 	{
 
@@ -16079,6 +16291,7 @@ CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerItem](
 	}
     [Table(Name = "PublishWebContentOperation")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("PublishWebContentOperation: {ID}")]
 	public class PublishWebContentOperation : ITheBallDataContextStorable
 	{
 
@@ -16149,6 +16362,7 @@ CREATE TABLE IF NOT EXISTS [PublishWebContentOperation](
 	}
     [Table(Name = "SubscriberInput")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriberInput: {ID}")]
 	public class SubscriberInput : ITheBallDataContextStorable
 	{
 
@@ -16219,6 +16433,7 @@ CREATE TABLE IF NOT EXISTS [SubscriberInput](
 	}
     [Table(Name = "Monitor")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Monitor: {ID}")]
 	public class Monitor : ITheBallDataContextStorable
 	{
 
@@ -16309,6 +16524,7 @@ CREATE TABLE IF NOT EXISTS [Monitor](
 	}
     [Table(Name = "IconTitleDescription")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("IconTitleDescription: {ID}")]
 	public class IconTitleDescription : ITheBallDataContextStorable
 	{
 
@@ -16369,6 +16585,7 @@ CREATE TABLE IF NOT EXISTS [IconTitleDescription](
 	}
     [Table(Name = "AboutAGIApplications")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AboutAGIApplications: {ID}")]
 	public class AboutAGIApplications : ITheBallDataContextStorable
 	{
 
@@ -16429,6 +16646,7 @@ CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
 	}
     [Table(Name = "PublicationPackageCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("PublicationPackageCollection: {ID}")]
 	public class PublicationPackageCollection : ITheBallDataContextStorable
 	{
 
@@ -16454,17 +16672,23 @@ CREATE TABLE IF NOT EXISTS [AboutAGIApplications](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [PublicationPackageCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "TBAccountCollaborationGroupCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBAccountCollaborationGroupCollection: {ID}")]
 	public class TBAccountCollaborationGroupCollection : ITheBallDataContextStorable
 	{
 
@@ -16490,17 +16714,23 @@ CREATE TABLE IF NOT EXISTS [PublicationPackageCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroupCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "TBLoginInfoCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBLoginInfoCollection: {ID}")]
 	public class TBLoginInfoCollection : ITheBallDataContextStorable
 	{
 
@@ -16526,17 +16756,23 @@ CREATE TABLE IF NOT EXISTS [TBAccountCollaborationGroupCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TBLoginInfoCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "TBEmailCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBEmailCollection: {ID}")]
 	public class TBEmailCollection : ITheBallDataContextStorable
 	{
 
@@ -16562,17 +16798,23 @@ CREATE TABLE IF NOT EXISTS [TBLoginInfoCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TBEmailCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "TBCollaboratorRoleCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TBCollaboratorRoleCollection: {ID}")]
 	public class TBCollaboratorRoleCollection : ITheBallDataContextStorable
 	{
 
@@ -16598,17 +16840,23 @@ CREATE TABLE IF NOT EXISTS [TBEmailCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TBCollaboratorRoleCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "LoginProviderCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LoginProviderCollection: {ID}")]
 	public class LoginProviderCollection : ITheBallDataContextStorable
 	{
 
@@ -16634,17 +16882,23 @@ CREATE TABLE IF NOT EXISTS [TBCollaboratorRoleCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [LoginProviderCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "AddressAndLocationCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AddressAndLocationCollection: {ID}")]
 	public class AddressAndLocationCollection : ITheBallDataContextStorable
 	{
 
@@ -16670,17 +16924,23 @@ CREATE TABLE IF NOT EXISTS [LoginProviderCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "GroupedInformationCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupedInformationCollection: {ID}")]
 	public class GroupedInformationCollection : ITheBallDataContextStorable
 	{
 
@@ -16706,17 +16966,23 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [GroupedInformationCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ReferenceCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ReferenceCollection: {ID}")]
 	public class ReferenceCollection : ITheBallDataContextStorable
 	{
 
@@ -16742,17 +17008,23 @@ CREATE TABLE IF NOT EXISTS [GroupedInformationCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ReferenceCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "RenderedNodeCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RenderedNodeCollection: {ID}")]
 	public class RenderedNodeCollection : ITheBallDataContextStorable
 	{
 
@@ -16778,17 +17050,23 @@ CREATE TABLE IF NOT EXISTS [ReferenceCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ShortTextCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ShortTextCollection: {ID}")]
 	public class ShortTextCollection : ITheBallDataContextStorable
 	{
 
@@ -16814,17 +17092,23 @@ CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "LongTextCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LongTextCollection: {ID}")]
 	public class LongTextCollection : ITheBallDataContextStorable
 	{
 
@@ -16850,17 +17134,23 @@ CREATE TABLE IF NOT EXISTS [ShortTextCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [LongTextCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "MapMarkerCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapMarkerCollection: {ID}")]
 	public class MapMarkerCollection : ITheBallDataContextStorable
 	{
 
@@ -16886,17 +17176,23 @@ CREATE TABLE IF NOT EXISTS [LongTextCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ActivityCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ActivityCollection: {ID}")]
 	public class ActivityCollection : ITheBallDataContextStorable
 	{
 
@@ -16922,17 +17218,23 @@ CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ActivityCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ModeratorCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ModeratorCollection: {ID}")]
 	public class ModeratorCollection : ITheBallDataContextStorable
 	{
 
@@ -16958,17 +17260,23 @@ CREATE TABLE IF NOT EXISTS [ActivityCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ModeratorCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "CollaboratorCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CollaboratorCollection: {ID}")]
 	public class CollaboratorCollection : ITheBallDataContextStorable
 	{
 
@@ -16994,17 +17302,23 @@ CREATE TABLE IF NOT EXISTS [ModeratorCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [CollaboratorCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "GroupCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupCollection: {ID}")]
 	public class GroupCollection : ITheBallDataContextStorable
 	{
 
@@ -17030,17 +17344,23 @@ CREATE TABLE IF NOT EXISTS [CollaboratorCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [GroupCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ContentCategoryRankCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ContentCategoryRankCollection: {ID}")]
 	public class ContentCategoryRankCollection : ITheBallDataContextStorable
 	{
 
@@ -17066,17 +17386,23 @@ CREATE TABLE IF NOT EXISTS [GroupCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ContentCategoryRankCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "LinkToContentCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LinkToContentCollection: {ID}")]
 	public class LinkToContentCollection : ITheBallDataContextStorable
 	{
 
@@ -17102,17 +17428,23 @@ CREATE TABLE IF NOT EXISTS [ContentCategoryRankCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [LinkToContentCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "EmbeddedContentCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("EmbeddedContentCollection: {ID}")]
 	public class EmbeddedContentCollection : ITheBallDataContextStorable
 	{
 
@@ -17138,17 +17470,23 @@ CREATE TABLE IF NOT EXISTS [LinkToContentCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [EmbeddedContentCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "DynamicContentGroupCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DynamicContentGroupCollection: {ID}")]
 	public class DynamicContentGroupCollection : ITheBallDataContextStorable
 	{
 
@@ -17174,17 +17512,23 @@ CREATE TABLE IF NOT EXISTS [EmbeddedContentCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContentGroupCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "DynamicContentCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("DynamicContentCollection: {ID}")]
 	public class DynamicContentCollection : ITheBallDataContextStorable
 	{
 
@@ -17210,17 +17554,23 @@ CREATE TABLE IF NOT EXISTS [DynamicContentGroupCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [DynamicContentCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "AttachedToObjectCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("AttachedToObjectCollection: {ID}")]
 	public class AttachedToObjectCollection : ITheBallDataContextStorable
 	{
 
@@ -17246,17 +17596,23 @@ CREATE TABLE IF NOT EXISTS [DynamicContentCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [AttachedToObjectCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "CommentCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CommentCollection: {ID}")]
 	public class CommentCollection : ITheBallDataContextStorable
 	{
 
@@ -17282,17 +17638,23 @@ CREATE TABLE IF NOT EXISTS [AttachedToObjectCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [CommentCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "SelectionCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SelectionCollection: {ID}")]
 	public class SelectionCollection : ITheBallDataContextStorable
 	{
 
@@ -17318,17 +17680,23 @@ CREATE TABLE IF NOT EXISTS [CommentCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [SelectionCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "TextContentCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TextContentCollection: {ID}")]
 	public class TextContentCollection : ITheBallDataContextStorable
 	{
 
@@ -17354,17 +17722,23 @@ CREATE TABLE IF NOT EXISTS [SelectionCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [TextContentCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "BlogCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("BlogCollection: {ID}")]
 	public class BlogCollection : ITheBallDataContextStorable
 	{
 
@@ -17390,17 +17764,23 @@ CREATE TABLE IF NOT EXISTS [TextContentCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [BlogCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "CalendarCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CalendarCollection: {ID}")]
 	public class CalendarCollection : ITheBallDataContextStorable
 	{
 
@@ -17426,17 +17806,23 @@ CREATE TABLE IF NOT EXISTS [BlogCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [CalendarCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "MapCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapCollection: {ID}")]
 	public class MapCollection : ITheBallDataContextStorable
 	{
 
@@ -17462,17 +17848,23 @@ CREATE TABLE IF NOT EXISTS [CalendarCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [MapCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "MapResultCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("MapResultCollection: {ID}")]
 	public class MapResultCollection : ITheBallDataContextStorable
 	{
 
@@ -17498,17 +17890,23 @@ CREATE TABLE IF NOT EXISTS [MapCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [MapResultCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ImageCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ImageCollection: {ID}")]
 	public class ImageCollection : ITheBallDataContextStorable
 	{
 
@@ -17534,17 +17932,23 @@ CREATE TABLE IF NOT EXISTS [MapResultCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ImageCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "BinaryFileCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("BinaryFileCollection: {ID}")]
 	public class BinaryFileCollection : ITheBallDataContextStorable
 	{
 
@@ -17570,17 +17974,23 @@ CREATE TABLE IF NOT EXISTS [ImageCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ImageGroupCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ImageGroupCollection: {ID}")]
 	public class ImageGroupCollection : ITheBallDataContextStorable
 	{
 
@@ -17606,17 +18016,23 @@ CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ImageGroupCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "VideoCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("VideoCollection: {ID}")]
 	public class VideoCollection : ITheBallDataContextStorable
 	{
 
@@ -17642,17 +18058,23 @@ CREATE TABLE IF NOT EXISTS [ImageGroupCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [VideoCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "SocialPanelCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SocialPanelCollection: {ID}")]
 	public class SocialPanelCollection : ITheBallDataContextStorable
 	{
 
@@ -17678,17 +18100,23 @@ CREATE TABLE IF NOT EXISTS [VideoCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [SocialPanelCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "LocationCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("LocationCollection: {ID}")]
 	public class LocationCollection : ITheBallDataContextStorable
 	{
 
@@ -17714,17 +18142,23 @@ CREATE TABLE IF NOT EXISTS [SocialPanelCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [LocationCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "CategoryCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CategoryCollection: {ID}")]
 	public class CategoryCollection : ITheBallDataContextStorable
 	{
 
@@ -17750,17 +18184,23 @@ CREATE TABLE IF NOT EXISTS [LocationCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [CategoryCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "SubscriptionCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionCollection: {ID}")]
 	public class SubscriptionCollection : ITheBallDataContextStorable
 	{
 
@@ -17786,17 +18226,23 @@ CREATE TABLE IF NOT EXISTS [CategoryCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "OperationRequestCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("OperationRequestCollection: {ID}")]
 	public class OperationRequestCollection : ITheBallDataContextStorable
 	{
 
@@ -17822,17 +18268,23 @@ CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [OperationRequestCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "SubscriptionTargetCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionTargetCollection: {ID}")]
 	public class SubscriptionTargetCollection : ITheBallDataContextStorable
 	{
 
@@ -17858,17 +18310,23 @@ CREATE TABLE IF NOT EXISTS [OperationRequestCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [SubscriptionTargetCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "SystemErrorItemCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("SystemErrorItemCollection: {ID}")]
 	public class SystemErrorItemCollection : ITheBallDataContextStorable
 	{
 
@@ -17894,17 +18352,23 @@ CREATE TABLE IF NOT EXISTS [SubscriptionTargetCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [SystemErrorItemCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "InformationSourceCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("InformationSourceCollection: {ID}")]
 	public class InformationSourceCollection : ITheBallDataContextStorable
 	{
 
@@ -17930,17 +18394,23 @@ CREATE TABLE IF NOT EXISTS [SystemErrorItemCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [InformationSourceCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "UpdateWebContentHandlerCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("UpdateWebContentHandlerCollection: {ID}")]
 	public class UpdateWebContentHandlerCollection : ITheBallDataContextStorable
 	{
 
@@ -17966,13 +18436,18 @@ CREATE TABLE IF NOT EXISTS [InformationSourceCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [UpdateWebContentHandlerCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
  } 

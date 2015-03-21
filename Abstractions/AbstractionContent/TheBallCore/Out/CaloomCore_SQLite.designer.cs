@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.Caloom.CORE { 
@@ -530,6 +531,7 @@ namespace SQLite.Caloom.CORE {
 
     [Table(Name = "Who")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Who: {ID}")]
 	public class Who : ITheBallDataContextStorable
 	{
 
@@ -600,6 +602,7 @@ CREATE TABLE IF NOT EXISTS [Who](
 	}
     [Table(Name = "ProductForWhom")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ProductForWhom: {ID}")]
 	public class ProductForWhom : ITheBallDataContextStorable
 	{
 
@@ -692,6 +695,7 @@ CREATE TABLE IF NOT EXISTS [ProductForWhom](
 	}
     [Table(Name = "Product")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Product: {ID}")]
 	public class Product : ITheBallDataContextStorable
 	{
 
@@ -723,7 +727,8 @@ CREATE TABLE IF NOT EXISTS [Product](
 [ImageBaseUrl] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL
+[Description] TEXT NOT NULL, 
+[SubProductsID] TEXT NULL
 )";
         }
 
@@ -771,6 +776,7 @@ CREATE TABLE IF NOT EXISTS [Product](
 	}
     [Table(Name = "ProductUsage")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ProductUsage: {ID}")]
 	public class ProductUsage : ITheBallDataContextStorable
 	{
 
@@ -826,6 +832,7 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 	}
     [Table(Name = "NodeSummaryContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("NodeSummaryContainer: {ID}")]
 	public class NodeSummaryContainer : ITheBallDataContextStorable
 	{
 
@@ -853,7 +860,9 @@ CREATE TABLE IF NOT EXISTS [ProductUsage](
 CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[NodesID] TEXT NULL, 
+[NodeSourceProductsID] TEXT NULL
 )";
         }
 
@@ -882,6 +891,7 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 	}
     [Table(Name = "RenderedNode")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RenderedNode: {ID}")]
 	public class RenderedNode : ITheBallDataContextStorable
 	{
 
@@ -916,7 +926,11 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ActualContentUrl] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [TimestampText] TEXT NOT NULL, 
-[MainSortableText] TEXT NOT NULL
+[MainSortableText] TEXT NOT NULL, 
+[CategoriesID] TEXT NULL, 
+[AuthorsID] TEXT NULL, 
+[LocationsID] TEXT NULL, 
+[FiltersID] TEXT NULL
 )";
         }
 
@@ -1012,6 +1026,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 	}
     [Table(Name = "ShortTextObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ShortTextObject: {ID}")]
 	public class ShortTextObject : ITheBallDataContextStorable
 	{
 
@@ -1058,6 +1073,7 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
 	}
     [Table(Name = "ProductUsageCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ProductUsageCollection: {ID}")]
 	public class ProductUsageCollection : ITheBallDataContextStorable
 	{
 
@@ -1083,17 +1099,23 @@ CREATE TABLE IF NOT EXISTS [ShortTextObject](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ProductUsageCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ProductCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ProductCollection: {ID}")]
 	public class ProductCollection : ITheBallDataContextStorable
 	{
 
@@ -1119,17 +1141,23 @@ CREATE TABLE IF NOT EXISTS [ProductUsageCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ProductCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "RenderedNodeCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("RenderedNodeCollection: {ID}")]
 	public class RenderedNodeCollection : ITheBallDataContextStorable
 	{
 
@@ -1155,17 +1183,23 @@ CREATE TABLE IF NOT EXISTS [ProductCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "ShortTextCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ShortTextCollection: {ID}")]
 	public class ShortTextCollection : ITheBallDataContextStorable
 	{
 
@@ -1191,13 +1225,18 @@ CREATE TABLE IF NOT EXISTS [RenderedNodeCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ShortTextCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
  } 

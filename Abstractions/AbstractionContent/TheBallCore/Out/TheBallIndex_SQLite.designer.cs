@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.TheBall.Index { 
@@ -260,6 +261,7 @@ namespace SQLite.TheBall.Index {
 
     [Table(Name = "IndexingRequest")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("IndexingRequest: {ID}")]
 	public class IndexingRequest : ITheBallDataContextStorable
 	{
 
@@ -358,6 +360,7 @@ CREATE TABLE IF NOT EXISTS [IndexingRequest](
 	}
     [Table(Name = "QueryRequest")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("QueryRequest: {ID}")]
 	public class QueryRequest : ITheBallDataContextStorable
 	{
 
@@ -496,6 +499,7 @@ CREATE TABLE IF NOT EXISTS [QueryRequest](
 	}
     [Table(Name = "QueryResultItem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("QueryResultItem: {ID}")]
 	public class QueryResultItem : ITheBallDataContextStorable
 	{
 

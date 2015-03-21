@@ -11,7 +11,7 @@ using SQLiteSupport;
 
 namespace PlatformCoreTests
 {
-    //[TestClass]
+    [TestClass]
     public class SQLiteStorageSyncTests_OIP
     {
         private readonly string PathRoot = TestSupport.OIPPath;
@@ -23,7 +23,7 @@ namespace PlatformCoreTests
         public void SetupForTest()
         {
             CurrentDBFileName = Path.GetTempFileName();
-            //CurrentDBFileName = @"d:\tmp\testdata.sqlite";
+            CurrentDBFileName = @"d:\tmp\testdata.sqlite";
             //CurrentDBFileName = ":memory:";
             CurrentContext = TheBallDataContext.CreateOrAttachToExistingDB(CurrentDBFileName);
             CurrentContext.CreateDomainDatabaseTablesIfNotExists();

@@ -20,6 +20,7 @@ using SQLiteSupport;
 using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribute;
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
+using System.Diagnostics;
 
 
 namespace SQLite.TheBall.Interface { 
@@ -759,6 +760,7 @@ namespace SQLite.TheBall.Interface {
 
     [Table(Name = "WizardContainer")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("WizardContainer: {ID}")]
 	public class WizardContainer : ITheBallDataContextStorable
 	{
 
@@ -849,6 +851,7 @@ CREATE TABLE IF NOT EXISTS [WizardContainer](
 	}
     [Table(Name = "WizardTask")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("WizardTask: {ID}")]
 	public class WizardTask : ITheBallDataContextStorable
 	{
 
@@ -911,6 +914,7 @@ CREATE TABLE IF NOT EXISTS [WizardTask](
 	}
     [Table(Name = "Connection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Connection: {ID}")]
 	public class Connection : ITheBallDataContextStorable
 	{
 
@@ -1295,6 +1299,7 @@ CREATE TABLE IF NOT EXISTS [Connection](
 	}
     [Table(Name = "TransferPackage")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("TransferPackage: {ID}")]
 	public class TransferPackage : ITheBallDataContextStorable
 	{
 
@@ -1415,6 +1420,7 @@ CREATE TABLE IF NOT EXISTS [TransferPackage](
 	}
     [Table(Name = "CategoryLink")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("CategoryLink: {ID}")]
 	public class CategoryLink : ITheBallDataContextStorable
 	{
 
@@ -1477,6 +1483,7 @@ CREATE TABLE IF NOT EXISTS [CategoryLink](
 	}
     [Table(Name = "Category")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("Category: {ID}")]
 	public class Category : ITheBallDataContextStorable
 	{
 
@@ -1555,6 +1562,7 @@ CREATE TABLE IF NOT EXISTS [Category](
 	}
     [Table(Name = "StatusSummary")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("StatusSummary: {ID}")]
 	public class StatusSummary : ITheBallDataContextStorable
 	{
 
@@ -1801,6 +1809,7 @@ CREATE TABLE IF NOT EXISTS [StatusSummary](
 	}
     [Table(Name = "InformationChangeItem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("InformationChangeItem: {ID}")]
 	public class InformationChangeItem : ITheBallDataContextStorable
 	{
 
@@ -1903,6 +1912,7 @@ CREATE TABLE IF NOT EXISTS [InformationChangeItem](
 	}
     [Table(Name = "OperationExecutionItem")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("OperationExecutionItem: {ID}")]
 	public class OperationExecutionItem : ITheBallDataContextStorable
 	{
 
@@ -1999,6 +2009,7 @@ CREATE TABLE IF NOT EXISTS [OperationExecutionItem](
 	}
     [Table(Name = "GenericCollectionableObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GenericCollectionableObject: {ID}")]
 	public class GenericCollectionableObject : ITheBallDataContextStorable
 	{
 
@@ -2048,6 +2059,7 @@ CREATE TABLE IF NOT EXISTS [GenericCollectionableObject](
 	}
     [Table(Name = "GenericObject")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GenericObject: {ID}")]
 	public class GenericObject : ITheBallDataContextStorable
 	{
 
@@ -2152,6 +2164,7 @@ CREATE TABLE IF NOT EXISTS [GenericObject](
 	}
     [Table(Name = "GenericValue")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GenericValue: {ID}")]
 	public class GenericValue : ITheBallDataContextStorable
 	{
 
@@ -2503,6 +2516,7 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
 	}
     [Table(Name = "ConnectionCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("ConnectionCollection: {ID}")]
 	public class ConnectionCollection : ITheBallDataContextStorable
 	{
 
@@ -2528,17 +2542,23 @@ CREATE TABLE IF NOT EXISTS [GenericValue](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [ConnectionCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "GenericObjectCollection")]
 	[ScaffoldTable(true)]
+	[DebuggerDisplay("GenericObjectCollection: {ID}")]
 	public class GenericObjectCollection : ITheBallDataContextStorable
 	{
 
@@ -2564,13 +2584,18 @@ CREATE TABLE IF NOT EXISTS [ConnectionCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [GenericObjectCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[CollectionItemID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL)";
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
         }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
 		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
  } 

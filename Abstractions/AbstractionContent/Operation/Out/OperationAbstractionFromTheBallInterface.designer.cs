@@ -346,4 +346,4 @@ using System.IO;
 				FetchURLAsGroupContentImplementation.ExecuteMethod_FetchDataAndAttachToFile(parameters.DataURL, BinaryFile);		
 				}
 				}
-		} 
+		 } 
