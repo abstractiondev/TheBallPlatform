@@ -124,13 +124,6 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="PerformWebAction (0 %)" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Being implemented 8</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="UpdatePublicationInfo (0 %)" level="2">
               <Paragraph>
                 <Text>
@@ -894,107 +887,6 @@
                     </ColumnData>
                     <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
                       <TextContent>Create and send email confirmation for joining the group</TextContent>
-                    </ColumnData>
-                  </Row>
-                </Rows>
-              </Table>
-            </Paragraph>
-          </Header>
-          <Header text="PerformWebAction (0 %)" level="1">
-            <Paragraph>
-              <Table>
-                <Columns>
-                  <Column name="Item" />
-                  <Column name="Status" />
-                  <Column name="Description" />
-                </Columns>
-                <Rows>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: TargetObjectID</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Target object id</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: CommandName</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Command name</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: Owner</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Data owner</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: InformationSources</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Information sources of the page</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: FormSourceNames</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Form source names</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: FormSubmitContent</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Form field collection as-posted</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>MethodExecuteType: ExecuteActualOperation</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Execute actual operation</TextContent>
-                    </ColumnData>
-                  </Row>
-                  <Row>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>VariableType: RenderPageAfterOperation</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>Being implemented</TextContent>
-                    </ColumnData>
-                    <ColumnData styleRef="color:blue;font-weight:bold;font-style:italic">
-                      <TextContent>If true, page should be rendered after operation</TextContent>
                     </ColumnData>
                   </Row>
                 </Rows>

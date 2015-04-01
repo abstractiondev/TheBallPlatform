@@ -310,25 +310,6 @@ namespace TheBallTool
             "Text testing...");
         }
 
-        private static void DoMapData(IContainerOwner owner)
-        {
-            MapContainer mapContainer =
-                MapContainer.RetrieveMapContainer(
-                    "livesite/oip-layouts/oip-layout-default-view.phtml/AaltoGlobalImpact.OIP/MapContainer/38b16ead-5851-484f-a367-bb215eb8e490",
-                    owner);
-            MapMarker marker1 = MapMarker.CreateDefault();
-            marker1.LocationText = "8446198.6713314,2759433.3836466";
-            MapMarker marker2 = MapMarker.CreateDefault();
-            marker2.LocationText = "10000,10000";
-            MapMarker marker3 = MapMarker.CreateDefault();
-            marker3.LocationText = "0,0";
-            //mapContainer.MapMarkers = MapMarkerCollection.CreateDefault();
-            mapContainer.MapMarkers.CollectionContent.Add(marker1);
-            mapContainer.MapMarkers.CollectionContent.Add(marker2);
-            mapContainer.MapMarkers.CollectionContent.Add(marker3);
-            StorageSupport.StoreInformation(mapContainer, owner);
-        }
-
         private static void AddLoginToAccount(string loginUrlID, string accountID)
         {
             TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);

@@ -403,30 +403,6 @@
     <StatusItem name="UpdateAccountContainersGroupMembership_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store modified objects">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="PerformWebAction_TargetObjectID" displayName="VariableType: TargetObjectID" description="Target object id">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_CommandName" displayName="VariableType: CommandName" description="Command name">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_Owner" displayName="VariableType: Owner" description="Data owner">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_InformationSources" displayName="VariableType: InformationSources" description="Information sources of the page">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_FormSourceNames" displayName="VariableType: FormSourceNames" description="Form source names">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_FormSubmitContent" displayName="VariableType: FormSubmitContent" description="Form field collection as-posted">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_ExecuteActualOperation" displayName="MethodExecuteType: ExecuteActualOperation" description="Execute actual operation">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="PerformWebAction_RenderPageAfterOperation" displayName="VariableType: RenderPageAfterOperation" description="If true, page should be rendered after operation">
-      <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
-    </StatusItem>
     <StatusItem name="PublishGroupContentToPublicArea_GroupID" displayName="VariableType: GroupID" description="Group ID of group being published">
       <StatusValue trafficLightIndicator="yellow" indicatorDisplayText="Being implemented" indicatorValue="1" />
     </StatusItem>
@@ -611,12 +587,6 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ClearDefaultGroupFromAccount_RemoveAccountRedirectFile" displayName="MethodExecuteType: RemoveAccountRedirectFile" description="Remove account RedirectFromFolder.red from pointing to group">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="MigrateActivitiesAndBlogsToTextContents_Process" displayName="VariableType: Process" description="Process that this operation is to execute">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="MigrateActivitiesAndBlogsToTextContents_ExecuteProcess" displayName="MethodExecuteType: ExecuteProcess" description="Execute process.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
   </StatusItems>
@@ -804,16 +774,6 @@
       <ItemRef itemName="UpdateAccountContainersGroupMembership_UpdateAccountContainerMemberships" />
       <ItemRef itemName="UpdateAccountContainersGroupMembership_StoreObjects" />
     </Group>
-    <Group name="PerformWebAction">
-      <ItemRef itemName="PerformWebAction_TargetObjectID" />
-      <ItemRef itemName="PerformWebAction_CommandName" />
-      <ItemRef itemName="PerformWebAction_Owner" />
-      <ItemRef itemName="PerformWebAction_InformationSources" />
-      <ItemRef itemName="PerformWebAction_FormSourceNames" />
-      <ItemRef itemName="PerformWebAction_FormSubmitContent" />
-      <ItemRef itemName="PerformWebAction_ExecuteActualOperation" />
-      <ItemRef itemName="PerformWebAction_RenderPageAfterOperation" />
-    </Group>
     <Group name="PublishGroupContentToPublicArea">
       <ItemRef itemName="PublishGroupContentToPublicArea_GroupID" />
       <ItemRef itemName="PublishGroupContentToPublicArea_UseWorker" />
@@ -903,10 +863,6 @@
       <ItemRef itemName="ClearDefaultGroupFromAccount_ClearDefaultGroupValue" />
       <ItemRef itemName="ClearDefaultGroupFromAccount_StoreObject" />
       <ItemRef itemName="ClearDefaultGroupFromAccount_RemoveAccountRedirectFile" />
-    </Group>
-    <Group name="MigrateActivitiesAndBlogsToTextContents">
-      <ItemRef itemName="MigrateActivitiesAndBlogsToTextContents_Process" />
-      <ItemRef itemName="MigrateActivitiesAndBlogsToTextContents_ExecuteProcess" />
     </Group>
   </Groups>
 </StatusTrackingAbstraction>

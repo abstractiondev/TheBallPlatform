@@ -468,33 +468,6 @@ using System.IO;
 				UpdateAccountContainersGroupMembershipImplementation.ExecuteMethod_StoreObjects(AccountContainer, GroupSummaryContainer);		
 				}
 				}
-				public class PerformWebActionParameters 
-		{
-				public string TargetObjectID ;
-				public string CommandName ;
-				public TheBall.CORE.IContainerOwner Owner ;
-				public InformationSourceCollection InformationSources ;
-				public string[] FormSourceNames ;
-				public NameValueCollection FormSubmitContent ;
-				}
-		
-		public class PerformWebAction 
-		{
-				private static void PrepareParameters(PerformWebActionParameters parameters)
-		{
-					}
-				public static PerformWebActionReturnValue Execute(PerformWebActionParameters parameters)
-		{
-						PrepareParameters(parameters);
-					bool ExecuteActualOperationOutput = PerformWebActionImplementation.ExecuteMethod_ExecuteActualOperation(parameters.TargetObjectID, parameters.CommandName, parameters.Owner, parameters.InformationSources, parameters.FormSourceNames, parameters.FormSubmitContent);		
-				PerformWebActionReturnValue returnValue = PerformWebActionImplementation.Get_ReturnValue(ExecuteActualOperationOutput);
-		return returnValue;
-				}
-				}
-				public class PerformWebActionReturnValue 
-		{
-				public bool RenderPageAfterOperation ;
-				}
 				public class PublishGroupContentToPublicAreaParameters 
 		{
 				public string GroupID ;
@@ -733,22 +706,6 @@ using System.IO;
 				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_ClearDefaultGroupValue(AccountContainer);		
 				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_StoreObject(AccountContainer);		
 				ClearDefaultGroupFromAccountImplementation.ExecuteMethod_RemoveAccountRedirectFile(RedirectFromFolderBlobName);		
-				}
-				}
-				public class MigrateActivitiesAndBlogsToTextContentsParameters 
-		{
-				public TheBall.CORE.Process Process ;
-				}
-		
-		public class MigrateActivitiesAndBlogsToTextContents 
-		{
-				private static void PrepareParameters(MigrateActivitiesAndBlogsToTextContentsParameters parameters)
-		{
-					}
-				public static void Execute(MigrateActivitiesAndBlogsToTextContentsParameters parameters)
-		{
-						PrepareParameters(parameters);
-					MigrateActivitiesAndBlogsToTextContentsImplementation.ExecuteMethod_ExecuteProcess(parameters.Process);		
 				}
 				}
 		 } 

@@ -105,47 +105,24 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(TBDeviceJoinConfirmation.GetCreateTableSQL());
 				tableCreationCommands.Add(TBInformationInputConfirmation.GetCreateTableSQL());
 				tableCreationCommands.Add(TBInformationOutputConfirmation.GetCreateTableSQL());
-				tableCreationCommands.Add(TBRegisterContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(LoginProvider.GetCreateTableSQL());
-				tableCreationCommands.Add(ContactOipContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(TBPRegisterEmail.GetCreateTableSQL());
-				tableCreationCommands.Add(JavaScriptContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(JavascriptContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(FooterContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(NavigationContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(AccountIndex.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountModule.GetCreateTableSQL());
-				tableCreationCommands.Add(ImageGroupContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(LocationContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(AddressAndLocation.GetCreateTableSQL());
 				tableCreationCommands.Add(StreetAddress.GetCreateTableSQL());
-				tableCreationCommands.Add(AccountContent.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountProfile.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountSecurity.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountRoles.GetCreateTableSQL());
 				tableCreationCommands.Add(PersonalInfoVisibility.GetCreateTableSQL());
-				tableCreationCommands.Add(GroupedInformation.GetCreateTableSQL());
 				tableCreationCommands.Add(ReferenceToInformation.GetCreateTableSQL());
-				tableCreationCommands.Add(BlogContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(RecentBlogSummary.GetCreateTableSQL());
 				tableCreationCommands.Add(NodeSummaryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(RenderedNode.GetCreateTableSQL());
 				tableCreationCommands.Add(ShortTextObject.GetCreateTableSQL());
 				tableCreationCommands.Add(LongTextObject.GetCreateTableSQL());
-				tableCreationCommands.Add(MapContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(MapMarker.GetCreateTableSQL());
-				tableCreationCommands.Add(CalendarContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(AboutContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(OBSAccountContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(ProjectContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(CourseContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(ContainerHeader.GetCreateTableSQL());
-				tableCreationCommands.Add(ActivitySummaryContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(ActivityIndex.GetCreateTableSQL());
-				tableCreationCommands.Add(ActivityContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(Activity.GetCreateTableSQL());
 				tableCreationCommands.Add(Moderator.GetCreateTableSQL());
 				tableCreationCommands.Add(Collaborator.GetCreateTableSQL());
 				tableCreationCommands.Add(GroupSummaryContainer.GetCreateTableSQL());
@@ -170,30 +147,16 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(Comment.GetCreateTableSQL());
 				tableCreationCommands.Add(Selection.GetCreateTableSQL());
 				tableCreationCommands.Add(TextContent.GetCreateTableSQL());
-				tableCreationCommands.Add(Blog.GetCreateTableSQL());
-				tableCreationCommands.Add(BlogIndexGroup.GetCreateTableSQL());
-				tableCreationCommands.Add(CalendarIndex.GetCreateTableSQL());
-				tableCreationCommands.Add(Filter.GetCreateTableSQL());
-				tableCreationCommands.Add(Calendar.GetCreateTableSQL());
 				tableCreationCommands.Add(Map.GetCreateTableSQL());
-				tableCreationCommands.Add(MapIndexCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(MapResult.GetCreateTableSQL());
 				tableCreationCommands.Add(MapResultsCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(Video.GetCreateTableSQL());
 				tableCreationCommands.Add(Image.GetCreateTableSQL());
 				tableCreationCommands.Add(BinaryFile.GetCreateTableSQL());
-				tableCreationCommands.Add(ImageGroup.GetCreateTableSQL());
-				tableCreationCommands.Add(VideoGroup.GetCreateTableSQL());
-				tableCreationCommands.Add(Tooltip.GetCreateTableSQL());
-				tableCreationCommands.Add(SocialPanel.GetCreateTableSQL());
 				tableCreationCommands.Add(Longitude.GetCreateTableSQL());
 				tableCreationCommands.Add(Latitude.GetCreateTableSQL());
 				tableCreationCommands.Add(Location.GetCreateTableSQL());
 				tableCreationCommands.Add(Date.GetCreateTableSQL());
-				tableCreationCommands.Add(Sex.GetCreateTableSQL());
-				tableCreationCommands.Add(OBSAddress.GetCreateTableSQL());
-				tableCreationCommands.Add(Identity.GetCreateTableSQL());
-				tableCreationCommands.Add(ImageVideoSoundVectorRaw.GetCreateTableSQL());
 				tableCreationCommands.Add(CategoryContainer.GetCreateTableSQL());
 				tableCreationCommands.Add(Category.GetCreateTableSQL());
 				tableCreationCommands.Add(Subscription.GetCreateTableSQL());
@@ -222,13 +185,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(TBCollaboratorRoleCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(LoginProviderCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(AddressAndLocationCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(GroupedInformationCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(ReferenceCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(RenderedNodeCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(ShortTextCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(LongTextCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(MapMarkerCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(ActivityCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(ModeratorCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(CollaboratorCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(GroupCollection.GetCreateTableSQL());
@@ -241,15 +202,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				tableCreationCommands.Add(CommentCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(SelectionCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(TextContentCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(BlogCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(CalendarCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(MapCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(MapResultCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(ImageCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(BinaryFileCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(ImageGroupCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(VideoCollection.GetCreateTableSQL());
-				tableCreationCommands.Add(SocialPanelCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(LocationCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(CategoryCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(SubscriptionCollection.GetCreateTableSQL());
@@ -577,25 +533,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.InformationOutputID = serializedObject.InformationOutputID;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "TBRegisterContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.TBRegisterContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = TBRegisterContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
-					if(serializedObject.LoginProviderCollection != null)
-						existingObject.LoginProviderCollectionID = serializedObject.LoginProviderCollection.ID;
-					else
-						existingObject.LoginProviderCollectionID = null;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "LoginProvider")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -611,17 +548,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "ContactOipContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ContactOipContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ContactOipContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "TBPRegisterEmail")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -633,50 +559,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "JavaScriptContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.JavaScriptContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = JavaScriptContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.HtmlContent = serializedObject.HtmlContent;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "JavascriptContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.JavascriptContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = JavascriptContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.HtmlContent = serializedObject.HtmlContent;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "FooterContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.FooterContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = FooterContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.HtmlContent = serializedObject.HtmlContent;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "NavigationContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.NavigationContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = NavigationContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Dummy = serializedObject.Dummy;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "AccountSummary")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -685,14 +567,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSummaryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Introduction != null)
-						existingObject.IntroductionID = serializedObject.Introduction.ID;
-					else
-						existingObject.IntroductionID = null;
-					if(serializedObject.ActivitySummary != null)
-						existingObject.ActivitySummaryID = serializedObject.ActivitySummary.ID;
-					else
-						existingObject.ActivitySummaryID = null;
 					if(serializedObject.GroupSummary != null)
 						existingObject.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
@@ -707,14 +581,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-					if(serializedObject.AccountIndex != null)
-						existingObject.AccountIndexID = serializedObject.AccountIndex.ID;
-					else
-						existingObject.AccountIndexID = null;
 					if(serializedObject.AccountModule != null)
 						existingObject.AccountModuleID = serializedObject.AccountModule.ID;
 					else
@@ -723,23 +589,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountSummaryID = serializedObject.AccountSummary.ID;
 					else
 						existingObject.AccountSummaryID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "AccountIndex")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.AccountIndex.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = AccountIndexTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Icon != null)
-						existingObject.IconID = serializedObject.Icon.ID;
-					else
-						existingObject.IconID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Introduction = serializedObject.Introduction;
-		            existingObject.Summary = serializedObject.Summary;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "AccountModule")
@@ -766,20 +615,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						existingObject.LocationCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ImageGroupContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ImageGroupContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ImageGroupContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.ImageGroups != null)
-						existingObject.ImageGroupsID = serializedObject.ImageGroups.ID;
-					else
-						existingObject.ImageGroupsID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "LocationContainer")
@@ -830,17 +665,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ZipCode = serializedObject.ZipCode;
 		            existingObject.Town = serializedObject.Town;
 		            existingObject.Country = serializedObject.Country;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "AccountContent")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.AccountContent.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = AccountContentTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Dummy = serializedObject.Dummy;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "AccountProfile")
@@ -914,21 +738,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "GroupedInformation")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.GroupedInformation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = GroupedInformationTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.GroupName = serializedObject.GroupName;
-					if(serializedObject.ReferenceCollection != null)
-						existingObject.ReferenceCollectionID = serializedObject.ReferenceCollection.ID;
-					else
-						existingObject.ReferenceCollectionID = null;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "ReferenceToInformation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -939,50 +748,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.URL = serializedObject.URL;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "BlogContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.BlogContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = BlogContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-					if(serializedObject.FeaturedBlog != null)
-						existingObject.FeaturedBlogID = serializedObject.FeaturedBlog.ID;
-					else
-						existingObject.FeaturedBlogID = null;
-					if(serializedObject.RecentBlogSummary != null)
-						existingObject.RecentBlogSummaryID = serializedObject.RecentBlogSummary.ID;
-					else
-						existingObject.RecentBlogSummaryID = null;
-					if(serializedObject.BlogIndexGroup != null)
-						existingObject.BlogIndexGroupID = serializedObject.BlogIndexGroup.ID;
-					else
-						existingObject.BlogIndexGroupID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "RecentBlogSummary")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.RecentBlogSummary.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = RecentBlogSummaryTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Introduction != null)
-						existingObject.IntroductionID = serializedObject.Introduction.ID;
-					else
-						existingObject.IntroductionID = null;
-					if(serializedObject.RecentBlogCollection != null)
-						existingObject.RecentBlogCollectionID = serializedObject.RecentBlogCollection.ID;
-					else
-						existingObject.RecentBlogCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "NodeSummaryContainer")
@@ -997,14 +762,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.NodesID = serializedObject.Nodes.ID;
 					else
 						existingObject.NodesID = null;
-					if(serializedObject.NodeSourceBlogs != null)
-						existingObject.NodeSourceBlogsID = serializedObject.NodeSourceBlogs.ID;
-					else
-						existingObject.NodeSourceBlogsID = null;
-					if(serializedObject.NodeSourceActivities != null)
-						existingObject.NodeSourceActivitiesID = serializedObject.NodeSourceActivities.ID;
-					else
-						existingObject.NodeSourceActivitiesID = null;
 					if(serializedObject.NodeSourceTextContent != null)
 						existingObject.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
 					else
@@ -1094,52 +851,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Content = serializedObject.Content;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "MapContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.MapContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = MapContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-					if(serializedObject.MapFeatured != null)
-						existingObject.MapFeaturedID = serializedObject.MapFeatured.ID;
-					else
-						existingObject.MapFeaturedID = null;
-					if(serializedObject.MapCollection != null)
-						existingObject.MapCollectionID = serializedObject.MapCollection.ID;
-					else
-						existingObject.MapCollectionID = null;
-					if(serializedObject.MapResultCollection != null)
-						existingObject.MapResultCollectionID = serializedObject.MapResultCollection.ID;
-					else
-						existingObject.MapResultCollectionID = null;
-					if(serializedObject.MapIndexCollection != null)
-						existingObject.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
-					else
-						existingObject.MapIndexCollectionID = null;
-					if(serializedObject.MarkerSourceLocations != null)
-						existingObject.MarkerSourceLocationsID = serializedObject.MarkerSourceLocations.ID;
-					else
-						existingObject.MarkerSourceLocationsID = null;
-					if(serializedObject.MarkerSourceBlogs != null)
-						existingObject.MarkerSourceBlogsID = serializedObject.MarkerSourceBlogs.ID;
-					else
-						existingObject.MarkerSourceBlogsID = null;
-					if(serializedObject.MarkerSourceActivities != null)
-						existingObject.MarkerSourceActivitiesID = serializedObject.MarkerSourceActivities.ID;
-					else
-						existingObject.MarkerSourceActivitiesID = null;
-					if(serializedObject.MapMarkers != null)
-						existingObject.MapMarkersID = serializedObject.MapMarkers.ID;
-					else
-						existingObject.MapMarkersID = null;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "MapMarker")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -1158,262 +869,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "CalendarContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.CalendarContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = CalendarContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.CalendarContainerHeader != null)
-						existingObject.CalendarContainerHeaderID = serializedObject.CalendarContainerHeader.ID;
-					else
-						existingObject.CalendarContainerHeaderID = null;
-					if(serializedObject.CalendarFeatured != null)
-						existingObject.CalendarFeaturedID = serializedObject.CalendarFeatured.ID;
-					else
-						existingObject.CalendarFeaturedID = null;
-					if(serializedObject.CalendarCollection != null)
-						existingObject.CalendarCollectionID = serializedObject.CalendarCollection.ID;
-					else
-						existingObject.CalendarCollectionID = null;
-					if(serializedObject.CalendarIndexCollection != null)
-						existingObject.CalendarIndexCollectionID = serializedObject.CalendarIndexCollection.ID;
-					else
-						existingObject.CalendarIndexCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "AboutContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.AboutContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = AboutContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.MainImage != null)
-						existingObject.MainImageID = serializedObject.MainImage.ID;
-					else
-						existingObject.MainImageID = null;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-		            existingObject.Excerpt = serializedObject.Excerpt;
-		            existingObject.Body = serializedObject.Body;
-		            existingObject.Published = serializedObject.Published;
-		            existingObject.Author = serializedObject.Author;
-					if(serializedObject.ImageGroup != null)
-						existingObject.ImageGroupID = serializedObject.ImageGroup.ID;
-					else
-						existingObject.ImageGroupID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "OBSAccountContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.OBSAccountContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = OBSAccountContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.AccountContainerHeader != null)
-						existingObject.AccountContainerHeaderID = serializedObject.AccountContainerHeader.ID;
-					else
-						existingObject.AccountContainerHeaderID = null;
-					if(serializedObject.AccountFeatured != null)
-						existingObject.AccountFeaturedID = serializedObject.AccountFeatured.ID;
-					else
-						existingObject.AccountFeaturedID = null;
-					if(serializedObject.AccountCollection != null)
-						existingObject.AccountCollectionID = serializedObject.AccountCollection.ID;
-					else
-						existingObject.AccountCollectionID = null;
-					if(serializedObject.AccountIndexCollection != null)
-						existingObject.AccountIndexCollectionID = serializedObject.AccountIndexCollection.ID;
-					else
-						existingObject.AccountIndexCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ProjectContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ProjectContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ProjectContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.ProjectContainerHeader != null)
-						existingObject.ProjectContainerHeaderID = serializedObject.ProjectContainerHeader.ID;
-					else
-						existingObject.ProjectContainerHeaderID = null;
-					if(serializedObject.ProjectFeatured != null)
-						existingObject.ProjectFeaturedID = serializedObject.ProjectFeatured.ID;
-					else
-						existingObject.ProjectFeaturedID = null;
-					if(serializedObject.ProjectCollection != null)
-						existingObject.ProjectCollectionID = serializedObject.ProjectCollection.ID;
-					else
-						existingObject.ProjectCollectionID = null;
-					if(serializedObject.ProjectIndexCollection != null)
-						existingObject.ProjectIndexCollectionID = serializedObject.ProjectIndexCollection.ID;
-					else
-						existingObject.ProjectIndexCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "CourseContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.CourseContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = CourseContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.CourseContainerHeader != null)
-						existingObject.CourseContainerHeaderID = serializedObject.CourseContainerHeader.ID;
-					else
-						existingObject.CourseContainerHeaderID = null;
-					if(serializedObject.CourseFeatured != null)
-						existingObject.CourseFeaturedID = serializedObject.CourseFeatured.ID;
-					else
-						existingObject.CourseFeaturedID = null;
-					if(serializedObject.CourseCollection != null)
-						existingObject.CourseCollectionID = serializedObject.CourseCollection.ID;
-					else
-						existingObject.CourseCollectionID = null;
-					if(serializedObject.CourseIndexCollection != null)
-						existingObject.CourseIndexCollectionID = serializedObject.CourseIndexCollection.ID;
-					else
-						existingObject.CourseIndexCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ContainerHeader")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ContainerHeader.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ContainerHeaderTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.SubTitle = serializedObject.SubTitle;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ActivitySummaryContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ActivitySummaryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ActivitySummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-		            existingObject.SummaryBody = serializedObject.SummaryBody;
-					if(serializedObject.Introduction != null)
-						existingObject.IntroductionID = serializedObject.Introduction.ID;
-					else
-						existingObject.IntroductionID = null;
-					if(serializedObject.ActivityIndex != null)
-						existingObject.ActivityIndexID = serializedObject.ActivityIndex.ID;
-					else
-						existingObject.ActivityIndexID = null;
-					if(serializedObject.ActivityCollection != null)
-						existingObject.ActivityCollectionID = serializedObject.ActivityCollection.ID;
-					else
-						existingObject.ActivityCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ActivityIndex")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ActivityIndex.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ActivityIndexTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Icon != null)
-						existingObject.IconID = serializedObject.Icon.ID;
-					else
-						existingObject.IconID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Introduction = serializedObject.Introduction;
-		            existingObject.Summary = serializedObject.Summary;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ActivityContainer")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ActivityContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ActivityContainerTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
-					if(serializedObject.ActivityIndex != null)
-						existingObject.ActivityIndexID = serializedObject.ActivityIndex.ID;
-					else
-						existingObject.ActivityIndexID = null;
-					if(serializedObject.ActivityModule != null)
-						existingObject.ActivityModuleID = serializedObject.ActivityModule.ID;
-					else
-						existingObject.ActivityModuleID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Activity")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Activity.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ActivityTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.ReferenceToInformation != null)
-						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						existingObject.ReferenceToInformationID = null;
-					if(serializedObject.ProfileImage != null)
-						existingObject.ProfileImageID = serializedObject.ProfileImage.ID;
-					else
-						existingObject.ProfileImageID = null;
-					if(serializedObject.IconImage != null)
-						existingObject.IconImageID = serializedObject.IconImage.ID;
-					else
-						existingObject.IconImageID = null;
-		            existingObject.ActivityName = serializedObject.ActivityName;
-					if(serializedObject.Introduction != null)
-						existingObject.IntroductionID = serializedObject.Introduction.ID;
-					else
-						existingObject.IntroductionID = null;
-		            existingObject.ContactPerson = serializedObject.ContactPerson;
-		            existingObject.StartingTime = serializedObject.StartingTime;
-		            existingObject.Excerpt = serializedObject.Excerpt;
-		            existingObject.Description = serializedObject.Description;
-		            existingObject.IFrameSources = serializedObject.IFrameSources;
-					if(serializedObject.Collaborators != null)
-						existingObject.CollaboratorsID = serializedObject.Collaborators.ID;
-					else
-						existingObject.CollaboratorsID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						existingObject.ImageGroupCollectionID = null;
-					if(serializedObject.LocationCollection != null)
-						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
-					else
-						existingObject.LocationCollectionID = null;
-					if(serializedObject.CategoryCollection != null)
-						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
-					else
-						existingObject.CategoryCollectionID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Moderator")
@@ -1451,10 +906,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
 		            existingObject.SummaryBody = serializedObject.SummaryBody;
 					if(serializedObject.Introduction != null)
 						existingObject.IntroductionID = serializedObject.Introduction.ID;
@@ -1478,10 +929,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Header != null)
-						existingObject.HeaderID = serializedObject.Header.ID;
-					else
-						existingObject.HeaderID = null;
 					if(serializedObject.GroupIndex != null)
 						existingObject.GroupIndexID = serializedObject.GroupIndex.ID;
 					else
@@ -1498,14 +945,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
 					else
 						existingObject.PendingCollaboratorsID = null;
-					if(serializedObject.Activities != null)
-						existingObject.ActivitiesID = serializedObject.Activities.ID;
-					else
-						existingObject.ActivitiesID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						existingObject.ImageGroupCollectionID = null;
 					if(serializedObject.LocationCollection != null)
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
@@ -1858,143 +1297,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.RawHtmlContent = serializedObject.RawHtmlContent;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "Blog")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Blog.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = BlogTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.ReferenceToInformation != null)
-						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						existingObject.ReferenceToInformationID = null;
-					if(serializedObject.ProfileImage != null)
-						existingObject.ProfileImageID = serializedObject.ProfileImage.ID;
-					else
-						existingObject.ProfileImageID = null;
-					if(serializedObject.IconImage != null)
-						existingObject.IconImageID = serializedObject.IconImage.ID;
-					else
-						existingObject.IconImageID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.SubTitle = serializedObject.SubTitle;
-					if(serializedObject.Introduction != null)
-						existingObject.IntroductionID = serializedObject.Introduction.ID;
-					else
-						existingObject.IntroductionID = null;
-		            existingObject.Published = serializedObject.Published;
-		            existingObject.Author = serializedObject.Author;
-					if(serializedObject.FeaturedImage != null)
-						existingObject.FeaturedImageID = serializedObject.FeaturedImage.ID;
-					else
-						existingObject.FeaturedImageID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						existingObject.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						existingObject.ImageGroupCollectionID = null;
-					if(serializedObject.VideoGroup != null)
-						existingObject.VideoGroupID = serializedObject.VideoGroup.ID;
-					else
-						existingObject.VideoGroupID = null;
-		            existingObject.Body = serializedObject.Body;
-		            existingObject.Excerpt = serializedObject.Excerpt;
-		            existingObject.IFrameSources = serializedObject.IFrameSources;
-					if(serializedObject.LocationCollection != null)
-						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
-					else
-						existingObject.LocationCollectionID = null;
-					if(serializedObject.CategoryCollection != null)
-						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
-					else
-						existingObject.CategoryCollectionID = null;
-					if(serializedObject.SocialPanel != null)
-						existingObject.SocialPanelID = serializedObject.SocialPanel.ID;
-					else
-						existingObject.SocialPanelID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "BlogIndexGroup")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.BlogIndexGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = BlogIndexGroupTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Icon != null)
-						existingObject.IconID = serializedObject.Icon.ID;
-					else
-						existingObject.IconID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Introduction = serializedObject.Introduction;
-					if(serializedObject.GroupedByDate != null)
-						existingObject.GroupedByDateID = serializedObject.GroupedByDate.ID;
-					else
-						existingObject.GroupedByDateID = null;
-					if(serializedObject.GroupedByLocation != null)
-						existingObject.GroupedByLocationID = serializedObject.GroupedByLocation.ID;
-					else
-						existingObject.GroupedByLocationID = null;
-					if(serializedObject.GroupedByAuthor != null)
-						existingObject.GroupedByAuthorID = serializedObject.GroupedByAuthor.ID;
-					else
-						existingObject.GroupedByAuthorID = null;
-					if(serializedObject.GroupedByCategory != null)
-						existingObject.GroupedByCategoryID = serializedObject.GroupedByCategory.ID;
-					else
-						existingObject.GroupedByCategoryID = null;
-					if(serializedObject.FullBlogArchive != null)
-						existingObject.FullBlogArchiveID = serializedObject.FullBlogArchive.ID;
-					else
-						existingObject.FullBlogArchiveID = null;
-					if(serializedObject.BlogSourceForSummary != null)
-						existingObject.BlogSourceForSummaryID = serializedObject.BlogSourceForSummary.ID;
-					else
-						existingObject.BlogSourceForSummaryID = null;
-		            existingObject.Summary = serializedObject.Summary;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "CalendarIndex")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.CalendarIndex.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = CalendarIndexTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.Icon != null)
-						existingObject.IconID = serializedObject.Icon.ID;
-					else
-						existingObject.IconID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Introduction = serializedObject.Introduction;
-		            existingObject.Summary = serializedObject.Summary;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Filter")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Filter.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = FilterTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Title = serializedObject.Title;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Calendar")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Calendar.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = CalendarTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Title = serializedObject.Title;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "Map")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -2004,32 +1306,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "MapIndexCollection")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.MapIndexCollection.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = MapIndexCollectionTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.MapByDate != null)
-						existingObject.MapByDateID = serializedObject.MapByDate.ID;
-					else
-						existingObject.MapByDateID = null;
-					if(serializedObject.MapByLocation != null)
-						existingObject.MapByLocationID = serializedObject.MapByLocation.ID;
-					else
-						existingObject.MapByLocationID = null;
-					if(serializedObject.MapByAuthor != null)
-						existingObject.MapByAuthorID = serializedObject.MapByAuthor.ID;
-					else
-						existingObject.MapByAuthorID = null;
-					if(serializedObject.MapByCategory != null)
-						existingObject.MapByCategoryID = serializedObject.MapByCategory.ID;
-					else
-						existingObject.MapByCategoryID = null;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "MapResult")
@@ -2134,71 +1410,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = null;
 		            return;
 		        } 
-		        if (updateData.ObjectType == "ImageGroup")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ImageGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ImageGroupTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.ReferenceToInformation != null)
-						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						existingObject.ReferenceToInformationID = null;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Description = serializedObject.Description;
-					if(serializedObject.FeaturedImage != null)
-						existingObject.FeaturedImageID = serializedObject.FeaturedImage.ID;
-					else
-						existingObject.FeaturedImageID = null;
-					if(serializedObject.ImagesCollection != null)
-						existingObject.ImagesCollectionID = serializedObject.ImagesCollection.ID;
-					else
-						existingObject.ImagesCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "VideoGroup")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.VideoGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = VideoGroupTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Title = serializedObject.Title;
-		            existingObject.Description = serializedObject.Description;
-					if(serializedObject.VideoCollection != null)
-						existingObject.VideoCollectionID = serializedObject.VideoCollection.ID;
-					else
-						existingObject.VideoCollectionID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Tooltip")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Tooltip.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = TooltipTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.TooltipText = serializedObject.TooltipText;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "SocialPanel")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.SocialPanel.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = SocialPanelTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-					if(serializedObject.SocialFilter != null)
-						existingObject.SocialFilterID = serializedObject.SocialFilter.ID;
-					else
-						existingObject.SocialFilterID = null;
-		            return;
-		        } 
 		        if (updateData.ObjectType == "Longitude")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -2252,73 +1463,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Week = serializedObject.Week;
 		            existingObject.Month = serializedObject.Month;
 		            existingObject.Year = serializedObject.Year;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Sex")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Sex.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = SexTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.SexText = serializedObject.SexText;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "OBSAddress")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.OBSAddress.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = OBSAddressTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.StreetName = serializedObject.StreetName;
-		            existingObject.BuildingNumber = serializedObject.BuildingNumber;
-		            existingObject.PostOfficeBox = serializedObject.PostOfficeBox;
-		            existingObject.PostalCode = serializedObject.PostalCode;
-		            existingObject.Municipality = serializedObject.Municipality;
-		            existingObject.Region = serializedObject.Region;
-		            existingObject.Province = serializedObject.Province;
-		            existingObject.state = serializedObject.state;
-		            existingObject.Country = serializedObject.Country;
-		            existingObject.Continent = serializedObject.Continent;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "Identity")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.Identity.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = IdentityTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.FirstName = serializedObject.FirstName;
-		            existingObject.LastName = serializedObject.LastName;
-		            existingObject.Initials = serializedObject.Initials;
-					if(serializedObject.Sex != null)
-						existingObject.SexID = serializedObject.Sex.ID;
-					else
-						existingObject.SexID = null;
-					if(serializedObject.Birthday != null)
-						existingObject.BirthdayID = serializedObject.Birthday.ID;
-					else
-						existingObject.BirthdayID = null;
-		            return;
-		        } 
-		        if (updateData.ObjectType == "ImageVideoSoundVectorRaw")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.AaltoGlobalImpact.OIP.ImageVideoSoundVectorRaw.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = ImageVideoSoundVectorRawTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.Image = serializedObject.Image;
-		            existingObject.Video = serializedObject.Video;
-		            existingObject.Sound = serializedObject.Sound;
-		            existingObject.Vector = serializedObject.Vector;
-		            existingObject.Raw = serializedObject.Raw;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "CategoryContainer")
@@ -2980,25 +2124,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "TBRegisterContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.TBRegisterContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new TBRegisterContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
-					if(serializedObject.LoginProviderCollection != null)
-						objectToAdd.LoginProviderCollectionID = serializedObject.LoginProviderCollection.ID;
-					else
-						objectToAdd.LoginProviderCollectionID = null;
-					TBRegisterContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "LoginProvider")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -3014,17 +2139,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					LoginProviderTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "ContactOipContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ContactOipContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContactOipContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.OIPModeratorGroupID = serializedObject.OIPModeratorGroupID;
-					ContactOipContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "TBPRegisterEmail")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -3036,50 +2150,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "JavaScriptContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.JavaScriptContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new JavaScriptContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
-					JavaScriptContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "JavascriptContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.JavascriptContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new JavascriptContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
-					JavascriptContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "FooterContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.FooterContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new FooterContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.HtmlContent = serializedObject.HtmlContent;
-					FooterContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "NavigationContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.NavigationContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new NavigationContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Dummy = serializedObject.Dummy;
-					NavigationContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "AccountSummary")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -3087,14 +2157,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.AccountSummary.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Introduction != null)
-						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
-					else
-						objectToAdd.IntroductionID = null;
-					if(serializedObject.ActivitySummary != null)
-						objectToAdd.ActivitySummaryID = serializedObject.ActivitySummary.ID;
-					else
-						objectToAdd.ActivitySummaryID = null;
 					if(serializedObject.GroupSummary != null)
 						objectToAdd.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
@@ -3109,14 +2171,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.AccountContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-					if(serializedObject.AccountIndex != null)
-						objectToAdd.AccountIndexID = serializedObject.AccountIndex.ID;
-					else
-						objectToAdd.AccountIndexID = null;
 					if(serializedObject.AccountModule != null)
 						objectToAdd.AccountModuleID = serializedObject.AccountModule.ID;
 					else
@@ -3126,23 +2180,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountSummaryID = null;
 					AccountContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "AccountIndex")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.AccountIndex.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Icon != null)
-						objectToAdd.IconID = serializedObject.Icon.ID;
-					else
-						objectToAdd.IconID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Introduction = serializedObject.Introduction;
-		            objectToAdd.Summary = serializedObject.Summary;
-					AccountIndexTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "AccountModule")
@@ -3169,20 +2206,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationCollectionID = null;
 					AccountModuleTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ImageGroupContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ImageGroupContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ImageGroupContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ImageGroups != null)
-						objectToAdd.ImageGroupsID = serializedObject.ImageGroups.ID;
-					else
-						objectToAdd.ImageGroupsID = null;
-					ImageGroupContainerTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "LocationContainer")
@@ -3233,17 +2256,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Town = serializedObject.Town;
 		            objectToAdd.Country = serializedObject.Country;
 					StreetAddressTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "AccountContent")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.AccountContent.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AccountContent {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Dummy = serializedObject.Dummy;
-					AccountContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "AccountProfile")
@@ -3317,21 +2329,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "GroupedInformation")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.GroupedInformation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new GroupedInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.GroupName = serializedObject.GroupName;
-					if(serializedObject.ReferenceCollection != null)
-						objectToAdd.ReferenceCollectionID = serializedObject.ReferenceCollection.ID;
-					else
-						objectToAdd.ReferenceCollectionID = null;
-					GroupedInformationTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "ReferenceToInformation")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -3342,50 +2339,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
 					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "BlogContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.BlogContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new BlogContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-					if(serializedObject.FeaturedBlog != null)
-						objectToAdd.FeaturedBlogID = serializedObject.FeaturedBlog.ID;
-					else
-						objectToAdd.FeaturedBlogID = null;
-					if(serializedObject.RecentBlogSummary != null)
-						objectToAdd.RecentBlogSummaryID = serializedObject.RecentBlogSummary.ID;
-					else
-						objectToAdd.RecentBlogSummaryID = null;
-					if(serializedObject.BlogIndexGroup != null)
-						objectToAdd.BlogIndexGroupID = serializedObject.BlogIndexGroup.ID;
-					else
-						objectToAdd.BlogIndexGroupID = null;
-					BlogContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "RecentBlogSummary")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.RecentBlogSummary.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new RecentBlogSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Introduction != null)
-						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
-					else
-						objectToAdd.IntroductionID = null;
-					if(serializedObject.RecentBlogCollection != null)
-						objectToAdd.RecentBlogCollectionID = serializedObject.RecentBlogCollection.ID;
-					else
-						objectToAdd.RecentBlogCollectionID = null;
-					RecentBlogSummaryTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "NodeSummaryContainer")
@@ -3399,14 +2352,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.NodesID = serializedObject.Nodes.ID;
 					else
 						objectToAdd.NodesID = null;
-					if(serializedObject.NodeSourceBlogs != null)
-						objectToAdd.NodeSourceBlogsID = serializedObject.NodeSourceBlogs.ID;
-					else
-						objectToAdd.NodeSourceBlogsID = null;
-					if(serializedObject.NodeSourceActivities != null)
-						objectToAdd.NodeSourceActivitiesID = serializedObject.NodeSourceActivities.ID;
-					else
-						objectToAdd.NodeSourceActivitiesID = null;
 					if(serializedObject.NodeSourceTextContent != null)
 						objectToAdd.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
 					else
@@ -3497,52 +2442,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					LongTextObjectTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "MapContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.MapContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new MapContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-					if(serializedObject.MapFeatured != null)
-						objectToAdd.MapFeaturedID = serializedObject.MapFeatured.ID;
-					else
-						objectToAdd.MapFeaturedID = null;
-					if(serializedObject.MapCollection != null)
-						objectToAdd.MapCollectionID = serializedObject.MapCollection.ID;
-					else
-						objectToAdd.MapCollectionID = null;
-					if(serializedObject.MapResultCollection != null)
-						objectToAdd.MapResultCollectionID = serializedObject.MapResultCollection.ID;
-					else
-						objectToAdd.MapResultCollectionID = null;
-					if(serializedObject.MapIndexCollection != null)
-						objectToAdd.MapIndexCollectionID = serializedObject.MapIndexCollection.ID;
-					else
-						objectToAdd.MapIndexCollectionID = null;
-					if(serializedObject.MarkerSourceLocations != null)
-						objectToAdd.MarkerSourceLocationsID = serializedObject.MarkerSourceLocations.ID;
-					else
-						objectToAdd.MarkerSourceLocationsID = null;
-					if(serializedObject.MarkerSourceBlogs != null)
-						objectToAdd.MarkerSourceBlogsID = serializedObject.MarkerSourceBlogs.ID;
-					else
-						objectToAdd.MarkerSourceBlogsID = null;
-					if(serializedObject.MarkerSourceActivities != null)
-						objectToAdd.MarkerSourceActivitiesID = serializedObject.MarkerSourceActivities.ID;
-					else
-						objectToAdd.MarkerSourceActivitiesID = null;
-					if(serializedObject.MapMarkers != null)
-						objectToAdd.MapMarkersID = serializedObject.MapMarkers.ID;
-					else
-						objectToAdd.MapMarkersID = null;
-					MapContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "MapMarker")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -3561,262 +2460,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					MapMarkerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "CalendarContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.CalendarContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CalendarContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.CalendarContainerHeader != null)
-						objectToAdd.CalendarContainerHeaderID = serializedObject.CalendarContainerHeader.ID;
-					else
-						objectToAdd.CalendarContainerHeaderID = null;
-					if(serializedObject.CalendarFeatured != null)
-						objectToAdd.CalendarFeaturedID = serializedObject.CalendarFeatured.ID;
-					else
-						objectToAdd.CalendarFeaturedID = null;
-					if(serializedObject.CalendarCollection != null)
-						objectToAdd.CalendarCollectionID = serializedObject.CalendarCollection.ID;
-					else
-						objectToAdd.CalendarCollectionID = null;
-					if(serializedObject.CalendarIndexCollection != null)
-						objectToAdd.CalendarIndexCollectionID = serializedObject.CalendarIndexCollection.ID;
-					else
-						objectToAdd.CalendarIndexCollectionID = null;
-					CalendarContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "AboutContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.AboutContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new AboutContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.MainImage != null)
-						objectToAdd.MainImageID = serializedObject.MainImage.ID;
-					else
-						objectToAdd.MainImageID = null;
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-		            objectToAdd.Excerpt = serializedObject.Excerpt;
-		            objectToAdd.Body = serializedObject.Body;
-		            objectToAdd.Published = serializedObject.Published;
-		            objectToAdd.Author = serializedObject.Author;
-					if(serializedObject.ImageGroup != null)
-						objectToAdd.ImageGroupID = serializedObject.ImageGroup.ID;
-					else
-						objectToAdd.ImageGroupID = null;
-					AboutContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "OBSAccountContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.OBSAccountContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new OBSAccountContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.AccountContainerHeader != null)
-						objectToAdd.AccountContainerHeaderID = serializedObject.AccountContainerHeader.ID;
-					else
-						objectToAdd.AccountContainerHeaderID = null;
-					if(serializedObject.AccountFeatured != null)
-						objectToAdd.AccountFeaturedID = serializedObject.AccountFeatured.ID;
-					else
-						objectToAdd.AccountFeaturedID = null;
-					if(serializedObject.AccountCollection != null)
-						objectToAdd.AccountCollectionID = serializedObject.AccountCollection.ID;
-					else
-						objectToAdd.AccountCollectionID = null;
-					if(serializedObject.AccountIndexCollection != null)
-						objectToAdd.AccountIndexCollectionID = serializedObject.AccountIndexCollection.ID;
-					else
-						objectToAdd.AccountIndexCollectionID = null;
-					OBSAccountContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ProjectContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ProjectContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ProjectContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ProjectContainerHeader != null)
-						objectToAdd.ProjectContainerHeaderID = serializedObject.ProjectContainerHeader.ID;
-					else
-						objectToAdd.ProjectContainerHeaderID = null;
-					if(serializedObject.ProjectFeatured != null)
-						objectToAdd.ProjectFeaturedID = serializedObject.ProjectFeatured.ID;
-					else
-						objectToAdd.ProjectFeaturedID = null;
-					if(serializedObject.ProjectCollection != null)
-						objectToAdd.ProjectCollectionID = serializedObject.ProjectCollection.ID;
-					else
-						objectToAdd.ProjectCollectionID = null;
-					if(serializedObject.ProjectIndexCollection != null)
-						objectToAdd.ProjectIndexCollectionID = serializedObject.ProjectIndexCollection.ID;
-					else
-						objectToAdd.ProjectIndexCollectionID = null;
-					ProjectContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "CourseContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.CourseContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CourseContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.CourseContainerHeader != null)
-						objectToAdd.CourseContainerHeaderID = serializedObject.CourseContainerHeader.ID;
-					else
-						objectToAdd.CourseContainerHeaderID = null;
-					if(serializedObject.CourseFeatured != null)
-						objectToAdd.CourseFeaturedID = serializedObject.CourseFeatured.ID;
-					else
-						objectToAdd.CourseFeaturedID = null;
-					if(serializedObject.CourseCollection != null)
-						objectToAdd.CourseCollectionID = serializedObject.CourseCollection.ID;
-					else
-						objectToAdd.CourseCollectionID = null;
-					if(serializedObject.CourseIndexCollection != null)
-						objectToAdd.CourseIndexCollectionID = serializedObject.CourseIndexCollection.ID;
-					else
-						objectToAdd.CourseIndexCollectionID = null;
-					CourseContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ContainerHeader")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ContainerHeader.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ContainerHeader {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.SubTitle = serializedObject.SubTitle;
-					ContainerHeaderTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ActivitySummaryContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ActivitySummaryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ActivitySummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
-					if(serializedObject.Introduction != null)
-						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
-					else
-						objectToAdd.IntroductionID = null;
-					if(serializedObject.ActivityIndex != null)
-						objectToAdd.ActivityIndexID = serializedObject.ActivityIndex.ID;
-					else
-						objectToAdd.ActivityIndexID = null;
-					if(serializedObject.ActivityCollection != null)
-						objectToAdd.ActivityCollectionID = serializedObject.ActivityCollection.ID;
-					else
-						objectToAdd.ActivityCollectionID = null;
-					ActivitySummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ActivityIndex")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ActivityIndex.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ActivityIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Icon != null)
-						objectToAdd.IconID = serializedObject.Icon.ID;
-					else
-						objectToAdd.IconID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Introduction = serializedObject.Introduction;
-		            objectToAdd.Summary = serializedObject.Summary;
-					ActivityIndexTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ActivityContainer")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ActivityContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ActivityContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
-					if(serializedObject.ActivityIndex != null)
-						objectToAdd.ActivityIndexID = serializedObject.ActivityIndex.ID;
-					else
-						objectToAdd.ActivityIndexID = null;
-					if(serializedObject.ActivityModule != null)
-						objectToAdd.ActivityModuleID = serializedObject.ActivityModule.ID;
-					else
-						objectToAdd.ActivityModuleID = null;
-					ActivityContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Activity")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Activity.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Activity {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ReferenceToInformation != null)
-						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						objectToAdd.ReferenceToInformationID = null;
-					if(serializedObject.ProfileImage != null)
-						objectToAdd.ProfileImageID = serializedObject.ProfileImage.ID;
-					else
-						objectToAdd.ProfileImageID = null;
-					if(serializedObject.IconImage != null)
-						objectToAdd.IconImageID = serializedObject.IconImage.ID;
-					else
-						objectToAdd.IconImageID = null;
-		            objectToAdd.ActivityName = serializedObject.ActivityName;
-					if(serializedObject.Introduction != null)
-						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
-					else
-						objectToAdd.IntroductionID = null;
-		            objectToAdd.ContactPerson = serializedObject.ContactPerson;
-		            objectToAdd.StartingTime = serializedObject.StartingTime;
-		            objectToAdd.Excerpt = serializedObject.Excerpt;
-		            objectToAdd.Description = serializedObject.Description;
-		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
-					if(serializedObject.Collaborators != null)
-						objectToAdd.CollaboratorsID = serializedObject.Collaborators.ID;
-					else
-						objectToAdd.CollaboratorsID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						objectToAdd.ImageGroupCollectionID = null;
-					if(serializedObject.LocationCollection != null)
-						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
-					else
-						objectToAdd.LocationCollectionID = null;
-					if(serializedObject.CategoryCollection != null)
-						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
-					else
-						objectToAdd.CategoryCollectionID = null;
-					ActivityTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "Moderator")
@@ -3853,10 +2496,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
 		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
 					if(serializedObject.Introduction != null)
 						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
@@ -3880,10 +2519,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                         global::SER.AaltoGlobalImpact.OIP.GroupContainer.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Header != null)
-						objectToAdd.HeaderID = serializedObject.Header.ID;
-					else
-						objectToAdd.HeaderID = null;
 					if(serializedObject.GroupIndex != null)
 						objectToAdd.GroupIndexID = serializedObject.GroupIndex.ID;
 					else
@@ -3900,14 +2535,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
 					else
 						objectToAdd.PendingCollaboratorsID = null;
-					if(serializedObject.Activities != null)
-						objectToAdd.ActivitiesID = serializedObject.Activities.ID;
-					else
-						objectToAdd.ActivitiesID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						objectToAdd.ImageGroupCollectionID = null;
 					if(serializedObject.LocationCollection != null)
 						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
@@ -4261,143 +2888,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					TextContentTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "Blog")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Blog.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Blog {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ReferenceToInformation != null)
-						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						objectToAdd.ReferenceToInformationID = null;
-					if(serializedObject.ProfileImage != null)
-						objectToAdd.ProfileImageID = serializedObject.ProfileImage.ID;
-					else
-						objectToAdd.ProfileImageID = null;
-					if(serializedObject.IconImage != null)
-						objectToAdd.IconImageID = serializedObject.IconImage.ID;
-					else
-						objectToAdd.IconImageID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.SubTitle = serializedObject.SubTitle;
-					if(serializedObject.Introduction != null)
-						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
-					else
-						objectToAdd.IntroductionID = null;
-		            objectToAdd.Published = serializedObject.Published;
-		            objectToAdd.Author = serializedObject.Author;
-					if(serializedObject.FeaturedImage != null)
-						objectToAdd.FeaturedImageID = serializedObject.FeaturedImage.ID;
-					else
-						objectToAdd.FeaturedImageID = null;
-					if(serializedObject.ImageGroupCollection != null)
-						objectToAdd.ImageGroupCollectionID = serializedObject.ImageGroupCollection.ID;
-					else
-						objectToAdd.ImageGroupCollectionID = null;
-					if(serializedObject.VideoGroup != null)
-						objectToAdd.VideoGroupID = serializedObject.VideoGroup.ID;
-					else
-						objectToAdd.VideoGroupID = null;
-		            objectToAdd.Body = serializedObject.Body;
-		            objectToAdd.Excerpt = serializedObject.Excerpt;
-		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
-					if(serializedObject.LocationCollection != null)
-						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
-					else
-						objectToAdd.LocationCollectionID = null;
-					if(serializedObject.CategoryCollection != null)
-						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
-					else
-						objectToAdd.CategoryCollectionID = null;
-					if(serializedObject.SocialPanel != null)
-						objectToAdd.SocialPanelID = serializedObject.SocialPanel.ID;
-					else
-						objectToAdd.SocialPanelID = null;
-					BlogTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "BlogIndexGroup")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.BlogIndexGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new BlogIndexGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Icon != null)
-						objectToAdd.IconID = serializedObject.Icon.ID;
-					else
-						objectToAdd.IconID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Introduction = serializedObject.Introduction;
-					if(serializedObject.GroupedByDate != null)
-						objectToAdd.GroupedByDateID = serializedObject.GroupedByDate.ID;
-					else
-						objectToAdd.GroupedByDateID = null;
-					if(serializedObject.GroupedByLocation != null)
-						objectToAdd.GroupedByLocationID = serializedObject.GroupedByLocation.ID;
-					else
-						objectToAdd.GroupedByLocationID = null;
-					if(serializedObject.GroupedByAuthor != null)
-						objectToAdd.GroupedByAuthorID = serializedObject.GroupedByAuthor.ID;
-					else
-						objectToAdd.GroupedByAuthorID = null;
-					if(serializedObject.GroupedByCategory != null)
-						objectToAdd.GroupedByCategoryID = serializedObject.GroupedByCategory.ID;
-					else
-						objectToAdd.GroupedByCategoryID = null;
-					if(serializedObject.FullBlogArchive != null)
-						objectToAdd.FullBlogArchiveID = serializedObject.FullBlogArchive.ID;
-					else
-						objectToAdd.FullBlogArchiveID = null;
-					if(serializedObject.BlogSourceForSummary != null)
-						objectToAdd.BlogSourceForSummaryID = serializedObject.BlogSourceForSummary.ID;
-					else
-						objectToAdd.BlogSourceForSummaryID = null;
-		            objectToAdd.Summary = serializedObject.Summary;
-					BlogIndexGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "CalendarIndex")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.CalendarIndex.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new CalendarIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Icon != null)
-						objectToAdd.IconID = serializedObject.Icon.ID;
-					else
-						objectToAdd.IconID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Introduction = serializedObject.Introduction;
-		            objectToAdd.Summary = serializedObject.Summary;
-					CalendarIndexTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Filter")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Filter.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Filter {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Title = serializedObject.Title;
-					FilterTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Calendar")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Calendar.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Calendar {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Title = serializedObject.Title;
-					CalendarTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "Map")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -4407,32 +2897,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					MapTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "MapIndexCollection")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.MapIndexCollection.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new MapIndexCollection {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.MapByDate != null)
-						objectToAdd.MapByDateID = serializedObject.MapByDate.ID;
-					else
-						objectToAdd.MapByDateID = null;
-					if(serializedObject.MapByLocation != null)
-						objectToAdd.MapByLocationID = serializedObject.MapByLocation.ID;
-					else
-						objectToAdd.MapByLocationID = null;
-					if(serializedObject.MapByAuthor != null)
-						objectToAdd.MapByAuthorID = serializedObject.MapByAuthor.ID;
-					else
-						objectToAdd.MapByAuthorID = null;
-					if(serializedObject.MapByCategory != null)
-						objectToAdd.MapByCategoryID = serializedObject.MapByCategory.ID;
-					else
-						objectToAdd.MapByCategoryID = null;
-					MapIndexCollectionTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "MapResult")
@@ -4537,71 +3001,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					BinaryFileTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
-                if (insertData.ObjectType == "ImageGroup")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ImageGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ImageGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ReferenceToInformation != null)
-						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
-					else
-						objectToAdd.ReferenceToInformationID = null;
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Description = serializedObject.Description;
-					if(serializedObject.FeaturedImage != null)
-						objectToAdd.FeaturedImageID = serializedObject.FeaturedImage.ID;
-					else
-						objectToAdd.FeaturedImageID = null;
-					if(serializedObject.ImagesCollection != null)
-						objectToAdd.ImagesCollectionID = serializedObject.ImagesCollection.ID;
-					else
-						objectToAdd.ImagesCollectionID = null;
-					ImageGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "VideoGroup")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.VideoGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new VideoGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Title = serializedObject.Title;
-		            objectToAdd.Description = serializedObject.Description;
-					if(serializedObject.VideoCollection != null)
-						objectToAdd.VideoCollectionID = serializedObject.VideoCollection.ID;
-					else
-						objectToAdd.VideoCollectionID = null;
-					VideoGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Tooltip")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Tooltip.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Tooltip {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.TooltipText = serializedObject.TooltipText;
-					TooltipTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "SocialPanel")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.SocialPanel.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new SocialPanel {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.SocialFilter != null)
-						objectToAdd.SocialFilterID = serializedObject.SocialFilter.ID;
-					else
-						objectToAdd.SocialFilterID = null;
-					SocialPanelTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
                 if (insertData.ObjectType == "Longitude")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -4655,73 +3054,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Month = serializedObject.Month;
 		            objectToAdd.Year = serializedObject.Year;
 					DateTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Sex")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Sex.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Sex {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.SexText = serializedObject.SexText;
-					SexTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "OBSAddress")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.OBSAddress.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new OBSAddress {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.StreetName = serializedObject.StreetName;
-		            objectToAdd.BuildingNumber = serializedObject.BuildingNumber;
-		            objectToAdd.PostOfficeBox = serializedObject.PostOfficeBox;
-		            objectToAdd.PostalCode = serializedObject.PostalCode;
-		            objectToAdd.Municipality = serializedObject.Municipality;
-		            objectToAdd.Region = serializedObject.Region;
-		            objectToAdd.Province = serializedObject.Province;
-		            objectToAdd.state = serializedObject.state;
-		            objectToAdd.Country = serializedObject.Country;
-		            objectToAdd.Continent = serializedObject.Continent;
-					OBSAddressTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "Identity")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.Identity.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new Identity {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.FirstName = serializedObject.FirstName;
-		            objectToAdd.LastName = serializedObject.LastName;
-		            objectToAdd.Initials = serializedObject.Initials;
-					if(serializedObject.Sex != null)
-						objectToAdd.SexID = serializedObject.Sex.ID;
-					else
-						objectToAdd.SexID = null;
-					if(serializedObject.Birthday != null)
-						objectToAdd.BirthdayID = serializedObject.Birthday.ID;
-					else
-						objectToAdd.BirthdayID = null;
-					IdentityTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "ImageVideoSoundVectorRaw")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.AaltoGlobalImpact.OIP.ImageVideoSoundVectorRaw.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new ImageVideoSoundVectorRaw {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.Image = serializedObject.Image;
-		            objectToAdd.Video = serializedObject.Video;
-		            objectToAdd.Sound = serializedObject.Sound;
-		            objectToAdd.Vector = serializedObject.Vector;
-		            objectToAdd.Raw = serializedObject.Raw;
-					ImageVideoSoundVectorRawTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "CategoryContainer")
@@ -5224,13 +3556,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "TBRegisterContainer")
-		        {
-		            var objectToDelete = new TBRegisterContainer {ID = deleteData.ID};
-                    TBRegisterContainerTable.Attach(objectToDelete);
-                    TBRegisterContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "LoginProvider")
 		        {
 		            var objectToDelete = new LoginProvider {ID = deleteData.ID};
@@ -5238,46 +3563,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     LoginProviderTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "ContactOipContainer")
-		        {
-		            var objectToDelete = new ContactOipContainer {ID = deleteData.ID};
-                    ContactOipContainerTable.Attach(objectToDelete);
-                    ContactOipContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "TBPRegisterEmail")
 		        {
 		            var objectToDelete = new TBPRegisterEmail {ID = deleteData.ID};
                     TBPRegisterEmailTable.Attach(objectToDelete);
                     TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "JavaScriptContainer")
-		        {
-		            var objectToDelete = new JavaScriptContainer {ID = deleteData.ID};
-                    JavaScriptContainerTable.Attach(objectToDelete);
-                    JavaScriptContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "JavascriptContainer")
-		        {
-		            var objectToDelete = new JavascriptContainer {ID = deleteData.ID};
-                    JavascriptContainerTable.Attach(objectToDelete);
-                    JavascriptContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "FooterContainer")
-		        {
-		            var objectToDelete = new FooterContainer {ID = deleteData.ID};
-                    FooterContainerTable.Attach(objectToDelete);
-                    FooterContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NavigationContainer")
-		        {
-		            var objectToDelete = new NavigationContainer {ID = deleteData.ID};
-                    NavigationContainerTable.Attach(objectToDelete);
-                    NavigationContainerTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "AccountSummary")
@@ -5294,25 +3584,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     AccountContainerTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "AccountIndex")
-		        {
-		            var objectToDelete = new AccountIndex {ID = deleteData.ID};
-                    AccountIndexTable.Attach(objectToDelete);
-                    AccountIndexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "AccountModule")
 		        {
 		            var objectToDelete = new AccountModule {ID = deleteData.ID};
                     AccountModuleTable.Attach(objectToDelete);
                     AccountModuleTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ImageGroupContainer")
-		        {
-		            var objectToDelete = new ImageGroupContainer {ID = deleteData.ID};
-                    ImageGroupContainerTable.Attach(objectToDelete);
-                    ImageGroupContainerTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "LocationContainer")
@@ -5334,13 +3610,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var objectToDelete = new StreetAddress {ID = deleteData.ID};
                     StreetAddressTable.Attach(objectToDelete);
                     StreetAddressTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountContent")
-		        {
-		            var objectToDelete = new AccountContent {ID = deleteData.ID};
-                    AccountContentTable.Attach(objectToDelete);
-                    AccountContentTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "AccountProfile")
@@ -5371,32 +3640,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "GroupedInformation")
-		        {
-		            var objectToDelete = new GroupedInformation {ID = deleteData.ID};
-                    GroupedInformationTable.Attach(objectToDelete);
-                    GroupedInformationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "ReferenceToInformation")
 		        {
 		            var objectToDelete = new ReferenceToInformation {ID = deleteData.ID};
                     ReferenceToInformationTable.Attach(objectToDelete);
                     ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BlogContainer")
-		        {
-		            var objectToDelete = new BlogContainer {ID = deleteData.ID};
-                    BlogContainerTable.Attach(objectToDelete);
-                    BlogContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RecentBlogSummary")
-		        {
-		            var objectToDelete = new RecentBlogSummary {ID = deleteData.ID};
-                    RecentBlogSummaryTable.Attach(objectToDelete);
-                    RecentBlogSummaryTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "NodeSummaryContainer")
@@ -5427,88 +3675,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     LongTextObjectTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "MapContainer")
-		        {
-		            var objectToDelete = new MapContainer {ID = deleteData.ID};
-                    MapContainerTable.Attach(objectToDelete);
-                    MapContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "MapMarker")
 		        {
 		            var objectToDelete = new MapMarker {ID = deleteData.ID};
                     MapMarkerTable.Attach(objectToDelete);
                     MapMarkerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CalendarContainer")
-		        {
-		            var objectToDelete = new CalendarContainer {ID = deleteData.ID};
-                    CalendarContainerTable.Attach(objectToDelete);
-                    CalendarContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AboutContainer")
-		        {
-		            var objectToDelete = new AboutContainer {ID = deleteData.ID};
-                    AboutContainerTable.Attach(objectToDelete);
-                    AboutContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "OBSAccountContainer")
-		        {
-		            var objectToDelete = new OBSAccountContainer {ID = deleteData.ID};
-                    OBSAccountContainerTable.Attach(objectToDelete);
-                    OBSAccountContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProjectContainer")
-		        {
-		            var objectToDelete = new ProjectContainer {ID = deleteData.ID};
-                    ProjectContainerTable.Attach(objectToDelete);
-                    ProjectContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CourseContainer")
-		        {
-		            var objectToDelete = new CourseContainer {ID = deleteData.ID};
-                    CourseContainerTable.Attach(objectToDelete);
-                    CourseContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContainerHeader")
-		        {
-		            var objectToDelete = new ContainerHeader {ID = deleteData.ID};
-                    ContainerHeaderTable.Attach(objectToDelete);
-                    ContainerHeaderTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ActivitySummaryContainer")
-		        {
-		            var objectToDelete = new ActivitySummaryContainer {ID = deleteData.ID};
-                    ActivitySummaryContainerTable.Attach(objectToDelete);
-                    ActivitySummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ActivityIndex")
-		        {
-		            var objectToDelete = new ActivityIndex {ID = deleteData.ID};
-                    ActivityIndexTable.Attach(objectToDelete);
-                    ActivityIndexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ActivityContainer")
-		        {
-		            var objectToDelete = new ActivityContainer {ID = deleteData.ID};
-                    ActivityContainerTable.Attach(objectToDelete);
-                    ActivityContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Activity")
-		        {
-		            var objectToDelete = new Activity {ID = deleteData.ID};
-                    ActivityTable.Attach(objectToDelete);
-                    ActivityTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "Moderator")
@@ -5679,53 +3850,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     TextContentTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "Blog")
-		        {
-		            var objectToDelete = new Blog {ID = deleteData.ID};
-                    BlogTable.Attach(objectToDelete);
-                    BlogTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BlogIndexGroup")
-		        {
-		            var objectToDelete = new BlogIndexGroup {ID = deleteData.ID};
-                    BlogIndexGroupTable.Attach(objectToDelete);
-                    BlogIndexGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CalendarIndex")
-		        {
-		            var objectToDelete = new CalendarIndex {ID = deleteData.ID};
-                    CalendarIndexTable.Attach(objectToDelete);
-                    CalendarIndexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Filter")
-		        {
-		            var objectToDelete = new Filter {ID = deleteData.ID};
-                    FilterTable.Attach(objectToDelete);
-                    FilterTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Calendar")
-		        {
-		            var objectToDelete = new Calendar {ID = deleteData.ID};
-                    CalendarTable.Attach(objectToDelete);
-                    CalendarTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "Map")
 		        {
 		            var objectToDelete = new Map {ID = deleteData.ID};
                     MapTable.Attach(objectToDelete);
                     MapTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapIndexCollection")
-		        {
-		            var objectToDelete = new MapIndexCollection {ID = deleteData.ID};
-                    MapIndexCollectionTable.Attach(objectToDelete);
-                    MapIndexCollectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "MapResult")
@@ -5763,34 +3892,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     BinaryFileTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "ImageGroup")
-		        {
-		            var objectToDelete = new ImageGroup {ID = deleteData.ID};
-                    ImageGroupTable.Attach(objectToDelete);
-                    ImageGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "VideoGroup")
-		        {
-		            var objectToDelete = new VideoGroup {ID = deleteData.ID};
-                    VideoGroupTable.Attach(objectToDelete);
-                    VideoGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Tooltip")
-		        {
-		            var objectToDelete = new Tooltip {ID = deleteData.ID};
-                    TooltipTable.Attach(objectToDelete);
-                    TooltipTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SocialPanel")
-		        {
-		            var objectToDelete = new SocialPanel {ID = deleteData.ID};
-                    SocialPanelTable.Attach(objectToDelete);
-                    SocialPanelTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "Longitude")
 		        {
 		            var objectToDelete = new Longitude {ID = deleteData.ID};
@@ -5817,34 +3918,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var objectToDelete = new Date {ID = deleteData.ID};
                     DateTable.Attach(objectToDelete);
                     DateTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Sex")
-		        {
-		            var objectToDelete = new Sex {ID = deleteData.ID};
-                    SexTable.Attach(objectToDelete);
-                    SexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "OBSAddress")
-		        {
-		            var objectToDelete = new OBSAddress {ID = deleteData.ID};
-                    OBSAddressTable.Attach(objectToDelete);
-                    OBSAddressTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Identity")
-		        {
-		            var objectToDelete = new Identity {ID = deleteData.ID};
-                    IdentityTable.Attach(objectToDelete);
-                    IdentityTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ImageVideoSoundVectorRaw")
-		        {
-		            var objectToDelete = new ImageVideoSoundVectorRaw {ID = deleteData.ID};
-                    ImageVideoSoundVectorRawTable.Attach(objectToDelete);
-                    ImageVideoSoundVectorRawTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "CategoryContainer")
@@ -6043,13 +4116,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "GroupedInformationCollection")
-		        {
-		            var objectToDelete = new GroupedInformationCollection {ID = deleteData.ID};
-                    GroupedInformationCollectionTable.Attach(objectToDelete);
-                    GroupedInformationCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "ReferenceCollection")
 		        {
 		            var objectToDelete = new ReferenceCollection {ID = deleteData.ID};
@@ -6083,13 +4149,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var objectToDelete = new MapMarkerCollection {ID = deleteData.ID};
                     MapMarkerCollectionTable.Attach(objectToDelete);
                     MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ActivityCollection")
-		        {
-		            var objectToDelete = new ActivityCollection {ID = deleteData.ID};
-                    ActivityCollectionTable.Attach(objectToDelete);
-                    ActivityCollectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "ModeratorCollection")
@@ -6176,20 +4235,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
-		        if (deleteData.ObjectType == "BlogCollection")
-		        {
-		            var objectToDelete = new BlogCollection {ID = deleteData.ID};
-                    BlogCollectionTable.Attach(objectToDelete);
-                    BlogCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CalendarCollection")
-		        {
-		            var objectToDelete = new CalendarCollection {ID = deleteData.ID};
-                    CalendarCollectionTable.Attach(objectToDelete);
-                    CalendarCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
 		        if (deleteData.ObjectType == "MapCollection")
 		        {
 		            var objectToDelete = new MapCollection {ID = deleteData.ID};
@@ -6216,27 +4261,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var objectToDelete = new BinaryFileCollection {ID = deleteData.ID};
                     BinaryFileCollectionTable.Attach(objectToDelete);
                     BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ImageGroupCollection")
-		        {
-		            var objectToDelete = new ImageGroupCollection {ID = deleteData.ID};
-                    ImageGroupCollectionTable.Attach(objectToDelete);
-                    ImageGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "VideoCollection")
-		        {
-		            var objectToDelete = new VideoCollection {ID = deleteData.ID};
-                    VideoCollectionTable.Attach(objectToDelete);
-                    VideoCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SocialPanelCollection")
-		        {
-		            var objectToDelete = new SocialPanelCollection {ID = deleteData.ID};
-                    SocialPanelCollectionTable.Attach(objectToDelete);
-                    SocialPanelCollectionTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "LocationCollection")
@@ -6398,44 +4422,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<TBInformationOutputConfirmation>();
 				}
 			}
-			public Table<TBRegisterContainer> TBRegisterContainerTable {
-				get {
-					return this.GetTable<TBRegisterContainer>();
-				}
-			}
 			public Table<LoginProvider> LoginProviderTable {
 				get {
 					return this.GetTable<LoginProvider>();
 				}
 			}
-			public Table<ContactOipContainer> ContactOipContainerTable {
-				get {
-					return this.GetTable<ContactOipContainer>();
-				}
-			}
 			public Table<TBPRegisterEmail> TBPRegisterEmailTable {
 				get {
 					return this.GetTable<TBPRegisterEmail>();
-				}
-			}
-			public Table<JavaScriptContainer> JavaScriptContainerTable {
-				get {
-					return this.GetTable<JavaScriptContainer>();
-				}
-			}
-			public Table<JavascriptContainer> JavascriptContainerTable {
-				get {
-					return this.GetTable<JavascriptContainer>();
-				}
-			}
-			public Table<FooterContainer> FooterContainerTable {
-				get {
-					return this.GetTable<FooterContainer>();
-				}
-			}
-			public Table<NavigationContainer> NavigationContainerTable {
-				get {
-					return this.GetTable<NavigationContainer>();
 				}
 			}
 			public Table<AccountSummary> AccountSummaryTable {
@@ -6448,19 +4442,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<AccountContainer>();
 				}
 			}
-			public Table<AccountIndex> AccountIndexTable {
-				get {
-					return this.GetTable<AccountIndex>();
-				}
-			}
 			public Table<AccountModule> AccountModuleTable {
 				get {
 					return this.GetTable<AccountModule>();
-				}
-			}
-			public Table<ImageGroupContainer> ImageGroupContainerTable {
-				get {
-					return this.GetTable<ImageGroupContainer>();
 				}
 			}
 			public Table<LocationContainer> LocationContainerTable {
@@ -6476,11 +4460,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			public Table<StreetAddress> StreetAddressTable {
 				get {
 					return this.GetTable<StreetAddress>();
-				}
-			}
-			public Table<AccountContent> AccountContentTable {
-				get {
-					return this.GetTable<AccountContent>();
 				}
 			}
 			public Table<AccountProfile> AccountProfileTable {
@@ -6503,24 +4482,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<PersonalInfoVisibility>();
 				}
 			}
-			public Table<GroupedInformation> GroupedInformationTable {
-				get {
-					return this.GetTable<GroupedInformation>();
-				}
-			}
 			public Table<ReferenceToInformation> ReferenceToInformationTable {
 				get {
 					return this.GetTable<ReferenceToInformation>();
-				}
-			}
-			public Table<BlogContainer> BlogContainerTable {
-				get {
-					return this.GetTable<BlogContainer>();
-				}
-			}
-			public Table<RecentBlogSummary> RecentBlogSummaryTable {
-				get {
-					return this.GetTable<RecentBlogSummary>();
 				}
 			}
 			public Table<NodeSummaryContainer> NodeSummaryContainerTable {
@@ -6543,64 +4507,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<LongTextObject>();
 				}
 			}
-			public Table<MapContainer> MapContainerTable {
-				get {
-					return this.GetTable<MapContainer>();
-				}
-			}
 			public Table<MapMarker> MapMarkerTable {
 				get {
 					return this.GetTable<MapMarker>();
-				}
-			}
-			public Table<CalendarContainer> CalendarContainerTable {
-				get {
-					return this.GetTable<CalendarContainer>();
-				}
-			}
-			public Table<AboutContainer> AboutContainerTable {
-				get {
-					return this.GetTable<AboutContainer>();
-				}
-			}
-			public Table<OBSAccountContainer> OBSAccountContainerTable {
-				get {
-					return this.GetTable<OBSAccountContainer>();
-				}
-			}
-			public Table<ProjectContainer> ProjectContainerTable {
-				get {
-					return this.GetTable<ProjectContainer>();
-				}
-			}
-			public Table<CourseContainer> CourseContainerTable {
-				get {
-					return this.GetTable<CourseContainer>();
-				}
-			}
-			public Table<ContainerHeader> ContainerHeaderTable {
-				get {
-					return this.GetTable<ContainerHeader>();
-				}
-			}
-			public Table<ActivitySummaryContainer> ActivitySummaryContainerTable {
-				get {
-					return this.GetTable<ActivitySummaryContainer>();
-				}
-			}
-			public Table<ActivityIndex> ActivityIndexTable {
-				get {
-					return this.GetTable<ActivityIndex>();
-				}
-			}
-			public Table<ActivityContainer> ActivityContainerTable {
-				get {
-					return this.GetTable<ActivityContainer>();
-				}
-			}
-			public Table<Activity> ActivityTable {
-				get {
-					return this.GetTable<Activity>();
 				}
 			}
 			public Table<Moderator> ModeratorTable {
@@ -6723,39 +4632,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<TextContent>();
 				}
 			}
-			public Table<Blog> BlogTable {
-				get {
-					return this.GetTable<Blog>();
-				}
-			}
-			public Table<BlogIndexGroup> BlogIndexGroupTable {
-				get {
-					return this.GetTable<BlogIndexGroup>();
-				}
-			}
-			public Table<CalendarIndex> CalendarIndexTable {
-				get {
-					return this.GetTable<CalendarIndex>();
-				}
-			}
-			public Table<Filter> FilterTable {
-				get {
-					return this.GetTable<Filter>();
-				}
-			}
-			public Table<Calendar> CalendarTable {
-				get {
-					return this.GetTable<Calendar>();
-				}
-			}
 			public Table<Map> MapTable {
 				get {
 					return this.GetTable<Map>();
-				}
-			}
-			public Table<MapIndexCollection> MapIndexCollectionTable {
-				get {
-					return this.GetTable<MapIndexCollection>();
 				}
 			}
 			public Table<MapResult> MapResultTable {
@@ -6783,26 +4662,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<BinaryFile>();
 				}
 			}
-			public Table<ImageGroup> ImageGroupTable {
-				get {
-					return this.GetTable<ImageGroup>();
-				}
-			}
-			public Table<VideoGroup> VideoGroupTable {
-				get {
-					return this.GetTable<VideoGroup>();
-				}
-			}
-			public Table<Tooltip> TooltipTable {
-				get {
-					return this.GetTable<Tooltip>();
-				}
-			}
-			public Table<SocialPanel> SocialPanelTable {
-				get {
-					return this.GetTable<SocialPanel>();
-				}
-			}
 			public Table<Longitude> LongitudeTable {
 				get {
 					return this.GetTable<Longitude>();
@@ -6821,26 +4680,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			public Table<Date> DateTable {
 				get {
 					return this.GetTable<Date>();
-				}
-			}
-			public Table<Sex> SexTable {
-				get {
-					return this.GetTable<Sex>();
-				}
-			}
-			public Table<OBSAddress> OBSAddressTable {
-				get {
-					return this.GetTable<OBSAddress>();
-				}
-			}
-			public Table<Identity> IdentityTable {
-				get {
-					return this.GetTable<Identity>();
-				}
-			}
-			public Table<ImageVideoSoundVectorRaw> ImageVideoSoundVectorRawTable {
-				get {
-					return this.GetTable<ImageVideoSoundVectorRaw>();
 				}
 			}
 			public Table<CategoryContainer> CategoryContainerTable {
@@ -6983,11 +4822,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<AddressAndLocationCollection>();
 				}
 			}
-			public Table<GroupedInformationCollection> GroupedInformationCollectionTable {
-				get {
-					return this.GetTable<GroupedInformationCollection>();
-				}
-			}
 			public Table<ReferenceCollection> ReferenceCollectionTable {
 				get {
 					return this.GetTable<ReferenceCollection>();
@@ -7011,11 +4845,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			public Table<MapMarkerCollection> MapMarkerCollectionTable {
 				get {
 					return this.GetTable<MapMarkerCollection>();
-				}
-			}
-			public Table<ActivityCollection> ActivityCollectionTable {
-				get {
-					return this.GetTable<ActivityCollection>();
 				}
 			}
 			public Table<ModeratorCollection> ModeratorCollectionTable {
@@ -7078,16 +4907,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					return this.GetTable<TextContentCollection>();
 				}
 			}
-			public Table<BlogCollection> BlogCollectionTable {
-				get {
-					return this.GetTable<BlogCollection>();
-				}
-			}
-			public Table<CalendarCollection> CalendarCollectionTable {
-				get {
-					return this.GetTable<CalendarCollection>();
-				}
-			}
 			public Table<MapCollection> MapCollectionTable {
 				get {
 					return this.GetTable<MapCollection>();
@@ -7106,21 +4925,6 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 			public Table<BinaryFileCollection> BinaryFileCollectionTable {
 				get {
 					return this.GetTable<BinaryFileCollection>();
-				}
-			}
-			public Table<ImageGroupCollection> ImageGroupCollectionTable {
-				get {
-					return this.GetTable<ImageGroupCollection>();
-				}
-			}
-			public Table<VideoCollection> VideoCollectionTable {
-				get {
-					return this.GetTable<VideoCollection>();
-				}
-			}
-			public Table<SocialPanelCollection> SocialPanelCollectionTable {
-				get {
-					return this.GetTable<SocialPanelCollection>();
 				}
 			}
 			public Table<LocationCollection> LocationCollectionTable {
@@ -8390,74 +6194,6 @@ CREATE TABLE IF NOT EXISTS [TBInformationOutputConfirmation](
 				InformationOutputID = string.Empty;
 		}
 	}
-    [Table(Name = "TBRegisterContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("TBRegisterContainer: {ID}")]
-	public class TBRegisterContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public TBRegisterContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [TBRegisterContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[ReturnUrl] TEXT NOT NULL, 
-[LoginProviderCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string ReturnUrl { get; set; }
-		// private string _unmodified_ReturnUrl;
-			[Column]
-			public string LoginProviderCollectionID { get; set; }
-			private EntityRef< LoginProviderCollection > _LoginProviderCollection;
-			[Association(Storage = "_LoginProviderCollection", ThisKey = "LoginProviderCollectionID")]
-			public LoginProviderCollection LoginProviderCollection
-			{
-				get { return this._LoginProviderCollection.Entity; }
-				set { this._LoginProviderCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(ReturnUrl == null)
-				ReturnUrl = string.Empty;
-		}
-	}
     [Table(Name = "LoginProvider")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("LoginProvider: {ID}")]
@@ -8537,53 +6273,6 @@ CREATE TABLE IF NOT EXISTS [LoginProvider](
 				ReturnUrl = string.Empty;
 		}
 	}
-    [Table(Name = "ContactOipContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ContactOipContainer: {ID}")]
-	public class ContactOipContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ContactOipContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContactOipContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[OIPModeratorGroupID] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string OIPModeratorGroupID { get; set; }
-		// private string _unmodified_OIPModeratorGroupID;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(OIPModeratorGroupID == null)
-				OIPModeratorGroupID = string.Empty;
-		}
-	}
     [Table(Name = "TBPRegisterEmail")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("TBPRegisterEmail: {ID}")]
@@ -8631,194 +6320,6 @@ CREATE TABLE IF NOT EXISTS [TBPRegisterEmail](
 				EmailAddress = string.Empty;
 		}
 	}
-    [Table(Name = "JavaScriptContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("JavaScriptContainer: {ID}")]
-	public class JavaScriptContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public JavaScriptContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [JavaScriptContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string HtmlContent { get; set; }
-		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(HtmlContent == null)
-				HtmlContent = string.Empty;
-		}
-	}
-    [Table(Name = "JavascriptContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("JavascriptContainer: {ID}")]
-	public class JavascriptContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public JavascriptContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [JavascriptContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string HtmlContent { get; set; }
-		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(HtmlContent == null)
-				HtmlContent = string.Empty;
-		}
-	}
-    [Table(Name = "FooterContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("FooterContainer: {ID}")]
-	public class FooterContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public FooterContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [FooterContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HtmlContent] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string HtmlContent { get; set; }
-		// private string _unmodified_HtmlContent;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(HtmlContent == null)
-				HtmlContent = string.Empty;
-		}
-	}
-    [Table(Name = "NavigationContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("NavigationContainer: {ID}")]
-	public class NavigationContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public NavigationContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [NavigationContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Dummy] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Dummy { get; set; }
-		// private string _unmodified_Dummy;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Dummy == null)
-				Dummy = string.Empty;
-		}
-	}
     [Table(Name = "AccountSummary")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountSummary: {ID}")]
@@ -8850,31 +6351,9 @@ CREATE TABLE IF NOT EXISTS [AccountSummary](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[IntroductionID] TEXT NULL, 
-[ActivitySummaryID] TEXT NULL, 
 [GroupSummaryID] TEXT NULL
 )";
         }
-
-			[Column]
-			public string IntroductionID { get; set; }
-			private EntityRef< Introduction > _Introduction;
-			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
-			public Introduction Introduction
-			{
-				get { return this._Introduction.Entity; }
-				set { this._Introduction.Entity = value; }
-			}
-
-			[Column]
-			public string ActivitySummaryID { get; set; }
-			private EntityRef< ActivitySummaryContainer > _ActivitySummary;
-			[Association(Storage = "_ActivitySummary", ThisKey = "ActivitySummaryID")]
-			public ActivitySummaryContainer ActivitySummary
-			{
-				get { return this._ActivitySummary.Entity; }
-				set { this._ActivitySummary.Entity = value; }
-			}
 
 			[Column]
 			public string GroupSummaryID { get; set; }
@@ -8922,32 +6401,10 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[HeaderID] TEXT NULL, 
-[AccountIndexID] TEXT NULL, 
 [AccountModuleID] TEXT NULL, 
 [AccountSummaryID] TEXT NULL
 )";
         }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-			[Column]
-			public string AccountIndexID { get; set; }
-			private EntityRef< AccountIndex > _AccountIndex;
-			[Association(Storage = "_AccountIndex", ThisKey = "AccountIndexID")]
-			public AccountIndex AccountIndex
-			{
-				get { return this._AccountIndex.Entity; }
-				set { this._AccountIndex.Entity = value; }
-			}
 
 			[Column]
 			public string AccountModuleID { get; set; }
@@ -8972,80 +6429,6 @@ CREATE TABLE IF NOT EXISTS [AccountContainer](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
-		}
-	}
-    [Table(Name = "AccountIndex")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("AccountIndex: {ID}")]
-	public class AccountIndex : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public AccountIndex() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
-			[Column]
-			public string IconID { get; set; }
-			private EntityRef< Image > _Icon;
-			[Association(Storage = "_Icon", ThisKey = "IconID")]
-			public Image Icon
-			{
-				get { return this._Icon.Entity; }
-				set { this._Icon.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Introduction { get; set; }
-		// private string _unmodified_Introduction;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Summary { get; set; }
-		// private string _unmodified_Summary;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Introduction == null)
-				Introduction = string.Empty;
-			if(Summary == null)
-				Summary = string.Empty;
 		}
 	}
     [Table(Name = "AccountModule")]
@@ -9124,55 +6507,6 @@ CREATE TABLE IF NOT EXISTS [AccountModule](
 			{
 				get { return this._LocationCollection.Entity; }
 				set { this._LocationCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "ImageGroupContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ImageGroupContainer: {ID}")]
-	public class ImageGroupContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ImageGroupContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageGroupContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ImageGroupsID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string ImageGroupsID { get; set; }
-			private EntityRef< ImageGroupCollection > _ImageGroups;
-			[Association(Storage = "_ImageGroups", ThisKey = "ImageGroupsID")]
-			public ImageGroupCollection ImageGroups
-			{
-				get { return this._ImageGroups.Entity; }
-				set { this._ImageGroups.Entity = value; }
 			}
         public void PrepareForStoring(bool isInitialInsert)
         {
@@ -9369,53 +6703,6 @@ CREATE TABLE IF NOT EXISTS [StreetAddress](
 				Town = string.Empty;
 			if(Country == null)
 				Country = string.Empty;
-		}
-	}
-    [Table(Name = "AccountContent")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("AccountContent: {ID}")]
-	public class AccountContent : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public AccountContent() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AccountContent](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Dummy] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Dummy { get; set; }
-		// private string _unmodified_Dummy;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Dummy == null)
-				Dummy = string.Empty;
 		}
 	}
     [Table(Name = "AccountProfile")]
@@ -9690,63 +6977,6 @@ CREATE TABLE IF NOT EXISTS [PersonalInfoVisibility](
 				NoOne_Network_All = string.Empty;
 		}
 	}
-    [Table(Name = "GroupedInformation")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("GroupedInformation: {ID}")]
-	public class GroupedInformation : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public GroupedInformation() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupedInformation](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[GroupName] TEXT NOT NULL, 
-[ReferenceCollectionID] TEXT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string GroupName { get; set; }
-		// private string _unmodified_GroupName;
-			[Column]
-			public string ReferenceCollectionID { get; set; }
-			private EntityRef< ReferenceCollection > _ReferenceCollection;
-			[Association(Storage = "_ReferenceCollection", ThisKey = "ReferenceCollectionID")]
-			public ReferenceCollection ReferenceCollection
-			{
-				get { return this._ReferenceCollection.Entity; }
-				set { this._ReferenceCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(GroupName == null)
-				GroupName = string.Empty;
-		}
-	}
     [Table(Name = "ReferenceToInformation")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceToInformation: {ID}")]
@@ -9802,149 +7032,6 @@ CREATE TABLE IF NOT EXISTS [ReferenceToInformation](
 				URL = string.Empty;
 		}
 	}
-    [Table(Name = "BlogContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("BlogContainer: {ID}")]
-	public class BlogContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public BlogContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BlogContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[FeaturedBlogID] TEXT NULL, 
-[RecentBlogSummaryID] TEXT NULL, 
-[BlogIndexGroupID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-			[Column]
-			public string FeaturedBlogID { get; set; }
-			private EntityRef< Blog > _FeaturedBlog;
-			[Association(Storage = "_FeaturedBlog", ThisKey = "FeaturedBlogID")]
-			public Blog FeaturedBlog
-			{
-				get { return this._FeaturedBlog.Entity; }
-				set { this._FeaturedBlog.Entity = value; }
-			}
-
-			[Column]
-			public string RecentBlogSummaryID { get; set; }
-			private EntityRef< RecentBlogSummary > _RecentBlogSummary;
-			[Association(Storage = "_RecentBlogSummary", ThisKey = "RecentBlogSummaryID")]
-			public RecentBlogSummary RecentBlogSummary
-			{
-				get { return this._RecentBlogSummary.Entity; }
-				set { this._RecentBlogSummary.Entity = value; }
-			}
-
-			[Column]
-			public string BlogIndexGroupID { get; set; }
-			private EntityRef< BlogIndexGroup > _BlogIndexGroup;
-			[Association(Storage = "_BlogIndexGroup", ThisKey = "BlogIndexGroupID")]
-			public BlogIndexGroup BlogIndexGroup
-			{
-				get { return this._BlogIndexGroup.Entity; }
-				set { this._BlogIndexGroup.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "RecentBlogSummary")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("RecentBlogSummary: {ID}")]
-	public class RecentBlogSummary : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public RecentBlogSummary() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [RecentBlogSummary](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IntroductionID] TEXT NULL, 
-[RecentBlogCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string IntroductionID { get; set; }
-			private EntityRef< Introduction > _Introduction;
-			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
-			public Introduction Introduction
-			{
-				get { return this._Introduction.Entity; }
-				set { this._Introduction.Entity = value; }
-			}
-
-			[Column]
-			public string RecentBlogCollectionID { get; set; }
-			private EntityRef< BlogCollection > _RecentBlogCollection;
-			[Association(Storage = "_RecentBlogCollection", ThisKey = "RecentBlogCollectionID")]
-			public BlogCollection RecentBlogCollection
-			{
-				get { return this._RecentBlogCollection.Entity; }
-				set { this._RecentBlogCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
     [Table(Name = "NodeSummaryContainer")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("NodeSummaryContainer: {ID}")]
@@ -9977,8 +7064,6 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 [ETag] TEXT NOT NULL
 , 
 [NodesID] TEXT NULL, 
-[NodeSourceBlogsID] TEXT NULL, 
-[NodeSourceActivitiesID] TEXT NULL, 
 [NodeSourceTextContentID] TEXT NULL, 
 [NodeSourceLinkToContentID] TEXT NULL, 
 [NodeSourceEmbeddedContentID] TEXT NULL, 
@@ -9996,24 +7081,6 @@ CREATE TABLE IF NOT EXISTS [NodeSummaryContainer](
 			{
 				get { return this._Nodes.Entity; }
 				set { this._Nodes.Entity = value; }
-			}
-			[Column]
-			public string NodeSourceBlogsID { get; set; }
-			private EntityRef< BlogCollection > _NodeSourceBlogs;
-			[Association(Storage = "_NodeSourceBlogs", ThisKey = "NodeSourceBlogsID")]
-			public BlogCollection NodeSourceBlogs
-			{
-				get { return this._NodeSourceBlogs.Entity; }
-				set { this._NodeSourceBlogs.Entity = value; }
-			}
-			[Column]
-			public string NodeSourceActivitiesID { get; set; }
-			private EntityRef< ActivityCollection > _NodeSourceActivities;
-			[Association(Storage = "_NodeSourceActivities", ThisKey = "NodeSourceActivitiesID")]
-			public ActivityCollection NodeSourceActivities
-			{
-				get { return this._NodeSourceActivities.Entity; }
-				set { this._NodeSourceActivities.Entity = value; }
 			}
 			[Column]
 			public string NodeSourceTextContentID { get; set; }
@@ -10343,138 +7410,6 @@ CREATE TABLE IF NOT EXISTS [LongTextObject](
 				Content = string.Empty;
 		}
 	}
-    [Table(Name = "MapContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("MapContainer: {ID}")]
-	public class MapContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public MapContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[MapFeaturedID] TEXT NULL, 
-[MapCollectionID] TEXT NULL, 
-[MapResultCollectionID] TEXT NULL, 
-[MapIndexCollectionID] TEXT NULL, 
-[MarkerSourceLocationsID] TEXT NULL, 
-[MarkerSourceBlogsID] TEXT NULL, 
-[MarkerSourceActivitiesID] TEXT NULL, 
-[MapMarkersID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-			[Column]
-			public string MapFeaturedID { get; set; }
-			private EntityRef< Map > _MapFeatured;
-			[Association(Storage = "_MapFeatured", ThisKey = "MapFeaturedID")]
-			public Map MapFeatured
-			{
-				get { return this._MapFeatured.Entity; }
-				set { this._MapFeatured.Entity = value; }
-			}
-
-			[Column]
-			public string MapCollectionID { get; set; }
-			private EntityRef< MapCollection > _MapCollection;
-			[Association(Storage = "_MapCollection", ThisKey = "MapCollectionID")]
-			public MapCollection MapCollection
-			{
-				get { return this._MapCollection.Entity; }
-				set { this._MapCollection.Entity = value; }
-			}
-			[Column]
-			public string MapResultCollectionID { get; set; }
-			private EntityRef< MapResultCollection > _MapResultCollection;
-			[Association(Storage = "_MapResultCollection", ThisKey = "MapResultCollectionID")]
-			public MapResultCollection MapResultCollection
-			{
-				get { return this._MapResultCollection.Entity; }
-				set { this._MapResultCollection.Entity = value; }
-			}
-			[Column]
-			public string MapIndexCollectionID { get; set; }
-			private EntityRef< MapIndexCollection > _MapIndexCollection;
-			[Association(Storage = "_MapIndexCollection", ThisKey = "MapIndexCollectionID")]
-			public MapIndexCollection MapIndexCollection
-			{
-				get { return this._MapIndexCollection.Entity; }
-				set { this._MapIndexCollection.Entity = value; }
-			}
-
-			[Column]
-			public string MarkerSourceLocationsID { get; set; }
-			private EntityRef< AddressAndLocationCollection > _MarkerSourceLocations;
-			[Association(Storage = "_MarkerSourceLocations", ThisKey = "MarkerSourceLocationsID")]
-			public AddressAndLocationCollection MarkerSourceLocations
-			{
-				get { return this._MarkerSourceLocations.Entity; }
-				set { this._MarkerSourceLocations.Entity = value; }
-			}
-			[Column]
-			public string MarkerSourceBlogsID { get; set; }
-			private EntityRef< BlogCollection > _MarkerSourceBlogs;
-			[Association(Storage = "_MarkerSourceBlogs", ThisKey = "MarkerSourceBlogsID")]
-			public BlogCollection MarkerSourceBlogs
-			{
-				get { return this._MarkerSourceBlogs.Entity; }
-				set { this._MarkerSourceBlogs.Entity = value; }
-			}
-			[Column]
-			public string MarkerSourceActivitiesID { get; set; }
-			private EntityRef< ActivityCollection > _MarkerSourceActivities;
-			[Association(Storage = "_MarkerSourceActivities", ThisKey = "MarkerSourceActivitiesID")]
-			public ActivityCollection MarkerSourceActivities
-			{
-				get { return this._MarkerSourceActivities.Entity; }
-				set { this._MarkerSourceActivities.Entity = value; }
-			}
-			[Column]
-			public string MapMarkersID { get; set; }
-			private EntityRef< MapMarkerCollection > _MapMarkers;
-			[Association(Storage = "_MapMarkers", ThisKey = "MapMarkersID")]
-			public MapMarkerCollection MapMarkers
-			{
-				get { return this._MapMarkers.Entity; }
-				set { this._MapMarkers.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
     [Table(Name = "MapMarker")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("MapMarker: {ID}")]
@@ -10571,896 +7506,6 @@ CREATE TABLE IF NOT EXISTS [MapMarker](
 				PopupTitle = string.Empty;
 			if(PopupContent == null)
 				PopupContent = string.Empty;
-		}
-	}
-    [Table(Name = "CalendarContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("CalendarContainer: {ID}")]
-	public class CalendarContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public CalendarContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CalendarContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CalendarContainerHeaderID] TEXT NULL, 
-[CalendarFeaturedID] TEXT NULL, 
-[CalendarCollectionID] TEXT NULL, 
-[CalendarIndexCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string CalendarContainerHeaderID { get; set; }
-			private EntityRef< ContainerHeader > _CalendarContainerHeader;
-			[Association(Storage = "_CalendarContainerHeader", ThisKey = "CalendarContainerHeaderID")]
-			public ContainerHeader CalendarContainerHeader
-			{
-				get { return this._CalendarContainerHeader.Entity; }
-				set { this._CalendarContainerHeader.Entity = value; }
-			}
-
-			[Column]
-			public string CalendarFeaturedID { get; set; }
-			private EntityRef< Calendar > _CalendarFeatured;
-			[Association(Storage = "_CalendarFeatured", ThisKey = "CalendarFeaturedID")]
-			public Calendar CalendarFeatured
-			{
-				get { return this._CalendarFeatured.Entity; }
-				set { this._CalendarFeatured.Entity = value; }
-			}
-
-			[Column]
-			public string CalendarCollectionID { get; set; }
-			private EntityRef< CalendarCollection > _CalendarCollection;
-			[Association(Storage = "_CalendarCollection", ThisKey = "CalendarCollectionID")]
-			public CalendarCollection CalendarCollection
-			{
-				get { return this._CalendarCollection.Entity; }
-				set { this._CalendarCollection.Entity = value; }
-			}
-			[Column]
-			public string CalendarIndexCollectionID { get; set; }
-			private EntityRef< CalendarIndex > _CalendarIndexCollection;
-			[Association(Storage = "_CalendarIndexCollection", ThisKey = "CalendarIndexCollectionID")]
-			public CalendarIndex CalendarIndexCollection
-			{
-				get { return this._CalendarIndexCollection.Entity; }
-				set { this._CalendarIndexCollection.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "AboutContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("AboutContainer: {ID}")]
-	public class AboutContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public AboutContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [AboutContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[MainImageID] TEXT NULL, 
-[HeaderID] TEXT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Body] TEXT NOT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[ImageGroupID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string MainImageID { get; set; }
-			private EntityRef< Image > _MainImage;
-			[Association(Storage = "_MainImage", ThisKey = "MainImageID")]
-			public Image MainImage
-			{
-				get { return this._MainImage.Entity; }
-				set { this._MainImage.Entity = value; }
-			}
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Excerpt { get; set; }
-		// private string _unmodified_Excerpt;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Body { get; set; }
-		// private string _unmodified_Body;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public DateTime Published { get; set; }
-		// private DateTime _unmodified_Published;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Author { get; set; }
-		// private string _unmodified_Author;
-			[Column]
-			public string ImageGroupID { get; set; }
-			private EntityRef< ImageGroup > _ImageGroup;
-			[Association(Storage = "_ImageGroup", ThisKey = "ImageGroupID")]
-			public ImageGroup ImageGroup
-			{
-				get { return this._ImageGroup.Entity; }
-				set { this._ImageGroup.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Excerpt == null)
-				Excerpt = string.Empty;
-			if(Body == null)
-				Body = string.Empty;
-			if(Author == null)
-				Author = string.Empty;
-		}
-	}
-    [Table(Name = "OBSAccountContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("OBSAccountContainer: {ID}")]
-	public class OBSAccountContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public OBSAccountContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [OBSAccountContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[AccountContainerHeaderID] TEXT NULL, 
-[AccountFeaturedID] TEXT NULL, 
-[AccountCollectionID] TEXT NULL, 
-[AccountIndexCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string AccountContainerHeaderID { get; set; }
-			private EntityRef< ContainerHeader > _AccountContainerHeader;
-			[Association(Storage = "_AccountContainerHeader", ThisKey = "AccountContainerHeaderID")]
-			public ContainerHeader AccountContainerHeader
-			{
-				get { return this._AccountContainerHeader.Entity; }
-				set { this._AccountContainerHeader.Entity = value; }
-			}
-
-			[Column]
-			public string AccountFeaturedID { get; set; }
-			private EntityRef< Calendar > _AccountFeatured;
-			[Association(Storage = "_AccountFeatured", ThisKey = "AccountFeaturedID")]
-			public Calendar AccountFeatured
-			{
-				get { return this._AccountFeatured.Entity; }
-				set { this._AccountFeatured.Entity = value; }
-			}
-
-			[Column]
-			public string AccountCollectionID { get; set; }
-			private EntityRef< CalendarCollection > _AccountCollection;
-			[Association(Storage = "_AccountCollection", ThisKey = "AccountCollectionID")]
-			public CalendarCollection AccountCollection
-			{
-				get { return this._AccountCollection.Entity; }
-				set { this._AccountCollection.Entity = value; }
-			}
-			[Column]
-			public string AccountIndexCollectionID { get; set; }
-			private EntityRef< CalendarIndex > _AccountIndexCollection;
-			[Association(Storage = "_AccountIndexCollection", ThisKey = "AccountIndexCollectionID")]
-			public CalendarIndex AccountIndexCollection
-			{
-				get { return this._AccountIndexCollection.Entity; }
-				set { this._AccountIndexCollection.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "ProjectContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ProjectContainer: {ID}")]
-	public class ProjectContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ProjectContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ProjectContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ProjectContainerHeaderID] TEXT NULL, 
-[ProjectFeaturedID] TEXT NULL, 
-[ProjectCollectionID] TEXT NULL, 
-[ProjectIndexCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string ProjectContainerHeaderID { get; set; }
-			private EntityRef< ContainerHeader > _ProjectContainerHeader;
-			[Association(Storage = "_ProjectContainerHeader", ThisKey = "ProjectContainerHeaderID")]
-			public ContainerHeader ProjectContainerHeader
-			{
-				get { return this._ProjectContainerHeader.Entity; }
-				set { this._ProjectContainerHeader.Entity = value; }
-			}
-
-			[Column]
-			public string ProjectFeaturedID { get; set; }
-			private EntityRef< Calendar > _ProjectFeatured;
-			[Association(Storage = "_ProjectFeatured", ThisKey = "ProjectFeaturedID")]
-			public Calendar ProjectFeatured
-			{
-				get { return this._ProjectFeatured.Entity; }
-				set { this._ProjectFeatured.Entity = value; }
-			}
-
-			[Column]
-			public string ProjectCollectionID { get; set; }
-			private EntityRef< CalendarCollection > _ProjectCollection;
-			[Association(Storage = "_ProjectCollection", ThisKey = "ProjectCollectionID")]
-			public CalendarCollection ProjectCollection
-			{
-				get { return this._ProjectCollection.Entity; }
-				set { this._ProjectCollection.Entity = value; }
-			}
-			[Column]
-			public string ProjectIndexCollectionID { get; set; }
-			private EntityRef< CalendarIndex > _ProjectIndexCollection;
-			[Association(Storage = "_ProjectIndexCollection", ThisKey = "ProjectIndexCollectionID")]
-			public CalendarIndex ProjectIndexCollection
-			{
-				get { return this._ProjectIndexCollection.Entity; }
-				set { this._ProjectIndexCollection.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "CourseContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("CourseContainer: {ID}")]
-	public class CourseContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public CourseContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CourseContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[CourseContainerHeaderID] TEXT NULL, 
-[CourseFeaturedID] TEXT NULL, 
-[CourseCollectionID] TEXT NULL, 
-[CourseIndexCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string CourseContainerHeaderID { get; set; }
-			private EntityRef< ContainerHeader > _CourseContainerHeader;
-			[Association(Storage = "_CourseContainerHeader", ThisKey = "CourseContainerHeaderID")]
-			public ContainerHeader CourseContainerHeader
-			{
-				get { return this._CourseContainerHeader.Entity; }
-				set { this._CourseContainerHeader.Entity = value; }
-			}
-
-			[Column]
-			public string CourseFeaturedID { get; set; }
-			private EntityRef< Calendar > _CourseFeatured;
-			[Association(Storage = "_CourseFeatured", ThisKey = "CourseFeaturedID")]
-			public Calendar CourseFeatured
-			{
-				get { return this._CourseFeatured.Entity; }
-				set { this._CourseFeatured.Entity = value; }
-			}
-
-			[Column]
-			public string CourseCollectionID { get; set; }
-			private EntityRef< CalendarCollection > _CourseCollection;
-			[Association(Storage = "_CourseCollection", ThisKey = "CourseCollectionID")]
-			public CalendarCollection CourseCollection
-			{
-				get { return this._CourseCollection.Entity; }
-				set { this._CourseCollection.Entity = value; }
-			}
-			[Column]
-			public string CourseIndexCollectionID { get; set; }
-			private EntityRef< CalendarIndex > _CourseIndexCollection;
-			[Association(Storage = "_CourseIndexCollection", ThisKey = "CourseIndexCollectionID")]
-			public CalendarIndex CourseIndexCollection
-			{
-				get { return this._CourseIndexCollection.Entity; }
-				set { this._CourseIndexCollection.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "ContainerHeader")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ContainerHeader: {ID}")]
-	public class ContainerHeader : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ContainerHeader() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ContainerHeader](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[SubTitle] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string SubTitle { get; set; }
-		// private string _unmodified_SubTitle;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(SubTitle == null)
-				SubTitle = string.Empty;
-		}
-	}
-    [Table(Name = "ActivitySummaryContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ActivitySummaryContainer: {ID}")]
-	public class ActivitySummaryContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ActivitySummaryContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivitySummaryContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[SummaryBody] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL, 
-[ActivityCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string SummaryBody { get; set; }
-		// private string _unmodified_SummaryBody;
-			[Column]
-			public string IntroductionID { get; set; }
-			private EntityRef< Introduction > _Introduction;
-			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
-			public Introduction Introduction
-			{
-				get { return this._Introduction.Entity; }
-				set { this._Introduction.Entity = value; }
-			}
-
-			[Column]
-			public string ActivityIndexID { get; set; }
-			private EntityRef< ActivityIndex > _ActivityIndex;
-			[Association(Storage = "_ActivityIndex", ThisKey = "ActivityIndexID")]
-			public ActivityIndex ActivityIndex
-			{
-				get { return this._ActivityIndex.Entity; }
-				set { this._ActivityIndex.Entity = value; }
-			}
-
-			[Column]
-			public string ActivityCollectionID { get; set; }
-			private EntityRef< ActivityCollection > _ActivityCollection;
-			[Association(Storage = "_ActivityCollection", ThisKey = "ActivityCollectionID")]
-			public ActivityCollection ActivityCollection
-			{
-				get { return this._ActivityCollection.Entity; }
-				set { this._ActivityCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(SummaryBody == null)
-				SummaryBody = string.Empty;
-		}
-	}
-    [Table(Name = "ActivityIndex")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ActivityIndex: {ID}")]
-	public class ActivityIndex : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ActivityIndex() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivityIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
-			[Column]
-			public string IconID { get; set; }
-			private EntityRef< Image > _Icon;
-			[Association(Storage = "_Icon", ThisKey = "IconID")]
-			public Image Icon
-			{
-				get { return this._Icon.Entity; }
-				set { this._Icon.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Introduction { get; set; }
-		// private string _unmodified_Introduction;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Summary { get; set; }
-		// private string _unmodified_Summary;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Introduction == null)
-				Introduction = string.Empty;
-			if(Summary == null)
-				Summary = string.Empty;
-		}
-	}
-    [Table(Name = "ActivityContainer")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ActivityContainer: {ID}")]
-	public class ActivityContainer : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ActivityContainer() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivityContainer](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[HeaderID] TEXT NULL, 
-[ActivityIndexID] TEXT NULL, 
-[ActivityModuleID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
-
-			[Column]
-			public string ActivityIndexID { get; set; }
-			private EntityRef< ActivityIndex > _ActivityIndex;
-			[Association(Storage = "_ActivityIndex", ThisKey = "ActivityIndexID")]
-			public ActivityIndex ActivityIndex
-			{
-				get { return this._ActivityIndex.Entity; }
-				set { this._ActivityIndex.Entity = value; }
-			}
-
-			[Column]
-			public string ActivityModuleID { get; set; }
-			private EntityRef< Activity > _ActivityModule;
-			[Association(Storage = "_ActivityModule", ThisKey = "ActivityModuleID")]
-			public Activity ActivityModule
-			{
-				get { return this._ActivityModule.Entity; }
-				set { this._ActivityModule.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
-    [Table(Name = "Activity")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Activity: {ID}")]
-	public class Activity : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Activity() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Activity](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[ProfileImageID] TEXT NULL, 
-[IconImageID] TEXT NULL, 
-[ActivityName] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[ContactPerson] TEXT NOT NULL, 
-[StartingTime] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL, 
-[CollaboratorsID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
-[LocationCollectionID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string ReferenceToInformationID { get; set; }
-			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
-			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
-			public ReferenceToInformation ReferenceToInformation
-			{
-				get { return this._ReferenceToInformation.Entity; }
-				set { this._ReferenceToInformation.Entity = value; }
-			}
-
-			[Column]
-			public string ProfileImageID { get; set; }
-			private EntityRef< Image > _ProfileImage;
-			[Association(Storage = "_ProfileImage", ThisKey = "ProfileImageID")]
-			public Image ProfileImage
-			{
-				get { return this._ProfileImage.Entity; }
-				set { this._ProfileImage.Entity = value; }
-			}
-
-			[Column]
-			public string IconImageID { get; set; }
-			private EntityRef< Image > _IconImage;
-			[Association(Storage = "_IconImage", ThisKey = "IconImageID")]
-			public Image IconImage
-			{
-				get { return this._IconImage.Entity; }
-				set { this._IconImage.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string ActivityName { get; set; }
-		// private string _unmodified_ActivityName;
-			[Column]
-			public string IntroductionID { get; set; }
-			private EntityRef< Introduction > _Introduction;
-			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
-			public Introduction Introduction
-			{
-				get { return this._Introduction.Entity; }
-				set { this._Introduction.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string ContactPerson { get; set; }
-		// private string _unmodified_ContactPerson;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public DateTime StartingTime { get; set; }
-		// private DateTime _unmodified_StartingTime;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Excerpt { get; set; }
-		// private string _unmodified_Excerpt;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Description { get; set; }
-		// private string _unmodified_Description;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string IFrameSources { get; set; }
-		// private string _unmodified_IFrameSources;
-			[Column]
-			public string CollaboratorsID { get; set; }
-			private EntityRef< CollaboratorCollection > _Collaborators;
-			[Association(Storage = "_Collaborators", ThisKey = "CollaboratorsID")]
-			public CollaboratorCollection Collaborators
-			{
-				get { return this._Collaborators.Entity; }
-				set { this._Collaborators.Entity = value; }
-			}
-			[Column]
-			public string ImageGroupCollectionID { get; set; }
-			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
-			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
-			public ImageGroupCollection ImageGroupCollection
-			{
-				get { return this._ImageGroupCollection.Entity; }
-				set { this._ImageGroupCollection.Entity = value; }
-			}
-			[Column]
-			public string LocationCollectionID { get; set; }
-			private EntityRef< AddressAndLocationCollection > _LocationCollection;
-			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
-			public AddressAndLocationCollection LocationCollection
-			{
-				get { return this._LocationCollection.Entity; }
-				set { this._LocationCollection.Entity = value; }
-			}
-			[Column]
-			public string CategoryCollectionID { get; set; }
-			private EntityRef< CategoryCollection > _CategoryCollection;
-			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
-			public CategoryCollection CategoryCollection
-			{
-				get { return this._CategoryCollection.Entity; }
-				set { this._CategoryCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(ActivityName == null)
-				ActivityName = string.Empty;
-			if(ContactPerson == null)
-				ContactPerson = string.Empty;
-			if(Excerpt == null)
-				Excerpt = string.Empty;
-			if(Description == null)
-				Description = string.Empty;
-			if(IFrameSources == null)
-				IFrameSources = string.Empty;
 		}
 	}
     [Table(Name = "Moderator")]
@@ -11628,23 +7673,12 @@ CREATE TABLE IF NOT EXISTS [GroupSummaryContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[HeaderID] TEXT NULL, 
 [SummaryBody] TEXT NOT NULL, 
 [IntroductionID] TEXT NULL, 
 [GroupSummaryIndexID] TEXT NULL, 
 [GroupCollectionID] TEXT NULL
 )";
         }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
 
 
 		[Column]
@@ -11718,26 +7752,13 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[HeaderID] TEXT NULL, 
 [GroupIndexID] TEXT NULL, 
 [GroupProfileID] TEXT NULL, 
 [CollaboratorsID] TEXT NULL, 
 [PendingCollaboratorsID] TEXT NULL, 
-[ActivitiesID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
 [LocationCollectionID] TEXT NULL
 )";
         }
-
-			[Column]
-			public string HeaderID { get; set; }
-			private EntityRef< ContainerHeader > _Header;
-			[Association(Storage = "_Header", ThisKey = "HeaderID")]
-			public ContainerHeader Header
-			{
-				get { return this._Header.Entity; }
-				set { this._Header.Entity = value; }
-			}
 
 			[Column]
 			public string GroupIndexID { get; set; }
@@ -11776,24 +7797,6 @@ CREATE TABLE IF NOT EXISTS [GroupContainer](
 			{
 				get { return this._PendingCollaborators.Entity; }
 				set { this._PendingCollaborators.Entity = value; }
-			}
-			[Column]
-			public string ActivitiesID { get; set; }
-			private EntityRef< ActivityCollection > _Activities;
-			[Association(Storage = "_Activities", ThisKey = "ActivitiesID")]
-			public ActivityCollection Activities
-			{
-				get { return this._Activities.Entity; }
-				set { this._Activities.Entity = value; }
-			}
-			[Column]
-			public string ImageGroupCollectionID { get; set; }
-			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
-			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
-			public ImageGroupCollection ImageGroupCollection
-			{
-				get { return this._ImageGroupCollection.Entity; }
-				set { this._ImageGroupCollection.Entity = value; }
 			}
 			[Column]
 			public string LocationCollectionID { get; set; }
@@ -13368,507 +9371,6 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 				RawHtmlContent = string.Empty;
 		}
 	}
-    [Table(Name = "Blog")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Blog: {ID}")]
-	public class Blog : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Blog() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Blog](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[ProfileImageID] TEXT NULL, 
-[IconImageID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[SubTitle] TEXT NOT NULL, 
-[IntroductionID] TEXT NULL, 
-[Published] TEXT NOT NULL, 
-[Author] TEXT NOT NULL, 
-[FeaturedImageID] TEXT NULL, 
-[ImageGroupCollectionID] TEXT NULL, 
-[VideoGroupID] TEXT NULL, 
-[Body] TEXT NOT NULL, 
-[Excerpt] TEXT NOT NULL, 
-[IFrameSources] TEXT NOT NULL, 
-[LocationCollectionID] TEXT NULL, 
-[CategoryCollectionID] TEXT NULL, 
-[SocialPanelID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string ReferenceToInformationID { get; set; }
-			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
-			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
-			public ReferenceToInformation ReferenceToInformation
-			{
-				get { return this._ReferenceToInformation.Entity; }
-				set { this._ReferenceToInformation.Entity = value; }
-			}
-
-			[Column]
-			public string ProfileImageID { get; set; }
-			private EntityRef< Image > _ProfileImage;
-			[Association(Storage = "_ProfileImage", ThisKey = "ProfileImageID")]
-			public Image ProfileImage
-			{
-				get { return this._ProfileImage.Entity; }
-				set { this._ProfileImage.Entity = value; }
-			}
-
-			[Column]
-			public string IconImageID { get; set; }
-			private EntityRef< Image > _IconImage;
-			[Association(Storage = "_IconImage", ThisKey = "IconImageID")]
-			public Image IconImage
-			{
-				get { return this._IconImage.Entity; }
-				set { this._IconImage.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string SubTitle { get; set; }
-		// private string _unmodified_SubTitle;
-			[Column]
-			public string IntroductionID { get; set; }
-			private EntityRef< Introduction > _Introduction;
-			[Association(Storage = "_Introduction", ThisKey = "IntroductionID")]
-			public Introduction Introduction
-			{
-				get { return this._Introduction.Entity; }
-				set { this._Introduction.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public DateTime Published { get; set; }
-		// private DateTime _unmodified_Published;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Author { get; set; }
-		// private string _unmodified_Author;
-			[Column]
-			public string FeaturedImageID { get; set; }
-			private EntityRef< Image > _FeaturedImage;
-			[Association(Storage = "_FeaturedImage", ThisKey = "FeaturedImageID")]
-			public Image FeaturedImage
-			{
-				get { return this._FeaturedImage.Entity; }
-				set { this._FeaturedImage.Entity = value; }
-			}
-
-			[Column]
-			public string ImageGroupCollectionID { get; set; }
-			private EntityRef< ImageGroupCollection > _ImageGroupCollection;
-			[Association(Storage = "_ImageGroupCollection", ThisKey = "ImageGroupCollectionID")]
-			public ImageGroupCollection ImageGroupCollection
-			{
-				get { return this._ImageGroupCollection.Entity; }
-				set { this._ImageGroupCollection.Entity = value; }
-			}
-			[Column]
-			public string VideoGroupID { get; set; }
-			private EntityRef< VideoGroup > _VideoGroup;
-			[Association(Storage = "_VideoGroup", ThisKey = "VideoGroupID")]
-			public VideoGroup VideoGroup
-			{
-				get { return this._VideoGroup.Entity; }
-				set { this._VideoGroup.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Body { get; set; }
-		// private string _unmodified_Body;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Excerpt { get; set; }
-		// private string _unmodified_Excerpt;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string IFrameSources { get; set; }
-		// private string _unmodified_IFrameSources;
-			[Column]
-			public string LocationCollectionID { get; set; }
-			private EntityRef< AddressAndLocationCollection > _LocationCollection;
-			[Association(Storage = "_LocationCollection", ThisKey = "LocationCollectionID")]
-			public AddressAndLocationCollection LocationCollection
-			{
-				get { return this._LocationCollection.Entity; }
-				set { this._LocationCollection.Entity = value; }
-			}
-			[Column]
-			public string CategoryCollectionID { get; set; }
-			private EntityRef< CategoryCollection > _CategoryCollection;
-			[Association(Storage = "_CategoryCollection", ThisKey = "CategoryCollectionID")]
-			public CategoryCollection CategoryCollection
-			{
-				get { return this._CategoryCollection.Entity; }
-				set { this._CategoryCollection.Entity = value; }
-			}
-			[Column]
-			public string SocialPanelID { get; set; }
-			private EntityRef< SocialPanelCollection > _SocialPanel;
-			[Association(Storage = "_SocialPanel", ThisKey = "SocialPanelID")]
-			public SocialPanelCollection SocialPanel
-			{
-				get { return this._SocialPanel.Entity; }
-				set { this._SocialPanel.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(SubTitle == null)
-				SubTitle = string.Empty;
-			if(Author == null)
-				Author = string.Empty;
-			if(Body == null)
-				Body = string.Empty;
-			if(Excerpt == null)
-				Excerpt = string.Empty;
-			if(IFrameSources == null)
-				IFrameSources = string.Empty;
-		}
-	}
-    [Table(Name = "BlogIndexGroup")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("BlogIndexGroup: {ID}")]
-	public class BlogIndexGroup : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public BlogIndexGroup() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BlogIndexGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[GroupedByDateID] TEXT NULL, 
-[GroupedByLocationID] TEXT NULL, 
-[GroupedByAuthorID] TEXT NULL, 
-[GroupedByCategoryID] TEXT NULL, 
-[FullBlogArchiveID] TEXT NULL, 
-[BlogSourceForSummaryID] TEXT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
-			[Column]
-			public string IconID { get; set; }
-			private EntityRef< Image > _Icon;
-			[Association(Storage = "_Icon", ThisKey = "IconID")]
-			public Image Icon
-			{
-				get { return this._Icon.Entity; }
-				set { this._Icon.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Introduction { get; set; }
-		// private string _unmodified_Introduction;
-			[Column]
-			public string GroupedByDateID { get; set; }
-			private EntityRef< GroupedInformationCollection > _GroupedByDate;
-			[Association(Storage = "_GroupedByDate", ThisKey = "GroupedByDateID")]
-			public GroupedInformationCollection GroupedByDate
-			{
-				get { return this._GroupedByDate.Entity; }
-				set { this._GroupedByDate.Entity = value; }
-			}
-			[Column]
-			public string GroupedByLocationID { get; set; }
-			private EntityRef< GroupedInformationCollection > _GroupedByLocation;
-			[Association(Storage = "_GroupedByLocation", ThisKey = "GroupedByLocationID")]
-			public GroupedInformationCollection GroupedByLocation
-			{
-				get { return this._GroupedByLocation.Entity; }
-				set { this._GroupedByLocation.Entity = value; }
-			}
-			[Column]
-			public string GroupedByAuthorID { get; set; }
-			private EntityRef< GroupedInformationCollection > _GroupedByAuthor;
-			[Association(Storage = "_GroupedByAuthor", ThisKey = "GroupedByAuthorID")]
-			public GroupedInformationCollection GroupedByAuthor
-			{
-				get { return this._GroupedByAuthor.Entity; }
-				set { this._GroupedByAuthor.Entity = value; }
-			}
-			[Column]
-			public string GroupedByCategoryID { get; set; }
-			private EntityRef< GroupedInformationCollection > _GroupedByCategory;
-			[Association(Storage = "_GroupedByCategory", ThisKey = "GroupedByCategoryID")]
-			public GroupedInformationCollection GroupedByCategory
-			{
-				get { return this._GroupedByCategory.Entity; }
-				set { this._GroupedByCategory.Entity = value; }
-			}
-			[Column]
-			public string FullBlogArchiveID { get; set; }
-			private EntityRef< ReferenceCollection > _FullBlogArchive;
-			[Association(Storage = "_FullBlogArchive", ThisKey = "FullBlogArchiveID")]
-			public ReferenceCollection FullBlogArchive
-			{
-				get { return this._FullBlogArchive.Entity; }
-				set { this._FullBlogArchive.Entity = value; }
-			}
-			[Column]
-			public string BlogSourceForSummaryID { get; set; }
-			private EntityRef< BlogCollection > _BlogSourceForSummary;
-			[Association(Storage = "_BlogSourceForSummary", ThisKey = "BlogSourceForSummaryID")]
-			public BlogCollection BlogSourceForSummary
-			{
-				get { return this._BlogSourceForSummary.Entity; }
-				set { this._BlogSourceForSummary.Entity = value; }
-			}
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Summary { get; set; }
-		// private string _unmodified_Summary;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Introduction == null)
-				Introduction = string.Empty;
-			if(Summary == null)
-				Summary = string.Empty;
-		}
-	}
-    [Table(Name = "CalendarIndex")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("CalendarIndex: {ID}")]
-	public class CalendarIndex : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public CalendarIndex() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CalendarIndex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[IconID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Introduction] TEXT NOT NULL, 
-[Summary] TEXT NOT NULL
-)";
-        }
-
-			[Column]
-			public string IconID { get; set; }
-			private EntityRef< Image > _Icon;
-			[Association(Storage = "_Icon", ThisKey = "IconID")]
-			public Image Icon
-			{
-				get { return this._Icon.Entity; }
-				set { this._Icon.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Introduction { get; set; }
-		// private string _unmodified_Introduction;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Summary { get; set; }
-		// private string _unmodified_Summary;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Introduction == null)
-				Introduction = string.Empty;
-			if(Summary == null)
-				Summary = string.Empty;
-		}
-	}
-    [Table(Name = "Filter")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Filter: {ID}")]
-	public class Filter : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Filter() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Filter](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-		}
-	}
-    [Table(Name = "Calendar")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Calendar: {ID}")]
-	public class Calendar : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Calendar() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Calendar](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-		}
-	}
     [Table(Name = "Map")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("Map: {ID}")]
@@ -13914,85 +9416,6 @@ CREATE TABLE IF NOT EXISTS [Map](
 		
 			if(Title == null)
 				Title = string.Empty;
-		}
-	}
-    [Table(Name = "MapIndexCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("MapIndexCollection: {ID}")]
-	public class MapIndexCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public MapIndexCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [MapIndexCollection](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[MapByDateID] TEXT NULL, 
-[MapByLocationID] TEXT NULL, 
-[MapByAuthorID] TEXT NULL, 
-[MapByCategoryID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string MapByDateID { get; set; }
-			private EntityRef< MapCollection > _MapByDate;
-			[Association(Storage = "_MapByDate", ThisKey = "MapByDateID")]
-			public MapCollection MapByDate
-			{
-				get { return this._MapByDate.Entity; }
-				set { this._MapByDate.Entity = value; }
-			}
-			[Column]
-			public string MapByLocationID { get; set; }
-			private EntityRef< MapCollection > _MapByLocation;
-			[Association(Storage = "_MapByLocation", ThisKey = "MapByLocationID")]
-			public MapCollection MapByLocation
-			{
-				get { return this._MapByLocation.Entity; }
-				set { this._MapByLocation.Entity = value; }
-			}
-			[Column]
-			public string MapByAuthorID { get; set; }
-			private EntityRef< MapCollection > _MapByAuthor;
-			[Association(Storage = "_MapByAuthor", ThisKey = "MapByAuthorID")]
-			public MapCollection MapByAuthor
-			{
-				get { return this._MapByAuthor.Entity; }
-				set { this._MapByAuthor.Entity = value; }
-			}
-			[Column]
-			public string MapByCategoryID { get; set; }
-			private EntityRef< MapCollection > _MapByCategory;
-			[Association(Storage = "_MapByCategory", ThisKey = "MapByCategoryID")]
-			public MapCollection MapByCategory
-			{
-				get { return this._MapByCategory.Entity; }
-				set { this._MapByCategory.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
 		}
 	}
     [Table(Name = "MapResult")]
@@ -14345,255 +9768,6 @@ CREATE TABLE IF NOT EXISTS [BinaryFile](
 				Description = string.Empty;
 		}
 	}
-    [Table(Name = "ImageGroup")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ImageGroup: {ID}")]
-	public class ImageGroup : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ImageGroup() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[ReferenceToInformationID] TEXT NULL, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[FeaturedImageID] TEXT NULL, 
-[ImagesCollectionID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string ReferenceToInformationID { get; set; }
-			private EntityRef< ReferenceToInformation > _ReferenceToInformation;
-			[Association(Storage = "_ReferenceToInformation", ThisKey = "ReferenceToInformationID")]
-			public ReferenceToInformation ReferenceToInformation
-			{
-				get { return this._ReferenceToInformation.Entity; }
-				set { this._ReferenceToInformation.Entity = value; }
-			}
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Description { get; set; }
-		// private string _unmodified_Description;
-			[Column]
-			public string FeaturedImageID { get; set; }
-			private EntityRef< Image > _FeaturedImage;
-			[Association(Storage = "_FeaturedImage", ThisKey = "FeaturedImageID")]
-			public Image FeaturedImage
-			{
-				get { return this._FeaturedImage.Entity; }
-				set { this._FeaturedImage.Entity = value; }
-			}
-
-			[Column]
-			public string ImagesCollectionID { get; set; }
-			private EntityRef< ImageCollection > _ImagesCollection;
-			[Association(Storage = "_ImagesCollection", ThisKey = "ImagesCollectionID")]
-			public ImageCollection ImagesCollection
-			{
-				get { return this._ImagesCollection.Entity; }
-				set { this._ImagesCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Description == null)
-				Description = string.Empty;
-		}
-	}
-    [Table(Name = "VideoGroup")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("VideoGroup: {ID}")]
-	public class VideoGroup : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public VideoGroup() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [VideoGroup](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Title] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[VideoCollectionID] TEXT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Title { get; set; }
-		// private string _unmodified_Title;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Description { get; set; }
-		// private string _unmodified_Description;
-			[Column]
-			public string VideoCollectionID { get; set; }
-			private EntityRef< VideoCollection > _VideoCollection;
-			[Association(Storage = "_VideoCollection", ThisKey = "VideoCollectionID")]
-			public VideoCollection VideoCollection
-			{
-				get { return this._VideoCollection.Entity; }
-				set { this._VideoCollection.Entity = value; }
-			}
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Title == null)
-				Title = string.Empty;
-			if(Description == null)
-				Description = string.Empty;
-		}
-	}
-    [Table(Name = "Tooltip")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Tooltip: {ID}")]
-	public class Tooltip : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Tooltip() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Tooltip](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TooltipText] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string TooltipText { get; set; }
-		// private string _unmodified_TooltipText;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(TooltipText == null)
-				TooltipText = string.Empty;
-		}
-	}
-    [Table(Name = "SocialPanel")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("SocialPanel: {ID}")]
-	public class SocialPanel : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public SocialPanel() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SocialPanel](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SocialFilterID] TEXT NULL
-)";
-        }
-
-			[Column]
-			public string SocialFilterID { get; set; }
-			private EntityRef< Filter > _SocialFilter;
-			[Association(Storage = "_SocialFilter", ThisKey = "SocialFilterID")]
-			public Filter SocialFilter
-			{
-				get { return this._SocialFilter.Entity; }
-				set { this._SocialFilter.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-		}
-	}
     [Table(Name = "Longitude")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("Longitude: {ID}")]
@@ -14818,328 +9992,6 @@ CREATE TABLE IF NOT EXISTS [Date](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
-		}
-	}
-    [Table(Name = "Sex")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Sex: {ID}")]
-	public class Sex : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Sex() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Sex](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[SexText] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string SexText { get; set; }
-		// private string _unmodified_SexText;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(SexText == null)
-				SexText = string.Empty;
-		}
-	}
-    [Table(Name = "OBSAddress")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("OBSAddress: {ID}")]
-	public class OBSAddress : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public OBSAddress() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [OBSAddress](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[StreetName] TEXT NOT NULL, 
-[BuildingNumber] TEXT NOT NULL, 
-[PostOfficeBox] TEXT NOT NULL, 
-[PostalCode] TEXT NOT NULL, 
-[Municipality] TEXT NOT NULL, 
-[Region] TEXT NOT NULL, 
-[Province] TEXT NOT NULL, 
-[state] TEXT NOT NULL, 
-[Country] TEXT NOT NULL, 
-[Continent] TEXT NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string StreetName { get; set; }
-		// private string _unmodified_StreetName;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string BuildingNumber { get; set; }
-		// private string _unmodified_BuildingNumber;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string PostOfficeBox { get; set; }
-		// private string _unmodified_PostOfficeBox;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string PostalCode { get; set; }
-		// private string _unmodified_PostalCode;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Municipality { get; set; }
-		// private string _unmodified_Municipality;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Region { get; set; }
-		// private string _unmodified_Region;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Province { get; set; }
-		// private string _unmodified_Province;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string state { get; set; }
-		// private string _unmodified_state;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Country { get; set; }
-		// private string _unmodified_Country;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Continent { get; set; }
-		// private string _unmodified_Continent;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(StreetName == null)
-				StreetName = string.Empty;
-			if(BuildingNumber == null)
-				BuildingNumber = string.Empty;
-			if(PostOfficeBox == null)
-				PostOfficeBox = string.Empty;
-			if(PostalCode == null)
-				PostalCode = string.Empty;
-			if(Municipality == null)
-				Municipality = string.Empty;
-			if(Region == null)
-				Region = string.Empty;
-			if(Province == null)
-				Province = string.Empty;
-			if(state == null)
-				state = string.Empty;
-			if(Country == null)
-				Country = string.Empty;
-			if(Continent == null)
-				Continent = string.Empty;
-		}
-	}
-    [Table(Name = "Identity")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("Identity: {ID}")]
-	public class Identity : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public Identity() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [Identity](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[FirstName] TEXT NOT NULL, 
-[LastName] TEXT NOT NULL, 
-[Initials] TEXT NOT NULL, 
-[SexID] TEXT NULL, 
-[BirthdayID] TEXT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string FirstName { get; set; }
-		// private string _unmodified_FirstName;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string LastName { get; set; }
-		// private string _unmodified_LastName;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Initials { get; set; }
-		// private string _unmodified_Initials;
-			[Column]
-			public string SexID { get; set; }
-			private EntityRef< Sex > _Sex;
-			[Association(Storage = "_Sex", ThisKey = "SexID")]
-			public Sex Sex
-			{
-				get { return this._Sex.Entity; }
-				set { this._Sex.Entity = value; }
-			}
-
-			[Column]
-			public string BirthdayID { get; set; }
-			private EntityRef< Date > _Birthday;
-			[Association(Storage = "_Birthday", ThisKey = "BirthdayID")]
-			public Date Birthday
-			{
-				get { return this._Birthday.Entity; }
-				set { this._Birthday.Entity = value; }
-			}
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(FirstName == null)
-				FirstName = string.Empty;
-			if(LastName == null)
-				LastName = string.Empty;
-			if(Initials == null)
-				Initials = string.Empty;
-		}
-	}
-    [Table(Name = "ImageVideoSoundVectorRaw")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ImageVideoSoundVectorRaw: {ID}")]
-	public class ImageVideoSoundVectorRaw : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ImageVideoSoundVectorRaw() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageVideoSoundVectorRaw](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[Image] BLOB NOT NULL, 
-[Video] BLOB NOT NULL, 
-[Sound] BLOB NOT NULL, 
-[Vector] TEXT NOT NULL, 
-[Raw] BLOB NOT NULL
-)";
-        }
-
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public byte[] Image { get; set; }
-		// private byte[] _unmodified_Image;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public byte[] Video { get; set; }
-		// private byte[] _unmodified_Video;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public byte[] Sound { get; set; }
-		// private byte[] _unmodified_Sound;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public string Vector { get; set; }
-		// private string _unmodified_Vector;
-
-		[Column]
-        [ScaffoldColumn(true)]
-		public byte[] Raw { get; set; }
-		// private byte[] _unmodified_Raw;
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-			if(Vector == null)
-				Vector = string.Empty;
 		}
 	}
     [Table(Name = "CategoryContainer")]
@@ -16938,48 +11790,6 @@ CREATE TABLE IF NOT EXISTS [AddressAndLocationCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "GroupedInformationCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("GroupedInformationCollection: {ID}")]
-	public class GroupedInformationCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public GroupedInformationCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [GroupedInformationCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
     [Table(Name = "ReferenceCollection")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("ReferenceCollection: {ID}")]
@@ -17176,48 +11986,6 @@ CREATE TABLE IF NOT EXISTS [LongTextCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [MapMarkerCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
-    [Table(Name = "ActivityCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ActivityCollection: {ID}")]
-	public class ActivityCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ActivityCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ActivityCollection](
 [ID] TEXT NOT NULL, 
 [CollectionItemID] TEXT NOT NULL, 
 [ETag] TEXT NOT NULL,
@@ -17736,90 +12504,6 @@ CREATE TABLE IF NOT EXISTS [TextContentCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
-    [Table(Name = "BlogCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("BlogCollection: {ID}")]
-	public class BlogCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public BlogCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [BlogCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
-    [Table(Name = "CalendarCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("CalendarCollection: {ID}")]
-	public class CalendarCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public CalendarCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [CalendarCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
     [Table(Name = "MapCollection")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("MapCollection: {ID}")]
@@ -17974,132 +12658,6 @@ CREATE TABLE IF NOT EXISTS [ImageCollection](
             return
                 @"
 CREATE TABLE IF NOT EXISTS [BinaryFileCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
-    [Table(Name = "ImageGroupCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("ImageGroupCollection: {ID}")]
-	public class ImageGroupCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public ImageGroupCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [ImageGroupCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
-    [Table(Name = "VideoCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("VideoCollection: {ID}")]
-	public class VideoCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public VideoCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [VideoCollection](
-[ID] TEXT NOT NULL, 
-[CollectionItemID] TEXT NOT NULL, 
-[ETag] TEXT NOT NULL,
-	PRIMARY KEY (ID) )";
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		}
-		//[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string CollectionItemID { get; set; }
-	}
-    [Table(Name = "SocialPanelCollection")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("SocialPanelCollection: {ID}")]
-	public class SocialPanelCollection : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public SocialPanelCollection() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [SocialPanelCollection](
 [ID] TEXT NOT NULL, 
 [CollectionItemID] TEXT NOT NULL, 
 [ETag] TEXT NOT NULL,

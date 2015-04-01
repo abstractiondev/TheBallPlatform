@@ -589,36 +589,6 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="PerformWebAction">
-      <OperationSpec>
-        <Description>Perform web action based on action name and ObjectID, given the page information sources in as well</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="TargetObjectID" dataType="string" designDesc="Target object id" state="designApproved" />
-        <Parameter name="CommandName" dataType="string" designDesc="Command name" state="designApproved" />
-        <Parameter name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Data owner" state="designApproved" />
-        <Parameter name="InformationSources" dataType="InformationSourceCollection" designDesc="Information sources of the page" state="designApproved" />
-        <Parameter name="FormSourceNames" dataType="string[]" designDesc="Form source names" state="designApproved" />
-        <Parameter name="FormSubmitContent" dataType="NameValueCollection" designDesc="Form field collection as-posted" state="designApproved" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="ExecuteActualOperation" designDesc="Execute actual operation" state="designApproved">
-            <Parameter name="TargetObjectID" />
-            <Parameter name="CommandName" />
-            <Parameter name="Owner" />
-            <Parameter name="InformationSources" />
-            <Parameter name="FormSourceNames" />
-            <Parameter name="FormSubmitContent" />
-            <ReturnValue name="RenderPageAfterOperation" dataType="bool" designDesc="If true, page should be rendered after operation" state="designApproved" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-      <OperationReturnValues>
-        <ReturnValue name="RenderPageAfterOperation" dataType="bool" designDesc="If true, page should be rendered after operation" state="designApproved" />
-        <Target name="ExecuteActualOperationOutput" />
-      </OperationReturnValues>
-    </Operation>
     <Operation name="PublishGroupContentToPublicArea">
       <OperationSpec>
         <Description />
@@ -922,21 +892,6 @@
           </MethodExecute>
           <MethodExecute name="RemoveAccountRedirectFile" designDesc="Remove account RedirectFromFolder.red from pointing to group" state="implemented">
             <Target name="RedirectFromFolderBlobName" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="MigrateActivitiesAndBlogsToTextContents">
-      <OperationSpec>
-        <Description>Migrate activities and blogs to text contents</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="Process" dataType="TheBall.CORE.Process" designDesc="Process that this operation is to execute" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="ExecuteProcess" designDesc="Execute process." state="implemented">
-            <Parameter name="Process" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

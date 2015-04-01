@@ -38,39 +38,6 @@ namespace TheBallTool
 
         }
 
-        public static void UpdateReferenceInformationsInAllAcountsAndGroups()
-        {
-            var ownerLocations = GetAllOwnerLocations();
-            int totalCount = ownerLocations.Length;
-            int currIX = 0;
-            foreach(var ownerLocation in ownerLocations)
-            {
-                Console.WriteLine("Updating number " + (++currIX) + " out of " + totalCount);
-                VirtualOwner owner = VirtualOwner.FigureOwner(ownerLocation);
-                var informationObjects = StorageSupport.CurrActiveContainer.
-                    GetInformationObjects(ownerLocation,
-                                          iObj =>
-                                          iObj is Blog ||
-                                          iObj is Activity ||
-                                          iObj is AddressAndLocation);
-                foreach (var iObj in informationObjects)
-                {
-                    try
-                    {
-                        StorageSupport.StoreInformationMasterFirst(iObj, owner, true);
-                        InformationContext.ProcessAndClearCurrent();
-                        InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-                    } catch(Exception ex)
-                    {
-                        bool letThrow = false;
-                        if (letThrow)
-                            throw;
-                    }
-                }
-
-            }
-        }
-
         public static void EnsureAndRefreshMasterCollections()
         {
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
@@ -176,19 +143,6 @@ namespace TheBallTool
 
 
 
-        private static void DoCustomCleanup(string groupLoc)
-        {
-            var defaultBlogToDelete = StorageSupport.CurrActiveContainer.
-                GetInformationObjects(groupLoc, null,
-                                      item => item is Blog && item.RelativeLocation.EndsWith("/default")).ToArray();
-            foreach (Blog blog in defaultBlogToDelete)
-            {
-                StorageSupport.DeleteInformationObject(blog);
-            }
-            InformationContext.ProcessAndClearCurrent();
-            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-        }
-
         private static void SyncWwwPublicFromDefaultGroup()
         {
             string publicSite = "demowww.aaltoglobalimpact.org";
@@ -247,92 +201,6 @@ namespace TheBallTool
             groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
 
-        private static void RemoveBlogLocationsOnce()
-        {
-            var blogs = GetAllInformationObjects(name => name.Contains("Blog"), io => io is Blog).Cast<Blog>().ToArray();
-            foreach (var blog in blogs)
-            {
-                //blog.Location = null;
-                //blog.StoreInformation();
-            }
-        }
-
-        private static void RemoveActivityLocationsOnce()
-        {
-            var activities = GetAllInformationObjects(null, io => io is Activity).Cast<Activity>().ToArray();
-            foreach (var activity in activities)
-            {
-                //activity.Location = null;
-                //activity.StoreInformation();
-            }
-        }
-
-
-        private static void RemoveIncontextEditingFromBlogsAndActivitiesFromCertainGroup()
-        {
-            Regex regex = new Regex(@"(?<opentag>\<a class=""noteditable [^""]*""[^>]*\>)(?<content>.*?)(?<closetag>\</a\>)");
-            const string contentStr = "${content}";
-            var ownerLocations = GetAllOwnerLocations();
-            var ownerLocation = ownerLocations.Where(loc => loc.Contains("/9798daca-")).SingleOrDefault();
-            var blogsAndActivities = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("/Blog/") || name.Contains("/Activity/"), io => io is Blog || io is Activity).ToArray();
-            var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
-            var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
-            foreach (Blog blog in blogs)
-            {
-                if (blog.Body == null)
-                    continue;
-                string backupPath = Path.Combine(@"c:\tmp\backup", "blog_" + blog.ID);
-                File.WriteAllText(backupPath, "Body:" + Environment.NewLine + blog.Body
-                                              + Environment.NewLine + "Excerpt:" + Environment.NewLine + blog.Excerpt);
-                string body = blog.Body;
-                blog.Body = regex.Replace(body, contentStr);
-                string excerpt = blog.Excerpt;
-                blog.Excerpt = regex.Replace(excerpt, contentStr);
-                bool fixDone = false;
-                if (body != blog.Body || excerpt != blog.Excerpt)
-                {
-                    fixDone = true;
-                }
-            }
-            foreach (Activity activity in activities)
-            {
-                if (activity.Description == null)
-                    continue;
-                string backupPath = Path.Combine(@"c:\tmp\backup", "activity_" + activity.ID);
-                File.WriteAllText(backupPath, "Description:" + Environment.NewLine + activity.Description
-                                              + Environment.NewLine + "Excerpt:" + Environment.NewLine + activity.Excerpt);
-                string description = activity.Description;
-                activity.Description = regex.Replace(description, contentStr);
-                string excerpt = activity.Excerpt;
-                activity.Excerpt = regex.Replace(excerpt, contentStr);
-                bool fixDone = false;
-                if (description != activity.Description || excerpt != activity.Excerpt)
-                {
-                    fixDone = true;
-                }
-            }
-        }
-
-        private static void InitBlogProfileAndIconOnce()
-        {
-            var blogs = GetAllInformationObjects(name => name.Contains("/Blog/"), io => io is Blog).Cast<Blog>().ToArray();
-            try
-            {
-                foreach (var blog in blogs)
-                {
-                    blog.IconImage = Image.CreateDefault();
-                    blog.ProfileImage = Image.CreateDefault();
-                    VirtualOwner owner = VirtualOwner.FigureOwner(blog);
-                    blog.StoreInformationMasterFirst(owner, false);
-                }
-            }
-            finally
-            {
-                InformationContext.ProcessAndClearCurrent();
-                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-            }
-        }
-
         private static void InitCategoryParentIDFromParentCategory()
         {
             var categories =
@@ -359,64 +227,6 @@ namespace TheBallTool
             {
                 InformationContext.ProcessAndClearCurrent();
                 InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-            }
-        }
-
-        private static void InitBlogGroupActivityImageGroupCollectionsOnce()
-        {
-            var blogsGroupsActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog || io is GroupContainer).ToArray();
-            var blogs = blogsGroupsActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
-            var activities = blogsGroupsActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
-            var groupContainers = blogsGroupsActivities.Where(ba => ba is GroupContainer).Cast<GroupContainer>().ToArray();
-            foreach (var blog in blogs.Where(bl => bl.ImageGroupCollection == null))
-            {
-                blog.ImageGroupCollection = ImageGroupCollection.CreateDefault();
-                blog.StoreInformation();
-                blog.ReconnectMastersAndCollections(false);
-            }
-            foreach (var activity in activities.Where(act => act.ImageGroupCollection == null))
-            {
-                activity.ImageGroupCollection = ImageGroupCollection.CreateDefault();
-                activity.StoreInformation();
-                activity.ReconnectMastersAndCollections(false);
-            }
-            foreach (var groupContainer in groupContainers.Where(grpC => grpC.ImageGroupCollection == null))
-            {
-                groupContainer.ImageGroupCollection = ImageGroupCollection.CreateDefault();
-                groupContainer.StoreInformation();
-                groupContainer.ReconnectMastersAndCollections(false);
-            }
-
-        }
-
-        private static void InitBlogAndActivityLocationCollectionsOnce()
-        {
-            var blogsAndActivities = GetAllInformationObjects(null, io => io is Activity || io is Blog).ToArray();
-            var blogs = blogsAndActivities.Where(ba => ba is Blog).Cast<Blog>().ToArray();
-            var activities = blogsAndActivities.Where(ba => ba is Activity).Cast<Activity>().ToArray();
-            foreach (var blog in blogs.Where(bl => bl.LocationCollection == null))
-            {
-                blog.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                blog.StoreInformation();
-                blog.ReconnectMastersAndCollections(false);
-            }
-            foreach (var activity in activities.Where(act => act.LocationCollection == null))
-            {
-                activity.LocationCollection = AddressAndLocationCollection.CreateDefault();
-                activity.StoreInformation();
-                activity.ReconnectMastersAndCollections(false);
-            }
-        }
-
-        private static void ConnectMapContainerToCollections()
-        {
-            var mapContainers = GetAllInformationObjects(null, io => io is MapContainer).Cast<MapContainer>().ToArray();
-            foreach (var mapContainer in mapContainers)
-            {
-                mapContainer.MarkerSourceActivities = ActivityCollection.CreateDefault();
-                mapContainer.MarkerSourceBlogs = BlogCollection.CreateDefault();
-                mapContainer.MarkerSourceLocations = AddressAndLocationCollection.CreateDefault();
-                mapContainer.ReconnectMastersAndCollections(true);
             }
         }
 
@@ -866,37 +676,5 @@ namespace TheBallTool
             return true;
         }
 
-        private static void PatchBlogsAndActivitiesSelectedCollections()
-        {
-            var ownerLocations = GetAllOwnerLocations();
-            int totalCount = ownerLocations.Length;
-            int currIX = 0;
-            foreach (var ownerLocation in ownerLocations)
-            {
-                Console.WriteLine("Updating number " + (++currIX) + " out of " + totalCount);
-                VirtualOwner owner = VirtualOwner.FigureOwner(ownerLocation);
-                var informationObjects = StorageSupport.CurrActiveContainer.
-                    GetInformationObjects(ownerLocation, null,
-                                          iObj =>
-                                          iObj is Blog ||
-                                          iObj is Activity).ToArray();
-                foreach (var iObj in informationObjects)
-                {
-                    try
-                    {
-                        //StorageSupport.StoreInformationMasterFirst(iObj, owner, true);
-                        StorageSupport.StoreInformationMasterFirst(iObj, owner, false);
-                    }
-                    catch (Exception ex)
-                    {
-                        bool letThrow = false;
-                        if (letThrow)
-                            throw;
-                    }
-                }
-            }
-            InformationContext.ProcessAndClearCurrent();
-            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-        }
     }
 }

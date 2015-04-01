@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Kalle Launiala (Citrus Solutions Oy) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" id="TheBallCore_v1_0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	id="TheBallCore_v1_0">
 	<xs:element name="TheBallCoreAbstraction" type="TheBallCoreAbstractionType"/>
 	<xs:complexType name="ClassModelAbstractionType">
 		<xs:sequence>
@@ -9,7 +10,8 @@
 	</xs:complexType>
 	<xs:complexType name="CustomMonitoringCycleType">
 		<xs:sequence>
-			<xs:element name="OperationParameter" type="OperationParameterType" maxOccurs="unbounded"/>
+			<xs:element name="OperationParameter" type="OperationParameterType"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="frequencyOperationName"/>
 	</xs:complexType>
@@ -61,6 +63,7 @@
 					<xs:enumeration value="Time_DateTime"/>
 					<xs:enumeration value="Data_Binary"/>
 					<xs:enumeration value="InformationObject"/>
+					<xs:enumeration value="InformationObjectLink"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
@@ -77,7 +80,8 @@
 	</xs:complexType>
 	<xs:complexType name="InformationModelType">
 		<xs:sequence>
-			<xs:element name="InformationObject" type="InformationObjectType" maxOccurs="unbounded"/>
+			<xs:element name="InformationObject" type="InformationObjectType" maxOccurs="unbounded"
+			/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="InformationObjectContentType">
@@ -157,7 +161,8 @@ Useful to NOT have in system-internal objects such as queue operations where the
 	</xs:complexType>
 	<xs:complexType name="MethodType">
 		<xs:sequence>
-			<xs:element name="Implementation" type="ImplementationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Implementation" type="ImplementationType" minOccurs="0"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
 	</xs:complexType>
@@ -194,8 +199,10 @@ Useful to NOT have in system-internal objects such as queue operations where the
 				<xs:element name="MonitoredInformationItem" type="InformationItemTargetType"/>
 				<xs:element name="MonitoredObjectContent" type="InformationObjectTargetType"/>
 			</xs:choice>
-			<xs:element name="MonitoringFrequency" type="MonitoringFrequencyType" maxOccurs="unbounded"/>
-			<xs:element name="OperationParameter" type="OperationParameterType" maxOccurs="unbounded"/>
+			<xs:element name="MonitoringFrequency" type="MonitoringFrequencyType"
+				maxOccurs="unbounded"/>
+			<xs:element name="OperationParameter" type="OperationParameterType"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="monitoringOperationName" type="xs:string" use="required"/>
 	</xs:complexType>
@@ -238,7 +245,8 @@ This is required for operations that take part of requirement and provider depen
 	</xs:complexType>
 	<xs:complexType name="OperationSignatureType">
 		<xs:sequence>
-			<xs:element name="Parameter" type="LogicalInformationType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Parameter" type="LogicalInformationType" minOccurs="0"
+				maxOccurs="unbounded"/>
 			<xs:element name="ReturnValue" type="LogicalInformationType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
@@ -479,7 +487,8 @@ The requirement definition is done separately, but some categories (such as Perf
 				<xs:element name="TriggeringInformationItem" type="InformationItemTargetType"/>
 				<xs:element name="TriggeringObjectContent" type="InformationObjectTargetType"/>
 			</xs:choice>
-			<xs:element name="OperationParameter" type="OperationParameterType" maxOccurs="unbounded"/>
+			<xs:element name="OperationParameter" type="OperationParameterType"
+				maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="triggeredOperationName" type="xs:string" use="required"/>
 	</xs:complexType>
