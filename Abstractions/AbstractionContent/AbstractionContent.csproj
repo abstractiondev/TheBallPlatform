@@ -40,15 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\InformationAndProcessModels\CaloomCore.xml">
-      <Link>TheBallCore\CaloomCore.xml</Link>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\CaloomHousing.xml">
-      <Link>TheBallCore\CaloomHousing.xml</Link>
-    </Content>
-    <Content Include="..\..\InformationAndProcessModels\CaloomSchools.xml">
-      <Link>TheBallCore\CaloomSchools.xml</Link>
-    </Content>
     <Content Include="..\..\InformationAndProcessModels\OIPBallInstance.xml">
       <Link>TheBallCore\OIPBallInstance.xml</Link>
       <SubType>Designer</SubType>
