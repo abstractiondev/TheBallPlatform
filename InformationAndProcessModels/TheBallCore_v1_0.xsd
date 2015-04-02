@@ -63,11 +63,16 @@
 					<xs:enumeration value="Time_DateTime"/>
 					<xs:enumeration value="Data_Binary"/>
 					<xs:enumeration value="InformationObject"/>
-					<xs:enumeration value="InformationObjectLink"/>
+					<xs:enumeration value="ObjectLink"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="informationObjectName" type="xs:string" default="">
+			<xs:annotation>
+				<xs:documentation>(Opt = "") If logical data type is referencing InformationObject, this is the name for the object.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="objectLinkTargetType" type="xs:string" default="">
 			<xs:annotation>
 				<xs:documentation>(Opt = "") If logical data type is referencing InformationObject, this is the name for the object.</xs:documentation>
 			</xs:annotation>

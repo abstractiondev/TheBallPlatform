@@ -32134,8 +32134,6 @@ Introduction.Body
 
 					result.ContentSemanticType = @"ContentCategoryRank.ContentSemanticType";
 
-					result.CategoryID = @"ContentCategoryRank.CategoryID";
-
 					result.RankName = @"ContentCategoryRank.RankName";
 
 					result.RankValue = @"ContentCategoryRank.RankValue";
