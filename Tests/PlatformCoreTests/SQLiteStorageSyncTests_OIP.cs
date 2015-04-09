@@ -22,9 +22,9 @@ namespace PlatformCoreTests
         [TestInitialize]
         public void SetupForTest()
         {
-            CurrentDBFileName = Path.GetTempFileName();
-            CurrentDBFileName = @"d:\tmp\testdata.sqlite";
-            //CurrentDBFileName = ":memory:";
+            //CurrentDBFileName = Path.GetTempFileName();
+            //CurrentDBFileName = @"d:\tmp\testdata.sqlite";
+            CurrentDBFileName = ":memory:";
             CurrentContext = TheBallDataContext.CreateOrAttachToExistingDB(CurrentDBFileName);
             CurrentContext.CreateDomainDatabaseTablesIfNotExists();
         }
