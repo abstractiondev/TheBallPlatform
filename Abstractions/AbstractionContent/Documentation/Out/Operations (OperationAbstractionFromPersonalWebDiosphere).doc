@@ -228,7 +228,7 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromPersonalWebDiosphere)</p>
 </div>
-		<h1>SaveRoomData (JSONData)</h1>
+		<h1>SaveRoomData (RoomID, JSONData)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Save room data as default root room
@@ -236,6 +236,23 @@ div.WordSection1
 		</p><h2>Parameters</h2>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RoomID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Room ID, thus group ID of room where to save
+		</div>
+				</td>
+				</tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" >
@@ -258,7 +275,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Get owner based root-room blob name
 		</div>
-		</p><h2>Method Call: SaveJSONContentToBlob ( OwnerRootRoomBlobName, JSONData )</h2>
+		</p><h2>Target Definition: Owner ( RoomID )</h2>
+		<p>		<div class="MsoNormal" >
+		Container owner; default group owner if RoomID given as parameter is null
+		</div>
+		</p><h2>Method Call: SaveJSONContentToBlob ( Owner, OwnerRootRoomBlobName, JSONData )</h2>
 		<p>		<div class="MsoNormal" >
 		Save JSON content to blob
 		</div>

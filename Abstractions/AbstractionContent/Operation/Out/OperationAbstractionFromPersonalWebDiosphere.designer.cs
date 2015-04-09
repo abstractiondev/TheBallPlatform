@@ -9,6 +9,7 @@ using System.IO;
 		namespace PersonalWeb.Diosphere { 
 				public class SaveRoomDataParameters 
 		{
+				public string RoomID ;
 				public string JSONData ;
 				}
 		
@@ -21,7 +22,8 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					string OwnerRootRoomBlobName = SaveRoomDataImplementation.GetTarget_OwnerRootRoomBlobName();	
-				SaveRoomDataImplementation.ExecuteMethod_SaveJSONContentToBlob(parameters.JSONData, OwnerRootRoomBlobName);		
+				TheBall.CORE.IContainerOwner Owner = SaveRoomDataImplementation.GetTarget_Owner(parameters.RoomID);	
+				SaveRoomDataImplementation.ExecuteMethod_SaveJSONContentToBlob(parameters.JSONData, Owner, OwnerRootRoomBlobName);		
 				}
 				}
 		 } 

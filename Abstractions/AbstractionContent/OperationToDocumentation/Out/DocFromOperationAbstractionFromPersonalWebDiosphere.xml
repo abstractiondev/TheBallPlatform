@@ -4,7 +4,7 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromPersonalWebDiosphere)" title="Operations (OperationAbstractionFromPersonalWebDiosphere)">
         <Content>
-          <Header text="SaveRoomData (JSONData)" level="1">
+          <Header text="SaveRoomData (RoomID, JSONData)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -21,6 +21,17 @@
                     <Column name="Description" />
                   </Columns>
                   <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RoomID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Room ID, thus group ID of room where to save</TextContent>
+                      </ColumnData>
+                    </Row>
                     <Row>
                       <ColumnData>
                         <TextContent>JSONData</TextContent>
@@ -43,7 +54,14 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SaveJSONContentToBlob ( OwnerRootRoomBlobName, JSONData )" level="2">
+            <Header text="Target Definition: Owner ( RoomID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Container owner; default group owner if RoomID given as parameter is null</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SaveJSONContentToBlob ( Owner, OwnerRootRoomBlobName, JSONData )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Save JSON content to blob</TextContent>

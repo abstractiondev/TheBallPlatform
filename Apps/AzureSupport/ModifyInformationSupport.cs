@@ -144,7 +144,8 @@ namespace TheBall
                 {
                     PersonalWeb.Diosphere.SaveRoomData.Execute(new SaveRoomDataParameters
                     {
-                        JSONData = form["JSONData"]
+                        JSONData = form["JSONData"],
+                        RoomID = form["RoomID"]
                     });
                     break;
                 }

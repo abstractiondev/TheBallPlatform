@@ -6,13 +6,18 @@
         <Description>Save room data as default root room</Description>
       </OperationSpec>
       <Parameters>
+        <Parameter name="RoomID" dataType="string" designDesc="Room ID, thus group ID of room where to save" state="implemented" />
         <Parameter name="JSONData" dataType="string" designDesc="JSON data as string" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="OwnerRootRoomBlobName" dataType="string" designDesc="Get owner based root-room blob name" state="implemented" />
+          <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="Container owner; default group owner if RoomID given as parameter is null" state="implemented">
+            <Parameter name="RoomID" />
+          </TargetDefinition>
           <MethodExecute name="SaveJSONContentToBlob" designDesc="Save JSON content to blob" state="implemented">
             <Parameter name="JSONData" />
+            <Target name="Owner" />
             <Target name="OwnerRootRoomBlobName" />
           </MethodExecute>
         </SequentialExecution>
