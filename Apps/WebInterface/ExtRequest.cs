@@ -47,7 +47,7 @@ namespace WebInterface
 
         public static bool IsGroupRequest(this HttpRequest request)
         {
-            return request.Path.StartsWith(AuthGroupPrefix);
+            return isGroupRequest(request.Path);
         }
 
         public static bool IsAboutRequest(this HttpRequest request)
@@ -57,12 +57,27 @@ namespace WebInterface
 
         public static bool IsPersonalRequest(this HttpRequest request)
         {
-            return request.Path.StartsWith(AuthPersonalPrefix);
+            return isPersonalRequest(request.Path);
         }
 
         public static bool IsAccountRequest(this HttpRequest request)
         {
-            return request.Path.StartsWith(AuthAccountPrefix);
+            return isAccountRequest(request.Path);
+        }
+
+        private static bool isGroupRequest(string path)
+        {
+            return path.StartsWith(AuthGroupPrefix);
+        }
+
+        private static bool isAccountRequest(string path)
+        {
+            return path.StartsWith(AuthAccountPrefix);
+        }
+
+        private static bool isPersonalRequest(string path)
+        {
+            return path.StartsWith(AuthPersonalPrefix);
         }
 
         public static string GetOwnerContentPath(this HttpRequest request)
@@ -73,8 +88,24 @@ namespace WebInterface
                 return request.Path.Substring(AuthAccountPrefixLen + 1 + GuidIDLen + 1);
             else if (request.IsPersonalRequest())
                 return request.Path.Substring(AuthPersonalPrefixLen);
-            throw new InvalidDataException("Owner content cath not recognized properly: " + request.Path);
+            throw new InvalidDataException("Owner content path not recognized properly: " + request.Path);
         }
+
+        public static string GetReferrerOwnerContentPath(this HttpRequest request)
+        {
+            var urlReferrer = request.UrlReferrer;
+            string referrerPath = urlReferrer != null && urlReferrer.Host == request.Url.Host ? urlReferrer.AbsolutePath : "";
+            if (String.IsNullOrEmpty(referrerPath))
+                return String.Empty;
+            if(isGroupRequest(referrerPath))
+                return referrerPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+            else if (isAccountRequest(referrerPath))
+                return referrerPath.Substring(AuthAccountPrefixLen + 1 + GuidIDLen + 1);
+            else if (isPersonalRequest(referrerPath))
+                return referrerPath.Substring(AuthPersonalPrefixLen);
+            throw new InvalidDataException("Owner content path not recognized properly: " + referrerPath);
+        }
+
 
         public static string GetGroupID(this HttpRequest request)
         {

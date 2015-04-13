@@ -701,7 +701,7 @@ namespace WebInterface
             // At this point we have referer either account or group, accept any plain html request
             if (contentPath.EndsWith(".html"))
                 return;
-            string refererOwnerPath = request.GetOwnerContentPath();
+            string refererOwnerPath = request.GetReferrerOwnerContentPath();
             // Accept account and group referers of default templates
             if (refererIsAccount && accountTemplates.Any(refererOwnerPath.StartsWith))
                 return;
@@ -795,8 +795,8 @@ namespace WebInterface
             {
                 response.StatusCode = 404;
             }
-            response.End();
-
+            //response.End();
+            HttpContext.Current.ApplicationInstance.CompleteRequest();
         }
 
         #endregion
