@@ -83,7 +83,7 @@
           <InformationItem name="StripeID" logicalDataType="Text_Short"/>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Short"/>
-          <InformationItem name="ActivePlans" logicalDataType="Text_Short" isCollection="true"/>
+          <InformationItem name="ActivePlans" logicalDataType="ObjectLink" objectLinkTargetType="GroupSubscriptionPlan" isCollection="true"/>
         </InformationItems>
       </InformationObject>
     </InformationModel>

@@ -531,7 +531,7 @@
         <InformationItems>
           <InformationItem name="ContentID" logicalDataType="Text_Short"/>
           <InformationItem name="ContentSemanticType" logicalDataType="Text_Short"/>
-          <InformationItem name="CategoryID" logicalDataType="ObjectLink" objectLinkTargetType="Category" />
+          <InformationItem name="CategoryID" logicalDataType="Text_Short" />
           <InformationItem name="RankName" logicalDataType="Text_Short"/>
           <InformationItem name="RankValue" logicalDataType="Text_Short"/>
         </InformationItems>

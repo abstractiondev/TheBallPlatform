@@ -97,16 +97,16 @@ namespace PlatformCoreTests
                 EmailAddress = "Email address",
                 StripeID = "TestStripeID"
             };
-            testCustomer.ActivePlans.Add("plan1");
-            testCustomer.ActivePlans.Add("plan2");
+            //testCustomer.ActivePlans.Add("plan1");
+            //testCustomer.ActivePlans.Add("plan2");
             ctx.CustomerAccountTable.InsertOnSubmit(testCustomer);
             ctx.SubmitChanges();
             Assert.AreEqual(ctx.CustomerAccountTable.Count(), 1, "Insert confirmation failure");
             //var firstCustomer = ctx.CustomerAccountTable.Single();
             var firstCustomer = ctx.CustomerAccountTable.Single(customer => customer.ID == testCustomer.ID);
             Assert.AreEqual(firstCustomer.ActivePlans.Count, 2);
-            Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
-            Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
+            //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
+            //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
         }
 
 

@@ -1703,8 +1703,6 @@ namespace INT {
 
 					result.Description = @"CustomerAccount.Description";
 
-					result.ActivePlans = @"CustomerAccount.ActivePlans";
-
 				
 					return result;
 				}

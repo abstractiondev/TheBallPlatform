@@ -136,10 +136,23 @@ namespace SQLite.TheBall.Payments {
 		            existingObject.StripeID = serializedObject.StripeID;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
-                    existingObject.ActivePlans.Clear();
-					if(serializedObject.ActivePlans != null)
-	                    serializedObject.ActivePlans.ForEach(item => existingObject.ActivePlans.Add(item));
-					
+                    if (serializedObject.ActivePlans != null)
+                    {
+						existingObject.ActivePlans.Clear();
+                        serializedObject.ActivePlans.ForEach(
+                            item =>
+                            {
+                                var relationObject = new CustomerAccountActivePlans
+                                {
+                                    CustomerAccountID = existingObject.ID,
+                                    GroupSubscriptionPlanID = item
+                                };
+                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                existingObject.ActivePlans.Add(relationObject);
+
+                            });
+                    }
+
 		            return;
 		        } 
 		    }
@@ -173,8 +186,22 @@ namespace SQLite.TheBall.Payments {
 		            objectToAdd.StripeID = serializedObject.StripeID;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;
-					if(serializedObject.ActivePlans != null)
-						serializedObject.ActivePlans.ForEach(item => objectToAdd.ActivePlans.Add(item));
+                    if (serializedObject.ActivePlans != null)
+                    {
+                        serializedObject.ActivePlans.ForEach(
+                            item =>
+                            {
+                                var relationObject = new CustomerAccountActivePlans
+                                {
+                                    CustomerAccountID = objectToAdd.ID,
+                                    GroupSubscriptionPlanID = item
+                                };
+                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                objectToAdd.ActivePlans.Add(relationObject);
+
+                            });
+                    }
+
 					CustomerAccountTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
@@ -226,6 +253,12 @@ namespace SQLite.TheBall.Payments {
 					return this.GetTable<CustomerAccount>();
 				}
 			}
+			public Table<CustomerAccountActivePlans> CustomerAccountActivePlansTable {
+				get {
+					return this.GetTable<CustomerAccountActivePlans>();
+				}
+			}
+
 			public Table<GroupSubscriptionPlanCollection> GroupSubscriptionPlanCollectionTable {
 				get {
 					return this.GetTable<GroupSubscriptionPlanCollection>();
@@ -398,50 +431,8 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
-        [Column(Name = "ActivePlans")] 
-        [ScaffoldColumn(true)]
-		public string ActivePlansData { get; set; }
-
-        private bool _IsActivePlansRetrieved = false;
-        private bool _IsActivePlansChanged = false;
-        private ObservableCollection<string> _ActivePlans = null;
-        public ObservableCollection<string> ActivePlans
-        {
-            get
-            {
-                if (!_IsActivePlansRetrieved)
-                {
-                    if (ActivePlansData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<string[]>(ActivePlansData);
-                        _ActivePlans = new ObservableCollection<string>(arrayData);
-                    }
-                    else
-                    {
-                        _ActivePlans = new ObservableCollection<string>();
-						ActivePlansData = Guid.NewGuid().ToString();
-						_IsActivePlansChanged = true;
-                    }
-                    _IsActivePlansRetrieved = true;
-                    _ActivePlans.CollectionChanged += (sender, args) =>
-						{
-							ActivePlansData = Guid.NewGuid().ToString();
-							_IsActivePlansChanged = true;
-						};
-                }
-                return _ActivePlans;
-            }
-            set 
-			{ 
-				_ActivePlans = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsActivePlansRetrieved = true;
-                ActivePlansData = Guid.NewGuid().ToString();
-                _IsActivePlansChanged = true;
-
-			}
-        }
+        [Association(ThisKey = "ID", OtherKey = "CustomerAccountID")]
+        public EntitySet<CustomerAccountActivePlans> ActivePlans { get; set; }
 
         public void PrepareForStoring(bool isInitialInsert)
         {
@@ -452,12 +443,6 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 				EmailAddress = string.Empty;
 			if(Description == null)
 				Description = string.Empty;
-            if (_IsActivePlansChanged || isInitialInsert)
-            {
-                var dataToStore = ActivePlans.ToArray();
-                ActivePlansData = JsonConvert.SerializeObject(dataToStore);
-            }
-
 		}
 	}
     [Table(Name = "GroupSubscriptionPlanCollection")]
@@ -544,4 +529,32 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
+    [Table(Name = "CustomerAccountActivePlans")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("CustomerAccountActivePlans: {CustomerAccountID} - {GroupSubscriptionPlanID}")]
+	public class CustomerAccountActivePlans // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [CustomerAccountActivePlans](
+[CustomerAccountID] TEXT NOT NULL, 
+[GroupSubscriptionPlanID] TEXT NOT NULL,
+PRIMARY KEY (CustomerAccountID, GroupSubscriptionPlanID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true)]
+        public string CustomerAccountID { get; set; }
+        [Column(IsPrimaryKey = true)]
+        public string GroupSubscriptionPlanID { get; set; }
+
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", IsUnique = false)]
+        public EntityRef<CustomerAccount> CustomerAccount { get; set; }
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID")]
+        public EntityRef<GroupSubscriptionPlan> GroupSubscriptionPlan { get; set; } 
+    }
+
  } 
