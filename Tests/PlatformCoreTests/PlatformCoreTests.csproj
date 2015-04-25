@@ -84,6 +84,7 @@
     <Reference Include="System.Data.SQLite.Linq">
       <HintPath>..\..\packages\System.Data.SQLite.Linq.1.0.94.1\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -107,6 +108,7 @@
     <Compile Include="SerializationTests.cs" />
     <Compile Include="TestSupport.cs" />
     <Compile Include="TheBallCORETests.cs" />
+    <Compile Include="HttpRequestSerializeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj">
