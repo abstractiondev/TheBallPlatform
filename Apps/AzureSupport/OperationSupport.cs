@@ -10,7 +10,7 @@ namespace TheBall
     {
         public static void ExecuteOperation(string operationTypeName, params Tuple<string, object>[] parameterValues)
         {
-            string parameterTypeName = operationTypeName + "Parameters";
+            string parameterTypeName = operationTypeName + "QueryParameters";
             Type operationType = TypeSupport.GetTypeByName(operationTypeName);
             if(operationType == null)
                 throw new InvalidDataException("Operation type not found: " + operationTypeName);

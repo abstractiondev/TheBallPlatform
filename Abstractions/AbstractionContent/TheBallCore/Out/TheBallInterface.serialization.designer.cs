@@ -73,21 +73,20 @@ namespace INT {
 
  }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
 			[Serializable]
-			public partial class WizardContainer 
+			public partial class InterfaceOperation 
 			{
 
-				public WizardContainer()
+				public InterfaceOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.SemanticDomainName = "TheBall.Interface";
-				    this.Name = "WizardContainer";
+				    this.Name = "InterfaceOperation";
 				}
 
-		
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardContainer));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InterfaceOperation));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -100,83 +99,13 @@ namespace INT {
 					}
 				}
 
-				public static WizardContainer DeserializeFromXml(string xmlString)
+				public static InterfaceOperation DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardContainer));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InterfaceOperation));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (WizardContainer) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-
-			
-
-			[DataMember]
-			public List< WizardTask > ActiveTasks = new List< WizardTask >();
-			
-			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]
-			[Serializable]
-			public partial class WizardTask 
-			{
-
-				public WizardTask()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.SemanticDomainName = "TheBall.Interface";
-				    this.Name = "WizardTask";
-				}
-
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardTask));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static WizardTask DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardTask));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (WizardTask) serializer.ReadObject(xmlReader);
+							return (InterfaceOperation) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -207,25 +136,37 @@ namespace INT {
 
 
 
-				private void CopyContentFrom(WizardTask sourceObject)
+				private void CopyContentFrom(InterfaceOperation sourceObject)
 				{
-					TaskName = sourceObject.TaskName;
-					Description = sourceObject.Description;
-					InputType = sourceObject.InputType;
+					Status = sourceObject.Status;
+					OperationDataType = sourceObject.OperationDataType;
+					Created = sourceObject.Created;
+					Executed = sourceObject.Executed;
+					ErrorCode = sourceObject.ErrorCode;
+					ErrorMessage = sourceObject.ErrorMessage;
 				}
 				
 
 
 
 			[DataMember]
-			public string TaskName { get; set; }
-			private string _unmodified_TaskName;
+			public string Status { get; set; }
+			private string _unmodified_Status;
 			[DataMember]
-			public string Description { get; set; }
-			private string _unmodified_Description;
+			public string OperationDataType { get; set; }
+			private string _unmodified_OperationDataType;
 			[DataMember]
-			public string InputType { get; set; }
-			private string _unmodified_InputType;
+			public DateTime Created { get; set; }
+			private DateTime _unmodified_Created;
+			[DataMember]
+			public DateTime Executed { get; set; }
+			private DateTime _unmodified_Executed;
+			[DataMember]
+			public string ErrorCode { get; set; }
+			private string _unmodified_ErrorCode;
+			[DataMember]
+			public string ErrorMessage { get; set; }
+			private string _unmodified_ErrorMessage;
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")]

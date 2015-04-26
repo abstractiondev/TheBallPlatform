@@ -140,7 +140,7 @@ namespace INT {
 		}
 			[DataContract]
 			[Serializable]
-			public partial class WizardContainer : IInformationObject 
+			public partial class InterfaceOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
 					get {
@@ -148,26 +148,26 @@ namespace INT {
 					}
 				}
 
-				public WizardContainer()
+				public InterfaceOperation()
 				{
 					this.ID = Guid.NewGuid().ToString();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
-				    this.Name = "WizardContainer";
+				    this.Name = "InterfaceOperation";
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
 				{
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.Interface/WizardContainer/";
+					string contentTypeName = "TheBall.Interface/InterfaceOperation/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
 					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
 					foreach(CloudBlockBlob blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(WizardContainer), null, owner);
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InterfaceOperation), null, owner);
 					    informationObject.MasterETag = informationObject.ETag;
 						informationObjects.Add(informationObject);
 					}
@@ -176,7 +176,7 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "WizardContainer", id).Replace("\\", "/");
+                    return Path.Combine("TheBall.Interface", "InterfaceOperation", id).Replace("\\", "/");
                 }
 
 				public void UpdateRelativeLocationFromID()
@@ -184,20 +184,20 @@ namespace INT {
 					RelativeLocation = GetRelativeLocationFromID(ID);
 				}
 
-				public static WizardContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				public static InterfaceOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
 				{
 					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWizardContainer(relativeLocation, owner);
+					return RetrieveInterfaceOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
 				{
 					IInformationObject iObject = (IInformationObject) this;
 					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: WizardContainer");
+						throw new NotSupportedException("Cannot retrieve master for non-master type: InterfaceOperation");
 					initiated = false;
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(WizardContainer), null, owner);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InterfaceOperation), null, owner);
 					if(master == null && initiateIfMissing)
 					{
 						StorageSupport.StoreInformation(this, owner);
@@ -216,305 +216,23 @@ namespace INT {
 				}
 
 
-                public static WizardContainer RetrieveWizardContainer(string relativeLocation, IContainerOwner owner = null)
+                public static InterfaceOperation RetrieveInterfaceOperation(string relativeLocation, IContainerOwner owner = null)
                 {
-                    var result = (WizardContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(WizardContainer), null, owner);
+                    var result = (InterfaceOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(InterfaceOperation), null, owner);
                     return result;
                 }
 
-				public static WizardContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				public static InterfaceOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
 				{
-					// var result = WizardContainer.RetrieveWizardContainer("Content/TheBall.Interface/WizardContainer/" + contentName, containerOwner);
-					var result = WizardContainer.RetrieveWizardContainer("TheBall.Interface/WizardContainer/" + contentName, containerOwner);
+					// var result = InterfaceOperation.RetrieveInterfaceOperation("Content/TheBall.Interface/InterfaceOperation/" + contentName, containerOwner);
+					var result = InterfaceOperation.RetrieveInterfaceOperation("TheBall.Interface/InterfaceOperation/" + contentName, containerOwner);
 					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/WizardContainer/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/WizardContainer/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					throw new NotImplementedException("Collection item objects do not support tree functions for now");
-				}
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					throw new NotImplementedException("Collection item objects do not support tree functions for now");
-				}
-
-				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-					throw new NotImplementedException("Collection item objects do not support tree functions for now");
-				}
-
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardContainer));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static WizardContainer DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardContainer));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (WizardContainer) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember]
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember]
-                public string Name { get; set; }
-
-                [DataMember]
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("TheBall.Interface", "WizardContainer", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Interface", "WizardContainer", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref WizardContainer customDemoObject);
-
-
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					// Remove exception if basic functionality starts to have issues
-					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
-					if(filterOnFalse(this))
-						result.Add(this);
-				}
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
-
-
-				}
-
-			
-                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-					// Remove exception if some basic functionality is broken due to it
-					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
-				}
-	
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-						// Remove exception if some basic functionality is broken due to it
-						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
-					}
-				}
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					// Remove exception if some basic functionality is broken due to it
-					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
-				}
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					// Remove exception if some basic functionality is broken due to it
-					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
-				}
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					// Remove exception if some basic functionality is broken due to it
-					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember]
-			public List< WizardTask > ActiveTasks = new List< WizardTask >();
-			
-			}
-			[DataContract]
-			[Serializable]
-			public partial class WizardTask : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public WizardTask()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "TheBall.Interface";
-				    this.Name = "WizardTask";
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "TheBall.Interface/WizardTask/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(WizardTask), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-                public static string GetRelativeLocationFromID(string id)
-                {
-                    return Path.Combine("TheBall.Interface", "WizardTask", id).Replace("\\", "/");
-                }
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static WizardTask RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWizardTask(relativeLocation, owner);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: WizardTask");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(WizardTask), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static WizardTask RetrieveWizardTask(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (WizardTask) StorageSupport.RetrieveInformation(relativeLocation, typeof(WizardTask), null, owner);
-                    return result;
-                }
-
-				public static WizardTask RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = WizardTask.RetrieveWizardTask("Content/TheBall.Interface/WizardTask/" + contentName, containerOwner);
-					var result = WizardTask.RetrieveWizardTask("TheBall.Interface/WizardTask/" + contentName, containerOwner);
-					return result;
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/WizardTask/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/WizardTask/" + contentName);
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/InterfaceOperation/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/InterfaceOperation/" + contentName);
                 }
 
 				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
@@ -584,7 +302,7 @@ namespace INT {
 						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
 					if(ID != sourceMaster.ID)
 						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((WizardTask) sourceMaster);
+					CopyContentFrom((InterfaceOperation) sourceMaster);
 				}
 
 
@@ -598,7 +316,7 @@ namespace INT {
 
 				public string SerializeToXml(bool noFormatting = false)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardTask));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InterfaceOperation));
 					using (var output = new StringWriter())
 					{
 						using (var writer = new XmlTextWriter(output))
@@ -611,13 +329,13 @@ namespace INT {
 					}
 				}
 
-				public static WizardTask DeserializeFromXml(string xmlString)
+				public static InterfaceOperation DeserializeFromXml(string xmlString)
 				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(WizardTask));
+					DataContractSerializer serializer = new DataContractSerializer(typeof(InterfaceOperation));
 					using(StringReader reader = new StringReader(xmlString))
 					{
 						using (var xmlReader = new XmlTextReader(reader))
-							return (WizardTask) serializer.ReadObject(xmlReader);
+							return (InterfaceOperation) serializer.ReadObject(xmlReader);
 					}
             
 				}
@@ -653,7 +371,7 @@ namespace INT {
 
 				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
 				{
-					return Path.Combine("TheBall.Interface", "WizardTask", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+					return Path.Combine("TheBall.Interface", "InterfaceOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
 				}
 
 				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
@@ -667,37 +385,39 @@ namespace INT {
                     if (String.IsNullOrEmpty(sourceName))
                         sourceName = "default";
                     string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Interface", "WizardTask", sourceName).Replace("\\", "/");
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.Interface", "InterfaceOperation", sourceName).Replace("\\", "/");
                     return relativeLocation;
                 }
 
-				static partial void CreateCustomDemo(ref WizardTask customDemoObject);
+				static partial void CreateCustomDemo(ref InterfaceOperation customDemoObject);
 
 
 
-				public static WizardTask CreateDefault()
+				public static InterfaceOperation CreateDefault()
 				{
-					var result = new WizardTask();
+					var result = new InterfaceOperation();
 					return result;
 				}
 				/*
-				public static WizardTask CreateDemoDefault()
+				public static InterfaceOperation CreateDemoDefault()
 				{
-					WizardTask customDemo = null;
-					WizardTask.CreateCustomDemo(ref customDemo);
+					InterfaceOperation customDemo = null;
+					InterfaceOperation.CreateCustomDemo(ref customDemo);
 					if(customDemo != null)
 						return customDemo;
-					var result = new WizardTask();
-					result.TaskName = @"WizardTask.TaskName";
+					var result = new InterfaceOperation();
+					result.Status = @"InterfaceOperation.Status";
 
-					result.Description = @"WizardTask.Description
-WizardTask.Description
-WizardTask.Description
-WizardTask.Description
-WizardTask.Description
+					result.OperationDataType = @"InterfaceOperation.OperationDataType";
+
+					result.ErrorCode = @"InterfaceOperation.ErrorCode";
+
+					result.ErrorMessage = @"InterfaceOperation.ErrorMessage
+InterfaceOperation.ErrorMessage
+InterfaceOperation.ErrorMessage
+InterfaceOperation.ErrorMessage
+InterfaceOperation.ErrorMessage
 ";
-
-					result.InputType = @"WizardTask.InputType";
 
 				
 					return result;
@@ -757,11 +477,17 @@ WizardTask.Description
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
-						if(TaskName != _unmodified_TaskName)
+						if(Status != _unmodified_Status)
 							return true;
-						if(Description != _unmodified_Description)
+						if(OperationDataType != _unmodified_OperationDataType)
 							return true;
-						if(InputType != _unmodified_InputType)
+						if(Created != _unmodified_Created)
+							return true;
+						if(Executed != _unmodified_Executed)
+							return true;
+						if(ErrorCode != _unmodified_ErrorCode)
+							return true;
+						if(ErrorMessage != _unmodified_ErrorMessage)
 							return true;
 				
 						return false;
@@ -773,20 +499,26 @@ WizardTask.Description
 				}
 
 
-				private void CopyContentFrom(WizardTask sourceObject)
+				private void CopyContentFrom(InterfaceOperation sourceObject)
 				{
-					TaskName = sourceObject.TaskName;
-					Description = sourceObject.Description;
-					InputType = sourceObject.InputType;
+					Status = sourceObject.Status;
+					OperationDataType = sourceObject.OperationDataType;
+					Created = sourceObject.Created;
+					Executed = sourceObject.Executed;
+					ErrorCode = sourceObject.ErrorCode;
+					ErrorMessage = sourceObject.ErrorMessage;
 				}
 				
 
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
-					_unmodified_TaskName = TaskName;
-					_unmodified_Description = Description;
-					_unmodified_InputType = InputType;
+					_unmodified_Status = Status;
+					_unmodified_OperationDataType = OperationDataType;
+					_unmodified_Created = Created;
+					_unmodified_Executed = Executed;
+					_unmodified_ErrorCode = ErrorCode;
+					_unmodified_ErrorMessage = ErrorMessage;
 				
 				
 				}
@@ -796,28 +528,46 @@ WizardTask.Description
 				{
 					switch (propertyName)
 					{
-						case "TaskName":
-							TaskName = value;
+						case "Status":
+							Status = value;
 							break;
-						case "Description":
-							Description = value;
+						case "OperationDataType":
+							OperationDataType = value;
 							break;
-						case "InputType":
-							InputType = value;
+						case "Created":
+							Created = DateTime.Parse(value);
+							break;
+						case "Executed":
+							Executed = DateTime.Parse(value);
+							break;
+						case "ErrorCode":
+							ErrorCode = value;
+							break;
+						case "ErrorMessage":
+							ErrorMessage = value;
 							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
 			[DataMember]
-			public string TaskName { get; set; }
-			private string _unmodified_TaskName;
+			public string Status { get; set; }
+			private string _unmodified_Status;
 			[DataMember]
-			public string Description { get; set; }
-			private string _unmodified_Description;
+			public string OperationDataType { get; set; }
+			private string _unmodified_OperationDataType;
 			[DataMember]
-			public string InputType { get; set; }
-			private string _unmodified_InputType;
+			public DateTime Created { get; set; }
+			private DateTime _unmodified_Created;
+			[DataMember]
+			public DateTime Executed { get; set; }
+			private DateTime _unmodified_Executed;
+			[DataMember]
+			public string ErrorCode { get; set; }
+			private string _unmodified_ErrorCode;
+			[DataMember]
+			public string ErrorMessage { get; set; }
+			private string _unmodified_ErrorMessage;
 			
 			}
 			[DataContract]

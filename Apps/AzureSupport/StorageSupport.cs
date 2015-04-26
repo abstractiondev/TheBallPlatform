@@ -1325,6 +1325,12 @@ namespace TheBall
             return blob.Container.Name == CurrActiveContainer.Name;
         }
 
+        public static void DeleteWithoutFiringSubscriptions(string blobLocation)
+        {
+            CloudBlob blob = CurrActiveContainer.GetBlobReference(blobLocation);
+            DeleteWithoutFiringSubscriptions(blob);
+        }
+
         public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
         {
             if (blob.IsStoredInActiveContainer() && blob.CanContainExternalMetadata())

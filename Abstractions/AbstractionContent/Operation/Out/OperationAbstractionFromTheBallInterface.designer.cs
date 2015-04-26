@@ -108,24 +108,65 @@ using System.IO;
 				PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObjectComplete(Connection, TransferPackage);		
 				}
 				}
-				public class ExecuteOperationParameters 
+				public class CreateInterfaceOperationForExecutionParameters 
 		{
-				public string OwnerLocation ;
-				public string OperationDomain ;
-				public string OperationName ;
-				public byte[] OperationParameters ;
-				public string CallerProvidedInfo ;
+				public string DataType ;
+				public byte[] OperationData ;
 				}
 		
-		public class ExecuteOperation 
+		public class CreateInterfaceOperationForExecution 
 		{
-				private static void PrepareParameters(ExecuteOperationParameters parameters)
+				private static void PrepareParameters(CreateInterfaceOperationForExecutionParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteOperationParameters parameters)
+				public static CreateInterfaceOperationForExecutionReturnValue Execute(CreateInterfaceOperationForExecutionParameters parameters)
 		{
 						PrepareParameters(parameters);
+					InterfaceOperation Operation = CreateInterfaceOperationForExecutionImplementation.GetTarget_Operation(parameters.DataType);	
+				string OperationDataLocation = CreateInterfaceOperationForExecutionImplementation.GetTarget_OperationDataLocation(Operation);	
+				CreateInterfaceOperationForExecutionImplementation.ExecuteMethod_StoreOperationWithData(parameters.OperationData, Operation, OperationDataLocation);		
+				CreateInterfaceOperationForExecutionReturnValue returnValue = CreateInterfaceOperationForExecutionImplementation.Get_ReturnValue(Operation);
+		return returnValue;
+				}
+				}
+				public class CreateInterfaceOperationForExecutionReturnValue 
+		{
+				public string OperationID ;
+				}
+				public class ExecuteInterfaceOperationParameters 
+		{
+				public string OperationID ;
+				}
+		
+		public class ExecuteInterfaceOperation 
+		{
+				private static void PrepareParameters(ExecuteInterfaceOperationParameters parameters)
+		{
 					}
+				public static void Execute(ExecuteInterfaceOperationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					InterfaceOperation OperationData = ExecuteInterfaceOperationImplementation.GetTarget_OperationData(parameters.OperationID);	
+				ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperation(OperationData);		
+				}
+				}
+				public class DeleteInterfaceOperationParameters 
+		{
+				public string OperationID ;
+				}
+		
+		public class DeleteInterfaceOperation 
+		{
+				private static void PrepareParameters(DeleteInterfaceOperationParameters parameters)
+		{
+					}
+				public static void Execute(DeleteInterfaceOperationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string OperationBlobLocation = DeleteInterfaceOperationImplementation.GetTarget_OperationBlobLocation(parameters.OperationID);	
+				string OperationDataBlobLocation = DeleteInterfaceOperationImplementation.GetTarget_OperationDataBlobLocation(OperationBlobLocation);	
+				DeleteInterfaceOperationImplementation.ExecuteMethod_DeleteOperationWithData(OperationBlobLocation, OperationDataBlobLocation);		
+				}
 				}
 				public class UpdateStatusSummaryParameters 
 		{

@@ -17,9 +17,9 @@ namespace PlatformCoreTests
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
             PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
-            var serData = new HttpRequestSerializer.HttpRequestPackage
+            var serData = new HttpRequestSerializer.HttpRequestData
             {
-                AccountId = "acctid",
+                ExecutorAccountID = "acctid",
                 ContentPath = "contentpath",
                 //FileCollection = (HttpFileCollection) httpFileCollection.Target,
                 FileCollection = new Dictionary<string, byte[]>()
@@ -45,9 +45,9 @@ namespace PlatformCoreTests
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
             PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
-            var serData = new HttpRequestSerializer.HttpRequestPackage
+            var serData = new HttpRequestSerializer.HttpRequestData
             {
-                AccountId = "acctid",
+                ExecutorAccountID = "acctid",
                 ContentPath = "contentpath",
                 //FileCollection = (HttpFileCollection) httpFileCollection.Target,
                 FileCollection = new Dictionary<string, byte[]>()
@@ -66,7 +66,7 @@ namespace PlatformCoreTests
             serData.ToStream(outputStream);
             var outputData = outputStream.ToArray();
             var inputStream = new MemoryStream(outputData);
-            var outputSer = inputStream.DeserializeProtobuf<HttpRequestSerializer.HttpRequestPackage>();
+            var outputSer = inputStream.DeserializeProtobuf<HttpRequestSerializer.HttpRequestData>();
             Assert.AreEqual(serData.OwnerRoot, outputSer.OwnerRoot);
         }
 

@@ -26,7 +26,7 @@ namespace TheBall.Interface
         {
             // TODO: Fix reflection call for operation
             string operationTypeName = packageContentListingOperationName;
-            string parameterTypeName = operationTypeName + "Parameters";
+            string parameterTypeName = operationTypeName + "QueryParameters";
             string returnValueTypeName = operationTypeName + "ReturnValue";
             Type operationType = Type.GetType(operationTypeName);
             Type parameterType = Type.GetType(parameterTypeName);

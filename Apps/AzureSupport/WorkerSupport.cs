@@ -451,22 +451,6 @@ namespace TheBall
         }
 
 
-        public static bool PollAndExecuteChainSubscription()
-        {
-            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
-            if (result.Length == 0)
-                return false;
-            string acquiredEtag = null;
-            var firstLockedOwner =
-                result.FirstOrDefault(
-                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
-            if (firstLockedOwner == null)
-                return false;
-            ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, null);
-            return true;
-        }
-
-
         public static string[] ExecuteSubscriptionChains(params SubscriptionChainRequestContent[] contentList)
         {
             InformationContext.Current.IsExecutingSubscriptions = true;

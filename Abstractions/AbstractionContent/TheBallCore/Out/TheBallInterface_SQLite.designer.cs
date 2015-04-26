@@ -85,8 +85,7 @@ namespace SQLite.TheBall.Interface {
 			{
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
-				tableCreationCommands.Add(WizardContainer.GetCreateTableSQL());
-				tableCreationCommands.Add(WizardTask.GetCreateTableSQL());
+				tableCreationCommands.Add(InterfaceOperation.GetCreateTableSQL());
 				tableCreationCommands.Add(Connection.GetCreateTableSQL());
 				tableCreationCommands.Add(TransferPackage.GetCreateTableSQL());
 				tableCreationCommands.Add(CategoryLink.GetCreateTableSQL());
@@ -119,31 +118,20 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "WizardContainer")
+		        if (updateData.ObjectType == "InterfaceOperation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject =
-		                global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
+		                global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = WizardContainerTable.Single(item => item.ID == updateData.ObjectID);
+		            var existingObject = InterfaceOperationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-                    existingObject.ActiveTasks.Clear();
-					if(serializedObject.ActiveTasks != null)
-	                    serializedObject.ActiveTasks.ForEach(item => existingObject.ActiveTasks.Add(item));
-					
-		            return;
-		        } 
-		        if (updateData.ObjectType == "WizardTask")
-		        {
-		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
-		                global::SER.TheBall.Interface.WizardTask.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
-		            var existingObject = WizardTaskTable.Single(item => item.ID == updateData.ObjectID);
-					existingObject.ETag = updateData.ETag;
-		            existingObject.TaskName = serializedObject.TaskName;
-		            existingObject.Description = serializedObject.Description;
-		            existingObject.InputType = serializedObject.InputType;
+		            existingObject.Status = serializedObject.Status;
+		            existingObject.OperationDataType = serializedObject.OperationDataType;
+		            existingObject.Created = serializedObject.Created;
+		            existingObject.Executed = serializedObject.Executed;
+		            existingObject.ErrorCode = serializedObject.ErrorCode;
+		            existingObject.ErrorMessage = serializedObject.ErrorMessage;
 		            return;
 		        } 
 		        if (updateData.ObjectType == "Connection")
@@ -370,29 +358,20 @@ namespace SQLite.TheBall.Interface {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "WizardContainer")
+                if (insertData.ObjectType == "InterfaceOperation")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
-                        global::SER.TheBall.Interface.WizardContainer.DeserializeFromXml(
+                        global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new WizardContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.ActiveTasks != null)
-						serializedObject.ActiveTasks.ForEach(item => objectToAdd.ActiveTasks.Add(item));
-					WizardContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
-                }
-                if (insertData.ObjectType == "WizardTask")
-                {
-                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
-                    var serializedObject =
-                        global::SER.TheBall.Interface.WizardTask.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
-                    var objectToAdd = new WizardTask {ID = insertData.ObjectID, ETag = insertData.ETag};
-		            objectToAdd.TaskName = serializedObject.TaskName;
-		            objectToAdd.Description = serializedObject.Description;
-		            objectToAdd.InputType = serializedObject.InputType;
-					WizardTaskTable.InsertOnSubmit(objectToAdd);
+                    var objectToAdd = new InterfaceOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Status = serializedObject.Status;
+		            objectToAdd.OperationDataType = serializedObject.OperationDataType;
+		            objectToAdd.Created = serializedObject.Created;
+		            objectToAdd.Executed = serializedObject.Executed;
+		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
+		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
+					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
                 if (insertData.ObjectType == "Connection")
@@ -585,18 +564,11 @@ namespace SQLite.TheBall.Interface {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "WizardContainer")
+		        if (deleteData.ObjectType == "InterfaceOperation")
 		        {
-		            var objectToDelete = new WizardContainer {ID = deleteData.ID};
-                    WizardContainerTable.Attach(objectToDelete);
-                    WizardContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "WizardTask")
-		        {
-		            var objectToDelete = new WizardTask {ID = deleteData.ID};
-                    WizardTaskTable.Attach(objectToDelete);
-                    WizardTaskTable.DeleteOnSubmit(objectToDelete);
+		            var objectToDelete = new InterfaceOperation {ID = deleteData.ID};
+                    InterfaceOperationTable.Attach(objectToDelete);
+                    InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "Connection")
@@ -686,14 +658,9 @@ namespace SQLite.TheBall.Interface {
 		    }
 
 
-			public Table<WizardContainer> WizardContainerTable {
+			public Table<InterfaceOperation> InterfaceOperationTable {
 				get {
-					return this.GetTable<WizardContainer>();
-				}
-			}
-			public Table<WizardTask> WizardTaskTable {
-				get {
-					return this.GetTable<WizardTask>();
+					return this.GetTable<InterfaceOperation>();
 				}
 			}
 			public Table<Connection> ConnectionTable {
@@ -758,10 +725,10 @@ namespace SQLite.TheBall.Interface {
 			}
         }
 
-    [Table(Name = "WizardContainer")]
+    [Table(Name = "InterfaceOperation")]
 	[ScaffoldTable(true)]
-	[DebuggerDisplay("WizardContainer: {ID}")]
-	public class WizardContainer : ITheBallDataContextStorable
+	[DebuggerDisplay("InterfaceOperation: {ID}")]
+	public class InterfaceOperation : ITheBallDataContextStorable
 	{
 
 		[Column(IsPrimaryKey = true)]
@@ -775,7 +742,7 @@ namespace SQLite.TheBall.Interface {
 		public string ETag { get; set; }
 
 
-		public WizardContainer() 
+		public InterfaceOperation() 
 		{
 			ID = Guid.NewGuid().ToString();
 			ETag = String.Empty;
@@ -785,131 +752,60 @@ namespace SQLite.TheBall.Interface {
         {
             return
                 @"
-CREATE TABLE IF NOT EXISTS [WizardContainer](
+CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[ActiveTasksID] TEXT NULL
-)";
-        }
-
-        [Column(Name = "ActiveTasks")] 
-        [ScaffoldColumn(true)]
-		public string ActiveTasksData { get; set; }
-
-        private bool _IsActiveTasksRetrieved = false;
-        private bool _IsActiveTasksChanged = false;
-        private ObservableCollection<SER.TheBall.Interface.WizardTask> _ActiveTasks = null;
-        public ObservableCollection<SER.TheBall.Interface.WizardTask> ActiveTasks
-        {
-            get
-            {
-                if (!_IsActiveTasksRetrieved)
-                {
-                    if (ActiveTasksData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<SER.TheBall.Interface.WizardTask[]>(ActiveTasksData);
-                        _ActiveTasks = new ObservableCollection<SER.TheBall.Interface.WizardTask>(arrayData);
-                    }
-                    else
-                    {
-                        _ActiveTasks = new ObservableCollection<SER.TheBall.Interface.WizardTask>();
-						ActiveTasksData = Guid.NewGuid().ToString();
-						_IsActiveTasksChanged = true;
-                    }
-                    _IsActiveTasksRetrieved = true;
-                    _ActiveTasks.CollectionChanged += (sender, args) =>
-						{
-							ActiveTasksData = Guid.NewGuid().ToString();
-							_IsActiveTasksChanged = true;
-						};
-                }
-                return _ActiveTasks;
-            }
-            set 
-			{ 
-				_ActiveTasks = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsActiveTasksRetrieved = true;
-                ActiveTasksData = Guid.NewGuid().ToString();
-                _IsActiveTasksChanged = true;
-
-			}
-        }
-
-        public void PrepareForStoring(bool isInitialInsert)
-        {
-		
-            if (_IsActiveTasksChanged || isInitialInsert)
-            {
-                var dataToStore = ActiveTasks.ToArray();
-                ActiveTasksData = JsonConvert.SerializeObject(dataToStore);
-            }
-
-		}
-	}
-    [Table(Name = "WizardTask")]
-	[ScaffoldTable(true)]
-	[DebuggerDisplay("WizardTask: {ID}")]
-	public class WizardTask : ITheBallDataContextStorable
-	{
-
-		[Column(IsPrimaryKey = true)]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ID { get; set; }
-
-		[Column]
-        [ScaffoldColumn(true)]
-        [Editable(false)]
-		public string ETag { get; set; }
-
-
-		public WizardTask() 
-		{
-			ID = Guid.NewGuid().ToString();
-			ETag = String.Empty;
-		}
-
-        public static string GetCreateTableSQL()
-        {
-            return
-                @"
-CREATE TABLE IF NOT EXISTS [WizardTask](
-[ID] TEXT NOT NULL PRIMARY KEY, 
-[ETag] TEXT NOT NULL
-, 
-[TaskName] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[InputType] TEXT NOT NULL
+[Status] TEXT NOT NULL, 
+[OperationDataType] TEXT NOT NULL, 
+[Created] TEXT NOT NULL, 
+[Executed] TEXT NOT NULL, 
+[ErrorCode] TEXT NOT NULL, 
+[ErrorMessage] TEXT NOT NULL
 )";
         }
 
 
 		[Column]
         [ScaffoldColumn(true)]
-		public string TaskName { get; set; }
-		// private string _unmodified_TaskName;
+		public string Status { get; set; }
+		// private string _unmodified_Status;
 
 		[Column]
         [ScaffoldColumn(true)]
-		public string Description { get; set; }
-		// private string _unmodified_Description;
+		public string OperationDataType { get; set; }
+		// private string _unmodified_OperationDataType;
 
 		[Column]
         [ScaffoldColumn(true)]
-		public string InputType { get; set; }
-		// private string _unmodified_InputType;
+		public DateTime Created { get; set; }
+		// private DateTime _unmodified_Created;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public DateTime Executed { get; set; }
+		// private DateTime _unmodified_Executed;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string ErrorCode { get; set; }
+		// private string _unmodified_ErrorCode;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string ErrorMessage { get; set; }
+		// private string _unmodified_ErrorMessage;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
-			if(TaskName == null)
-				TaskName = string.Empty;
-			if(Description == null)
-				Description = string.Empty;
-			if(InputType == null)
-				InputType = string.Empty;
+			if(Status == null)
+				Status = string.Empty;
+			if(OperationDataType == null)
+				OperationDataType = string.Empty;
+			if(ErrorCode == null)
+				ErrorCode = string.Empty;
+			if(ErrorMessage == null)
+				ErrorMessage = string.Empty;
 		}
 	}
     [Table(Name = "Connection")]

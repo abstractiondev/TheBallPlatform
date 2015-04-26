@@ -419,11 +419,6 @@ namespace TheBallTool
                 "AaltoGlobalImpact.OIP.Image", "AaltoGlobalImpact.OIP.ImageGroup", "AaltoGlobalImpact.OIP.Category");
         }*/
 
-        private static void TestSubscriptionChainPick()
-        {
-            bool result = WorkerSupport.PollAndExecuteChainSubscription();
-        }
-
         private static void resendIndexingRequests(string groupID)
         {
             VirtualOwner owner = new VirtualOwner("grp", groupID);

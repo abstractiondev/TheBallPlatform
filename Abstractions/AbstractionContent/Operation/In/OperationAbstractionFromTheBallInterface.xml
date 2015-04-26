@@ -155,19 +155,72 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="ExecuteOperation">
+    <Operation name="CreateInterfaceOperationForExecution">
+      <OperationSpec>
+        <Description>Create interface operation for execution. Return ID to follow-up on status.</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="DataType" dataType="string" designDesc="Operation data type" state="implemented" />
+        <Parameter name="OperationData" dataType="byte[]" designDesc="Operation data as raw binary to be stored next to operation data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Operation objecto to be saved along with the data" state="implemented">
+            <Parameter name="DataType" />
+          </TargetDefinition>
+          <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
+            <Target name="Operation" />
+          </TargetDefinition>
+          <MethodExecute name="StoreOperationWithData" designDesc="Store operation object with its data" state="implemented">
+            <Parameter name="OperationData" />
+            <Target name="Operation" />
+            <Target name="OperationDataLocation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="OperationID" dataType="string" designDesc="Operation ID of newly created operation" state="implemented" />
+        <Target name="Operation" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="ExecuteInterfaceOperation">
       <OperationSpec>
         <Description>Execute given operation</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="OwnerLocation" dataType="string" designDesc="Owner location of the operation context" state="designApproved" />
-        <Parameter name="OperationDomain" dataType="string" designDesc="Operation namespace" state="designApproved" />
-        <Parameter name="OperationName" dataType="string" designDesc="Operation name" state="designApproved" />
-        <Parameter name="OperationParameters" dataType="byte[]" designDesc="Operation parameters binary serialized." state="designApproved" />
-        <Parameter name="CallerProvidedInfo" dataType="string" designDesc="Caller provided information about the call. For caller specific purposes." state="designApproved" />
+        <Parameter name="OperationID" dataType="string" designDesc="Operation ID to execute" state="implemented" />
       </Parameters>
       <Execution>
-        <SequentialExecution />
+        <SequentialExecution>
+          <TargetDefinition name="OperationData" dataType="InterfaceOperation" designDesc="Interface object to be executed" state="implemented">
+            <Parameter name="OperationID" />
+          </TargetDefinition>
+          <MethodExecute name="ExecuteOperation" designDesc="Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info." state="implemented">
+            <Target name="OperationData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="DeleteInterfaceOperation">
+      <OperationSpec>
+        <Description>Delete given operation with its associated data</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="OperationID" dataType="string" designDesc="Operation ID to execute" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="OperationBlobLocation" dataType="string" designDesc="Operation blob location to be removed" state="implemented">
+            <Parameter name="OperationID" />
+          </TargetDefinition>
+          <TargetDefinition name="OperationDataBlobLocation" dataType="string" designDesc="Operation data blob location to be removed" state="implemented">
+            <Target name="OperationBlobLocation" />
+          </TargetDefinition>
+          <MethodExecute name="DeleteOperationWithData" designDesc="Delete interface operation with its associated data" state="implemented">
+            <Target name="OperationBlobLocation" />
+            <Target name="OperationDataBlobLocation" />
+          </MethodExecute>
+        </SequentialExecution>
       </Execution>
     </Operation>
     <Operation name="UpdateStatusSummary">

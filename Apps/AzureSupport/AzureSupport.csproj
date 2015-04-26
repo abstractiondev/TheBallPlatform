@@ -349,10 +349,13 @@
     <Compile Include="TheBall.Interface\Connection.cs" />
     <Compile Include="TheBall.Interface\ConnectionCollection.cs" />
     <Compile Include="TheBall.Interface\CreateConnectionStructuresImplementation.cs" />
+    <Compile Include="TheBall.Interface\CreateInterfaceOperationForExecutionImplementation.cs" />
     <Compile Include="TheBall.Interface\CreateReceivingConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\CreateReceivingConnectionStructuresImplementation.cs" />
     <Compile Include="TheBall.Interface\DeleteConnectionWithStructuresImplementation.cs" />
+    <Compile Include="TheBall.Interface\DeleteInterfaceOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteConnectionProcessImplementation.cs" />
+    <Compile Include="TheBall.Interface\ExecuteInterfaceOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\FetchURLAsGroupContentImplementation.cs" />
     <Compile Include="TheBall.Interface\FinalizeConnectionAfterGroupAuthorizationImplementation.cs" />
     <Compile Include="TheBall.Interface\GenericObject.cs" />

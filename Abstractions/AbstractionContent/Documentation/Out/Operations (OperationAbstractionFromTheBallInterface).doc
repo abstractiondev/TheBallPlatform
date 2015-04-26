@@ -301,6 +301,82 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>CreateInterfaceOperationForExecution (DataType, OperationData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Create interface operation for execution. Return ID to follow-up on status.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DataType
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation data type
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		byte[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation data as raw binary to be stored next to operation data
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Operation ( DataType )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation objecto to be saved along with the data
+		</div>
+		</p><h2>Target Definition: OperationDataLocation ( Operation )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation data object location to store
+		</div>
+		</p><h2>Method Call: StoreOperationWithData ( Operation, OperationDataLocation, OperationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Store operation object with its data
+		</div>
+		</p><h2>Return Value : CreateInterfaceOperationForExecutionReturnValue ( Operation )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation ID of newly created operation
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>CreateReceivingConnection (Description, OtherSideConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -480,6 +556,44 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete the actual connection object
 		</div>
+		</p><h1>DeleteInterfaceOperation (OperationID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Delete given operation with its associated data
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation ID to execute
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: OperationBlobLocation ( OperationID )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation blob location to be removed
+		</div>
+		</p><h2>Target Definition: OperationDataBlobLocation ( OperationBlobLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation data blob location to be removed
+		</div>
+		</p><h2>Method Call: DeleteOperationWithData ( OperationBlobLocation, OperationDataBlobLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete interface operation with its associated data
+		</div>
 		</p><h1>ExecuteConnectionProcess (ConnectionID, ConnectionProcessToExecute)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -533,7 +647,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Execute the defined process
 		</div>
-		</p><h1>ExecuteOperation (OwnerLocation, OperationDomain, OperationName, OperationParameters, CallerProvidedInfo)</h1>
+		</p><h1>ExecuteInterfaceOperation (OperationID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Execute given operation
@@ -543,90 +657,30 @@ div.WordSection1
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
 				<tr>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OwnerLocation
+				<div class="MsoNormal" >
+		OperationID
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
+				<div class="MsoNormal" >
 		string
 		</div>
 				</td>
 				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Owner location of the operation context
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationDomain
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Operation namespace
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationName
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Operation name
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		OperationParameters
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		byte[]
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Operation parameters binary serialized.
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		CallerProvidedInfo
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
-		Caller provided information about the call. For caller specific purposes.
+				<div class="MsoNormal" >
+		Operation ID to execute
 		</div>
 				</td>
 				</tr>
 		</table>
+		</p><h2>Target Definition: OperationData ( OperationID )</h2>
+		<p>		<div class="MsoNormal" >
+		Interface object to be executed
+		</div>
+		</p><h2>Method Call: ExecuteOperation ( OperationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.
+		</div>
 		</p><h1>ExecuteRemoteCalledConnectionOperation (InputStream, OutputStream)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
