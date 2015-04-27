@@ -206,9 +206,9 @@ namespace WebInterface
             HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes(wilmaSharedSecret)); // TODO: Dynamic config load from Ball-instance specific container
             var hashValue = hmacsha1.ComputeHash(hashSourceBin);
             string hashValueStr = Convert.ToBase64String(hashValue);
-            // For now Wilma doesn't escape + characters in base64 on query string
+            // For now Wilma doesn't escape + characters in base64 on query string - test against with and without + chars
             string tempFixedHashValue = hashValueStr.Replace("+", " ");
-            if (tempFixedHashValue != h)
+            if (hashValueStr != h && tempFixedHashValue != h)
                 throw new SecurityException("Invalid hash value - phase 1");
 
             // Login verification done, then call to Wilma for user results
