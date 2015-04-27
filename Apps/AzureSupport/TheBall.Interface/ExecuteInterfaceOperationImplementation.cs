@@ -14,10 +14,10 @@ namespace TheBall.Interface
         public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operation, string operationDataLocation)
         {
             byte[] operationData = StorageSupport.CurrActiveContainer.DownloadBlobBinary(operationDataLocation);
-            HttpRequestSerializer.HttpRequestData reqData = null;
+            HttpRequestData reqData = null;
             using (var memStream = new MemoryStream(operationData))
             {
-                reqData = memStream.DeserializeProtobuf<HttpRequestSerializer.HttpRequestData>();
+                reqData = memStream.DeserializeProtobuf<HttpRequestData>();
             }
             try
             {

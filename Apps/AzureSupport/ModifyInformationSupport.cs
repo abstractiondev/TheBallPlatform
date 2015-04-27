@@ -19,6 +19,54 @@ namespace TheBall
 {
     public static class ModifyInformationSupport
     {
+        internal static void ExecuteHttpOperation(string operationName, HttpRequestData reqData)
+        {
+            string parametersTypeName = operationName + "Parameters";
+            var operationType = Type.GetType(operationName);
+            var parametersType = Type.GetType(parametersTypeName);
+            if (operationType == null || parametersType == null)
+                throw new InvalidDataException("Operation fully qualified type or parameter type not found in executing assembly: " + operationName);
+
+            var paramObj = Activator.CreateInstance(parametersType);
+            var parameterFields = parametersType.GetFields(BindingFlags.Public);
+            var fieldValues = reqData.FormValues;
+            if (fieldValues != null)
+            {
+                foreach (var param in parameterFields)
+                {
+                    if (param.Name != "FileCollection")
+                    {
+                        string fieldValue;
+                        string fieldName = param.Name;
+                        if (fieldValues.TryGetValue(fieldName, out fieldValue))
+                        {
+                            param.SetValue(paramObj, fieldValue);
+                        }
+                    }
+                    else
+                    {
+                        param.SetValue(paramObj, reqData.FileCollection);
+                    }
+                }
+            }
+
+            operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
+                new object[] {paramObj});
+
+        }
+
+        internal static string QueueHttpOperation(string operationName, HttpRequestData reqData)
+        {
+            var interfaceOperation =
+                CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
+                {
+                    DataType = "HTTPREQUEST",
+                    OperationData = reqData.ToBytes()
+                });
+            return interfaceOperation.OperationID;
+        }
+
+
         public static object ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
         {
             bool reloadPageAfter = form["NORELOAD"] == null;
@@ -684,11 +732,6 @@ namespace TheBall
                 }
                 actualContainingObject = currPropValue;
             }
-        }
-
-        internal static void ExecuteHttpOperation(string operationName, HttpRequestSerializer.HttpRequestData reqData)
-        {
-            throw new NotImplementedException();
         }
     }
 }

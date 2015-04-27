@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
@@ -125,33 +124,18 @@ namespace AzureSupport
             Serializer.Serialize(stream, package);
         }
 
+        public static byte[] ToBytes(this HttpRequestData package)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                package.ToStream(memStream);
+                return memStream.ToArray();
+            }
+        }
+
         public static T DeserializeProtobuf<T>(this Stream stream)
         {
             return Serializer.Deserialize<T>(stream);
-        }
-
-        [ProtoContract]
-        public class HttpRequestData
-        {
-            [ProtoMember(1)]
-            public string ContentPath;
-
-            [ProtoMember(2)]
-            public Dictionary<string, string> QueryParameters;
-
-            [ProtoMember(3)]
-            public Dictionary<string, string> FormValues;
-
-            //[ProtoMember(3)] public HttpFileCollection FileCollection;
-            [ProtoMember(4)] public Dictionary<string, byte[]> FileCollection;
-            
-            [ProtoMember(5)]
-            public byte[] RequestContent;
-
-            [ProtoMember(6)] public string ExecutorAccountID;
-
-            [ProtoMember(7)] public string OwnerRoot;
-
         }
     }
 }

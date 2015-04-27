@@ -6,6 +6,9 @@ namespace TheBall.Interface
     {
         public static InterfaceOperation GetTarget_Operation(string dataType)
         {
+            if(dataType != "HTTPREQUEST")
+                throw new ArgumentException("OperationDataType not supported: " + dataType, "dataType");
+
             var operation = new InterfaceOperation();
             operation.SetLocationAsOwnerContent(InformationContext.CurrentOwner, operation.ID);
             operation.OperationDataType = dataType;
