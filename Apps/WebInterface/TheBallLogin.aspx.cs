@@ -206,7 +206,9 @@ namespace WebInterface
             HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes(wilmaSharedSecret)); // TODO: Dynamic config load from Ball-instance specific container
             var hashValue = hmacsha1.ComputeHash(hashSourceBin);
             string hashValueStr = Convert.ToBase64String(hashValue);
-            if(hashValueStr != h)
+            // For now Wilma doesn't escape + characters in base64 on query string
+            string tempFixedHashValue = hashValueStr.Replace("+", " ");
+            if (tempFixedHashValue != h)
                 throw new SecurityException("Invalid hash value");
 
             // Login verification done, then call to Wilma for user results
@@ -244,7 +246,8 @@ namespace WebInterface
                 content = isoEnc.GetString(convertedContent);
              */
                 content = reader.ReadToEnd();
-                content = content.Replace("ä", "??").Replace("ö", "??");
+                // Wilma got fixed for scandinavian character usage, no need to replace anymore
+                //content = content.Replace("ä", "??").Replace("ö", "??");
                 int prehPosition = content.LastIndexOf("\r\nh=");
                 if(prehPosition < 0)
                     throw new SecurityException("Invalid h position");

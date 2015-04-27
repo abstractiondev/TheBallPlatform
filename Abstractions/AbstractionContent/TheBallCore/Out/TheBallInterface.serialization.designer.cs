@@ -141,7 +141,9 @@ namespace INT {
 					Status = sourceObject.Status;
 					OperationDataType = sourceObject.OperationDataType;
 					Created = sourceObject.Created;
-					Executed = sourceObject.Executed;
+					Started = sourceObject.Started;
+					Progress = sourceObject.Progress;
+					Finished = sourceObject.Finished;
 					ErrorCode = sourceObject.ErrorCode;
 					ErrorMessage = sourceObject.ErrorMessage;
 				}
@@ -159,8 +161,14 @@ namespace INT {
 			public DateTime Created { get; set; }
 			private DateTime _unmodified_Created;
 			[DataMember]
-			public DateTime Executed { get; set; }
-			private DateTime _unmodified_Executed;
+			public DateTime Started { get; set; }
+			private DateTime _unmodified_Started;
+			[DataMember]
+			public double Progress { get; set; }
+			private double _unmodified_Progress;
+			[DataMember]
+			public DateTime Finished { get; set; }
+			private DateTime _unmodified_Finished;
 			[DataMember]
 			public string ErrorCode { get; set; }
 			private string _unmodified_ErrorCode;

@@ -129,7 +129,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.Status = serializedObject.Status;
 		            existingObject.OperationDataType = serializedObject.OperationDataType;
 		            existingObject.Created = serializedObject.Created;
-		            existingObject.Executed = serializedObject.Executed;
+		            existingObject.Started = serializedObject.Started;
+		            existingObject.Progress = serializedObject.Progress;
+		            existingObject.Finished = serializedObject.Finished;
 		            existingObject.ErrorCode = serializedObject.ErrorCode;
 		            existingObject.ErrorMessage = serializedObject.ErrorMessage;
 		            return;
@@ -368,7 +370,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.Status = serializedObject.Status;
 		            objectToAdd.OperationDataType = serializedObject.OperationDataType;
 		            objectToAdd.Created = serializedObject.Created;
-		            objectToAdd.Executed = serializedObject.Executed;
+		            objectToAdd.Started = serializedObject.Started;
+		            objectToAdd.Progress = serializedObject.Progress;
+		            objectToAdd.Finished = serializedObject.Finished;
 		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
 		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
 					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
@@ -759,7 +763,9 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 [Status] TEXT NOT NULL, 
 [OperationDataType] TEXT NOT NULL, 
 [Created] TEXT NOT NULL, 
-[Executed] TEXT NOT NULL, 
+[Started] TEXT NOT NULL, 
+[Progress] REAL NOT NULL, 
+[Finished] TEXT NOT NULL, 
 [ErrorCode] TEXT NOT NULL, 
 [ErrorMessage] TEXT NOT NULL
 )";
@@ -783,8 +789,18 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 
 		[Column]
         [ScaffoldColumn(true)]
-		public DateTime Executed { get; set; }
-		// private DateTime _unmodified_Executed;
+		public DateTime Started { get; set; }
+		// private DateTime _unmodified_Started;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public double Progress { get; set; }
+		// private double _unmodified_Progress;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public DateTime Finished { get; set; }
+		// private DateTime _unmodified_Finished;
 
 		[Column]
         [ScaffoldColumn(true)]

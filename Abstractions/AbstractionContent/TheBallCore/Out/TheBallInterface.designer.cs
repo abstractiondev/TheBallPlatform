@@ -483,7 +483,11 @@ InterfaceOperation.ErrorMessage
 							return true;
 						if(Created != _unmodified_Created)
 							return true;
-						if(Executed != _unmodified_Executed)
+						if(Started != _unmodified_Started)
+							return true;
+						if(Progress != _unmodified_Progress)
+							return true;
+						if(Finished != _unmodified_Finished)
 							return true;
 						if(ErrorCode != _unmodified_ErrorCode)
 							return true;
@@ -504,7 +508,9 @@ InterfaceOperation.ErrorMessage
 					Status = sourceObject.Status;
 					OperationDataType = sourceObject.OperationDataType;
 					Created = sourceObject.Created;
-					Executed = sourceObject.Executed;
+					Started = sourceObject.Started;
+					Progress = sourceObject.Progress;
+					Finished = sourceObject.Finished;
 					ErrorCode = sourceObject.ErrorCode;
 					ErrorMessage = sourceObject.ErrorMessage;
 				}
@@ -516,7 +522,9 @@ InterfaceOperation.ErrorMessage
 					_unmodified_Status = Status;
 					_unmodified_OperationDataType = OperationDataType;
 					_unmodified_Created = Created;
-					_unmodified_Executed = Executed;
+					_unmodified_Started = Started;
+					_unmodified_Progress = Progress;
+					_unmodified_Finished = Finished;
 					_unmodified_ErrorCode = ErrorCode;
 					_unmodified_ErrorMessage = ErrorMessage;
 				
@@ -537,8 +545,14 @@ InterfaceOperation.ErrorMessage
 						case "Created":
 							Created = DateTime.Parse(value);
 							break;
-						case "Executed":
-							Executed = DateTime.Parse(value);
+						case "Started":
+							Started = DateTime.Parse(value);
+							break;
+						case "Progress":
+							Progress = double.Parse(value);
+							break;
+						case "Finished":
+							Finished = DateTime.Parse(value);
 							break;
 						case "ErrorCode":
 							ErrorCode = value;
@@ -560,8 +574,14 @@ InterfaceOperation.ErrorMessage
 			public DateTime Created { get; set; }
 			private DateTime _unmodified_Created;
 			[DataMember]
-			public DateTime Executed { get; set; }
-			private DateTime _unmodified_Executed;
+			public DateTime Started { get; set; }
+			private DateTime _unmodified_Started;
+			[DataMember]
+			public double Progress { get; set; }
+			private double _unmodified_Progress;
+			[DataMember]
+			public DateTime Finished { get; set; }
+			private DateTime _unmodified_Finished;
 			[DataMember]
 			public string ErrorCode { get; set; }
 			private string _unmodified_ErrorCode;

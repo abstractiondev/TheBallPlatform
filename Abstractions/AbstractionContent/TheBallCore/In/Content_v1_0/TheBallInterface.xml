@@ -59,7 +59,9 @@
           <InformationItem name="Status" logicalDataType="Text_Short"/>
           <InformationItem name="OperationDataType" logicalDataType="Text_Short"/>
           <InformationItem name="Created" logicalDataType="Time_DateTime"/>
-          <InformationItem name="Executed" logicalDataType="Time_DateTime"/>
+          <InformationItem name="Started" logicalDataType="Time_DateTime"/>
+          <InformationItem name="Progress" logicalDataType="Number_ApproxDecimal"/>
+          <InformationItem name="Finished" logicalDataType="Time_DateTime"/>
           <InformationItem name="ErrorCode" logicalDataType="Text_Short"/>
           <InformationItem name="ErrorMessage" logicalDataType="Text_Long"/>
         </InformationItems>
