@@ -151,7 +151,7 @@
             <Header text="Target Definition: Operation ( DataType )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Operation objecto to be saved along with the data</TextContent>
+                  <TextContent>Operation object to be saved along with the data</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -561,14 +561,21 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: OperationData ( OperationID )" level="2">
+            <Header text="Target Definition: Operation ( OperationID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Interface object to be executed</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ExecuteOperation ( OperationData )" level="2">
+            <Header text="Target Definition: OperationDataLocation ( Operation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Operation data object location to store</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteOperation ( Operation, OperationDataLocation )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.</TextContent>

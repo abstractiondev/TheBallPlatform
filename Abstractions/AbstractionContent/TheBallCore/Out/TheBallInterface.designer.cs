@@ -406,6 +406,8 @@ namespace INT {
 					if(customDemo != null)
 						return customDemo;
 					var result = new InterfaceOperation();
+					result.OperationName = @"InterfaceOperation.OperationName";
+
 					result.Status = @"InterfaceOperation.Status";
 
 					result.OperationDataType = @"InterfaceOperation.OperationDataType";
@@ -477,6 +479,8 @@ InterfaceOperation.ErrorMessage
 				bool IInformationObject.IsInstanceTreeModified {
 					get { 
 
+						if(OperationName != _unmodified_OperationName)
+							return true;
 						if(Status != _unmodified_Status)
 							return true;
 						if(OperationDataType != _unmodified_OperationDataType)
@@ -505,6 +509,7 @@ InterfaceOperation.ErrorMessage
 
 				private void CopyContentFrom(InterfaceOperation sourceObject)
 				{
+					OperationName = sourceObject.OperationName;
 					Status = sourceObject.Status;
 					OperationDataType = sourceObject.OperationDataType;
 					Created = sourceObject.Created;
@@ -519,6 +524,7 @@ InterfaceOperation.ErrorMessage
 
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
+					_unmodified_OperationName = OperationName;
 					_unmodified_Status = Status;
 					_unmodified_OperationDataType = OperationDataType;
 					_unmodified_Created = Created;
@@ -536,6 +542,9 @@ InterfaceOperation.ErrorMessage
 				{
 					switch (propertyName)
 					{
+						case "OperationName":
+							OperationName = value;
+							break;
 						case "Status":
 							Status = value;
 							break;
@@ -564,6 +573,9 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
+			[DataMember]
+			public string OperationName { get; set; }
+			private string _unmodified_OperationName;
 			[DataMember]
 			public string Status { get; set; }
 			private string _unmodified_Status;

@@ -346,7 +346,7 @@ div.WordSection1
 		</table>
 		</p><h2>Target Definition: Operation ( DataType )</h2>
 		<p>		<div class="MsoNormal" >
-		Operation objecto to be saved along with the data
+		Operation object to be saved along with the data
 		</div>
 		</p><h2>Target Definition: OperationDataLocation ( Operation )</h2>
 		<p>		<div class="MsoNormal" >
@@ -673,11 +673,15 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: OperationData ( OperationID )</h2>
+		</p><h2>Target Definition: Operation ( OperationID )</h2>
 		<p>		<div class="MsoNormal" >
 		Interface object to be executed
 		</div>
-		</p><h2>Method Call: ExecuteOperation ( OperationData )</h2>
+		</p><h2>Target Definition: OperationDataLocation ( Operation )</h2>
+		<p>		<div class="MsoNormal" >
+		Operation data object location to store
+		</div>
+		</p><h2>Method Call: ExecuteOperation ( Operation, OperationDataLocation )</h2>
 		<p>		<div class="MsoNormal" >
 		Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.
 		</div>

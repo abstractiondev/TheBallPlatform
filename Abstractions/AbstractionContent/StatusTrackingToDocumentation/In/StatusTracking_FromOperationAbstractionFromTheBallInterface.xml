@@ -103,7 +103,7 @@
     <StatusItem name="CreateInterfaceOperationForExecution_OperationData" displayName="VariableType: OperationData" description="Operation data as raw binary to be stored next to operation data">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateInterfaceOperationForExecution_Operation" displayName="TargetDefinitionType: Operation" description="Operation objecto to be saved along with the data">
+    <StatusItem name="CreateInterfaceOperationForExecution_Operation" displayName="TargetDefinitionType: Operation" description="Operation object to be saved along with the data">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateInterfaceOperationForExecution_OperationDataLocation" displayName="TargetDefinitionType: OperationDataLocation" description="Operation data object location to store">
@@ -118,7 +118,10 @@
     <StatusItem name="ExecuteInterfaceOperation_OperationID" displayName="VariableType: OperationID" description="Operation ID to execute">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ExecuteInterfaceOperation_OperationData" displayName="TargetDefinitionType: OperationData" description="Interface object to be executed">
+    <StatusItem name="ExecuteInterfaceOperation_Operation" displayName="TargetDefinitionType: Operation" description="Interface object to be executed">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteInterfaceOperation_OperationDataLocation" displayName="TargetDefinitionType: OperationDataLocation" description="Operation data object location to store">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ExecuteInterfaceOperation_ExecuteOperation" displayName="MethodExecuteType: ExecuteOperation" description="Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.">
@@ -368,7 +371,8 @@
     </Group>
     <Group name="ExecuteInterfaceOperation">
       <ItemRef itemName="ExecuteInterfaceOperation_OperationID" />
-      <ItemRef itemName="ExecuteInterfaceOperation_OperationData" />
+      <ItemRef itemName="ExecuteInterfaceOperation_Operation" />
+      <ItemRef itemName="ExecuteInterfaceOperation_OperationDataLocation" />
       <ItemRef itemName="ExecuteInterfaceOperation_ExecuteOperation" />
     </Group>
     <Group name="DeleteInterfaceOperation">

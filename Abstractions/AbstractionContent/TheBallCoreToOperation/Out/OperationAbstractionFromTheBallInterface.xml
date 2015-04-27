@@ -165,7 +165,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Operation objecto to be saved along with the data" state="implemented">
+          <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Operation object to be saved along with the data" state="implemented">
             <Parameter name="DataType" />
           </TargetDefinition>
           <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
@@ -192,11 +192,15 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="OperationData" dataType="InterfaceOperation" designDesc="Interface object to be executed" state="implemented">
+          <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Interface object to be executed" state="implemented">
             <Parameter name="OperationID" />
           </TargetDefinition>
+          <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
+            <Target name="Operation" />
+          </TargetDefinition>
           <MethodExecute name="ExecuteOperation" designDesc="Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info." state="implemented">
-            <Target name="OperationData" />
+            <Target name="Operation" />
+            <Target name="OperationDataLocation" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

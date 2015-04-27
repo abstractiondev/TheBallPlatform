@@ -12,6 +12,7 @@ using PersonalWeb.Diosphere;
 using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using TheBall.Interface;
 
 namespace TheBall
@@ -683,6 +684,11 @@ namespace TheBall
                 }
                 actualContainingObject = currPropValue;
             }
+        }
+
+        internal static void ExecuteHttpOperation(string operationName, HttpRequestSerializer.HttpRequestData reqData)
+        {
+            throw new NotImplementedException();
         }
     }
 }

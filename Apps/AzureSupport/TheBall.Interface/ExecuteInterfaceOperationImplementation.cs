@@ -1,15 +1,47 @@
+using System;
+using System.IO;
+using AzureSupport;
+
 namespace TheBall.Interface
 {
     public class ExecuteInterfaceOperationImplementation
     {
-        public static InterfaceOperation GetTarget_OperationData(string operationID)
+        public static InterfaceOperation GetTarget_Operation(string operationID)
         {
             return InterfaceOperation.RetrieveFromOwnerContent(InformationContext.CurrentOwner, operationID);
         }
 
-        public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operationData)
+        public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operation, string operationDataLocation)
         {
-            throw new System.NotImplementedException();
+            byte[] operationData = StorageSupport.CurrActiveContainer.DownloadBlobBinary(operationDataLocation);
+            HttpRequestSerializer.HttpRequestData reqData = null;
+            using (var memStream = new MemoryStream(operationData))
+            {
+                reqData = memStream.DeserializeProtobuf<HttpRequestSerializer.HttpRequestData>();
+            }
+            try
+            {
+                operation.Started = DateTime.UtcNow;
+                operation.StoreInformation();
+                ModifyInformationSupport.ExecuteHttpOperation(operation.OperationName, reqData);
+
+                throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
+                // Finished cleanup
+                operation.DeleteInformationObject();
+                StorageSupport.DeleteWithoutFiringSubscriptions(operationDataLocation);
+            }
+            catch (Exception ex)
+            {
+                operation.ErrorCode = ex.HResult.ToString();
+                operation.ErrorMessage = ex.Message;
+                operation.Finished = DateTime.UtcNow;
+                operation.StoreInformation();
+            }
+        }
+
+        public static string GetTarget_OperationDataLocation(InterfaceOperation operation)
+        {
+            return operation.RelativeLocation + ".data";
         }
     }
 }

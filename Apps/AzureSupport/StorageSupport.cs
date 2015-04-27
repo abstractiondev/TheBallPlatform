@@ -170,6 +170,23 @@ namespace TheBall
             }
         }
 
+        public static byte[] DownloadBlobBinary(this CloudBlobContainer container, string blobPath, bool returnNullIfMissing = false)
+        {
+            try
+            {
+                var blob = container.GetBlockBlobReference(blobPath);
+                return blob.DownloadByteArray();
+            }
+            catch (StorageClientException stEx)
+            {
+                if (returnNullIfMissing && stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                    return null;
+                throw;
+            }
+        }
+
+
+
         public static CloudBlockBlob UploadBlobText(this CloudBlobContainer container,
             string blobPath, string textContent)
         {

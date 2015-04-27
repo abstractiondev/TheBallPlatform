@@ -146,8 +146,9 @@ using System.IO;
 				public static void Execute(ExecuteInterfaceOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InterfaceOperation OperationData = ExecuteInterfaceOperationImplementation.GetTarget_OperationData(parameters.OperationID);	
-				ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperation(OperationData);		
+					InterfaceOperation Operation = ExecuteInterfaceOperationImplementation.GetTarget_Operation(parameters.OperationID);	
+				string OperationDataLocation = ExecuteInterfaceOperationImplementation.GetTarget_OperationDataLocation(Operation);	
+				ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperation(Operation, OperationDataLocation);		
 				}
 				}
 				public class DeleteInterfaceOperationParameters 

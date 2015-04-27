@@ -138,6 +138,7 @@ namespace INT {
 
 				private void CopyContentFrom(InterfaceOperation sourceObject)
 				{
+					OperationName = sourceObject.OperationName;
 					Status = sourceObject.Status;
 					OperationDataType = sourceObject.OperationDataType;
 					Created = sourceObject.Created;
@@ -151,6 +152,9 @@ namespace INT {
 
 
 
+			[DataMember]
+			public string OperationName { get; set; }
+			private string _unmodified_OperationName;
 			[DataMember]
 			public string Status { get; set; }
 			private string _unmodified_Status;

@@ -126,6 +126,7 @@ namespace SQLite.TheBall.Interface {
 		                    ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InterfaceOperationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
+		            existingObject.OperationName = serializedObject.OperationName;
 		            existingObject.Status = serializedObject.Status;
 		            existingObject.OperationDataType = serializedObject.OperationDataType;
 		            existingObject.Created = serializedObject.Created;
@@ -367,6 +368,7 @@ namespace SQLite.TheBall.Interface {
                         global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InterfaceOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OperationName = serializedObject.OperationName;
 		            objectToAdd.Status = serializedObject.Status;
 		            objectToAdd.OperationDataType = serializedObject.OperationDataType;
 		            objectToAdd.Created = serializedObject.Created;
@@ -760,6 +762,7 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
+[OperationName] TEXT NOT NULL, 
 [Status] TEXT NOT NULL, 
 [OperationDataType] TEXT NOT NULL, 
 [Created] TEXT NOT NULL, 
@@ -771,6 +774,11 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
 )";
         }
 
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string OperationName { get; set; }
+		// private string _unmodified_OperationName;
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -814,6 +822,8 @@ CREATE TABLE IF NOT EXISTS [InterfaceOperation](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(OperationName == null)
+				OperationName = string.Empty;
 			if(Status == null)
 				Status = string.Empty;
 			if(OperationDataType == null)
