@@ -209,7 +209,7 @@ namespace WebInterface
             // For now Wilma doesn't escape + characters in base64 on query string
             string tempFixedHashValue = hashValueStr.Replace("+", " ");
             if (tempFixedHashValue != h)
-                throw new SecurityException("Invalid hash value");
+                throw new SecurityException("Invalid hash value - phase 1");
 
             // Login verification done, then call to Wilma for user results
             RNGCryptoServiceProvider rngCrypto = new RNGCryptoServiceProvider();
@@ -260,7 +260,7 @@ namespace WebInterface
                 string verifyH2Txt = Convert.ToBase64String(verifyH2);
                 string hValueFromContent = content.Substring(hPosition + 2);
                 if(hValueFromContent != verifyHTxt)
-                    throw new SecurityException("Invalid hash value");
+                    throw new SecurityException("Invalid hash value - phase 2");
                 string wilmaLoginName = getWilmaContentValue(content, "login");
                 string secureProtocolPrefix = "https://";
                 if(query.StartsWith(secureProtocolPrefix) == false)
