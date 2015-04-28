@@ -14,16 +14,16 @@ namespace TheBall.Interface
         public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operation, string operationDataLocation)
         {
             byte[] operationData = StorageSupport.CurrActiveContainer.DownloadBlobBinary(operationDataLocation);
-            HttpRequestData reqData = null;
+            HttpOperationData reqData = null;
             using (var memStream = new MemoryStream(operationData))
             {
-                reqData = memStream.DeserializeProtobuf<HttpRequestData>();
+                reqData = memStream.DeserializeProtobuf<HttpOperationData>();
             }
             try
             {
                 operation.Started = DateTime.UtcNow;
                 operation.StoreInformation();
-                ModifyInformationSupport.ExecuteHttpOperation(operation.OperationName, reqData);
+                OperationSupport.ExecuteHttpOperation(operation.OperationName, reqData);
 
                 throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
                 // Finished cleanup

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
@@ -248,51 +249,76 @@ namespace WebInterface
                 // Do first post, and then get to the same URL
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
-                bool redirectAfter = HandleOwnerPostRequest(containerOwner, context, contentPath);
-                if(redirectAfter)
-                    context.Response.Redirect(context.Request.Url.ToString(), true);
+                if (contentPath.StartsWith("op/"))
+                {
+                    SetCurrentAccountFromLogin(context);
+                    HandleOwnerOperationRequest(containerOwner, context, contentPath.Substring(3));
+                }
+                else
+                {
+                    try // Piloting POST account identifying for InformationContext
+                    {
+                        SetCurrentAccountFromLogin(context);
+                    }
+                    catch // We don't want any errors for this piloting
+                    {
+
+                    }
+                    bool redirectAfter = HandleOwnerPostRequest(containerOwner, context, contentPath);
+                    if (redirectAfter)
+                        context.Response.Redirect(context.Request.Url.ToString(), true);
+                }
                 return;
             }
             HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
+        private void HandleOwnerOperationRequest(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
+        {
+            string operationName = operationRequestPath.Split('/')[0];
+            var operationAssembly = typeof (OperationSupport).Assembly;
+            Type operationType = operationAssembly.GetType(operationName);
+            if (operationType == null)
+            {
+                EndResponseWithStatusCode(context, 404);
+                return;
+            }
+            var request = context.Request;
+            var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
+            {
+                var file = request.Files[key];
+                return new Tuple<string, byte[]>(file.FileName, file.InputStream.ToBytes());
+            });
+            Dictionary<string, string> formValues = request.Form.AllKeys.ToDictionary(key => key, key => request.Form[key]);
+            Dictionary<string, string> queryParameters = request.Params.AllKeys.ToDictionary(key => key, key => request.Params[key]);
+            byte[] requestContent = request.InputStream.ToBytes();
+            HttpOperationData operationData = new HttpOperationData
+            {
+                ExecutorAccountID = InformationContext.CurrentAccount.AccountID,
+                FileCollection = fileCollection,
+                FormValues = formValues,
+                OwnerRoot = containerOwner.GetOwnerPrefix(),
+                OperationRequestPath = operationRequestPath,
+                QueryParameters = queryParameters,
+                RequestContent = requestContent
+            };
+            string operationID = OperationSupport.QueueHttpOperation(operationName, operationData);
+            var response = context.Response;
+            response.Write(String.Format("{ \"OperationID\": {0} }", operationID));
+            EndResponseWithStatusCode(context, 202);
+        }
+
+        private static void EndResponseWithStatusCode(HttpContext context, int statusCode)
+        {
+            var response = context.Response;
+            response.StatusCode = statusCode;
+            response.Flush();
+            response.SuppressContent = true;
+            context.ApplicationInstance.CompleteRequest();
+        }
+
         private bool HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            try // Piloting POST account identifying for InformationContext
-            {
-                var loginUrl = context.User.Identity.Name;
-                string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-                TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
-                if (loginRoot != null)
-                {
-                    var currAccount = loginRoot.Account;
-                    var accountContainer = AccountContainer.RetrieveFromOwnerContent(currAccount, "default");
-                    string accountName;
-                    string accountID = currAccount.ID;
-                    string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
-                    if (accountEmail == null)
-                        accountEmail = "";
-                    if (accountContainer != null && accountContainer.AccountModule != null &&
-                        accountContainer.AccountModule.Profile != null)
-                    {
-                        accountName = string.Format("{0} {1}",
-                                                    accountContainer.AccountModule.Profile.FirstName,
-                                                    accountContainer.AccountModule.Profile.LastName);
-                    }
-                    else
-                    {
-                        accountName = accountEmail;
-                    }
-                    accountName = accountName.Trim();
-                    InformationContext.Current.Account = new CoreAccountData(accountID,
-                                                                             accountName, accountEmail);
-                }
-            }
-            catch // We don't want any errors for this piloting
-            {
-
-            }
-
             validateThatOwnerPostComesFromSameReferrer(context);
             HttpRequest request = context.Request;
             var form = request.Unvalidated.Form;
@@ -429,6 +455,37 @@ namespace WebInterface
 
             return true;
 #endif
+        }
+
+        private static void SetCurrentAccountFromLogin(HttpContext context)
+        {
+            var loginUrl = context.User.Identity.Name;
+            string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
+            TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
+            if (loginRoot != null)
+            {
+                var currAccount = loginRoot.Account;
+                var accountContainer = AccountContainer.RetrieveFromOwnerContent(currAccount, "default");
+                string accountName;
+                string accountID = currAccount.ID;
+                string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
+                if (accountEmail == null)
+                    accountEmail = "";
+                if (accountContainer != null && accountContainer.AccountModule != null &&
+                    accountContainer.AccountModule.Profile != null)
+                {
+                    accountName = string.Format("{0} {1}",
+                        accountContainer.AccountModule.Profile.FirstName,
+                        accountContainer.AccountModule.Profile.LastName);
+                }
+                else
+                {
+                    accountName = accountEmail;
+                }
+                accountName = accountName.Trim();
+                InformationContext.Current.Account = new CoreAccountData(accountID,
+                    accountName, accountEmail);
+            }
         }
 
         private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)

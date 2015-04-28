@@ -17,14 +17,14 @@ namespace PlatformCoreTests
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
             PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
-            var serData = new HttpRequestData
+            var serData = new HttpOperationData
             {
                 ExecutorAccountID = "acctid",
-                ContentPath = "contentpath",
+                OperationRequestPath = "contentpath",
                 //FileCollection = (HttpFileCollection) httpFileCollection.Target,
-                FileCollection = new Dictionary<string, byte[]>()
+                FileCollection = new Dictionary<string, Tuple<string, byte[]>>()
                 {
-                    {"filetest", new byte[] { 3, 4, 5, 7} }
+                    {"filetest", new Tuple<string, byte[]>("testi1", new byte[] { 3, 4, 5, 7}) }
                 },
                 FormValues = new Dictionary<string, string>()
                 {
@@ -37,7 +37,7 @@ namespace PlatformCoreTests
             var outputStream = new MemoryStream();
             serData.ToStream(outputStream);
             var outputData = outputStream.ToArray();
-            Assert.AreEqual(93, outputData.Length);
+            Assert.AreEqual(103, outputData.Length);
         }
 
         [TestMethod]
@@ -45,14 +45,14 @@ namespace PlatformCoreTests
         {
             //PrivateType httpFileCollectionType = new PrivateType(typeof(HttpFileCollection));
             PrivateObject httpFileCollection = new PrivateObject(typeof(HttpFileCollection));
-            var serData = new HttpRequestData
+            var serData = new HttpOperationData
             {
                 ExecutorAccountID = "acctid",
-                ContentPath = "contentpath",
+                OperationRequestPath = "contentpath",
                 //FileCollection = (HttpFileCollection) httpFileCollection.Target,
-                FileCollection = new Dictionary<string, byte[]>()
+                FileCollection = new Dictionary<string, Tuple<string, byte[]>>()
                 {
-                    {"filetest", new byte[] { 3, 4, 5, 7} }
+                    {"filetest", new Tuple<string, byte[]>("testi1", new byte[] { 3, 4, 5, 7}) }
                 },
                 FormValues = new Dictionary<string, string>()
                 {
@@ -66,8 +66,9 @@ namespace PlatformCoreTests
             serData.ToStream(outputStream);
             var outputData = outputStream.ToArray();
             var inputStream = new MemoryStream(outputData);
-            var outputSer = inputStream.DeserializeProtobuf<HttpRequestData>();
+            var outputSer = inputStream.DeserializeProtobuf<HttpOperationData>();
             Assert.AreEqual(serData.OwnerRoot, outputSer.OwnerRoot);
+            Assert.AreEqual("testi1", outputSer.FileCollection["filetest"].Item1);
         }
 
     }

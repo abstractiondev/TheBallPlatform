@@ -116,15 +116,15 @@ namespace AzureSupport
 
         static HttpRequestSerializer()
         {
-            Serializer.PrepareSerializer<HttpRequestData>();
+            Serializer.PrepareSerializer<HttpOperationData>();
         }
 
-        public static void ToStream(this HttpRequestData package, Stream stream)
+        public static void ToStream(this HttpOperationData package, Stream stream)
         {
             Serializer.Serialize(stream, package);
         }
 
-        public static byte[] ToBytes(this HttpRequestData package)
+        public static byte[] ToBytes(this HttpOperationData package)
         {
             using (var memStream = new MemoryStream())
             {

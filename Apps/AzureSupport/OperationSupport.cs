@@ -3,11 +3,69 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using AzureSupport;
+using TheBall.Interface;
 
 namespace TheBall
 {
     public static class OperationSupport
     {
+        public static byte[] ToBytes(this Stream inputStream)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                inputStream.CopyTo(memStream);
+                return memStream.ToArray();
+            }
+        }
+
+        public static void ExecuteHttpOperation(string operationName, HttpOperationData reqData)
+        {
+            string parametersTypeName = operationName + "Parameters";
+            var operationType = Type.GetType(operationName);
+            var parametersType = Type.GetType(parametersTypeName);
+            if (operationType == null || parametersType == null)
+                throw new InvalidDataException("Operation fully qualified type or parameter type not found in executing assembly: " + operationName);
+
+            var paramObj = Activator.CreateInstance(parametersType);
+            var parameterFields = parametersType.GetFields(BindingFlags.Public);
+            var fieldValues = reqData.FormValues;
+            if (fieldValues != null)
+            {
+                foreach (var param in parameterFields)
+                {
+                    if (param.Name != "FileCollection")
+                    {
+                        string fieldValue;
+                        string fieldName = param.Name;
+                        if (fieldValues.TryGetValue(fieldName, out fieldValue))
+                        {
+                            param.SetValue(paramObj, fieldValue);
+                        }
+                    }
+                    else
+                    {
+                        param.SetValue(paramObj, reqData.FileCollection);
+                    }
+                }
+            }
+
+            operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
+                new object[] { paramObj });
+
+        }
+
+        public static string QueueHttpOperation(string operationName, HttpOperationData reqData)
+        {
+            var interfaceOperation =
+                CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
+                {
+                    DataType = "HTTPREQUEST",
+                    OperationData = reqData.ToBytes()
+                });
+            return interfaceOperation.OperationID;
+        }
+
+
         public static void ExecuteOperation(string operationTypeName, params Tuple<string, object>[] parameterValues)
         {
             string parameterTypeName = operationTypeName + "QueryParameters";
