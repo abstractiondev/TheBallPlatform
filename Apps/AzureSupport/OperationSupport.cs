@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using AaltoGlobalImpact.OIP;
 using AzureSupport;
+using TheBall.CORE;
 using TheBall.Interface;
 
 namespace TheBall
@@ -89,6 +91,53 @@ namespace TheBall
             if(method == null)
                 throw new InvalidDataException("Execute method not found in operation class: " + operationTypeName);
             method.Invoke(null, new object[] { parameters });
+        }
+
+        private static Dictionary<string, Type> LegacyMappedTypes = new Dictionary<string, Type>()
+        {
+            { "FetchURLAsGroupContent", typeof(FetchURLAsGroupContent)},
+            { "SetGroupAsDefaultForAccount", typeof(SetGroupAsDefaultForAccount)},
+            { "ClearDefaultGroupFromAccount", typeof(ClearDefaultGroupFromAccount)},
+            { "PublishToConnection", typeof(PublishCollaborationContentOverConnection)},
+            { "FinalizeConnectionAfterGroupAuthorization", typeof(FinalizeConnectionAfterGroupAuthorization)},
+            { "DeleteConnection", typeof(DeleteConnectionWithStructures)},
+            { "SynchronizeConnectionCategories", typeof(SynchronizeConnectionCategories)},
+            { "UpdateConnectionThisSideCategories", typeof(ExecuteConnectionProcess)},
+            { "InitiateIntegrationConnection", typeof(InitiateIntegrationConnection)},
+            { "DeleteCustomUI", typeof(DeleteCustomUI)},
+            { "CreateOrUpdateCustomUI", typeof(CreateOrUpdateCustomUI)},
+            { "AddCategories", typeof(CreateSpecifiedInformationObjectWithValues)},
+            { "PublishGroupToWww", typeof(PublishGroupToWww)},
+            { "UpdateUsageMonitoringItems", typeof(object)},
+            { "ProcessAllResourceUsagesToOwnerCollections", typeof(ProcessAllResourceUsagesToOwnerCollections)},
+            { "CreateInformationOutput", typeof(object)},
+            { "DeleteInformationOutput", typeof(DeleteInformationOutput)},
+            { "PushToInformationOutput", typeof(PushToInformationOutput)},
+            { "DeleteInformationInput", typeof(DeleteInformationInput)},
+            { "FetchInputInformation", typeof(FetchInputInformation)},
+            { "DeleteDeviceMembership", typeof(DeleteDeviceMembership)},
+            { "DeleteAuthenticatedAsActiveDevice", typeof(DeleteAuthenticatedAsActiveDevice)},
+            { "PerformNegotiationAndValidateAuthenticationAsActiveDevice", typeof(PerformNegotiationAndValidateAuthenticationAsActiveDevice)},
+            { "CreateAuthenticatedAsActiveDevice", typeof(CreateAuthenticatedAsActiveDevice)},
+            { "RemoveCollaboratorFromGroup", typeof(RemoveMemberFromGroup)},
+            { "InviteMemberToGroupAndPlatform", typeof(InviteNewMemberToPlatformAndGroup)},
+            { "InviteMemberToGroup", typeof(InviteMemberToGroup)},
+            { "CreateGroupWithTemplates", typeof(CreateGroupWithTemplates)},
+            { "InitiateAccountMergeFromEmail", typeof(InitiateAccountMergeFromEmail)},
+            { "UnregisterEmailAddress", typeof(UnregisterEmailAddress)},
+            { "BeginAccountEmailAddressRegistration", typeof(BeginAccountEmailAddressRegistration)},
+            { "CreateInformationInput", typeof(object)},
+            { "CreateSpecifiedInformationObjectWithValues", typeof(CreateSpecifiedInformationObjectWithValues)},
+            { "DeleteSpecifiedInformationObject", typeof(DeleteSpecifiedInformationObject)},
+            // { "", typeof(object)},
+        };
+
+        public static Type GetLegacyMappedType(string operationLegacyName)
+        {
+            Type legacyMappedType;
+            if(LegacyMappedTypes.TryGetValue(operationLegacyName, out legacyMappedType))
+                return legacyMappedType;
+            return null;
         }
     }
 }

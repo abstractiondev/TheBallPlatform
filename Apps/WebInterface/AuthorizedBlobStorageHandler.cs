@@ -278,6 +278,8 @@ namespace WebInterface
             string operationName = operationRequestPath.Split('/')[0];
             var operationAssembly = typeof (OperationSupport).Assembly;
             Type operationType = operationAssembly.GetType(operationName);
+            if(operationType == null)
+                operationType = OperationSupport.GetLegacyMappedType(operationName);
             if (operationType == null)
             {
                 EndResponseWithStatusCode(context, 404);
