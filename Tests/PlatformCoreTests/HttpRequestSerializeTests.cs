@@ -31,7 +31,7 @@ namespace PlatformCoreTests
                     {"formval1", "val1"},
                     {"formval2", "val2"},
                 },
-                OwnerRoot = "ownerroot",
+                OwnerRootLocation = "ownerroot",
                 RequestContent = new byte[] {1, 2, 3, 4, 7}
             };
             var outputStream = new MemoryStream();
@@ -59,7 +59,7 @@ namespace PlatformCoreTests
                     {"formval1", "val1"},
                     {"formval2", "val2"},
                 },
-                OwnerRoot = "ownerroot",
+                OwnerRootLocation = "ownerroot",
                 RequestContent = new byte[] { 1, 2, 3, 4, 7 }
             };
             var outputStream = new MemoryStream();
@@ -67,7 +67,7 @@ namespace PlatformCoreTests
             var outputData = outputStream.ToArray();
             var inputStream = new MemoryStream(outputData);
             var outputSer = inputStream.DeserializeProtobuf<HttpOperationData>();
-            Assert.AreEqual(serData.OwnerRoot, outputSer.OwnerRoot);
+            Assert.AreEqual(serData.OwnerRootLocation, outputSer.OwnerRootLocation);
             Assert.AreEqual("testi1", outputSer.FileCollection["filetest"].Item1);
         }
 

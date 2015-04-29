@@ -296,15 +296,16 @@ namespace WebInterface
             byte[] requestContent = request.InputStream.ToBytes();
             HttpOperationData operationData = new HttpOperationData
             {
+                OperationName = operationName,
                 ExecutorAccountID = InformationContext.CurrentAccount.AccountID,
                 FileCollection = fileCollection,
                 FormValues = formValues,
-                OwnerRoot = containerOwner.GetOwnerPrefix(),
+                OwnerRootLocation = containerOwner.GetOwnerPrefix(),
                 OperationRequestPath = operationRequestPath,
                 QueryParameters = queryParameters,
                 RequestContent = requestContent
             };
-            string operationID = OperationSupport.QueueHttpOperation(operationName, operationData);
+            string operationID = OperationSupport.QueueHttpOperation(operationData);
             var response = context.Response;
             response.Write(String.Format("{ \"OperationID\": {0} }", operationID));
             EndResponseWithStatusCode(context, 202);

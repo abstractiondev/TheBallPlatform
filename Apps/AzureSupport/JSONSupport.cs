@@ -51,6 +51,14 @@ namespace AzureSupport
             return jsonObject;
         }
 
+        public static T GetObjectFromData<T>(byte[] data)
+        {
+            using (var memStream = new MemoryStream(data))
+            {
+                return GetObjectFromStream<T>(memStream);
+            }
+        }
+
         public static T GetObjectFromStream<T>(Stream stream)
         {
             Stopwatch watch = new Stopwatch();

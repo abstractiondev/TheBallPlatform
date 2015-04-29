@@ -21,9 +21,10 @@ namespace TheBall.Interface
             }
             try
             {
+                operation.OperationName = reqData.OperationName;
                 operation.Started = DateTime.UtcNow;
                 operation.StoreInformation();
-                OperationSupport.ExecuteHttpOperation(operation.OperationName, reqData);
+                OperationSupport.ExecuteHttpOperation(reqData);
 
                 throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
                 // Finished cleanup

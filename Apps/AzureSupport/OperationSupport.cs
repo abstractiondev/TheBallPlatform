@@ -20,14 +20,24 @@ namespace TheBall
             }
         }
 
-        public static void ExecuteHttpOperation(string operationName, HttpOperationData reqData)
+        public static void ExecuteHttpOperation(HttpOperationData reqData)
         {
+            string operationName = reqData.OperationName;
             string parametersTypeName = operationName + "Parameters";
             var operationType = Type.GetType(operationName);
             var parametersType = Type.GetType(parametersTypeName);
             if (operationType == null || parametersType == null)
                 throw new InvalidDataException("Operation fully qualified type or parameter type not found in executing assembly: " + operationName);
 
+            var paramObj = PrepareParameters(reqData, parametersType);
+
+            operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
+                new object[] { paramObj });
+
+        }
+
+        private static object PrepareParameters(HttpOperationData reqData, Type parametersType)
+        {
             var paramObj = Activator.CreateInstance(parametersType);
             var parameterFields = parametersType.GetFields(BindingFlags.Public);
             var fieldValues = reqData.FormValues;
@@ -50,13 +60,10 @@ namespace TheBall
                     }
                 }
             }
-
-            operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
-                new object[] { paramObj });
-
+            return paramObj;
         }
 
-        public static string QueueHttpOperation(string operationName, HttpOperationData reqData)
+        public static string QueueHttpOperation(HttpOperationData reqData)
         {
             var interfaceOperation =
                 CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
@@ -93,50 +100,53 @@ namespace TheBall
             method.Invoke(null, new object[] { parameters });
         }
 
-        private static Dictionary<string, Type> LegacyMappedTypes = new Dictionary<string, Type>()
+        private delegate void ParameterManipulator(object paramObj, HttpOperationData operationData);
+
+        private static Dictionary<string, Tuple<Type, ParameterManipulator>> LegacyMappedTypes = 
+            new Dictionary<string, Tuple<Type, ParameterManipulator>>()
         {
-            { "FetchURLAsGroupContent", typeof(FetchURLAsGroupContent)},
-            { "SetGroupAsDefaultForAccount", typeof(SetGroupAsDefaultForAccount)},
-            { "ClearDefaultGroupFromAccount", typeof(ClearDefaultGroupFromAccount)},
-            { "PublishToConnection", typeof(PublishCollaborationContentOverConnection)},
-            { "FinalizeConnectionAfterGroupAuthorization", typeof(FinalizeConnectionAfterGroupAuthorization)},
-            { "DeleteConnection", typeof(DeleteConnectionWithStructures)},
-            { "SynchronizeConnectionCategories", typeof(SynchronizeConnectionCategories)},
-            { "UpdateConnectionThisSideCategories", typeof(ExecuteConnectionProcess)},
-            { "InitiateIntegrationConnection", typeof(InitiateIntegrationConnection)},
-            { "DeleteCustomUI", typeof(DeleteCustomUI)},
-            { "CreateOrUpdateCustomUI", typeof(CreateOrUpdateCustomUI)},
-            { "AddCategories", typeof(CreateSpecifiedInformationObjectWithValues)},
-            { "PublishGroupToWww", typeof(PublishGroupToWww)},
-            { "UpdateUsageMonitoringItems", typeof(object)},
-            { "ProcessAllResourceUsagesToOwnerCollections", typeof(ProcessAllResourceUsagesToOwnerCollections)},
-            { "CreateInformationOutput", typeof(object)},
-            { "DeleteInformationOutput", typeof(DeleteInformationOutput)},
-            { "PushToInformationOutput", typeof(PushToInformationOutput)},
-            { "DeleteInformationInput", typeof(DeleteInformationInput)},
-            { "FetchInputInformation", typeof(FetchInputInformation)},
-            { "DeleteDeviceMembership", typeof(DeleteDeviceMembership)},
-            { "DeleteAuthenticatedAsActiveDevice", typeof(DeleteAuthenticatedAsActiveDevice)},
-            { "PerformNegotiationAndValidateAuthenticationAsActiveDevice", typeof(PerformNegotiationAndValidateAuthenticationAsActiveDevice)},
-            { "CreateAuthenticatedAsActiveDevice", typeof(CreateAuthenticatedAsActiveDevice)},
-            { "RemoveCollaboratorFromGroup", typeof(RemoveMemberFromGroup)},
-            { "InviteMemberToGroupAndPlatform", typeof(InviteNewMemberToPlatformAndGroup)},
-            { "InviteMemberToGroup", typeof(InviteMemberToGroup)},
-            { "CreateGroupWithTemplates", typeof(CreateGroupWithTemplates)},
-            { "InitiateAccountMergeFromEmail", typeof(InitiateAccountMergeFromEmail)},
-            { "UnregisterEmailAddress", typeof(UnregisterEmailAddress)},
-            { "BeginAccountEmailAddressRegistration", typeof(BeginAccountEmailAddressRegistration)},
-            { "CreateInformationInput", typeof(object)},
-            { "CreateSpecifiedInformationObjectWithValues", typeof(CreateSpecifiedInformationObjectWithValues)},
-            { "DeleteSpecifiedInformationObject", typeof(DeleteSpecifiedInformationObject)},
+            { "FetchURLAsGroupContent", new Tuple<Type, ParameterManipulator>(typeof(FetchURLAsGroupContent), null) },
+            { "SetGroupAsDefaultForAccount", new Tuple<Type, ParameterManipulator>(typeof(SetGroupAsDefaultForAccount), null) },
+            { "ClearDefaultGroupFromAccount", new Tuple<Type, ParameterManipulator>(typeof(ClearDefaultGroupFromAccount), null) },
+            { "PublishToConnection", new Tuple<Type, ParameterManipulator>(typeof(PublishCollaborationContentOverConnection), null)},
+            { "FinalizeConnectionAfterGroupAuthorization", new Tuple<Type, ParameterManipulator>(typeof(FinalizeConnectionAfterGroupAuthorization), null)},
+            { "DeleteConnection", new Tuple<Type, ParameterManipulator>(typeof(DeleteConnectionWithStructures), null)},
+            { "SynchronizeConnectionCategories", new Tuple<Type, ParameterManipulator>(typeof(SynchronizeConnectionCategories), null)},
+            { "UpdateConnectionThisSideCategories", new Tuple<Type, ParameterManipulator>(typeof(ExecuteConnectionProcess), null)},
+            { "InitiateIntegrationConnection", new Tuple<Type, ParameterManipulator>(typeof(InitiateIntegrationConnection), null)},
+            { "DeleteCustomUI", new Tuple<Type, ParameterManipulator>(typeof(DeleteCustomUI), null)},
+            { "CreateOrUpdateCustomUI", new Tuple<Type, ParameterManipulator>(typeof(CreateOrUpdateCustomUI), null)},
+            { "AddCategories", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
+            { "PublishGroupToWww", new Tuple<Type, ParameterManipulator>(typeof(PublishGroupToWww), null)},
+            { "UpdateUsageMonitoringItems", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
+            { "ProcessAllResourceUsagesToOwnerCollections", new Tuple<Type, ParameterManipulator>(typeof(ProcessAllResourceUsagesToOwnerCollections), null)},
+            { "CreateInformationOutput", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
+            { "DeleteInformationOutput", new Tuple<Type, ParameterManipulator>(typeof(DeleteInformationOutput), null)},
+            { "PushToInformationOutput", new Tuple<Type, ParameterManipulator>(typeof(PushToInformationOutput), null)},
+            { "DeleteInformationInput", new Tuple<Type, ParameterManipulator>(typeof(DeleteInformationInput), null)},
+            { "FetchInputInformation", new Tuple<Type, ParameterManipulator>(typeof(FetchInputInformation), null)},
+            { "DeleteDeviceMembership", new Tuple<Type, ParameterManipulator>(typeof(DeleteDeviceMembership), null)},
+            { "DeleteAuthenticatedAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(DeleteAuthenticatedAsActiveDevice), null)},
+            { "PerformNegotiationAndValidateAuthenticationAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(PerformNegotiationAndValidateAuthenticationAsActiveDevice), null)},
+            { "CreateAuthenticatedAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(CreateAuthenticatedAsActiveDevice), null)},
+            { "RemoveCollaboratorFromGroup", new Tuple<Type, ParameterManipulator>(typeof(RemoveMemberFromGroup), null)},
+            { "InviteMemberToGroupAndPlatform", new Tuple<Type, ParameterManipulator>(typeof(InviteNewMemberToPlatformAndGroup), null)},
+            { "InviteMemberToGroup", new Tuple<Type, ParameterManipulator>(typeof(InviteMemberToGroup), null)},
+            { "CreateGroupWithTemplates", new Tuple<Type, ParameterManipulator>(typeof(CreateGroupWithTemplates), null)},
+            { "InitiateAccountMergeFromEmail", new Tuple<Type, ParameterManipulator>(typeof(InitiateAccountMergeFromEmail), null)},
+            { "UnregisterEmailAddress", new Tuple<Type, ParameterManipulator>(typeof(UnregisterEmailAddress), null)},
+            { "BeginAccountEmailAddressRegistration", new Tuple<Type, ParameterManipulator>(typeof(BeginAccountEmailAddressRegistration), null)},
+            { "CreateInformationInput", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
+            { "CreateSpecifiedInformationObjectWithValues", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
+            { "DeleteSpecifiedInformationObject", new Tuple<Type, ParameterManipulator>(typeof(DeleteSpecifiedInformationObject), null)},
             // { "", typeof(object)},
         };
 
         public static Type GetLegacyMappedType(string operationLegacyName)
         {
-            Type legacyMappedType;
+            Tuple<Type, ParameterManipulator> legacyMappedType;
             if(LegacyMappedTypes.TryGetValue(operationLegacyName, out legacyMappedType))
-                return legacyMappedType;
+                return legacyMappedType.Item1;
             return null;
         }
     }
