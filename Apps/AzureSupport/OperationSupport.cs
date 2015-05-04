@@ -65,8 +65,11 @@ namespace TheBall
 
             var paramObj = PrepareParameters(reqData, parametersType);
 
-            operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
-                new object[] { paramObj });
+            var executeMethod = operationType.GetMethod("Execute");
+            executeMethod.Invoke(null, new object[] { paramObj});
+
+            //operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
+            //    new object[] { paramObj });
 
         }
 

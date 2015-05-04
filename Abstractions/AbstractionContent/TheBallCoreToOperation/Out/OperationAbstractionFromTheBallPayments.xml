@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
-    <Operation name="ProcessStripeWebHook">
+    <Operation name="ProcessStripeWebhook">
       <OperationSpec>
         <Description>Process Stripe launched webhook</Description>
       </OperationSpec>
@@ -9,7 +9,17 @@
         <Parameter name="JSONObject" dataType="INT.StripeWebhookData" designDesc="Stripe webhook request data" state="implemented" />
       </Parameters>
       <Execution>
-        <SequentialExecution />
+        <SequentialExecution>
+          <TargetDefinition name="EventID" dataType="string" designDesc="Stripe event id" state="implemented">
+            <Parameter name="JSONObject" />
+          </TargetDefinition>
+          <TargetDefinition name="EventData" dataType="Stripe.StripeEvent" designDesc="Stripe event object" state="implemented">
+            <Target name="EventID" />
+          </TargetDefinition>
+          <MethodExecute name="ProcessStripeEvent" designDesc="Process Stripe event" state="implemented">
+            <Target name="EventData" />
+          </MethodExecute>
+        </SequentialExecution>
       </Execution>
     </Operation>
     <Operation name="ValidatePlanContainingGroups">

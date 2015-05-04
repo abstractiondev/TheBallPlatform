@@ -564,7 +564,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>
-		</p><h1>ProcessStripeWebHook (JSONObject)</h1>
+		</p><h1>ProcessStripeWebhook (JSONObject)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Process Stripe launched webhook
@@ -590,6 +590,18 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h2>Target Definition: EventID ( JSONObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe event id
+		</div>
+		</p><h2>Target Definition: EventData ( EventID )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe event object
+		</div>
+		</p><h2>Method Call: ProcessStripeEvent ( EventData )</h2>
+		<p>		<div class="MsoNormal" >
+		Process Stripe event
+		</div>
 		</p><h1>RevokePaidAccessFromGroup (GroupID, AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

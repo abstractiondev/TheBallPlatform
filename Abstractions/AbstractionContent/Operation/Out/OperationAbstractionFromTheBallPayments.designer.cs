@@ -7,20 +7,23 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Payments { 
-				public class ProcessStripeWebHookParameters 
+				public class ProcessStripeWebhookParameters 
 		{
 				public INT.StripeWebhookData JSONObject ;
 				}
 		
-		public class ProcessStripeWebHook 
+		public class ProcessStripeWebhook 
 		{
-				private static void PrepareParameters(ProcessStripeWebHookParameters parameters)
+				private static void PrepareParameters(ProcessStripeWebhookParameters parameters)
 		{
 					}
-				public static void Execute(ProcessStripeWebHookParameters parameters)
+				public static void Execute(ProcessStripeWebhookParameters parameters)
 		{
 						PrepareParameters(parameters);
-					}
+					string EventID = ProcessStripeWebhookImplementation.GetTarget_EventID(parameters.JSONObject);	
+				Stripe.StripeEvent EventData = ProcessStripeWebhookImplementation.GetTarget_EventData(EventID);	
+				ProcessStripeWebhookImplementation.ExecuteMethod_ProcessStripeEvent(EventData);		
+				}
 				}
 				public class ValidatePlanContainingGroupsParameters 
 		{

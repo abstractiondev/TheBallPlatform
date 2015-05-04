@@ -455,7 +455,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="ProcessStripeWebHook (JSONObject)" level="1">
+          <Header text="ProcessStripeWebhook (JSONObject)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -485,6 +485,27 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EventID ( JSONObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe event id</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EventData ( EventID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe event object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessStripeEvent ( EventData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process Stripe event</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>
