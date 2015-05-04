@@ -7,6 +7,21 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Payments { 
+				public class ProcessStripeWebHookParameters 
+		{
+				public INT.StripeWebhookData JSONObject ;
+				}
+		
+		public class ProcessStripeWebHook 
+		{
+				private static void PrepareParameters(ProcessStripeWebHookParameters parameters)
+		{
+					}
+				public static void Execute(ProcessStripeWebHookParameters parameters)
+		{
+						PrepareParameters(parameters);
+					}
+				}
 				public class ValidatePlanContainingGroupsParameters 
 		{
 				public string PlanName ;

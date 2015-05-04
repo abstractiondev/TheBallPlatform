@@ -31,6 +31,17 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class StripeWebhookData
+			{
+				[DataMember]
+				public string id { get; set; }
+				[DataMember]
+				public bool livemode { get; set; }
+				[DataMember]
+				public string type { get; set; }
+			}
+
+			[DataContract]
 			public partial class PaymentToken
 			{
 				[DataMember]

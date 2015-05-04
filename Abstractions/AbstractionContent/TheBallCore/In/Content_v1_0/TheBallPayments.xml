@@ -3,6 +3,16 @@
   <InstanceOfTheBall semanticDomainName="TheBall.Payments">
     <DigitalInterface>
       <InterfaceModel>
+        <InterfaceObject name="StripeWebhookData" designDesc="Stripe webhook data">
+          <InterfaceItems>
+            <InterfaceItem name="id" logicalDataType="Text_Short"/>
+            <InterfaceItem name="livemode" logicalDataType="TrueOrFalse_Boolean"/>
+            <InterfaceItem name="type" logicalDataType="Text_Short"/>
+            <!--
+            <InterfaceItem name="object" logicalDataType="Text_Short"/>
+            -->
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="PaymentToken" designDesc="Payment authorized token">
           <InterfaceItems>
             <InterfaceItem name="id" logicalDataType="Text_Short"/>
@@ -88,6 +98,19 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="ProcessStripeWebHook">
+        <OperationSpec>
+          <Description>Process Stripe launched webhook</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="JSONObject" dataType="INT.StripeWebhookData" designDesc="Stripe webhook request data" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ValidatePlanContainingGroups">
         <OperationSpec>
           <Description>Validate that plan contains groups</Description>

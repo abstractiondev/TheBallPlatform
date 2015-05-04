@@ -564,6 +564,32 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>
+		</p><h1>ProcessStripeWebHook (JSONObject)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Process Stripe launched webhook
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		JSONObject
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.StripeWebhookData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Stripe webhook request data
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>RevokePaidAccessFromGroup (GroupID, AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

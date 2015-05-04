@@ -14,6 +14,26 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
+			public partial class StripeWebhookData 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string id;
+
+			[DataMember]
+			public bool livemode;
+
+			[DataMember]
+			public string type;
+
+			
+			}
+			[DataContract]
 			public partial class PaymentToken 
 			{
 				[DataMember]

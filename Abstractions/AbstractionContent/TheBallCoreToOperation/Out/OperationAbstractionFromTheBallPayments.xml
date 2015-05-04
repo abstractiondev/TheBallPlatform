@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
+    <Operation name="ProcessStripeWebHook">
+      <OperationSpec>
+        <Description>Process Stripe launched webhook</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="JSONObject" dataType="INT.StripeWebhookData" designDesc="Stripe webhook request data" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution />
+      </Execution>
+    </Operation>
     <Operation name="ValidatePlanContainingGroups">
       <OperationSpec>
         <Description>Validate that plan contains groups</Description>

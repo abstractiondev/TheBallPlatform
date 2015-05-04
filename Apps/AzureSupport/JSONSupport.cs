@@ -59,6 +59,20 @@ namespace AzureSupport
             }
         }
 
+        public static object GetObjectFromData(byte[] data, Type objectType)
+        {
+            using (var memStream = new MemoryStream(data))
+            {
+                return GetObjectFromStream(memStream, objectType);
+            }
+        }
+
+        public static object GetObjectFromStream(Stream stream, Type objectType)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectType);
+            return serializer.ReadObject(stream);
+        }
+
         public static T GetObjectFromStream<T>(Stream stream)
         {
             Stopwatch watch = new Stopwatch();

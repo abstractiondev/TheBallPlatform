@@ -70,6 +70,7 @@ namespace WebInterface
             {
                 OperationID = operationResult.OperationID
             });
+            context.Response.StatusCode = 200;
         }
     }
 

@@ -73,7 +73,7 @@ namespace TheBall
         private static object PrepareParameters(HttpOperationData reqData, Type parametersType)
         {
             var paramObj = Activator.CreateInstance(parametersType);
-            var parameterFields = parametersType.GetFields(BindingFlags.Public);
+            var parameterFields = parametersType.GetFields();
             var fieldValues = reqData.FormValues;
             if (fieldValues != null)
             {
@@ -92,6 +92,19 @@ namespace TheBall
                     {
                         param.SetValue(paramObj, reqData.FileCollection);
                     }
+                }
+            }
+            if (reqData.RequestContent.Length > 0)
+            {
+                string parameterTypeNS = parametersType.Namespace;
+                string interfaceTypeNS = parameterTypeNS + ".INT";
+                var firstInterfaceObjectParam =
+                    parameterFields.FirstOrDefault(field => field.FieldType.Namespace == interfaceTypeNS);
+                if (firstInterfaceObjectParam != null)
+                {
+                    object paramValue = JSONSupport.GetObjectFromData(reqData.RequestContent,
+                        firstInterfaceObjectParam.FieldType);
+                    firstInterfaceObjectParam.SetValue(paramObj, paramValue);
                 }
             }
             return paramObj;

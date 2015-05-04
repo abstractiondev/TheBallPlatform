@@ -12,6 +12,17 @@ using System.Runtime.Serialization;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class StripeWebhookData
+			{
+				[DataMember]
+				public string id { get; set; }
+				[DataMember]
+				public bool livemode { get; set; }
+				[DataMember]
+				public string type { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
 			public partial class PaymentToken
 			{
 				[DataMember]
