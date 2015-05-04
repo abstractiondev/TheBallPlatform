@@ -26,7 +26,7 @@ namespace TheBall.Interface
                 operation.StoreInformation();
                 OperationSupport.ExecuteHttpOperation(reqData);
 
-                throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
+                //throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
                 // Finished cleanup
                 operation.DeleteInformationObject();
                 StorageSupport.DeleteWithoutFiringSubscriptions(operationDataLocation);

@@ -45,6 +45,7 @@ namespace TheBall
         public static readonly string AdminGroupID;
         public static readonly string PaymentsGroupID;
         public static Dictionary<string, string> ContainerRedirects = new Dictionary<string, string>();
+        public static Dictionary<string, Tuple<string, string>> WebhookHandlers = new Dictionary<string, Tuple<string, string>>();
         public static readonly bool IsDeveloperMachine;
         public static readonly bool UseSQLiteMasterDatabase;
         public static readonly string[] DynamicDataCRUDDomains;
@@ -96,6 +97,21 @@ namespace TheBall
                     string redirectFrom = redirectComponents[0];
                     string redirectTo = redirectComponents[1];
                     ContainerRedirects.Add(redirectFrom, redirectTo);
+                }
+            }
+            string webhookHandlersValue = CloudConfigurationManager.GetSetting("WebhookHandlers");
+            if (String.IsNullOrEmpty(webhookHandlersValue) == false)
+            {
+                string[] handlerEntries = webhookHandlersValue.Split(',');
+                foreach (string handlerEntry in handlerEntries)
+                {
+                    var handlerComponents = handlerEntry.Split(':');
+                    if (handlerComponents.Length != 3)
+                        continue;
+                    string handlerUrlName = handlerComponents[0];
+                    string handlerOperationFullName = handlerComponents[1];
+                    string handlerOwnerGroup = handlerComponents[2];
+                    WebhookHandlers.Add(handlerUrlName, new Tuple<string, string>(handlerOperationFullName, handlerOwnerGroup));
                 }
             }
 

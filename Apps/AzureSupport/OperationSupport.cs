@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using TheBall.CORE;
@@ -19,6 +21,38 @@ namespace TheBall
                 return memStream.ToArray();
             }
         }
+
+        public static T ParseJSON<T>(this Stream inputStream)
+        {
+            return JSONSupport.GetObjectFromStream<T>(inputStream);
+        }
+
+        public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
+        {
+            var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
+            {
+                var file = request.Files[key];
+                return new Tuple<string, byte[]>(file.FileName, file.InputStream.ToBytes());
+            });
+            Dictionary<string, string> formValues = request.Form.AllKeys.ToDictionary(key => key, key => request.Form[key]);
+            Dictionary<string, string> queryParameters = request.Params.AllKeys.ToDictionary(key => key,
+                key => request.Params[key]);
+            byte[] requestContent = request.InputStream.ToBytes();
+            HttpOperationData operationData = new HttpOperationData
+            {
+                OperationName = operationName,
+                ExecutorAccountID = executorAccountID,
+                FileCollection = fileCollection,
+                FormValues = formValues,
+                OwnerRootLocation = ownerPrefix,
+                OperationRequestPath = operationRequestPath,
+                QueryParameters = queryParameters,
+                RequestContent = requestContent
+            };
+            return operationData;
+        }
+
+
 
         public static void ExecuteHttpOperation(HttpOperationData reqData)
         {
@@ -149,5 +183,7 @@ namespace TheBall
                 return legacyMappedType.Item1;
             return null;
         }
+
+        public const string HttpOperationDataType = "HTTPREQUEST";
     }
 }

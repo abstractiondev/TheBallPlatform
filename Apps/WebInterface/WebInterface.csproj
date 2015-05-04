@@ -14,7 +14,7 @@
     <RootNamespace>WebInterface</RootNamespace>
     <AssemblyName>WebInterface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -459,6 +459,7 @@
     <Compile Include="TheBallCertLogin.aspx.designer.cs">
       <DependentUpon>TheBallCertLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GenericWebhookHandler.cs" />
     <Compile Include="WebSocketHandler.cs" />
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -528,7 +529,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>50430</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44300/</IISUrl>
+          <IISUrl>https://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

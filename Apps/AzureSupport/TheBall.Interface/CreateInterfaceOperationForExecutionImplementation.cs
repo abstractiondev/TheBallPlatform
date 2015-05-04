@@ -1,4 +1,5 @@
 using System;
+using Lucene.Net.Support;
 
 namespace TheBall.Interface
 {
@@ -6,7 +7,7 @@ namespace TheBall.Interface
     {
         public static InterfaceOperation GetTarget_Operation(string dataType)
         {
-            if(dataType != "HTTPREQUEST")
+            if(dataType != OperationSupport.HttpOperationDataType)
                 throw new ArgumentException("OperationDataType not supported: " + dataType, "dataType");
 
             var operation = new InterfaceOperation();
@@ -17,7 +18,7 @@ namespace TheBall.Interface
 
         public static void ExecuteMethod_StoreOperationWithData(byte[] operationData, InterfaceOperation operation, string operationDataLocation)
         {
-            if(operation.OperationDataType != "HTTPREQUEST")
+            if(operation.OperationDataType != OperationSupport.HttpOperationDataType)
                 throw new NotSupportedException("OperationDataType not supported: " + operation.OperationDataType);
             operation.StoreInformation();
             StorageSupport.CurrActiveContainer.UploadBlobBinary(operationDataLocation, operationData);

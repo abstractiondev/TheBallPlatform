@@ -286,25 +286,7 @@ namespace WebInterface
                 return;
             }
             var request = context.Request;
-            var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
-            {
-                var file = request.Files[key];
-                return new Tuple<string, byte[]>(file.FileName, file.InputStream.ToBytes());
-            });
-            Dictionary<string, string> formValues = request.Form.AllKeys.ToDictionary(key => key, key => request.Form[key]);
-            Dictionary<string, string> queryParameters = request.Params.AllKeys.ToDictionary(key => key, key => request.Params[key]);
-            byte[] requestContent = request.InputStream.ToBytes();
-            HttpOperationData operationData = new HttpOperationData
-            {
-                OperationName = operationName,
-                ExecutorAccountID = InformationContext.CurrentAccount.AccountID,
-                FileCollection = fileCollection,
-                FormValues = formValues,
-                OwnerRootLocation = containerOwner.GetOwnerPrefix(),
-                OperationRequestPath = operationRequestPath,
-                QueryParameters = queryParameters,
-                RequestContent = requestContent
-            };
+            var operationData = OperationSupport.GetHttpOperationDataFromRequest(request, InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName, operationRequestPath);
             string operationID = OperationSupport.QueueHttpOperation(operationData);
             var response = context.Response;
             response.Write(String.Format("{ \"OperationID\": {0} }", operationID));
