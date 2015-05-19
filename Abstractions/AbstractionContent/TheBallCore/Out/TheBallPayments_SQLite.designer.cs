@@ -86,6 +86,7 @@ namespace SQLite.TheBall.Payments {
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
 				tableCreationCommands.Add(GroupSubscriptionPlan.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionPlanStatus.GetCreateTableSQL());
 				tableCreationCommands.Add(CustomerAccount.GetCreateTableSQL());
 				tableCreationCommands.Add(GroupSubscriptionPlanCollection.GetCreateTableSQL());
 				tableCreationCommands.Add(CustomerAccountCollection.GetCreateTableSQL());
@@ -125,6 +126,28 @@ namespace SQLite.TheBall.Payments {
 					
 		            return;
 		        } 
+		        if (updateData.ObjectType == "SubscriptionPlanStatus")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = SubscriptionPlanStatusTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    if (serializedObject.SubscriptionPlan != null)
+                    {
+                            var relationObject = new SubscriptionPlanStatusSubscriptionPlan
+                            {
+                                SubscriptionPlanStatusID = existingObject.ID,
+                                GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
+                            };
+                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+							existingObject.SubscriptionPlan = new EntityRef<SubscriptionPlanStatusSubscriptionPlan>(relationObject);
+                    }
+
+		            existingObject.ValidUntil = serializedObject.ValidUntil;
+		            return;
+		        } 
 		        if (updateData.ObjectType == "CustomerAccount")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -145,7 +168,7 @@ namespace SQLite.TheBall.Payments {
                                 var relationObject = new CustomerAccountActivePlans
                                 {
                                     CustomerAccountID = existingObject.ID,
-                                    GroupSubscriptionPlanID = item
+                                    SubscriptionPlanStatusID = item
                                 };
                                 CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
                                 existingObject.ActivePlans.Add(relationObject);
@@ -176,6 +199,28 @@ namespace SQLite.TheBall.Payments {
 					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
                     return;
                 }
+                if (insertData.ObjectType == "SubscriptionPlanStatus")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new SubscriptionPlanStatus {ID = insertData.ObjectID, ETag = insertData.ETag};
+                    if (serializedObject.SubscriptionPlan != null)
+                    {
+                            var relationObject = new SubscriptionPlanStatusSubscriptionPlan
+                            {
+                                SubscriptionPlanStatusID = objectToAdd.ID,
+                                GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
+                            };
+                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            objectToAdd.SubscriptionPlan = new EntityRef<SubscriptionPlanStatusSubscriptionPlan>(relationObject);
+                    }
+
+		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
+					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
                 if (insertData.ObjectType == "CustomerAccount")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -194,7 +239,7 @@ namespace SQLite.TheBall.Payments {
                                 var relationObject = new CustomerAccountActivePlans
                                 {
                                     CustomerAccountID = objectToAdd.ID,
-                                    GroupSubscriptionPlanID = item
+                                    SubscriptionPlanStatusID = item
                                 };
                                 CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
                                 objectToAdd.ActivePlans.Add(relationObject);
@@ -217,6 +262,13 @@ namespace SQLite.TheBall.Payments {
 		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
                     GroupSubscriptionPlanTable.Attach(objectToDelete);
                     GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SubscriptionPlanStatus")
+		        {
+		            var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ID};
+                    SubscriptionPlanStatusTable.Attach(objectToDelete);
+                    SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
 		            return;
 		        }
 		        if (deleteData.ObjectType == "CustomerAccount")
@@ -248,6 +300,17 @@ namespace SQLite.TheBall.Payments {
 					return this.GetTable<GroupSubscriptionPlan>();
 				}
 			}
+			public Table<SubscriptionPlanStatus> SubscriptionPlanStatusTable {
+				get {
+					return this.GetTable<SubscriptionPlanStatus>();
+				}
+			}
+			public Table<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlanStatusSubscriptionPlanTable {
+				get {
+					return this.GetTable<SubscriptionPlanStatusSubscriptionPlan>();
+				}
+			}
+
 			public Table<CustomerAccount> CustomerAccountTable {
 				get {
 					return this.GetTable<CustomerAccount>();
@@ -376,6 +439,55 @@ CREATE TABLE IF NOT EXISTS [GroupSubscriptionPlan](
                 GroupIDsData = JsonConvert.SerializeObject(dataToStore);
             }
 
+		}
+	}
+    [Table(Name = "SubscriptionPlanStatus")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionPlanStatus: {ID}")]
+	public class SubscriptionPlanStatus : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SubscriptionPlanStatus() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[SubscriptionPlan] TEXT NOT NULL, 
+[ValidUntil] TEXT NOT NULL
+)";
+        }
+
+        [Association(ThisKey = "ID", OtherKey = "SubscriptionPlanStatusID")]
+        public EntityRef<SubscriptionPlanStatusSubscriptionPlan> SubscriptionPlan { get; set; }
+
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public DateTime ValidUntil { get; set; }
+		// private DateTime _unmodified_ValidUntil;
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
 		}
 	}
     [Table(Name = "CustomerAccount")]
@@ -529,9 +641,37 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
+    [Table(Name = "SubscriptionPlanStatusSubscriptionPlan")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionPlanStatusSubscriptionPlan: {SubscriptionPlanStatusID} - {GroupSubscriptionPlanID}")]
+	public class SubscriptionPlanStatusSubscriptionPlan // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatusSubscriptionPlan](
+[SubscriptionPlanStatusID] TEXT NOT NULL, 
+[GroupSubscriptionPlanID] TEXT NOT NULL,
+PRIMARY KEY (SubscriptionPlanStatusID, GroupSubscriptionPlanID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true)]
+        public string SubscriptionPlanStatusID { get; set; }
+        [Column(IsPrimaryKey = true)]
+        public string GroupSubscriptionPlanID { get; set; }
+
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID", IsUnique = true)]
+        public EntityRef<SubscriptionPlanStatus> SubscriptionPlanStatus { get; set; }
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID")]
+        public EntityRef<GroupSubscriptionPlan> GroupSubscriptionPlan { get; set; } 
+    }
+
     [Table(Name = "CustomerAccountActivePlans")]
 	[ScaffoldTable(true)]
-	[DebuggerDisplay("CustomerAccountActivePlans: {CustomerAccountID} - {GroupSubscriptionPlanID}")]
+	[DebuggerDisplay("CustomerAccountActivePlans: {CustomerAccountID} - {SubscriptionPlanStatusID}")]
 	public class CustomerAccountActivePlans // : ITheBallDataContextStorable
 	{
         public static string GetCreateTableSQL()
@@ -540,8 +680,8 @@ CREATE TABLE IF NOT EXISTS [CustomerAccountCollection](
                 @"
 CREATE TABLE IF NOT EXISTS [CustomerAccountActivePlans](
 [CustomerAccountID] TEXT NOT NULL, 
-[GroupSubscriptionPlanID] TEXT NOT NULL,
-PRIMARY KEY (CustomerAccountID, GroupSubscriptionPlanID)
+[SubscriptionPlanStatusID] TEXT NOT NULL,
+PRIMARY KEY (CustomerAccountID, SubscriptionPlanStatusID)
 )";
         }
 
@@ -549,12 +689,12 @@ PRIMARY KEY (CustomerAccountID, GroupSubscriptionPlanID)
         [Column(IsPrimaryKey = true)]
         public string CustomerAccountID { get; set; }
         [Column(IsPrimaryKey = true)]
-        public string GroupSubscriptionPlanID { get; set; }
+        public string SubscriptionPlanStatusID { get; set; }
 
         [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "CustomerAccountID", OtherKey = "ID", IsUnique = false)]
         public EntityRef<CustomerAccount> CustomerAccount { get; set; }
-        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupSubscriptionPlanID", OtherKey = "ID")]
-        public EntityRef<GroupSubscriptionPlan> GroupSubscriptionPlan { get; set; } 
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "SubscriptionPlanStatusID", OtherKey = "ID")]
+        public EntityRef<SubscriptionPlanStatus> SubscriptionPlanStatus { get; set; } 
     }
 
  } 

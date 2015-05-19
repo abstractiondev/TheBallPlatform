@@ -54,37 +54,12 @@
           <InformationItem name="GroupIDs" logicalDataType="Text_Short" isCollection="true"/>
         </InformationItems>
       </InformationObject>
-      <!--
-      <InformationObject name="AccountPaymentInfoCollection" designDesc="Collection of account payment infos">
-        <CollectionFor collectionType="Master" contentInformationObjectName="AccountPaymentInfo"/>
-      </InformationObject>
-      <InformationObject name="AccountPaymentInfo" designDesc="Account Payment Info" provideCreateMethod="false">
+      <InformationObject name="SubscriptionPlanStatus" designDesc="Subscription plan status object" provideCreateMethod="false">
         <InformationItems>
-          <InformationItem name="AccountID" logicalDataType="Text_Short"/>
-          <InformationItem name="PaymentItems" logicalDataType="InformationObject" informationObjectName="PaymentItem" isCollection="true"/>
+          <InformationItem name="SubscriptionPlan" logicalDataType="ObjectLink" objectLinkTargetType="GroupSubscriptionPlan"/>
+          <InformationItem name="ValidUntil" logicalDataType="Time_DateTime"/>
         </InformationItems>
       </InformationObject>
-      <InformationObject name="GroupOffering" designDesc="Group offering item">
-        <InformationItems>
-          <InformationItem name="GroupID" logicalDataType="Text_Short"/>
-          <InformationItem name="Description" logicalDataType="Text_Long"/>
-        </InformationItems>
-      </InformationObject>
-      <InformationObject name="PaymentItem" designDesc="Generic purchaseable item">
-        <InformationItems>
-          <InformationItem name="TargetItemDomain" logicalDataType="Text_Short"/>
-          <InformationItem name="TargetItemName" logicalDataType="Text_Short"/>
-          <InformationItem name="TargetItemID" logicalDataType="Text_Short"/>
-          <InformationItem name="ItemType" logicalDataType="Text_Short"/>
-          <InformationItem name="ItemTypeID" logicalDataType="Text_Short"/>
-          <InformationItem name="Price" logicalDataType="Text_Short"/>
-          <InformationItem name="Currency" logicalDataType="Text_Short"/>
-          <InformationItem name="BillingInterval" logicalDataType="Text_Short"/>
-          <InformationItem name="PaidDateTime" logicalDataType="Time_DateTime"/>
-          <InformationItem name="NextDueDate" logicalDataType="Time_Date"/>
-        </InformationItems>
-      </InformationObject>
-      -->
       <InformationObject name="CustomerAccountCollection" designDesc="Collection of customer accounts">
         <CollectionFor collectionType="Master" contentInformationObjectName="CustomerAccount"/>
       </InformationObject>
@@ -93,7 +68,7 @@
           <InformationItem name="StripeID" logicalDataType="Text_Short"/>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Short"/>
-          <InformationItem name="ActivePlans" logicalDataType="ObjectLink" objectLinkTargetType="GroupSubscriptionPlan" isCollection="true"/>
+          <InformationItem name="ActivePlans" logicalDataType="ObjectLink" objectLinkTargetType="SubscriptionPlanStatus" isCollection="true"/>
         </InformationItems>
       </InformationObject>
     </InformationModel>

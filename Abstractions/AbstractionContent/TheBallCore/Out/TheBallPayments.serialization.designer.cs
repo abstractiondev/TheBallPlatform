@@ -260,6 +260,88 @@ namespace INT {
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
 			[Serializable]
+			public partial class SubscriptionPlanStatus 
+			{
+
+				public SubscriptionPlanStatus()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.Payments";
+				    this.Name = "SubscriptionPlanStatus";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionPlanStatus));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionPlanStatus DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionPlanStatus));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionPlanStatus) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember]
+                public string Name { get; set; }
+
+                [DataMember]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+
+				private void CopyContentFrom(SubscriptionPlanStatus sourceObject)
+				{
+					SubscriptionPlan = sourceObject.SubscriptionPlan;
+					ValidUntil = sourceObject.ValidUntil;
+				}
+				
+
+
+
+			[DataMember]
+			public string SubscriptionPlan { get; set; }
+			private string _unmodified_SubscriptionPlan;
+			[DataMember]
+			public DateTime ValidUntil { get; set; }
+			private DateTime _unmodified_ValidUntil;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+			[Serializable]
 			public partial class CustomerAccountCollection 
 			{
 
