@@ -290,7 +290,6 @@
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="OwnerSubscriptionItem.cs" />
     <Compile Include="Partials\AccountContainer.cs" />
-    <Compile Include="Partials\ActivitySummaryContainer.cs" />
     <Compile Include="Partials\AddressAndLocation.cs" />
     <Compile Include="Partials\BlogContainer.cs" />
     <Compile Include="Partials\Category.cs" />
