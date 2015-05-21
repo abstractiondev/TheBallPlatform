@@ -201,7 +201,7 @@ namespace TheBall
 
         protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
 
-        private string initializedContainerName = null;
+        public string InitializedContainerName { get; private set; }
         public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)
         {
             if(containerName == null)
@@ -210,13 +210,13 @@ namespace TheBall
                 throw new ArgumentException("Invalid container name", "containerName");
             if (reinitialize)
                 UninitializeCloudStorageAccess();
-            if(initializedContainerName != null)
+            if(InitializedContainerName != null)
             {
-                if (containerName == initializedContainerName)
+                if (containerName == InitializedContainerName)
                     return;
-                if(containerName != initializedContainerName)
+                if(containerName != InitializedContainerName)
                     throw new NotSupportedException("InitializeCloudStorageAccess already initialized with container name: " 
-                        + initializedContainerName + " (tried to initialize with: "
+                        + InitializedContainerName + " (tried to initialize with: "
                         + containerName + ")");
             }
             CloudBlobClient blobClient = StorageSupport.CurrStorageAccount.CreateCloudBlobClient();
@@ -226,14 +226,14 @@ namespace TheBall
             var activeContainer = blobClient.GetContainerReference(containerName.ToLower());
             activeContainer.CreateIfNotExist();
             CurrActiveContainer = activeContainer;
-            initializedContainerName = containerName;
+            InitializedContainerName = containerName;
         }
 
         public void UninitializeCloudStorageAccess()
         {
             CurrBlobClient = null;
             CurrActiveContainer = null;
-            initializedContainerName = null;
+            InitializedContainerName = null;
         }
 
         public void ReinitializeCloudStorageAccess(string containerName)
