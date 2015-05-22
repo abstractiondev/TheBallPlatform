@@ -15,6 +15,12 @@ namespace WebInterface
 {
     public class AnonymousBlobStorageHandler : IHttpHandler
     {
+        private static string CloudStorageRootUrl
+        {
+            get { return String.Format("http://{0}.blob.core.windows.net/", InstanceConfiguration.AzureAccountName); }
+
+        }
+
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
         /// web and register it with IIS before being able to use it. For more information
@@ -38,7 +44,7 @@ namespace WebInterface
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
-            CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
+            CloudBlobClient publicClient = new CloudBlobClient(CloudStorageRootUrl);
             string blobPath = GetBlobPath(request);
             if (blobPath.Contains("/MediaContent/"))
             {
@@ -124,7 +130,7 @@ namespace WebInterface
             try
             {
                 // "/2013-03-20_08-27-28";
-                CloudBlobClient publicClient = new CloudBlobClient("http://caloom.blob.core.windows.net/");
+                CloudBlobClient publicClient = new CloudBlobClient(CloudStorageRootUrl);
                 string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
                 var currBlob = publicClient.GetBlockBlobReference(currServingPath);
                 string currServingData = currBlob.DownloadText();
@@ -139,22 +145,6 @@ namespace WebInterface
                 
             }
             return containerName + currServingFolder + request.Path;
-        }
-
-        private static string GetAbsoluteLoginUrl(string hostName)
-        {
-            switch(hostName)
-            {
-                case "oip.msunit.citrus.fi":
-                    return "http://oip.msunit.citrus.fi/TheBallLogin.aspx";
-                case "demopublicoip.aaltoglobalimpact.org":
-                    return "http://demooip.aaltoglobalimpact.org/TheBallLogin.aspx";
-                case "localhost":
-                case "localdev":
-                    return null;
-                default:
-                    return null;
-            }
         }
 
         private static void HandlePublicBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
