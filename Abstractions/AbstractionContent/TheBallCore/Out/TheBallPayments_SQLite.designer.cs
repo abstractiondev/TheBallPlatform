@@ -472,7 +472,6 @@ CREATE TABLE IF NOT EXISTS [SubscriptionPlanStatus](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[SubscriptionPlan] TEXT NOT NULL, 
 [ValidUntil] TEXT NOT NULL
 )";
         }
@@ -523,8 +522,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 , 
 [StripeID] TEXT NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
-[Description] TEXT NOT NULL, 
-[ActivePlans] TEXT NOT NULL
+[Description] TEXT NOT NULL
 )";
         }
 
@@ -543,8 +541,12 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
         [ScaffoldColumn(true)]
 		public string Description { get; set; }
 		// private string _unmodified_Description;
+		private EntitySet<CustomerAccountActivePlans> _ActivePlans = new EntitySet<CustomerAccountActivePlans>();
         [Association(ThisKey = "ID", OtherKey = "CustomerAccountID")]
-        public EntitySet<CustomerAccountActivePlans> ActivePlans { get; set; }
+        public EntitySet<CustomerAccountActivePlans> ActivePlans { 
+			get { return _ActivePlans; }
+			set { _ActivePlans.Assign(value); }
+		}
 
         public void PrepareForStoring(bool isInitialInsert)
         {
