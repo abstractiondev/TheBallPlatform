@@ -100,11 +100,37 @@ namespace PlatformCoreTests
             //testCustomer.ActivePlans.Add("plan1");
             //testCustomer.ActivePlans.Add("plan2");
             ctx.CustomerAccountTable.InsertOnSubmit(testCustomer);
+
+            var plan1 = new PAY.GroupSubscriptionPlan
+            {
+                Description = "Plan 1 description",
+                PlanName = "Plan 1 name",
+            };
+
+            var subplanstatusplan = new PAY.SubscriptionPlanStatusSubscriptionPlan
+            {
+                GroupSubscriptionPlan = plan1
+            };
+            var subplanStatus = new PAY.SubscriptionPlanStatus
+            {
+                SubscriptionPlan = subplanstatusplan
+            };
+            subplanstatusplan.SubscriptionPlanStatus = subplanStatus;
+
+            testCustomer.ActivePlans.Add(new PAY.CustomerAccountActivePlans
+            {
+                CustomerAccount = testCustomer,
+                SubscriptionPlanStatus = subplanStatus,
+            });
+
             ctx.SubmitChanges();
-            Assert.AreEqual(ctx.CustomerAccountTable.Count(), 1, "Insert confirmation failure");
+            Assert.AreEqual(1, ctx.CustomerAccountTable.Count(), "Insert confirmation failure");
+            Assert.AreEqual(1, ctx.GroupSubscriptionPlanTable.Count(), "Insert confirmation failure");
+            Assert.AreEqual(1, ctx.SubscriptionPlanStatusTable.Count());
+            Assert.AreEqual(1, ctx.SubscriptionPlanStatusSubscriptionPlanTable.Count());
             //var firstCustomer = ctx.CustomerAccountTable.Single();
             var firstCustomer = ctx.CustomerAccountTable.Single(customer => customer.ID == testCustomer.ID);
-            Assert.AreEqual(0, firstCustomer.ActivePlans.Count);
+            Assert.AreEqual(1, firstCustomer.ActivePlans.Count);
             //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
             //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
         }
