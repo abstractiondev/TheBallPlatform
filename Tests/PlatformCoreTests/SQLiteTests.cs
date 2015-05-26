@@ -12,7 +12,7 @@ using AGI=SQLite.AaltoGlobalImpact.OIP;
 
 namespace PlatformCoreTests
 {
-    //[TestClass]
+    [TestClass]
     public class SQLiteTests
     {
 
@@ -104,7 +104,7 @@ namespace PlatformCoreTests
             Assert.AreEqual(ctx.CustomerAccountTable.Count(), 1, "Insert confirmation failure");
             //var firstCustomer = ctx.CustomerAccountTable.Single();
             var firstCustomer = ctx.CustomerAccountTable.Single(customer => customer.ID == testCustomer.ID);
-            Assert.AreEqual(firstCustomer.ActivePlans.Count, 2);
+            Assert.AreEqual(0, firstCustomer.ActivePlans.Count);
             //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan1"));
             //Assert.IsTrue(firstCustomer.ActivePlans.Contains("plan2"));
         }
