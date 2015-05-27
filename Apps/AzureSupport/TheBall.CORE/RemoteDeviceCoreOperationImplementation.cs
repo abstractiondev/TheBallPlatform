@@ -70,18 +70,30 @@ namespace TheBall.CORE
 
         private static void getContentMD5List(DeviceOperationData deviceOperationData)
         {
-            var folders = deviceOperationData.OperationParameters;
-            bool hasInvalidFolderNames = folders.Any(folder => SystemSupport.ReservedDomainNames.Any(folder.StartsWith));
-            if(hasInvalidFolderNames)
-                throw new InvalidDataException("Invalid parameter for remote folder name");
-            var owner = InformationContext.CurrentOwner;
-            var md5List = folders.SelectMany(folder =>
+            var initialEntries = deviceOperationData.OperationParameters;
+            var entries = initialEntries.Select(entry =>
+            {
+                if (String.IsNullOrEmpty(entry) || entry == "F:")
+                    throw new InvalidDataException("Empty entry not supported as prefix");
+                string entryName;
+                bool isFile = entry.StartsWith("F:");
+                if (isFile)
+                    entryName = entry.Substring(2);
+                else
                 {
-                    if(String.IsNullOrEmpty(folder))
-                        throw new InvalidDataException("Empty folder not supported as prefix");
-                    if (folder.EndsWith("/") == false)
-                        folder += "/";
-                    var result = owner.GetOwnerBlobListing(folder, true)
+                    entryName = entry;
+                    if (!entryName.EndsWith("/"))
+                        entryName += "/";
+                }
+                return entryName;
+            }).ToArray();
+            bool hasInvalidFolderNames = entries.Any(entry => SystemSupport.ReservedDomainNames.Any(entry.StartsWith));
+            if(hasInvalidFolderNames)
+                throw new InvalidDataException("Invalid parameter for remote entry name");
+            var owner = InformationContext.CurrentOwner;
+            var md5List = entries.SelectMany(entry =>
+                {
+                    var result = owner.GetOwnerBlobListing(entry, true)
                                       .Cast<CloudBlockBlob>()
                                       .Select(blob => new ContentItemLocationWithMD5
                                           {
