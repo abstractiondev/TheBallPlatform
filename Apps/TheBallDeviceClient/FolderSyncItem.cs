@@ -35,7 +35,7 @@ namespace TheBall.Support.DeviceClient
             var folderSyncItem = new FolderSyncItem
                 {
                     LocalFullPath = Path.Combine(stagingRootFolder, stagingSubfolder),
-                    RemoteFolder = remoteFolder,
+                    RemoteEntry = remoteFolder,
                     SyncDirection = "UP",
                     SyncItemName = "DYNAMIC",
                     SyncType = syncType
@@ -43,40 +43,45 @@ namespace TheBall.Support.DeviceClient
             return folderSyncItem;
         }
 
-        public static FolderSyncItem CreateFromStagingRemoteDataFolder(string stagingRootFolder, string dataFolder)
+        public static FolderSyncItem CreateFromStagingRemoteDataFolder(string stagingRootFolder, string syncEntry)
         {
-            if (string.IsNullOrEmpty(dataFolder))
+            if (string.IsNullOrEmpty(syncEntry))
                 return null;
-            if (dataFolder.EndsWith("/") == false)
-                dataFolder += "/";
+            bool isFile = syncEntry.StartsWith("F:");
+            if (!isFile && syncEntry.EndsWith("/") == false)
+                syncEntry += "/";
+            string localName = isFile ? syncEntry.Substring(2) : syncEntry;
+            string localFullPath = Path.Combine(stagingRootFolder, localName);
             var folderSyncItem = new FolderSyncItem
                 {
-                    LocalFullPath = Path.Combine(stagingRootFolder, dataFolder),
-                    RemoteFolder = dataFolder,
+                    LocalFullPath = localFullPath,
+                    RemoteEntry = syncEntry,
                     SyncDirection = "DOWN",
                     SyncItemName = "DYNAMIC",
                     SyncType = "DEV",
+                    IsFile = isFile
                 };
             return folderSyncItem;
         }
 
         public string LocalFullPath;
-        public string RemoteFolder;
+        public string RemoteEntry;
         public string SyncItemName;
         public string SyncDirection;
         public string SyncType;
+        public bool IsFile;
 
         public void Validate()
         {
-            if (RemoteFolder == "/")
+            if (RemoteEntry == "/")
                 throw new ArgumentException("Root remote folder (/) not supported");
-            if (RemoteFolder.EndsWith("/") == false)
-                RemoteFolder += "/";
+            if (RemoteEntry.EndsWith("/") == false && RemoteEntry.StartsWith("F:") == false)
+                RemoteEntry += "/";
             if (SyncDirection != "UP" && SyncDirection != "DOWN")
                 throw new ArgumentException("syncDirection must be either UP or DOWN");
             if (SyncType != "DEV" && SyncType != "wwwsite")
                 throw new ArgumentException("syncType must be either DEV or wwwsite");
-            if (SyncType == "wwwsite" && RemoteFolder != "wwwsite/")
+            if (SyncType == "wwwsite" && RemoteEntry != "wwwsite/")
                 throw new ArgumentException("remoteFolder must also be wwwsite when syncType is wwwsite");
         }
     }

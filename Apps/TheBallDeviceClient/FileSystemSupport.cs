@@ -7,23 +7,37 @@ namespace TheBall.Support.DeviceClient
 {
     public static class FileSystemSupport
     {
-        public static ContentItemLocationWithMD5[] GetContentRelativeFromRoot(string rootFolder)
+        public static ContentItemLocationWithMD5[] GetContentRelativeFromRoot(string rootItem)
         {
-            int relativeNameStartingIX = rootFolder.EndsWith("/") ? rootFolder.Length : rootFolder.Length + 1;
+            bool rootItemIsDir = Directory.Exists(rootItem);
+            FileInfo[] fileInfos = null;
+            int relativeNameStartingIX;
+            if (rootItemIsDir)
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(rootItem);
+                fileInfos = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+                relativeNameStartingIX = rootItem.EndsWith("/") ? rootItem.Length : rootItem.Length + 1;
+            }
+            else
+            {
+                fileInfos = new[] {new FileInfo(rootItem)};
+                var fileName = Path.GetFileName(rootItem);
+                relativeNameStartingIX = rootItem.Length - fileName.Length;
+            }
             List<ContentItemLocationWithMD5> contentItems = new List<ContentItemLocationWithMD5>();
-            DirectoryInfo dirInfo = new DirectoryInfo(rootFolder);
-            var fileInfos = dirInfo.GetFiles("*", SearchOption.AllDirectories);
             Console.WriteLine("Getting MD5 for {0} files...", fileInfos.Length);
             int totalTODO = fileInfos.Length;
             int currDone = 0;
             int currDots = 0;
             foreach (var fileInfo in fileInfos)
             {
+                if (!fileInfo.Exists)
+                    continue;
                 ContentItemLocationWithMD5 contentItem = new ContentItemLocationWithMD5
-                    {
-                        ContentLocation = fileInfo.FullName.Substring(relativeNameStartingIX).Replace('\\','/' ),
-                        ContentMD5 = getMD5(fileInfo)
-                    };
+                {
+                    ContentLocation = fileInfo.FullName.Substring(relativeNameStartingIX).Replace('\\', '/'),
+                    ContentMD5 = getMD5(fileInfo)
+                };
                 contentItems.Add(contentItem);
                 currDone++;
                 int currProgress = (currDone*10)/totalTODO;

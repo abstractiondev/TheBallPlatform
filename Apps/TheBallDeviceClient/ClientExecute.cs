@@ -40,7 +40,7 @@ namespace TheBall.Support.DeviceClient
             var rootFolder = upSyncItem.LocalFullPath;
             var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
             string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
-            string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteFolder;
+            string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteEntry;
             if (destinationCopyRoot.EndsWith("/") == false)
                 destinationCopyRoot += "/";
             ContentItemLocationWithMD5[] remoteContentBasedActionList = getConnectionToCopyMD5s(connection, sourceList, destinationCopyRoot);
@@ -80,20 +80,21 @@ namespace TheBall.Support.DeviceClient
 
         public static void DownSync(Connection connection, FolderSyncItem downSyncItem)
         {
-            var rootFolder = downSyncItem.LocalFullPath;
-            var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
+            var rootItem = downSyncItem.LocalFullPath;
+            var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootItem);
             foreach (var myDataItem in myDataContents)
             {
-                myDataItem.ContentLocation = downSyncItem.RemoteFolder + myDataItem.ContentLocation;
+                if(!downSyncItem.IsFile)
+                    myDataItem.ContentLocation = downSyncItem.RemoteEntry + myDataItem.ContentLocation;
             }
-            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteFolder });
+            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteEntry });
             var device = connection.Device;
-            int stripRemoteFolderIndex = downSyncItem.RemoteFolder.Length;
+            int stripRemoteFolderIndex = downSyncItem.IsFile ? 0 : downSyncItem.RemoteEntry.Length;
             SyncSupport.SynchronizeSourceListToTargetFolder(
                 remoteContentSourceList, myDataContents,
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
-                        string targetFullName = Path.Combine(rootFolder, target.ContentLocation.Substring(stripRemoteFolderIndex));
+                        string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, target.ContentLocation.Substring(stripRemoteFolderIndex));
                         string targetDirectoryName = Path.GetDirectoryName(targetFullName);
                         try
                         {
@@ -112,7 +113,7 @@ namespace TheBall.Support.DeviceClient
                     }, delegate(ContentItemLocationWithMD5 target)
                         {
                             string targetContentLocation = target.ContentLocation.Substring(stripRemoteFolderIndex);
-                            string targetFullName = Path.Combine(rootFolder, targetContentLocation);
+                            string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, targetContentLocation);
                             File.Delete(targetFullName);
                             Console.WriteLine("Deleted: " + targetContentLocation);
                         }, 10);
@@ -153,7 +154,7 @@ namespace TheBall.Support.DeviceClient
                     SyncDirection = syncDirection,
                     SyncType = syncType,
                     LocalFullPath = localFullPath,
-                    RemoteFolder = remoteFolder
+                    RemoteEntry = remoteFolder
                 };
             syncFolderItem.Validate();
             connection.FolderSyncItems.Add(syncFolderItem);
@@ -279,14 +280,18 @@ namespace TheBall.Support.DeviceClient
             {
                 if(stageDef.DataFolders.Count == 0)
                     throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
-                var folderSyncItems = stageDef.DataFolders.Select(dataFolder =>
+                var folderSyncItems = stageDef.DataFolders.Select(syncEntry =>
                     {
-                        string fullName = Path.Combine(stagingRootFolder, dataFolder);
-                        if (!Directory.Exists(fullName))
+                        bool isFile = syncEntry.StartsWith("F:");
+                        if (!isFile)
                         {
-                            Directory.CreateDirectory(fullName);
+                            string fullName = Path.Combine(stagingRootFolder, syncEntry);
+                            if (!Directory.Exists(fullName))
+                            {
+                                Directory.CreateDirectory(fullName);
+                            }
                         }
-                        return FolderSyncItem.CreateFromStagingRemoteDataFolder(stagingRootFolder, dataFolder);
+                        return FolderSyncItem.CreateFromStagingRemoteDataFolder(stagingRootFolder, syncEntry);
                     }).Where(fsi => fsi != null).ToArray();
                 foreach (var folderSyncItem in folderSyncItems)
                 {

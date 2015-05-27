@@ -49,7 +49,7 @@ namespace ContentSyncTool
                 syncItem.SyncItemName,
                 syncItem.LocalFullPath,
                 directionArrow,
-                syncItem.RemoteFolder
+                syncItem.RemoteEntry
                 );
         }
 
