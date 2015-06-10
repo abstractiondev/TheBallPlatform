@@ -597,6 +597,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: SyncCurrentStripePlansToAccount ( Account, CurrentPlansBeforeSync, ActivePlansFromStripe )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync current Stripe plans to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="ValidatePlanContainingGroups (PlanName)" level="1">
             <Header text="Specifications" level="2">

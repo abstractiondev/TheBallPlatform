@@ -162,6 +162,11 @@
             <Parameter name="AccountID" />
             <Target name="GroupsToRevokeAccessFrom" />
           </MethodExecute>
+          <MethodExecute name="SyncCurrentStripePlansToAccount" designDesc="Sync current Stripe plans to account" state="implemented">
+            <Target name="Account" />
+            <Target name="CurrentPlansBeforeSync" />
+            <Target name="ActivePlansFromStripe" />
+          </MethodExecute>
         </SequentialExecution>
       </Execution>
     </Operation>

@@ -105,5 +105,40 @@ namespace TheBall.Payments
                 });
             }
         }
+
+        public static void ExecuteMethod_SyncCurrentStripePlansToAccount(CustomerAccount account, GroupSubscriptionPlan[] currentPlansBeforeSync, GroupSubscriptionPlan[] activePlansFromStripe)
+        {
+            var activePlanIDs = activePlansFromStripe.Select(plan => plan.PlanName).ToArray();
+            var currentPlanIDs = currentPlansBeforeSync.Select(plan => plan.PlanName).ToArray();
+            var plansToAdd = activePlanIDs.Except(currentPlanIDs).ToArray();
+            var plansToRemove = currentPlanIDs.Except(activePlanIDs).ToArray();
+
+            var currentStatusIDs = account.ActivePlans;
+            var currentStatuses =
+                currentStatusIDs.Select(
+                    statusID =>
+                        SubscriptionPlanStatus.RetrieveFromOwnerContent(InformationContext.CurrentOwner, statusID))
+                    .ToArray();
+            var statusesToRemove =
+                currentStatuses.Where(status => activePlanIDs.All(planID => planID != status.SubscriptionPlan))
+                    .ToArray();
+            var plansToAddStatusesFor =
+                activePlanIDs.Where(planID => currentStatuses.All(status => status.SubscriptionPlan != planID))
+                    .ToArray();
+            foreach(var status in statusesToRemove)
+                status.DeleteInformationObject(InformationContext.CurrentOwner);
+            foreach (var planToAddStatus in plansToAddStatusesFor)
+            {
+                SubscriptionPlanStatus planStatus = new SubscriptionPlanStatus();
+                planStatus.SetLocationAsOwnerContent(InformationContext.CurrentOwner, planStatus.ID);
+                planStatus.SubscriptionPlan = planToAddStatus;
+                //planStatus.
+                planStatus.StoreInformation(InformationContext.CurrentOwner);
+            }
+
+            account.ActivePlans.Clear();
+            account.ActivePlans.AddRange(activePlanIDs);
+            account.StoreInformation(InformationContext.CurrentOwner);
+        }
     }
 }

@@ -660,6 +660,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Revoke access from inactive plan groups using RevokePaidAccessFromGroup operation.
 		</div>
+		</p><h2>Method Call: SyncCurrentStripePlansToAccount ( Account, CurrentPlansBeforeSync, ActivePlansFromStripe )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync current Stripe plans to account
+		</div>
 		</p><h1>ValidatePlanContainingGroups (PlanName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
