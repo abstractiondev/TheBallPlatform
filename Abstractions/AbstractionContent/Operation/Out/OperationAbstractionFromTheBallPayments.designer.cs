@@ -7,6 +7,30 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.Payments { 
+				public class GetAccountFromStripeCustomerParameters 
+		{
+				public string StripeCustomerID ;
+				}
+		
+		public class GetAccountFromStripeCustomer 
+		{
+				private static void PrepareParameters(GetAccountFromStripeCustomerParameters parameters)
+		{
+					}
+				public static GetAccountFromStripeCustomerReturnValue Execute(GetAccountFromStripeCustomerParameters parameters)
+		{
+						PrepareParameters(parameters);
+					CustomerAccount[] AllCustomerAccounts = GetAccountFromStripeCustomerImplementation.GetTarget_AllCustomerAccounts();	
+				CustomerAccount Account = GetAccountFromStripeCustomerImplementation.GetTarget_Account(parameters.StripeCustomerID, AllCustomerAccounts);	
+				GetAccountFromStripeCustomerReturnValue returnValue = GetAccountFromStripeCustomerImplementation.Get_ReturnValue(Account);
+		return returnValue;
+				}
+				}
+
+		    public class GetAccountFromStripeCustomerReturnValue 
+		{
+				public CustomerAccount ResultAccount ;
+				}
 				public class ProcessStripeWebhookParameters 
 		{
 				public INT.StripeWebhookData JSONObject ;

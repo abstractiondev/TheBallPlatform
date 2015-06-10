@@ -427,7 +427,7 @@ namespace TheBall
                             throw new InvalidOperationException("Collaborator removal is only supported in group context");
                         if(!TBCollaboratorRole.HasModeratorRights(InformationContext.Current.CurrentGroupRole))
                             throw new SecurityException("Collaborator removal is only doable by moderators/initiators");
-                        string accountID = form["ExecutorAccountID"];
+                        string accountID = form["AccountID"];
                         RemoveMemberFromGroupParameters parameters = new RemoveMemberFromGroupParameters
                             {
                                 AccountID = accountID,

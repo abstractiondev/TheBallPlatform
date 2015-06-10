@@ -1,6 +1,27 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Payments">
+    <Operation name="GetAccountFromStripeCustomer">
+      <OperationSpec>
+        <Description>Get AccountID from Stripe ID</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="StripeCustomerID" dataType="string" designDesc="Stripe Customer ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AllCustomerAccounts" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" />
+          <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Stripe customer ID based account" state="implemented">
+            <Parameter name="StripeCustomerID" />
+            <Target name="AllCustomerAccounts" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="ResultAccount" dataType="CustomerAccount" designDesc="Customer account to return" state="implemented" />
+        <Target name="Account" />
+      </OperationReturnValues>
+    </Operation>
     <Operation name="ProcessStripeWebhook">
       <OperationSpec>
         <Description>Process Stripe launched webhook</Description>

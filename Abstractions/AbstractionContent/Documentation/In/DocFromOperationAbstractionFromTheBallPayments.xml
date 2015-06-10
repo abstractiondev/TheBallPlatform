@@ -309,6 +309,77 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="GetAccountFromStripeCustomer (StripeCustomerID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get AccountID from Stripe ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>StripeCustomerID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Stripe Customer ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AllCustomerAccounts" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>All customer accounts</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AllCustomerAccounts, StripeCustomerID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe customer ID based account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : GetAccountFromStripeCustomerReturnValue ( Account )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ResultAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>CustomerAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Customer account to return</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="GrantPaidAccessToGroup (GroupID, AccountID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

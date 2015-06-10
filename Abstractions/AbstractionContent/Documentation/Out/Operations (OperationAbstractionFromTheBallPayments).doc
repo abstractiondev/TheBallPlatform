@@ -445,6 +445,61 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store new customers
 		</div>
+		</p><h1>GetAccountFromStripeCustomer (StripeCustomerID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Get AccountID from Stripe ID
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		StripeCustomerID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Stripe Customer ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AllCustomerAccounts</h2>
+		<p>		<div class="MsoNormal" >
+		All customer accounts
+		</div>
+		</p><h2>Target Definition: Account ( AllCustomerAccounts, StripeCustomerID )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe customer ID based account
+		</div>
+		</p><h2>Return Value : GetAccountFromStripeCustomerReturnValue ( Account )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ResultAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		CustomerAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Customer account to return
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>GrantPaidAccessToGroup (GroupID, AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

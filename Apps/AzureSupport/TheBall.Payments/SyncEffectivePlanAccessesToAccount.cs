@@ -19,8 +19,8 @@ namespace TheBall.Payments
             if (planID == "ONLINE")
             {
                 //result.GroupIDs.Add("e710a1f8-94a3-4d38-85df-193936624ce4");
-                //result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc");
-                result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4");
+                result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc");
+                //result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4");
             }
 
             return result;
@@ -40,7 +40,7 @@ namespace TheBall.Payments
                 subscriptionPlanStatusIDs.Select(
                     planStatusID =>
                         SubscriptionPlanStatus.RetrieveFromOwnerContent(InformationContext.CurrentOwner, planStatusID))
-                    .ToArray();
+                    .Where(status => status != null).ToArray();
             var plans = planStatuses.Select(planStatus => GetGroupSubscriptionPlan(planStatus.SubscriptionPlan)).ToArray();
             return plans;
         }
@@ -54,7 +54,7 @@ namespace TheBall.Payments
             var stripePlans =
                 stripeCustomer.StripeSubscriptionList.StripeSubscriptions.Select(stripeSub => stripeSub.StripePlan)
                     .ToArray();
-            var plans = stripePlans.Select(stripePlan => GetGroupSubscriptionPlan(stripePlan.Name)).ToArray();
+            var plans = stripePlans.Select(stripePlan => GetGroupSubscriptionPlan(stripePlan.Id)).ToArray();
             return plans;
         }
 
@@ -110,15 +110,13 @@ namespace TheBall.Payments
         {
             var activePlanIDs = activePlansFromStripe.Select(plan => plan.PlanName).ToArray();
             var currentPlanIDs = currentPlansBeforeSync.Select(plan => plan.PlanName).ToArray();
-            var plansToAdd = activePlanIDs.Except(currentPlanIDs).ToArray();
-            var plansToRemove = currentPlanIDs.Except(activePlanIDs).ToArray();
 
             var currentStatusIDs = account.ActivePlans;
             var currentStatuses =
                 currentStatusIDs.Select(
                     statusID =>
                         SubscriptionPlanStatus.RetrieveFromOwnerContent(InformationContext.CurrentOwner, statusID))
-                    .ToArray();
+                    .Where(status => status != null).ToArray();
             var statusesToRemove =
                 currentStatuses.Where(status => activePlanIDs.All(planID => planID != status.SubscriptionPlan))
                     .ToArray();
