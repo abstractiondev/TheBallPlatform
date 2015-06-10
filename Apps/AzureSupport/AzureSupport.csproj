@@ -377,12 +377,11 @@
     <Compile Include="TheBall.Payments\CustomerAccountCollection.cs" />
     <Compile Include="TheBall.Payments\FetchCustomersFromStripeImplementation.cs" />
     <Compile Include="TheBall.Payments\GrantPaidAccessToGroupImplementation.cs" />
-    <Compile Include="TheBall.Payments\GrantPlanAccessToAccountImplementation.cs" />
+    <Compile Include="TheBall.Payments\SyncEffectivePlanAccessesToAccount.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlan.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlanCollection.cs" />
     <Compile Include="TheBall.Payments\ProcessPaymentImplementation.cs" />
     <Compile Include="TheBall.Payments\ProcessStripeWebhookImplementation.cs" />
-    <Compile Include="TheBall.Payments\RevokePlanAccessFromAccountImplementation.cs" />
     <Compile Include="TheBall.Payments\RevokePaidAccessFromGroupImplementation.cs" />
     <Compile Include="TheBall.Payments\ValidatePlanContainingGroupsImplementation.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />

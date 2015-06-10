@@ -27,13 +27,9 @@ namespace TheBall.Payments
             }
         }
 
-        public static RevokePlanAccessFromAccountParameters RevokeAccessToCanceledPlan_GetParameters(string planName, string accountId)
+        public static SyncEffectivePlanAccessesToAccountParameters RevokeAccessFromCanceledPlan_GetParameters(string accountID)
         {
-            return new RevokePlanAccessFromAccountParameters
-            {
-                AccountID = accountId,
-                PlanName = planName
-            };
+            return new SyncEffectivePlanAccessesToAccountParameters { AccountID = accountID };
         }
     }
 }

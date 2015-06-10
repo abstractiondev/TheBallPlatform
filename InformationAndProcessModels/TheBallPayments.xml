@@ -165,9 +165,8 @@
             <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented">
               <Target name="CustomerAccount"/>
             </MethodExecute>
-            <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="GrantPlanAccessToAccount">
-              <Target name="CustomerAccount"/>
-              <Target name="PlanName"/>
+            <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount">
+              <Target name="AccountID"/>
             </OperationExecute>
           </SequentialExecution>
         </Execution>
@@ -189,29 +188,51 @@
               <Parameter name="PlanName"/>
               <Target name="CustomerAccount"/>
             </MethodExecute>
-            <OperationExecute name="RevokeAccessToCanceledPlan" designDesc="Revoke access to canceled plan" state="implemented" targetOperationName="RevokePlanAccessFromAccount">
-              <Parameter name="PlanName"/>
+            <OperationExecute name="RevokeAccessFromCanceledPlan" designDesc="Revoke access to canceled plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount">
               <Parameter name="AccountID"/>
             </OperationExecute>
           </SequentialExecution>
         </Execution>
       </Operation>
-      <Operation name="GrantPlanAccessToAccount">
+      <Operation name="SyncEffectivePlanAccessesToAccount">
         <OperationSpec>
           <Description>Grant plan access to account</Description>
         </OperationSpec>
         <Parameters>
-          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
           <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan of given name" state="implemented">
-              <Parameter name="PlanName"/>
-            </TargetDefinition>
-            <MethodExecute name="GrantAccessToAccountForPlanGroups" designDesc="Grant access to plan groups. Using GrantPaidAccessToGroup operation" state="implemented">
+            <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Customer account" state="implemented">
               <Parameter name="AccountID"/>
-              <Target name="GroupSubscriptionPlan"/>
+            </TargetDefinition>
+            <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
+              <Target name="Account"/>
+            </TargetDefinition>
+            <TargetDefinition name="ActivePlansFromStripe" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans of account - fetched from Stripe." state="implemented">
+              <Target name="Account"/>
+            </TargetDefinition>
+            <TargetDefinition name="GroupsToHaveAccessTo" dataType="string[]" designDesc="Group IDs of having access to" state="implemented">
+              <Target name="ActivePlansFromStripe"/>
+            </TargetDefinition>
+            <TargetDefinition name="CurrentGroupAccesses" dataType="string[]" designDesc="Group IDs of current access" state="implemented">
+              <Target name="CurrentPlansBeforeSync"/>
+            </TargetDefinition>
+            <TargetDefinition name="GroupsToAddAccessTo" dataType="string[]" designDesc="Group IDs to add access to" state="implemented">
+              <Target name="GroupsToHaveAccessTo"/>
+              <Target name="CurrentGroupAccesses"/>
+            </TargetDefinition>
+            <TargetDefinition name="GroupsToRevokeAccessFrom" dataType="string[]" designDesc="Group IDs to revoke access from" state="implemented">
+              <Target name="GroupsToHaveAccessTo"/>
+              <Target name="CurrentGroupAccesses"/>
+            </TargetDefinition>
+            <MethodExecute name="GrantAccessToGroups" designDesc="Grant access to missing group using GrantPaidAccessToGroup operation." state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupsToAddAccessTo"/>
+            </MethodExecute>
+            <MethodExecute name="RevokeAccessFromGroups" designDesc="Revoke access from inactive plan groups using RevokePaidAccessFromGroup operation." state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupsToRevokeAccessFrom"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
@@ -229,26 +250,6 @@
             <MethodExecute name="AddAccountToGroup" designDesc="Add account to group by inviting and confirming. Grant as visitor role." state="implemented">
               <Parameter name="GroupID"/>
               <Parameter name="AccountID"/>
-            </MethodExecute>
-          </SequentialExecution>
-        </Execution>
-      </Operation>
-      <Operation name="RevokePlanAccessFromAccount">
-        <OperationSpec>
-          <Description>Revoke plan access from account</Description>
-        </OperationSpec>
-        <Parameters>
-          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
-          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
-        </Parameters>
-        <Execution>
-          <SequentialExecution>
-            <TargetDefinition name="GroupSubscriptionPlan" dataType="GroupSubscriptionPlan" designDesc="Group subscription plan of given name" state="implemented">
-              <Parameter name="PlanName"/>
-            </TargetDefinition>
-            <MethodExecute name="RevokeAccessFromAccountForPlanGroups" designDesc="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation" state="implemented">
-              <Parameter name="AccountID"/>
-              <Target name="GroupSubscriptionPlan"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>

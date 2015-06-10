@@ -293,7 +293,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store processed object(s)
 		</div>
-		</p><h2>Operation Call: GrantAccessToPaidPlan ( CustomerAccount, PlanName )</h2>
+		</p><h2>Operation Call: GrantAccessToPaidPlan ( AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Grant access to paid plan
 		</div>
@@ -395,7 +395,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Cancel subscription plan on Stripe
 		</div>
-		</p><h2>Operation Call: RevokeAccessToCanceledPlan ( PlanName, AccountID )</h2>
+		</p><h2>Operation Call: RevokeAccessFromCanceledPlan ( AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Revoke access to canceled plan
 		</div>
@@ -491,57 +491,6 @@ div.WordSection1
 		</p><h2>Method Call: AddAccountToGroup ( GroupID, AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Add account to group by inviting and confirming. Grant as visitor role.
-		</div>
-		</p><h1>GrantPlanAccessToAccount (PlanName, AccountID)</h1>
-		<h2>Specifications</h2>
-		<p>		<div class="MsoNormal" >
-		Grant plan access to account
-		</div>
-		</p><h2>Parameters</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		PlanName
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Plan Name
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		AccountID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Account ID to grant access for
-		</div>
-				</td>
-				</tr>
-		</table>
-		</p><h2>Target Definition: GroupSubscriptionPlan ( PlanName )</h2>
-		<p>		<div class="MsoNormal" >
-		Group subscription plan of given name
-		</div>
-		</p><h2>Method Call: GrantAccessToAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )</h2>
-		<p>		<div class="MsoNormal" >
-		Grant access to plan groups. Using GrantPaidAccessToGroup operation
 		</div>
 		</p><h1>ProcessPayment</h1>
 		<h2>Specifications</h2>
@@ -649,31 +598,14 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Remove account from group.
 		</div>
-		</p><h1>RevokePlanAccessFromAccount (PlanName, AccountID)</h1>
+		</p><h1>SyncEffectivePlanAccessesToAccount (AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Revoke plan access from account
+		Grant plan access to account
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		PlanName
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Plan Name
-		</div>
-				</td>
-				</tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" >
@@ -692,13 +624,41 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: GroupSubscriptionPlan ( PlanName )</h2>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
 		<p>		<div class="MsoNormal" >
-		Group subscription plan of given name
+		Customer account
 		</div>
-		</p><h2>Method Call: RevokeAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )</h2>
+		</p><h2>Target Definition: CurrentPlansBeforeSync ( Account )</h2>
 		<p>		<div class="MsoNormal" >
-		Revoke access from plan groups. Using RevokePaidAccessFromGroup operation
+		Group subscription plans before syncing
+		</div>
+		</p><h2>Target Definition: ActivePlansFromStripe ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Group subscription plans of account - fetched from Stripe.
+		</div>
+		</p><h2>Target Definition: GroupsToHaveAccessTo ( ActivePlansFromStripe )</h2>
+		<p>		<div class="MsoNormal" >
+		Group IDs of having access to
+		</div>
+		</p><h2>Target Definition: CurrentGroupAccesses ( CurrentPlansBeforeSync )</h2>
+		<p>		<div class="MsoNormal" >
+		Group IDs of current access
+		</div>
+		</p><h2>Target Definition: GroupsToAddAccessTo ( GroupsToHaveAccessTo, CurrentGroupAccesses )</h2>
+		<p>		<div class="MsoNormal" >
+		Group IDs to add access to
+		</div>
+		</p><h2>Target Definition: GroupsToRevokeAccessFrom ( GroupsToHaveAccessTo, CurrentGroupAccesses )</h2>
+		<p>		<div class="MsoNormal" >
+		Group IDs to revoke access from
+		</div>
+		</p><h2>Method Call: GrantAccessToGroups ( GroupsToAddAccessTo, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Grant access to missing group using GrantPaidAccessToGroup operation.
+		</div>
+		</p><h2>Method Call: RevokeAccessFromGroups ( GroupsToRevokeAccessFrom, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Revoke access from inactive plan groups using RevokePaidAccessFromGroup operation.
 		</div>
 		</p><h1>ValidatePlanContainingGroups (PlanName)</h1>
 		<h2>Specifications</h2>

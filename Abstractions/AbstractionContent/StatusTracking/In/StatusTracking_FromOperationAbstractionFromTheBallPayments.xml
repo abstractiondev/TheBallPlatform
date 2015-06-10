@@ -82,19 +82,37 @@
     <StatusItem name="CancelGroupSubscriptionPlan_CancelSubscriptionPlan" displayName="MethodExecuteType: CancelSubscriptionPlan" description="Cancel subscription plan on Stripe">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CancelGroupSubscriptionPlan_RevokeAccessToCanceledPlan" displayName="OperationExecuteType: RevokeAccessToCanceledPlan" description="Revoke access to canceled plan">
+    <StatusItem name="CancelGroupSubscriptionPlan_RevokeAccessFromCanceledPlan" displayName="OperationExecuteType: RevokeAccessFromCanceledPlan" description="Revoke access to canceled plan">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="GrantPlanAccessToAccount_PlanName" displayName="VariableType: PlanName" description="Plan Name">
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_AccountID" displayName="VariableType: AccountID" description="Account ID to grant access for">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="GrantPlanAccessToAccount_AccountID" displayName="VariableType: AccountID" description="Account ID to grant access for">
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_Account" displayName="TargetDefinitionType: Account" description="Customer account">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="GrantPlanAccessToAccount_GroupSubscriptionPlan" displayName="TargetDefinitionType: GroupSubscriptionPlan" description="Group subscription plan of given name">
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_CurrentPlansBeforeSync" displayName="TargetDefinitionType: CurrentPlansBeforeSync" description="Group subscription plans before syncing">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="GrantPlanAccessToAccount_GrantAccessToAccountForPlanGroups" displayName="MethodExecuteType: GrantAccessToAccountForPlanGroups" description="Grant access to plan groups. Using GrantPaidAccessToGroup operation">
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_ActivePlansFromStripe" displayName="TargetDefinitionType: ActivePlansFromStripe" description="Group subscription plans of account - fetched from Stripe.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_GroupsToHaveAccessTo" displayName="TargetDefinitionType: GroupsToHaveAccessTo" description="Group IDs of having access to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_CurrentGroupAccesses" displayName="TargetDefinitionType: CurrentGroupAccesses" description="Group IDs of current access">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_GroupsToAddAccessTo" displayName="TargetDefinitionType: GroupsToAddAccessTo" description="Group IDs to add access to">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_GroupsToRevokeAccessFrom" displayName="TargetDefinitionType: GroupsToRevokeAccessFrom" description="Group IDs to revoke access from">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_GrantAccessToGroups" displayName="MethodExecuteType: GrantAccessToGroups" description="Grant access to missing group using GrantPaidAccessToGroup operation.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncEffectivePlanAccessesToAccount_RevokeAccessFromGroups" displayName="MethodExecuteType: RevokeAccessFromGroups" description="Revoke access from inactive plan groups using RevokePaidAccessFromGroup operation.">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="GrantPaidAccessToGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to grant access to">
@@ -104,18 +122,6 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="GrantPaidAccessToGroup_AddAccountToGroup" displayName="MethodExecuteType: AddAccountToGroup" description="Add account to group by inviting and confirming. Grant as visitor role.">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="RevokePlanAccessFromAccount_PlanName" displayName="VariableType: PlanName" description="Plan Name">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="RevokePlanAccessFromAccount_AccountID" displayName="VariableType: AccountID" description="Account ID to grant access for">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="RevokePlanAccessFromAccount_GroupSubscriptionPlan" displayName="TargetDefinitionType: GroupSubscriptionPlan" description="Group subscription plan of given name">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="RevokePlanAccessFromAccount_RevokeAccessFromAccountForPlanGroups" displayName="MethodExecuteType: RevokeAccessFromAccountForPlanGroups" description="Revoke access from plan groups. Using RevokePaidAccessFromGroup operation">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="RevokePaidAccessFromGroup_GroupID" displayName="VariableType: GroupID" description="Group ID to revoke access from">
@@ -197,32 +203,32 @@
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_StoreObjects" />
       <ItemRef itemName="ActivateAndPayGroupSubscriptionPlan_GrantAccessToPaidPlan" />
       <GroupRef groupName="ValidatePlanContainingGroups" />
-      <GroupRef groupName="GrantPlanAccessToAccount" />
+      <GroupRef groupName="SyncEffectivePlanAccessesToAccount" />
     </Group>
     <Group name="CancelGroupSubscriptionPlan">
       <ItemRef itemName="CancelGroupSubscriptionPlan_PlanName" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_AccountID" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_CustomerAccount" />
       <ItemRef itemName="CancelGroupSubscriptionPlan_CancelSubscriptionPlan" />
-      <ItemRef itemName="CancelGroupSubscriptionPlan_RevokeAccessToCanceledPlan" />
-      <GroupRef groupName="RevokePlanAccessFromAccount" />
+      <ItemRef itemName="CancelGroupSubscriptionPlan_RevokeAccessFromCanceledPlan" />
+      <GroupRef groupName="SyncEffectivePlanAccessesToAccount" />
     </Group>
-    <Group name="GrantPlanAccessToAccount">
-      <ItemRef itemName="GrantPlanAccessToAccount_PlanName" />
-      <ItemRef itemName="GrantPlanAccessToAccount_AccountID" />
-      <ItemRef itemName="GrantPlanAccessToAccount_GroupSubscriptionPlan" />
-      <ItemRef itemName="GrantPlanAccessToAccount_GrantAccessToAccountForPlanGroups" />
+    <Group name="SyncEffectivePlanAccessesToAccount">
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_AccountID" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_Account" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_CurrentPlansBeforeSync" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_ActivePlansFromStripe" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_GroupsToHaveAccessTo" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_CurrentGroupAccesses" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_GroupsToAddAccessTo" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_GroupsToRevokeAccessFrom" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_GrantAccessToGroups" />
+      <ItemRef itemName="SyncEffectivePlanAccessesToAccount_RevokeAccessFromGroups" />
     </Group>
     <Group name="GrantPaidAccessToGroup">
       <ItemRef itemName="GrantPaidAccessToGroup_GroupID" />
       <ItemRef itemName="GrantPaidAccessToGroup_AccountID" />
       <ItemRef itemName="GrantPaidAccessToGroup_AddAccountToGroup" />
-    </Group>
-    <Group name="RevokePlanAccessFromAccount">
-      <ItemRef itemName="RevokePlanAccessFromAccount_PlanName" />
-      <ItemRef itemName="RevokePlanAccessFromAccount_AccountID" />
-      <ItemRef itemName="RevokePlanAccessFromAccount_GroupSubscriptionPlan" />
-      <ItemRef itemName="RevokePlanAccessFromAccount_RevokeAccessFromAccountForPlanGroups" />
     </Group>
     <Group name="RevokePaidAccessFromGroup">
       <ItemRef itemName="RevokePaidAccessFromGroup_GroupID" />

@@ -147,9 +147,9 @@ namespace TheBall.Payments
             HttpContext.Current.Response.Write("{}");
         }
 
-        public static GrantPlanAccessToAccountParameters GrantAccessToPaidPlan_GetParameters(CustomerAccount customerAccount, string planName)
+        public static SyncEffectivePlanAccessesToAccountParameters GrantAccessToPaidPlan_GetParameters(string accountID)
         {
-            return new GrantPlanAccessToAccountParameters { AccountID = customerAccount.ID, PlanName = planName };
+            return new SyncEffectivePlanAccessesToAccountParameters {AccountID = accountID};
         }
 
         public static void ExecuteMethod_UpdateStripeCustomerData(CustomerAccount customerAccount, PaymentToken paymentToken)

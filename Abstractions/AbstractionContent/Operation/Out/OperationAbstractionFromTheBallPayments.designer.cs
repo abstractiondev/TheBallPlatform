@@ -70,8 +70,8 @@ using System.IO;
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_StoreObjects(CustomerAccount);		
 				
 		{ // Local block to allow local naming
-			GrantPlanAccessToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(CustomerAccount, PlanName);
-			GrantPlanAccessToAccount.Execute(operationParameters);
+			SyncEffectivePlanAccessesToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(AccountID);
+			SyncEffectivePlanAccessesToAccount.Execute(operationParameters);
 									
 		} // Local block closing
 				}
@@ -94,28 +94,34 @@ using System.IO;
 				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(parameters.PlanName, CustomerAccount);		
 				
 		{ // Local block to allow local naming
-			RevokePlanAccessFromAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessToCanceledPlan_GetParameters(parameters.PlanName, parameters.AccountID);
-			RevokePlanAccessFromAccount.Execute(operationParameters);
+			SyncEffectivePlanAccessesToAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessFromCanceledPlan_GetParameters(parameters.AccountID);
+			SyncEffectivePlanAccessesToAccount.Execute(operationParameters);
 									
 		} // Local block closing
 				}
 				}
-				public class GrantPlanAccessToAccountParameters 
+				public class SyncEffectivePlanAccessesToAccountParameters 
 		{
-				public string PlanName ;
 				public string AccountID ;
 				}
 		
-		public class GrantPlanAccessToAccount 
+		public class SyncEffectivePlanAccessesToAccount 
 		{
-				private static void PrepareParameters(GrantPlanAccessToAccountParameters parameters)
+				private static void PrepareParameters(SyncEffectivePlanAccessesToAccountParameters parameters)
 		{
 					}
-				public static void Execute(GrantPlanAccessToAccountParameters parameters)
+				public static void Execute(SyncEffectivePlanAccessesToAccountParameters parameters)
 		{
 						PrepareParameters(parameters);
-					GroupSubscriptionPlan GroupSubscriptionPlan = GrantPlanAccessToAccountImplementation.GetTarget_GroupSubscriptionPlan(parameters.PlanName);	
-				GrantPlanAccessToAccountImplementation.ExecuteMethod_GrantAccessToAccountForPlanGroups(parameters.AccountID, GroupSubscriptionPlan);		
+					CustomerAccount Account = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_Account(parameters.AccountID);	
+				GroupSubscriptionPlan[] CurrentPlansBeforeSync = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSync(Account);	
+				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(Account);	
+				string[] GroupsToHaveAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToHaveAccessTo(ActivePlansFromStripe);	
+				string[] CurrentGroupAccesses = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentGroupAccesses(CurrentPlansBeforeSync);	
+				string[] GroupsToAddAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToAddAccessTo(GroupsToHaveAccessTo, CurrentGroupAccesses);	
+				string[] GroupsToRevokeAccessFrom = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToRevokeAccessFrom(GroupsToHaveAccessTo, CurrentGroupAccesses);	
+				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_GrantAccessToGroups(parameters.AccountID, GroupsToAddAccessTo);		
+				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_RevokeAccessFromGroups(parameters.AccountID, GroupsToRevokeAccessFrom);		
 				}
 				}
 				public class GrantPaidAccessToGroupParameters 
@@ -133,24 +139,6 @@ using System.IO;
 		{
 						PrepareParameters(parameters);
 					GrantPaidAccessToGroupImplementation.ExecuteMethod_AddAccountToGroup(parameters.GroupID, parameters.AccountID);		
-				}
-				}
-				public class RevokePlanAccessFromAccountParameters 
-		{
-				public string PlanName ;
-				public string AccountID ;
-				}
-		
-		public class RevokePlanAccessFromAccount 
-		{
-				private static void PrepareParameters(RevokePlanAccessFromAccountParameters parameters)
-		{
-					}
-				public static void Execute(RevokePlanAccessFromAccountParameters parameters)
-		{
-						PrepareParameters(parameters);
-					GroupSubscriptionPlan GroupSubscriptionPlan = RevokePlanAccessFromAccountImplementation.GetTarget_GroupSubscriptionPlan(parameters.PlanName);	
-				RevokePlanAccessFromAccountImplementation.ExecuteMethod_RevokeAccessFromAccountForPlanGroups(parameters.AccountID, GroupSubscriptionPlan);		
 				}
 				}
 				public class RevokePaidAccessFromGroupParameters 

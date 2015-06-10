@@ -117,7 +117,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Operation Call: GrantAccessToPaidPlan ( CustomerAccount, PlanName )" level="2">
+            <Header text="Operation Call: GrantAccessToPaidPlan ( AccountID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Grant access to paid plan</TextContent>
@@ -233,7 +233,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Operation Call: RevokeAccessToCanceledPlan ( PlanName, AccountID )" level="2">
+            <Header text="Operation Call: RevokeAccessFromCanceledPlan ( AccountID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Revoke access to canceled plan</TextContent>
@@ -356,64 +356,6 @@
               <Paragraph>
                 <Text>
                   <TextContent>Add account to group by inviting and confirming. Grant as visitor role.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-          </Header>
-          <Header text="GrantPlanAccessToAccount (PlanName, AccountID)" level="1">
-            <Header text="Specifications" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Grant plan access to account</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>PlanName</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Plan Name</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>AccountID</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Account ID to grant access for</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Group subscription plan of given name</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: GrantAccessToAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Grant access to plan groups. Using GrantPaidAccessToGroup operation</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -560,11 +502,11 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="RevokePlanAccessFromAccount (PlanName, AccountID)" level="1">
+          <Header text="SyncEffectivePlanAccessesToAccount (AccountID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Revoke plan access from account</TextContent>
+                  <TextContent>Grant plan access to account</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -577,17 +519,6 @@
                     <Column name="Description" />
                   </Columns>
                   <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>PlanName</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Plan Name</TextContent>
-                      </ColumnData>
-                    </Row>
                     <Row>
                       <ColumnData>
                         <TextContent>AccountID</TextContent>
@@ -603,17 +534,66 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: GroupSubscriptionPlan ( PlanName )" level="2">
+            <Header text="Target Definition: Account ( AccountID )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Group subscription plan of given name</TextContent>
+                  <TextContent>Customer account</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: RevokeAccessFromAccountForPlanGroups ( GroupSubscriptionPlan, AccountID )" level="2">
+            <Header text="Target Definition: CurrentPlansBeforeSync ( Account )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Revoke access from plan groups. Using RevokePaidAccessFromGroup operation</TextContent>
+                  <TextContent>Group subscription plans before syncing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ActivePlansFromStripe ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plans of account - fetched from Stripe.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupsToHaveAccessTo ( ActivePlansFromStripe )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group IDs of having access to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentGroupAccesses ( CurrentPlansBeforeSync )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group IDs of current access</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupsToAddAccessTo ( GroupsToHaveAccessTo, CurrentGroupAccesses )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group IDs to add access to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupsToRevokeAccessFrom ( GroupsToHaveAccessTo, CurrentGroupAccesses )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group IDs to revoke access from</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: GrantAccessToGroups ( GroupsToAddAccessTo, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grant access to missing group using GrantPaidAccessToGroup operation.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RevokeAccessFromGroups ( GroupsToRevokeAccessFrom, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Revoke access from inactive plan groups using RevokePaidAccessFromGroup operation.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
