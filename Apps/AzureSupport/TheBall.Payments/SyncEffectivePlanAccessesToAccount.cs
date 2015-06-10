@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
@@ -86,11 +87,18 @@ namespace TheBall.Payments
         {
             foreach (var groupID in groupsToAddAccessTo)
             {
-                GrantPaidAccessToGroup.Execute(new GrantPaidAccessToGroupParameters
+                try
                 {
-                    AccountID = accountID,
-                    GroupID = groupID
-                });
+                    GrantPaidAccessToGroup.Execute(new GrantPaidAccessToGroupParameters
+                    {
+                        AccountID = accountID,
+                        GroupID = groupID
+                    });
+                }
+                catch (Exception exception)
+                {
+                    ErrorSupport.ReportException(exception);
+                }
             }
         }
 
@@ -98,18 +106,24 @@ namespace TheBall.Payments
         {
             foreach (var groupID in groupsToRevokeAccessFrom)
             {
-                RevokePaidAccessFromGroup.Execute(new RevokePaidAccessFromGroupParameters
+                try
                 {
-                    AccountID = accountID,
-                    GroupID = groupID
-                });
+                    RevokePaidAccessFromGroup.Execute(new RevokePaidAccessFromGroupParameters
+                    {
+                        AccountID = accountID,
+                        GroupID = groupID
+                    });
+                }
+                catch (Exception exception)
+                {
+                    ErrorSupport.ReportException(exception);
+                }
             }
         }
 
         public static void ExecuteMethod_SyncCurrentStripePlansToAccount(CustomerAccount account, GroupSubscriptionPlan[] currentPlansBeforeSync, GroupSubscriptionPlan[] activePlansFromStripe)
         {
             var activePlanIDs = activePlansFromStripe.Select(plan => plan.PlanName).ToArray();
-            var currentPlanIDs = currentPlansBeforeSync.Select(plan => plan.PlanName).ToArray();
 
             var currentStatusIDs = account.ActivePlans;
             var currentStatuses =
@@ -125,17 +139,20 @@ namespace TheBall.Payments
                     .ToArray();
             foreach(var status in statusesToRemove)
                 status.DeleteInformationObject(InformationContext.CurrentOwner);
+            List<string> addedStatusIDs = new List<string>();
             foreach (var planToAddStatus in plansToAddStatusesFor)
             {
                 SubscriptionPlanStatus planStatus = new SubscriptionPlanStatus();
                 planStatus.SetLocationAsOwnerContent(InformationContext.CurrentOwner, planStatus.ID);
                 planStatus.SubscriptionPlan = planToAddStatus;
-                //planStatus.
                 planStatus.StoreInformation(InformationContext.CurrentOwner);
+                addedStatusIDs.Add(planStatus.ID);
             }
 
-            account.ActivePlans.Clear();
-            account.ActivePlans.AddRange(activePlanIDs);
+            //account.ActivePlans.Clear();
+            account.ActivePlans.RemoveAll(
+                removedPlan => statusesToRemove.Any(status => status.ID == removedPlan));
+            account.ActivePlans.AddRange(addedStatusIDs);
             account.StoreInformation(InformationContext.CurrentOwner);
         }
     }
