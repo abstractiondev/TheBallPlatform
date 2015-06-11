@@ -31,6 +31,13 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class CancelSubscriptionParams
+			{
+				[DataMember]
+				public string PlanName { get; set; }
+			}
+
+			[DataContract]
 			public partial class StripeWebhookData
 			{
 				[DataMember]

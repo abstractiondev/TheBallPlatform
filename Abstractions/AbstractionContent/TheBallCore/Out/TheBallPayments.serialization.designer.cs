@@ -12,6 +12,13 @@ using System.Runtime.Serialization;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class CancelSubscriptionParams
+			{
+				[DataMember]
+				public string PlanName { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
 			public partial class StripeWebhookData
 			{
 				[DataMember]

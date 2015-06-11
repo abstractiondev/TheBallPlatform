@@ -344,54 +344,28 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Group as owner
 		</div>
-		</p><h1>CancelGroupSubscriptionPlan (PlanName, AccountID)</h1>
+		</p><h1>CancelGroupSubscriptionPlan</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Cancel group paid subscription
 		</div>
-		</p><h2>Parameters</h2>
-		<p><table border="1">
-				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		PlanName
+		</p><h2>Target Definition: CancelParams</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain parameterse from request stream
 		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
+		</p><h2>Target Definition: PlanName ( CancelParams )</h2>
+		<p>		<div class="MsoNormal" >
 		Plan Name
 		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		AccountID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
+		</p><h2>Target Definition: AccountID</h2>
+		<p>		<div class="MsoNormal" >
 		Account ID to grant access for
 		</div>
-				</td>
-				</tr>
-		</table>
 		</p><h2>Target Definition: CustomerAccount ( AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Customer account object based on account ID. Must be found
 		</div>
-		</p><h2>Method Call: CancelSubscriptionPlan ( CustomerAccount, PlanName )</h2>
+		</p><h2>Method Call: CancelSubscriptionPlan ( PlanName, CustomerAccount )</h2>
 		<p>		<div class="MsoNormal" >
 		Cancel subscription plan on Stripe
 		</div>

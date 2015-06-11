@@ -14,6 +14,20 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
+			public partial class CancelSubscriptionParams 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string PlanName;
+
+			
+			}
+			[DataContract]
 			public partial class StripeWebhookData 
 			{
 				[DataMember]

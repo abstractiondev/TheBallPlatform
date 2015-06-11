@@ -26,8 +26,7 @@ using System.IO;
 		return returnValue;
 				}
 				}
-
-		    public class GetAccountFromStripeCustomerReturnValue 
+				public class GetAccountFromStripeCustomerReturnValue 
 		{
 				public CustomerAccount ResultAccount ;
 				}
@@ -100,25 +99,20 @@ using System.IO;
 		} // Local block closing
 				}
 				}
-				public class CancelGroupSubscriptionPlanParameters 
-		{
-				public string PlanName ;
-				public string AccountID ;
-				}
 		
 		public class CancelGroupSubscriptionPlan 
 		{
-				private static void PrepareParameters(CancelGroupSubscriptionPlanParameters parameters)
+				public static void Execute()
 		{
-					}
-				public static void Execute(CancelGroupSubscriptionPlanParameters parameters)
-		{
-						PrepareParameters(parameters);
-					CustomerAccount CustomerAccount = CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(parameters.AccountID);	
-				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(parameters.PlanName, CustomerAccount);		
+						
+					INT.CancelSubscriptionParams CancelParams = CancelGroupSubscriptionPlanImplementation.GetTarget_CancelParams();	
+				string PlanName = CancelGroupSubscriptionPlanImplementation.GetTarget_PlanName(CancelParams);	
+				string AccountID = CancelGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
+				CustomerAccount CustomerAccount = CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
+				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(PlanName, CustomerAccount);		
 				
 		{ // Local block to allow local naming
-			SyncEffectivePlanAccessesToAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessFromCanceledPlan_GetParameters(parameters.AccountID);
+			SyncEffectivePlanAccessesToAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessFromCanceledPlan_GetParameters(AccountID);
 			SyncEffectivePlanAccessesToAccount.Execute(operationParameters);
 									
 		} // Local block closing

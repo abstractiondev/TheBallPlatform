@@ -124,21 +124,22 @@
       <OperationSpec>
         <Description>Cancel group paid subscription</Description>
       </OperationSpec>
-      <Parameters>
-        <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented" />
-        <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented" />
-      </Parameters>
       <Execution>
         <SequentialExecution>
+          <TargetDefinition name="CancelParams" dataType="INT.CancelSubscriptionParams" designDesc="Obtain parameterse from request stream" state="implemented" />
+          <TargetDefinition name="PlanName" dataType="string" designDesc="Plan Name" state="implemented">
+            <Target name="CancelParams" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented" />
           <TargetDefinition name="CustomerAccount" dataType="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
-            <Parameter name="AccountID" />
+            <Target name="AccountID" />
           </TargetDefinition>
           <MethodExecute name="CancelSubscriptionPlan" designDesc="Cancel subscription plan on Stripe" state="implemented">
-            <Parameter name="PlanName" />
+            <Target name="PlanName" />
             <Target name="CustomerAccount" />
           </MethodExecute>
           <OperationExecute name="RevokeAccessFromCanceledPlan" targetOperationName="SyncEffectivePlanAccessesToAccount" designDesc="Revoke access to canceled plan" state="implemented">
-            <Parameter name="AccountID" />
+            <Target name="AccountID" />
           </OperationExecute>
         </SequentialExecution>
       </Execution>

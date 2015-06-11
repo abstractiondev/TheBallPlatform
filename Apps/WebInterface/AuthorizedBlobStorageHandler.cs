@@ -579,7 +579,7 @@ namespace WebInterface
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
-                // contentPath.StartsWith("cpanel/") ||
+                contentPath.StartsWith("cpanel/") ||
                 (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
                 contentPath.Contains("categoriesandcontent/") ||
                 contentPath.Contains("controlpanel_comments_v1/")))

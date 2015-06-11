@@ -18,7 +18,7 @@ namespace TheBall.Payments
                 GroupID = groupId,
                 MemberEmailAddress = accountEmail,
                 MemberRole = TBCollaboratorRole.ViewerRoleValue,
-                DontSendEmailInvitation = false
+                DontSendEmailInvitation = true
             });
             ConfirmInviteToJoinGroup.Execute(new ConfirmInviteToJoinGroupParameters
             {

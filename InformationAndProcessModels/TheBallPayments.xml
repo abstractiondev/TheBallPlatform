@@ -3,6 +3,11 @@
   <InstanceOfTheBall semanticDomainName="TheBall.Payments">
     <DigitalInterface>
       <InterfaceModel>
+        <InterfaceObject name="CancelSubscriptionParams" designDesc="Cancel subscription parameters">
+          <InterfaceItems>
+            <InterfaceItem name="PlanName" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="StripeWebhookData" designDesc="Stripe webhook data">
           <InterfaceItems>
             <InterfaceItem name="id" logicalDataType="Text_Short"/>
@@ -196,21 +201,22 @@
         <OperationSpec>
           <Description>Cancel group paid subscription</Description>
         </OperationSpec>
-        <Parameters>
-          <Parameter name="PlanName" dataType="string" designDesc="Plan Name" state="implemented"/>
-          <Parameter name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented"/>
-        </Parameters>
         <Execution>
           <SequentialExecution>
+            <TargetDefinition dataType="INT.CancelSubscriptionParams" name="CancelParams" designDesc="Obtain parameterse from request stream" state="implemented" />
+            <TargetDefinition name="PlanName" dataType="string" designDesc="Plan Name" state="implemented">
+              <Target name="CancelParams"/>
+            </TargetDefinition>
+            <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented" />
             <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
-              <Parameter name="AccountID"/>
+              <Target name="AccountID"/>
             </TargetDefinition>
             <MethodExecute name="CancelSubscriptionPlan" designDesc="Cancel subscription plan on Stripe" state="implemented">
-              <Parameter name="PlanName"/>
+              <Target name="PlanName"/>
               <Target name="CustomerAccount"/>
             </MethodExecute>
             <OperationExecute name="RevokeAccessFromCanceledPlan" designDesc="Revoke access to canceled plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount">
-              <Parameter name="AccountID"/>
+              <Target name="AccountID"/>
             </OperationExecute>
           </SequentialExecution>
         </Execution>
