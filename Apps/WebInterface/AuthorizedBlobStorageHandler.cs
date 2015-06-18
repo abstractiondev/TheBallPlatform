@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 //using System.Web.Helpers;
 using System.Web.Security;
@@ -27,7 +28,7 @@ using Process = TheBall.CORE.Process;
 
 namespace WebInterface
 {
-    public class AuthorizedBlobStorageHandler : IHttpHandler
+    public class AuthorizedBlobStorageHandler : HttpTaskAsyncHandler
     {
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
@@ -43,7 +44,7 @@ namespace WebInterface
             get { return true; }
         }
 
-        public void ProcessRequest(HttpContext context)
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
             string user = context.User.Identity.Name;
             var userIdentity = context.User;
@@ -64,15 +65,15 @@ namespace WebInterface
             {
                 if (userIdentity.IsInRole("DeviceAES"))
                 {
-                    HandleEncryptedDeviceRequest(context);
+                    await HandleEncryptedDeviceRequest(context);
                 }
                 else if (request.IsPersonalRequest())
                 {
-                    HandlePersonalRequest(context);
+                    await HandlePersonalRequest(context);
                 }
                 else if (request.IsGroupRequest())
                 {
-                    HandleGroupRequest(context);
+                    await HandleGroupRequest(context);
                 }
                 else if (request.IsAccountRequest())
                 {
@@ -86,7 +87,7 @@ namespace WebInterface
             }
         }
 
-        private void HandleEncryptedDeviceRequest(HttpContext context)
+        private async Task HandleEncryptedDeviceRequest(HttpContext context)
         {
             var request = context.Request;
             var response = context.Response;
@@ -215,16 +216,16 @@ namespace WebInterface
             //TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
         }
 
-        private void HandleGroupRequest(HttpContext context)
+        private async Task HandleGroupRequest(HttpContext context)
         {
             var request = context.Request;
             var loginGroupRoot = request.RequireAndRetrieveGroupAccessRole();
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             var contentPath = request.GetOwnerContentPath();
-            HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
+            await HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
         }
 
-        private void HandlePersonalRequest(HttpContext context)
+        private async Task HandlePersonalRequest(HttpContext context)
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
@@ -238,10 +239,10 @@ namespace WebInterface
             TBAccount account = loginRoot.Account;
             var request = context.Request;
             var contentPath = request.GetOwnerContentPath();
-            HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
+            await HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
-        private void HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
+        private async Task HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
         {
             InformationContext.Current.Owner = containerOwner;
             if (context.Request.RequestType == "POST")
@@ -252,7 +253,7 @@ namespace WebInterface
                 if (contentPath.StartsWith("op/"))
                 {
                     SetCurrentAccountFromLogin(context);
-                    HandleOwnerOperationRequest(containerOwner, context, contentPath.Substring(3));
+                    await HandleOwnerOperationRequest(containerOwner, context, contentPath.Substring(3));
                 }
                 else
                 {
@@ -264,16 +265,16 @@ namespace WebInterface
                     {
 
                     }
-                    bool redirectAfter = HandleOwnerPostRequest(containerOwner, context, contentPath);
+                    bool redirectAfter = await HandleOwnerPostRequest(containerOwner, context, contentPath);
                     if (redirectAfter)
                         context.Response.Redirect(context.Request.Url.ToString(), true);
                 }
                 return;
             }
-            HandleOwnerGetRequest(containerOwner, context, contentPath);
+            await HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
-        private void HandleOwnerOperationRequest(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
+        private async Task HandleOwnerOperationRequest(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
         {
             string operationName = operationRequestPath.Split('/')[0];
             var operationAssembly = typeof (OperationSupport).Assembly;
@@ -302,7 +303,7 @@ namespace WebInterface
             context.ApplicationInstance.CompleteRequest();
         }
 
-        private bool HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private async Task<bool> HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             validateThatOwnerPostComesFromSameReferrer(context);
             HttpRequest request = context.Request;
@@ -538,7 +539,7 @@ namespace WebInterface
             throw new NotImplementedException();
         }
 
-        private void HandleAboutGetRequest(HttpContext context, string contentPath)
+        private async Task HandleAboutGetRequest(HttpContext context, string contentPath)
         {
             var response = context.Response;
             var request = context.Request;
@@ -547,7 +548,7 @@ namespace WebInterface
             response.Clear();
             try
             {
-                HandleBlobRequestWithCacheSupport(context, blob, response);
+                await HandleBlobRequestWithCacheSupport(context, blob, response);
             }
             catch (StorageClientException scEx)
             {
@@ -570,7 +571,7 @@ namespace WebInterface
 
         }
 
-        private void HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private async Task HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
@@ -584,7 +585,7 @@ namespace WebInterface
                 contentPath.Contains("categoriesandcontent/") ||
                 contentPath.Contains("controlpanel_comments_v1/")))
             {
-                HandleFileSystemGetRequest(containerOwner, context, contentPath);
+                await HandleFileSystemGetRequest(containerOwner, context, contentPath);
                 return;
             }
             if (String.IsNullOrEmpty(contentPath) || contentPath.EndsWith("/"))
@@ -624,7 +625,7 @@ namespace WebInterface
             response.Clear();
             try
             {
-                HandleBlobRequestWithCacheSupport(context, blob, response);
+                await HandleBlobRequestWithCacheSupport(context, blob, response);
             } catch(StorageClientException scEx)
             {
                 if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
@@ -644,10 +645,10 @@ namespace WebInterface
                 string errMsg = ex.ToString();
                 response.Write(errMsg);
             }
-            response.End();
+            context.ApplicationInstance.CompleteRequest();
         }
 
-        private static void HandleBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
+        private static async Task HandleBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
         {
             // Set the cache request properties as IIS will include them regardless for now
             // even when we wouldn't want them on 304 response...
@@ -656,7 +657,8 @@ namespace WebInterface
             response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
             response.Cache.SetCacheability(HttpCacheability.Private);
             var request = context.Request;
-            blob.FetchAttributes();
+            await Task.Factory.FromAsync(blob.BeginFetchAttributes, blob.EndFetchAttributes, null);
+            //blob.FetchAttributes();
             string ifNoneMatch = request.Headers["If-None-Match"];
             string ifModifiedSince = request.Headers["If-Modified-Since"];
             if (ifNoneMatch != null)
@@ -688,7 +690,9 @@ namespace WebInterface
             //response.Cache.SetETag(blob.Properties.ETag);
             response.Headers.Add("ETag", blob.Properties.ETag);
             response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
-            blob.DownloadToStream(response.OutputStream);
+            //blob.DownloadToStream(response.OutputStream);
+            await Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, response.OutputStream,
+                    null);
         }
 
         private void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
@@ -764,7 +768,7 @@ namespace WebInterface
             }
         }
 
-        private void HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private async Task HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             bool isAccount = containerOwner is TBAccount;
             var response = context.Response;
@@ -829,16 +833,14 @@ namespace WebInterface
                 response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
                 response.Cache.SetLastModified(lastModified);
                 response.Cache.SetCacheability(HttpCacheability.Private);
-                var fileStream = File.OpenRead(fileName);
-                fileStream.CopyTo(context.Response.OutputStream);
-                fileStream.Close();
+                using(var fileStream = File.OpenRead(fileName))
+                    await fileStream.CopyToAsync(context.Response.OutputStream);
             }
             else
             {
                 response.StatusCode = 404;
             }
-            //response.End();
-            HttpContext.Current.ApplicationInstance.CompleteRequest();
+            context.ApplicationInstance.CompleteRequest();
         }
 
         #endregion
