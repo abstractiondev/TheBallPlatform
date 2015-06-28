@@ -193,6 +193,7 @@
     <Content Include="DynamicData\PageTemplates\ListDetails.aspx" />
     <Content Include="index.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="index.html" />
     <Content Include="Site.css" />
     <Content Include="TheBallCertLogin.aspx" />
     <Content Include="TheBallLogin.aspx" />
