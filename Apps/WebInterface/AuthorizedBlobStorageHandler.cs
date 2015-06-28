@@ -53,7 +53,7 @@ namespace WebInterface
             var response = context.Response;
             if (request.IsAboutRequest())
             {
-                HandleAboutGetRequest(context, request.Path);
+                await HandleAboutGetRequest(context, request.Path);
                 return;
             }
 
@@ -566,7 +566,8 @@ namespace WebInterface
             }
             finally
             {
-                response.End();
+                //response.End();
+                context.ApplicationInstance.CompleteRequest();
             }
 
         }
