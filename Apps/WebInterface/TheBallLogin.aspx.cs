@@ -175,6 +175,8 @@ namespace WebInterface
                 return true;
             if (friendlyName.StartsWith("me.yahoo.com/a/"))
                 return true;
+            if (friendlyName.StartsWith("steamcommunity.com/openid/id/"))
+                return true;
             return false;
         }
 
