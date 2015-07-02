@@ -16,6 +16,7 @@ namespace TheBall.CORE
         XML = 0,
         JSON,
         Binary,
+        ProtoBuf,
         Custom
     }
     public interface IInformationObject

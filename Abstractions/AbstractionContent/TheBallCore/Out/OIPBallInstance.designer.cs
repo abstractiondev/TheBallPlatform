@@ -24,6 +24,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
+using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
 
@@ -318,7 +319,7 @@ namespace INT {
                 }
             }
 		}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBSystem : IInformationObject 
 			{
@@ -520,7 +521,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -532,10 +533,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -693,15 +694,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string InstanceName { get; set; }
 			private string _unmodified_InstanceName;
-			[DataMember]
+			[DataMember] 
 			public string AdminGroupID { get; set; }
 			private string _unmodified_AdminGroupID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class WebPublishInfo : IInformationObject 
 			{
@@ -903,7 +904,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -915,10 +916,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1180,21 +1181,21 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string PublishType { get; set; }
 			private string _unmodified_PublishType;
-			[DataMember]
+			[DataMember] 
 			public string PublishContainer { get; set; }
 			private string _unmodified_PublishContainer;
-			[DataMember]
+			[DataMember] 
 			public PublicationPackage ActivePublication { get; set; }
 			private PublicationPackage _unmodified_ActivePublication;
-			[DataMember]
+			[DataMember] 
 			public PublicationPackageCollection Publications { get; set; }
 			private PublicationPackageCollection _unmodified_Publications;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class PublicationPackageCollection : IInformationObject , IInformationCollection
 			{
@@ -1396,7 +1397,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1408,10 +1409,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1696,7 +1697,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class PublicationPackage : IInformationObject 
 			{
@@ -1898,7 +1899,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1910,10 +1911,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2069,15 +2070,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string PackageName { get; set; }
 			private string _unmodified_PackageName;
-			[DataMember]
+			[DataMember] 
 			public DateTime PublicationTime { get; set; }
 			private DateTime _unmodified_PublicationTime;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBRLoginRoot : IInformationObject 
 			{
@@ -2279,7 +2280,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2291,10 +2292,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2495,15 +2496,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string DomainName { get; set; }
 			private string _unmodified_DomainName;
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBRAccountRoot : IInformationObject 
 			{
@@ -2705,7 +2706,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2717,10 +2718,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2912,12 +2913,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBRGroupRoot : IInformationObject 
 			{
@@ -3119,7 +3120,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3131,10 +3132,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3326,12 +3327,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBCollaboratingGroup Group { get; set; }
 			private TBCollaboratingGroup _unmodified_Group;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBRLoginGroupRoot : IInformationObject 
 			{
@@ -3533,7 +3534,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3545,10 +3546,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3706,15 +3707,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBREmailRoot : IInformationObject 
 			{
@@ -3916,7 +3917,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3928,10 +3929,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4123,12 +4124,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBAccount : IInformationObject 
 			{
@@ -4330,7 +4331,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4342,10 +4343,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4641,18 +4642,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBEmailCollection Emails { get; set; }
 			private TBEmailCollection _unmodified_Emails;
-			[DataMember]
+			[DataMember] 
 			public TBLoginInfoCollection Logins { get; set; }
 			private TBLoginInfoCollection _unmodified_Logins;
-			[DataMember]
+			[DataMember] 
 			public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
 			private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBAccountCollaborationGroup : IInformationObject 
 			{
@@ -4854,7 +4855,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4866,10 +4867,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5036,18 +5037,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string GroupRole { get; set; }
 			private string _unmodified_GroupRole;
-			[DataMember]
+			[DataMember] 
 			public string RoleStatus { get; set; }
 			private string _unmodified_RoleStatus;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBAccountCollaborationGroupCollection : IInformationObject , IInformationCollection
 			{
@@ -5249,7 +5250,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5261,10 +5262,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5549,7 +5550,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBLoginInfo : IInformationObject 
 			{
@@ -5751,7 +5752,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5763,10 +5764,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5915,12 +5916,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OpenIDUrl { get; set; }
 			private string _unmodified_OpenIDUrl;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBLoginInfoCollection : IInformationObject , IInformationCollection
 			{
@@ -6122,7 +6123,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6134,10 +6135,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6422,7 +6423,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBEmail : IInformationObject 
 			{
@@ -6624,7 +6625,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6636,10 +6637,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6795,15 +6796,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidatedAt { get; set; }
 			private DateTime _unmodified_ValidatedAt;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBEmailCollection : IInformationObject , IInformationCollection
 			{
@@ -7005,7 +7006,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7017,10 +7018,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7305,7 +7306,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBCollaboratorRole : IInformationObject 
 			{
@@ -7507,7 +7508,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7519,10 +7520,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7732,18 +7733,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBEmail Email { get; set; }
 			private TBEmail _unmodified_Email;
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string RoleStatus { get; set; }
 			private string _unmodified_RoleStatus;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBCollaboratorRoleCollection : IInformationObject , IInformationCollection
 			{
@@ -7945,7 +7946,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7957,10 +7958,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8245,7 +8246,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBCollaboratingGroup : IInformationObject 
 			{
@@ -8447,7 +8448,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8459,10 +8460,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8663,15 +8664,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public TBCollaboratorRoleCollection Roles { get; set; }
 			private TBCollaboratorRoleCollection _unmodified_Roles;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBEmailValidation : IInformationObject 
 			{
@@ -8873,7 +8874,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8885,10 +8886,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9288,36 +9289,36 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Email { get; set; }
 			private string _unmodified_Email;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidUntil { get; set; }
 			private DateTime _unmodified_ValidUntil;
-			[DataMember]
+			[DataMember] 
 			public TBGroupJoinConfirmation GroupJoinConfirmation { get; set; }
 			private TBGroupJoinConfirmation _unmodified_GroupJoinConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBDeviceJoinConfirmation DeviceJoinConfirmation { get; set; }
 			private TBDeviceJoinConfirmation _unmodified_DeviceJoinConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBInformationInputConfirmation InformationInputConfirmation { get; set; }
 			private TBInformationInputConfirmation _unmodified_InformationInputConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBInformationOutputConfirmation InformationOutputConfirmation { get; set; }
 			private TBInformationOutputConfirmation _unmodified_InformationOutputConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBMergeAccountConfirmation MergeAccountsConfirmation { get; set; }
 			private TBMergeAccountConfirmation _unmodified_MergeAccountsConfirmation;
-			[DataMember]
+			[DataMember] 
 			public string RedirectUrlAfterValidation { get; set; }
 			private string _unmodified_RedirectUrlAfterValidation;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBMergeAccountConfirmation : IInformationObject 
 			{
@@ -9519,7 +9520,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9531,10 +9532,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9692,15 +9693,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string AccountToBeMergedID { get; set; }
 			private string _unmodified_AccountToBeMergedID;
-			[DataMember]
+			[DataMember] 
 			public string AccountToMergeToID { get; set; }
 			private string _unmodified_AccountToMergeToID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBGroupJoinConfirmation : IInformationObject 
 			{
@@ -9902,7 +9903,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9914,10 +9915,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10075,15 +10076,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string InvitationMode { get; set; }
 			private string _unmodified_InvitationMode;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBDeviceJoinConfirmation : IInformationObject 
 			{
@@ -10285,7 +10286,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10297,10 +10298,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10467,18 +10468,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string DeviceMembershipID { get; set; }
 			private string _unmodified_DeviceMembershipID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBInformationInputConfirmation : IInformationObject 
 			{
@@ -10680,7 +10681,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10692,10 +10693,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10862,18 +10863,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string InformationInputID { get; set; }
 			private string _unmodified_InformationInputID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBInformationOutputConfirmation : IInformationObject 
 			{
@@ -11075,7 +11076,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11087,10 +11088,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11257,18 +11258,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string InformationOutputID { get; set; }
 			private string _unmodified_InformationOutputID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LoginProvider : IInformationObject 
 			{
@@ -11470,7 +11471,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11482,10 +11483,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11670,24 +11671,24 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ProviderName { get; set; }
 			private string _unmodified_ProviderName;
-			[DataMember]
+			[DataMember] 
 			public string ProviderIconClass { get; set; }
 			private string _unmodified_ProviderIconClass;
-			[DataMember]
+			[DataMember] 
 			public string ProviderType { get; set; }
 			private string _unmodified_ProviderType;
-			[DataMember]
+			[DataMember] 
 			public string ProviderUrl { get; set; }
 			private string _unmodified_ProviderUrl;
-			[DataMember]
+			[DataMember] 
 			public string ReturnUrl { get; set; }
 			private string _unmodified_ReturnUrl;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LoginProviderCollection : IInformationObject , IInformationCollection
 			{
@@ -11889,7 +11890,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11901,10 +11902,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12189,7 +12190,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TBPRegisterEmail : IInformationObject 
 			{
@@ -12391,7 +12392,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12403,10 +12404,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12555,12 +12556,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountSummary : IInformationObject 
 			{
@@ -12762,7 +12763,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12774,10 +12775,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12969,12 +12970,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public GroupSummaryContainer GroupSummary { get; set; }
 			private GroupSummaryContainer _unmodified_GroupSummary;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountContainer : IInformationObject 
 			{
@@ -13176,7 +13177,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13188,10 +13189,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -13435,15 +13436,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public AccountModule AccountModule { get; set; }
 			private AccountModule _unmodified_AccountModule;
-			[DataMember]
+			[DataMember] 
 			public AccountSummary AccountSummary { get; set; }
 			private AccountSummary _unmodified_AccountSummary;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountModule : IInformationObject 
 			{
@@ -13645,7 +13646,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13657,10 +13658,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14009,21 +14010,21 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public AccountProfile Profile { get; set; }
 			private AccountProfile _unmodified_Profile;
-			[DataMember]
+			[DataMember] 
 			public AccountSecurity Security { get; set; }
 			private AccountSecurity _unmodified_Security;
-			[DataMember]
+			[DataMember] 
 			public AccountRoles Roles { get; set; }
 			private AccountRoles _unmodified_Roles;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection LocationCollection { get; set; }
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LocationContainer : IInformationObject 
 			{
@@ -14225,7 +14226,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -14237,10 +14238,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14433,12 +14434,12 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddressAndLocationCollection : IInformationObject , IInformationCollection
 			{
@@ -14640,7 +14641,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -14652,10 +14653,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14951,7 +14952,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddressAndLocation : IInformationObject 
 			{
@@ -15153,7 +15154,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -15165,10 +15166,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -15450,18 +15451,18 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public StreetAddress Address { get; set; }
 			private StreetAddress _unmodified_Address;
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StreetAddress : IInformationObject 
 			{
@@ -15663,7 +15664,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -15675,10 +15676,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -15854,21 +15855,21 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Street { get; set; }
 			private string _unmodified_Street;
-			[DataMember]
+			[DataMember] 
 			public string ZipCode { get; set; }
 			private string _unmodified_ZipCode;
-			[DataMember]
+			[DataMember] 
 			public string Town { get; set; }
 			private string _unmodified_Town;
-			[DataMember]
+			[DataMember] 
 			public string Country { get; set; }
 			private string _unmodified_Country;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountProfile : IInformationObject 
 			{
@@ -16070,7 +16071,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -16082,10 +16083,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -16358,30 +16359,30 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public Image ProfileImage { get; set; }
 			private Image _unmodified_ProfileImage;
-			[DataMember]
+			[DataMember] 
 			public string FirstName { get; set; }
 			private string _unmodified_FirstName;
-			[DataMember]
+			[DataMember] 
 			public string LastName { get; set; }
 			private string _unmodified_LastName;
-			[DataMember]
+			[DataMember] 
 			public StreetAddress Address { get; set; }
 			private StreetAddress _unmodified_Address;
-			[DataMember]
+			[DataMember] 
 			public bool IsSimplifiedAccount { get; set; }
 			private bool _unmodified_IsSimplifiedAccount;
-			[DataMember]
+			[DataMember] 
 			public string SimplifiedAccountEmail { get; set; }
 			private string _unmodified_SimplifiedAccountEmail;
-			[DataMember]
+			[DataMember] 
 			public string SimplifiedAccountGroupID { get; set; }
 			private string _unmodified_SimplifiedAccountGroupID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountSecurity : IInformationObject 
 			{
@@ -16583,7 +16584,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -16595,10 +16596,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -16842,15 +16843,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TBLoginInfoCollection LoginInfoCollection { get; set; }
 			private TBLoginInfoCollection _unmodified_LoginInfoCollection;
-			[DataMember]
+			[DataMember] 
 			public TBEmailCollection EmailCollection { get; set; }
 			private TBEmailCollection _unmodified_EmailCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AccountRoles : IInformationObject 
 			{
@@ -17052,7 +17053,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -17064,10 +17065,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -17325,18 +17326,18 @@ AccountRoles.OrganizationsImPartOf
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public ReferenceCollection ModeratorInGroups { get; set; }
 			private ReferenceCollection _unmodified_ModeratorInGroups;
-			[DataMember]
+			[DataMember] 
 			public ReferenceCollection MemberInGroups { get; set; }
 			private ReferenceCollection _unmodified_MemberInGroups;
-			[DataMember]
+			[DataMember] 
 			public string OrganizationsImPartOf { get; set; }
 			private string _unmodified_OrganizationsImPartOf;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class PersonalInfoVisibility : IInformationObject 
 			{
@@ -17538,7 +17539,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -17550,10 +17551,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -17702,12 +17703,12 @@ AccountRoles.OrganizationsImPartOf
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string NoOne_Network_All { get; set; }
 			private string _unmodified_NoOne_Network_All;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ReferenceToInformation : IInformationObject 
 			{
@@ -17909,7 +17910,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -17921,10 +17922,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -18082,15 +18083,15 @@ AccountRoles.OrganizationsImPartOf
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string URL { get; set; }
 			private string _unmodified_URL;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ReferenceCollection : IInformationObject , IInformationCollection
 			{
@@ -18292,7 +18293,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -18304,10 +18305,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -18581,7 +18582,7 @@ AccountRoles.OrganizationsImPartOf
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class NodeSummaryContainer : IInformationObject 
 			{
@@ -18783,7 +18784,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -18795,10 +18796,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -19308,30 +19309,30 @@ AccountRoles.OrganizationsImPartOf
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public RenderedNodeCollection Nodes { get; set; }
 			private RenderedNodeCollection _unmodified_Nodes;
-			[DataMember]
+			[DataMember] 
 			public TextContentCollection NodeSourceTextContent { get; set; }
 			private TextContentCollection _unmodified_NodeSourceTextContent;
-			[DataMember]
+			[DataMember] 
 			public LinkToContentCollection NodeSourceLinkToContent { get; set; }
 			private LinkToContentCollection _unmodified_NodeSourceLinkToContent;
-			[DataMember]
+			[DataMember] 
 			public EmbeddedContentCollection NodeSourceEmbeddedContent { get; set; }
 			private EmbeddedContentCollection _unmodified_NodeSourceEmbeddedContent;
-			[DataMember]
+			[DataMember] 
 			public ImageCollection NodeSourceImages { get; set; }
 			private ImageCollection _unmodified_NodeSourceImages;
-			[DataMember]
+			[DataMember] 
 			public BinaryFileCollection NodeSourceBinaryFiles { get; set; }
 			private BinaryFileCollection _unmodified_NodeSourceBinaryFiles;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection NodeSourceCategories { get; set; }
 			private CategoryCollection _unmodified_NodeSourceCategories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class RenderedNodeCollection : IInformationObject , IInformationCollection
 			{
@@ -19533,7 +19534,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -19545,10 +19546,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -19833,7 +19834,7 @@ AccountRoles.OrganizationsImPartOf
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class RenderedNode : IInformationObject 
 			{
@@ -20035,7 +20036,7 @@ AccountRoles.OrganizationsImPartOf
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -20047,10 +20048,10 @@ AccountRoles.OrganizationsImPartOf
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -20552,57 +20553,57 @@ RenderedNode.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OriginalContentID { get; set; }
 			private string _unmodified_OriginalContentID;
-			[DataMember]
+			[DataMember] 
 			public string TechnicalSource { get; set; }
 			private string _unmodified_TechnicalSource;
-			[DataMember]
+			[DataMember] 
 			public string ImageBaseUrl { get; set; }
 			private string _unmodified_ImageBaseUrl;
-			[DataMember]
+			[DataMember] 
 			public string ImageExt { get; set; }
 			private string _unmodified_ImageExt;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string ActualContentUrl { get; set; }
 			private string _unmodified_ActualContentUrl;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public string TimestampText { get; set; }
 			private string _unmodified_TimestampText;
-			[DataMember]
+			[DataMember] 
 			public string MainSortableText { get; set; }
 			private string _unmodified_MainSortableText;
-			[DataMember]
+			[DataMember] 
 			public bool IsCategoryFilteringNode { get; set; }
 			private bool _unmodified_IsCategoryFilteringNode;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CategoryFilters { get; set; }
 			private ShortTextCollection _unmodified_CategoryFilters;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CategoryNames { get; set; }
 			private ShortTextCollection _unmodified_CategoryNames;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Categories { get; set; }
 			private ShortTextCollection _unmodified_Categories;
-			[DataMember]
+			[DataMember] 
 			public string CategoryIDList { get; set; }
 			private string _unmodified_CategoryIDList;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Authors { get; set; }
 			private ShortTextCollection _unmodified_Authors;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Locations { get; set; }
 			private ShortTextCollection _unmodified_Locations;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ShortTextCollection : IInformationObject , IInformationCollection
 			{
@@ -20804,7 +20805,7 @@ RenderedNode.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -20816,10 +20817,10 @@ RenderedNode.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -21104,7 +21105,7 @@ RenderedNode.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ShortTextObject : IInformationObject 
 			{
@@ -21306,7 +21307,7 @@ RenderedNode.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -21318,10 +21319,10 @@ RenderedNode.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -21470,12 +21471,12 @@ RenderedNode.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LongTextCollection : IInformationObject , IInformationCollection
 			{
@@ -21677,7 +21678,7 @@ RenderedNode.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -21689,10 +21690,10 @@ RenderedNode.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -21977,7 +21978,7 @@ RenderedNode.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LongTextObject : IInformationObject 
 			{
@@ -22179,7 +22180,7 @@ RenderedNode.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -22191,10 +22192,10 @@ RenderedNode.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -22348,12 +22349,12 @@ LongTextObject.Content
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapMarker : IInformationObject 
 			{
@@ -22555,7 +22556,7 @@ LongTextObject.Content
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -22567,10 +22568,10 @@ LongTextObject.Content
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -22821,30 +22822,30 @@ MapMarker.PopupContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string IconUrl { get; set; }
 			private string _unmodified_IconUrl;
-			[DataMember]
+			[DataMember] 
 			public string MarkerSource { get; set; }
 			private string _unmodified_MarkerSource;
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
-			[DataMember]
+			[DataMember] 
 			public string LocationText { get; set; }
 			private string _unmodified_LocationText;
-			[DataMember]
+			[DataMember] 
 			public string PopupTitle { get; set; }
 			private string _unmodified_PopupTitle;
-			[DataMember]
+			[DataMember] 
 			public string PopupContent { get; set; }
 			private string _unmodified_PopupContent;
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapMarkerCollection : IInformationObject , IInformationCollection
 			{
@@ -23046,7 +23047,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -23058,10 +23059,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -23346,7 +23347,7 @@ MapMarker.PopupContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ModeratorCollection : IInformationObject , IInformationCollection
 			{
@@ -23548,7 +23549,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -23560,10 +23561,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -23848,7 +23849,7 @@ MapMarker.PopupContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Moderator : IInformationObject 
 			{
@@ -24050,7 +24051,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -24062,10 +24063,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -24223,15 +24224,15 @@ MapMarker.PopupContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ModeratorName { get; set; }
 			private string _unmodified_ModeratorName;
-			[DataMember]
+			[DataMember] 
 			public string ProfileUrl { get; set; }
 			private string _unmodified_ProfileUrl;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CollaboratorCollection : IInformationObject , IInformationCollection
 			{
@@ -24433,7 +24434,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -24445,10 +24446,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -24733,7 +24734,7 @@ MapMarker.PopupContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Collaborator : IInformationObject 
 			{
@@ -24935,7 +24936,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -24947,10 +24948,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -25135,24 +25136,24 @@ MapMarker.PopupContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public string CollaboratorName { get; set; }
 			private string _unmodified_CollaboratorName;
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string ProfileUrl { get; set; }
 			private string _unmodified_ProfileUrl;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupSummaryContainer : IInformationObject 
 			{
@@ -25354,7 +25355,7 @@ MapMarker.PopupContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -25366,10 +25367,10 @@ MapMarker.PopupContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -25679,21 +25680,21 @@ GroupSummaryContainer.SummaryBody
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SummaryBody { get; set; }
 			private string _unmodified_SummaryBody;
-			[DataMember]
+			[DataMember] 
 			public Introduction Introduction { get; set; }
 			private Introduction _unmodified_Introduction;
-			[DataMember]
+			[DataMember] 
 			public GroupIndex GroupSummaryIndex { get; set; }
 			private GroupIndex _unmodified_GroupSummaryIndex;
-			[DataMember]
+			[DataMember] 
 			public GroupCollection GroupCollection { get; set; }
 			private GroupCollection _unmodified_GroupCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupContainer : IInformationObject 
 			{
@@ -25895,7 +25896,7 @@ GroupSummaryContainer.SummaryBody
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -25907,10 +25908,10 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -26311,24 +26312,24 @@ GroupSummaryContainer.SummaryBody
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public GroupIndex GroupIndex { get; set; }
 			private GroupIndex _unmodified_GroupIndex;
-			[DataMember]
+			[DataMember] 
 			public Group GroupProfile { get; set; }
 			private Group _unmodified_GroupProfile;
-			[DataMember]
+			[DataMember] 
 			public CollaboratorCollection Collaborators { get; set; }
 			private CollaboratorCollection _unmodified_Collaborators;
-			[DataMember]
+			[DataMember] 
 			public CollaboratorCollection PendingCollaborators { get; set; }
 			private CollaboratorCollection _unmodified_PendingCollaborators;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection LocationCollection { get; set; }
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupIndex : IInformationObject 
 			{
@@ -26530,7 +26531,7 @@ GroupSummaryContainer.SummaryBody
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -26542,10 +26543,10 @@ GroupSummaryContainer.SummaryBody
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -26760,21 +26761,21 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public Image Icon { get; set; }
 			private Image _unmodified_Icon;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Introduction { get; set; }
 			private string _unmodified_Introduction;
-			[DataMember]
+			[DataMember] 
 			public string Summary { get; set; }
 			private string _unmodified_Summary;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddAddressAndLocationInfo : IInformationObject 
 			{
@@ -26976,7 +26977,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -26988,10 +26989,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -27140,12 +27141,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string LocationName { get; set; }
 			private string _unmodified_LocationName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddImageInfo : IInformationObject 
 			{
@@ -27347,7 +27348,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -27359,10 +27360,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -27511,12 +27512,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ImageTitle { get; set; }
 			private string _unmodified_ImageTitle;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddImageGroupInfo : IInformationObject 
 			{
@@ -27718,7 +27719,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -27730,10 +27731,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -27882,12 +27883,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ImageGroupTitle { get; set; }
 			private string _unmodified_ImageGroupTitle;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddEmailAddressInfo : IInformationObject 
 			{
@@ -28089,7 +28090,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -28101,10 +28102,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -28253,12 +28254,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CreateGroupInfo : IInformationObject 
 			{
@@ -28460,7 +28461,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -28472,10 +28473,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -28624,12 +28625,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddActivityInfo : IInformationObject 
 			{
@@ -28831,7 +28832,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -28843,10 +28844,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -28995,12 +28996,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ActivityName { get; set; }
 			private string _unmodified_ActivityName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddBlogPostInfo : IInformationObject 
 			{
@@ -29202,7 +29203,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -29214,10 +29215,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -29366,12 +29367,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AddCategoryInfo : IInformationObject 
 			{
@@ -29573,7 +29574,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -29585,10 +29586,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -29737,12 +29738,12 @@ GroupIndex.Summary
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupCollection : IInformationObject , IInformationCollection
 			{
@@ -29944,7 +29945,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -29956,10 +29957,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -30244,7 +30245,7 @@ GroupIndex.Summary
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Group : IInformationObject 
 			{
@@ -30446,7 +30447,7 @@ GroupIndex.Summary
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -30458,10 +30459,10 @@ GroupIndex.Summary
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -30918,39 +30919,39 @@ Group.OrganizationsAndGroupsLinkedToUs
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public Image ProfileImage { get; set; }
 			private Image _unmodified_ProfileImage;
-			[DataMember]
+			[DataMember] 
 			public Image IconImage { get; set; }
 			private Image _unmodified_IconImage;
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string OrganizationsAndGroupsLinkedToUs { get; set; }
 			private string _unmodified_OrganizationsAndGroupsLinkedToUs;
-			[DataMember]
+			[DataMember] 
 			public string WwwSiteToPublishTo { get; set; }
 			private string _unmodified_WwwSiteToPublishTo;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CustomUICollection { get; set; }
 			private ShortTextCollection _unmodified_CustomUICollection;
-			[DataMember]
+			[DataMember] 
 			public ModeratorCollection Moderators { get; set; }
 			private ModeratorCollection _unmodified_Moderators;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Introduction : IInformationObject 
 			{
@@ -31152,7 +31153,7 @@ Group.OrganizationsAndGroupsLinkedToUs
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -31164,10 +31165,10 @@ Group.OrganizationsAndGroupsLinkedToUs
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -31330,15 +31331,15 @@ Introduction.Body
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Body { get; set; }
 			private string _unmodified_Body;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ContentCategoryRankCollection : IInformationObject , IInformationCollection
 			{
@@ -31540,7 +31541,7 @@ Introduction.Body
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -31552,10 +31553,10 @@ Introduction.Body
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -31862,7 +31863,7 @@ Introduction.Body
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ContentCategoryRank : IInformationObject 
 			{
@@ -32064,7 +32065,7 @@ Introduction.Body
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -32076,10 +32077,10 @@ Introduction.Body
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -32264,24 +32265,24 @@ Introduction.Body
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ContentID { get; set; }
 			private string _unmodified_ContentID;
-			[DataMember]
+			[DataMember] 
 			public string ContentSemanticType { get; set; }
 			private string _unmodified_ContentSemanticType;
-			[DataMember]
+			[DataMember] 
 			public string CategoryID { get; set; }
 			private string _unmodified_CategoryID;
-			[DataMember]
+			[DataMember] 
 			public string RankName { get; set; }
 			private string _unmodified_RankName;
-			[DataMember]
+			[DataMember] 
 			public string RankValue { get; set; }
 			private string _unmodified_RankValue;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LinkToContentCollection : IInformationObject , IInformationCollection
 			{
@@ -32483,7 +32484,7 @@ Introduction.Body
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -32495,10 +32496,10 @@ Introduction.Body
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -32794,7 +32795,7 @@ Introduction.Body
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LinkToContent : IInformationObject 
 			{
@@ -32996,7 +32997,7 @@ Introduction.Body
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -33008,10 +33009,10 @@ Introduction.Body
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -33357,33 +33358,33 @@ LinkToContent.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string URL { get; set; }
 			private string _unmodified_URL;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class EmbeddedContentCollection : IInformationObject , IInformationCollection
 			{
@@ -33585,7 +33586,7 @@ LinkToContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -33597,10 +33598,10 @@ LinkToContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -33896,7 +33897,7 @@ LinkToContent.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class EmbeddedContent : IInformationObject 
 			{
@@ -34098,7 +34099,7 @@ LinkToContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -34110,10 +34111,10 @@ LinkToContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -34407,30 +34408,30 @@ EmbeddedContent.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string IFrameTagContents { get; set; }
 			private string _unmodified_IFrameTagContents;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DynamicContentGroupCollection : IInformationObject , IInformationCollection
 			{
@@ -34632,7 +34633,7 @@ EmbeddedContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -34644,10 +34645,10 @@ EmbeddedContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -34954,7 +34955,7 @@ EmbeddedContent.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DynamicContentGroup : IInformationObject 
 			{
@@ -35156,7 +35157,7 @@ EmbeddedContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -35168,10 +35169,10 @@ EmbeddedContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -35328,24 +35329,24 @@ EmbeddedContent.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string HostName { get; set; }
 			private string _unmodified_HostName;
-			[DataMember]
+			[DataMember] 
 			public string GroupHeader { get; set; }
 			private string _unmodified_GroupHeader;
-			[DataMember]
+			[DataMember] 
 			public string SortValue { get; set; }
 			private string _unmodified_SortValue;
-			[DataMember]
+			[DataMember] 
 			public string PageLocation { get; set; }
 			private string _unmodified_PageLocation;
-			[DataMember]
+			[DataMember] 
 			public string ContentItemNames { get; set; }
 			private string _unmodified_ContentItemNames;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DynamicContentCollection : IInformationObject , IInformationCollection
 			{
@@ -35547,7 +35548,7 @@ EmbeddedContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -35559,10 +35560,10 @@ EmbeddedContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -35869,7 +35870,7 @@ EmbeddedContent.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DynamicContent : IInformationObject 
 			{
@@ -36071,7 +36072,7 @@ EmbeddedContent.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -36083,10 +36084,10 @@ EmbeddedContent.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -36388,45 +36389,45 @@ DynamicContent.RawContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string HostName { get; set; }
 			private string _unmodified_HostName;
-			[DataMember]
+			[DataMember] 
 			public string ContentName { get; set; }
 			private string _unmodified_ContentName;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string ElementQuery { get; set; }
 			private string _unmodified_ElementQuery;
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
-			[DataMember]
+			[DataMember] 
 			public string RawContent { get; set; }
 			private string _unmodified_RawContent;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public bool IsEnabled { get; set; }
 			private bool _unmodified_IsEnabled;
-			[DataMember]
+			[DataMember] 
 			public bool ApplyActively { get; set; }
 			private bool _unmodified_ApplyActively;
-			[DataMember]
+			[DataMember] 
 			public string EditType { get; set; }
 			private string _unmodified_EditType;
-			[DataMember]
+			[DataMember] 
 			public string PageLocation { get; set; }
 			private string _unmodified_PageLocation;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AttachedToObjectCollection : IInformationObject , IInformationCollection
 			{
@@ -36628,7 +36629,7 @@ DynamicContent.RawContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -36640,10 +36641,10 @@ DynamicContent.RawContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -36950,7 +36951,7 @@ DynamicContent.RawContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AttachedToObject : IInformationObject 
 			{
@@ -37152,7 +37153,7 @@ DynamicContent.RawContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -37164,10 +37165,10 @@ DynamicContent.RawContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -37361,27 +37362,27 @@ DynamicContent.RawContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectID { get; set; }
 			private string _unmodified_SourceObjectID;
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectName { get; set; }
 			private string _unmodified_SourceObjectName;
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectDomain { get; set; }
 			private string _unmodified_SourceObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CommentCollection : IInformationObject , IInformationCollection
 			{
@@ -37583,7 +37584,7 @@ DynamicContent.RawContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -37595,10 +37596,10 @@ DynamicContent.RawContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -37905,7 +37906,7 @@ DynamicContent.RawContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Comment : IInformationObject 
 			{
@@ -38107,7 +38108,7 @@ DynamicContent.RawContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -38119,10 +38120,10 @@ DynamicContent.RawContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -38371,45 +38372,45 @@ Comment.CommentText
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string CommentText { get; set; }
 			private string _unmodified_CommentText;
-			[DataMember]
+			[DataMember] 
 			public DateTime Created { get; set; }
 			private DateTime _unmodified_Created;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorName { get; set; }
 			private string _unmodified_OriginalAuthorName;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorEmail { get; set; }
 			private string _unmodified_OriginalAuthorEmail;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorAccountID { get; set; }
 			private string _unmodified_OriginalAuthorAccountID;
-			[DataMember]
+			[DataMember] 
 			public DateTime LastModified { get; set; }
 			private DateTime _unmodified_LastModified;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorName { get; set; }
 			private string _unmodified_LastAuthorName;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorEmail { get; set; }
 			private string _unmodified_LastAuthorEmail;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorAccountID { get; set; }
 			private string _unmodified_LastAuthorAccountID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SelectionCollection : IInformationObject , IInformationCollection
 			{
@@ -38611,7 +38612,7 @@ Comment.CommentText
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -38623,10 +38624,10 @@ Comment.CommentText
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -38933,7 +38934,7 @@ Comment.CommentText
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Selection : IInformationObject 
 			{
@@ -39135,7 +39136,7 @@ Comment.CommentText
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -39147,10 +39148,10 @@ Comment.CommentText
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -39349,30 +39350,30 @@ Comment.CommentText
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string SelectionCategory { get; set; }
 			private string _unmodified_SelectionCategory;
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
-			[DataMember]
+			[DataMember] 
 			public bool BooleanValue { get; set; }
 			private bool _unmodified_BooleanValue;
-			[DataMember]
+			[DataMember] 
 			public double DoubleValue { get; set; }
 			private double _unmodified_DoubleValue;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TextContentCollection : IInformationObject , IInformationCollection
 			{
@@ -39574,7 +39575,7 @@ Comment.CommentText
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -39586,10 +39587,10 @@ Comment.CommentText
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -39885,7 +39886,7 @@ Comment.CommentText
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TextContent : IInformationObject 
 			{
@@ -40087,7 +40088,7 @@ Comment.CommentText
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -40099,10 +40100,10 @@ Comment.CommentText
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -40497,45 +40498,45 @@ TextContent.RawHtmlContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string SubTitle { get; set; }
 			private string _unmodified_SubTitle;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public string Body { get; set; }
 			private string _unmodified_Body;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
-			[DataMember]
+			[DataMember] 
 			public double SortOrderNumber { get; set; }
 			private double _unmodified_SortOrderNumber;
-			[DataMember]
+			[DataMember] 
 			public string IFrameSources { get; set; }
 			private string _unmodified_IFrameSources;
-			[DataMember]
+			[DataMember] 
 			public string RawHtmlContent { get; set; }
 			private string _unmodified_RawHtmlContent;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Map : IInformationObject 
 			{
@@ -40737,7 +40738,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -40749,10 +40750,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -40901,12 +40902,12 @@ TextContent.RawHtmlContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapCollection : IInformationObject , IInformationCollection
 			{
@@ -41108,7 +41109,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -41120,10 +41121,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -41408,7 +41409,7 @@ TextContent.RawHtmlContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapResult : IInformationObject 
 			{
@@ -41610,7 +41611,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -41622,10 +41623,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -41817,12 +41818,12 @@ TextContent.RawHtmlContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapResultCollection : IInformationObject , IInformationCollection
 			{
@@ -42024,7 +42025,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -42036,10 +42037,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -42324,7 +42325,7 @@ TextContent.RawHtmlContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MapResultsCollection : IInformationObject 
 			{
@@ -42526,7 +42527,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -42538,10 +42539,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -42837,18 +42838,18 @@ TextContent.RawHtmlContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByDate { get; set; }
 			private MapResultCollection _unmodified_ResultByDate;
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByAuthor { get; set; }
 			private MapResultCollection _unmodified_ResultByAuthor;
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByProximity { get; set; }
 			private MapResultCollection _unmodified_ResultByProximity;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Video : IInformationObject 
 			{
@@ -43050,7 +43051,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -43062,10 +43063,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -43275,18 +43276,18 @@ TextContent.RawHtmlContent
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public MediaContent VideoData { get; set; }
 			private MediaContent _unmodified_VideoData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Caption { get; set; }
 			private string _unmodified_Caption;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ImageCollection : IInformationObject , IInformationCollection
 			{
@@ -43488,7 +43489,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -43500,10 +43501,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -43799,7 +43800,7 @@ TextContent.RawHtmlContent
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Image : IInformationObject 
 			{
@@ -44001,7 +44002,7 @@ TextContent.RawHtmlContent
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -44013,10 +44014,10 @@ TextContent.RawHtmlContent
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -44384,30 +44385,30 @@ Image.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Caption { get; set; }
 			private string _unmodified_Caption;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class BinaryFileCollection : IInformationObject , IInformationCollection
 			{
@@ -44609,7 +44610,7 @@ Image.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -44621,10 +44622,10 @@ Image.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -44931,7 +44932,7 @@ Image.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class BinaryFile : IInformationObject 
 			{
@@ -45133,7 +45134,7 @@ Image.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -45145,10 +45146,10 @@ Image.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -45425,24 +45426,24 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OriginalFileName { get; set; }
 			private string _unmodified_OriginalFileName;
-			[DataMember]
+			[DataMember] 
 			public MediaContent Data { get; set; }
 			private MediaContent _unmodified_Data;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class MediaContent : IInformationObject 
 			{
@@ -45644,7 +45645,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -45656,10 +45657,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -45774,7 +45775,7 @@ BinaryFile.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Longitude : IInformationObject 
 			{
@@ -45976,7 +45977,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -45988,10 +45989,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -46140,12 +46141,12 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Latitude : IInformationObject 
 			{
@@ -46347,7 +46348,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -46359,10 +46360,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -46511,12 +46512,12 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Location : IInformationObject 
 			{
@@ -46718,7 +46719,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -46730,10 +46731,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -46986,18 +46987,18 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string LocationName { get; set; }
 			private string _unmodified_LocationName;
-			[DataMember]
+			[DataMember] 
 			public Longitude Longitude { get; set; }
 			private Longitude _unmodified_Longitude;
-			[DataMember]
+			[DataMember] 
 			public Latitude Latitude { get; set; }
 			private Latitude _unmodified_Latitude;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class LocationCollection : IInformationObject , IInformationCollection
 			{
@@ -47199,7 +47200,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -47211,10 +47212,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -47499,7 +47500,7 @@ BinaryFile.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Date : IInformationObject 
 			{
@@ -47701,7 +47702,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -47713,10 +47714,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -47884,21 +47885,21 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime Day { get; set; }
 			private DateTime _unmodified_Day;
-			[DataMember]
+			[DataMember] 
 			public DateTime Week { get; set; }
 			private DateTime _unmodified_Week;
-			[DataMember]
+			[DataMember] 
 			public DateTime Month { get; set; }
 			private DateTime _unmodified_Month;
-			[DataMember]
+			[DataMember] 
 			public DateTime Year { get; set; }
 			private DateTime _unmodified_Year;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CategoryContainer : IInformationObject 
 			{
@@ -48100,7 +48101,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -48112,10 +48113,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -48308,12 +48309,12 @@ BinaryFile.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Category : IInformationObject 
 			{
@@ -48515,7 +48516,7 @@ BinaryFile.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -48527,10 +48528,10 @@ BinaryFile.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -48839,30 +48840,30 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public Category ParentCategory { get; set; }
 			private Category _unmodified_ParentCategory;
-			[DataMember]
+			[DataMember] 
 			public string ParentCategoryID { get; set; }
 			private string _unmodified_ParentCategoryID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
@@ -49064,7 +49065,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -49076,10 +49077,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -49375,7 +49376,7 @@ Category.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionCollection : IInformationObject , IInformationCollection
 			{
@@ -49577,7 +49578,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -49589,10 +49590,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -49877,7 +49878,7 @@ Category.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Subscription : IInformationObject 
 			{
@@ -50079,7 +50080,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -50091,10 +50092,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -50286,27 +50287,27 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public long Priority { get; set; }
 			private long _unmodified_Priority;
-			[DataMember]
+			[DataMember] 
 			public string TargetRelativeLocation { get; set; }
 			private string _unmodified_TargetRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string TargetInformationObjectType { get; set; }
 			private string _unmodified_TargetInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberRelativeLocation { get; set; }
 			private string _unmodified_SubscriberRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberInformationObjectType { get; set; }
 			private string _unmodified_SubscriberInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SubscriptionType { get; set; }
 			private string _unmodified_SubscriptionType;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class QueueEnvelope : IInformationObject 
 			{
@@ -50508,7 +50509,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -50520,10 +50521,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -50844,27 +50845,27 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ActiveContainerName { get; set; }
 			private string _unmodified_ActiveContainerName;
-			[DataMember]
+			[DataMember] 
 			public string OwnerPrefix { get; set; }
 			private string _unmodified_OwnerPrefix;
-			[DataMember]
+			[DataMember] 
 			public long CurrentRetryCount { get; set; }
 			private long _unmodified_CurrentRetryCount;
-			[DataMember]
+			[DataMember] 
 			public OperationRequest SingleOperation { get; set; }
 			private OperationRequest _unmodified_SingleOperation;
-			[DataMember]
+			[DataMember] 
 			public OperationRequestCollection OrderDependentOperationSequence { get; set; }
 			private OperationRequestCollection _unmodified_OrderDependentOperationSequence;
-			[DataMember]
+			[DataMember] 
 			public SystemError ErrorContent { get; set; }
 			private SystemError _unmodified_ErrorContent;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class OperationRequestCollection : IInformationObject , IInformationCollection
 			{
@@ -51066,7 +51067,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -51078,10 +51079,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -51366,7 +51367,7 @@ Category.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class OperationRequest : IInformationObject 
 			{
@@ -51568,7 +51569,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -51580,10 +51581,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -52096,33 +52097,33 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public Subscription SubscriberNotification { get; set; }
 			private Subscription _unmodified_SubscriberNotification;
-			[DataMember]
+			[DataMember] 
 			public SubscriptionChainRequestMessage SubscriptionChainRequest { get; set; }
 			private SubscriptionChainRequestMessage _unmodified_SubscriptionChainRequest;
-			[DataMember]
+			[DataMember] 
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			private UpdateWebContentOperation _unmodified_UpdateWebContentOperation;
-			[DataMember]
+			[DataMember] 
 			public RefreshDefaultViewsOperation RefreshDefaultViewsOperation { get; set; }
 			private RefreshDefaultViewsOperation _unmodified_RefreshDefaultViewsOperation;
-			[DataMember]
+			[DataMember] 
 			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
 			private DeleteEntireOwnerOperation _unmodified_DeleteEntireOwner;
-			[DataMember]
+			[DataMember] 
 			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
 			private DeleteOwnerContentOperation _unmodified_DeleteOwnerContent;
-			[DataMember]
+			[DataMember] 
 			public PublishWebContentOperation PublishWebContent { get; set; }
 			private PublishWebContentOperation _unmodified_PublishWebContent;
-			[DataMember]
+			[DataMember] 
 			public string ProcessIDToExecute { get; set; }
 			private string _unmodified_ProcessIDToExecute;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionChainRequestMessage : IInformationObject 
 			{
@@ -52324,7 +52325,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -52336,10 +52337,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -52488,12 +52489,12 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ContentItemID { get; set; }
 			private string _unmodified_ContentItemID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionChainRequestContent : IInformationObject 
 			{
@@ -52695,7 +52696,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -52707,10 +52708,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -52937,27 +52938,27 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime SubmitTime { get; set; }
 			private DateTime _unmodified_SubmitTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingStartTime { get; set; }
 			private DateTime _unmodified_ProcessingStartTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTimeInformationObjects { get; set; }
 			private DateTime _unmodified_ProcessingEndTimeInformationObjects;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTimeWebTemplatesRendering { get; set; }
 			private DateTime _unmodified_ProcessingEndTimeWebTemplatesRendering;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTime { get; set; }
 			private DateTime _unmodified_ProcessingEndTime;
-			[DataMember]
+			[DataMember] 
 			public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
 			private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionTarget : IInformationObject 
 			{
@@ -53159,7 +53160,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -53171,10 +53172,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -53323,12 +53324,12 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string BlobLocation { get; set; }
 			private string _unmodified_BlobLocation;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionTargetCollection : IInformationObject , IInformationCollection
 			{
@@ -53530,7 +53531,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -53542,10 +53543,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -53830,7 +53831,7 @@ Category.Excerpt
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DeleteEntireOwnerOperation : IInformationObject 
 			{
@@ -54032,7 +54033,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -54044,10 +54045,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -54205,15 +54206,15 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ContainerName { get; set; }
 			private string _unmodified_ContainerName;
-			[DataMember]
+			[DataMember] 
 			public string LocationPrefix { get; set; }
 			private string _unmodified_LocationPrefix;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DeleteOwnerContentOperation : IInformationObject 
 			{
@@ -54415,7 +54416,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -54427,10 +54428,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -54588,15 +54589,15 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ContainerName { get; set; }
 			private string _unmodified_ContainerName;
-			[DataMember]
+			[DataMember] 
 			public string LocationPrefix { get; set; }
 			private string _unmodified_LocationPrefix;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SystemError : IInformationObject 
 			{
@@ -54798,7 +54799,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -54810,10 +54811,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -55073,21 +55074,21 @@ Category.Excerpt
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ErrorTitle { get; set; }
 			private string _unmodified_ErrorTitle;
-			[DataMember]
+			[DataMember] 
 			public DateTime OccurredAt { get; set; }
 			private DateTime _unmodified_OccurredAt;
-			[DataMember]
+			[DataMember] 
 			public SystemErrorItemCollection SystemErrorItems { get; set; }
 			private SystemErrorItemCollection _unmodified_SystemErrorItems;
-			[DataMember]
+			[DataMember] 
 			public QueueEnvelope MessageContent { get; set; }
 			private QueueEnvelope _unmodified_MessageContent;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SystemErrorItem : IInformationObject 
 			{
@@ -55289,7 +55290,7 @@ Category.Excerpt
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -55301,10 +55302,10 @@ Category.Excerpt
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -55467,15 +55468,15 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ShortDescription { get; set; }
 			private string _unmodified_ShortDescription;
-			[DataMember]
+			[DataMember] 
 			public string LongDescription { get; set; }
 			private string _unmodified_LongDescription;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SystemErrorItemCollection : IInformationObject , IInformationCollection
 			{
@@ -55677,7 +55678,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -55689,10 +55690,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -55977,7 +55978,7 @@ SystemErrorItem.LongDescription
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationSource : IInformationObject 
 			{
@@ -56179,7 +56180,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -56191,10 +56192,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -56402,33 +56403,33 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SourceName { get; set; }
 			private string _unmodified_SourceName;
-			[DataMember]
+			[DataMember] 
 			public string SourceLocation { get; set; }
 			private string _unmodified_SourceLocation;
-			[DataMember]
+			[DataMember] 
 			public string SourceType { get; set; }
 			private string _unmodified_SourceType;
-			[DataMember]
+			[DataMember] 
 			public bool IsDynamic { get; set; }
 			private bool _unmodified_IsDynamic;
-			[DataMember]
+			[DataMember] 
 			public string SourceInformationObjectType { get; set; }
 			private string _unmodified_SourceInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SourceETag { get; set; }
 			private string _unmodified_SourceETag;
-			[DataMember]
+			[DataMember] 
 			public string SourceMD5 { get; set; }
 			private string _unmodified_SourceMD5;
-			[DataMember]
+			[DataMember] 
 			public DateTime SourceLastModified { get; set; }
 			private DateTime _unmodified_SourceLastModified;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationSourceCollection : IInformationObject , IInformationCollection
 			{
@@ -56630,7 +56631,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -56642,10 +56643,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -56930,7 +56931,7 @@ SystemErrorItem.LongDescription
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class RefreshDefaultViewsOperation : IInformationObject 
 			{
@@ -57132,7 +57133,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -57144,10 +57145,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -57305,15 +57306,15 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ViewLocation { get; set; }
 			private string _unmodified_ViewLocation;
-			[DataMember]
+			[DataMember] 
 			public string TypeNameToRefresh { get; set; }
 			private string _unmodified_TypeNameToRefresh;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class UpdateWebContentOperation : IInformationObject 
 			{
@@ -57515,7 +57516,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -57527,10 +57528,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -57765,27 +57766,27 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SourceContainerName { get; set; }
 			private string _unmodified_SourceContainerName;
-			[DataMember]
+			[DataMember] 
 			public string SourcePathRoot { get; set; }
 			private string _unmodified_SourcePathRoot;
-			[DataMember]
+			[DataMember] 
 			public string TargetContainerName { get; set; }
 			private string _unmodified_TargetContainerName;
-			[DataMember]
+			[DataMember] 
 			public string TargetPathRoot { get; set; }
 			private string _unmodified_TargetPathRoot;
-			[DataMember]
+			[DataMember] 
 			public bool RenderWhileSync { get; set; }
 			private bool _unmodified_RenderWhileSync;
-			[DataMember]
+			[DataMember] 
 			public UpdateWebContentHandlerCollection Handlers { get; set; }
 			private UpdateWebContentHandlerCollection _unmodified_Handlers;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class UpdateWebContentHandlerItem : IInformationObject 
 			{
@@ -57987,7 +57988,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -57999,10 +58000,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -58160,15 +58161,15 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string InformationTypeName { get; set; }
 			private string _unmodified_InformationTypeName;
-			[DataMember]
+			[DataMember] 
 			public string OptionName { get; set; }
 			private string _unmodified_OptionName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class UpdateWebContentHandlerCollection : IInformationObject , IInformationCollection
 			{
@@ -58370,7 +58371,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -58382,10 +58383,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -58670,7 +58671,7 @@ SystemErrorItem.LongDescription
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class PublishWebContentOperation : IInformationObject 
 			{
@@ -58872,7 +58873,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -58884,10 +58885,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -59063,21 +59064,21 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SourceContainerName { get; set; }
 			private string _unmodified_SourceContainerName;
-			[DataMember]
+			[DataMember] 
 			public string SourcePathRoot { get; set; }
 			private string _unmodified_SourcePathRoot;
-			[DataMember]
+			[DataMember] 
 			public string SourceOwner { get; set; }
 			private string _unmodified_SourceOwner;
-			[DataMember]
+			[DataMember] 
 			public string TargetContainerName { get; set; }
 			private string _unmodified_TargetContainerName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriberInput : IInformationObject 
 			{
@@ -59279,7 +59280,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -59291,10 +59292,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -59470,21 +59471,21 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string InputRelativeLocation { get; set; }
 			private string _unmodified_InputRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string InformationObjectName { get; set; }
 			private string _unmodified_InformationObjectName;
-			[DataMember]
+			[DataMember] 
 			public string InformationItemName { get; set; }
 			private string _unmodified_InformationItemName;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberRelativeLocation { get; set; }
 			private string _unmodified_SubscriberRelativeLocation;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Monitor : IInformationObject 
 			{
@@ -59686,7 +59687,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -59698,10 +59699,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -59900,30 +59901,30 @@ SystemErrorItem.LongDescription
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetItemName { get; set; }
 			private string _unmodified_TargetItemName;
-			[DataMember]
+			[DataMember] 
 			public DateTime MonitoringUtcTimeStampToStart { get; set; }
 			private DateTime _unmodified_MonitoringUtcTimeStampToStart;
-			[DataMember]
+			[DataMember] 
 			public string MonitoringCycleFrequencyUnit { get; set; }
 			private string _unmodified_MonitoringCycleFrequencyUnit;
-			[DataMember]
+			[DataMember] 
 			public long MonitoringCycleEveryXthOfUnit { get; set; }
 			private long _unmodified_MonitoringCycleEveryXthOfUnit;
-			[DataMember]
+			[DataMember] 
 			public string CustomMonitoringCycleOperationName { get; set; }
 			private string _unmodified_CustomMonitoringCycleOperationName;
-			[DataMember]
+			[DataMember] 
 			public string OperationActionName { get; set; }
 			private string _unmodified_OperationActionName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class IconTitleDescription : IInformationObject 
 			{
@@ -60125,7 +60126,7 @@ SystemErrorItem.LongDescription
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -60137,10 +60138,10 @@ SystemErrorItem.LongDescription
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -60307,18 +60308,18 @@ IconTitleDescription.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public byte[] Icon { get; set; }
 			private byte[] _unmodified_Icon;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AboutAGIApplications : IInformationObject 
 			{
@@ -60520,7 +60521,7 @@ IconTitleDescription.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -60532,10 +60533,10 @@ IconTitleDescription.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -60779,10 +60780,10 @@ IconTitleDescription.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public IconTitleDescription BuiltForAnybody { get; set; }
 			private IconTitleDescription _unmodified_BuiltForAnybody;
-			[DataMember]
+			[DataMember] 
 			public IconTitleDescription ForAllPeople { get; set; }
 			private IconTitleDescription _unmodified_ForAllPeople;
 			

@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using ProtoBuf;
 
 
 namespace INT { 
@@ -46,7 +47,239 @@ namespace INT {
 				public string ItemTextData { get; set; }
 			}
 
- }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+			[Serializable]
+			public partial class Account 
+			{
+
+				public Account()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Account";
+				}
+
+		
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Account));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Account DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Account));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Account) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+			
+
+			[DataMember] [ProtoMember(1)]
+			public List< string > Emails = new List< string >();
+			[DataMember] [ProtoMember(2)]
+			public List< string > Logins = new List< string >();
+			[DataMember] [ProtoMember(3)]
+			public List< string > GroupMemberships = new List< string >();
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+			[Serializable]
+			public partial class Group 
+			{
+
+				public Group()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Group";
+				}
+
+		
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Group));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Group DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Group));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Group) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+			
+
+			[DataMember] [ProtoMember(1)]
+			public List< string > GroupMemberships = new List< string >();
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+			[Serializable]
+			public partial class GroupMembership 
+			{
+
+				public GroupMembership()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "GroupMembership";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupMembership));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static GroupMembership DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupMembership));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (GroupMembership) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+
+				private void CopyContentFrom(GroupMembership sourceObject)
+				{
+					Account = sourceObject.Account;
+					Group = sourceObject.Group;
+					Role = sourceObject.Role;
+				}
+				
+
+
+
+			[DataMember] [ProtoMember(1)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			[DataMember] [ProtoMember(2)]
+			public string Group { get; set; }
+			private string _unmodified_Group;
+			[DataMember] [ProtoMember(3)]
+			public string Role { get; set; }
+			private string _unmodified_Role;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ContentPackageCollection 
 			{
@@ -85,7 +318,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -97,10 +330,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -165,7 +398,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ContentPackage 
 			{
@@ -204,7 +437,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -216,10 +449,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -242,24 +475,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string PackageType { get; set; }
 			private string _unmodified_PackageType;
-			[DataMember]
+			[DataMember] 
 			public string PackageName { get; set; }
 			private string _unmodified_PackageName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string PackageRootFolder { get; set; }
 			private string _unmodified_PackageRootFolder;
-			[DataMember]
+			[DataMember] 
 			public DateTime CreationTime { get; set; }
 			private DateTime _unmodified_CreationTime;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InformationInputCollection 
 			{
@@ -298,7 +531,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -310,10 +543,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -378,7 +611,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InformationInput 
 			{
@@ -417,7 +650,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -429,10 +662,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -455,24 +688,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string InputDescription { get; set; }
 			private string _unmodified_InputDescription;
-			[DataMember]
+			[DataMember] 
 			public string LocationURL { get; set; }
 			private string _unmodified_LocationURL;
-			[DataMember]
+			[DataMember] 
 			public string LocalContentName { get; set; }
 			private string _unmodified_LocalContentName;
-			[DataMember]
+			[DataMember] 
 			public string AuthenticatedDeviceID { get; set; }
 			private string _unmodified_AuthenticatedDeviceID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InformationOutputCollection 
 			{
@@ -511,7 +744,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -523,10 +756,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -591,7 +824,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InformationOutput 
 			{
@@ -630,7 +863,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -642,10 +875,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -669,27 +902,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string OutputDescription { get; set; }
 			private string _unmodified_OutputDescription;
-			[DataMember]
+			[DataMember] 
 			public string DestinationURL { get; set; }
 			private string _unmodified_DestinationURL;
-			[DataMember]
+			[DataMember] 
 			public string DestinationContentName { get; set; }
 			private string _unmodified_DestinationContentName;
-			[DataMember]
+			[DataMember] 
 			public string LocalContentURL { get; set; }
 			private string _unmodified_LocalContentURL;
-			[DataMember]
+			[DataMember] 
 			public string AuthenticatedDeviceID { get; set; }
 			private string _unmodified_AuthenticatedDeviceID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection 
 			{
@@ -728,7 +961,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -740,10 +973,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -808,7 +1041,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDevice 
 			{
@@ -847,7 +1080,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -859,10 +1092,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -887,30 +1120,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string AuthenticationDescription { get; set; }
 			private string _unmodified_AuthenticationDescription;
-			[DataMember]
+			[DataMember] 
 			public string SharedSecret { get; set; }
 			private string _unmodified_SharedSecret;
-			[DataMember]
+			[DataMember] 
 			public byte[] ActiveSymmetricAESKey { get; set; }
 			private byte[] _unmodified_ActiveSymmetricAESKey;
-			[DataMember]
+			[DataMember] 
 			public string EstablishedTrustID { get; set; }
 			private string _unmodified_EstablishedTrustID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
-			[DataMember]
+			[DataMember] 
 			public string NegotiationURL { get; set; }
 			private string _unmodified_NegotiationURL;
-			[DataMember]
+			[DataMember] 
 			public string ConnectionURL { get; set; }
 			private string _unmodified_ConnectionURL;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class DeviceMembershipCollection 
 			{
@@ -949,7 +1182,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -961,10 +1194,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1029,7 +1262,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class DeviceMembership 
 			{
@@ -1068,7 +1301,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1080,10 +1313,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1105,21 +1338,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string DeviceDescription { get; set; }
 			private string _unmodified_DeviceDescription;
-			[DataMember]
+			[DataMember] 
 			public string SharedSecret { get; set; }
 			private string _unmodified_SharedSecret;
-			[DataMember]
+			[DataMember] 
 			public byte[] ActiveSymmetricAESKey { get; set; }
 			private byte[] _unmodified_ActiveSymmetricAESKey;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceFiscalExportSummary 
 			{
@@ -1158,7 +1391,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1170,10 +1403,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1194,18 +1427,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public DateTime FiscalInclusiveStartDate { get; set; }
 			private DateTime _unmodified_FiscalInclusiveStartDate;
-			[DataMember]
+			[DataMember] 
 			public DateTime FiscalInclusiveEndDate { get; set; }
 			private DateTime _unmodified_FiscalInclusiveEndDate;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection ExportedInvoices { get; set; }
 			private InvoiceCollection _unmodified_ExportedInvoices;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceSummaryContainer 
 			{
@@ -1244,7 +1477,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1256,10 +1489,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1281,21 +1514,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection OpenInvoices { get; set; }
 			private InvoiceCollection _unmodified_OpenInvoices;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PredictedInvoices { get; set; }
 			private InvoiceCollection _unmodified_PredictedInvoices;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PaidInvoicesActiveYear { get; set; }
 			private InvoiceCollection _unmodified_PaidInvoicesActiveYear;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PaidInvoicesLast12Months { get; set; }
 			private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceCollection 
 			{
@@ -1334,7 +1567,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1346,10 +1579,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1414,7 +1647,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class Invoice 
 			{
@@ -1453,7 +1686,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1465,10 +1698,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1496,39 +1729,39 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string InvoiceName { get; set; }
 			private string _unmodified_InvoiceName;
-			[DataMember]
+			[DataMember] 
 			public string InvoiceID { get; set; }
 			private string _unmodified_InvoiceID;
-			[DataMember]
+			[DataMember] 
 			public string InvoicedAmount { get; set; }
 			private string _unmodified_InvoicedAmount;
-			[DataMember]
+			[DataMember] 
 			public DateTime CreateDate { get; set; }
 			private DateTime _unmodified_CreateDate;
-			[DataMember]
+			[DataMember] 
 			public DateTime DueDate { get; set; }
 			private DateTime _unmodified_DueDate;
-			[DataMember]
+			[DataMember] 
 			public string PaidAmount { get; set; }
 			private string _unmodified_PaidAmount;
-			[DataMember]
+			[DataMember] 
 			public string FeesAndInterestAmount { get; set; }
 			private string _unmodified_FeesAndInterestAmount;
-			[DataMember]
+			[DataMember] 
 			public string UnpaidAmount { get; set; }
 			private string _unmodified_UnpaidAmount;
-			[DataMember]
+			[DataMember] 
 			public InvoiceDetails InvoiceDetails { get; set; }
 			private InvoiceDetails _unmodified_InvoiceDetails;
-			[DataMember]
+			[DataMember] 
 			public InvoiceUserCollection InvoiceUsers { get; set; }
 			private InvoiceUserCollection _unmodified_InvoiceUsers;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceDetails 
 			{
@@ -1567,7 +1800,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1579,10 +1812,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1606,27 +1839,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string MonthlyFeesTotal { get; set; }
 			private string _unmodified_MonthlyFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string OneTimeFeesTotal { get; set; }
 			private string _unmodified_OneTimeFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string UsageFeesTotal { get; set; }
 			private string _unmodified_UsageFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string InterestFeesTotal { get; set; }
 			private string _unmodified_InterestFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string PenaltyFeesTotal { get; set; }
 			private string _unmodified_PenaltyFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string TotalFeesTotal { get; set; }
 			private string _unmodified_TotalFeesTotal;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceUserCollection 
 			{
@@ -1665,7 +1898,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1677,10 +1910,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1745,7 +1978,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceUser 
 			{
@@ -1784,7 +2017,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1796,10 +2029,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1824,30 +2057,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string UserName { get; set; }
 			private string _unmodified_UserName;
-			[DataMember]
+			[DataMember] 
 			public string UserID { get; set; }
 			private string _unmodified_UserID;
-			[DataMember]
+			[DataMember] 
 			public string UserPhoneNumber { get; set; }
 			private string _unmodified_UserPhoneNumber;
-			[DataMember]
+			[DataMember] 
 			public string UserSubscriptionNumber { get; set; }
 			private string _unmodified_UserSubscriptionNumber;
-			[DataMember]
+			[DataMember] 
 			public string UserInvoiceTotalAmount { get; set; }
 			private string _unmodified_UserInvoiceTotalAmount;
-			[DataMember]
+			[DataMember] 
 			public InvoiceRowGroupCollection InvoiceRowGroupCollection { get; set; }
 			private InvoiceRowGroupCollection _unmodified_InvoiceRowGroupCollection;
-			[DataMember]
+			[DataMember] 
 			public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection { get; set; }
 			private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceRowGroupCollection 
 			{
@@ -1886,7 +2119,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1898,10 +2131,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1966,7 +2199,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroupCollection 
 			{
@@ -2005,7 +2238,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2017,10 +2250,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2085,7 +2318,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceRowGroup 
 			{
@@ -2124,7 +2357,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2136,10 +2369,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2162,24 +2395,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalPriceWithoutTaxes { get; set; }
 			private string _unmodified_GroupTotalPriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalTaxes { get; set; }
 			private string _unmodified_GroupTotalTaxes;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalPriceWithTaxes { get; set; }
 			private string _unmodified_GroupTotalPriceWithTaxes;
-			[DataMember]
+			[DataMember] 
 			public InvoiceRowCollection InvoiceRowCollection { get; set; }
 			private InvoiceRowCollection _unmodified_InvoiceRowCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroup 
 			{
@@ -2218,7 +2451,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2230,10 +2463,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2253,15 +2486,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public InvoiceEventDetailCollection InvoiceEventDetailCollection { get; set; }
 			private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceEventDetailCollection 
 			{
@@ -2300,7 +2533,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2312,10 +2545,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2380,7 +2613,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceRowCollection 
 			{
@@ -2419,7 +2652,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2431,10 +2664,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2499,7 +2732,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceEventDetail 
 			{
@@ -2538,7 +2771,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2550,10 +2783,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2581,39 +2814,39 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string IndentMode { get; set; }
 			private string _unmodified_IndentMode;
-			[DataMember]
+			[DataMember] 
 			public DateTime EventStartDateTime { get; set; }
 			private DateTime _unmodified_EventStartDateTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime EventEndDateTime { get; set; }
 			private DateTime _unmodified_EventEndDateTime;
-			[DataMember]
+			[DataMember] 
 			public string ReceivingParty { get; set; }
 			private string _unmodified_ReceivingParty;
-			[DataMember]
+			[DataMember] 
 			public string AmountOfUnits { get; set; }
 			private string _unmodified_AmountOfUnits;
-			[DataMember]
+			[DataMember] 
 			public string Duration { get; set; }
 			private string _unmodified_Duration;
-			[DataMember]
+			[DataMember] 
 			public string UnitPrice { get; set; }
 			private string _unmodified_UnitPrice;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithoutTaxes { get; set; }
 			private string _unmodified_PriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string Taxes { get; set; }
 			private string _unmodified_Taxes;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithTaxes { get; set; }
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InvoiceRow 
 			{
@@ -2652,7 +2885,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2664,10 +2897,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2692,30 +2925,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string IndentMode { get; set; }
 			private string _unmodified_IndentMode;
-			[DataMember]
+			[DataMember] 
 			public string AmountOfUnits { get; set; }
 			private string _unmodified_AmountOfUnits;
-			[DataMember]
+			[DataMember] 
 			public string Duration { get; set; }
 			private string _unmodified_Duration;
-			[DataMember]
+			[DataMember] 
 			public string UnitPrice { get; set; }
 			private string _unmodified_UnitPrice;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithoutTaxes { get; set; }
 			private string _unmodified_PriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string Taxes { get; set; }
 			private string _unmodified_Taxes;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithTaxes { get; set; }
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class CategoryCollection 
 			{
@@ -2754,7 +2987,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2766,10 +2999,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2834,7 +3067,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class Category 
 			{
@@ -2873,7 +3106,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2885,10 +3118,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2907,12 +3140,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ProcessContainer 
 			{
@@ -2952,7 +3185,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2964,10 +3197,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2979,11 +3212,11 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public List< string > ProcessIDs = new List< string >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class Process 
 			{
@@ -3023,7 +3256,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3035,10 +3268,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3050,19 +3283,19 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public string ProcessDescription { get; set; }
 			private string _unmodified_ProcessDescription;
-			[DataMember]
+			[DataMember] 
 			public SemanticInformationItem ExecutingOperation { get; set; }
 			private SemanticInformationItem _unmodified_ExecutingOperation;
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > InitialArguments = new List< SemanticInformationItem >();
-			[DataMember]
+			[DataMember] 
 			public List< ProcessItem > ProcessItems = new List< ProcessItem >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ProcessItem 
 			{
@@ -3102,7 +3335,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3114,10 +3347,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3129,13 +3362,13 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > Outputs = new List< SemanticInformationItem >();
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class SemanticInformationItem 
 			{
@@ -3174,7 +3407,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3186,10 +3419,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3209,15 +3442,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ItemFullType { get; set; }
 			private string _unmodified_ItemFullType;
-			[DataMember]
+			[DataMember] 
 			public string ItemValue { get; set; }
 			private string _unmodified_ItemValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class InformationOwnerInfo 
 			{
@@ -3256,7 +3489,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3268,10 +3501,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3291,15 +3524,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string OwnerType { get; set; }
 			private string _unmodified_OwnerType;
-			[DataMember]
+			[DataMember] 
 			public string OwnerIdentifier { get; set; }
 			private string _unmodified_OwnerIdentifier;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class UsageSummary 
 			{
@@ -3338,7 +3571,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3350,10 +3583,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3373,15 +3606,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SummaryName { get; set; }
 			private string _unmodified_SummaryName;
-			[DataMember]
+			[DataMember] 
 			public UsageMonitorItem SummaryMonitoringItem { get; set; }
 			private UsageMonitorItem _unmodified_SummaryMonitoringItem;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class UsageMonitorItem 
 			{
@@ -3420,7 +3653,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3432,10 +3665,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3460,30 +3693,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public InformationOwnerInfo OwnerInfo { get; set; }
 			private InformationOwnerInfo _unmodified_OwnerInfo;
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRangeInclusiveStartExclusiveEnd { get; set; }
 			private TimeRange _unmodified_TimeRangeInclusiveStartExclusiveEnd;
-			[DataMember]
+			[DataMember] 
 			public long StepSizeInMinutes { get; set; }
 			private long _unmodified_StepSizeInMinutes;
-			[DataMember]
+			[DataMember] 
 			public ProcessorUsageCollection ProcessorUsages { get; set; }
 			private ProcessorUsageCollection _unmodified_ProcessorUsages;
-			[DataMember]
+			[DataMember] 
 			public StorageTransactionUsageCollection StorageTransactionUsages { get; set; }
 			private StorageTransactionUsageCollection _unmodified_StorageTransactionUsages;
-			[DataMember]
+			[DataMember] 
 			public StorageUsageCollection StorageUsages { get; set; }
 			private StorageUsageCollection _unmodified_StorageUsages;
-			[DataMember]
+			[DataMember] 
 			public NetworkUsageCollection NetworkUsages { get; set; }
 			private NetworkUsageCollection _unmodified_NetworkUsages;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class RequestResourceUsageCollection 
 			{
@@ -3522,7 +3755,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3534,10 +3767,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3602,7 +3835,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class RequestResourceUsage 
 			{
@@ -3641,7 +3874,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3653,10 +3886,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3679,24 +3912,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public InformationOwnerInfo OwnerInfo { get; set; }
 			private InformationOwnerInfo _unmodified_OwnerInfo;
-			[DataMember]
+			[DataMember] 
 			public ProcessorUsage ProcessorUsage { get; set; }
 			private ProcessorUsage _unmodified_ProcessorUsage;
-			[DataMember]
+			[DataMember] 
 			public StorageTransactionUsage StorageTransactionUsage { get; set; }
 			private StorageTransactionUsage _unmodified_StorageTransactionUsage;
-			[DataMember]
+			[DataMember] 
 			public NetworkUsage NetworkUsage { get; set; }
 			private NetworkUsage _unmodified_NetworkUsage;
-			[DataMember]
+			[DataMember] 
 			public HTTPActivityDetails RequestDetails { get; set; }
 			private HTTPActivityDetails _unmodified_RequestDetails;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ProcessorUsageCollection 
 			{
@@ -3735,7 +3968,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3747,10 +3980,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3815,7 +4048,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class ProcessorUsage 
 			{
@@ -3854,7 +4087,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3866,10 +4099,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3892,24 +4125,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public double AmountOfTicks { get; set; }
 			private double _unmodified_AmountOfTicks;
-			[DataMember]
+			[DataMember] 
 			public double FrequencyTicksPerSecond { get; set; }
 			private double _unmodified_FrequencyTicksPerSecond;
-			[DataMember]
+			[DataMember] 
 			public long Milliseconds { get; set; }
 			private long _unmodified_Milliseconds;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class StorageTransactionUsageCollection 
 			{
@@ -3948,7 +4181,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3960,10 +4193,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4028,7 +4261,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class StorageTransactionUsage 
 			{
@@ -4067,7 +4300,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4079,10 +4312,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4103,18 +4336,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public long AmountOfTransactions { get; set; }
 			private long _unmodified_AmountOfTransactions;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class StorageUsageCollection 
 			{
@@ -4153,7 +4386,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4165,10 +4398,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4233,7 +4466,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class StorageUsage 
 			{
@@ -4272,7 +4505,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4284,10 +4517,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4309,21 +4542,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public DateTime SnapshotTime { get; set; }
 			private DateTime _unmodified_SnapshotTime;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public string UsageUnit { get; set; }
 			private string _unmodified_UsageUnit;
-			[DataMember]
+			[DataMember] 
 			public double AmountOfUnits { get; set; }
 			private double _unmodified_AmountOfUnits;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class NetworkUsageCollection 
 			{
@@ -4362,7 +4595,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4374,10 +4607,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4442,7 +4675,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class NetworkUsage 
 			{
@@ -4481,7 +4714,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4493,10 +4726,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4517,18 +4750,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public long AmountOfBytes { get; set; }
 			private long _unmodified_AmountOfBytes;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class TimeRange 
 			{
@@ -4567,7 +4800,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4579,10 +4812,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4602,15 +4835,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public DateTime StartTime { get; set; }
 			private DateTime _unmodified_StartTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime EndTime { get; set; }
 			private DateTime _unmodified_EndTime;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class HTTPActivityDetailsCollection 
 			{
@@ -4649,7 +4882,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4661,10 +4894,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4729,7 +4962,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] 
 			[Serializable]
 			public partial class HTTPActivityDetails 
 			{
@@ -4768,7 +5001,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4780,10 +5013,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4808,25 +5041,25 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string RemoteIPAddress { get; set; }
 			private string _unmodified_RemoteIPAddress;
-			[DataMember]
+			[DataMember] 
 			public string RemoteEndpointUserName { get; set; }
 			private string _unmodified_RemoteEndpointUserName;
-			[DataMember]
+			[DataMember] 
 			public string UserID { get; set; }
 			private string _unmodified_UserID;
-			[DataMember]
+			[DataMember] 
 			public DateTime UTCDateTime { get; set; }
 			private DateTime _unmodified_UTCDateTime;
-			[DataMember]
+			[DataMember] 
 			public string RequestLine { get; set; }
 			private string _unmodified_RequestLine;
-			[DataMember]
+			[DataMember] 
 			public long HTTPStatusCode { get; set; }
 			private long _unmodified_HTTPStatusCode;
-			[DataMember]
+			[DataMember] 
 			public long ReturnedContentLength { get; set; }
 			private long _unmodified_ReturnedContentLength;
 			

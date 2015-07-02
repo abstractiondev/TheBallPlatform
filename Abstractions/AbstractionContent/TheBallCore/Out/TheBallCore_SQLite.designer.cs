@@ -85,6 +85,13 @@ namespace SQLite.TheBall.CORE {
 			{
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
+				tableCreationCommands.Add(Account.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountGroupMemberships.GetCreateTableSQL());
+				tableCreationCommands.Add(Group.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupGroupMemberships.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupMembership.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupMembershipAccount.GetCreateTableSQL());
+				tableCreationCommands.Add(GroupMembershipGroup.GetCreateTableSQL());
 				tableCreationCommands.Add(ContentPackage.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationInput.GetCreateTableSQL());
 				tableCreationCommands.Add(InformationOutput.GetCreateTableSQL());
@@ -152,6 +159,101 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if(updateData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "Account")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.Account.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = AccountTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    existingObject.Emails.Clear();
+					if(serializedObject.Emails != null)
+	                    serializedObject.Emails.ForEach(item => existingObject.Emails.Add(item));
+					
+                    existingObject.Logins.Clear();
+					if(serializedObject.Logins != null)
+	                    serializedObject.Logins.ForEach(item => existingObject.Logins.Add(item));
+					
+                    if (serializedObject.GroupMemberships != null)
+                    {
+						existingObject.GroupMemberships.Clear();
+                        serializedObject.GroupMemberships.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountGroupMemberships
+                                {
+                                    AccountID = existingObject.ID,
+                                    GroupMembershipID = item
+                                };
+                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                existingObject.GroupMemberships.Add(relationObject);
+
+                            });
+                    }
+
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Group")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.Group.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    if (serializedObject.GroupMemberships != null)
+                    {
+						existingObject.GroupMemberships.Clear();
+                        serializedObject.GroupMemberships.ForEach(
+                            item =>
+                            {
+                                var relationObject = new GroupGroupMemberships
+                                {
+                                    GroupID = existingObject.ID,
+                                    GroupMembershipID = item
+                                };
+                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                existingObject.GroupMemberships.Add(relationObject);
+
+                            });
+                    }
+
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GroupMembership")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject =
+		                global::SER.TheBall.CORE.GroupMembership.DeserializeFromXml(
+		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GroupMembershipTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new GroupMembershipAccount
+                            {
+                                GroupMembershipID = existingObject.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+							existingObject.Account = relationObject;
+                    }
+
+                    if (serializedObject.Group != null)
+                    {
+                            var relationObject = new GroupMembershipGroup
+                            {
+                                GroupMembershipID = existingObject.ID,
+                                GroupID = serializedObject.Group
+                            };
+                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+							existingObject.Group = relationObject;
+                    }
+
+		            existingObject.Role = serializedObject.Role;
+		            return;
+		        } 
 		        if (updateData.ObjectType == "ContentPackage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -676,6 +778,95 @@ namespace SQLite.TheBall.CORE {
                 if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "Account")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Account.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Account {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Emails != null)
+						serializedObject.Emails.ForEach(item => objectToAdd.Emails.Add(item));
+					if(serializedObject.Logins != null)
+						serializedObject.Logins.ForEach(item => objectToAdd.Logins.Add(item));
+                    if (serializedObject.GroupMemberships != null)
+                    {
+                        serializedObject.GroupMemberships.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountGroupMemberships
+                                {
+                                    AccountID = objectToAdd.ID,
+                                    GroupMembershipID = item
+                                };
+                                AccountGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.GroupMemberships.Add(relationObject);
+
+                            });
+                    }
+
+					AccountTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Group")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Group.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Group {ID = insertData.ObjectID, ETag = insertData.ETag};
+                    if (serializedObject.GroupMemberships != null)
+                    {
+                        serializedObject.GroupMemberships.ForEach(
+                            item =>
+                            {
+                                var relationObject = new GroupGroupMemberships
+                                {
+                                    GroupID = objectToAdd.ID,
+                                    GroupMembershipID = item
+                                };
+                                GroupGroupMembershipsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.GroupMemberships.Add(relationObject);
+
+                            });
+                    }
+
+					GroupTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GroupMembership")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.GroupMembership.DeserializeFromXml(
+                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new GroupMembership {ID = insertData.ObjectID, ETag = insertData.ETag};
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new GroupMembershipAccount
+                            {
+                                GroupMembershipID = objectToAdd.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            GroupMembershipAccountTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Account = relationObject;
+                    }
+
+                    if (serializedObject.Group != null)
+                    {
+                            var relationObject = new GroupMembershipGroup
+                            {
+                                GroupMembershipID = objectToAdd.ID,
+                                GroupID = serializedObject.Group
+                            };
+                            GroupMembershipGroupTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Group = relationObject;
+                    }
+
+		            objectToAdd.Role = serializedObject.Role;
+					GroupMembershipTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
                 if (insertData.ObjectType == "ContentPackage")
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -1190,6 +1381,27 @@ namespace SQLite.TheBall.CORE {
                 if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "Account")
+		        {
+		            var objectToDelete = new Account {ID = deleteData.ID};
+                    AccountTable.Attach(objectToDelete);
+                    AccountTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Group")
+		        {
+		            var objectToDelete = new Group {ID = deleteData.ID};
+                    GroupTable.Attach(objectToDelete);
+                    GroupTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupMembership")
+		        {
+		            var objectToDelete = new GroupMembership {ID = deleteData.ID};
+                    GroupMembershipTable.Attach(objectToDelete);
+                    GroupMembershipTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
 		        if (deleteData.ObjectType == "ContentPackage")
 		        {
 		            var objectToDelete = new ContentPackage {ID = deleteData.ID};
@@ -1522,6 +1734,45 @@ namespace SQLite.TheBall.CORE {
 		    }
 
 
+			public Table<Account> AccountTable {
+				get {
+					return this.GetTable<Account>();
+				}
+			}
+			public Table<AccountGroupMemberships> AccountGroupMembershipsTable {
+				get {
+					return this.GetTable<AccountGroupMemberships>();
+				}
+			}
+
+			public Table<Group> GroupTable {
+				get {
+					return this.GetTable<Group>();
+				}
+			}
+			public Table<GroupGroupMemberships> GroupGroupMembershipsTable {
+				get {
+					return this.GetTable<GroupGroupMemberships>();
+				}
+			}
+
+			public Table<GroupMembership> GroupMembershipTable {
+				get {
+					return this.GetTable<GroupMembership>();
+				}
+			}
+			public Table<GroupMembershipAccount> GroupMembershipAccountTable {
+				get {
+					return this.GetTable<GroupMembershipAccount>();
+				}
+			}
+
+			public Table<GroupMembershipGroup> GroupMembershipGroupTable {
+				get {
+					return this.GetTable<GroupMembershipGroup>();
+				}
+			}
+
 			public Table<ContentPackage> ContentPackageTable {
 				get {
 					return this.GetTable<ContentPackage>();
@@ -1759,6 +2010,265 @@ namespace SQLite.TheBall.CORE {
 			}
         }
 
+    [Table(Name = "Account")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("Account: {ID}")]
+	public class Account : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Account() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Account](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Emails] TEXT NOT NULL, 
+[Logins] TEXT NOT NULL
+)";
+        }
+
+        [Column(Name = "Emails")] 
+        [ScaffoldColumn(true)]
+		public string EmailsData { get; set; }
+
+        private bool _IsEmailsRetrieved = false;
+        private bool _IsEmailsChanged = false;
+        private ObservableCollection<string> _Emails = null;
+        public ObservableCollection<string> Emails
+        {
+            get
+            {
+                if (!_IsEmailsRetrieved)
+                {
+                    if (EmailsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(EmailsData);
+                        _Emails = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _Emails = new ObservableCollection<string>();
+						EmailsData = Guid.NewGuid().ToString();
+						_IsEmailsChanged = true;
+                    }
+                    _IsEmailsRetrieved = true;
+                    _Emails.CollectionChanged += (sender, args) =>
+						{
+							EmailsData = Guid.NewGuid().ToString();
+							_IsEmailsChanged = true;
+						};
+                }
+                return _Emails;
+            }
+            set 
+			{ 
+				_Emails = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsEmailsRetrieved = true;
+                EmailsData = Guid.NewGuid().ToString();
+                _IsEmailsChanged = true;
+
+			}
+        }
+
+        [Column(Name = "Logins")] 
+        [ScaffoldColumn(true)]
+		public string LoginsData { get; set; }
+
+        private bool _IsLoginsRetrieved = false;
+        private bool _IsLoginsChanged = false;
+        private ObservableCollection<string> _Logins = null;
+        public ObservableCollection<string> Logins
+        {
+            get
+            {
+                if (!_IsLoginsRetrieved)
+                {
+                    if (LoginsData != null)
+                    {
+                        var arrayData = JsonConvert.DeserializeObject<string[]>(LoginsData);
+                        _Logins = new ObservableCollection<string>(arrayData);
+                    }
+                    else
+                    {
+                        _Logins = new ObservableCollection<string>();
+						LoginsData = Guid.NewGuid().ToString();
+						_IsLoginsChanged = true;
+                    }
+                    _IsLoginsRetrieved = true;
+                    _Logins.CollectionChanged += (sender, args) =>
+						{
+							LoginsData = Guid.NewGuid().ToString();
+							_IsLoginsChanged = true;
+						};
+                }
+                return _Logins;
+            }
+            set 
+			{ 
+				_Logins = value; 
+                // Reset the data field to unique value
+                // to trigger change on object, just in case nothing else changed
+                _IsLoginsRetrieved = true;
+                LoginsData = Guid.NewGuid().ToString();
+                _IsLoginsChanged = true;
+
+			}
+        }
+
+		private EntitySet<AccountGroupMemberships> _GroupMemberships = new EntitySet<AccountGroupMemberships>();
+        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_GroupMemberships")]
+        public EntitySet<AccountGroupMemberships> GroupMemberships { 
+			get { return _GroupMemberships; }
+			set { _GroupMemberships.Assign(value); }
+		}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+            if (_IsEmailsChanged || isInitialInsert)
+            {
+                var dataToStore = Emails.ToArray();
+                EmailsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+            if (_IsLoginsChanged || isInitialInsert)
+            {
+                var dataToStore = Logins.ToArray();
+                LoginsData = JsonConvert.SerializeObject(dataToStore);
+            }
+
+		}
+	}
+    [Table(Name = "Group")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("Group: {ID}")]
+	public class Group : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Group() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Group](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+
+)";
+        }
+
+		private EntitySet<GroupGroupMemberships> _GroupMemberships = new EntitySet<GroupGroupMemberships>();
+        [Association(ThisKey = "ID", OtherKey = "GroupID", Storage="_GroupMemberships")]
+        public EntitySet<GroupGroupMemberships> GroupMemberships { 
+			get { return _GroupMemberships; }
+			set { _GroupMemberships.Assign(value); }
+		}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+		}
+	}
+    [Table(Name = "GroupMembership")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupMembership: {ID}")]
+	public class GroupMembership : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public GroupMembership() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupMembership](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[Role] TEXT NOT NULL
+)";
+        }
+
+		private EntityRef<GroupMembershipAccount> _Account = new EntityRef<GroupMembershipAccount>();
+        [Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Account")]
+        public GroupMembershipAccount Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+		private EntityRef<GroupMembershipGroup> _Group = new EntityRef<GroupMembershipGroup>();
+        [Association(ThisKey = "ID", OtherKey = "GroupMembershipID", Storage="_Group")]
+        public GroupMembershipGroup Group 
+		{ 
+			get { return _Group.Entity; }
+			set { _Group.Entity = value; }
+		}
+
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string Role { get; set; }
+		// private string _unmodified_Role;
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+			if(Role == null)
+				Role = string.Empty;
+		}
+	}
     [Table(Name = "ContentPackage")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("ContentPackage: {ID}")]
@@ -4929,4 +5439,176 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetailsCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
+    [Table(Name = "AccountGroupMemberships")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountGroupMemberships: {AccountID} - {GroupMembershipID}")]
+	public class AccountGroupMemberships // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountGroupMemberships](
+[AccountID] TEXT NOT NULL, 
+[GroupMembershipID] TEXT NOT NULL,
+PRIMARY KEY (AccountID, GroupMembershipID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupMembershipID { get; set; }
+
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account", IsUnique = false)]
+        public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+			Storage = "_GroupMembership")]
+		public GroupMembership GroupMembership 
+		{ 
+			get { return _GroupMembership.Entity; }
+			set { _GroupMembership.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "GroupGroupMemberships")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupGroupMemberships: {GroupID} - {GroupMembershipID}")]
+	public class GroupGroupMemberships // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupGroupMemberships](
+[GroupID] TEXT NOT NULL, 
+[GroupMembershipID] TEXT NOT NULL,
+PRIMARY KEY (GroupID, GroupMembershipID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupMembershipID { get; set; }
+
+
+        private EntityRef<Group> _Group = new EntityRef<Group>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
+			Storage = "_Group", IsUnique = false)]
+        public Group Group 
+		{ 
+			get { return _Group.Entity; }
+			set { _Group.Entity = value; }
+		}
+
+        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+			Storage = "_GroupMembership")]
+		public GroupMembership GroupMembership 
+		{ 
+			get { return _GroupMembership.Entity; }
+			set { _GroupMembership.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "GroupMembershipAccount")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupMembershipAccount: {GroupMembershipID} - {AccountID}")]
+	public class GroupMembershipAccount // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupMembershipAccount](
+[GroupMembershipID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL,
+PRIMARY KEY (GroupMembershipID, AccountID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupMembershipID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+
+
+        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+			Storage = "_GroupMembership", IsUnique = true)]
+        public GroupMembership GroupMembership 
+		{ 
+			get { return _GroupMembership.Entity; }
+			set { _GroupMembership.Entity = value; }
+		}
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account")]
+		public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "GroupMembershipGroup")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("GroupMembershipGroup: {GroupMembershipID} - {GroupID}")]
+	public class GroupMembershipGroup // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [GroupMembershipGroup](
+[GroupMembershipID] TEXT NOT NULL, 
+[GroupID] TEXT NOT NULL,
+PRIMARY KEY (GroupMembershipID, GroupID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupMembershipID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string GroupID { get; set; }
+
+
+        private EntityRef<GroupMembership> _GroupMembership = new EntityRef<GroupMembership>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupMembershipID", OtherKey = "ID", 
+			Storage = "_GroupMembership", IsUnique = true)]
+        public GroupMembership GroupMembership 
+		{ 
+			get { return _GroupMembership.Entity; }
+			set { _GroupMembership.Entity = value; }
+		}
+
+        private EntityRef<Group> _Group = new EntityRef<Group>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "GroupID", OtherKey = "ID", 
+			Storage = "_Group")]
+		public Group Group 
+		{ 
+			get { return _Group.Entity; }
+			set { _Group.Entity = value; }
+		}
+
+    }
+
  } 

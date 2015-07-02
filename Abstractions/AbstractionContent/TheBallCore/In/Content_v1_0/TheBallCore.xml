@@ -31,6 +31,29 @@
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
+      <InformationObject name="Account" designDesc="Core level account" serializationType="ProtoBuf">
+        <InformationItems>
+          <InformationItem name="Emails" logicalDataType="Text_Short" isCollection="true" fieldOrderNumber="1"/>
+          <InformationItem name="Logins" logicalDataType="Text_Short" isCollection="true" fieldOrderNumber="2"/>
+          <InformationItem name="GroupMemberships" logicalDataType="ObjectLink" isCollection="true" 
+                           objectLinkTargetType="GroupMembership" fieldOrderNumber="3"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Group" designDesc="Core level group" serializationType="ProtoBuf">
+        <InformationItems>
+          <InformationItem name="GroupMemberships" logicalDataType="ObjectLink" isCollection="true" 
+                           objectLinkTargetType="GroupMembership" fieldOrderNumber="1"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="GroupMembership" designDesc="Core level group membership" serializationType="ProtoBuf">
+        <InformationItems>
+          <InformationItem name="Account" logicalDataType="ObjectLink" isCollection="false" objectLinkTargetType="Account" fieldOrderNumber="1"/>
+          <InformationItem name="Group" logicalDataType="ObjectLink" isCollection="false" objectLinkTargetType="Group" fieldOrderNumber="2"/>
+          <InformationItem name="Role" logicalDataType="Text_Short" fieldOrderNumber="3"/>
+        </InformationItems>
+      </InformationObject>
+      
+      
       <InformationObject name="ContentPackageCollection" designDesc="Collection for content packages">
         <CollectionFor contentInformationObjectName="ContentPackage" collectionType="Master"/>
       </InformationObject>

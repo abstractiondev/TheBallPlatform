@@ -24,6 +24,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
+using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
 
@@ -189,7 +190,1018 @@ namespace INT {
                 }
             }
 		}
-			[DataContract]
+			[DataContract] [ProtoContract]
+			[Serializable]
+			public partial class Account : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.ProtoBuf;
+					}
+				}
+
+				public Account()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Account";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/Account/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Account), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "Account", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Account RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveAccount(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Account");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Account), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static Account RetrieveAccount(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (Account) StorageSupport.RetrieveInformation(relativeLocation, typeof(Account), null, owner);
+                    return result;
+                }
+
+				public static Account RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = Account.RetrieveAccount("Content/TheBall.CORE/Account/" + contentName, containerOwner);
+					var result = Account.RetrieveAccount("TheBall.CORE/Account/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Account/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Account/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Account));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Account DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Account));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Account) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "Account", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Account", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref Account customDemoObject);
+
+
+
+				public static Account CreateDefault()
+				{
+					var result = new Account();
+					return result;
+				}
+				/*
+				public static Account CreateDemoDefault()
+				{
+					Account customDemo = null;
+					Account.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new Account();
+					result.Emails = @"Account.Emails";
+
+					result.Logins = @"Account.Logins";
+
+				
+					return result;
+				}
+				*/
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					// Remove exception if basic functionality starts to have issues
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					if(filterOnFalse(this))
+						result.Add(this);
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
+
+
+				}
+
+			
+                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+	
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+						// Remove exception if some basic functionality is broken due to it
+						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+					}
+				}
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					// Remove exception if some basic functionality is broken due to it
+					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Emails":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
+						case "Logins":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
+						case "GroupMemberships":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember] [ProtoMember(1)]
+			public List< string > Emails = new List< string >();
+			[DataMember] [ProtoMember(2)]
+			public List< string > Logins = new List< string >();
+			[DataMember] [ProtoMember(3)]
+			public List< string > GroupMemberships = new List< string >();
+			
+			}
+			[DataContract] [ProtoContract]
+			[Serializable]
+			public partial class Group : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.ProtoBuf;
+					}
+				}
+
+				public Group()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Group";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/Group/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Group), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "Group", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static Group RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveGroup(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Group), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static Group RetrieveGroup(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (Group) StorageSupport.RetrieveInformation(relativeLocation, typeof(Group), null, owner);
+                    return result;
+                }
+
+				public static Group RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = Group.RetrieveGroup("Content/TheBall.CORE/Group/" + contentName, containerOwner);
+					var result = Group.RetrieveGroup("TheBall.CORE/Group/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Group/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Group/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+				void IInformationObject.SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+					throw new NotImplementedException("Collection item objects do not support tree functions for now");
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Group));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Group DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Group));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Group) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "Group", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Group", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref Group customDemoObject);
+
+
+
+				public static Group CreateDefault()
+				{
+					var result = new Group();
+					return result;
+				}
+				/*
+				public static Group CreateDemoDefault()
+				{
+					Group customDemo = null;
+					Group.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new Group();
+				
+					return result;
+				}
+				*/
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					// Remove exception if basic functionality starts to have issues
+					//throw new NotImplementedException("Item level collections do not support object tree operations right now");
+					if(filterOnFalse(this))
+						result.Add(this);
+				}
+
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					throw new NotImplementedException("Object tree support not implemented for item level collection objects");
+
+
+				}
+
+			
+                void IInformationObject.SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+	
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+						// Remove exception if some basic functionality is broken due to it
+						throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+					}
+				}
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					// Remove exception if some basic functionality is broken due to it
+					//throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					// Remove exception if some basic functionality is broken due to it
+					throw new NotImplementedException("Collection items do not support instance tree queries as of now");
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "GroupMemberships":
+							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember] [ProtoMember(1)]
+			public List< string > GroupMemberships = new List< string >();
+			
+			}
+			[DataContract] [ProtoContract]
+			[Serializable]
+			public partial class GroupMembership : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.ProtoBuf;
+					}
+				}
+
+				public GroupMembership()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "GroupMembership";
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/GroupMembership/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(GroupMembership), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+                public static string GetRelativeLocationFromID(string id)
+                {
+                    return Path.Combine("TheBall.CORE", "GroupMembership", id).Replace("\\", "/");
+                }
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = GetRelativeLocationFromID(ID);
+				}
+
+				public static GroupMembership RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
+				{
+					string relativeLocation = GetRelativeLocationFromID(id);
+					return RetrieveGroupMembership(relativeLocation, owner);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupMembership");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupMembership), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+
+                public static GroupMembership RetrieveGroupMembership(string relativeLocation, IContainerOwner owner = null)
+                {
+                    var result = (GroupMembership) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupMembership), null, owner);
+                    return result;
+                }
+
+				public static GroupMembership RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
+				{
+					// var result = GroupMembership.RetrieveGroupMembership("Content/TheBall.CORE/GroupMembership/" + contentName, containerOwner);
+					var result = GroupMembership.RetrieveGroupMembership("TheBall.CORE/GroupMembership/" + contentName, containerOwner);
+					return result;
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/GroupMembership/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/GroupMembership/" + contentName);
+                }
+
+				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
+
+			    public void InitializeDefaultSubscribers(IContainerOwner owner)
+			    {
+					DoInitializeDefaultSubscribers(owner);
+			    }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((GroupMembership) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupMembership));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static GroupMembership DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(GroupMembership));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (GroupMembership) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "GroupMembership", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "GroupMembership", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref GroupMembership customDemoObject);
+
+
+
+				public static GroupMembership CreateDefault()
+				{
+					var result = new GroupMembership();
+					return result;
+				}
+				/*
+				public static GroupMembership CreateDemoDefault()
+				{
+					GroupMembership customDemo = null;
+					GroupMembership.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new GroupMembership();
+					result.Role = @"GroupMembership.Role";
+
+				
+					return result;
+				}
+				*/
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(Account != _unmodified_Account)
+							return true;
+						if(Group != _unmodified_Group)
+							return true;
+						if(Role != _unmodified_Role)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(GroupMembership sourceObject)
+				{
+					Account = sourceObject.Account;
+					Group = sourceObject.Group;
+					Role = sourceObject.Role;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_Account = Account;
+					_unmodified_Group = Group;
+					_unmodified_Role = Role;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "Account":
+							Account = value;
+							break;
+						case "Group":
+							Group = value;
+							break;
+						case "Role":
+							Role = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember] [ProtoMember(1)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			[DataMember] [ProtoMember(2)]
+			public string Group { get; set; }
+			private string _unmodified_Group;
+			[DataMember] [ProtoMember(3)]
+			public string Role { get; set; }
+			private string _unmodified_Role;
+			
+			}
+			[DataContract] 
 			[Serializable]
 			public partial class ContentPackageCollection : IInformationObject , IInformationCollection
 			{
@@ -391,7 +1403,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -403,10 +1415,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -713,7 +1725,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ContentPackage : IInformationObject 
 			{
@@ -915,7 +1927,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -927,10 +1939,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1118,24 +2130,24 @@ ContentPackage.Description
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string PackageType { get; set; }
 			private string _unmodified_PackageType;
-			[DataMember]
+			[DataMember] 
 			public string PackageName { get; set; }
 			private string _unmodified_PackageName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string PackageRootFolder { get; set; }
 			private string _unmodified_PackageRootFolder;
-			[DataMember]
+			[DataMember] 
 			public DateTime CreationTime { get; set; }
 			private DateTime _unmodified_CreationTime;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationInputCollection : IInformationObject , IInformationCollection
 			{
@@ -1337,7 +2349,7 @@ ContentPackage.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1349,10 +2361,10 @@ ContentPackage.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1659,7 +2671,7 @@ ContentPackage.Description
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationInput : IInformationObject 
 			{
@@ -1861,7 +2873,7 @@ ContentPackage.Description
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1873,10 +2885,10 @@ ContentPackage.Description
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2064,24 +3076,24 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string InputDescription { get; set; }
 			private string _unmodified_InputDescription;
-			[DataMember]
+			[DataMember] 
 			public string LocationURL { get; set; }
 			private string _unmodified_LocationURL;
-			[DataMember]
+			[DataMember] 
 			public string LocalContentName { get; set; }
 			private string _unmodified_LocalContentName;
-			[DataMember]
+			[DataMember] 
 			public string AuthenticatedDeviceID { get; set; }
 			private string _unmodified_AuthenticatedDeviceID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationOutputCollection : IInformationObject , IInformationCollection
 			{
@@ -2283,7 +3295,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2295,10 +3307,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2605,7 +3617,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationOutput : IInformationObject 
 			{
@@ -2807,7 +3819,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2819,10 +3831,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3014,27 +4026,27 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OutputDescription { get; set; }
 			private string _unmodified_OutputDescription;
-			[DataMember]
+			[DataMember] 
 			public string DestinationURL { get; set; }
 			private string _unmodified_DestinationURL;
-			[DataMember]
+			[DataMember] 
 			public string DestinationContentName { get; set; }
 			private string _unmodified_DestinationContentName;
-			[DataMember]
+			[DataMember] 
 			public string LocalContentURL { get; set; }
 			private string _unmodified_LocalContentURL;
-			[DataMember]
+			[DataMember] 
 			public string AuthenticatedDeviceID { get; set; }
 			private string _unmodified_AuthenticatedDeviceID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection : IInformationObject , IInformationCollection
 			{
@@ -3236,7 +4248,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3248,10 +4260,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3558,7 +4570,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class AuthenticatedAsActiveDevice : IInformationObject 
 			{
@@ -3760,7 +4772,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3772,10 +4784,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3971,30 +4983,30 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string AuthenticationDescription { get; set; }
 			private string _unmodified_AuthenticationDescription;
-			[DataMember]
+			[DataMember] 
 			public string SharedSecret { get; set; }
 			private string _unmodified_SharedSecret;
-			[DataMember]
+			[DataMember] 
 			public byte[] ActiveSymmetricAESKey { get; set; }
 			private byte[] _unmodified_ActiveSymmetricAESKey;
-			[DataMember]
+			[DataMember] 
 			public string EstablishedTrustID { get; set; }
 			private string _unmodified_EstablishedTrustID;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
-			[DataMember]
+			[DataMember] 
 			public string NegotiationURL { get; set; }
 			private string _unmodified_NegotiationURL;
-			[DataMember]
+			[DataMember] 
 			public string ConnectionURL { get; set; }
 			private string _unmodified_ConnectionURL;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DeviceMembershipCollection : IInformationObject , IInformationCollection
 			{
@@ -4196,7 +5208,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4208,10 +5220,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4518,7 +5530,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class DeviceMembership : IInformationObject 
 			{
@@ -4720,7 +5732,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4732,10 +5744,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4904,21 +5916,21 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string DeviceDescription { get; set; }
 			private string _unmodified_DeviceDescription;
-			[DataMember]
+			[DataMember] 
 			public string SharedSecret { get; set; }
 			private string _unmodified_SharedSecret;
-			[DataMember]
+			[DataMember] 
 			public byte[] ActiveSymmetricAESKey { get; set; }
 			private byte[] _unmodified_ActiveSymmetricAESKey;
-			[DataMember]
+			[DataMember] 
 			public bool IsValidatedAndActive { get; set; }
 			private bool _unmodified_IsValidatedAndActive;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceFiscalExportSummary : IInformationObject 
 			{
@@ -5120,7 +6132,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5132,10 +6144,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5342,18 +6354,18 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime FiscalInclusiveStartDate { get; set; }
 			private DateTime _unmodified_FiscalInclusiveStartDate;
-			[DataMember]
+			[DataMember] 
 			public DateTime FiscalInclusiveEndDate { get; set; }
 			private DateTime _unmodified_FiscalInclusiveEndDate;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection ExportedInvoices { get; set; }
 			private InvoiceCollection _unmodified_ExportedInvoices;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceSummaryContainer : IInformationObject 
 			{
@@ -5555,7 +6567,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5567,10 +6579,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5922,21 +6934,21 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection OpenInvoices { get; set; }
 			private InvoiceCollection _unmodified_OpenInvoices;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PredictedInvoices { get; set; }
 			private InvoiceCollection _unmodified_PredictedInvoices;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PaidInvoicesActiveYear { get; set; }
 			private InvoiceCollection _unmodified_PaidInvoicesActiveYear;
-			[DataMember]
+			[DataMember] 
 			public InvoiceCollection PaidInvoicesLast12Months { get; set; }
 			private InvoiceCollection _unmodified_PaidInvoicesLast12Months;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceCollection : IInformationObject , IInformationCollection
 			{
@@ -6138,7 +7150,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6150,10 +7162,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6460,7 +7472,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Invoice : IInformationObject 
 			{
@@ -6662,7 +7674,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6674,10 +7686,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6989,39 +8001,39 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string InvoiceName { get; set; }
 			private string _unmodified_InvoiceName;
-			[DataMember]
+			[DataMember] 
 			public string InvoiceID { get; set; }
 			private string _unmodified_InvoiceID;
-			[DataMember]
+			[DataMember] 
 			public string InvoicedAmount { get; set; }
 			private string _unmodified_InvoicedAmount;
-			[DataMember]
+			[DataMember] 
 			public DateTime CreateDate { get; set; }
 			private DateTime _unmodified_CreateDate;
-			[DataMember]
+			[DataMember] 
 			public DateTime DueDate { get; set; }
 			private DateTime _unmodified_DueDate;
-			[DataMember]
+			[DataMember] 
 			public string PaidAmount { get; set; }
 			private string _unmodified_PaidAmount;
-			[DataMember]
+			[DataMember] 
 			public string FeesAndInterestAmount { get; set; }
 			private string _unmodified_FeesAndInterestAmount;
-			[DataMember]
+			[DataMember] 
 			public string UnpaidAmount { get; set; }
 			private string _unmodified_UnpaidAmount;
-			[DataMember]
+			[DataMember] 
 			public InvoiceDetails InvoiceDetails { get; set; }
 			private InvoiceDetails _unmodified_InvoiceDetails;
-			[DataMember]
+			[DataMember] 
 			public InvoiceUserCollection InvoiceUsers { get; set; }
 			private InvoiceUserCollection _unmodified_InvoiceUsers;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceDetails : IInformationObject 
 			{
@@ -7223,7 +8235,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7235,10 +8247,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7432,27 +8444,27 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string MonthlyFeesTotal { get; set; }
 			private string _unmodified_MonthlyFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string OneTimeFeesTotal { get; set; }
 			private string _unmodified_OneTimeFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string UsageFeesTotal { get; set; }
 			private string _unmodified_UsageFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string InterestFeesTotal { get; set; }
 			private string _unmodified_InterestFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string PenaltyFeesTotal { get; set; }
 			private string _unmodified_PenaltyFeesTotal;
-			[DataMember]
+			[DataMember] 
 			public string TotalFeesTotal { get; set; }
 			private string _unmodified_TotalFeesTotal;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceUserCollection : IInformationObject , IInformationCollection
 			{
@@ -7654,7 +8666,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7666,10 +8678,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7954,7 +8966,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceUser : IInformationObject 
 			{
@@ -8156,7 +9168,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8168,10 +9180,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8460,30 +9472,30 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string UserName { get; set; }
 			private string _unmodified_UserName;
-			[DataMember]
+			[DataMember] 
 			public string UserID { get; set; }
 			private string _unmodified_UserID;
-			[DataMember]
+			[DataMember] 
 			public string UserPhoneNumber { get; set; }
 			private string _unmodified_UserPhoneNumber;
-			[DataMember]
+			[DataMember] 
 			public string UserSubscriptionNumber { get; set; }
 			private string _unmodified_UserSubscriptionNumber;
-			[DataMember]
+			[DataMember] 
 			public string UserInvoiceTotalAmount { get; set; }
 			private string _unmodified_UserInvoiceTotalAmount;
-			[DataMember]
+			[DataMember] 
 			public InvoiceRowGroupCollection InvoiceRowGroupCollection { get; set; }
 			private InvoiceRowGroupCollection _unmodified_InvoiceRowGroupCollection;
-			[DataMember]
+			[DataMember] 
 			public InvoiceEventDetailGroupCollection InvoiceEventDetailGroupCollection { get; set; }
 			private InvoiceEventDetailGroupCollection _unmodified_InvoiceEventDetailGroupCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceRowGroupCollection : IInformationObject , IInformationCollection
 			{
@@ -8685,7 +9697,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8697,10 +9709,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8985,7 +9997,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroupCollection : IInformationObject , IInformationCollection
 			{
@@ -9187,7 +10199,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9199,10 +10211,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9487,7 +10499,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceRowGroup : IInformationObject 
 			{
@@ -9689,7 +10701,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9701,10 +10713,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9932,24 +10944,24 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalPriceWithoutTaxes { get; set; }
 			private string _unmodified_GroupTotalPriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalTaxes { get; set; }
 			private string _unmodified_GroupTotalTaxes;
-			[DataMember]
+			[DataMember] 
 			public string GroupTotalPriceWithTaxes { get; set; }
 			private string _unmodified_GroupTotalPriceWithTaxes;
-			[DataMember]
+			[DataMember] 
 			public InvoiceRowCollection InvoiceRowCollection { get; set; }
 			private InvoiceRowCollection _unmodified_InvoiceRowCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceEventDetailGroup : IInformationObject 
 			{
@@ -10151,7 +11163,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10163,10 +11175,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10367,15 +11379,15 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public InvoiceEventDetailCollection InvoiceEventDetailCollection { get; set; }
 			private InvoiceEventDetailCollection _unmodified_InvoiceEventDetailCollection;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceEventDetailCollection : IInformationObject , IInformationCollection
 			{
@@ -10577,7 +11589,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10589,10 +11601,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10877,7 +11889,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceRowCollection : IInformationObject , IInformationCollection
 			{
@@ -11079,7 +12091,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11091,10 +12103,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11379,7 +12391,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceEventDetail : IInformationObject 
 			{
@@ -11581,7 +12593,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11593,10 +12605,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11822,39 +12834,39 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string IndentMode { get; set; }
 			private string _unmodified_IndentMode;
-			[DataMember]
+			[DataMember] 
 			public DateTime EventStartDateTime { get; set; }
 			private DateTime _unmodified_EventStartDateTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime EventEndDateTime { get; set; }
 			private DateTime _unmodified_EventEndDateTime;
-			[DataMember]
+			[DataMember] 
 			public string ReceivingParty { get; set; }
 			private string _unmodified_ReceivingParty;
-			[DataMember]
+			[DataMember] 
 			public string AmountOfUnits { get; set; }
 			private string _unmodified_AmountOfUnits;
-			[DataMember]
+			[DataMember] 
 			public string Duration { get; set; }
 			private string _unmodified_Duration;
-			[DataMember]
+			[DataMember] 
 			public string UnitPrice { get; set; }
 			private string _unmodified_UnitPrice;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithoutTaxes { get; set; }
 			private string _unmodified_PriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string Taxes { get; set; }
 			private string _unmodified_Taxes;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithTaxes { get; set; }
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InvoiceRow : IInformationObject 
 			{
@@ -12056,7 +13068,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12068,10 +13080,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12274,30 +13286,30 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string IndentMode { get; set; }
 			private string _unmodified_IndentMode;
-			[DataMember]
+			[DataMember] 
 			public string AmountOfUnits { get; set; }
 			private string _unmodified_AmountOfUnits;
-			[DataMember]
+			[DataMember] 
 			public string Duration { get; set; }
 			private string _unmodified_Duration;
-			[DataMember]
+			[DataMember] 
 			public string UnitPrice { get; set; }
 			private string _unmodified_UnitPrice;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithoutTaxes { get; set; }
 			private string _unmodified_PriceWithoutTaxes;
-			[DataMember]
+			[DataMember] 
 			public string Taxes { get; set; }
 			private string _unmodified_Taxes;
-			[DataMember]
+			[DataMember] 
 			public string PriceWithTaxes { get; set; }
 			private string _unmodified_PriceWithTaxes;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CategoryCollection : IInformationObject , IInformationCollection
 			{
@@ -12499,7 +13511,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12511,10 +13523,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12799,7 +13811,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Category : IInformationObject 
 			{
@@ -13001,7 +14013,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13013,10 +14025,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -13165,12 +14177,12 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ProcessContainer : IInformationObject 
 			{
@@ -13338,7 +14350,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13350,10 +14362,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -13451,11 +14463,11 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public List< string > ProcessIDs = new List< string >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Process : IInformationObject 
 			{
@@ -13623,7 +14635,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13635,10 +14647,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -13736,19 +14748,19 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ProcessDescription { get; set; }
 			private string _unmodified_ProcessDescription;
-			[DataMember]
+			[DataMember] 
 			public SemanticInformationItem ExecutingOperation { get; set; }
 			private SemanticInformationItem _unmodified_ExecutingOperation;
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > InitialArguments = new List< SemanticInformationItem >();
-			[DataMember]
+			[DataMember] 
 			public List< ProcessItem > ProcessItems = new List< ProcessItem >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ProcessItem : IInformationObject 
 			{
@@ -13916,7 +14928,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -13928,10 +14940,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14026,13 +15038,13 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > Outputs = new List< SemanticInformationItem >();
-			[DataMember]
+			[DataMember] 
 			public List< SemanticInformationItem > Inputs = new List< SemanticInformationItem >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SemanticInformationItem : IInformationObject 
 			{
@@ -14234,7 +15246,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -14246,10 +15258,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14407,15 +15419,15 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ItemFullType { get; set; }
 			private string _unmodified_ItemFullType;
-			[DataMember]
+			[DataMember] 
 			public string ItemValue { get; set; }
 			private string _unmodified_ItemValue;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationOwnerInfo : IInformationObject 
 			{
@@ -14617,7 +15629,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -14629,10 +15641,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -14790,15 +15802,15 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OwnerType { get; set; }
 			private string _unmodified_OwnerType;
-			[DataMember]
+			[DataMember] 
 			public string OwnerIdentifier { get; set; }
 			private string _unmodified_OwnerIdentifier;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class UsageSummary : IInformationObject 
 			{
@@ -15000,7 +16012,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -15012,10 +16024,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -15216,15 +16228,15 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SummaryName { get; set; }
 			private string _unmodified_SummaryName;
-			[DataMember]
+			[DataMember] 
 			public UsageMonitorItem SummaryMonitoringItem { get; set; }
 			private UsageMonitorItem _unmodified_SummaryMonitoringItem;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class UsageMonitorItem : IInformationObject 
 			{
@@ -15426,7 +16438,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -15438,10 +16450,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -15900,30 +16912,30 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public InformationOwnerInfo OwnerInfo { get; set; }
 			private InformationOwnerInfo _unmodified_OwnerInfo;
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRangeInclusiveStartExclusiveEnd { get; set; }
 			private TimeRange _unmodified_TimeRangeInclusiveStartExclusiveEnd;
-			[DataMember]
+			[DataMember] 
 			public long StepSizeInMinutes { get; set; }
 			private long _unmodified_StepSizeInMinutes;
-			[DataMember]
+			[DataMember] 
 			public ProcessorUsageCollection ProcessorUsages { get; set; }
 			private ProcessorUsageCollection _unmodified_ProcessorUsages;
-			[DataMember]
+			[DataMember] 
 			public StorageTransactionUsageCollection StorageTransactionUsages { get; set; }
 			private StorageTransactionUsageCollection _unmodified_StorageTransactionUsages;
-			[DataMember]
+			[DataMember] 
 			public StorageUsageCollection StorageUsages { get; set; }
 			private StorageUsageCollection _unmodified_StorageUsages;
-			[DataMember]
+			[DataMember] 
 			public NetworkUsageCollection NetworkUsages { get; set; }
 			private NetworkUsageCollection _unmodified_NetworkUsages;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class RequestResourceUsageCollection : IInformationObject , IInformationCollection
 			{
@@ -16125,7 +17137,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -16137,10 +17149,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -16425,7 +17437,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class RequestResourceUsage : IInformationObject 
 			{
@@ -16627,7 +17639,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -16639,10 +17651,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -17042,24 +18054,24 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public InformationOwnerInfo OwnerInfo { get; set; }
 			private InformationOwnerInfo _unmodified_OwnerInfo;
-			[DataMember]
+			[DataMember] 
 			public ProcessorUsage ProcessorUsage { get; set; }
 			private ProcessorUsage _unmodified_ProcessorUsage;
-			[DataMember]
+			[DataMember] 
 			public StorageTransactionUsage StorageTransactionUsage { get; set; }
 			private StorageTransactionUsage _unmodified_StorageTransactionUsage;
-			[DataMember]
+			[DataMember] 
 			public NetworkUsage NetworkUsage { get; set; }
 			private NetworkUsage _unmodified_NetworkUsage;
-			[DataMember]
+			[DataMember] 
 			public HTTPActivityDetails RequestDetails { get; set; }
 			private HTTPActivityDetails _unmodified_RequestDetails;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ProcessorUsageCollection : IInformationObject , IInformationCollection
 			{
@@ -17261,7 +18273,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -17273,10 +18285,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -17561,7 +18573,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ProcessorUsage : IInformationObject 
 			{
@@ -17763,7 +18775,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -17775,10 +18787,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -18000,24 +19012,24 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public double AmountOfTicks { get; set; }
 			private double _unmodified_AmountOfTicks;
-			[DataMember]
+			[DataMember] 
 			public double FrequencyTicksPerSecond { get; set; }
 			private double _unmodified_FrequencyTicksPerSecond;
-			[DataMember]
+			[DataMember] 
 			public long Milliseconds { get; set; }
 			private long _unmodified_Milliseconds;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StorageTransactionUsageCollection : IInformationObject , IInformationCollection
 			{
@@ -18219,7 +19231,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -18231,10 +19243,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -18519,7 +19531,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StorageTransactionUsage : IInformationObject 
 			{
@@ -18721,7 +19733,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -18733,10 +19745,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -18944,18 +19956,18 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public long AmountOfTransactions { get; set; }
 			private long _unmodified_AmountOfTransactions;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StorageUsageCollection : IInformationObject , IInformationCollection
 			{
@@ -19157,7 +20169,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -19169,10 +20181,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -19457,7 +20469,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StorageUsage : IInformationObject 
 			{
@@ -19659,7 +20671,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -19671,10 +20683,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -19846,21 +20858,21 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime SnapshotTime { get; set; }
 			private DateTime _unmodified_SnapshotTime;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public string UsageUnit { get; set; }
 			private string _unmodified_UsageUnit;
-			[DataMember]
+			[DataMember] 
 			public double AmountOfUnits { get; set; }
 			private double _unmodified_AmountOfUnits;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class NetworkUsageCollection : IInformationObject , IInformationCollection
 			{
@@ -20062,7 +21074,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -20074,10 +21086,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -20362,7 +21374,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class NetworkUsage : IInformationObject 
 			{
@@ -20564,7 +21576,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -20576,10 +21588,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -20787,18 +21799,18 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public TimeRange TimeRange { get; set; }
 			private TimeRange _unmodified_TimeRange;
-			[DataMember]
+			[DataMember] 
 			public string UsageType { get; set; }
 			private string _unmodified_UsageType;
-			[DataMember]
+			[DataMember] 
 			public long AmountOfBytes { get; set; }
 			private long _unmodified_AmountOfBytes;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TimeRange : IInformationObject 
 			{
@@ -21000,7 +22012,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -21012,10 +22024,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -21169,15 +22181,15 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime StartTime { get; set; }
 			private DateTime _unmodified_StartTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime EndTime { get; set; }
 			private DateTime _unmodified_EndTime;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class HTTPActivityDetailsCollection : IInformationObject , IInformationCollection
 			{
@@ -21379,7 +22391,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -21391,10 +22403,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -21679,7 +22691,7 @@ InformationInput.AuthenticatedDeviceID
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class HTTPActivityDetails : IInformationObject 
 			{
@@ -21881,7 +22893,7 @@ InformationInput.AuthenticatedDeviceID
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -21893,10 +22905,10 @@ InformationInput.AuthenticatedDeviceID
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -22093,25 +23105,25 @@ InformationInput.AuthenticatedDeviceID
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string RemoteIPAddress { get; set; }
 			private string _unmodified_RemoteIPAddress;
-			[DataMember]
+			[DataMember] 
 			public string RemoteEndpointUserName { get; set; }
 			private string _unmodified_RemoteEndpointUserName;
-			[DataMember]
+			[DataMember] 
 			public string UserID { get; set; }
 			private string _unmodified_UserID;
-			[DataMember]
+			[DataMember] 
 			public DateTime UTCDateTime { get; set; }
 			private DateTime _unmodified_UTCDateTime;
-			[DataMember]
+			[DataMember] 
 			public string RequestLine { get; set; }
 			private string _unmodified_RequestLine;
-			[DataMember]
+			[DataMember] 
 			public long HTTPStatusCode { get; set; }
 			private long _unmodified_HTTPStatusCode;
-			[DataMember]
+			[DataMember] 
 			public long ReturnedContentLength { get; set; }
 			private long _unmodified_ReturnedContentLength;
 			

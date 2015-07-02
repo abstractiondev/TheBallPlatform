@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using ProtoBuf;
 
 
 namespace INT { 
@@ -31,7 +32,7 @@ namespace INT {
 				public string QueryRequestObjectID { get; set; }
 			}
 
- }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")] 
 			[Serializable]
 			public partial class IndexingRequest 
 			{
@@ -71,7 +72,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -83,10 +84,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -98,14 +99,14 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public string IndexName { get; set; }
 			private string _unmodified_IndexName;
-			[DataMember]
+			[DataMember] 
 			public List< string > ObjectLocations = new List< string >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")] 
 			[Serializable]
 			public partial class QueryRequest 
 			{
@@ -145,7 +146,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -157,10 +158,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -172,32 +173,32 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public string QueryString { get; set; }
 			private string _unmodified_QueryString;
-			[DataMember]
+			[DataMember] 
 			public string DefaultFieldName { get; set; }
 			private string _unmodified_DefaultFieldName;
-			[DataMember]
+			[DataMember] 
 			public string IndexName { get; set; }
 			private string _unmodified_IndexName;
-			[DataMember]
+			[DataMember] 
 			public bool IsQueryCompleted { get; set; }
 			private bool _unmodified_IsQueryCompleted;
-			[DataMember]
+			[DataMember] 
 			public DateTime LastRequestTime { get; set; }
 			private DateTime _unmodified_LastRequestTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime LastCompletionTime { get; set; }
 			private DateTime _unmodified_LastCompletionTime;
-			[DataMember]
+			[DataMember] 
 			public long LastCompletionDurationMs { get; set; }
 			private long _unmodified_LastCompletionDurationMs;
-			[DataMember]
+			[DataMember] 
 			public List< QueryResultItem > QueryResultObjects = new List< QueryResultItem >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Index")] 
 			[Serializable]
 			public partial class QueryResultItem 
 			{
@@ -236,7 +237,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -248,10 +249,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -273,16 +274,16 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ObjectDomainName { get; set; }
 			private string _unmodified_ObjectDomainName;
-			[DataMember]
+			[DataMember] 
 			public string ObjectName { get; set; }
 			private string _unmodified_ObjectName;
-			[DataMember]
+			[DataMember] 
 			public string ObjectID { get; set; }
 			private string _unmodified_ObjectID;
-			[DataMember]
+			[DataMember] 
 			public double Rank { get; set; }
 			private double _unmodified_Rank;
 			

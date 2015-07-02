@@ -24,6 +24,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
+using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
 
@@ -138,7 +139,7 @@ namespace INT {
                 }
             }
 		}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InterfaceOperation : IInformationObject 
 			{
@@ -340,7 +341,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -352,10 +353,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -573,36 +574,36 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OperationName { get; set; }
 			private string _unmodified_OperationName;
-			[DataMember]
+			[DataMember] 
 			public string Status { get; set; }
 			private string _unmodified_Status;
-			[DataMember]
+			[DataMember] 
 			public string OperationDataType { get; set; }
 			private string _unmodified_OperationDataType;
-			[DataMember]
+			[DataMember] 
 			public DateTime Created { get; set; }
 			private DateTime _unmodified_Created;
-			[DataMember]
+			[DataMember] 
 			public DateTime Started { get; set; }
 			private DateTime _unmodified_Started;
-			[DataMember]
+			[DataMember] 
 			public double Progress { get; set; }
 			private double _unmodified_Progress;
-			[DataMember]
+			[DataMember] 
 			public DateTime Finished { get; set; }
 			private DateTime _unmodified_Finished;
-			[DataMember]
+			[DataMember] 
 			public string ErrorCode { get; set; }
 			private string _unmodified_ErrorCode;
-			[DataMember]
+			[DataMember] 
 			public string ErrorMessage { get; set; }
 			private string _unmodified_ErrorMessage;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class ConnectionCollection : IInformationObject , IInformationCollection
 			{
@@ -804,7 +805,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -816,10 +817,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1126,7 +1127,7 @@ InterfaceOperation.ErrorMessage
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Connection : IInformationObject 
 			{
@@ -1294,7 +1295,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1306,10 +1307,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1437,52 +1438,52 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OutputInformationID { get; set; }
 			private string _unmodified_OutputInformationID;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string DeviceID { get; set; }
 			private string _unmodified_DeviceID;
-			[DataMember]
+			[DataMember] 
 			public bool IsActiveParty { get; set; }
 			private bool _unmodified_IsActiveParty;
-			[DataMember]
+			[DataMember] 
 			public string OtherSideConnectionID { get; set; }
 			private string _unmodified_OtherSideConnectionID;
-			[DataMember]
+			[DataMember] 
 			public List< Category > ThisSideCategories = new List< Category >();
-			[DataMember]
+			[DataMember] 
 			public List< Category > OtherSideCategories = new List< Category >();
-			[DataMember]
+			[DataMember] 
 			public List< CategoryLink > CategoryLinks = new List< CategoryLink >();
-			[DataMember]
+			[DataMember] 
 			public List< TransferPackage > IncomingPackages = new List< TransferPackage >();
-			[DataMember]
+			[DataMember] 
 			public List< TransferPackage > OutgoingPackages = new List< TransferPackage >();
-			[DataMember]
+			[DataMember] 
 			public string OperationNameToListPackageContents { get; set; }
 			private string _unmodified_OperationNameToListPackageContents;
-			[DataMember]
+			[DataMember] 
 			public string OperationNameToProcessReceived { get; set; }
 			private string _unmodified_OperationNameToProcessReceived;
-			[DataMember]
+			[DataMember] 
 			public string OperationNameToUpdateThisSideCategories { get; set; }
 			private string _unmodified_OperationNameToUpdateThisSideCategories;
-			[DataMember]
+			[DataMember] 
 			public string ProcessIDToListPackageContents { get; set; }
 			private string _unmodified_ProcessIDToListPackageContents;
-			[DataMember]
+			[DataMember] 
 			public string ProcessIDToProcessReceived { get; set; }
 			private string _unmodified_ProcessIDToProcessReceived;
-			[DataMember]
+			[DataMember] 
 			public string ProcessIDToUpdateThisSideCategories { get; set; }
 			private string _unmodified_ProcessIDToUpdateThisSideCategories;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class TransferPackage : IInformationObject 
 			{
@@ -1650,7 +1651,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1662,10 +1663,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1775,23 +1776,23 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ConnectionID { get; set; }
 			private string _unmodified_ConnectionID;
-			[DataMember]
+			[DataMember] 
 			public string PackageDirection { get; set; }
 			private string _unmodified_PackageDirection;
-			[DataMember]
+			[DataMember] 
 			public string PackageType { get; set; }
 			private string _unmodified_PackageType;
-			[DataMember]
+			[DataMember] 
 			public bool IsProcessed { get; set; }
 			private bool _unmodified_IsProcessed;
-			[DataMember]
+			[DataMember] 
 			public List< string > PackageContentBlobs = new List< string >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CategoryLink : IInformationObject 
 			{
@@ -1993,7 +1994,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2005,10 +2006,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2175,18 +2176,18 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SourceCategoryID { get; set; }
 			private string _unmodified_SourceCategoryID;
-			[DataMember]
+			[DataMember] 
 			public string TargetCategoryID { get; set; }
 			private string _unmodified_TargetCategoryID;
-			[DataMember]
+			[DataMember] 
 			public string LinkingType { get; set; }
 			private string _unmodified_LinkingType;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class Category : IInformationObject 
 			{
@@ -2388,7 +2389,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2400,10 +2401,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2597,27 +2598,27 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string NativeCategoryID { get; set; }
 			private string _unmodified_NativeCategoryID;
-			[DataMember]
+			[DataMember] 
 			public string NativeCategoryDomainName { get; set; }
 			private string _unmodified_NativeCategoryDomainName;
-			[DataMember]
+			[DataMember] 
 			public string NativeCategoryObjectName { get; set; }
 			private string _unmodified_NativeCategoryObjectName;
-			[DataMember]
+			[DataMember] 
 			public string NativeCategoryTitle { get; set; }
 			private string _unmodified_NativeCategoryTitle;
-			[DataMember]
+			[DataMember] 
 			public string IdentifyingCategoryName { get; set; }
 			private string _unmodified_IdentifyingCategoryName;
-			[DataMember]
+			[DataMember] 
 			public string ParentCategoryID { get; set; }
 			private string _unmodified_ParentCategoryID;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class StatusSummary : IInformationObject 
 			{
@@ -2785,7 +2786,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2797,10 +2798,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2898,17 +2899,17 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public List< OperationExecutionItem > PendingOperations = new List< OperationExecutionItem >();
-			[DataMember]
+			[DataMember] 
 			public List< OperationExecutionItem > ExecutingOperations = new List< OperationExecutionItem >();
-			[DataMember]
+			[DataMember] 
 			public List< OperationExecutionItem > RecentCompletedOperations = new List< OperationExecutionItem >();
-			[DataMember]
+			[DataMember] 
 			public List< string > ChangeItemTrackingList = new List< string >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class InformationChangeItem : IInformationObject 
 			{
@@ -3076,7 +3077,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3088,10 +3089,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3195,17 +3196,17 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public DateTime StartTimeUTC { get; set; }
 			private DateTime _unmodified_StartTimeUTC;
-			[DataMember]
+			[DataMember] 
 			public DateTime EndTimeUTC { get; set; }
 			private DateTime _unmodified_EndTimeUTC;
-			[DataMember]
+			[DataMember] 
 			public List< string > ChangedObjectIDList = new List< string >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class OperationExecutionItem : IInformationObject 
 			{
@@ -3407,7 +3408,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3419,10 +3420,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3628,33 +3629,33 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string OperationName { get; set; }
 			private string _unmodified_OperationName;
-			[DataMember]
+			[DataMember] 
 			public string OperationDomain { get; set; }
 			private string _unmodified_OperationDomain;
-			[DataMember]
+			[DataMember] 
 			public string OperationID { get; set; }
 			private string _unmodified_OperationID;
-			[DataMember]
+			[DataMember] 
 			public string CallerProvidedInfo { get; set; }
 			private string _unmodified_CallerProvidedInfo;
-			[DataMember]
+			[DataMember] 
 			public DateTime CreationTime { get; set; }
 			private DateTime _unmodified_CreationTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ExecutionBeginTime { get; set; }
 			private DateTime _unmodified_ExecutionBeginTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ExecutionCompletedTime { get; set; }
 			private DateTime _unmodified_ExecutionCompletedTime;
-			[DataMember]
+			[DataMember] 
 			public string ExecutionStatus { get; set; }
 			private string _unmodified_ExecutionStatus;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GenericObjectCollection : IInformationObject , IInformationCollection
 			{
@@ -3856,7 +3857,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3868,10 +3869,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4178,7 +4179,7 @@ InterfaceOperation.ErrorMessage
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GenericCollectionableObject : IInformationObject 
 			{
@@ -4380,7 +4381,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4392,10 +4393,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4567,12 +4568,12 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public GenericObject ValueObject { get; set; }
 			private GenericObject _unmodified_ValueObject;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GenericObject : IInformationObject 
 			{
@@ -4740,7 +4741,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4752,10 +4753,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4856,17 +4857,17 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public List< GenericValue > Values = new List< GenericValue >();
-			[DataMember]
+			[DataMember] 
 			public bool IncludeInCollection { get; set; }
 			private bool _unmodified_IncludeInCollection;
-			[DataMember]
+			[DataMember] 
 			public string OptionalCollectionName { get; set; }
 			private string _unmodified_OptionalCollectionName;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GenericValue : IInformationObject 
 			{
@@ -5034,7 +5035,7 @@ InterfaceOperation.ErrorMessage
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5046,10 +5047,10 @@ InterfaceOperation.ErrorMessage
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5174,35 +5175,35 @@ InterfaceOperation.ErrorMessage
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string ValueName { get; set; }
 			private string _unmodified_ValueName;
-			[DataMember]
+			[DataMember] 
 			public string String { get; set; }
 			private string _unmodified_String;
-			[DataMember]
+			[DataMember] 
 			public List< string > StringArray = new List< string >();
-			[DataMember]
+			[DataMember] 
 			public double Number { get; set; }
 			private double _unmodified_Number;
-			[DataMember]
+			[DataMember] 
 			public List< double > NumberArray = new List< double >();
-			[DataMember]
+			[DataMember] 
 			public bool Boolean { get; set; }
 			private bool _unmodified_Boolean;
-			[DataMember]
+			[DataMember] 
 			public List< bool > BooleanArray = new List< bool >();
-			[DataMember]
+			[DataMember] 
 			public DateTime DateTime { get; set; }
 			private DateTime _unmodified_DateTime;
-			[DataMember]
+			[DataMember] 
 			public List< DateTime > DateTimeArray = new List< DateTime >();
-			[DataMember]
+			[DataMember] 
 			public GenericObject Object { get; set; }
 			private GenericObject _unmodified_Object;
-			[DataMember]
+			[DataMember] 
 			public List< GenericObject > ObjectArray = new List< GenericObject >();
-			[DataMember]
+			[DataMember] 
 			public string IndexingInfo { get; set; }
 			private string _unmodified_IndexingInfo;
 			

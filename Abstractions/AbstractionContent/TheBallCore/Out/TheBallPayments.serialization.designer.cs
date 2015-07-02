@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using ProtoBuf;
 
 
 namespace INT { 
@@ -69,7 +70,7 @@ namespace INT {
 				public string last4 { get; set; }
 			}
 
- }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class GroupSubscriptionPlanCollection 
 			{
@@ -108,7 +109,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -120,10 +121,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -188,7 +189,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class GroupSubscriptionPlan 
 			{
@@ -228,7 +229,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -240,10 +241,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -255,17 +256,17 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public string PlanName { get; set; }
 			private string _unmodified_PlanName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public List< string > GroupIDs = new List< string >();
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class SubscriptionPlanStatus 
 			{
@@ -304,7 +305,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -316,10 +317,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -339,15 +340,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SubscriptionPlan { get; set; }
 			private string _unmodified_SubscriptionPlan;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidUntil { get; set; }
 			private DateTime _unmodified_ValidUntil;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class CustomerAccountCollection 
 			{
@@ -386,7 +387,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -398,10 +399,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -466,7 +467,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class CustomerAccount 
 			{
@@ -506,7 +507,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -518,10 +519,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -533,16 +534,16 @@ namespace INT {
 
 			
 
-			[DataMember]
+			[DataMember] 
 			public string StripeID { get; set; }
 			private string _unmodified_StripeID;
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public List< string > ActivePlans = new List< string >();
 			
 			}

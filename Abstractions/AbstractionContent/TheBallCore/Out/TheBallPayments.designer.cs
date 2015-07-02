@@ -24,6 +24,7 @@ using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.WindowsAzure.StorageClient;
+using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
 
@@ -136,7 +137,7 @@ namespace INT {
                 }
             }
 		}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupSubscriptionPlanCollection : IInformationObject , IInformationCollection
 			{
@@ -338,7 +339,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -350,10 +351,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -660,7 +661,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class GroupSubscriptionPlan : IInformationObject 
 			{
@@ -828,7 +829,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -840,10 +841,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -947,17 +948,17 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string PlanName { get; set; }
 			private string _unmodified_PlanName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public List< string > GroupIDs = new List< string >();
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class SubscriptionPlanStatus : IInformationObject 
 			{
@@ -1159,7 +1160,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1171,10 +1172,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1310,15 +1311,15 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string SubscriptionPlan { get; set; }
 			private string _unmodified_SubscriptionPlan;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidUntil { get; set; }
 			private DateTime _unmodified_ValidUntil;
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CustomerAccountCollection : IInformationObject , IInformationCollection
 			{
@@ -1520,7 +1521,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1532,10 +1533,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1842,7 +1843,7 @@ namespace INT {
 
 			
 			}
-			[DataContract]
+			[DataContract] 
 			[Serializable]
 			public partial class CustomerAccount : IInformationObject 
 			{
@@ -2010,7 +2011,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2022,10 +2023,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2156,16 +2157,16 @@ namespace INT {
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
 	        }
-			[DataMember]
+			[DataMember] 
 			public string StripeID { get; set; }
 			private string _unmodified_StripeID;
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public List< string > ActivePlans = new List< string >();
 			
 			}

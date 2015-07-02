@@ -8,6 +8,7 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
+using ProtoBuf;
 
 
 namespace INT { 
@@ -42,7 +43,7 @@ namespace INT {
 				public ParentToChildren[] children { get; set; }
 			}
 
- }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+ }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBSystem 
 			{
@@ -81,7 +82,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -93,10 +94,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -116,15 +117,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string InstanceName { get; set; }
 			private string _unmodified_InstanceName;
-			[DataMember]
+			[DataMember] 
 			public string AdminGroupID { get; set; }
 			private string _unmodified_AdminGroupID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class WebPublishInfo 
 			{
@@ -163,7 +164,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -175,10 +176,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -200,21 +201,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string PublishType { get; set; }
 			private string _unmodified_PublishType;
-			[DataMember]
+			[DataMember] 
 			public string PublishContainer { get; set; }
 			private string _unmodified_PublishContainer;
-			[DataMember]
+			[DataMember] 
 			public PublicationPackage ActivePublication { get; set; }
 			private PublicationPackage _unmodified_ActivePublication;
-			[DataMember]
+			[DataMember] 
 			public PublicationPackageCollection Publications { get; set; }
 			private PublicationPackageCollection _unmodified_Publications;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class PublicationPackageCollection 
 			{
@@ -253,7 +254,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -265,10 +266,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -333,7 +334,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class PublicationPackage 
 			{
@@ -372,7 +373,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -384,10 +385,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -407,15 +408,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string PackageName { get; set; }
 			private string _unmodified_PackageName;
-			[DataMember]
+			[DataMember] 
 			public DateTime PublicationTime { get; set; }
 			private DateTime _unmodified_PublicationTime;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBRLoginRoot 
 			{
@@ -454,7 +455,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -466,10 +467,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -489,15 +490,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string DomainName { get; set; }
 			private string _unmodified_DomainName;
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBRAccountRoot 
 			{
@@ -536,7 +537,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -548,10 +549,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -570,12 +571,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBRGroupRoot 
 			{
@@ -614,7 +615,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -626,10 +627,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -648,12 +649,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBCollaboratingGroup Group { get; set; }
 			private TBCollaboratingGroup _unmodified_Group;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBRLoginGroupRoot 
 			{
@@ -692,7 +693,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -704,10 +705,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -727,15 +728,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBREmailRoot 
 			{
@@ -774,7 +775,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -786,10 +787,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -808,12 +809,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBAccount Account { get; set; }
 			private TBAccount _unmodified_Account;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBAccount 
 			{
@@ -852,7 +853,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -864,10 +865,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -888,18 +889,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBEmailCollection Emails { get; set; }
 			private TBEmailCollection _unmodified_Emails;
-			[DataMember]
+			[DataMember] 
 			public TBLoginInfoCollection Logins { get; set; }
 			private TBLoginInfoCollection _unmodified_Logins;
-			[DataMember]
+			[DataMember] 
 			public TBAccountCollaborationGroupCollection GroupRoleCollection { get; set; }
 			private TBAccountCollaborationGroupCollection _unmodified_GroupRoleCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBAccountCollaborationGroup 
 			{
@@ -938,7 +939,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -950,10 +951,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -974,18 +975,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string GroupRole { get; set; }
 			private string _unmodified_GroupRole;
-			[DataMember]
+			[DataMember] 
 			public string RoleStatus { get; set; }
 			private string _unmodified_RoleStatus;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBAccountCollaborationGroupCollection 
 			{
@@ -1024,7 +1025,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1036,10 +1037,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1104,7 +1105,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBLoginInfo 
 			{
@@ -1143,7 +1144,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1155,10 +1156,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1177,12 +1178,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string OpenIDUrl { get; set; }
 			private string _unmodified_OpenIDUrl;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBLoginInfoCollection 
 			{
@@ -1221,7 +1222,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1233,10 +1234,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1301,7 +1302,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBEmail 
 			{
@@ -1340,7 +1341,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1352,10 +1353,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1375,15 +1376,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidatedAt { get; set; }
 			private DateTime _unmodified_ValidatedAt;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBEmailCollection 
 			{
@@ -1422,7 +1423,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1434,10 +1435,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1502,7 +1503,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBCollaboratorRole 
 			{
@@ -1541,7 +1542,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1553,10 +1554,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1577,18 +1578,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBEmail Email { get; set; }
 			private TBEmail _unmodified_Email;
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string RoleStatus { get; set; }
 			private string _unmodified_RoleStatus;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBCollaboratorRoleCollection 
 			{
@@ -1627,7 +1628,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1639,10 +1640,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1707,7 +1708,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBCollaboratingGroup 
 			{
@@ -1746,7 +1747,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1758,10 +1759,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1781,15 +1782,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public TBCollaboratorRoleCollection Roles { get; set; }
 			private TBCollaboratorRoleCollection _unmodified_Roles;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBEmailValidation 
 			{
@@ -1828,7 +1829,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1840,10 +1841,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1870,36 +1871,36 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Email { get; set; }
 			private string _unmodified_Email;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public DateTime ValidUntil { get; set; }
 			private DateTime _unmodified_ValidUntil;
-			[DataMember]
+			[DataMember] 
 			public TBGroupJoinConfirmation GroupJoinConfirmation { get; set; }
 			private TBGroupJoinConfirmation _unmodified_GroupJoinConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBDeviceJoinConfirmation DeviceJoinConfirmation { get; set; }
 			private TBDeviceJoinConfirmation _unmodified_DeviceJoinConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBInformationInputConfirmation InformationInputConfirmation { get; set; }
 			private TBInformationInputConfirmation _unmodified_InformationInputConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBInformationOutputConfirmation InformationOutputConfirmation { get; set; }
 			private TBInformationOutputConfirmation _unmodified_InformationOutputConfirmation;
-			[DataMember]
+			[DataMember] 
 			public TBMergeAccountConfirmation MergeAccountsConfirmation { get; set; }
 			private TBMergeAccountConfirmation _unmodified_MergeAccountsConfirmation;
-			[DataMember]
+			[DataMember] 
 			public string RedirectUrlAfterValidation { get; set; }
 			private string _unmodified_RedirectUrlAfterValidation;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBMergeAccountConfirmation 
 			{
@@ -1938,7 +1939,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -1950,10 +1951,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -1973,15 +1974,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string AccountToBeMergedID { get; set; }
 			private string _unmodified_AccountToBeMergedID;
-			[DataMember]
+			[DataMember] 
 			public string AccountToMergeToID { get; set; }
 			private string _unmodified_AccountToMergeToID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBGroupJoinConfirmation 
 			{
@@ -2020,7 +2021,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2032,10 +2033,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2055,15 +2056,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string InvitationMode { get; set; }
 			private string _unmodified_InvitationMode;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBDeviceJoinConfirmation 
 			{
@@ -2102,7 +2103,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2114,10 +2115,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2138,18 +2139,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string DeviceMembershipID { get; set; }
 			private string _unmodified_DeviceMembershipID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBInformationInputConfirmation 
 			{
@@ -2188,7 +2189,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2200,10 +2201,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2224,18 +2225,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string InformationInputID { get; set; }
 			private string _unmodified_InformationInputID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBInformationOutputConfirmation 
 			{
@@ -2274,7 +2275,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2286,10 +2287,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2310,18 +2311,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupID { get; set; }
 			private string _unmodified_GroupID;
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string InformationOutputID { get; set; }
 			private string _unmodified_InformationOutputID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LoginProvider 
 			{
@@ -2360,7 +2361,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2372,10 +2373,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2398,24 +2399,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ProviderName { get; set; }
 			private string _unmodified_ProviderName;
-			[DataMember]
+			[DataMember] 
 			public string ProviderIconClass { get; set; }
 			private string _unmodified_ProviderIconClass;
-			[DataMember]
+			[DataMember] 
 			public string ProviderType { get; set; }
 			private string _unmodified_ProviderType;
-			[DataMember]
+			[DataMember] 
 			public string ProviderUrl { get; set; }
 			private string _unmodified_ProviderUrl;
-			[DataMember]
+			[DataMember] 
 			public string ReturnUrl { get; set; }
 			private string _unmodified_ReturnUrl;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LoginProviderCollection 
 			{
@@ -2454,7 +2455,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2466,10 +2467,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2534,7 +2535,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TBPRegisterEmail 
 			{
@@ -2573,7 +2574,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2585,10 +2586,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2607,12 +2608,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountSummary 
 			{
@@ -2651,7 +2652,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2663,10 +2664,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2685,12 +2686,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public GroupSummaryContainer GroupSummary { get; set; }
 			private GroupSummaryContainer _unmodified_GroupSummary;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountContainer 
 			{
@@ -2729,7 +2730,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2741,10 +2742,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2764,15 +2765,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public AccountModule AccountModule { get; set; }
 			private AccountModule _unmodified_AccountModule;
-			[DataMember]
+			[DataMember] 
 			public AccountSummary AccountSummary { get; set; }
 			private AccountSummary _unmodified_AccountSummary;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountModule 
 			{
@@ -2811,7 +2812,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2823,10 +2824,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2848,21 +2849,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public AccountProfile Profile { get; set; }
 			private AccountProfile _unmodified_Profile;
-			[DataMember]
+			[DataMember] 
 			public AccountSecurity Security { get; set; }
 			private AccountSecurity _unmodified_Security;
-			[DataMember]
+			[DataMember] 
 			public AccountRoles Roles { get; set; }
 			private AccountRoles _unmodified_Roles;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection LocationCollection { get; set; }
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LocationContainer 
 			{
@@ -2901,7 +2902,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2913,10 +2914,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -2935,12 +2936,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddressAndLocationCollection 
 			{
@@ -2979,7 +2980,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -2991,10 +2992,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3059,7 +3060,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddressAndLocation 
 			{
@@ -3098,7 +3099,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3110,10 +3111,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3134,18 +3135,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public StreetAddress Address { get; set; }
 			private StreetAddress _unmodified_Address;
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class StreetAddress 
 			{
@@ -3184,7 +3185,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3196,10 +3197,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3221,21 +3222,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Street { get; set; }
 			private string _unmodified_Street;
-			[DataMember]
+			[DataMember] 
 			public string ZipCode { get; set; }
 			private string _unmodified_ZipCode;
-			[DataMember]
+			[DataMember] 
 			public string Town { get; set; }
 			private string _unmodified_Town;
-			[DataMember]
+			[DataMember] 
 			public string Country { get; set; }
 			private string _unmodified_Country;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountProfile 
 			{
@@ -3274,7 +3275,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3286,10 +3287,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3314,30 +3315,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public Image ProfileImage { get; set; }
 			private Image _unmodified_ProfileImage;
-			[DataMember]
+			[DataMember] 
 			public string FirstName { get; set; }
 			private string _unmodified_FirstName;
-			[DataMember]
+			[DataMember] 
 			public string LastName { get; set; }
 			private string _unmodified_LastName;
-			[DataMember]
+			[DataMember] 
 			public StreetAddress Address { get; set; }
 			private StreetAddress _unmodified_Address;
-			[DataMember]
+			[DataMember] 
 			public bool IsSimplifiedAccount { get; set; }
 			private bool _unmodified_IsSimplifiedAccount;
-			[DataMember]
+			[DataMember] 
 			public string SimplifiedAccountEmail { get; set; }
 			private string _unmodified_SimplifiedAccountEmail;
-			[DataMember]
+			[DataMember] 
 			public string SimplifiedAccountGroupID { get; set; }
 			private string _unmodified_SimplifiedAccountGroupID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountSecurity 
 			{
@@ -3376,7 +3377,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3388,10 +3389,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3411,15 +3412,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public TBLoginInfoCollection LoginInfoCollection { get; set; }
 			private TBLoginInfoCollection _unmodified_LoginInfoCollection;
-			[DataMember]
+			[DataMember] 
 			public TBEmailCollection EmailCollection { get; set; }
 			private TBEmailCollection _unmodified_EmailCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AccountRoles 
 			{
@@ -3458,7 +3459,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3470,10 +3471,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3494,18 +3495,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public ReferenceCollection ModeratorInGroups { get; set; }
 			private ReferenceCollection _unmodified_ModeratorInGroups;
-			[DataMember]
+			[DataMember] 
 			public ReferenceCollection MemberInGroups { get; set; }
 			private ReferenceCollection _unmodified_MemberInGroups;
-			[DataMember]
+			[DataMember] 
 			public string OrganizationsImPartOf { get; set; }
 			private string _unmodified_OrganizationsImPartOf;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class PersonalInfoVisibility 
 			{
@@ -3544,7 +3545,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3556,10 +3557,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3578,12 +3579,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string NoOne_Network_All { get; set; }
 			private string _unmodified_NoOne_Network_All;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ReferenceToInformation 
 			{
@@ -3622,7 +3623,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3634,10 +3635,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3657,15 +3658,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string URL { get; set; }
 			private string _unmodified_URL;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ReferenceCollection 
 			{
@@ -3704,7 +3705,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3716,10 +3717,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3784,7 +3785,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class NodeSummaryContainer 
 			{
@@ -3823,7 +3824,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3835,10 +3836,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -3863,30 +3864,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public RenderedNodeCollection Nodes { get; set; }
 			private RenderedNodeCollection _unmodified_Nodes;
-			[DataMember]
+			[DataMember] 
 			public TextContentCollection NodeSourceTextContent { get; set; }
 			private TextContentCollection _unmodified_NodeSourceTextContent;
-			[DataMember]
+			[DataMember] 
 			public LinkToContentCollection NodeSourceLinkToContent { get; set; }
 			private LinkToContentCollection _unmodified_NodeSourceLinkToContent;
-			[DataMember]
+			[DataMember] 
 			public EmbeddedContentCollection NodeSourceEmbeddedContent { get; set; }
 			private EmbeddedContentCollection _unmodified_NodeSourceEmbeddedContent;
-			[DataMember]
+			[DataMember] 
 			public ImageCollection NodeSourceImages { get; set; }
 			private ImageCollection _unmodified_NodeSourceImages;
-			[DataMember]
+			[DataMember] 
 			public BinaryFileCollection NodeSourceBinaryFiles { get; set; }
 			private BinaryFileCollection _unmodified_NodeSourceBinaryFiles;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection NodeSourceCategories { get; set; }
 			private CategoryCollection _unmodified_NodeSourceCategories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class RenderedNodeCollection 
 			{
@@ -3925,7 +3926,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -3937,10 +3938,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4005,7 +4006,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class RenderedNode 
 			{
@@ -4044,7 +4045,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4056,10 +4057,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4093,57 +4094,57 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string OriginalContentID { get; set; }
 			private string _unmodified_OriginalContentID;
-			[DataMember]
+			[DataMember] 
 			public string TechnicalSource { get; set; }
 			private string _unmodified_TechnicalSource;
-			[DataMember]
+			[DataMember] 
 			public string ImageBaseUrl { get; set; }
 			private string _unmodified_ImageBaseUrl;
-			[DataMember]
+			[DataMember] 
 			public string ImageExt { get; set; }
 			private string _unmodified_ImageExt;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string ActualContentUrl { get; set; }
 			private string _unmodified_ActualContentUrl;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public string TimestampText { get; set; }
 			private string _unmodified_TimestampText;
-			[DataMember]
+			[DataMember] 
 			public string MainSortableText { get; set; }
 			private string _unmodified_MainSortableText;
-			[DataMember]
+			[DataMember] 
 			public bool IsCategoryFilteringNode { get; set; }
 			private bool _unmodified_IsCategoryFilteringNode;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CategoryFilters { get; set; }
 			private ShortTextCollection _unmodified_CategoryFilters;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CategoryNames { get; set; }
 			private ShortTextCollection _unmodified_CategoryNames;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Categories { get; set; }
 			private ShortTextCollection _unmodified_Categories;
-			[DataMember]
+			[DataMember] 
 			public string CategoryIDList { get; set; }
 			private string _unmodified_CategoryIDList;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Authors { get; set; }
 			private ShortTextCollection _unmodified_Authors;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection Locations { get; set; }
 			private ShortTextCollection _unmodified_Locations;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ShortTextCollection 
 			{
@@ -4182,7 +4183,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4194,10 +4195,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4262,7 +4263,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ShortTextObject 
 			{
@@ -4301,7 +4302,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4313,10 +4314,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4335,12 +4336,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LongTextCollection 
 			{
@@ -4379,7 +4380,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4391,10 +4392,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4459,7 +4460,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LongTextObject 
 			{
@@ -4498,7 +4499,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4510,10 +4511,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4532,12 +4533,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapMarker 
 			{
@@ -4576,7 +4577,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4588,10 +4589,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4616,30 +4617,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string IconUrl { get; set; }
 			private string _unmodified_IconUrl;
-			[DataMember]
+			[DataMember] 
 			public string MarkerSource { get; set; }
 			private string _unmodified_MarkerSource;
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
-			[DataMember]
+			[DataMember] 
 			public string LocationText { get; set; }
 			private string _unmodified_LocationText;
-			[DataMember]
+			[DataMember] 
 			public string PopupTitle { get; set; }
 			private string _unmodified_PopupTitle;
-			[DataMember]
+			[DataMember] 
 			public string PopupContent { get; set; }
 			private string _unmodified_PopupContent;
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapMarkerCollection 
 			{
@@ -4678,7 +4679,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4690,10 +4691,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4758,7 +4759,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ModeratorCollection 
 			{
@@ -4797,7 +4798,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4809,10 +4810,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4877,7 +4878,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Moderator 
 			{
@@ -4916,7 +4917,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -4928,10 +4929,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -4951,15 +4952,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ModeratorName { get; set; }
 			private string _unmodified_ModeratorName;
-			[DataMember]
+			[DataMember] 
 			public string ProfileUrl { get; set; }
 			private string _unmodified_ProfileUrl;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class CollaboratorCollection 
 			{
@@ -4998,7 +4999,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5010,10 +5011,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5078,7 +5079,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Collaborator 
 			{
@@ -5117,7 +5118,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5129,10 +5130,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5155,24 +5156,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string AccountID { get; set; }
 			private string _unmodified_AccountID;
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
-			[DataMember]
+			[DataMember] 
 			public string CollaboratorName { get; set; }
 			private string _unmodified_CollaboratorName;
-			[DataMember]
+			[DataMember] 
 			public string Role { get; set; }
 			private string _unmodified_Role;
-			[DataMember]
+			[DataMember] 
 			public string ProfileUrl { get; set; }
 			private string _unmodified_ProfileUrl;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class GroupSummaryContainer 
 			{
@@ -5211,7 +5212,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5223,10 +5224,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5248,21 +5249,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SummaryBody { get; set; }
 			private string _unmodified_SummaryBody;
-			[DataMember]
+			[DataMember] 
 			public Introduction Introduction { get; set; }
 			private Introduction _unmodified_Introduction;
-			[DataMember]
+			[DataMember] 
 			public GroupIndex GroupSummaryIndex { get; set; }
 			private GroupIndex _unmodified_GroupSummaryIndex;
-			[DataMember]
+			[DataMember] 
 			public GroupCollection GroupCollection { get; set; }
 			private GroupCollection _unmodified_GroupCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class GroupContainer 
 			{
@@ -5301,7 +5302,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5313,10 +5314,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5339,24 +5340,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public GroupIndex GroupIndex { get; set; }
 			private GroupIndex _unmodified_GroupIndex;
-			[DataMember]
+			[DataMember] 
 			public Group GroupProfile { get; set; }
 			private Group _unmodified_GroupProfile;
-			[DataMember]
+			[DataMember] 
 			public CollaboratorCollection Collaborators { get; set; }
 			private CollaboratorCollection _unmodified_Collaborators;
-			[DataMember]
+			[DataMember] 
 			public CollaboratorCollection PendingCollaborators { get; set; }
 			private CollaboratorCollection _unmodified_PendingCollaborators;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection LocationCollection { get; set; }
 			private AddressAndLocationCollection _unmodified_LocationCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class GroupIndex 
 			{
@@ -5395,7 +5396,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5407,10 +5408,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5432,21 +5433,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public Image Icon { get; set; }
 			private Image _unmodified_Icon;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Introduction { get; set; }
 			private string _unmodified_Introduction;
-			[DataMember]
+			[DataMember] 
 			public string Summary { get; set; }
 			private string _unmodified_Summary;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddAddressAndLocationInfo 
 			{
@@ -5485,7 +5486,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5497,10 +5498,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5519,12 +5520,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string LocationName { get; set; }
 			private string _unmodified_LocationName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddImageInfo 
 			{
@@ -5563,7 +5564,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5575,10 +5576,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5597,12 +5598,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ImageTitle { get; set; }
 			private string _unmodified_ImageTitle;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddImageGroupInfo 
 			{
@@ -5641,7 +5642,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5653,10 +5654,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5675,12 +5676,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ImageGroupTitle { get; set; }
 			private string _unmodified_ImageGroupTitle;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddEmailAddressInfo 
 			{
@@ -5719,7 +5720,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5731,10 +5732,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5753,12 +5754,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class CreateGroupInfo 
 			{
@@ -5797,7 +5798,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5809,10 +5810,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5831,12 +5832,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddActivityInfo 
 			{
@@ -5875,7 +5876,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5887,10 +5888,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5909,12 +5910,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ActivityName { get; set; }
 			private string _unmodified_ActivityName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddBlogPostInfo 
 			{
@@ -5953,7 +5954,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -5965,10 +5966,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -5987,12 +5988,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AddCategoryInfo 
 			{
@@ -6031,7 +6032,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6043,10 +6044,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6065,12 +6066,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class GroupCollection 
 			{
@@ -6109,7 +6110,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6121,10 +6122,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6189,7 +6190,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Group 
 			{
@@ -6228,7 +6229,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6240,10 +6241,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6271,39 +6272,39 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public Image ProfileImage { get; set; }
 			private Image _unmodified_ProfileImage;
-			[DataMember]
+			[DataMember] 
 			public Image IconImage { get; set; }
 			private Image _unmodified_IconImage;
-			[DataMember]
+			[DataMember] 
 			public string GroupName { get; set; }
 			private string _unmodified_GroupName;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string OrganizationsAndGroupsLinkedToUs { get; set; }
 			private string _unmodified_OrganizationsAndGroupsLinkedToUs;
-			[DataMember]
+			[DataMember] 
 			public string WwwSiteToPublishTo { get; set; }
 			private string _unmodified_WwwSiteToPublishTo;
-			[DataMember]
+			[DataMember] 
 			public ShortTextCollection CustomUICollection { get; set; }
 			private ShortTextCollection _unmodified_CustomUICollection;
-			[DataMember]
+			[DataMember] 
 			public ModeratorCollection Moderators { get; set; }
 			private ModeratorCollection _unmodified_Moderators;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection CategoryCollection { get; set; }
 			private CategoryCollection _unmodified_CategoryCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Introduction 
 			{
@@ -6342,7 +6343,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6354,10 +6355,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6377,15 +6378,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Body { get; set; }
 			private string _unmodified_Body;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ContentCategoryRankCollection 
 			{
@@ -6424,7 +6425,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6436,10 +6437,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6504,7 +6505,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ContentCategoryRank 
 			{
@@ -6543,7 +6544,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6555,10 +6556,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6581,24 +6582,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ContentID { get; set; }
 			private string _unmodified_ContentID;
-			[DataMember]
+			[DataMember] 
 			public string ContentSemanticType { get; set; }
 			private string _unmodified_ContentSemanticType;
-			[DataMember]
+			[DataMember] 
 			public string CategoryID { get; set; }
 			private string _unmodified_CategoryID;
-			[DataMember]
+			[DataMember] 
 			public string RankName { get; set; }
 			private string _unmodified_RankName;
-			[DataMember]
+			[DataMember] 
 			public string RankValue { get; set; }
 			private string _unmodified_RankValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LinkToContentCollection 
 			{
@@ -6637,7 +6638,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6649,10 +6650,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6717,7 +6718,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LinkToContent 
 			{
@@ -6756,7 +6757,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6768,10 +6769,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6797,33 +6798,33 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string URL { get; set; }
 			private string _unmodified_URL;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class EmbeddedContentCollection 
 			{
@@ -6862,7 +6863,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6874,10 +6875,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -6942,7 +6943,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class EmbeddedContent 
 			{
@@ -6981,7 +6982,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -6993,10 +6994,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7021,30 +7022,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string IFrameTagContents { get; set; }
 			private string _unmodified_IFrameTagContents;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DynamicContentGroupCollection 
 			{
@@ -7083,7 +7084,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7095,10 +7096,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7163,7 +7164,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DynamicContentGroup 
 			{
@@ -7202,7 +7203,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7214,10 +7215,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7240,24 +7241,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string HostName { get; set; }
 			private string _unmodified_HostName;
-			[DataMember]
+			[DataMember] 
 			public string GroupHeader { get; set; }
 			private string _unmodified_GroupHeader;
-			[DataMember]
+			[DataMember] 
 			public string SortValue { get; set; }
 			private string _unmodified_SortValue;
-			[DataMember]
+			[DataMember] 
 			public string PageLocation { get; set; }
 			private string _unmodified_PageLocation;
-			[DataMember]
+			[DataMember] 
 			public string ContentItemNames { get; set; }
 			private string _unmodified_ContentItemNames;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DynamicContentCollection 
 			{
@@ -7296,7 +7297,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7308,10 +7309,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7376,7 +7377,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DynamicContent 
 			{
@@ -7415,7 +7416,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7427,10 +7428,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7460,45 +7461,45 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string HostName { get; set; }
 			private string _unmodified_HostName;
-			[DataMember]
+			[DataMember] 
 			public string ContentName { get; set; }
 			private string _unmodified_ContentName;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public string ElementQuery { get; set; }
 			private string _unmodified_ElementQuery;
-			[DataMember]
+			[DataMember] 
 			public string Content { get; set; }
 			private string _unmodified_Content;
-			[DataMember]
+			[DataMember] 
 			public string RawContent { get; set; }
 			private string _unmodified_RawContent;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public bool IsEnabled { get; set; }
 			private bool _unmodified_IsEnabled;
-			[DataMember]
+			[DataMember] 
 			public bool ApplyActively { get; set; }
 			private bool _unmodified_ApplyActively;
-			[DataMember]
+			[DataMember] 
 			public string EditType { get; set; }
 			private string _unmodified_EditType;
-			[DataMember]
+			[DataMember] 
 			public string PageLocation { get; set; }
 			private string _unmodified_PageLocation;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AttachedToObjectCollection 
 			{
@@ -7537,7 +7538,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7549,10 +7550,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7617,7 +7618,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AttachedToObject 
 			{
@@ -7656,7 +7657,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7668,10 +7669,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7695,27 +7696,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectID { get; set; }
 			private string _unmodified_SourceObjectID;
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectName { get; set; }
 			private string _unmodified_SourceObjectName;
-			[DataMember]
+			[DataMember] 
 			public string SourceObjectDomain { get; set; }
 			private string _unmodified_SourceObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class CommentCollection 
 			{
@@ -7754,7 +7755,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7766,10 +7767,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7834,7 +7835,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Comment 
 			{
@@ -7873,7 +7874,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -7885,10 +7886,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -7918,45 +7919,45 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string CommentText { get; set; }
 			private string _unmodified_CommentText;
-			[DataMember]
+			[DataMember] 
 			public DateTime Created { get; set; }
 			private DateTime _unmodified_Created;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorName { get; set; }
 			private string _unmodified_OriginalAuthorName;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorEmail { get; set; }
 			private string _unmodified_OriginalAuthorEmail;
-			[DataMember]
+			[DataMember] 
 			public string OriginalAuthorAccountID { get; set; }
 			private string _unmodified_OriginalAuthorAccountID;
-			[DataMember]
+			[DataMember] 
 			public DateTime LastModified { get; set; }
 			private DateTime _unmodified_LastModified;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorName { get; set; }
 			private string _unmodified_LastAuthorName;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorEmail { get; set; }
 			private string _unmodified_LastAuthorEmail;
-			[DataMember]
+			[DataMember] 
 			public string LastAuthorAccountID { get; set; }
 			private string _unmodified_LastAuthorAccountID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SelectionCollection 
 			{
@@ -7995,7 +7996,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8007,10 +8008,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8075,7 +8076,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Selection 
 			{
@@ -8114,7 +8115,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8126,10 +8127,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8154,30 +8155,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectID { get; set; }
 			private string _unmodified_TargetObjectID;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectDomain { get; set; }
 			private string _unmodified_TargetObjectDomain;
-			[DataMember]
+			[DataMember] 
 			public string SelectionCategory { get; set; }
 			private string _unmodified_SelectionCategory;
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
-			[DataMember]
+			[DataMember] 
 			public bool BooleanValue { get; set; }
 			private bool _unmodified_BooleanValue;
-			[DataMember]
+			[DataMember] 
 			public double DoubleValue { get; set; }
 			private double _unmodified_DoubleValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TextContentCollection 
 			{
@@ -8216,7 +8217,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8228,10 +8229,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8296,7 +8297,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class TextContent 
 			{
@@ -8335,7 +8336,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8347,10 +8348,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8380,45 +8381,45 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string SubTitle { get; set; }
 			private string _unmodified_SubTitle;
-			[DataMember]
+			[DataMember] 
 			public DateTime Published { get; set; }
 			private DateTime _unmodified_Published;
-			[DataMember]
+			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public string Body { get; set; }
 			private string _unmodified_Body;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
-			[DataMember]
+			[DataMember] 
 			public double SortOrderNumber { get; set; }
 			private double _unmodified_SortOrderNumber;
-			[DataMember]
+			[DataMember] 
 			public string IFrameSources { get; set; }
 			private string _unmodified_IFrameSources;
-			[DataMember]
+			[DataMember] 
 			public string RawHtmlContent { get; set; }
 			private string _unmodified_RawHtmlContent;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Map 
 			{
@@ -8457,7 +8458,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8469,10 +8470,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8491,12 +8492,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapCollection 
 			{
@@ -8535,7 +8536,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8547,10 +8548,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8615,7 +8616,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapResult 
 			{
@@ -8654,7 +8655,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8666,10 +8667,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8688,12 +8689,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public Location Location { get; set; }
 			private Location _unmodified_Location;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapResultCollection 
 			{
@@ -8732,7 +8733,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8744,10 +8745,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8812,7 +8813,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MapResultsCollection 
 			{
@@ -8851,7 +8852,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8863,10 +8864,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8887,18 +8888,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByDate { get; set; }
 			private MapResultCollection _unmodified_ResultByDate;
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByAuthor { get; set; }
 			private MapResultCollection _unmodified_ResultByAuthor;
-			[DataMember]
+			[DataMember] 
 			public MapResultCollection ResultByProximity { get; set; }
 			private MapResultCollection _unmodified_ResultByProximity;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Video 
 			{
@@ -8937,7 +8938,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -8949,10 +8950,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -8973,18 +8974,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public MediaContent VideoData { get; set; }
 			private MediaContent _unmodified_VideoData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Caption { get; set; }
 			private string _unmodified_Caption;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class ImageCollection 
 			{
@@ -9023,7 +9024,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9035,10 +9036,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9103,7 +9104,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Image 
 			{
@@ -9142,7 +9143,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9154,10 +9155,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9182,30 +9183,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Caption { get; set; }
 			private string _unmodified_Caption;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public AddressAndLocationCollection Locations { get; set; }
 			private AddressAndLocationCollection _unmodified_Locations;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class BinaryFileCollection 
 			{
@@ -9244,7 +9245,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9256,10 +9257,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9324,7 +9325,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class BinaryFile 
 			{
@@ -9363,7 +9364,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9375,10 +9376,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9401,24 +9402,24 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string OriginalFileName { get; set; }
 			private string _unmodified_OriginalFileName;
-			[DataMember]
+			[DataMember] 
 			public MediaContent Data { get; set; }
 			private MediaContent _unmodified_Data;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class MediaContent 
 			{
@@ -9457,7 +9458,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9469,10 +9470,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9484,7 +9485,7 @@ namespace INT {
 
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Longitude 
 			{
@@ -9523,7 +9524,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9535,10 +9536,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9557,12 +9558,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Latitude 
 			{
@@ -9601,7 +9602,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9613,10 +9614,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9635,12 +9636,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string TextValue { get; set; }
 			private string _unmodified_TextValue;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Location 
 			{
@@ -9679,7 +9680,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9691,10 +9692,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9715,18 +9716,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string LocationName { get; set; }
 			private string _unmodified_LocationName;
-			[DataMember]
+			[DataMember] 
 			public Longitude Longitude { get; set; }
 			private Longitude _unmodified_Longitude;
-			[DataMember]
+			[DataMember] 
 			public Latitude Latitude { get; set; }
 			private Latitude _unmodified_Latitude;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class LocationCollection 
 			{
@@ -9765,7 +9766,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9777,10 +9778,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9845,7 +9846,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Date 
 			{
@@ -9884,7 +9885,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9896,10 +9897,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -9921,21 +9922,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public DateTime Day { get; set; }
 			private DateTime _unmodified_Day;
-			[DataMember]
+			[DataMember] 
 			public DateTime Week { get; set; }
 			private DateTime _unmodified_Week;
-			[DataMember]
+			[DataMember] 
 			public DateTime Month { get; set; }
 			private DateTime _unmodified_Month;
-			[DataMember]
+			[DataMember] 
 			public DateTime Year { get; set; }
 			private DateTime _unmodified_Year;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class CategoryContainer 
 			{
@@ -9974,7 +9975,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -9986,10 +9987,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10008,12 +10009,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public CategoryCollection Categories { get; set; }
 			private CategoryCollection _unmodified_Categories;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Category 
 			{
@@ -10052,7 +10053,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10064,10 +10065,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10092,30 +10093,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public ReferenceToInformation ReferenceToInformation { get; set; }
 			private ReferenceToInformation _unmodified_ReferenceToInformation;
-			[DataMember]
+			[DataMember] 
 			public string CategoryName { get; set; }
 			private string _unmodified_CategoryName;
-			[DataMember]
+			[DataMember] 
 			public MediaContent ImageData { get; set; }
 			private MediaContent _unmodified_ImageData;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
-			[DataMember]
+			[DataMember] 
 			public Category ParentCategory { get; set; }
 			private Category _unmodified_ParentCategory;
-			[DataMember]
+			[DataMember] 
 			public string ParentCategoryID { get; set; }
 			private string _unmodified_ParentCategoryID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class CategoryCollection 
 			{
@@ -10154,7 +10155,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10166,10 +10167,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10234,7 +10235,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriptionCollection 
 			{
@@ -10273,7 +10274,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10285,10 +10286,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10353,7 +10354,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Subscription 
 			{
@@ -10392,7 +10393,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10404,10 +10405,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10431,27 +10432,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public long Priority { get; set; }
 			private long _unmodified_Priority;
-			[DataMember]
+			[DataMember] 
 			public string TargetRelativeLocation { get; set; }
 			private string _unmodified_TargetRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string TargetInformationObjectType { get; set; }
 			private string _unmodified_TargetInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberRelativeLocation { get; set; }
 			private string _unmodified_SubscriberRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberInformationObjectType { get; set; }
 			private string _unmodified_SubscriberInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SubscriptionType { get; set; }
 			private string _unmodified_SubscriptionType;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class QueueEnvelope 
 			{
@@ -10490,7 +10491,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10502,10 +10503,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10529,27 +10530,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ActiveContainerName { get; set; }
 			private string _unmodified_ActiveContainerName;
-			[DataMember]
+			[DataMember] 
 			public string OwnerPrefix { get; set; }
 			private string _unmodified_OwnerPrefix;
-			[DataMember]
+			[DataMember] 
 			public long CurrentRetryCount { get; set; }
 			private long _unmodified_CurrentRetryCount;
-			[DataMember]
+			[DataMember] 
 			public OperationRequest SingleOperation { get; set; }
 			private OperationRequest _unmodified_SingleOperation;
-			[DataMember]
+			[DataMember] 
 			public OperationRequestCollection OrderDependentOperationSequence { get; set; }
 			private OperationRequestCollection _unmodified_OrderDependentOperationSequence;
-			[DataMember]
+			[DataMember] 
 			public SystemError ErrorContent { get; set; }
 			private SystemError _unmodified_ErrorContent;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class OperationRequestCollection 
 			{
@@ -10588,7 +10589,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10600,10 +10601,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10668,7 +10669,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class OperationRequest 
 			{
@@ -10707,7 +10708,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10719,10 +10720,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10748,33 +10749,33 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public Subscription SubscriberNotification { get; set; }
 			private Subscription _unmodified_SubscriberNotification;
-			[DataMember]
+			[DataMember] 
 			public SubscriptionChainRequestMessage SubscriptionChainRequest { get; set; }
 			private SubscriptionChainRequestMessage _unmodified_SubscriptionChainRequest;
-			[DataMember]
+			[DataMember] 
 			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
 			private UpdateWebContentOperation _unmodified_UpdateWebContentOperation;
-			[DataMember]
+			[DataMember] 
 			public RefreshDefaultViewsOperation RefreshDefaultViewsOperation { get; set; }
 			private RefreshDefaultViewsOperation _unmodified_RefreshDefaultViewsOperation;
-			[DataMember]
+			[DataMember] 
 			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
 			private DeleteEntireOwnerOperation _unmodified_DeleteEntireOwner;
-			[DataMember]
+			[DataMember] 
 			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
 			private DeleteOwnerContentOperation _unmodified_DeleteOwnerContent;
-			[DataMember]
+			[DataMember] 
 			public PublishWebContentOperation PublishWebContent { get; set; }
 			private PublishWebContentOperation _unmodified_PublishWebContent;
-			[DataMember]
+			[DataMember] 
 			public string ProcessIDToExecute { get; set; }
 			private string _unmodified_ProcessIDToExecute;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriptionChainRequestMessage 
 			{
@@ -10813,7 +10814,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10825,10 +10826,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10847,12 +10848,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ContentItemID { get; set; }
 			private string _unmodified_ContentItemID;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriptionChainRequestContent 
 			{
@@ -10891,7 +10892,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -10903,10 +10904,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -10930,27 +10931,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public DateTime SubmitTime { get; set; }
 			private DateTime _unmodified_SubmitTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingStartTime { get; set; }
 			private DateTime _unmodified_ProcessingStartTime;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTimeInformationObjects { get; set; }
 			private DateTime _unmodified_ProcessingEndTimeInformationObjects;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTimeWebTemplatesRendering { get; set; }
 			private DateTime _unmodified_ProcessingEndTimeWebTemplatesRendering;
-			[DataMember]
+			[DataMember] 
 			public DateTime ProcessingEndTime { get; set; }
 			private DateTime _unmodified_ProcessingEndTime;
-			[DataMember]
+			[DataMember] 
 			public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
 			private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriptionTarget 
 			{
@@ -10989,7 +10990,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11001,10 +11002,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11023,12 +11024,12 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string BlobLocation { get; set; }
 			private string _unmodified_BlobLocation;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriptionTargetCollection 
 			{
@@ -11067,7 +11068,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11079,10 +11080,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11147,7 +11148,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DeleteEntireOwnerOperation 
 			{
@@ -11186,7 +11187,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11198,10 +11199,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11221,15 +11222,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ContainerName { get; set; }
 			private string _unmodified_ContainerName;
-			[DataMember]
+			[DataMember] 
 			public string LocationPrefix { get; set; }
 			private string _unmodified_LocationPrefix;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class DeleteOwnerContentOperation 
 			{
@@ -11268,7 +11269,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11280,10 +11281,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11303,15 +11304,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ContainerName { get; set; }
 			private string _unmodified_ContainerName;
-			[DataMember]
+			[DataMember] 
 			public string LocationPrefix { get; set; }
 			private string _unmodified_LocationPrefix;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SystemError 
 			{
@@ -11350,7 +11351,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11362,10 +11363,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11387,21 +11388,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ErrorTitle { get; set; }
 			private string _unmodified_ErrorTitle;
-			[DataMember]
+			[DataMember] 
 			public DateTime OccurredAt { get; set; }
 			private DateTime _unmodified_OccurredAt;
-			[DataMember]
+			[DataMember] 
 			public SystemErrorItemCollection SystemErrorItems { get; set; }
 			private SystemErrorItemCollection _unmodified_SystemErrorItems;
-			[DataMember]
+			[DataMember] 
 			public QueueEnvelope MessageContent { get; set; }
 			private QueueEnvelope _unmodified_MessageContent;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SystemErrorItem 
 			{
@@ -11440,7 +11441,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11452,10 +11453,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11475,15 +11476,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ShortDescription { get; set; }
 			private string _unmodified_ShortDescription;
-			[DataMember]
+			[DataMember] 
 			public string LongDescription { get; set; }
 			private string _unmodified_LongDescription;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SystemErrorItemCollection 
 			{
@@ -11522,7 +11523,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11534,10 +11535,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11602,7 +11603,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class InformationSource 
 			{
@@ -11641,7 +11642,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11653,10 +11654,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11682,33 +11683,33 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SourceName { get; set; }
 			private string _unmodified_SourceName;
-			[DataMember]
+			[DataMember] 
 			public string SourceLocation { get; set; }
 			private string _unmodified_SourceLocation;
-			[DataMember]
+			[DataMember] 
 			public string SourceType { get; set; }
 			private string _unmodified_SourceType;
-			[DataMember]
+			[DataMember] 
 			public bool IsDynamic { get; set; }
 			private bool _unmodified_IsDynamic;
-			[DataMember]
+			[DataMember] 
 			public string SourceInformationObjectType { get; set; }
 			private string _unmodified_SourceInformationObjectType;
-			[DataMember]
+			[DataMember] 
 			public string SourceETag { get; set; }
 			private string _unmodified_SourceETag;
-			[DataMember]
+			[DataMember] 
 			public string SourceMD5 { get; set; }
 			private string _unmodified_SourceMD5;
-			[DataMember]
+			[DataMember] 
 			public DateTime SourceLastModified { get; set; }
 			private DateTime _unmodified_SourceLastModified;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class InformationSourceCollection 
 			{
@@ -11747,7 +11748,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11759,10 +11760,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11827,7 +11828,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class RefreshDefaultViewsOperation 
 			{
@@ -11866,7 +11867,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11878,10 +11879,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11901,15 +11902,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string ViewLocation { get; set; }
 			private string _unmodified_ViewLocation;
-			[DataMember]
+			[DataMember] 
 			public string TypeNameToRefresh { get; set; }
 			private string _unmodified_TypeNameToRefresh;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class UpdateWebContentOperation 
 			{
@@ -11948,7 +11949,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -11960,10 +11961,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -11987,27 +11988,27 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SourceContainerName { get; set; }
 			private string _unmodified_SourceContainerName;
-			[DataMember]
+			[DataMember] 
 			public string SourcePathRoot { get; set; }
 			private string _unmodified_SourcePathRoot;
-			[DataMember]
+			[DataMember] 
 			public string TargetContainerName { get; set; }
 			private string _unmodified_TargetContainerName;
-			[DataMember]
+			[DataMember] 
 			public string TargetPathRoot { get; set; }
 			private string _unmodified_TargetPathRoot;
-			[DataMember]
+			[DataMember] 
 			public bool RenderWhileSync { get; set; }
 			private bool _unmodified_RenderWhileSync;
-			[DataMember]
+			[DataMember] 
 			public UpdateWebContentHandlerCollection Handlers { get; set; }
 			private UpdateWebContentHandlerCollection _unmodified_Handlers;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class UpdateWebContentHandlerItem 
 			{
@@ -12046,7 +12047,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12058,10 +12059,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12081,15 +12082,15 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string InformationTypeName { get; set; }
 			private string _unmodified_InformationTypeName;
-			[DataMember]
+			[DataMember] 
 			public string OptionName { get; set; }
 			private string _unmodified_OptionName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class UpdateWebContentHandlerCollection 
 			{
@@ -12128,7 +12129,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12140,10 +12141,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12208,7 +12209,7 @@ namespace INT {
 				
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class PublishWebContentOperation 
 			{
@@ -12247,7 +12248,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12259,10 +12260,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12284,21 +12285,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string SourceContainerName { get; set; }
 			private string _unmodified_SourceContainerName;
-			[DataMember]
+			[DataMember] 
 			public string SourcePathRoot { get; set; }
 			private string _unmodified_SourcePathRoot;
-			[DataMember]
+			[DataMember] 
 			public string SourceOwner { get; set; }
 			private string _unmodified_SourceOwner;
-			[DataMember]
+			[DataMember] 
 			public string TargetContainerName { get; set; }
 			private string _unmodified_TargetContainerName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class SubscriberInput 
 			{
@@ -12337,7 +12338,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12349,10 +12350,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12374,21 +12375,21 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string InputRelativeLocation { get; set; }
 			private string _unmodified_InputRelativeLocation;
-			[DataMember]
+			[DataMember] 
 			public string InformationObjectName { get; set; }
 			private string _unmodified_InformationObjectName;
-			[DataMember]
+			[DataMember] 
 			public string InformationItemName { get; set; }
 			private string _unmodified_InformationItemName;
-			[DataMember]
+			[DataMember] 
 			public string SubscriberRelativeLocation { get; set; }
 			private string _unmodified_SubscriberRelativeLocation;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class Monitor 
 			{
@@ -12427,7 +12428,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12439,10 +12440,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12467,30 +12468,30 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public string TargetObjectName { get; set; }
 			private string _unmodified_TargetObjectName;
-			[DataMember]
+			[DataMember] 
 			public string TargetItemName { get; set; }
 			private string _unmodified_TargetItemName;
-			[DataMember]
+			[DataMember] 
 			public DateTime MonitoringUtcTimeStampToStart { get; set; }
 			private DateTime _unmodified_MonitoringUtcTimeStampToStart;
-			[DataMember]
+			[DataMember] 
 			public string MonitoringCycleFrequencyUnit { get; set; }
 			private string _unmodified_MonitoringCycleFrequencyUnit;
-			[DataMember]
+			[DataMember] 
 			public long MonitoringCycleEveryXthOfUnit { get; set; }
 			private long _unmodified_MonitoringCycleEveryXthOfUnit;
-			[DataMember]
+			[DataMember] 
 			public string CustomMonitoringCycleOperationName { get; set; }
 			private string _unmodified_CustomMonitoringCycleOperationName;
-			[DataMember]
+			[DataMember] 
 			public string OperationActionName { get; set; }
 			private string _unmodified_OperationActionName;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class IconTitleDescription 
 			{
@@ -12529,7 +12530,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12541,10 +12542,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12565,18 +12566,18 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public byte[] Icon { get; set; }
 			private byte[] _unmodified_Icon;
-			[DataMember]
+			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
-			[DataMember]
+			[DataMember] 
 			public string Description { get; set; }
 			private string _unmodified_Description;
 			
 			}
-            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")]
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/AaltoGlobalImpact.OIP")] 
 			[Serializable]
 			public partial class AboutAGIApplications 
 			{
@@ -12615,7 +12616,7 @@ namespace INT {
             
 				}
 
-				[DataMember]
+				[DataMember] 
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
@@ -12627,10 +12628,10 @@ namespace INT {
                 [DataMember]
                 public string RelativeLocation { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string Name { get; set; }
 
-                [DataMember]
+                [DataMember] 
                 public string SemanticDomainName { get; set; }
 
 				[DataMember]
@@ -12650,10 +12651,10 @@ namespace INT {
 
 
 
-			[DataMember]
+			[DataMember] 
 			public IconTitleDescription BuiltForAnybody { get; set; }
 			private IconTitleDescription _unmodified_BuiltForAnybody;
-			[DataMember]
+			[DataMember] 
 			public IconTitleDescription ForAllPeople { get; set; }
 			private IconTitleDescription _unmodified_ForAllPeople;
 			
