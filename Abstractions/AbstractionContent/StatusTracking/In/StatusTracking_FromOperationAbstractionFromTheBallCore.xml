@@ -28,6 +28,27 @@
     <StatusItem name="ObtainSystemProcessLock_ObtainedLockID" displayName="VariableType: ObtainedLockID" description="If obtained succesfully, the locks ETag ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_Owner" displayName="VariableType: Owner" description="Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_LatestEntryTime" displayName="VariableType: LatestEntryTime" description="Latest locking entry timestamp">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_LockID" displayName="VariableType: LockID" description="Lock ID to release">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_OwnerLockFileName" displayName="TargetDefinitionType: OwnerLockFileName" description="Lock file name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_SystemOwnerLockFileName" displayName="TargetDefinitionType: SystemOwnerLockFileName" description="Lock file name for system-owner lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_ReleaseOwnedOwnerLevelLock" displayName="MethodExecuteType: ReleaseOwnedOwnerLevelLock" description="Obtain owner level lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ReleaseSystemProcessLock_ReleaseReportingSystemLock" displayName="MethodExecuteType: ReleaseReportingSystemLock" description="Store system lock to match owner lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateProcess_ProcessDescription" displayName="VariableType: ProcessDescription" description="Process description">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1123,6 +1144,15 @@
       <ItemRef itemName="ObtainSystemProcessLock_ObtainOwnerLevelLock" />
       <ItemRef itemName="ObtainSystemProcessLock_ReportSystemLockToMatchOwnerLock" />
       <ItemRef itemName="ObtainSystemProcessLock_ObtainedLockID" />
+    </Group>
+    <Group name="ReleaseSystemProcessLock">
+      <ItemRef itemName="ReleaseSystemProcessLock_Owner" />
+      <ItemRef itemName="ReleaseSystemProcessLock_LatestEntryTime" />
+      <ItemRef itemName="ReleaseSystemProcessLock_LockID" />
+      <ItemRef itemName="ReleaseSystemProcessLock_OwnerLockFileName" />
+      <ItemRef itemName="ReleaseSystemProcessLock_SystemOwnerLockFileName" />
+      <ItemRef itemName="ReleaseSystemProcessLock_ReleaseOwnedOwnerLevelLock" />
+      <ItemRef itemName="ReleaseSystemProcessLock_ReleaseReportingSystemLock" />
     </Group>
     <Group name="CreateProcess">
       <ItemRef itemName="CreateProcess_ProcessDescription" />

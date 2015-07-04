@@ -39,6 +39,33 @@
         <Target name="ObtainOwnerLevelLockOutput" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="ReleaseSystemProcessLock">
+      <OperationSpec>
+        <Description>Release process lock for owner</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide" state="implemented" />
+        <Parameter name="LatestEntryTime" dataType="DateTime" designDesc="Latest locking entry timestamp" state="implemented" />
+        <Parameter name="LockID" dataType="string" designDesc="Lock ID to release" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="OwnerLockFileName" dataType="string" designDesc="Lock file name" state="implemented" />
+          <TargetDefinition name="SystemOwnerLockFileName" dataType="string" designDesc="Lock file name for system-owner lock" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="LatestEntryTime" />
+          </TargetDefinition>
+          <MethodExecute name="ReleaseOwnedOwnerLevelLock" designDesc="Obtain owner level lock" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="LockID" />
+            <Target name="OwnerLockFileName" />
+          </MethodExecute>
+          <MethodExecute name="ReleaseReportingSystemLock" designDesc="Store system lock to match owner lock" state="implemented">
+            <Target name="SystemOwnerLockFileName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="CreateProcess">
       <OperationSpec>
         <Description>

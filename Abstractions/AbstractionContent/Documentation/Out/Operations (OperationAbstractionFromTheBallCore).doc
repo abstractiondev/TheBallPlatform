@@ -3351,6 +3351,82 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Update account root and container objects with changes
 		</div>
+		</p><h1>ReleaseSystemProcessLock (Owner, LatestEntryTime, LockID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Release process lock for owner
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LatestEntryTime
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		DateTime
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Latest locking entry timestamp
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LockID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Lock ID to release
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: OwnerLockFileName</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file name
+		</div>
+		</p><h2>Target Definition: SystemOwnerLockFileName ( Owner, LatestEntryTime )</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file name for system-owner lock
+		</div>
+		</p><h2>Method Call: ReleaseOwnedOwnerLevelLock ( OwnerLockFileName, Owner, LockID )</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain owner level lock
+		</div>
+		</p><h2>Method Call: ReleaseReportingSystemLock ( SystemOwnerLockFileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Store system lock to match owner lock
+		</div>
 		</p><h1>RemoteDeviceCoreOperation (InputStream, OutputStream)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

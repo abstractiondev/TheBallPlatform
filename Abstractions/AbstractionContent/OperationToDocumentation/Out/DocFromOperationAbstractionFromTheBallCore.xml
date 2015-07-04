@@ -3479,6 +3479,89 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ReleaseSystemProcessLock (Owner, LatestEntryTime, LockID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Release process lock for owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Owner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LatestEntryTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>DateTime</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Latest locking entry timestamp</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Lock ID to release</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerLockFileName" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Lock file name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SystemOwnerLockFileName ( Owner, LatestEntryTime )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Lock file name for system-owner lock</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ReleaseOwnedOwnerLevelLock ( OwnerLockFileName, Owner, LockID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Obtain owner level lock</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ReleaseReportingSystemLock ( SystemOwnerLockFileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store system lock to match owner lock</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="RemoteDeviceCoreOperation (InputStream, OutputStream)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

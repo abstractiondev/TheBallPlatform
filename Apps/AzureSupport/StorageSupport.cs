@@ -205,6 +205,17 @@ namespace TheBall
             blob.UploadText(textContent, Encoding.UTF8, options);
         }
 
+        public static void DeleteBlob(this CloudBlob blob, string requiredETag = null)
+        {
+            BlobRequestOptions options = new BlobRequestOptions
+            {
+                RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3))
+            };
+            if(requiredETag != null)
+                options.AccessCondition = AccessCondition.IfMatch(requiredETag);
+            blob.DeleteIfExists(options);
+        }
+
         public static void UploadBlobBinary(this CloudBlobContainer container,
     string blobPath, byte[] binaryContent)
         {
@@ -1570,6 +1581,13 @@ namespace TheBall
             return lockETag;
         }
 
+        private static void deleteLockFile(IContainerOwner owner, string lockFileName, string lockID)
+        {
+            var blob = GetOwnerBlobReference(owner, lockFileName);
+            blob.DeleteBlob(lockID);
+            InformationContext.AddStorageTransactionToCurrent();
+        }
+
         private static string createLockFileWithContent(IContainerOwner owner, string lockFileName, string lockFileContent, bool requireUnclaimedLock)
         {
             var blob = GetOwnerBlobReference(owner, lockFileName);
@@ -1591,6 +1609,12 @@ namespace TheBall
         {
             createLockFileWithContent(owner, ownerLockFileName, lockFileContent, false);
         }
+
+        public static void ReleaseLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockID = null)
+        {
+            deleteLockFile(owner, ownerLockFileName, lockID);
+        }
+
     }
 
     public class ReferenceOutdatedException : Exception

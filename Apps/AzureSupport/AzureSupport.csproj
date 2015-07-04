@@ -202,6 +202,7 @@
     <Compile Include="Partials\BinaryFileCollection.cs" />
     <Compile Include="Partials\ImageCollection.cs" />
     <Compile Include="TheBall.CORE\RegisterEmailAddressImplementation.cs" />
+    <Compile Include="TheBall.CORE\ReleaseSystemProcessLockImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoveAccountFromGroupImplementation.cs" />
     <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />

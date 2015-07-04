@@ -35,6 +35,27 @@ using System.IO;
 		{
 				public string ObtainedLockID ;
 				}
+				public class ReleaseSystemProcessLockParameters 
+		{
+				public IContainerOwner Owner ;
+				public DateTime LatestEntryTime ;
+				public string LockID ;
+				}
+		
+		public class ReleaseSystemProcessLock 
+		{
+				private static void PrepareParameters(ReleaseSystemProcessLockParameters parameters)
+		{
+					}
+				public static void Execute(ReleaseSystemProcessLockParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string OwnerLockFileName = ReleaseSystemProcessLockImplementation.GetTarget_OwnerLockFileName();	
+				string SystemOwnerLockFileName = ReleaseSystemProcessLockImplementation.GetTarget_SystemOwnerLockFileName(parameters.Owner, parameters.LatestEntryTime);	
+				ReleaseSystemProcessLockImplementation.ExecuteMethod_ReleaseOwnedOwnerLevelLock(parameters.Owner, parameters.LockID, OwnerLockFileName);		
+				ReleaseSystemProcessLockImplementation.ExecuteMethod_ReleaseReportingSystemLock(SystemOwnerLockFileName);		
+				}
+				}
 				public class CreateProcessParameters 
 		{
 				public string ProcessDescription ;
