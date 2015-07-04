@@ -189,6 +189,7 @@
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
     <Compile Include="TheBall.CORE\JoinAccountToGroupImplementation.cs" />
     <Compile Include="TheBall.CORE\MergeAccountsDestructivelyImplementation.cs" />
+    <Compile Include="TheBall.CORE\ObtainSystemProcessLockImplementation.cs" />
     <Compile Include="TheBall.CORE\PackageOwnerContentImplementation.cs" />
     <Compile Include="TheBall.CORE\ExportOwnerContentToZipImplementation.cs" />
     <Compile Include="Partials\EmbeddedContentCollection.cs" />

@@ -2500,6 +2500,127 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Refresh account group relations
 		</div>
+		</p><h1>ObtainSystemProcessLock (Owner, LatestEntryTime, AmountOfEntries)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain system process lock for owner
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Owner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LatestEntryTime
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		DateTime
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Latest locking entry timestamp
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AmountOfEntries
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		int
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Amount of entries in the time of lock. Note! This is required to catch if new entries appear that have older times still!
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: LockFileContent ( LatestEntryTime, AmountOfEntries )</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file text content
+		</div>
+		</p><h2>Target Definition: OwnerLockFileName</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file name
+		</div>
+		</p><h2>Target Definition: SystemOwnerLockFileName ( Owner, LatestEntryTime )</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file name for system-owner lock
+		</div>
+		</p><h2>Method Call: ObtainOwnerLevelLock ( OwnerLockFileName, LockFileContent, Owner )</h2>
+		<p>		<div class="MsoNormal" >
+		Obtain owner level lock
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ObtainedLockID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		If obtained succesfully, the locks ETag ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ReportSystemLockToMatchOwnerLock ( ObtainOwnerLevelLockOutput, SystemOwnerLockFileName, LockFileContent )</h2>
+		<p>		<div class="MsoNormal" >
+		Store system lock to match owner lock
+		</div>
+		</p><h2>Return Value : ObtainSystemProcessLockReturnValue ( ObtainOwnerLevelLockOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ObtainedLockID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		If obtained succesfully, the locks ETag ID
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>PackageOwnerContent (Owner, PackageType, PackageName, Description, PackageRootFolder, IncludedFolders)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

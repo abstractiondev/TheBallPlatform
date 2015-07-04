@@ -7,6 +7,34 @@ using System.Drawing;
 using System.IO;
 
 		namespace TheBall.CORE { 
+				public class ObtainSystemProcessLockParameters 
+		{
+				public IContainerOwner Owner ;
+				public DateTime LatestEntryTime ;
+				public int AmountOfEntries ;
+				}
+		
+		public class ObtainSystemProcessLock 
+		{
+				private static void PrepareParameters(ObtainSystemProcessLockParameters parameters)
+		{
+					}
+				public static ObtainSystemProcessLockReturnValue Execute(ObtainSystemProcessLockParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string LockFileContent = ObtainSystemProcessLockImplementation.GetTarget_LockFileContent(parameters.LatestEntryTime, parameters.AmountOfEntries);	
+				string OwnerLockFileName = ObtainSystemProcessLockImplementation.GetTarget_OwnerLockFileName();	
+				string SystemOwnerLockFileName = ObtainSystemProcessLockImplementation.GetTarget_SystemOwnerLockFileName(parameters.Owner, parameters.LatestEntryTime);	
+				string ObtainOwnerLevelLockOutput = ObtainSystemProcessLockImplementation.ExecuteMethod_ObtainOwnerLevelLock(parameters.Owner, OwnerLockFileName, LockFileContent);		
+				ObtainSystemProcessLockImplementation.ExecuteMethod_ReportSystemLockToMatchOwnerLock(ObtainOwnerLevelLockOutput, SystemOwnerLockFileName, LockFileContent);		
+				ObtainSystemProcessLockReturnValue returnValue = ObtainSystemProcessLockImplementation.Get_ReturnValue(ObtainOwnerLevelLockOutput);
+		return returnValue;
+				}
+				}
+				public class ObtainSystemProcessLockReturnValue 
+		{
+				public string ObtainedLockID ;
+				}
 				public class CreateProcessParameters 
 		{
 				public string ProcessDescription ;

@@ -195,10 +195,14 @@ namespace TheBall
             return blob;
         }
 
-        public static void UploadBlobText(this CloudBlob blob, string textContent)
+        public static void UploadBlobText(this CloudBlob blob, string textContent, bool requireNonExistentBlob = false)
         {
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
-            blob.UploadText(textContent);
+            BlobRequestOptions options = new BlobRequestOptions();
+            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            if(requireNonExistentBlob)
+                options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            blob.UploadText(textContent, Encoding.UTF8, options);
         }
 
         public static void UploadBlobBinary(this CloudBlobContainer container,
@@ -1555,6 +1559,37 @@ namespace TheBall
             if (contentLocation.StartsWith("acc/") || contentLocation.StartsWith("grp/"))
                 return contentLocation.Substring(AccOrGrpPlusIDPathLength);
             return contentLocation;
+        }
+
+        private const string LockPath = "TheBall.CORE/Locks/";
+
+        public static string TryClaimLockForOwner(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            string lockFileName = LockPath + ownerLockFileName;
+            var lockETag = createLockFileWithContent(owner, lockFileName, lockFileContent, true);
+            return lockETag;
+        }
+
+        private static string createLockFileWithContent(IContainerOwner owner, string lockFileName, string lockFileContent, bool requireUnclaimedLock)
+        {
+            var blob = GetOwnerBlobReference(owner, lockFileName);
+            try
+            {
+                blob.UploadBlobText(lockFileContent, requireUnclaimedLock);
+            }
+            catch (StorageClientException exception)
+            {
+                if (exception.ErrorCode == StorageErrorCode.BlobAlreadyExists)
+                    return null;
+            }
+            InformationContext.AddStorageTransactionToCurrent();
+            var lockETag = blob.Properties.ETag;
+            return lockETag;
+        }
+
+        public static void ReplicateClaimedLock(IContainerOwner owner, string ownerLockFileName, string lockFileContent)
+        {
+            createLockFileWithContent(owner, ownerLockFileName, lockFileContent, false);
         }
     }
 

@@ -1,6 +1,44 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.CORE">
+    <Operation name="ObtainSystemProcessLock">
+      <OperationSpec>
+        <Description>Obtain system process lock for owner</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Owner" dataType="IContainerOwner" designDesc="Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide" state="implemented" />
+        <Parameter name="LatestEntryTime" dataType="DateTime" designDesc="Latest locking entry timestamp" state="implemented" />
+        <Parameter name="AmountOfEntries" dataType="int" designDesc="Amount of entries in the time of lock. Note! This is required to catch if new entries appear that have older times still!" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="LockFileContent" dataType="string" designDesc="Lock file text content" state="implemented">
+            <Parameter name="LatestEntryTime" />
+            <Parameter name="AmountOfEntries" />
+          </TargetDefinition>
+          <TargetDefinition name="OwnerLockFileName" dataType="string" designDesc="Lock file name" state="implemented" />
+          <TargetDefinition name="SystemOwnerLockFileName" dataType="string" designDesc="Lock file name for system-owner lock" state="implemented">
+            <Parameter name="Owner" />
+            <Parameter name="LatestEntryTime" />
+          </TargetDefinition>
+          <MethodExecute name="ObtainOwnerLevelLock" designDesc="Obtain owner level lock" state="implemented">
+            <Parameter name="Owner" />
+            <Target name="OwnerLockFileName" />
+            <Target name="LockFileContent" />
+            <ReturnValue name="ObtainedLockID" dataType="string" designDesc="If obtained succesfully, the locks ETag ID" state="implemented" />
+          </MethodExecute>
+          <MethodExecute name="ReportSystemLockToMatchOwnerLock" designDesc="Store system lock to match owner lock" state="implemented">
+            <Target name="ObtainOwnerLevelLockOutput" />
+            <Target name="SystemOwnerLockFileName" />
+            <Target name="LockFileContent" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="ObtainedLockID" dataType="string" designDesc="If obtained succesfully, the locks ETag ID" state="implemented" />
+        <Target name="ObtainOwnerLevelLockOutput" />
+      </OperationReturnValues>
+    </Operation>
     <Operation name="CreateProcess">
       <OperationSpec>
         <Description>
