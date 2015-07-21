@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2014-06.2.4">
+<ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
   <Role name="WorkerRoleAccelerator.Core">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="CoreFileShareAccountName" value=""/>
-      <Setting name="CoreFileShareAccountKey" value=""/>
+      <Setting name="CoreFileShareAccountName" value="" />
+      <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="StorageConnectionString" value="" />
       <Setting name="UseSQLiteMasterDatabase" value="" />
       <Setting name="DataConnectionString" value="" />
       <Setting name="AmazonSESAccessInfo" value="" />
       <Setting name="WorkerRoleEntryPointContainerName" value="" />
-      <Setting name="WorkerActiveContainerName" value=""/>
+      <Setting name="WorkerActiveContainerName" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
@@ -25,8 +25,8 @@
   <Role name="TheBallWebFarm">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="CoreFileShareAccountName" value=""/>
-      <Setting name="CoreFileShareAccountKey" value=""/>
+      <Setting name="CoreFileShareAccountName" value="" />
+      <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="UseSQLiteMasterDatabase" value="" />
       <Setting name="StorageConnectionString" value="" />
       <Setting name="DataConnectionString" value="" />
