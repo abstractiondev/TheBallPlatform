@@ -55,6 +55,7 @@
     </DigitalInterface>
     <InformationModel>
       <InformationObject name="InterfaceOperation" designDesc="Interface operation information">
+        <AutomationDefinition customIDProvider="true"/>
         <InformationItems>
           <InformationItem name="OperationName" logicalDataType="Text_Short"/>
           <InformationItem name="Status" logicalDataType="Text_Short"/>

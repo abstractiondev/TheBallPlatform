@@ -151,7 +151,7 @@ namespace INT {
 
 				public InterfaceOperation()
 				{
-					this.ID = Guid.NewGuid().ToString();
+					this.ID = InterfaceOperationImplementation.GetID();
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "InterfaceOperation";

@@ -253,7 +253,7 @@ namespace WebInterface
                 if (contentPath.StartsWith("op/"))
                 {
                     SetCurrentAccountFromLogin(context);
-                    await HandleOwnerOperationRequest(containerOwner, context, contentPath.Substring(3));
+                    await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
                 }
                 else
                 {
@@ -274,12 +274,18 @@ namespace WebInterface
             await HandleOwnerGetRequest(containerOwner, context, contentPath);
         }
 
-        private async Task HandleOwnerOperationRequest(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
+        private async Task HandleOwnerOperationRequestWithUrlPath(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
         {
             string operationName = operationRequestPath.Split('/')[0];
+            await HandleOwnerOperationRequest(containerOwner, context, operationName);
+        }
+
+        private async Task HandleOwnerOperationRequest(IContainerOwner containerOwner, HttpContext context,
+            string operationName)
+        {
             var operationAssembly = typeof (OperationSupport).Assembly;
             Type operationType = operationAssembly.GetType(operationName);
-            if(operationType == null)
+            if (operationType == null)
                 operationType = OperationSupport.GetLegacyMappedType(operationName);
             if (operationType == null)
             {
@@ -287,10 +293,12 @@ namespace WebInterface
                 return;
             }
             var request = context.Request;
-            var operationData = OperationSupport.GetHttpOperationDataFromRequest(request, InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName, operationRequestPath);
+            var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
+                InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
+                String.Empty);
             string operationID = OperationSupport.QueueHttpOperation(operationData);
             var response = context.Response;
-            response.Write(String.Format("{ \"OperationID\": {0} }", operationID));
+            response.Write(String.Format("{{ \"OperationID\": {0} }}", operationID));
             EndResponseWithStatusCode(context, 202);
         }
 
@@ -341,7 +349,7 @@ namespace WebInterface
                 form.Get("ExecuteOperation") != null || form.Get("ExecuteAdminOperation") != null;
             if(isClientTemplateRequest)
             {
-                bool redirectAfter = HandleOwnerClientTemplatePOST(containerOwner, request);
+                HandleOwnerClientTemplatePOST(containerOwner, request);
                 bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
                                        containerOwner.LocationPrefix == InstanceConfiguration.PaymentsGroupID;
                 if (isPaymentsGroup && false)
@@ -349,98 +357,10 @@ namespace WebInterface
                     SQLiteSyncOwnerData(containerOwner);
                 }
 
-                return redirectAfter;
+                return false;
             }
 
             throw new NotSupportedException("Old legacy update no longer supported");
-
-#if superseded
-            string sourceNamesCommaSeparated = form["RootSourceName"];
-            bool isCancelButton = form["btnCancel"] != null;
-            if (isCancelButton)
-                return true;
-            string actionName = form["RootSourceAction"];
-            string objectFieldID = form["ObjectFieldID"];
-
-            CloudBlob webPageBlob = StorageSupport.CurrActiveContainer.GetBlob(contentPath, containerOwner);
-            InformationSourceCollection sources = webPageBlob.GetBlobInformationSources();
-            if (sources == null)
-                throw new InvalidDataException("Postback to page with no information sources defined - where there should be");
-            if (sourceNamesCommaSeparated == null)
-                sourceNamesCommaSeparated = "";
-            sourceNamesCommaSeparated += ",";
-            string[] sourceNames = sourceNamesCommaSeparated.Split(',').Distinct().ToArray();
-            
-            if(objectFieldID != null && actionName.StartsWith("cmd") == false && actionName != "Save" && actionName.Contains(",") == false)
-            {
-                var result = PerformWebAction.Execute(new PerformWebActionParameters
-                                                          {
-                                                              CommandName = actionName,
-                                                              FormSourceNames = sourceNames,
-                                                              FormSubmitContent = form,
-                                                              InformationSources = sources,
-                                                              Owner = containerOwner,
-                                                              TargetObjectID = objectFieldID
-                                                          });
-                if(result.RenderPageAfterOperation)
-                    RenderWebSupport.RefreshPHTMLContent(webPageBlob);
-                return true;
-            }
-
-            string inContextEditFieldID = form["InContextEditFieldID"];
-
-            if (inContextEditFieldID != null)
-            {
-                string objectFieldValue = form["Text_Short"];
-                if (objectFieldValue == null)
-                    objectFieldValue = form["Text_Long"];
-                form = new NameValueCollection();
-                form.Set(inContextEditFieldID, objectFieldValue);
-            }
-
-            InformationSource[] sourceArray =
-                sources.CollectionContent.Where(
-                    src => src.IsDynamic || (src.IsInformationObjectSource && sourceNames.Contains(src.SourceName)) ).ToArray();
-            foreach (InformationSource source in sourceArray)
-            {
-                string oldETag = source.SourceETag;
-                IInformationObject rootObject = source.RetrieveInformationObject();
-                /* Temporarily removed all the version checks - last save wins! 
-                if (oldETag != rootObject.ETag)
-                {
-                    RenderWebSupport.RefreshPHTMLContent(webPageBlob);
-                    throw new InvalidDataException("Information under editing was modified during display and save");
-                }
-                 * */
-                // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
-                rootObject.SetValuesToObjects(form);
-                IAddOperationProvider addOperationProvider = rootObject as IAddOperationProvider;
-                bool skipNormalStoreAfterAdd = false;
-                if(addOperationProvider != null)
-                {
-                    skipNormalStoreAfterAdd = addOperationProvider.PerformAddOperation(actionName, sources, contentPath, request.Files);
-                }
-                if(skipNormalStoreAfterAdd == false) {
-                    // If not add operation, set media content to stored object
-                    foreach (string contentID in request.Files.AllKeys)
-                    {
-                        HttpPostedFile postedFile = request.Files[contentID];
-                        if (String.IsNullOrWhiteSpace(postedFile.FileName))
-                            continue;
-                        rootObject.SetMediaContent(containerOwner, contentID, postedFile);
-                    }
-                    rootObject.StoreInformationMasterFirst(containerOwner, false);
-                }
-            }
-            RenderWebSupport.RefreshPHTMLContent(webPageBlob);
-            // Temporary live to pub sync below, to be removed
-            //SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name,
-            //    String.Format("grp/f8e1d8c6-0000-467e-b487-74be4ad099cd/{0}/", "livesite"),
-            //    StorageSupport.CurrAnonPublicContainer.Name,
-            //                    String.Format("grp/default/{0}/", "livepubsite"), true);
-
-            return true;
-#endif
         }
 
         private static void SetCurrentAccountFromLogin(HttpContext context)
@@ -492,10 +412,9 @@ namespace WebInterface
                 throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
         }
 
-        private bool HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
+        private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;
-            bool reloadPageAfter = form["NORELOAD"] == null;
             object operationResult = null;
             try
             {
@@ -503,22 +422,18 @@ namespace WebInterface
             }
             catch (Exception ex)
             {
-                if (reloadPageAfter)
-                    throw;
                 var response = HttpContext.Current.Response;
                 response.ContentEncoding = Encoding.UTF8;
                 response.Write(String.Format("{{ \"ErrorType\": \"{0}\", \"ErrorText\": {1} }}", ex.GetType().Name, WebSupport.EncodeJsString(ex.Message)));
                 response.ContentType = "application/json";
                 response.StatusCode = 500;
                 response.TrySkipIisCustomErrors = true;
-                return false;
+                return;
             }
-            if (reloadPageAfter)
-                return true;
             if (operationResult != null)
             {
                 if (operationResult is bool)
-                    return (bool) operationResult;
+                    return;
                 IInformationObject iObj = operationResult as IInformationObject;
                 if (iObj != null)
                 {
@@ -529,9 +444,7 @@ namespace WebInterface
                         iObj.ETag.Replace("\"", "\\\"")));
                     response.ContentType = "application/json";
                 }
-                return false;
             }
-            return false;
         }
 
         private void HandlerOwnerAjaxDataPOST(IContainerOwner containerOwner, NameValueCollection form)

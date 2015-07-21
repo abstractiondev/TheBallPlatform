@@ -21,34 +21,30 @@ namespace TheBall
     {
         public static object ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
         {
-            bool reloadPageAfter = form["NORELOAD"] == null;
-
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
-                return reloadPageAfter;
+                return false;
 
             string operationName = form["ExecuteOperation"];
             if (operationName != null)
             {
                 var operationResult = executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
-                if(operationResult != null)
-                    return operationResult;
-                return reloadPageAfter;
+                return operationResult;
             }
 
             string adminOperationName = form["ExecuteAdminOperation"];
             if (adminOperationName != null)
             {
                 var adminResult = executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
-                if(adminResult != null)
-                    return adminResult;
-                return reloadPageAfter;
+                return adminResult;
             }
+
+            throw new NotSupportedException("Object CRUD-alike saving without operation call is no longer supported");
 
             string contentSourceInfo = form["ContentSourceInfo"];
             var rootSourceAction = form["RootSourceAction"];
             if (rootSourceAction != null && rootSourceAction != "Save")
-                return reloadPageAfter;
+                return null;
             var filterFields = new string[] { "ContentSourceInfo", "RootSourceAction", "NORELOAD" };
             string[] contentSourceInfos = contentSourceInfo.Split(',');
             var filteredForm = filterForm(form, filterFields);
@@ -75,7 +71,7 @@ namespace TheBall
                         HttpFileData = fileContent
                     });
             }
-            return reloadPageAfter;
+            return null;
         }
 
         private static object executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)

@@ -102,11 +102,14 @@
 		<xs:attribute name="objectName" type="xs:string" use="required"/>
 	</xs:complexType>
 	<xs:complexType name="InformationObjectType">
-		<xs:choice>
-			<xs:element name="InformationItems" type="InformationItemsType"/>
-			<xs:element name="CollectionFor" type="CollectionForType"/>
-			<xs:element name="InformationObjectContent" type="InformationObjectContentType"/>
-		</xs:choice>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="AutomationDefinition" type="AutomationDefinitionsType"/>
+			<xs:choice>
+				<xs:element name="InformationItems" type="InformationItemsType"/>
+				<xs:element name="CollectionFor" type="CollectionForType"/>
+				<xs:element name="InformationObjectContent" type="InformationObjectContentType"/>
+			</xs:choice>
+		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="designDesc" type="xs:string" use="required"/>
 		<xs:attribute name="provideCreateMethod" type="xs:boolean" default="true">
@@ -626,6 +629,7 @@ DerivedFromMaster = Derived from master object collection (filter or alike)</xs:
 	</xs:complexType>
 	<xs:complexType name="InterfaceObjectType">
 		<xs:sequence>
+			<xs:element minOccurs="0" name="AutomationDefinition" type="AutomationDefinitionsType"/>
 			<xs:element name="InterfaceItems" type="InterfaceItemsType"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:string" use="required"/>
@@ -713,5 +717,8 @@ ToggleEdit = Read-only togglable to edit</xs:documentation>
 		<xs:sequence>
 			<xs:element name="InterfaceView" type="InterfaceViewType" maxOccurs="unbounded"/>
 		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AutomationDefinitionsType">
+		<xs:attribute default="false" name="customIDProvider" type="xs:boolean"/>
 	</xs:complexType>
 </xs:schema>

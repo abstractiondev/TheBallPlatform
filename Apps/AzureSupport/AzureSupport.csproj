@@ -364,6 +364,7 @@
     <Compile Include="TheBall.Interface\InformationChangeItem.cs" />
     <Compile Include="TheBall.Interface\InitiateIntegrationConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteRemoteCalledConnectionOperationImplementation.cs" />
+    <Compile Include="TheBall.Interface\InterfaceOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
