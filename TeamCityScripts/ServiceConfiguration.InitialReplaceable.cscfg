@@ -22,7 +22,7 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="$RDPCertificateThumbprint$" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
-  <Role name="TheBallWebFarm">
+  <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="IISCertAccountName" value="$IISCertAccountName$" />
