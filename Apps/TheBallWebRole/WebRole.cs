@@ -27,7 +27,7 @@ namespace TheBallWebRole
         {
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-            var connStr = StorageConnectionString;
+            var connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
 
             StorageAccount = CloudStorageAccount.Parse(connStr);
             BlobClient = StorageAccount.CreateCloudBlobClient();
@@ -38,7 +38,7 @@ namespace TheBallWebRole
             return base.OnStart();
         }
 
-        private static string StorageConnectionString => CloudConfigurationManager.GetSetting("StorageConnectionString");
+        //private static string StorageConnectionString => CloudConfigurationManager.GetSetting("StorageConnectionString");
 
         private static string TempSitesRootFolder
         {
