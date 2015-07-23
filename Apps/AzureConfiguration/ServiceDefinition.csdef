@@ -47,7 +47,16 @@
           </Variable>
         </Environment>
       </Task>
-      <Task commandLine="IISInitTasks.cmd" executionContext="elevated" taskType="simple" />
+      <Task commandLine="IISInitTasks.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="IISCertAccountName">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountName']/@value" />
+          </Variable>
+          <Variable name="IISCertAccountPassword">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountPassword']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
     </Startup>
     <Runtime executionContext="elevated" />
     <Sites>
@@ -74,6 +83,8 @@
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
     <ConfigurationSettings>
+      <Setting name="IISCertAccountName" />
+      <Setting name="IISCertAccountPassword" />
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
       <Setting name="UseSQLiteMasterDatabase" />

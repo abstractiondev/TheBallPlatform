@@ -25,6 +25,8 @@
   <Role name="TheBallWebFarm">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="IISCertAccountName" value="$IISCertAccountName$" />
+      <Setting name="IISCertAccountPassword" value="$IISCertAccountPassword$" />
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
       <Setting name="UseSQLiteMasterDatabase" value="$UseSQLiteMasterDatabase$" />
