@@ -22,7 +22,7 @@
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
-  <Role name="TheBallWebFarm">
+  <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="" />

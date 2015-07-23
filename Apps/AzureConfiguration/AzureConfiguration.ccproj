@@ -14,6 +14,7 @@
     <Name>AzureConfiguration</Name>
     <PackageEnableRemoteDebugger>False</PackageEnableRemoteDebugger>
     <UseEmulatorExpressByDefault>False</UseEmulatorExpressByDefault>
+    <UseWebProjectPorts>True</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,12 +39,12 @@
     <ServiceDefinition Include="ServiceDefinition.csdef" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TheBallWebFarm\TheBallWebFarm.csproj">
-      <Name>TheBallWebFarm</Name>
-      <Project>{0a89a6a6-241b-4cac-9fea-993802e36b2d}</Project>
+    <ProjectReference Include="..\TheBallWebRole\TheBallWebRole.csproj">
+      <Name>TheBallWebRole</Name>
+      <Project>{7dfb6305-ba41-40ce-9d8b-35cf1a0735e8}</Project>
       <Private>True</Private>
       <RoleType>Web</RoleType>
-      <RoleName>TheBallWebFarm</RoleName>
+      <RoleName>TheBallWebRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
     <ProjectReference Include="..\workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj">
@@ -57,9 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Profiles" />
+    <Folder Include="TheBallWebRoleContent\" />
   </ItemGroup>
   <ItemGroup>
-    <PublishProfile Include="Profiles\diosphereProduction.azurePubxml" />
+    <DiagnosticsConfiguration Include="TheBallWebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

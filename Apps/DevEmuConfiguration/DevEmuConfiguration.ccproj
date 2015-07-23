@@ -13,6 +13,7 @@
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
     <Name>AzureConfiguration</Name>
     <UseEmulatorExpressByDefault>False</UseEmulatorExpressByDefault>
+    <UseWebProjectPorts>True</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,14 +39,20 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj">
-      <Name>WorkerRoleAccelerator.Core</Name>
-      <Project>{4a04fe1b-840a-4ef4-810a-834300f9675f}</Project>
+    <ProjectReference Include="..\TheBallWebRole\TheBallWebRole.csproj">
+      <Name>TheBallWebRole</Name>
+      <Project>{7dfb6305-ba41-40ce-9d8b-35cf1a0735e8}</Project>
       <Private>True</Private>
-      <RoleType>Worker</RoleType>
-      <RoleName>WorkerRoleAccelerator.Core</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>False</UpdateDiagnosticsConnectionStringOnPublish>
+      <RoleType>Web</RoleType>
+      <RoleName>TheBallWebRole</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TheBallWebRoleContent\" />
+  </ItemGroup>
+  <ItemGroup>
+    <DiagnosticsConfiguration Include="TheBallWebRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
