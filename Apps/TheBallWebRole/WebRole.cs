@@ -16,16 +16,9 @@ namespace TheBallWebRole
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
 
 
-            SetupIIS();
             SyncWebsitesFromStorage();
             
-
             return base.OnStart();
-        }
-
-        private void SetupIIS()
-        {
-            IISSupport.SetupIIS();
         }
 
         private void SyncWebsitesFromStorage()
@@ -35,7 +28,14 @@ namespace TheBallWebRole
 
             websiteFolder = @"d:\temp\iistest1";
             hostAndSiteName = "testlocal.theball.me";
-            IISSupport.CreateCCSWebSite(websiteFolder, hostAndSiteName);
+            try
+            {
+                IISSupport.CreateCCSWebSite(websiteFolder, hostAndSiteName);
+
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

@@ -23,10 +23,5 @@ namespace TheBall.Infra.WebServerManager
             iisManager.CommitChanges();
         }
 
-        public static void SetupIIS()
-        {
-            ServerManager iisManager = new ServerManager();
-            var adminConfig = iisManager.GetAdministrationConfiguration();
-        }
     }
 }
