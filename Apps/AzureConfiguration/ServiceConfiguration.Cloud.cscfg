@@ -25,6 +25,8 @@
   <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="IISCertAccountName" value="" />
+      <Setting name="IISCertAccountPassword" value="" />
       <Setting name="CoreFileShareAccountName" value="" />
       <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="UseSQLiteMasterDatabase" value="" />
