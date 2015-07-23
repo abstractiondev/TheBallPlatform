@@ -123,7 +123,7 @@ namespace TheBallWebRole
             {
                 string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
                 string targetFolder = fullLivePath;
-                ProcessStartInfo startInfo = new ProcessStartInfo("robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
+                ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
                     targetFolder));
                 startInfo.UseShellExecute = true;
                 var proc = Process.Start(startInfo);

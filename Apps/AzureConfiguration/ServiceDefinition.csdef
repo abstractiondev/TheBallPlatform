@@ -62,8 +62,10 @@
     <Sites>
       <Site name="Web">
         <Bindings>
-          <Binding name="HttpIn" endpointName="HttpIn" />
+          <Binding name="HttpIn" endpointName="HttpIn" hostHeader="localhost" />
+          <!--
           <Binding name="HttpsIn" endpointName="HttpsIn" />
+          -->
         </Bindings>
       </Site>
     </Sites>
