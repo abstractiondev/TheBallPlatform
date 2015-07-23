@@ -1,6 +1,7 @@
 ﻿REM   *** Allow websites to define system.webServer/access. ***
-REM net use x: \\%CoreFileShareAccountName%.file.core.windows.net\tbcore /u:%CoreFileShareAccountName% %CoreFileShareAccountKey%  >> "%~dp0\NetOutput.txt" 2>&1
-REM dir x: >> "%~dp0\NetOutput.txt"
+net use x: \\%CoreFileShareAccountName%.file.core.windows.net\tbcore /u:%CoreFileShareAccountName% %CoreFileShareAccountKey%  >> "%~dp0\NetOutput.txt" 2>&1
+dir x: >> "%~dp0\NetOutput.txt"
+robocopy /MIR x:\Infra e:\TheBallInfra
 
 REM   *** Allow websites to define system.webServer/access. ***
 %windir%\system32\inetsrv\appcmd unlock config /section:system.webServer/security/access >> "%TEMP%\StartupLog.txt" 2>&1
