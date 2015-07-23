@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.ApplicationServices;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure;
@@ -23,6 +25,8 @@ namespace TheBallWebRole
         private CloudStorageAccount StorageAccount;
         private CloudBlobClient BlobClient;
         private CloudBlobContainer SiteContainer;
+        private volatile bool IsRunning = false;
+        private volatile bool TaskIsDone = true;
 
         public override bool OnStart()
         {
@@ -34,9 +38,18 @@ namespace TheBallWebRole
             BlobClient = StorageAccount.CreateCloudBlobClient();
             SiteContainer = BlobClient.GetContainerReference(SiteContainerName);
 
-            SyncWebsitesFromStorage();
+            IsRunning = true;
+            Task.Factory.StartNew(SyncWebsitesFromStorage);
             
             return base.OnStart();
+        }
+
+        public override void OnStop()
+        {
+            IsRunning = false;
+            while(!TaskIsDone)
+                Thread.Sleep(200);
+            base.OnStop();
         }
 
         //private static string StorageConnectionString => CloudConfigurationManager.GetSetting("StorageConnectionString");
@@ -61,22 +74,36 @@ namespace TheBallWebRole
 
         private void SyncWebsitesFromStorage()
         {
-            var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
-            foreach (CloudBlockBlob blob in blobs)
+            while (IsRunning)
             {
-                string fileName = blob.Name;
-                string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
-                string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
-                FileInfo currentFile = new FileInfo(tempFile);
-                var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
-                if (!currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified)
+                TaskIsDone = false;
+                var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
+                foreach (CloudBlockBlob blob in blobs)
                 {
-                    blob.DownloadToFile(tempFile, FileMode.Create);
-                    currentFile.Refresh();
-                    currentFile.LastWriteTimeUtc = blobLastModified;
-                    UpdateIISSite(tempFile, TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder);
+                    string fileName = blob.Name;
+                    string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
+                    string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
+                    FileInfo currentFile = new FileInfo(tempFile);
+                    var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
+                    if (!currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified)
+                    {
+                        try
+                        {
+                            blob.DownloadToFile(tempFile, FileMode.Create);
+                            currentFile.Refresh();
+                            currentFile.LastWriteTimeUtc = blobLastModified;
+                            UpdateIISSite(tempFile, TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder);
+                        }
+                        catch
+                        {
+                            
+                        }
+                    }
                 }
+                if(IsRunning)
+                    Thread.Sleep(10000);
             }
+            TaskIsDone = true;
         }
 
         private void UpdateIISSite(string tempZipFile, string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder)
