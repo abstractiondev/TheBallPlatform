@@ -17,8 +17,8 @@ namespace TheBallWebRole
     public class WebRole : RoleEntryPoint
     {
         private const string SiteContainerName = "tb-sites";
-        //private const string PathTo7Zip = @"d:\bin\7z.exe";
-        private const string PathTo7Zip = @"E:\TheBallInfra\7z\7z.exe";
+        private const string PathTo7Zip = @"d:\bin\7z.exe";
+        //private const string PathTo7Zip = @"E:\TheBallInfra\7z\7z.exe";
 
         private CloudStorageAccount StorageAccount;
         private CloudBlobClient BlobClient;
@@ -29,6 +29,8 @@ namespace TheBallWebRole
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
             var connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
+            connStr =
+                "DefaultEndpointsProtocol=https;AccountName=caloomdemo;AccountKey=W3C3m0Sv9aOY9YuX1srMbN+7M+6EiGAA/hVOMrIoBOjAt2MiWI9bLjDJlwuAhdwNDljXCgkxD7uxB0DrJDdOOQ==";
 
             StorageAccount = CloudStorageAccount.Parse(connStr);
             BlobClient = StorageAccount.CreateCloudBlobClient();

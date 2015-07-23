@@ -17,8 +17,20 @@ namespace TheBall.Infra.WebServerManager
             var existingSite = sites[hostAndSiteName];
             if (existingSite != null)
                 return existingSite;
+            var appPools = iisManager.ApplicationPools;
+            string appPoolName = hostAndSiteName;
+            var appPool = appPools[appPoolName];
+            if (appPool == null)
+            {
+                appPool = appPools.Add(appPoolName);
+                appPool.ManagedPipelineMode = ManagedPipelineMode.Integrated;
+                appPool.ManagedRuntimeVersion = "v4.0";
+                iisManager.CommitChanges();
+            }
+            sites = iisManager.Sites;
             string bindingInformation = String.Format("*:443:{0}", hostAndSiteName);
             existingSite = sites.Add(hostAndSiteName, "https", bindingInformation, websiteFolder);
+            existingSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
             var binding = existingSite.Bindings[0];
             binding.SslFlags = SslFlags.CentralCertStore | SslFlags.Sni;
             iisManager.CommitChanges();

@@ -77,8 +77,8 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
     <LocalResources>
-      <LocalStorage name="Sites" cleanOnRoleRecycle="true" sizeInMB="2500" />
-      <LocalStorage name="TempSites" cleanOnRoleRecycle="true" sizeInMB="2500" />
+      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="2500" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="2500" />
       <LocalStorage name="Execution" cleanOnRoleRecycle="true" sizeInMB="2500" />
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
