@@ -60,7 +60,7 @@
     </Startup>
     <Runtime executionContext="elevated" />
     <Sites>
-      <Site name="Web">
+      <Site name="InternalProbe">
         <Bindings>
           <Binding name="HttpIn" endpointName="HttpIn" />
           <Binding name="HttpsIn" endpointName="HttpsIn" />
