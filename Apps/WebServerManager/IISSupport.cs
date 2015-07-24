@@ -25,7 +25,8 @@ namespace TheBall.Infra.WebServerManager
                 appPool = appPools.Add(appPoolName);
                 appPool.ManagedPipelineMode = ManagedPipelineMode.Integrated;
                 appPool.ManagedRuntimeVersion = "v4.0";
-                iisManager.CommitChanges();
+                appPool.ProcessModel.IdentityType = ProcessModelIdentityType.NetworkService;
+                //iisManager.CommitChanges();
             }
             sites = iisManager.Sites;
             string bindingInformation = String.Format("*:443:{0}", hostAndSiteName);
@@ -40,13 +41,13 @@ namespace TheBall.Infra.WebServerManager
         public static void UpdateSite(string fullLivePath, string hostAndSiteName, Action action)
         {
             var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
-            site.Stop();
-            while(site.State != ObjectState.Stopped)
-                Thread.Sleep(200);
+            //site.Stop();
+            //while(site.State != ObjectState.Stopped)
+            //    Thread.Sleep(200);
             action();
-            site.Start();
-            while(site.State != ObjectState.Started)
-                Thread.Sleep(200);
+            //site.Start();
+            //while(site.State != ObjectState.Started)
+            //    Thread.Sleep(200);
         }
     }
 }

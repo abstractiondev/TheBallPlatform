@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.ApplicationServices;
@@ -85,19 +87,20 @@ namespace TheBallWebRole
                     string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
                     FileInfo currentFile = new FileInfo(tempFile);
                     var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
-                    if (!currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified)
+                    bool needsUnzipping = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
+                    try
                     {
-                        try
+                        if (needsUnzipping)
                         {
                             blob.DownloadToFile(tempFile, FileMode.Create);
                             currentFile.Refresh();
                             currentFile.LastWriteTimeUtc = blobLastModified;
-                            UpdateIISSite(tempFile, TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder);
                         }
-                        catch
-                        {
-                            
-                        }
+                        UpdateIISSite(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsUnzipping);
+                    }
+                    catch
+                    {
+
                     }
                 }
                 if(IsRunning)
@@ -106,29 +109,44 @@ namespace TheBallWebRole
             TaskIsDone = true;
         }
 
-        private void UpdateIISSite(string tempZipFile, string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder)
+        private void UpdateIISSite(string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder, bool needsUnzipping)
         {
-            string tempDirName = Path.Combine(tempSitesRootFolder, hostAndSiteName);
-            var tempDirectory = new DirectoryInfo(tempDirName);
-            if(tempDirectory.Exists)
-                tempDirectory.Delete(true);
-            tempDirectory.Create();
-            var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x ..\{0}.zip", hostAndSiteName));
-            unzipProcInfo.WorkingDirectory = tempDirName;
-            var unzipProc = Process.Start(unzipProcInfo);
-            unzipProc.WaitForExit();
+            if (needsUnzipping)
+            {
+                string tempDirName = Path.Combine(tempSitesRootFolder, hostAndSiteName);
+                var tempDirectory = new DirectoryInfo(tempDirName);
+                if (tempDirectory.Exists)
+                    tempDirectory.Delete(true);
+                tempDirectory.Create();
+                var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x ..\{0}.zip", hostAndSiteName));
+                unzipProcInfo.WorkingDirectory = tempDirName;
+                var unzipProc = Process.Start(unzipProcInfo);
+                unzipProc.WaitForExit();
+            }
 
             string fullLivePath = Path.Combine(liveSitesRootFolder, hostAndSiteName);
-            IISSupport.UpdateSite(fullLivePath, hostAndSiteName, () =>
+            bool needsInitialSiteDir = !Directory.Exists(fullLivePath);
+            if (needsInitialSiteDir)
             {
-                string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
-                string targetFolder = fullLivePath;
-                ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
-                    targetFolder));
-                startInfo.UseShellExecute = true;
-                var proc = Process.Start(startInfo);
-                proc.WaitForExit();
-            });
+                var targetDir = Directory.CreateDirectory(fullLivePath);
+                var currAccess = targetDir.GetAccessControl();
+                currAccess.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
+                targetDir.SetAccessControl(currAccess);
+            }
+            bool needsUpdating = needsUnzipping || needsInitialSiteDir;
+            if (needsUpdating)
+            {
+                IISSupport.UpdateSite(fullLivePath, hostAndSiteName, () =>
+                {
+                    string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
+                    string targetFolder = fullLivePath;
+                    ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
+                        targetFolder));
+                    startInfo.UseShellExecute = true;
+                    var proc = Process.Start(startInfo);
+                    proc.WaitForExit();
+                });
+            }
         }
     }
 }
