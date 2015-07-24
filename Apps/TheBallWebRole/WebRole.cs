@@ -82,7 +82,7 @@ namespace TheBallWebRole
                 TaskIsDone = false;
                 PollAndSyncWebsitesFromStorage();
                 if(IsRunning)
-                    Thread.Sleep(10000);
+                    Thread.Sleep(30000);
             }
             TaskIsDone = true;
         }
