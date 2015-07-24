@@ -40,9 +40,10 @@ namespace TheBallWebRole
             BlobClient = StorageAccount.CreateCloudBlobClient();
             SiteContainer = BlobClient.GetContainerReference(SiteContainerName);
 
+            PollAndSyncWebsitesFromStorage();
+
             IsRunning = true;
             Task.Factory.StartNew(SyncWebsitesFromStorage);
-            
             return base.OnStart();
         }
 
@@ -79,34 +80,38 @@ namespace TheBallWebRole
             while (IsRunning)
             {
                 TaskIsDone = false;
-                var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
-                foreach (CloudBlockBlob blob in blobs)
-                {
-                    string fileName = blob.Name;
-                    string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
-                    string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
-                    FileInfo currentFile = new FileInfo(tempFile);
-                    var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
-                    bool needsUnzipping = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
-                    try
-                    {
-                        if (needsUnzipping)
-                        {
-                            blob.DownloadToFile(tempFile, FileMode.Create);
-                            currentFile.Refresh();
-                            currentFile.LastWriteTimeUtc = blobLastModified;
-                        }
-                        UpdateIISSite(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsUnzipping);
-                    }
-                    catch
-                    {
-
-                    }
-                }
+                PollAndSyncWebsitesFromStorage();
                 if(IsRunning)
                     Thread.Sleep(10000);
             }
             TaskIsDone = true;
+        }
+
+        private void PollAndSyncWebsitesFromStorage()
+        {
+            var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
+            foreach (CloudBlockBlob blob in blobs)
+            {
+                string fileName = blob.Name;
+                string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
+                string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
+                FileInfo currentFile = new FileInfo(tempFile);
+                var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
+                bool needsUnzipping = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
+                try
+                {
+                    if (needsUnzipping)
+                    {
+                        blob.DownloadToFile(tempFile, FileMode.Create);
+                        currentFile.Refresh();
+                        currentFile.LastWriteTimeUtc = blobLastModified;
+                    }
+                    UpdateIISSite(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsUnzipping);
+                }
+                catch
+                {
+                }
+            }
         }
 
         private void UpdateIISSite(string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder, bool needsUnzipping)
@@ -137,12 +142,11 @@ namespace TheBallWebRole
             if (needsUpdating)
             {
                 string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
-                string targetFolder = fullLivePath;
                 /*
                 IISSupport.UpdateSite(fullLivePath, hostAndSiteName, () =>
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
-                        targetFolder));
+                        fullLivePath));
                     startInfo.UseShellExecute = true;
                     var proc = Process.Start(startInfo);
                     proc.WaitForExit();
