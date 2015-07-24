@@ -138,21 +138,9 @@ namespace TheBallWebRole
                 currAccess.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
                 targetDir.SetAccessControl(currAccess);
             }
-            bool needsUpdating = needsUnzipping || needsInitialSiteDir;
-            if (needsUpdating)
-            {
-                string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
-                /*
-                IISSupport.UpdateSite(fullLivePath, hostAndSiteName, () =>
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
-                        fullLivePath));
-                    startInfo.UseShellExecute = true;
-                    var proc = Process.Start(startInfo);
-                    proc.WaitForExit();
-                });*/
-                IISSupport.UpdateSiteWithDeploy(sourceFolder, fullLivePath, hostAndSiteName);
-            }
+            bool needsContentUpdating = needsUnzipping || needsInitialSiteDir;
+            string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
+            IISSupport.UpdateSiteWithDeploy(needsContentUpdating, sourceFolder, fullLivePath, hostAndSiteName);
         }
     }
 }

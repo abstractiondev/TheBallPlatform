@@ -51,13 +51,16 @@ namespace TheBall.Infra.WebServerManager
             //    Thread.Sleep(200);
         }
 
-        public static void UpdateSiteWithDeploy(string tempSitePath, string fullLivePath, string hostAndSiteName)
+        public static void UpdateSiteWithDeploy(bool needsContentUpdating, string tempSitePath, string fullLivePath, string hostAndSiteName)
         {
             var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
-            using (var depObj = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
+            if (needsContentUpdating)
             {
-                depObj.SyncTo(DeploymentWellKnownProvider.DirPath, fullLivePath, new DeploymentBaseOptions(),
-                    new DeploymentSyncOptions());
+                using (var depObj = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
+                {
+                    depObj.SyncTo(DeploymentWellKnownProvider.DirPath, fullLivePath, new DeploymentBaseOptions(),
+                        new DeploymentSyncOptions());
+                }
             }
         }
     }
