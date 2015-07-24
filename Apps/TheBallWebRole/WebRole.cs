@@ -136,16 +136,18 @@ namespace TheBallWebRole
             bool needsUpdating = needsUnzipping || needsInitialSiteDir;
             if (needsUpdating)
             {
+                string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
+                string targetFolder = fullLivePath;
+                /*
                 IISSupport.UpdateSite(fullLivePath, hostAndSiteName, () =>
                 {
-                    string sourceFolder = Path.Combine(tempSitesRootFolder, hostAndSiteName);
-                    string targetFolder = fullLivePath;
                     ProcessStartInfo startInfo = new ProcessStartInfo(@"d:\windows\system32\robocopy.exe", String.Format(@"/MIR ""{0}"" ""{1}""", sourceFolder,
                         targetFolder));
                     startInfo.UseShellExecute = true;
                     var proc = Process.Start(startInfo);
                     proc.WaitForExit();
-                });
+                });*/
+                IISSupport.UpdateSiteWithDeploy(sourceFolder, fullLivePath, hostAndSiteName);
             }
         }
     }

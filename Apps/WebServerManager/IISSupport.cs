@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Web.Administration;
+using Microsoft.Web.Deployment;
 
 namespace TheBall.Infra.WebServerManager
 {
@@ -48,6 +49,16 @@ namespace TheBall.Infra.WebServerManager
             //site.Start();
             //while(site.State != ObjectState.Started)
             //    Thread.Sleep(200);
+        }
+
+        public static void UpdateSiteWithDeploy(string tempSitePath, string fullLivePath, string hostAndSiteName)
+        {
+            var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
+            using (var depObj = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
+            {
+                depObj.SyncTo(DeploymentWellKnownProvider.DirPath, fullLivePath, new DeploymentBaseOptions(),
+                    new DeploymentSyncOptions());
+            }
         }
     }
 }
