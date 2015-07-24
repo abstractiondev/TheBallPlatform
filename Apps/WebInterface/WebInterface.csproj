@@ -25,8 +25,10 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>9b654b4a</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
+    <ApplicationInsightsResourceId>/subscriptions/34c49516-d527-45d9-86ce-64a5e3de3440/resourcegroups/WebInterface/providers/microsoft.insights/components/WebInterface</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -79,7 +81,31 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=1.0.0.4220, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.1.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.DependencyCollector, Version=1.0.0.4227, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.DependencyCollector.1.0.0\lib\net45\Microsoft.ApplicationInsights.Extensibility.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector, Version=1.0.0.4231, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.1.0.0\lib\net45\Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Extensibility.Web, Version=1.0.0.4227, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.Web.1.0.0\lib\net45\Microsoft.ApplicationInsights.Extensibility.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights.Web.TelemetryChannel, Version=1.0.0.4227, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.Web.TelemetryChannel.1.0.0\lib\net45\Microsoft.ApplicationInsights.Web.TelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Diagnostics.Instrumentation.Extensions.Intercept, Version=0.17.0.194, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.0.17.0\lib\net45\Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -517,6 +543,15 @@
   <ItemGroup>
     <Content Include="Site.master" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationInsights.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Service References\Application Insights\ConnectedService.json" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -548,7 +583,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\System.Data.SQLite.Core.1.0.94.0\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Data.SQLite.Core.1.0.94.0\build\net45\System.Data.SQLite.Core.targets'))" />
+    <Error Condition="!Exists('..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.0.17.0\build\Microsoft.ApplicationInsights.Agent.Intercept.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.0.17.0\build\Microsoft.ApplicationInsights.Agent.Intercept.targets'))" />
   </Target>
+  <Import Project="..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.0.17.0\build\Microsoft.ApplicationInsights.Agent.Intercept.targets" Condition="Exists('..\..\packages\Microsoft.ApplicationInsights.Agent.Intercept.0.17.0\build\Microsoft.ApplicationInsights.Agent.Intercept.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
