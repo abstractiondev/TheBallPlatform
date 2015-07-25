@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
   <Role name="WorkerRoleAccelerator.Core">
-    <Instances count="2" />
+    <Instances count="$WorkerRoleCount$" />
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
@@ -23,7 +23,7 @@
     </Certificates>
   </Role>
   <Role name="TheBallWebRole">
-    <Instances count="2" />
+    <Instances count="$WebRoleCount$" />
     <ConfigurationSettings>
       <Setting name="IISCertAccountName" value="$IISCertAccountName$" />
       <Setting name="IISCertAccountPassword" value="$IISCertAccountPassword$" />

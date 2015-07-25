@@ -35,7 +35,7 @@
     <Certificates>
     </Certificates>
   </WorkerRole>
-  <WebRole name="TheBallWebRole" vmsize="ExtraSmall">
+  <WebRole name="TheBallWebRole" vmsize="Small">
     <Startup>
       <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple">
         <Environment>
