@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -31,11 +32,20 @@ namespace TheBall
             AllowStatic = allowStatic;
         }
 
+        public static void DeInitialize()
+        {
+            if(_syncStorage == null)
+                throw new InvalidOperationException("InformationContext is expected to be initialized when calling DeInitialize");
+            _syncStorage = null;
+        }
+
         public InformationContext()
         {
             FinalizingOperationQueue = new List<OperationRequest>();
             SubscriptionChainTargetsToUpdate = new List<OwnerSubscriptionItem>();
         }
+
+        public static int ActiveContextCount => _syncStorage.Count;
 
         protected List<OwnerSubscriptionItem> SubscriptionChainTargetsToUpdate { get; private set; }
 
@@ -56,12 +66,31 @@ namespace TheBall
             get { return Current.Account; }
         }
 
+        public static void InitializeToLogicalContext()
+        {
+            var logicalContext = CallContext.LogicalGetData(KEYNAME);
+            if(logicalContext != null)
+                throw new InvalidOperationException("LogicalContext already initialized");
+            var ctx = InformationContext.Create();
+            CallContext.LogicalSetData(KEYNAME, ctx);
+        }
 
+        public static void RemoveFromLogicalContext()
+        {
+            var current = CallContext.LogicalGetData(KEYNAME);
+            if (Current == null)
+                throw new InvalidOperationException("LogicalContext is expected to be initialized");
+            CallContext.LogicalSetData(KEYNAME, null);
+        }
 
         public static InformationContext Current
         {
             get
             {
+                var logicalContext = CallContext.LogicalGetData(KEYNAME);
+                if (logicalContext != null)
+                    return (InformationContext) logicalContext;
+
                 var httpContext = HttpContext.Current;
                 if(httpContext != null)
                 {
@@ -72,7 +101,8 @@ namespace TheBall
                     return informationContext;
                 }
                 var currTaskID = Task.CurrentId;
-                if(currTaskID.HasValue || AllowStatic)
+                //int? currTaskID = TaskScheduler.Current.Id;
+                if (currTaskID.HasValue || AllowStatic)
                 {
                     if(_syncStorage == null)
                         throw new InvalidOperationException("InformationContext not initialized for Task required storage");
@@ -113,10 +143,15 @@ namespace TheBall
         public static void ProcessAndClearCurrent()
         {
             Current.PerformFinalizingActions();
+            ClearCurrent();
+        }
+
+        public static void ClearCurrent()
+        {
             var httpContext = HttpContext.Current;
-            if(httpContext != null)
+            if (httpContext != null)
             {
-                if(httpContext.Items.Contains(KEYNAME))
+                if (httpContext.Items.Contains(KEYNAME))
                 {
                     httpContext.Items.Remove(KEYNAME);
                     return;
