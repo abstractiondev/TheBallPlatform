@@ -85,7 +85,7 @@ namespace TheBall.Interface
         {
             foreach (string changeItemID in ensureUpdateOnStatusSummaryOutput)
             {
-                string relativeLocationFromOwner = InformationChangeItem.GetRelativeLocationFromID(changeItemID);
+                string relativeLocationFromOwner = ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(changeItemID);
                 var blob = StorageSupport.GetOwnerBlobReference(owner, relativeLocationFromOwner);
                 blob.DeleteWithoutFiringSubscriptions();
                 var jsonBlob = StorageSupport.GetOwnerBlobReference(owner, relativeLocationFromOwner + ".json");

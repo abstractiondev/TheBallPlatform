@@ -155,7 +155,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "InterfaceOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -175,14 +175,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InterfaceOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InterfaceOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -613,7 +608,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "ConnectionCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -633,14 +628,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ConnectionCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ConnectionCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -880,7 +870,7 @@ InterfaceOperation.ErrorMessage
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Connection.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Connection>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -1131,7 +1121,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "Connection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1151,14 +1141,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Connection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Connection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1481,7 +1466,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "TransferPackage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1501,14 +1486,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TransferPackage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TransferPackage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1784,7 +1764,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "CategoryLink";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1804,14 +1784,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CategoryLink>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CategoryLink>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2173,7 +2148,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "Category";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2193,14 +2168,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Category>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2598,7 +2568,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "StatusSummary";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2618,14 +2588,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StatusSummary>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StatusSummary>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2883,7 +2848,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "InformationChangeItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2903,14 +2868,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3174,7 +3134,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "OperationExecutionItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3194,14 +3154,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<OperationExecutionItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationExecutionItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3617,7 +3572,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "GenericObjectCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3637,14 +3592,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GenericObjectCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericObjectCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3884,7 +3834,7 @@ InterfaceOperation.ErrorMessage
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = GenericCollectionableObject.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -4135,7 +4085,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "GenericCollectionableObject";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4155,14 +4105,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4523,7 +4468,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "GenericObject";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4543,14 +4488,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GenericObject>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericObject>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4811,7 +4751,7 @@ InterfaceOperation.ErrorMessage
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Interface";
 				    this.Name = "GenericValue";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4831,14 +4771,9 @@ InterfaceOperation.ErrorMessage
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GenericValue>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GenericValue>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

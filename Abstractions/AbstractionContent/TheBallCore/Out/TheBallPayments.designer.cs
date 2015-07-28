@@ -153,7 +153,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
 				    this.Name = "GroupSubscriptionPlanCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -173,14 +173,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlanCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlanCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -420,7 +415,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = GroupSubscriptionPlan.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -671,7 +666,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
 				    this.Name = "GroupSubscriptionPlan";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -691,14 +686,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -962,7 +952,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
 				    this.Name = "SubscriptionPlanStatus";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -982,14 +972,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionPlanStatus>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionPlanStatus>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1317,7 +1302,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
 				    this.Name = "CustomerAccountCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1337,14 +1322,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CustomerAccountCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CustomerAccountCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1584,7 +1564,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = CustomerAccount.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<CustomerAccount>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -1835,7 +1815,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Payments";
 				    this.Name = "CustomerAccount";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1855,14 +1835,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CustomerAccount>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CustomerAccount>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

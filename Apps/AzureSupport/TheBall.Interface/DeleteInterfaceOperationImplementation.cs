@@ -6,7 +6,7 @@ namespace TheBall.Interface
     {
         public static string GetTarget_OperationBlobLocation(string operationID)
         {
-            string operationLocation = InterfaceOperation.GetRelativeLocationFromID(operationID);
+            string operationLocation = ObjectStorage.GetRelativeLocationFromID<InterfaceOperation> (operationID);
             return StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, operationLocation);
         }
 

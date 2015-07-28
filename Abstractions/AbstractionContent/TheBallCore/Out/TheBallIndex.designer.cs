@@ -77,7 +77,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Index";
 				    this.Name = "IndexingRequest";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -97,14 +97,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<IndexingRequest>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<IndexingRequest>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -362,7 +357,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Index";
 				    this.Name = "QueryRequest";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -382,14 +377,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<QueryRequest>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<QueryRequest>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -680,7 +670,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.Index";
 				    this.Name = "QueryResultItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -700,14 +690,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<QueryResultItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<QueryResultItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

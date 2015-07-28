@@ -335,7 +335,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBSystem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -355,14 +355,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBSystem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBSystem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -712,7 +707,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "WebPublishInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -732,14 +727,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<WebPublishInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<WebPublishInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1199,7 +1189,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "PublicationPackageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1219,14 +1209,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<PublicationPackageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<PublicationPackageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1464,7 +1449,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = PublicationPackage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<PublicationPackage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -1695,7 +1680,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "PublicationPackage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1715,14 +1700,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<PublicationPackage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<PublicationPackage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2070,7 +2050,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBRLoginRoot";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2090,14 +2070,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBRLoginRoot>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBRLoginRoot>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2490,7 +2465,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBRAccountRoot";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2510,14 +2485,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBRAccountRoot>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBRAccountRoot>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2898,7 +2868,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBRGroupRoot";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2918,14 +2888,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBRGroupRoot>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBRGroupRoot>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3306,7 +3271,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBRLoginGroupRoot";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3326,14 +3291,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBRLoginGroupRoot>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBRLoginGroupRoot>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3683,7 +3643,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBREmailRoot";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3703,14 +3663,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBREmailRoot>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBREmailRoot>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4091,7 +4046,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBAccount";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4111,14 +4066,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBAccount>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBAccount>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4609,7 +4559,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBAccountCollaborationGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4629,14 +4579,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4998,7 +4943,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBAccountCollaborationGroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -5018,14 +4963,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroupCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroupCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5263,7 +5203,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = TBAccountCollaborationGroup.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -5494,7 +5434,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBLoginInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -5514,14 +5454,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5859,7 +5794,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBLoginInfoCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -5879,14 +5814,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBLoginInfoCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBLoginInfoCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6124,7 +6054,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = TBLoginInfo.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -6355,7 +6285,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBEmail";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -6375,14 +6305,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBEmail>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBEmail>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6730,7 +6655,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBEmailCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -6750,14 +6675,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBEmailCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBEmailCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6995,7 +6915,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = TBEmail.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBEmail>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -7226,7 +7146,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBCollaboratorRole";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -7246,14 +7166,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7658,7 +7573,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBCollaboratorRoleCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -7678,14 +7593,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRoleCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRoleCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7923,7 +7833,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = TBCollaboratorRole.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -8154,7 +8064,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBCollaboratingGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -8174,14 +8084,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratingGroup>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratingGroup>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8574,7 +8479,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBEmailValidation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -8594,14 +8499,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBEmailValidation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBEmailValidation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9214,7 +9114,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBMergeAccountConfirmation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -9234,14 +9134,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBMergeAccountConfirmation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBMergeAccountConfirmation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9591,7 +9486,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBGroupJoinConfirmation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -9611,14 +9506,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBGroupJoinConfirmation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBGroupJoinConfirmation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9968,7 +9858,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBDeviceJoinConfirmation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -9988,14 +9878,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBDeviceJoinConfirmation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBDeviceJoinConfirmation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10357,7 +10242,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBInformationInputConfirmation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -10377,14 +10262,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBInformationInputConfirmation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBInformationInputConfirmation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10746,7 +10626,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBInformationOutputConfirmation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -10766,14 +10646,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBInformationOutputConfirmation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBInformationOutputConfirmation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11135,7 +11010,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LoginProvider";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -11155,14 +11030,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LoginProvider>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LoginProvider>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11548,7 +11418,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LoginProviderCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -11568,14 +11438,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LoginProviderCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LoginProviderCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11813,7 +11678,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = LoginProvider.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LoginProvider>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -12044,7 +11909,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TBPRegisterEmail";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -12064,14 +11929,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TBPRegisterEmail>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TBPRegisterEmail>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12409,7 +12269,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountSummary";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -12429,14 +12289,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountSummary>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountSummary>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12817,7 +12672,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -12837,14 +12692,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13280,7 +13130,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountModule";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -13300,14 +13150,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountModule>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountModule>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13854,7 +13699,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LocationContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -13874,14 +13719,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LocationContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LocationContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14263,7 +14103,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddressAndLocationCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14283,14 +14123,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddressAndLocationCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddressAndLocationCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14525,7 +14360,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = AddressAndLocation.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -14770,7 +14605,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddressAndLocation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14790,14 +14625,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15274,7 +15104,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "StreetAddress";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -15294,14 +15124,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StreetAddress>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StreetAddress>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15675,7 +15500,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountProfile";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -15695,14 +15520,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountProfile>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountProfile>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16182,7 +16002,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountSecurity";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -16202,14 +16022,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountSecurity>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountSecurity>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16645,7 +16460,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AccountRoles";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -16665,14 +16480,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AccountRoles>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AccountRoles>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17125,7 +16935,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "PersonalInfoVisibility";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -17145,14 +16955,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<PersonalInfoVisibility>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<PersonalInfoVisibility>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17490,7 +17295,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ReferenceToInformation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -17510,14 +17315,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17867,7 +17667,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ReferenceCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -17887,14 +17687,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ReferenceCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ReferenceCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18127,7 +17922,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = ReferenceToInformation.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -18352,7 +18147,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "NodeSummaryContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -18372,14 +18167,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<NodeSummaryContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<NodeSummaryContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19096,7 +18886,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "RenderedNodeCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -19116,14 +18906,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<RenderedNodeCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RenderedNodeCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19361,7 +19146,7 @@ AccountRoles.OrganizationsImPartOf
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = RenderedNode.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RenderedNode>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -19592,7 +19377,7 @@ AccountRoles.OrganizationsImPartOf
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "RenderedNode";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -19612,14 +19397,9 @@ AccountRoles.OrganizationsImPartOf
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<RenderedNode>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RenderedNode>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20355,7 +20135,7 @@ RenderedNode.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ShortTextCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -20375,14 +20155,9 @@ RenderedNode.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ShortTextCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ShortTextCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20620,7 +20395,7 @@ RenderedNode.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = ShortTextObject.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ShortTextObject>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -20851,7 +20626,7 @@ RenderedNode.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ShortTextObject";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -20871,14 +20646,9 @@ RenderedNode.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ShortTextObject>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ShortTextObject>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21216,7 +20986,7 @@ RenderedNode.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LongTextCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -21236,14 +21006,9 @@ RenderedNode.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LongTextCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LongTextCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21481,7 +21246,7 @@ RenderedNode.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = LongTextObject.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LongTextObject>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -21712,7 +21477,7 @@ RenderedNode.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LongTextObject";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -21732,14 +21497,9 @@ RenderedNode.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LongTextObject>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LongTextObject>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22082,7 +21842,7 @@ LongTextObject.Content
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapMarker";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -22102,14 +21862,9 @@ LongTextObject.Content
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapMarker>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapMarker>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22567,7 +22322,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapMarkerCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -22587,14 +22342,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapMarkerCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapMarkerCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22832,7 +22582,7 @@ MapMarker.PopupContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = MapMarker.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapMarker>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -23063,7 +22813,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ModeratorCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -23083,14 +22833,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ModeratorCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ModeratorCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -23328,7 +23073,7 @@ MapMarker.PopupContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Moderator.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Moderator>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -23559,7 +23304,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Moderator";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -23579,14 +23324,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Moderator>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Moderator>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -23936,7 +23676,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CollaboratorCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -23956,14 +23696,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CollaboratorCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CollaboratorCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -24201,7 +23936,7 @@ MapMarker.PopupContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Collaborator.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Collaborator>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -24432,7 +24167,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Collaborator";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -24452,14 +24187,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Collaborator>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Collaborator>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -24845,7 +24575,7 @@ MapMarker.PopupContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "GroupSummaryContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -24865,14 +24595,9 @@ MapMarker.PopupContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupSummaryContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupSummaryContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -25380,7 +25105,7 @@ GroupSummaryContainer.SummaryBody
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "GroupContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -25400,14 +25125,9 @@ GroupSummaryContainer.SummaryBody
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -26009,7 +25729,7 @@ GroupSummaryContainer.SummaryBody
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "GroupIndex";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -26029,14 +25749,9 @@ GroupSummaryContainer.SummaryBody
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupIndex>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupIndex>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -26449,7 +26164,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddAddressAndLocationInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -26469,14 +26184,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddAddressAndLocationInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddAddressAndLocationInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -26814,7 +26524,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddImageInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -26834,14 +26544,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddImageInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddImageInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27179,7 +26884,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddImageGroupInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -27199,14 +26904,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddImageGroupInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddImageGroupInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27544,7 +27244,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddEmailAddressInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -27564,14 +27264,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddEmailAddressInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddEmailAddressInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27909,7 +27604,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CreateGroupInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -27929,14 +27624,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CreateGroupInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CreateGroupInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -28274,7 +27964,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddActivityInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -28294,14 +27984,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddActivityInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddActivityInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -28639,7 +28324,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddBlogPostInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -28659,14 +28344,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddBlogPostInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddBlogPostInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29004,7 +28684,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AddCategoryInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -29024,14 +28704,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AddCategoryInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AddCategoryInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29369,7 +29044,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "GroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -29389,14 +29064,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29634,7 +29304,7 @@ GroupIndex.Summary
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Group.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Group>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -29865,7 +29535,7 @@ GroupIndex.Summary
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Group";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -29885,14 +29555,9 @@ GroupIndex.Summary
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Group>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Group>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -30565,7 +30230,7 @@ Group.OrganizationsAndGroupsLinkedToUs
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Introduction";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -30585,14 +30250,9 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Introduction>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Introduction>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -30947,7 +30607,7 @@ Introduction.Body
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ContentCategoryRankCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -30967,14 +30627,9 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ContentCategoryRankCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ContentCategoryRankCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -31214,7 +30869,7 @@ Introduction.Body
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = ContentCategoryRank.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -31465,7 +31120,7 @@ Introduction.Body
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ContentCategoryRank";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -31485,14 +31140,9 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -31878,7 +31528,7 @@ Introduction.Body
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LinkToContentCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -31898,14 +31548,9 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LinkToContentCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LinkToContentCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -32140,7 +31785,7 @@ Introduction.Body
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = LinkToContent.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LinkToContent>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -32385,7 +32030,7 @@ Introduction.Body
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LinkToContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -32405,14 +32050,9 @@ Introduction.Body
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LinkToContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LinkToContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -32968,7 +32608,7 @@ LinkToContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "EmbeddedContentCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -32988,14 +32628,9 @@ LinkToContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<EmbeddedContentCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<EmbeddedContentCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -33230,7 +32865,7 @@ LinkToContent.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = EmbeddedContent.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -33475,7 +33110,7 @@ LinkToContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "EmbeddedContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -33495,14 +33130,9 @@ LinkToContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -34003,7 +33633,7 @@ EmbeddedContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DynamicContentGroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -34023,14 +33653,9 @@ EmbeddedContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DynamicContentGroupCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentGroupCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -34270,7 +33895,7 @@ EmbeddedContent.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = DynamicContentGroup.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -34521,7 +34146,7 @@ EmbeddedContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DynamicContentGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -34541,14 +34166,9 @@ EmbeddedContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -34906,7 +34526,7 @@ EmbeddedContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DynamicContentCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -34926,14 +34546,9 @@ EmbeddedContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DynamicContentCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -35173,7 +34788,7 @@ EmbeddedContent.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = DynamicContent.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContent>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -35424,7 +35039,7 @@ EmbeddedContent.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DynamicContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -35444,14 +35059,9 @@ EmbeddedContent.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DynamicContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -35975,7 +35585,7 @@ DynamicContent.RawContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AttachedToObjectCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -35995,14 +35605,9 @@ DynamicContent.RawContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AttachedToObjectCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AttachedToObjectCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -36242,7 +35847,7 @@ DynamicContent.RawContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = AttachedToObject.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AttachedToObject>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -36493,7 +36098,7 @@ DynamicContent.RawContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AttachedToObject";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -36513,14 +36118,9 @@ DynamicContent.RawContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AttachedToObject>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AttachedToObject>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -36918,7 +36518,7 @@ DynamicContent.RawContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CommentCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -36938,14 +36538,9 @@ DynamicContent.RawContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CommentCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CommentCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -37185,7 +36780,7 @@ DynamicContent.RawContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Comment.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Comment>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -37436,7 +37031,7 @@ DynamicContent.RawContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Comment";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -37456,14 +37051,9 @@ DynamicContent.RawContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Comment>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Comment>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -37934,7 +37524,7 @@ Comment.CommentText
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SelectionCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -37954,14 +37544,9 @@ Comment.CommentText
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SelectionCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SelectionCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -38201,7 +37786,7 @@ Comment.CommentText
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Selection.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Selection>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -38452,7 +38037,7 @@ Comment.CommentText
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Selection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -38472,14 +38057,9 @@ Comment.CommentText
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Selection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Selection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -38885,7 +38465,7 @@ Comment.CommentText
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TextContentCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -38905,14 +38485,9 @@ Comment.CommentText
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TextContentCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TextContentCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -39147,7 +38722,7 @@ Comment.CommentText
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = TextContent.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TextContent>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -39392,7 +38967,7 @@ Comment.CommentText
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "TextContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -39412,14 +38987,9 @@ Comment.CommentText
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TextContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TextContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -40036,7 +39606,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Map";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -40056,14 +39626,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Map>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Map>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -40401,7 +39966,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -40421,14 +39986,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -40666,7 +40226,7 @@ TextContent.RawHtmlContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Map.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Map>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -40897,7 +40457,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResult";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -40917,14 +40477,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapResult>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapResult>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -41305,7 +40860,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResultCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -41325,14 +40880,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapResultCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapResultCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -41570,7 +41120,7 @@ TextContent.RawHtmlContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = MapResult.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapResult>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -41801,7 +41351,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MapResultsCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -41821,14 +41371,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MapResultsCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MapResultsCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -42319,7 +41864,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Video";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -42339,14 +41884,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Video>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Video>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -42751,7 +42291,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "ImageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -42771,14 +42311,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ImageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ImageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -43013,7 +42548,7 @@ TextContent.RawHtmlContent
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Image.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Image>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -43258,7 +42793,7 @@ TextContent.RawHtmlContent
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Image";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -43278,14 +42813,9 @@ TextContent.RawHtmlContent
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Image>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Image>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -43860,7 +43390,7 @@ Image.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "BinaryFileCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -43880,14 +43410,9 @@ Image.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<BinaryFileCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<BinaryFileCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -44127,7 +43652,7 @@ Image.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = BinaryFile.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<BinaryFile>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -44378,7 +43903,7 @@ Image.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "BinaryFile";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -44398,14 +43923,9 @@ Image.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<BinaryFile>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<BinaryFile>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -44883,7 +44403,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "MediaContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -44903,14 +44423,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<MediaContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<MediaContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -45209,7 +44724,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Longitude";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -45229,14 +44744,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Longitude>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Longitude>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -45574,7 +45084,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Latitude";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -45594,14 +45104,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Latitude>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Latitude>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -45939,7 +45444,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Location";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -45959,14 +45464,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Location>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Location>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -46414,7 +45914,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "LocationCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -46434,14 +45934,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<LocationCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<LocationCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -46679,7 +46174,7 @@ BinaryFile.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Location.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Location>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -46910,7 +46405,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Date";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -46930,14 +46425,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Date>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Date>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -47303,7 +46793,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CategoryContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -47323,14 +46813,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CategoryContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CategoryContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -47712,7 +47197,7 @@ BinaryFile.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Category";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -47732,14 +47217,9 @@ BinaryFile.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Category>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -48255,7 +47735,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "CategoryCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -48275,14 +47755,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -48517,7 +47992,7 @@ Category.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Category.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -48762,7 +48237,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -48782,14 +48257,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -49027,7 +48497,7 @@ Category.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Subscription.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Subscription>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -49258,7 +48728,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Subscription";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -49278,14 +48748,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Subscription>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Subscription>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -49681,7 +49146,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "QueueEnvelope";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -49701,14 +49166,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<QueueEnvelope>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<QueueEnvelope>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -50233,7 +49693,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "OperationRequestCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -50253,14 +49713,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<OperationRequestCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequestCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -50498,7 +49953,7 @@ Category.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = OperationRequest.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequest>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -50729,7 +50184,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "OperationRequest";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -50749,14 +50204,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<OperationRequest>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequest>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -51479,7 +50929,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionChainRequestMessage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -51499,14 +50949,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestMessage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestMessage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -51844,7 +51289,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionChainRequestContent";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -51864,14 +51309,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestContent>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestContent>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52302,7 +51742,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionTarget";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -52322,14 +51762,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52667,7 +52102,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriptionTargetCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -52687,14 +52122,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriptionTargetCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTargetCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52932,7 +52362,7 @@ Category.Excerpt
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = SubscriptionTarget.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -53163,7 +52593,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DeleteEntireOwnerOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -53183,14 +52613,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DeleteEntireOwnerOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeleteEntireOwnerOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -53540,7 +52965,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "DeleteOwnerContentOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -53560,14 +52985,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DeleteOwnerContentOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeleteOwnerContentOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -53917,7 +53337,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SystemError";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -53937,14 +53357,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SystemError>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemError>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -54402,7 +53817,7 @@ Category.Excerpt
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SystemErrorItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -54422,14 +53837,9 @@ Category.Excerpt
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -54784,7 +54194,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SystemErrorItemCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -54804,14 +54214,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SystemErrorItemCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItemCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -55049,7 +54454,7 @@ SystemErrorItem.LongDescription
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = SystemErrorItem.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -55280,7 +54685,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "InformationSource";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -55300,14 +54705,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationSource>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationSource>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -55725,7 +55125,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "InformationSourceCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -55745,14 +55145,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationSourceCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationSourceCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -55990,7 +55385,7 @@ SystemErrorItem.LongDescription
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InformationSource.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationSource>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -56221,7 +55616,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "RefreshDefaultViewsOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -56241,14 +55636,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<RefreshDefaultViewsOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RefreshDefaultViewsOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -56598,7 +55988,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "UpdateWebContentOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -56618,14 +56008,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -57064,7 +56449,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "UpdateWebContentHandlerItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -57084,14 +56469,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -57441,7 +56821,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "UpdateWebContentHandlerCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -57461,14 +56841,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -57706,7 +57081,7 @@ SystemErrorItem.LongDescription
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = UpdateWebContentHandlerItem.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -57937,7 +57312,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "PublishWebContentOperation";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -57957,14 +57332,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<PublishWebContentOperation>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<PublishWebContentOperation>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -58338,7 +57708,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "SubscriberInput";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -58358,14 +57728,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SubscriberInput>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriberInput>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -58739,7 +58104,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "Monitor";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -58759,14 +58124,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Monitor>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Monitor>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -59172,7 +58532,7 @@ SystemErrorItem.LongDescription
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "IconTitleDescription";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -59192,14 +58552,9 @@ SystemErrorItem.LongDescription
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<IconTitleDescription>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<IconTitleDescription>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -59561,7 +58916,7 @@ IconTitleDescription.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
 				    this.Name = "AboutAGIApplications";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -59581,14 +58936,9 @@ IconTitleDescription.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AboutAGIApplications>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AboutAGIApplications>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

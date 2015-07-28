@@ -206,7 +206,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "Account";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -226,14 +226,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Account>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Account>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -517,7 +512,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "Group";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -537,14 +532,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Group>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Group>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -814,7 +804,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "GroupMembership";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -834,14 +824,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<GroupMembership>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<GroupMembership>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1199,7 +1184,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ContentPackageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1219,14 +1204,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ContentPackageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ContentPackageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1466,7 +1446,7 @@ namespace INT {
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = ContentPackage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentPackage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -1717,7 +1697,7 @@ namespace INT {
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ContentPackage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -1737,14 +1717,9 @@ namespace INT {
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ContentPackage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ContentPackage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2133,7 +2108,7 @@ ContentPackage.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InformationInputCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2153,14 +2128,9 @@ ContentPackage.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationInputCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationInputCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2400,7 +2370,7 @@ ContentPackage.Description
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InformationInput.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationInput>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -2651,7 +2621,7 @@ ContentPackage.Description
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InformationInput";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -2671,14 +2641,9 @@ ContentPackage.Description
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationInput>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationInput>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3067,7 +3032,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InformationOutputCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3087,14 +3052,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationOutputCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationOutputCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3334,7 +3294,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InformationOutput.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationOutput>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -3585,7 +3545,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InformationOutput";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -3605,14 +3565,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationOutput>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationOutput>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4008,7 +3963,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "AuthenticatedAsActiveDeviceCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4028,14 +3983,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDeviceCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDeviceCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4275,7 +4225,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = AuthenticatedAsActiveDevice.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -4526,7 +4476,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "AuthenticatedAsActiveDevice";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4546,14 +4496,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4956,7 +4901,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "DeviceMembershipCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -4976,14 +4921,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DeviceMembershipCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeviceMembershipCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5223,7 +5163,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = DeviceMembership.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DeviceMembership>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -5474,7 +5414,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "DeviceMembership";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -5494,14 +5434,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<DeviceMembership>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeviceMembership>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5868,7 +5803,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceFiscalExportSummary";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -5888,14 +5823,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceFiscalExportSummary>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceFiscalExportSummary>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6297,7 +6227,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceSummaryContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -6317,14 +6247,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceSummaryContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceSummaryContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6874,7 +6799,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -6894,14 +6819,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7141,7 +7061,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Invoice.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Invoice>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -7392,7 +7312,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "Invoice";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -7412,14 +7332,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Invoice>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Invoice>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7947,7 +7862,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceDetails";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -7967,14 +7882,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceDetails>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceDetails>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8372,7 +8282,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceUserCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -8392,14 +8302,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceUserCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceUserCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8637,7 +8542,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InvoiceUser.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceUser>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -8868,7 +8773,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceUser";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -8888,14 +8793,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceUser>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceUser>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9391,7 +9291,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceRowGroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -9411,14 +9311,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroupCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroupCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9656,7 +9551,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InvoiceRowGroup.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -9887,7 +9782,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceEventDetailGroupCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -9907,14 +9802,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroupCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroupCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10152,7 +10042,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InvoiceEventDetailGroup.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -10383,7 +10273,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceRowGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -10403,14 +10293,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10839,7 +10724,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceEventDetailGroup";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -10859,14 +10744,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11259,7 +11139,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceEventDetailCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -11279,14 +11159,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11524,7 +11399,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InvoiceEventDetail.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -11755,7 +11630,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceRowCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -11775,14 +11650,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12020,7 +11890,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = InvoiceRow.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRow>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -12251,7 +12121,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceEventDetail";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -12271,14 +12141,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12720,7 +12585,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InvoiceRow";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -12740,14 +12605,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InvoiceRow>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRow>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13157,7 +13017,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "CategoryCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -13177,14 +13037,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13422,7 +13277,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = Category.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -13653,7 +13508,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "Category";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -13673,14 +13528,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Category>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14018,7 +13868,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ProcessContainer";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14038,14 +13888,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ProcessContainer>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ProcessContainer>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14297,7 +14142,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "Process";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14317,14 +14162,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<Process>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Process>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14584,7 +14424,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ProcessItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14604,14 +14444,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ProcessItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ProcessItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14862,7 +14697,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "SemanticInformationItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -14882,14 +14717,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<SemanticInformationItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SemanticInformationItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15239,7 +15069,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "InformationOwnerInfo";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -15259,14 +15089,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<InformationOwnerInfo>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationOwnerInfo>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15616,7 +15441,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "UsageSummary";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -15636,14 +15461,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<UsageSummary>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<UsageSummary>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16036,7 +15856,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "UsageMonitorItem";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -16056,14 +15876,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<UsageMonitorItem>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<UsageMonitorItem>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16729,7 +16544,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "RequestResourceUsageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -16749,14 +16564,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<RequestResourceUsageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RequestResourceUsageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16994,7 +16804,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = RequestResourceUsage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -17225,7 +17035,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "RequestResourceUsage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -17245,14 +17055,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17853,7 +17658,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ProcessorUsageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -17873,14 +17678,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ProcessorUsageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ProcessorUsageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18118,7 +17918,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = ProcessorUsage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -18349,7 +18149,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "ProcessorUsage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -18369,14 +18169,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18799,7 +18594,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "StorageTransactionUsageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -18819,14 +18614,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19064,7 +18854,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = StorageTransactionUsage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -19295,7 +19085,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "StorageTransactionUsage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -19315,14 +19105,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19725,7 +19510,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "StorageUsageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -19745,14 +19530,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StorageUsageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StorageUsageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19990,7 +19770,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = StorageUsage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageUsage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -20221,7 +20001,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "StorageUsage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -20241,14 +20021,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<StorageUsage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<StorageUsage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20618,7 +20393,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "NetworkUsageCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -20638,14 +20413,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<NetworkUsageCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<NetworkUsageCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20883,7 +20653,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = NetworkUsage.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<NetworkUsage>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -21114,7 +20884,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "NetworkUsage";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -21134,14 +20904,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<NetworkUsage>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<NetworkUsage>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21544,7 +21309,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "TimeRange";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -21564,14 +21329,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<TimeRange>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<TimeRange>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21917,7 +21677,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "HTTPActivityDetailsCollection";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -21937,14 +21697,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetailsCollection>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetailsCollection>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22182,7 +21937,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public string GetItemDirectory()
 				{
-					string dummyItemLocation = HTTPActivityDetails.GetRelativeLocationFromID("dummy");
+					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>("dummy");
 					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
@@ -22413,7 +22168,7 @@ InformationInput.AuthenticatedDeviceID
 				    this.OwnerID = StorageSupport.ActiveOwnerID;
 				    this.SemanticDomainName = "TheBall.CORE";
 				    this.Name = "HTTPActivityDetails";
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					UpdateRelativeLocationFromID();
 				}
 
 				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
@@ -22433,14 +22188,9 @@ InformationInput.AuthenticatedDeviceID
 					return informationObjects.ToArray();
 				}
 
-                public static string GetRelativeLocationFromID(string id)
-                {
-					return ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>(id);
-                }
-
 				public void UpdateRelativeLocationFromID()
 				{
-					RelativeLocation = GetRelativeLocationFromID(ID);
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>(ID);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
