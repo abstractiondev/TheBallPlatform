@@ -8,7 +8,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static TBRAccountRoot GetTarget_AccountRoot(string accountID)
         {
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
 
         public static TBRLoginRoot[] GetTarget_AccountLogins(TBRAccountRoot accountRoot)
@@ -16,7 +16,7 @@ namespace AaltoGlobalImpact.OIP
             var loginRootIDs =
                 accountRoot.Account.Logins.CollectionContent.Select(
                     login => TBLoginInfo.GetLoginIDFromLoginURL(login.OpenIDUrl)).Distinct().ToArray();
-            var loginRoots = loginRootIDs.Select(loginID => TBRLoginRoot.RetrieveFromDefaultLocation(loginID)).ToArray();
+            var loginRoots = loginRootIDs.Select(loginID => ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginID)).ToArray();
             return loginRoots;
         }
 
@@ -24,7 +24,7 @@ namespace AaltoGlobalImpact.OIP
         {
             var emailIDs = accountRoot.Account.Emails.CollectionContent.Select(email => TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress)).Distinct().ToArray();
             var emailRoots =
-                emailIDs.Select(emailAddress => TBREmailRoot.RetrieveFromDefaultLocation(emailAddress)).ToArray();
+                emailIDs.Select(emailAddress => ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailAddress)).ToArray();
             return emailRoots;
         }
 

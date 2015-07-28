@@ -55,7 +55,7 @@ namespace WebInterface
             string requestPath = context.Request.Path;
             string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
             TBAccount account = loginRoot.Account;
-            TBEmailValidation emailValidation = TBEmailValidation.RetrieveFromDefaultLocation(emailValidationID);
+            TBEmailValidation emailValidation = ObjectStorage.RetrieveFromDefaultLocation<TBEmailValidation>(emailValidationID);
             if (emailValidation == null)
             {
                 RespondEmailValidationRecordNotExist(context);
@@ -242,7 +242,7 @@ namespace WebInterface
                 account.StoreAccountToRoot();
                 // TODO: Move Emailroot storage to account root syncs
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress);
-                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                 if (emailRoot == null)
                 {
                     emailRoot = TBREmailRoot.CreateDefault();

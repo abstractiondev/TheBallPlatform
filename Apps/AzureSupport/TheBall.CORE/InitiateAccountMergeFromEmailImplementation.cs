@@ -9,7 +9,7 @@ namespace TheBall.CORE
         public static string GetTarget_AccountToMergeToID(string emailAddress)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             return emailRoot.Account.ID;
         }
 
@@ -47,7 +47,7 @@ namespace TheBall.CORE
         public static void ExecuteMethod_ValidateExistingEmail(string emailAddress)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             if(emailRoot == null)
                 throw new InvalidDataException("Email address for merge does not exist in the system");
         }

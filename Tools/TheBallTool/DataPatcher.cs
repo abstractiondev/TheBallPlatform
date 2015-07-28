@@ -24,7 +24,7 @@ namespace TheBallTool
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach(var acctID in accountIDs)
             {
-                TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(acctID);
+                TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(acctID);
                 TBAccount account = accountRoot.Account;
                 foreach(var grpRole in account.GroupRoleCollection.CollectionContent)
                 {
@@ -163,7 +163,7 @@ namespace TheBallTool
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach (var accountID in accountIDs)
             {
-                var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+                var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
                 accountRoot.Account.StoreAccountToRoot();
             }
 
@@ -172,7 +172,7 @@ namespace TheBallTool
         private static void FixGroupMastersAndCollections(string groupID)
         {
             Debug.WriteLine("Fixing group: " + groupID);
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
             IContainerOwner owner = groupRoot.Group;
             owner.InitializeAndConnectMastersAndCollections();
             //OIPDomain.EnsureMasterCollections(groupRoot.Group);
@@ -386,11 +386,11 @@ namespace TheBallTool
         private static void UpdateAccountAndGroups(string accountEmail)
         {
             string emailID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailID);
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(emailRoot.Account.ID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailID);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(emailRoot.Account.ID);
             foreach(var groupRole in accountRoot.Account.GroupRoleCollection.CollectionContent)
             {
-                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupRole.GroupID);
+                TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupRole.GroupID);
                 RefreshAccountGroupMemberships.Execute(new RefreshAccountGroupMembershipsParameters
                 {
                     AccountID = accountRoot.Account.ID,

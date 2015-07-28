@@ -175,18 +175,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "GroupSubscriptionPlanCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlanCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupSubscriptionPlanCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupSubscriptionPlanCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -699,18 +693,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "GroupSubscriptionPlan", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupSubscriptionPlan RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupSubscriptionPlan(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -996,18 +984,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "SubscriptionPlanStatus", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionPlanStatus>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionPlanStatus RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionPlanStatus(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1357,18 +1339,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "CustomerAccountCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CustomerAccountCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CustomerAccountCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCustomerAccountCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1881,18 +1857,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Payments", "CustomerAccount", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CustomerAccount>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CustomerAccount RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCustomerAccount(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

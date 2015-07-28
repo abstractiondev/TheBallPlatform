@@ -110,13 +110,13 @@ namespace WebInterface
             if (String.IsNullOrEmpty(accountEmail) == false)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-                var emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                var emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                 if(emailRoot == null)
                     throw new SecurityException("No such email defined: " + accountEmail);
                 informationContext.Owner = emailRoot.Account;
             } else if (String.IsNullOrEmpty(groupID) == false)
             {
-                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+                TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
                 if(groupRoot == null)
                     throw new SecurityException("No such groupID defined: " + groupID);
                 informationContext.Owner = groupRoot.Group;

@@ -99,13 +99,13 @@ namespace AaltoGlobalImpact.OIP
                 Select(email =>
                 {
                     string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email);
-                    TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                    TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                     return emailRoot.Account.ID;
                 }).Distinct().ToArray();
             List<AccountRootAndContainer> result = new List<AccountRootAndContainer>();
             foreach(var accountID in accountIDs)
             {
-                TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+                TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
                 VirtualOwner owner = new VirtualOwner("acc", accountID);
                 var accountContainer = AccountContainer.RetrieveFromOwnerContent(owner, "default");
                 AccountRootAndContainer accountRootAndContainer = new AccountRootAndContainer

@@ -20,7 +20,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static TBRAccountRoot GetTarget_AccountRoot(string accountID)
         {
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
 
         public static TBRLoginGroupRoot[] GetTarget_LoginGroupRoots(TBRAccountRoot accountRoot)

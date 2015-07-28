@@ -7,8 +7,8 @@ namespace TheBall.CORE
     {
         public static void ExecuteMethod_AddNewInitiatorToGroup(string groupId, string newInitiatorAccountId)
         {
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupId);
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(newInitiatorAccountId);
+            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupId);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(newInitiatorAccountId);
             var accountEmails = accountRoot.Account.Emails.CollectionContent;
             var group = groupRoot.Group;
             foreach(TBEmail email in accountEmails)
@@ -31,8 +31,8 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_RemoveOldInitiatorFromGroup(string groupId, string oldInitiatorAccountId)
         {
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupId);
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(oldInitiatorAccountId);
+            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupId);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(oldInitiatorAccountId);
             var accountEmails = accountRoot.Account.Emails.CollectionContent;
             var group = groupRoot.Group;
             foreach (TBEmail email in accountEmails)

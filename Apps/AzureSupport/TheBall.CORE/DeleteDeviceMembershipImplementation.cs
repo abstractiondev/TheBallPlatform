@@ -4,7 +4,7 @@ namespace TheBall.CORE
     {
         public static DeviceMembership GetTarget_DeviceMembership(IContainerOwner owner, string deviceMembershipId)
         {
-            return DeviceMembership.RetrieveFromDefaultLocation(deviceMembershipId, owner);
+            return ObjectStorage.RetrieveFromDefaultLocation<DeviceMembership>(deviceMembershipId, owner);
         }
 
         public static void ExecuteMethod_DeleteDeviceMembership(DeviceMembership deviceMembership)

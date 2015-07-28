@@ -9,12 +9,12 @@ namespace AaltoGlobalImpact.OIP
     {
         public static TBRGroupRoot GetTarget_GroupRoot(string groupID)
         {
-            return TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
         }
 
         public static TBRAccountRoot GetTarget_AccountRoot(string accountID)
         {
-            var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
             if(accountRoot == null)
                 throw new InvalidDataException("AccountRoot not found for: " + accountID);
             return accountRoot;
@@ -27,7 +27,7 @@ namespace AaltoGlobalImpact.OIP
             if (accountID != null)
                 return accountID;
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(memberEmailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             return emailRoot.Account.ID;
         }
 

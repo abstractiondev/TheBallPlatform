@@ -357,18 +357,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBSystem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBSystem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBSystem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBSystem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -740,18 +734,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "WebPublishInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<WebPublishInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static WebPublishInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveWebPublishInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1233,18 +1221,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "PublicationPackageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<PublicationPackageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static PublicationPackageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrievePublicationPackageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1735,18 +1717,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "PublicationPackage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<PublicationPackage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static PublicationPackage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrievePublicationPackage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2116,18 +2092,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginRoot", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBRLoginRoot>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBRLoginRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRLoginRoot(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2542,18 +2512,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRAccountRoot", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBRAccountRoot>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBRAccountRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRAccountRoot(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2956,18 +2920,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRGroupRoot", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBRGroupRoot>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBRGroupRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRGroupRoot(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3370,18 +3328,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBRLoginGroupRoot", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBRLoginGroupRoot>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBRLoginGroupRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBRLoginGroupRoot(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3753,18 +3705,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBREmailRoot", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBREmailRoot>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBREmailRoot RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBREmailRoot(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4167,18 +4113,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccount", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBAccount>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBAccount RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccount(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4691,18 +4631,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroup", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBAccountCollaborationGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccountCollaborationGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5086,18 +5020,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBAccountCollaborationGroupCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroupCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBAccountCollaborationGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBAccountCollaborationGroupCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5588,18 +5516,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBLoginInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBLoginInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5959,18 +5881,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBLoginInfoCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBLoginInfoCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBLoginInfoCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBLoginInfoCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6461,18 +6377,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmail", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBEmail>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBEmail RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmail(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6842,18 +6752,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBEmailCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBEmailCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmailCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7344,18 +7248,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRole", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBCollaboratorRole RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratorRole(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7782,18 +7680,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratorRoleCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRoleCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBCollaboratorRoleCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratorRoleCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8284,18 +8176,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBCollaboratingGroup", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBCollaboratingGroup>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBCollaboratingGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBCollaboratingGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8710,18 +8596,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBEmailValidation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBEmailValidation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBEmailValidation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBEmailValidation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9356,18 +9236,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBMergeAccountConfirmation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBMergeAccountConfirmation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBMergeAccountConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBMergeAccountConfirmation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9739,18 +9613,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBGroupJoinConfirmation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBGroupJoinConfirmation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBGroupJoinConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBGroupJoinConfirmation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10122,18 +9990,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBDeviceJoinConfirmation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBDeviceJoinConfirmation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBDeviceJoinConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBDeviceJoinConfirmation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10517,18 +10379,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBInformationInputConfirmation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBInformationInputConfirmation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBInformationInputConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBInformationInputConfirmation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10912,18 +10768,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBInformationOutputConfirmation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBInformationOutputConfirmation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBInformationOutputConfirmation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBInformationOutputConfirmation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11307,18 +11157,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LoginProvider", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LoginProvider>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LoginProvider RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLoginProvider(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11726,18 +11570,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LoginProviderCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LoginProviderCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LoginProviderCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLoginProviderCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12228,18 +12066,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TBPRegisterEmail", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TBPRegisterEmail>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TBPRegisterEmail RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTBPRegisterEmail(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12599,18 +12431,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSummary", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountSummary>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountSummary(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13013,18 +12839,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13482,18 +13302,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountModule", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountModule>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountModule RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountModule(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14062,18 +13876,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LocationContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LocationContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LocationContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLocationContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14477,18 +14285,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocationCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddressAndLocationCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddressAndLocationCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddressAndLocationCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14990,18 +14792,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddressAndLocation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddressAndLocation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddressAndLocation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15500,18 +15296,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "StreetAddress", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StreetAddress>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StreetAddress RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStreetAddress(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15907,18 +15697,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountProfile", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountProfile>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountProfile RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountProfile(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16420,18 +16204,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountSecurity", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountSecurity>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountSecurity RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountSecurity(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16889,18 +16667,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AccountRoles", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AccountRoles>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AccountRoles RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccountRoles(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17375,18 +17147,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "PersonalInfoVisibility", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<PersonalInfoVisibility>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static PersonalInfoVisibility RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrievePersonalInfoVisibility(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17746,18 +17512,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceToInformation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ReferenceToInformation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceToInformation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18129,18 +17889,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ReferenceCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ReferenceCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ReferenceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveReferenceCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18620,18 +18374,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "NodeSummaryContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<NodeSummaryContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static NodeSummaryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveNodeSummaryContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19370,18 +19118,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "RenderedNodeCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<RenderedNodeCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static RenderedNodeCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveRenderedNodeCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19872,18 +19614,12 @@ AccountRoles.OrganizationsImPartOf
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "RenderedNode", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<RenderedNode>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static RenderedNode RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveRenderedNode(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20641,18 +20377,12 @@ RenderedNode.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ShortTextCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ShortTextCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ShortTextCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveShortTextCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21143,18 +20873,12 @@ RenderedNode.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ShortTextObject", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ShortTextObject>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ShortTextObject RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveShortTextObject(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21514,18 +21238,12 @@ RenderedNode.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LongTextCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LongTextCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LongTextCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLongTextCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22016,18 +21734,12 @@ RenderedNode.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LongTextObject", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LongTextObject>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LongTextObject RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLongTextObject(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22392,18 +22104,12 @@ LongTextObject.Content
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapMarker", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapMarker>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapMarker RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapMarker(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22883,18 +22589,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapMarkerCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapMarkerCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapMarkerCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapMarkerCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -23385,18 +23085,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ModeratorCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ModeratorCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ModeratorCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveModeratorCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -23887,18 +23581,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Moderator", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Moderator>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Moderator RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveModerator(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -24270,18 +23958,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CollaboratorCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CollaboratorCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CollaboratorCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaboratorCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -24772,18 +24454,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Collaborator", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Collaborator>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Collaborator RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCollaborator(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -25191,18 +24867,12 @@ MapMarker.PopupContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupSummaryContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupSummaryContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupSummaryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupSummaryContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -25732,18 +25402,12 @@ GroupSummaryContainer.SummaryBody
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -26367,18 +26031,12 @@ GroupSummaryContainer.SummaryBody
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupIndex", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupIndex>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupIndex RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupIndex(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -26813,18 +26471,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddAddressAndLocationInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddAddressAndLocationInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddAddressAndLocationInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddAddressAndLocationInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27184,18 +26836,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddImageInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddImageInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddImageInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddImageInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27555,18 +27201,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddImageGroupInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddImageGroupInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddImageGroupInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddImageGroupInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -27926,18 +27566,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddEmailAddressInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddEmailAddressInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddEmailAddressInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddEmailAddressInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -28297,18 +27931,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CreateGroupInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CreateGroupInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CreateGroupInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCreateGroupInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -28668,18 +28296,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddActivityInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddActivityInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddActivityInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddActivityInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29039,18 +28661,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddBlogPostInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddBlogPostInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddBlogPostInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddBlogPostInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29410,18 +29026,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AddCategoryInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AddCategoryInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AddCategoryInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAddCategoryInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -29781,18 +29391,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "GroupCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -30283,18 +29887,12 @@ GroupIndex.Summary
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Group", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Group>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Group RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -30989,18 +30587,12 @@ Group.OrganizationsAndGroupsLinkedToUs
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Introduction", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Introduction>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Introduction RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIntroduction(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -31377,18 +30969,12 @@ Introduction.Body
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ContentCategoryRankCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ContentCategoryRankCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ContentCategoryRankCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveContentCategoryRankCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -31901,18 +31487,12 @@ Introduction.Body
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ContentCategoryRank", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ContentCategoryRank RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveContentCategoryRank(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -32320,18 +31900,12 @@ Introduction.Body
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LinkToContentCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LinkToContentCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LinkToContentCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLinkToContentCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -32833,18 +32407,12 @@ Introduction.Body
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LinkToContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LinkToContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LinkToContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLinkToContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -33422,18 +32990,12 @@ LinkToContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "EmbeddedContentCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<EmbeddedContentCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static EmbeddedContentCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEmbeddedContentCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -33935,18 +33497,12 @@ LinkToContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "EmbeddedContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static EmbeddedContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveEmbeddedContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -34469,18 +34025,12 @@ EmbeddedContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroupCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DynamicContentGroupCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DynamicContentGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDynamicContentGroupCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -34993,18 +34543,12 @@ EmbeddedContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentGroup", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DynamicContentGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDynamicContentGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -35384,18 +34928,12 @@ EmbeddedContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContentCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DynamicContentCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DynamicContentCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDynamicContentCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -35908,18 +35446,12 @@ EmbeddedContent.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DynamicContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DynamicContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DynamicContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDynamicContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -36465,18 +35997,12 @@ DynamicContent.RawContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AttachedToObjectCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AttachedToObjectCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AttachedToObjectCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAttachedToObjectCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -36989,18 +36515,12 @@ DynamicContent.RawContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AttachedToObject", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AttachedToObject>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AttachedToObject RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAttachedToObject(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -37420,18 +36940,12 @@ DynamicContent.RawContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CommentCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CommentCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CommentCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCommentCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -37944,18 +37458,12 @@ DynamicContent.RawContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Comment", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Comment>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Comment RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveComment(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -38448,18 +37956,12 @@ Comment.CommentText
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SelectionCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SelectionCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SelectionCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSelectionCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -38972,18 +38474,12 @@ Comment.CommentText
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Selection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Selection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Selection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSelection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -39411,18 +38907,12 @@ Comment.CommentText
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TextContentCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TextContentCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TextContentCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTextContentCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -39924,18 +39414,12 @@ Comment.CommentText
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "TextContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TextContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TextContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTextContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -40574,18 +40058,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Map", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Map>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Map RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMap(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -40945,18 +40423,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -41447,18 +40919,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResult", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapResult>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapResult RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResult(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -41861,18 +41327,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResultCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapResultCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapResultCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResultCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -42363,18 +41823,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MapResultsCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MapResultsCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MapResultsCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMapResultsCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -42887,18 +42341,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Video", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Video>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Video RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveVideo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -43325,18 +42773,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "ImageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ImageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ImageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -43838,18 +43280,12 @@ TextContent.RawHtmlContent
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Image", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Image>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Image RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveImage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -44446,18 +43882,12 @@ Image.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "BinaryFileCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<BinaryFileCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static BinaryFileCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBinaryFileCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -44970,18 +44400,12 @@ Image.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "BinaryFile", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<BinaryFile>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static BinaryFile RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveBinaryFile(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -45481,18 +44905,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "MediaContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<MediaContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static MediaContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMediaContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -45813,18 +45231,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Longitude", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Longitude>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Longitude RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLongitude(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -46184,18 +45596,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Latitude", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Latitude>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Latitude RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLatitude(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -46555,18 +45961,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Location", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Location>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Location RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLocation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -47036,18 +46436,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "LocationCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<LocationCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static LocationCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveLocationCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -47538,18 +46932,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Date", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Date>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Date RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDate(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -47937,18 +47325,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CategoryContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CategoryContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CategoryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategoryContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -48352,18 +47734,12 @@ BinaryFile.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Category", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Category RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategory(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -48901,18 +48277,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "CategoryCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CategoryCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategoryCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -49414,18 +48784,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -49916,18 +49280,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Subscription>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Subscription RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscription(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -50345,18 +49703,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<QueueEnvelope>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static QueueEnvelope RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveQueueEnvelope(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -50903,18 +50255,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<OperationRequestCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static OperationRequestCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveOperationRequestCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -51405,18 +50751,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<OperationRequest>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static OperationRequest RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveOperationRequest(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52161,18 +51501,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestMessage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionChainRequestMessage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionChainRequestMessage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52532,18 +51866,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestContent>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionChainRequestContent RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionChainRequestContent(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -52996,18 +52324,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTarget", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionTarget RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionTarget(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -53367,18 +52689,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriptionTargetCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriptionTargetCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriptionTargetCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -53869,18 +53185,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DeleteEntireOwnerOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DeleteEntireOwnerOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDeleteEntireOwnerOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -54252,18 +53562,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DeleteOwnerContentOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DeleteOwnerContentOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDeleteOwnerContentOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -54635,18 +53939,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SystemError>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SystemError RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSystemError(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -55126,18 +54424,12 @@ Category.Excerpt
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SystemErrorItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSystemErrorItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -55514,18 +54806,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SystemErrorItemCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SystemErrorItemCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSystemErrorItemCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -56016,18 +55302,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationSource>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationSource RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationSource(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -56467,18 +55747,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationSourceCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationSourceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationSourceCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -56969,18 +56243,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<RefreshDefaultViewsOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static RefreshDefaultViewsOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveRefreshDefaultViewsOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -57352,18 +56620,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static UpdateWebContentOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUpdateWebContentOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -57824,18 +57086,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static UpdateWebContentHandlerItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUpdateWebContentHandlerItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -58207,18 +57463,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "UpdateWebContentHandlerCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static UpdateWebContentHandlerCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUpdateWebContentHandlerCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -58709,18 +57959,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "PublishWebContentOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<PublishWebContentOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static PublishWebContentOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrievePublishWebContentOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -59116,18 +58360,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SubscriberInput>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SubscriberInput RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSubscriberInput(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -59523,18 +58761,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Monitor>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Monitor RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveMonitor(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -59962,18 +59194,12 @@ SystemErrorItem.LongDescription
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<IconTitleDescription>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IconTitleDescription RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIconTitleDescription(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -60357,18 +59583,12 @@ IconTitleDescription.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AboutAGIApplications>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AboutAGIApplications RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAboutAGIApplications(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

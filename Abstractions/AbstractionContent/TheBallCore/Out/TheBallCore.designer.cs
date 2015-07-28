@@ -228,18 +228,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "Account", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Account>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Account RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAccount(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -545,18 +539,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "Group", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Group>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Group RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -848,18 +836,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "GroupMembership", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GroupMembership>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GroupMembership RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGroupMembership(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1239,18 +1221,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ContentPackageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ContentPackageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ContentPackageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveContentPackageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1763,18 +1739,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ContentPackage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ContentPackage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ContentPackage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveContentPackage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2185,18 +2155,12 @@ ContentPackage.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InformationInputCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationInputCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationInputCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationInputCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2709,18 +2673,12 @@ ContentPackage.Description
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InformationInput", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationInput>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationInput RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationInput(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3131,18 +3089,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InformationOutputCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationOutputCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationOutputCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationOutputCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3655,18 +3607,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InformationOutput", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationOutput>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationOutput RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationOutput(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4084,18 +4030,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "AuthenticatedAsActiveDeviceCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDeviceCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AuthenticatedAsActiveDeviceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAuthenticatedAsActiveDeviceCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4608,18 +4548,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "AuthenticatedAsActiveDevice", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static AuthenticatedAsActiveDevice RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveAuthenticatedAsActiveDevice(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5044,18 +4978,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "DeviceMembershipCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DeviceMembershipCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DeviceMembershipCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDeviceMembershipCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5568,18 +5496,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "DeviceMembership", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<DeviceMembership>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static DeviceMembership RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveDeviceMembership(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -5968,18 +5890,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceFiscalExportSummary", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceFiscalExportSummary>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceFiscalExportSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceFiscalExportSummary(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6403,18 +6319,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceSummaryContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceSummaryContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceSummaryContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceSummaryContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -6986,18 +6896,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -7510,18 +7414,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "Invoice", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Invoice>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Invoice RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoice(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8071,18 +7969,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceDetails", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceDetails>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceDetails RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceDetails(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -8502,18 +8394,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceUserCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceUserCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceUserCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceUserCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9004,18 +8890,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceUser", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceUser>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceUser RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceUser(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -9533,18 +9413,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceRowGroupCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroupCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceRowGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceRowGroupCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10035,18 +9909,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceEventDetailGroupCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroupCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceEventDetailGroupCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceEventDetailGroupCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10537,18 +10405,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceRowGroup", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceRowGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceRowGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -10999,18 +10861,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceEventDetailGroup", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceEventDetailGroup RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceEventDetailGroup(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11425,18 +11281,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceEventDetailCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceEventDetailCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceEventDetailCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -11927,18 +11777,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceRowCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceRowCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceRowCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceRowCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12429,18 +12273,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceEventDetail", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceEventDetail RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceEventDetail(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -12904,18 +12742,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InvoiceRow", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InvoiceRow>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InvoiceRow RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInvoiceRow(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13347,18 +13179,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "CategoryCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CategoryCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CategoryCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategoryCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -13849,18 +13675,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "Category", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Category RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategory(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14220,18 +14040,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ProcessContainer", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ProcessContainer>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ProcessContainer RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProcessContainer(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14505,18 +14319,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "Process", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Process>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Process RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProcess(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -14798,18 +14606,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ProcessItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ProcessItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ProcessItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProcessItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15082,18 +14884,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "SemanticInformationItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<SemanticInformationItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static SemanticInformationItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveSemanticInformationItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15465,18 +15261,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "InformationOwnerInfo", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationOwnerInfo>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationOwnerInfo RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationOwnerInfo(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -15848,18 +15638,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "UsageSummary", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<UsageSummary>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static UsageSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUsageSummary(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16274,18 +16058,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "UsageMonitorItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<UsageMonitorItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static UsageMonitorItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveUsageMonitorItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -16973,18 +16751,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "RequestResourceUsageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<RequestResourceUsageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static RequestResourceUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveRequestResourceUsageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -17475,18 +17247,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "RequestResourceUsage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static RequestResourceUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveRequestResourceUsage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18109,18 +17875,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ProcessorUsageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ProcessorUsageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ProcessorUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProcessorUsageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -18611,18 +18371,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "ProcessorUsage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ProcessorUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveProcessorUsage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19067,18 +18821,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "StorageTransactionUsageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StorageTransactionUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStorageTransactionUsageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -19569,18 +19317,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "StorageTransactionUsage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StorageTransactionUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStorageTransactionUsage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20005,18 +19747,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "StorageUsageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StorageUsageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StorageUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStorageUsageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20507,18 +20243,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "StorageUsage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StorageUsage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StorageUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStorageUsage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -20910,18 +20640,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "NetworkUsageCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<NetworkUsageCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static NetworkUsageCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveNetworkUsageCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21412,18 +21136,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "NetworkUsage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<NetworkUsage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static NetworkUsage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveNetworkUsage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -21848,18 +21566,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "TimeRange", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TimeRange>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TimeRange RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTimeRange(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22227,18 +21939,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "HTTPActivityDetailsCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetailsCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static HTTPActivityDetailsCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveHTTPActivityDetailsCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -22729,18 +22435,12 @@ InformationInput.AuthenticatedDeviceID
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.CORE", "HTTPActivityDetails", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static HTTPActivityDetails RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveHTTPActivityDetails(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

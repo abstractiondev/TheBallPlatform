@@ -367,7 +367,7 @@ namespace WebInterface
         {
             var loginUrl = context.User.Identity.Name;
             string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
+            TBRLoginRoot loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginID);
             if (loginRoot != null)
             {
                 var currAccount = loginRoot.Account;

@@ -12,7 +12,7 @@ namespace TheBall.CORE
     {
         public static InformationInput GetTarget_InformationInput(IContainerOwner owner, string informationInputId)
         {
-            return InformationInput.RetrieveFromDefaultLocation(informationInputId, owner);
+            return ObjectStorage.RetrieveFromDefaultLocation<InformationInput>(informationInputId, owner);
         }
 
         public static void ExecuteMethod_VerifyValidInput(InformationInput informationInput)

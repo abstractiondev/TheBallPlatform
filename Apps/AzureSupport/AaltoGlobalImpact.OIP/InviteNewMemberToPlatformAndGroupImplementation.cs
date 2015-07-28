@@ -10,14 +10,14 @@ namespace AaltoGlobalImpact.OIP
         public static void ExecuteMethod_ValidateThatEmailAddressIsNew(string memberEmailAddress)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(memberEmailAddress);
-            var emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            var emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             if(emailRoot != null)
                 throw new InvalidDataException("Email is already registered in the platform");
         }
 
         public static TBRGroupRoot GetTarget_GroupRoot(string groupId)
         {
-            return TBRGroupRoot.RetrieveFromDefaultLocation(groupId);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupId);
         }
 
         public static TBEmailValidation GetTarget_EmailValidation(string memberEmailAddress, string groupId)

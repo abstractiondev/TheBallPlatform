@@ -9,13 +9,13 @@ namespace TheBall.CORE
     {
         public static TBRAccountRoot GetTarget_PrimaryAccountToStay(string primaryAccountToStayId)
         {
-            var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(primaryAccountToStayId);
+            var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(primaryAccountToStayId);
             return accountRoot;
         }
 
         public static TBRAccountRoot GetTarget_AccountToBeMerged(string accountToBeMergedAndDestroyedId)
         {
-            var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountToBeMergedAndDestroyedId);
+            var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountToBeMergedAndDestroyedId);
             return accountRoot;
         }
 
@@ -80,7 +80,7 @@ namespace TheBall.CORE
             var loginIDs = loginURLs.Select(loginURL => TBLoginInfo.GetLoginIDFromLoginURL(loginURL)).ToArray();
             foreach (var loginID in loginIDs)
             {
-                var loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginID);
+                var loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginID);
                 // Don't delete account login roots - as they're going to be merged later on
                 //loginRoot.DeleteInformationObject();
             }
@@ -97,7 +97,7 @@ namespace TheBall.CORE
             foreach (var email in emailAddressesToBeMerged)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email.EmailAddress);
-                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                 if (emailRoot == null)
                 {
                     emailRoot = TBREmailRoot.CreateDefault();
@@ -124,7 +124,7 @@ namespace TheBall.CORE
             string memberEmailAddress = primaryAccountToStay.Account.Emails.CollectionContent.FirstOrDefault().EmailAddress;
             foreach (var groupAccess in groupAccessToBeMerged)
             {
-                TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupAccess.GroupID);
+                TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupAccess.GroupID);
                 TBCollaboratorRole role =
                     groupRoot.Group.Roles.CollectionContent.FirstOrDefault(
                         candidate => candidate.Email.EmailAddress == memberEmailAddress);

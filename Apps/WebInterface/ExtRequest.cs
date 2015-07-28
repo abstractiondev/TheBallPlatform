@@ -4,6 +4,7 @@ using System.Security;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
+using TheBall;
 using TheBall.CORE;
 
 namespace WebInterface
@@ -39,7 +40,7 @@ namespace WebInterface
             string loginUrl = WebSupport.GetLoginUrl(request.RequestContext.HttpContext.User);
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
-            TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
+            TBRLoginGroupRoot loginGroupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginGroupRoot>(loginGroupID);
             if (loginGroupRoot == null)
                 throw new SecurityException("No access to requested group");
             return loginGroupRoot;

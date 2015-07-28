@@ -128,7 +128,7 @@ namespace WebInterface
             string loginUrl = WebSupport.GetLoginUrl(context);
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
-            TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
+            TBRLoginGroupRoot loginGroupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginGroupRoot>(loginGroupID);
             if (loginGroupRoot == null)
             {
                 // TODO: Polite invitation request

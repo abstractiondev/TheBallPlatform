@@ -11,14 +11,14 @@ namespace TheBall.CORE
             if (String.IsNullOrWhiteSpace(emailAddress))
                 throw new InvalidDataException("Email address is required");
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             if (emailRoot != null)
                 throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
         }
 
         public static TBRAccountRoot GetTarget_AccountRoot(string accountId)
         {
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountId);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountId);
             return accountRoot;
         }
 

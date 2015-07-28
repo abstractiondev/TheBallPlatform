@@ -13,7 +13,7 @@ namespace AaltoGlobalImpact.OIP
         public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest, string currentDomainName)
         {
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            var loginRoot = RetrieveFromDefaultLocation(loginRootID);
+            var loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginRootID);
             if (loginRoot == null)
             {
                 // Storing loginroot
@@ -105,7 +105,7 @@ namespace AaltoGlobalImpact.OIP
                     Thread.Sleep(5000);
                 }
             }
-            loginRoot = RetrieveFromDefaultLocation(loginRootID);
+            loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginRootID);
             return loginRoot;
         }
 

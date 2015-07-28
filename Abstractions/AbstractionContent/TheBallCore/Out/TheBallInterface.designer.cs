@@ -177,18 +177,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "InterfaceOperation", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InterfaceOperation>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InterfaceOperation RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInterfaceOperation(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -641,18 +635,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "ConnectionCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<ConnectionCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static ConnectionCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveConnectionCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1165,18 +1153,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "Connection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Connection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Connection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveConnection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1521,18 +1503,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "TransferPackage", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<TransferPackage>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static TransferPackage RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveTransferPackage(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -1830,18 +1806,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "CategoryLink", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<CategoryLink>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static CategoryLink RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategoryLink(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2225,18 +2195,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "Category", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<Category>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static Category RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveCategory(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2656,18 +2620,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "StatusSummary", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<StatusSummary>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static StatusSummary RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveStatusSummary(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -2947,18 +2905,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "InformationChangeItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static InformationChangeItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveInformationChangeItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3244,18 +3196,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "OperationExecutionItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<OperationExecutionItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static OperationExecutionItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveOperationExecutionItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -3693,18 +3639,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "GenericObjectCollection", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GenericObjectCollection>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GenericObjectCollection RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGenericObjectCollection(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4217,18 +4157,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "GenericCollectionableObject", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GenericCollectionableObject RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGenericCollectionableObject(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4611,18 +4545,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "GenericObject", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GenericObject>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GenericObject RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGenericObject(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -4905,18 +4833,12 @@ InterfaceOperation.ErrorMessage
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Interface", "GenericValue", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<GenericValue>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static GenericValue RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveGenericValue(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

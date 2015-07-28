@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
         public static TBRAccountRoot GetOwningAccountRoot(IInformationObject informationObject)
         {
             string accountID = StorageSupport.GetAccountIDFromLocation(informationObject.RelativeLocation);
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
     }
 }

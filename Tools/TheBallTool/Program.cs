@@ -312,7 +312,7 @@ namespace TheBallTool
 
         private static void AddLoginToAccount(string loginUrlID, string accountID)
         {
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
 
             TBLoginInfo loginInfo = TBLoginInfo.CreateDefault();
             loginInfo.OpenIDUrl = loginUrlID;
@@ -333,7 +333,7 @@ namespace TheBallTool
 
         private static TBCollaboratingGroup InitializeDefaultOIPWebGroup()
         {
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(FixedGroupID);
+            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(FixedGroupID);
             if(groupRoot == null)
             {
                 groupRoot = TBRGroupRoot.CreateDefault();

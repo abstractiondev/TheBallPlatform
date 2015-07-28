@@ -9,7 +9,7 @@ namespace TheBall.Admin
         public static void ExecuteMethod_FixMastersAndCollections(string groupID)
         {
             Debug.WriteLine("Fixing group: " + groupID);
-            TBRGroupRoot groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
             IContainerOwner owner = groupRoot.Group;
             owner.InitializeAndConnectMastersAndCollections();
         }

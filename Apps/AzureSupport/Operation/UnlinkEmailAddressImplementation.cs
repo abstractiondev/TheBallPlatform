@@ -17,7 +17,7 @@ namespace AaltoGlobalImpact.OIP
         {
             var groupIDs =
                 accountRoot.Account.GroupRoleCollection.CollectionContent.Select(grpRole => grpRole.GroupID).ToArray();
-            var groups = groupIDs.Select(groupID => TBRGroupRoot.RetrieveFromDefaultLocation(groupID)).ToArray();
+            var groups = groupIDs.Select(groupID => ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID)).ToArray();
             var groupsContainingEmail =
                 groups.Where(
                     grp => grp.Group.Roles.CollectionContent.Any(role => role.Email.EmailAddress == emailAddress)).
@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
         public static TBREmailRoot GetTarget_EmailRoot(string emailAddress)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            return TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
         }
 
         public static void ExecuteMethod_RemoveEmailFromAccountRoot(TBRAccountRoot accountRoot, string emailAddress)
@@ -66,12 +66,12 @@ namespace AaltoGlobalImpact.OIP
 
         public static TBRAccountRoot GetTarget_AccountRootBeforeGroupRemoval(string accountID)
         {
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
 
         public static TBRAccountRoot GetTarget_AccountRootAfterGroupRemoval(string accountID)
         {
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
 
         public static AccountContainer GetTarget_AccountContainerAfterGroupRemoval(AccountContainer accountContainerBeforeGroupRemoval)

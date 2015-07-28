@@ -99,18 +99,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Index", "IndexingRequest", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<IndexingRequest>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static IndexingRequest RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveIndexingRequest(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -390,18 +384,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Index", "QueryRequest", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<QueryRequest>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static QueryRequest RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveQueryRequest(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
@@ -714,18 +702,12 @@ namespace INT {
 
                 public static string GetRelativeLocationFromID(string id)
                 {
-                    return Path.Combine("TheBall.Index", "QueryResultItem", id).Replace("\\", "/");
+					return ObjectStorage.GetRelativeLocationFromID<QueryResultItem>(id);
                 }
 
 				public void UpdateRelativeLocationFromID()
 				{
 					RelativeLocation = GetRelativeLocationFromID(ID);
-				}
-
-				public static QueryResultItem RetrieveFromDefaultLocation(string id, IContainerOwner owner = null)
-				{
-					string relativeLocation = GetRelativeLocationFromID(id);
-					return RetrieveQueryResultItem(relativeLocation, owner);
 				}
 
 				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)

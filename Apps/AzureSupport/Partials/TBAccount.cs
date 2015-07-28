@@ -43,85 +43,15 @@ namespace AaltoGlobalImpact.OIP
 
         public void StoreAccountToRoot()
         {
-            TBRAccountRoot accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(this.ID);
+            TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(this.ID);
             accountRoot.Account = this;
             StorageSupport.StoreInformation(accountRoot);
-            return;
-            AccountContainer accountContainer = AccountContainer.RetrieveFromOwnerContent(this, "default");
-            if(accountContainer == null)
-            {
-                accountContainer = AccountContainer.CreateDefault();
-                accountContainer.SetLocationAsOwnerContent(this, "default");
-            }
-            accountContainer.AccountModule.Security.LoginInfoCollection = this.Logins;
-            foreach(var loginItem in this.Logins.CollectionContent)
-            {
-                string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginItem.OpenIDUrl);
-                TBRLoginRoot loginRoot = TBRLoginRoot.RetrieveFromDefaultLocation(loginRootID);
-                loginRoot.Account = this;
-                StorageSupport.StoreInformation(loginRoot);
-                // TODO: Remove invalid group role logins at this stage
-                foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent.Where(grpRole => TBCollaboratorRole.IsRoleStatusValidMember(grpRole.RoleStatus)))
-                {
-                    string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupRoleItem.GroupID, loginRootID);
-                    TBRLoginGroupRoot loginGroupRoot = TBRLoginGroupRoot.RetrieveFromDefaultLocation(loginGroupID);
-                    if(loginGroupRoot == null)
-                    {
-                        loginGroupRoot = TBRLoginGroupRoot.CreateDefault();
-                        loginGroupRoot.ID = loginGroupID;
-                        loginGroupRoot.UpdateRelativeLocationFromID();
-                    }
-                    loginGroupRoot.GroupID = groupRoleItem.GroupID;
-                    loginGroupRoot.Role = groupRoleItem.GroupRole;
-                    StorageSupport.StoreInformation(loginGroupRoot);
-                }
-            }
-            //accountContainer.AccountModule.Security.EmailCollection = this.Emails;
-            foreach(var emailItem in this.Emails.CollectionContent)
-            {
-                string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailItem.EmailAddress);
-                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
-                if(emailRoot == null)
-                {
-                    emailRoot = TBREmailRoot.CreateDefault();
-                    emailRoot.ID = emailRootID;
-                    emailRoot.UpdateRelativeLocationFromID();
-                }
-                emailRoot.Account = this;
-                StorageSupport.StoreInformation(emailRoot);
-            }
-            var roles = accountContainer.AccountModule.Roles;
-            roles.MemberInGroups.CollectionContent.Clear();
-            roles.ModeratorInGroups.CollectionContent.Clear();
-            foreach(var groupRoleItem in this.GroupRoleCollection.CollectionContent)
-            {
-                var groupRoot = TBRGroupRoot.RetrieveFromDefaultLocation(groupRoleItem.GroupID);
-                if (groupRoot == null)
-                    continue;
-                var grp = groupRoot.Group;
-                ReferenceToInformation reference = ReferenceToInformation.CreateDefault();
-                reference.URL = string.Format("/auth/grp/{0}/website/oip-group/oip-layout-groups-edit.phtml",
-                                              groupRoot.ID);
-                reference.Title = grp.Title + " - " + groupRoleItem.GroupRole;
-                switch(groupRoleItem.GroupRole.ToLower())
-                {
-                    case "initiator":
-                    case "moderator":
-                        roles.ModeratorInGroups.CollectionContent.Add(reference);
-                        break;
-                    case "collaborator":
-                    case "viewer":
-                        roles.MemberInGroups.CollectionContent.Add(reference);
-                        break;
-                }
-            }
-            StorageSupport.StoreInformation(accountContainer);
         }
 
         public static TBAccount GetAccountFromEmail(string emailAddress)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             TBAccount account = emailRoot.Account;
             return account;
         }

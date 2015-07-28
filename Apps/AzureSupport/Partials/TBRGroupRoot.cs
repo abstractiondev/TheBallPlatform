@@ -35,12 +35,12 @@ namespace AaltoGlobalImpact.OIP
 
         public static void DeleteEntireGroup(string groupID)
         {
-            TBRGroupRoot groupToDelete = TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            TBRGroupRoot groupToDelete = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
             throw new NotImplementedException("Call remove group membership for each member, then delete to recycle bin");
             foreach(var member in groupToDelete.Group.Roles.CollectionContent)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(member.Email.EmailAddress);
-                TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                 emailRoot.Account.GroupRoleCollection.CollectionContent.RemoveAll(
                     candidate => candidate.GroupID == groupToDelete.Group.ID);
                 emailRoot.Account.StoreAccountToRoot();

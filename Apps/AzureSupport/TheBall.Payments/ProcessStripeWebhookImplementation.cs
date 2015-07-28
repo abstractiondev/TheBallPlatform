@@ -52,7 +52,7 @@ namespace TheBall.Payments
                     if (account != null)
                     {
                         string accountID = output.ResultAccount.ID;
-                        var accountRoot = TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+                        var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
                         var currAccount = accountRoot.Account;
                         string accountName;
                         string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();

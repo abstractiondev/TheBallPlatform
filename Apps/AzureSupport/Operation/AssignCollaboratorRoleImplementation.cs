@@ -8,7 +8,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static TBRGroupRoot GetTarget_GroupRoot(string groupID)
         {
-            return TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
         }
 
         public static Collaborator GetTarget_Collaborator(GroupContainer groupContainer, string collaboratorID)
@@ -56,7 +56,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static TBRAccountRoot GetTarget_AccountRoot(string accountID)
         {
-            return TBRAccountRoot.RetrieveFromDefaultLocation(accountID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
         }
     }
 }

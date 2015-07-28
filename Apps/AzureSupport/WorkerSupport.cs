@@ -513,7 +513,7 @@ namespace TheBall
         {
             InformationContext.Current.IsExecutingSubscriptions = true;
             SubscriptionChainRequestContent requestContent =
-                SubscriptionChainRequestContent.RetrieveFromDefaultLocation(subscriptionChainRequest.ContentItemID);
+                ObjectStorage.RetrieveFromDefaultLocation<SubscriptionChainRequestContent>(subscriptionChainRequest.ContentItemID);
             requestContent.ProcessingStartTime = DateTime.UtcNow;
             requestContent.StoreInformation();
             string[] subscriptionTargetList =

@@ -10,7 +10,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static TBRGroupRoot GetTarget_GroupRoot(string groupID)
         {
-            return TBRGroupRoot.RetrieveFromDefaultLocation(groupID);
+            return ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
         }
 
         public static TBEmailValidation GetTarget_EmailValidation(string memberEmailAddress, string groupID)
@@ -69,7 +69,7 @@ namespace AaltoGlobalImpact.OIP
         public static string GetTarget_AccountID(string memberEmailAddress)
         {
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(memberEmailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             return emailRoot.Account.ID;
         }
 

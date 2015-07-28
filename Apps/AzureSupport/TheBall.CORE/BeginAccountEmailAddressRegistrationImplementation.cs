@@ -11,7 +11,7 @@ namespace TheBall.CORE
             if(String.IsNullOrWhiteSpace(emailAddress))
                 throw new InvalidDataException("Email address is required");
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
             if (emailRoot != null)
                 throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
         }

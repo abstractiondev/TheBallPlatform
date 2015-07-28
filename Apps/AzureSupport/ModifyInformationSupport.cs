@@ -316,8 +316,7 @@ namespace TheBall
                         TBCollaboratingGroup owningGroup = null;
                         if (owningAccount == null)
                         {
-                            TBRGroupRoot groupRoot =
-                                TBRGroupRoot.RetrieveFromDefaultLocation(containerOwner.LocationPrefix);
+                            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation <TBRGroupRoot>(containerOwner.LocationPrefix);
                             owningGroup = groupRoot.Group;
                         }
                         CreateAndSendEmailValidationForInformationOutputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationOutputConfirmationParameters
@@ -450,7 +449,7 @@ namespace TheBall
                             throw new InvalidOperationException("Group invitation is only supported in group context");
                         string emailAddress = form["EmailAddress"];
                         string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-                        TBREmailRoot emailRoot = TBREmailRoot.RetrieveFromDefaultLocation(emailRootID);
+                        TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                         if(emailRoot == null)
                             throw new NotSupportedException("Email used for group invitation is not yet registered to the system");
                         string groupID = containerOwner.LocationPrefix;
@@ -531,7 +530,7 @@ namespace TheBall
                         if (owningAccount == null)
                         {
                             TBRGroupRoot groupRoot =
-                                TBRGroupRoot.RetrieveFromDefaultLocation(containerOwner.LocationPrefix);
+                                ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(containerOwner.LocationPrefix);
                             owningGroup = groupRoot.Group;
                         }
                         CreateAndSendEmailValidationForInformationInputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationInputConfirmationParameters
