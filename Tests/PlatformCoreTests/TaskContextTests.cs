@@ -79,7 +79,7 @@ namespace PlatformCoreTests
         public void ImplicitTaskTest()
         {
             InformationContext.InitializeFunctionality(2);
-            var task = CallerStubWithCtx1(10);
+            var task = CallerStubWithCtx1(10, null);
             task.Wait();
             var result = task.Result;
             Assert.AreNotEqual(0, result);
@@ -91,10 +91,11 @@ namespace PlatformCoreTests
             try
             {
                 InformationContext.InitializeToLogicalContext();
+                var currentCtx = InformationContext.Current;
                 int result = 0;
                 var task = Task.Factory.StartNew(() =>
                 {
-                    var implicitTask = CallerStubWithCtx1(10);
+                    var implicitTask = CallerStubWithCtx1(10, currentCtx);
                     implicitTask.Wait();
                     result = implicitTask.Result;
                 });
@@ -111,7 +112,7 @@ namespace PlatformCoreTests
         [TestMethod]
         public void MassiveParallelTasksTest()
         {
-            const int TaskCount = 100000;
+            const int TaskCount = 1000;
             try
             {
                 Dictionary<InformationContext, bool> uniqueDict = new Dictionary<InformationContext, bool>();
@@ -124,7 +125,7 @@ namespace PlatformCoreTests
                         var ctx = InformationContext.Current;
                         lock(uniqueDict)
                             uniqueDict.Add(ctx, true);
-                        await CallerStubWithCtx1(LocalRandom.Next(100, 1000));
+                        await CallerStubWithCtx1(LocalRandom.Next(100, 1000), ctx);
                         InformationContext.RemoveFromLogicalContext();
                     });
                     tasks[i] = task;
@@ -144,9 +145,9 @@ namespace PlatformCoreTests
             return result;
         }
 
-        private async Task<int> CallerStubWithCtx1(int waitMilliseconds)
+        private async Task<int> CallerStubWithCtx1(int waitMilliseconds, InformationContext ctx)
         {
-            var result = await AsyncStubWithCtx1(waitMilliseconds);
+            var result = await AsyncStubWithCtx1(waitMilliseconds, ctx);
             return result;
         }
 
@@ -156,13 +157,13 @@ namespace PlatformCoreTests
             return Task.CurrentId.GetValueOrDefault(0);
         }
 
-        private async Task<int> AsyncStubWithCtx1(int waitMilliseconds)
+        private async Task<int> AsyncStubWithCtx1(int waitMilliseconds, InformationContext expectedContext)
         {
             var ctx = InformationContext.Current;
             await Task.Delay(waitMilliseconds);
             //Task.Delay(TimeSpan.FromMilliseconds(waitMilliseconds)).Wait();
             var ctx2 = InformationContext.Current;
-            if(ctx != ctx2)
+            if(ctx != ctx2 || ctx != expectedContext)
                 throw new InvalidOperationException("Context mismatch");
             return Task.CurrentId.GetValueOrDefault(0);
         }

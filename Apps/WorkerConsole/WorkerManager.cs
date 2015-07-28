@@ -45,7 +45,7 @@ namespace TheBall.Platform.WorkerConsole
 
         public static TaskCommunicatingObject TaskCommObj = new TaskCommunicatingObject();
 
-        public void RunUntilStopped()
+        public async void RunUntilStopped()
         {
             GracefullyStopped = false;
             //ThreadPool.SetMinThreads(3, 3);
@@ -66,29 +66,11 @@ namespace TheBall.Platform.WorkerConsole
             {
                 try
                 {
-                    Task.WaitAny(tasks);
+                    await Task.WhenAny(tasks);
                     if (IsStopped)
                         break;
                     int availableIx;
                     Task availableTask = WorkerSupport.GetFirstCompleted(tasks, out availableIx);
-
-                    if (IsIndexingMaster && TaskCommObj.IsExecutingIndexing == false)
-                    {
-                        lock (TaskCommObj)
-                        {
-                            TaskCommObj.IsExecutingIndexing = true;
-                            bool handledIndexing = PollAndHandleIndexingMessages(tasks, availableIx, availableTask);
-                            if (handledIndexing)
-                            {
-                                Thread.Sleep(PollCyclePerRound);
-                                continue;
-                            }
-                            else // If task wasn't started, we set indexing to false and allow flow to continue
-                            {
-                                TaskCommObj.IsExecutingIndexing = false;
-                            }
-                        }
-                    }
 
                     stepActiveContainerIX(ref activeContainerIX);
                     string activeContainerName = ActiveContainerNames[activeContainerIX];
@@ -115,16 +97,6 @@ namespace TheBall.Platform.WorkerConsole
                     // or ...
                     // ae.Flatten().Handle((ex) => ex is MyCustomException);
                 }
-                /*
-            catch (MessagingException e)
-            {
-                if (!e.IsTransient)
-                {
-                    Trace.WriteLine(e.Message);
-                    throw;
-                }
-                Thread.Sleep(10000);
-            }*/
                 catch (OperationCanceledException e)
                 {
                     if (!IsStopped)

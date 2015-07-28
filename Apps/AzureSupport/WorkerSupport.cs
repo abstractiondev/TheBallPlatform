@@ -397,12 +397,11 @@ namespace TheBall
         {
             try
             {
-                if (containerName != null)
-                {
-                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
-                    InformationContext.Current.Owner = lockedOwner;
-                    InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
-                }
+                InformationContext.InitializeToLogicalContext();
+                InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
+                InformationContext.Current.Owner = lockedOwner;
+                InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
+
                 string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
                 var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
                 const double invalidSubscriptionSubmissionTimeInSeconds = 3600;
@@ -438,8 +437,8 @@ namespace TheBall
             finally
             {
                 SubscribeSupport.ReleaseChainLock(lockedOwner, acquiredEtag);
-                if(containerName != null)
-                    InformationContext.ProcessAndClearCurrent();
+                InformationContext.ProcessAndClearCurrent();
+                InformationContext.RemoveFromLogicalContext();
             }
             counter++;
             if (counter >= 1000)

@@ -39,8 +39,6 @@ namespace TheBall
                 return adminResult;
             }
 
-            throw new NotSupportedException("Object CRUD-alike saving without operation call is no longer supported");
-
             string contentSourceInfo = form["ContentSourceInfo"];
             var rootSourceAction = form["RootSourceAction"];
             if (rootSourceAction != null && rootSourceAction != "Save")
