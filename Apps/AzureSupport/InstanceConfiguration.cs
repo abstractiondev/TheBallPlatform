@@ -10,6 +10,7 @@ namespace TheBall
 {
     public static class InstanceConfiguration
     {
+        public static readonly string AppInsightInstrumentationKey;
         public static readonly string VersionString = "v1.0.6d";
         public static readonly string AWSAccessKey;
         public static readonly string AWSSecretKey;
@@ -65,6 +66,11 @@ namespace TheBall
             CloudDriveContainerName = "clouddrives";
             CloudDriveTotalCacheSizeInMB = 2048;
             #endregion
+            #region Monitoring
+
+            AppInsightInstrumentationKey = CloudConfigurationManager.GetSetting("AppInsightInstrumentationKey");
+            #endregion
+
             #region Data storage
 
             const string ConnStrFileName = @"D:\UserData\kalle\work\ConnectionStringStorage\caloomdemoconnstr.txt";

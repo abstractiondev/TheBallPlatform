@@ -18,6 +18,9 @@ using System.Web.Security;
 using System.Web.SessionState;
 using System.Web.UI;
 using AzureSupport;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.WindowsAzure;
 using SQLite.TheBall.Payments;
 using SQLiteSupport;
@@ -162,6 +165,12 @@ namespace WebInterface
             };
             if(!InstanceConfiguration.IsDeveloperMachine)
                 FileShareSupport.MountCoreShare();
+
+            var appInstanceKey = InstanceConfiguration.AppInsightInstrumentationKey;
+            if (!String.IsNullOrEmpty(appInstanceKey))
+            {
+                TelemetryConfiguration.Active.InstrumentationKey = appInstanceKey;
+            }
         }
 
         protected void Session_Start(object sender, EventArgs e)
