@@ -92,7 +92,9 @@ namespace WebInterface
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
+            var loginRootTask = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
+            loginRootTask.Wait();
+            TBRLoginRoot loginRoot = loginRootTask.Result;
             bool doDelete = false;
             if (doDelete)
             {

@@ -2,6 +2,7 @@
 using System.Runtime.Remoting.Contexts;
 using System.Security.Principal;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using TheBall;
 using TheBall.CORE;
@@ -10,10 +11,10 @@ namespace AaltoGlobalImpact.OIP
 {
     partial class TBRLoginRoot
     {
-        public static TBRLoginRoot GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest, string currentDomainName)
+        public static async Task<TBRLoginRoot> GetOrCreateLoginRootWithAccount(string loginUrl, bool isAccountRequest, string currentDomainName)
         {
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            var loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginRootID);
+            var loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginRootID);
             if (loginRoot == null)
             {
                 // Storing loginroot
@@ -104,8 +105,8 @@ namespace AaltoGlobalImpact.OIP
                     // Sleep a bit to compensate async blob.Copy above, so that all of them area "likely" copied
                     Thread.Sleep(5000);
                 }
+                loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginRootID);
             }
-            loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginRootID);
             return loginRoot;
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
@@ -33,14 +34,14 @@ namespace WebInterface
         }
 
 
-        public static TBRLoginGroupRoot RequireAndRetrieveGroupAccessRole(this HttpRequest request)
+        public static async Task<TBRLoginGroupRoot> RequireAndRetrieveGroupAccessRole(this HttpRequest request)
         {
             var context = request.RequestContext;
             string groupID = request.GetGroupID();
             string loginUrl = WebSupport.GetLoginUrl(request.RequestContext.HttpContext.User);
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
-            TBRLoginGroupRoot loginGroupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginGroupRoot>(loginGroupID);
+            TBRLoginGroupRoot loginGroupRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginGroupRoot>(loginGroupID);
             if (loginGroupRoot == null)
                 throw new SecurityException("No access to requested group");
             return loginGroupRoot;

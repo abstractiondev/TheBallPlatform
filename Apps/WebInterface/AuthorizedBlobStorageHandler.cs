@@ -219,7 +219,7 @@ namespace WebInterface
         private async Task HandleGroupRequest(HttpContext context)
         {
             var request = context.Request;
-            var loginGroupRoot = request.RequireAndRetrieveGroupAccessRole();
+            var loginGroupRoot = await request.RequireAndRetrieveGroupAccessRole();
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             var contentPath = request.GetOwnerContentPath();
             await HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
@@ -229,7 +229,7 @@ namespace WebInterface
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
+            TBRLoginRoot loginRoot = await TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
             bool doDelete = false;
             if(doDelete)
             {

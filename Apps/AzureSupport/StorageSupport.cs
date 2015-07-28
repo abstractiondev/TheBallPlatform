@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
 using System.Security;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
@@ -1024,11 +1025,55 @@ namespace TheBall
         }
 
 
+        public static async Task<IInformationObject> RetrieveInformationA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
+        {
+            var result = await RetrieveInformationWithBlobA(relativeLocation, typeToRetrieve, eTag, owner);
+            return result?.Item1;
+        }
+
         public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
             CloudBlob blob;
             return RetrieveInformationWithBlob(relativeLocation, typeToRetrieve, out blob, eTag, owner);
         }
+
+        public static async Task<Tuple<IInformationObject, CloudBlob>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
+        {
+            if (owner != null)
+                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
+            var blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            MemoryStream memoryStream = new MemoryStream();
+            string blobEtag = null;
+            try
+            {
+                BlobRequestOptions options = new BlobRequestOptions();
+                options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+                if (eTag != null)
+                    options.AccessCondition = AccessCondition.IfMatch(eTag);
+                await
+                    Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, memoryStream, options);
+                InformationContext.AddStorageTransactionToCurrent();
+                blobEtag = blob.Properties.ETag;
+            }
+            catch (StorageClientException stEx)
+            {
+                if (stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                    return null;
+                throw;
+            }
+            //if (memoryStream.Length == 0)
+            //    return null;
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            var informationObject = DeserializeInformationObjectFromStream(typeToRetrieve, memoryStream);
+            informationObject.ETag = blobEtag;
+            //informationObject.RelativeLocation = blob.Attributes.Metadata["RelativeLocation"];
+            informationObject.RelativeLocation = relativeLocation;
+            informationObject.SetInstanceTreeValuesAsUnmodified();
+            Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
+                informationObject.ID));
+            return new Tuple<IInformationObject, CloudBlob>(informationObject, blob);
+        }
+
 
         public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
         {

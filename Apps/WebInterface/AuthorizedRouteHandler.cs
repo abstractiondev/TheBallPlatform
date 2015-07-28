@@ -15,7 +15,9 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             if(!request.IsGroupRequest())
                 throw new NotSupportedException("Route handling only supported for groups");
-            var accessRole = request.RequireAndRetrieveGroupAccessRole();
+            var accessRoleTask = request.RequireAndRetrieveGroupAccessRole();
+            accessRoleTask.Wait();
+            var accessRole = accessRoleTask.Result;
             if(!TBCollaboratorRole.HasModeratorRights(accessRole.Role))
                 throw new SecurityException("Moderator rights required to perform dynamic data fetch");
             InformationContext.Current.Owner = accessRole;
