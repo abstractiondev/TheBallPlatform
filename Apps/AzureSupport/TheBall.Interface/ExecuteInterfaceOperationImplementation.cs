@@ -8,7 +8,7 @@ namespace TheBall.Interface
     {
         public static InterfaceOperation GetTarget_Operation(string operationID)
         {
-            return InterfaceOperation.RetrieveFromOwnerContent(InformationContext.CurrentOwner, operationID);
+            return ObjectStorage.RetrieveFromOwnerContent<InterfaceOperation>(InformationContext.CurrentOwner, operationID);
         }
 
         public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operation, string operationDataLocation)

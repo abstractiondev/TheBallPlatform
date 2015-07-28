@@ -256,20 +256,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Account RetrieveAccount(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Account) StorageSupport.RetrieveInformation(relativeLocation, typeof(Account), null, owner);
-                    return result;
-                }
-
-				public static Account RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Account.RetrieveAccount("Content/TheBall.CORE/Account/" + contentName, containerOwner);
-					var result = Account.RetrieveAccount("TheBall.CORE/Account/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Account/" + contentName);
@@ -562,20 +548,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Group RetrieveGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Group) StorageSupport.RetrieveInformation(relativeLocation, typeof(Group), null, owner);
-                    return result;
-                }
-
-				public static Group RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Group.RetrieveGroup("Content/TheBall.CORE/Group/" + contentName, containerOwner);
-					var result = Group.RetrieveGroup("TheBall.CORE/Group/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Group/" + contentName);
@@ -852,20 +824,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GroupMembership RetrieveGroupMembership(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupMembership) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupMembership), null, owner);
-                    return result;
-                }
-
-				public static GroupMembership RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupMembership.RetrieveGroupMembership("Content/TheBall.CORE/GroupMembership/" + contentName, containerOwner);
-					var result = GroupMembership.RetrieveGroupMembership("TheBall.CORE/GroupMembership/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -1234,20 +1192,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ContentPackageCollection RetrieveContentPackageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ContentPackageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContentPackageCollection), null, owner);
-                    return result;
-                }
-
-				public static ContentPackageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ContentPackageCollection.RetrieveContentPackageCollection("Content/TheBall.CORE/ContentPackageCollection/" + contentName, containerOwner);
-					var result = ContentPackageCollection.RetrieveContentPackageCollection("TheBall.CORE/ContentPackageCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ContentPackageCollection/" + contentName);
@@ -1467,7 +1411,7 @@ namespace INT {
 
 				public static ContentPackageCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return ContentPackageCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<ContentPackageCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -1745,20 +1689,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static ContentPackage RetrieveContentPackage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ContentPackage) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContentPackage), null, owner);
-                    return result;
-                }
-
-				public static ContentPackage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ContentPackage.RetrieveContentPackage("Content/TheBall.CORE/ContentPackage/" + contentName, containerOwner);
-					var result = ContentPackage.RetrieveContentPackage("TheBall.CORE/ContentPackage/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -2158,20 +2088,6 @@ ContentPackage.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InformationInputCollection RetrieveInformationInputCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationInputCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationInputCollection), null, owner);
-                    return result;
-                }
-
-				public static InformationInputCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationInputCollection.RetrieveInformationInputCollection("Content/TheBall.CORE/InformationInputCollection/" + contentName, containerOwner);
-					var result = InformationInputCollection.RetrieveInformationInputCollection("TheBall.CORE/InformationInputCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationInputCollection/" + contentName);
@@ -2391,7 +2307,7 @@ ContentPackage.Description
 
 				public static InformationInputCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return InformationInputCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<InformationInputCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -2669,20 +2585,6 @@ ContentPackage.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InformationInput RetrieveInformationInput(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationInput) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationInput), null, owner);
-                    return result;
-                }
-
-				public static InformationInput RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationInput.RetrieveInformationInput("Content/TheBall.CORE/InformationInput/" + contentName, containerOwner);
-					var result = InformationInput.RetrieveInformationInput("TheBall.CORE/InformationInput/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -3082,20 +2984,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InformationOutputCollection RetrieveInformationOutputCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationOutputCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationOutputCollection), null, owner);
-                    return result;
-                }
-
-				public static InformationOutputCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationOutputCollection.RetrieveInformationOutputCollection("Content/TheBall.CORE/InformationOutputCollection/" + contentName, containerOwner);
-					var result = InformationOutputCollection.RetrieveInformationOutputCollection("TheBall.CORE/InformationOutputCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOutputCollection/" + contentName);
@@ -3315,7 +3203,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static InformationOutputCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return InformationOutputCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<InformationOutputCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -3593,20 +3481,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InformationOutput RetrieveInformationOutput(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationOutput) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationOutput), null, owner);
-                    return result;
-                }
-
-				public static InformationOutput RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationOutput.RetrieveInformationOutput("Content/TheBall.CORE/InformationOutput/" + contentName, containerOwner);
-					var result = InformationOutput.RetrieveInformationOutput("TheBall.CORE/InformationOutput/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -4013,20 +3887,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AuthenticatedAsActiveDeviceCollection RetrieveAuthenticatedAsActiveDeviceCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AuthenticatedAsActiveDeviceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(AuthenticatedAsActiveDeviceCollection), null, owner);
-                    return result;
-                }
-
-				public static AuthenticatedAsActiveDeviceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AuthenticatedAsActiveDeviceCollection.RetrieveAuthenticatedAsActiveDeviceCollection("Content/TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName, containerOwner);
-					var result = AuthenticatedAsActiveDeviceCollection.RetrieveAuthenticatedAsActiveDeviceCollection("TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
@@ -4246,7 +4106,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static AuthenticatedAsActiveDeviceCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return AuthenticatedAsActiveDeviceCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDeviceCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -4524,20 +4384,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AuthenticatedAsActiveDevice RetrieveAuthenticatedAsActiveDevice(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AuthenticatedAsActiveDevice) StorageSupport.RetrieveInformation(relativeLocation, typeof(AuthenticatedAsActiveDevice), null, owner);
-                    return result;
-                }
-
-				public static AuthenticatedAsActiveDevice RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AuthenticatedAsActiveDevice.RetrieveAuthenticatedAsActiveDevice("Content/TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName, containerOwner);
-					var result = AuthenticatedAsActiveDevice.RetrieveAuthenticatedAsActiveDevice("TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -4951,20 +4797,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static DeviceMembershipCollection RetrieveDeviceMembershipCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DeviceMembershipCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeviceMembershipCollection), null, owner);
-                    return result;
-                }
-
-				public static DeviceMembershipCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DeviceMembershipCollection.RetrieveDeviceMembershipCollection("Content/TheBall.CORE/DeviceMembershipCollection/" + contentName, containerOwner);
-					var result = DeviceMembershipCollection.RetrieveDeviceMembershipCollection("TheBall.CORE/DeviceMembershipCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/DeviceMembershipCollection/" + contentName);
@@ -5184,7 +5016,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static DeviceMembershipCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return DeviceMembershipCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<DeviceMembershipCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -5462,20 +5294,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static DeviceMembership RetrieveDeviceMembership(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DeviceMembership) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeviceMembership), null, owner);
-                    return result;
-                }
-
-				public static DeviceMembership RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DeviceMembership.RetrieveDeviceMembership("Content/TheBall.CORE/DeviceMembership/" + contentName, containerOwner);
-					var result = DeviceMembership.RetrieveDeviceMembership("TheBall.CORE/DeviceMembership/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -5851,20 +5669,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceFiscalExportSummary RetrieveInvoiceFiscalExportSummary(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceFiscalExportSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceFiscalExportSummary), null, owner);
-                    return result;
-                }
-
-				public static InvoiceFiscalExportSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceFiscalExportSummary.RetrieveInvoiceFiscalExportSummary("Content/TheBall.CORE/InvoiceFiscalExportSummary/" + contentName, containerOwner);
-					var result = InvoiceFiscalExportSummary.RetrieveInvoiceFiscalExportSummary("TheBall.CORE/InvoiceFiscalExportSummary/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -6275,20 +6079,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceSummaryContainer RetrieveInvoiceSummaryContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceSummaryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceSummaryContainer), null, owner);
-                    return result;
-                }
-
-				public static InvoiceSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceSummaryContainer.RetrieveInvoiceSummaryContainer("Content/TheBall.CORE/InvoiceSummaryContainer/" + contentName, containerOwner);
-					var result = InvoiceSummaryContainer.RetrieveInvoiceSummaryContainer("TheBall.CORE/InvoiceSummaryContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -6849,20 +6639,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceCollection RetrieveInvoiceCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceCollection.RetrieveInvoiceCollection("Content/TheBall.CORE/InvoiceCollection/" + contentName, containerOwner);
-					var result = InvoiceCollection.RetrieveInvoiceCollection("TheBall.CORE/InvoiceCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceCollection/" + contentName);
@@ -7082,7 +6858,7 @@ InformationInput.AuthenticatedDeviceID
 
 				public static InvoiceCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return InvoiceCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<InvoiceCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -7360,20 +7136,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Invoice RetrieveInvoice(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Invoice) StorageSupport.RetrieveInformation(relativeLocation, typeof(Invoice), null, owner);
-                    return result;
-                }
-
-				public static Invoice RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Invoice.RetrieveInvoice("Content/TheBall.CORE/Invoice/" + contentName, containerOwner);
-					var result = Invoice.RetrieveInvoice("TheBall.CORE/Invoice/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -7912,20 +7674,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceDetails RetrieveInvoiceDetails(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceDetails) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceDetails), null, owner);
-                    return result;
-                }
-
-				public static InvoiceDetails RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceDetails.RetrieveInvoiceDetails("Content/TheBall.CORE/InvoiceDetails/" + contentName, containerOwner);
-					var result = InvoiceDetails.RetrieveInvoiceDetails("TheBall.CORE/InvoiceDetails/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceDetails/" + contentName);
@@ -8330,20 +8078,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceUserCollection RetrieveInvoiceUserCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceUserCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceUserCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceUserCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceUserCollection.RetrieveInvoiceUserCollection("Content/TheBall.CORE/InvoiceUserCollection/" + contentName, containerOwner);
-					var result = InvoiceUserCollection.RetrieveInvoiceUserCollection("TheBall.CORE/InvoiceUserCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -8821,20 +8555,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceUser RetrieveInvoiceUser(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceUser) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceUser), null, owner);
-                    return result;
-                }
-
-				public static InvoiceUser RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceUser.RetrieveInvoiceUser("Content/TheBall.CORE/InvoiceUser/" + contentName, containerOwner);
-					var result = InvoiceUser.RetrieveInvoiceUser("TheBall.CORE/InvoiceUser/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -9341,20 +9061,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceRowGroupCollection RetrieveInvoiceRowGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceRowGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceRowGroupCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceRowGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceRowGroupCollection.RetrieveInvoiceRowGroupCollection("Content/TheBall.CORE/InvoiceRowGroupCollection/" + contentName, containerOwner);
-					var result = InvoiceRowGroupCollection.RetrieveInvoiceRowGroupCollection("TheBall.CORE/InvoiceRowGroupCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
@@ -9830,20 +9536,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceEventDetailGroupCollection RetrieveInvoiceEventDetailGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceEventDetailGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceEventDetailGroupCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceEventDetailGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceEventDetailGroupCollection.RetrieveInvoiceEventDetailGroupCollection("Content/TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName, containerOwner);
-					var result = InvoiceEventDetailGroupCollection.RetrieveInvoiceEventDetailGroupCollection("TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -10323,20 +10015,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceRowGroup RetrieveInvoiceRowGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceRowGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceRowGroup), null, owner);
-                    return result;
-                }
-
-				public static InvoiceRowGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceRowGroup.RetrieveInvoiceRowGroup("Content/TheBall.CORE/InvoiceRowGroup/" + contentName, containerOwner);
-					var result = InvoiceRowGroup.RetrieveInvoiceRowGroup("TheBall.CORE/InvoiceRowGroup/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowGroup/" + contentName);
@@ -10774,20 +10452,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceEventDetailGroup RetrieveInvoiceEventDetailGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceEventDetailGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceEventDetailGroup), null, owner);
-                    return result;
-                }
-
-				public static InvoiceEventDetailGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceEventDetailGroup.RetrieveInvoiceEventDetailGroup("Content/TheBall.CORE/InvoiceEventDetailGroup/" + contentName, containerOwner);
-					var result = InvoiceEventDetailGroup.RetrieveInvoiceEventDetailGroup("TheBall.CORE/InvoiceEventDetailGroup/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
@@ -11187,20 +10851,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InvoiceEventDetailCollection RetrieveInvoiceEventDetailCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceEventDetailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceEventDetailCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceEventDetailCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceEventDetailCollection.RetrieveInvoiceEventDetailCollection("Content/TheBall.CORE/InvoiceEventDetailCollection/" + contentName, containerOwner);
-					var result = InvoiceEventDetailCollection.RetrieveInvoiceEventDetailCollection("TheBall.CORE/InvoiceEventDetailCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -11680,20 +11330,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceRowCollection RetrieveInvoiceRowCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceRowCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceRowCollection), null, owner);
-                    return result;
-                }
-
-				public static InvoiceRowCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceRowCollection.RetrieveInvoiceRowCollection("Content/TheBall.CORE/InvoiceRowCollection/" + contentName, containerOwner);
-					var result = InvoiceRowCollection.RetrieveInvoiceRowCollection("TheBall.CORE/InvoiceRowCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRowCollection/" + contentName);
@@ -12171,20 +11807,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceEventDetail RetrieveInvoiceEventDetail(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceEventDetail) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceEventDetail), null, owner);
-                    return result;
-                }
-
-				public static InvoiceEventDetail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceEventDetail.RetrieveInvoiceEventDetail("Content/TheBall.CORE/InvoiceEventDetail/" + contentName, containerOwner);
-					var result = InvoiceEventDetail.RetrieveInvoiceEventDetail("TheBall.CORE/InvoiceEventDetail/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceEventDetail/" + contentName);
@@ -12635,20 +12257,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InvoiceRow RetrieveInvoiceRow(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InvoiceRow) StorageSupport.RetrieveInformation(relativeLocation, typeof(InvoiceRow), null, owner);
-                    return result;
-                }
-
-				public static InvoiceRow RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InvoiceRow.RetrieveInvoiceRow("Content/TheBall.CORE/InvoiceRow/" + contentName, containerOwner);
-					var result = InvoiceRow.RetrieveInvoiceRow("TheBall.CORE/InvoiceRow/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InvoiceRow/" + contentName);
@@ -13065,20 +12673,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CategoryCollection RetrieveCategoryCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CategoryCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryCollection), null, owner);
-                    return result;
-                }
-
-				public static CategoryCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CategoryCollection.RetrieveCategoryCollection("Content/TheBall.CORE/CategoryCollection/" + contentName, containerOwner);
-					var result = CategoryCollection.RetrieveCategoryCollection("TheBall.CORE/CategoryCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -13558,20 +13152,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Category RetrieveCategory(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Category) StorageSupport.RetrieveInformation(relativeLocation, typeof(Category), null, owner);
-                    return result;
-                }
-
-				public static Category RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Category.RetrieveCategory("Content/TheBall.CORE/Category/" + contentName, containerOwner);
-					var result = Category.RetrieveCategory("TheBall.CORE/Category/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Category/" + contentName);
@@ -13918,20 +13498,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ProcessContainer RetrieveProcessContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ProcessContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProcessContainer), null, owner);
-                    return result;
-                }
-
-				public static ProcessContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ProcessContainer.RetrieveProcessContainer("Content/TheBall.CORE/ProcessContainer/" + contentName, containerOwner);
-					var result = ProcessContainer.RetrieveProcessContainer("TheBall.CORE/ProcessContainer/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessContainer/" + contentName);
@@ -14190,20 +13756,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Process RetrieveProcess(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Process) StorageSupport.RetrieveInformation(relativeLocation, typeof(Process), null, owner);
-                    return result;
-                }
-
-				public static Process RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Process.RetrieveProcess("Content/TheBall.CORE/Process/" + contentName, containerOwner);
-					var result = Process.RetrieveProcess("TheBall.CORE/Process/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -14474,20 +14026,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ProcessItem RetrieveProcessItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ProcessItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProcessItem), null, owner);
-                    return result;
-                }
-
-				public static ProcessItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ProcessItem.RetrieveProcessItem("Content/TheBall.CORE/ProcessItem/" + contentName, containerOwner);
-					var result = ProcessItem.RetrieveProcessItem("TheBall.CORE/ProcessItem/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessItem/" + contentName);
@@ -14745,20 +14283,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SemanticInformationItem RetrieveSemanticInformationItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SemanticInformationItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(SemanticInformationItem), null, owner);
-                    return result;
-                }
-
-				public static SemanticInformationItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SemanticInformationItem.RetrieveSemanticInformationItem("Content/TheBall.CORE/SemanticInformationItem/" + contentName, containerOwner);
-					var result = SemanticInformationItem.RetrieveSemanticInformationItem("TheBall.CORE/SemanticInformationItem/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -15119,20 +14643,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InformationOwnerInfo RetrieveInformationOwnerInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationOwnerInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationOwnerInfo), null, owner);
-                    return result;
-                }
-
-				public static InformationOwnerInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationOwnerInfo.RetrieveInformationOwnerInfo("Content/TheBall.CORE/InformationOwnerInfo/" + contentName, containerOwner);
-					var result = InformationOwnerInfo.RetrieveInformationOwnerInfo("TheBall.CORE/InformationOwnerInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/InformationOwnerInfo/" + contentName);
@@ -15489,20 +14999,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static UsageSummary RetrieveUsageSummary(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (UsageSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(UsageSummary), null, owner);
-                    return result;
-                }
-
-				public static UsageSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = UsageSummary.RetrieveUsageSummary("Content/TheBall.CORE/UsageSummary/" + contentName, containerOwner);
-					var result = UsageSummary.RetrieveUsageSummary("TheBall.CORE/UsageSummary/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -15904,20 +15400,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static UsageMonitorItem RetrieveUsageMonitorItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (UsageMonitorItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(UsageMonitorItem), null, owner);
-                    return result;
-                }
-
-				public static UsageMonitorItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = UsageMonitorItem.RetrieveUsageMonitorItem("Content/TheBall.CORE/UsageMonitorItem/" + contentName, containerOwner);
-					var result = UsageMonitorItem.RetrieveUsageMonitorItem("TheBall.CORE/UsageMonitorItem/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -16594,20 +16076,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static RequestResourceUsageCollection RetrieveRequestResourceUsageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (RequestResourceUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(RequestResourceUsageCollection), null, owner);
-                    return result;
-                }
-
-				public static RequestResourceUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = RequestResourceUsageCollection.RetrieveRequestResourceUsageCollection("Content/TheBall.CORE/RequestResourceUsageCollection/" + contentName, containerOwner);
-					var result = RequestResourceUsageCollection.RetrieveRequestResourceUsageCollection("TheBall.CORE/RequestResourceUsageCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/RequestResourceUsageCollection/" + contentName);
@@ -17083,20 +16551,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static RequestResourceUsage RetrieveRequestResourceUsage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (RequestResourceUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(RequestResourceUsage), null, owner);
-                    return result;
-                }
-
-				public static RequestResourceUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = RequestResourceUsage.RetrieveRequestResourceUsage("Content/TheBall.CORE/RequestResourceUsage/" + contentName, containerOwner);
-					var result = RequestResourceUsage.RetrieveRequestResourceUsage("TheBall.CORE/RequestResourceUsage/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -17708,20 +17162,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ProcessorUsageCollection RetrieveProcessorUsageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ProcessorUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProcessorUsageCollection), null, owner);
-                    return result;
-                }
-
-				public static ProcessorUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ProcessorUsageCollection.RetrieveProcessorUsageCollection("Content/TheBall.CORE/ProcessorUsageCollection/" + contentName, containerOwner);
-					var result = ProcessorUsageCollection.RetrieveProcessorUsageCollection("TheBall.CORE/ProcessorUsageCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsageCollection/" + contentName);
@@ -18199,20 +17639,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ProcessorUsage RetrieveProcessorUsage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ProcessorUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(ProcessorUsage), null, owner);
-                    return result;
-                }
-
-				public static ProcessorUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ProcessorUsage.RetrieveProcessorUsage("Content/TheBall.CORE/ProcessorUsage/" + contentName, containerOwner);
-					var result = ProcessorUsage.RetrieveProcessorUsage("TheBall.CORE/ProcessorUsage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/ProcessorUsage/" + contentName);
@@ -18642,20 +18068,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static StorageTransactionUsageCollection RetrieveStorageTransactionUsageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StorageTransactionUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(StorageTransactionUsageCollection), null, owner);
-                    return result;
-                }
-
-				public static StorageTransactionUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StorageTransactionUsageCollection.RetrieveStorageTransactionUsageCollection("Content/TheBall.CORE/StorageTransactionUsageCollection/" + contentName, containerOwner);
-					var result = StorageTransactionUsageCollection.RetrieveStorageTransactionUsageCollection("TheBall.CORE/StorageTransactionUsageCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -19135,20 +18547,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static StorageTransactionUsage RetrieveStorageTransactionUsage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StorageTransactionUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(StorageTransactionUsage), null, owner);
-                    return result;
-                }
-
-				public static StorageTransactionUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StorageTransactionUsage.RetrieveStorageTransactionUsage("Content/TheBall.CORE/StorageTransactionUsage/" + contentName, containerOwner);
-					var result = StorageTransactionUsage.RetrieveStorageTransactionUsage("TheBall.CORE/StorageTransactionUsage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageTransactionUsage/" + contentName);
@@ -19558,20 +18956,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static StorageUsageCollection RetrieveStorageUsageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StorageUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(StorageUsageCollection), null, owner);
-                    return result;
-                }
-
-				public static StorageUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StorageUsageCollection.RetrieveStorageUsageCollection("Content/TheBall.CORE/StorageUsageCollection/" + contentName, containerOwner);
-					var result = StorageUsageCollection.RetrieveStorageUsageCollection("TheBall.CORE/StorageUsageCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -20051,20 +19435,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static StorageUsage RetrieveStorageUsage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StorageUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(StorageUsage), null, owner);
-                    return result;
-                }
-
-				public static StorageUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StorageUsage.RetrieveStorageUsage("Content/TheBall.CORE/StorageUsage/" + contentName, containerOwner);
-					var result = StorageUsage.RetrieveStorageUsage("TheBall.CORE/StorageUsage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/StorageUsage/" + contentName);
@@ -20441,20 +19811,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static NetworkUsageCollection RetrieveNetworkUsageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (NetworkUsageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(NetworkUsageCollection), null, owner);
-                    return result;
-                }
-
-				public static NetworkUsageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = NetworkUsageCollection.RetrieveNetworkUsageCollection("Content/TheBall.CORE/NetworkUsageCollection/" + contentName, containerOwner);
-					var result = NetworkUsageCollection.RetrieveNetworkUsageCollection("TheBall.CORE/NetworkUsageCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -20934,20 +20290,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static NetworkUsage RetrieveNetworkUsage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (NetworkUsage) StorageSupport.RetrieveInformation(relativeLocation, typeof(NetworkUsage), null, owner);
-                    return result;
-                }
-
-				public static NetworkUsage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = NetworkUsage.RetrieveNetworkUsage("Content/TheBall.CORE/NetworkUsage/" + contentName, containerOwner);
-					var result = NetworkUsage.RetrieveNetworkUsage("TheBall.CORE/NetworkUsage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/NetworkUsage/" + contentName);
@@ -21359,20 +20701,6 @@ InformationInput.AuthenticatedDeviceID
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TimeRange RetrieveTimeRange(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TimeRange) StorageSupport.RetrieveInformation(relativeLocation, typeof(TimeRange), null, owner);
-                    return result;
-                }
-
-				public static TimeRange RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TimeRange.RetrieveTimeRange("Content/TheBall.CORE/TimeRange/" + contentName, containerOwner);
-					var result = TimeRange.RetrieveTimeRange("TheBall.CORE/TimeRange/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/TimeRange/" + contentName);
@@ -21725,20 +21053,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static HTTPActivityDetailsCollection RetrieveHTTPActivityDetailsCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (HTTPActivityDetailsCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(HTTPActivityDetailsCollection), null, owner);
-                    return result;
-                }
-
-				public static HTTPActivityDetailsCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = HTTPActivityDetailsCollection.RetrieveHTTPActivityDetailsCollection("Content/TheBall.CORE/HTTPActivityDetailsCollection/" + contentName, containerOwner);
-					var result = HTTPActivityDetailsCollection.RetrieveHTTPActivityDetailsCollection("TheBall.CORE/HTTPActivityDetailsCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -22216,20 +21530,6 @@ InformationInput.AuthenticatedDeviceID
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static HTTPActivityDetails RetrieveHTTPActivityDetails(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (HTTPActivityDetails) StorageSupport.RetrieveInformation(relativeLocation, typeof(HTTPActivityDetails), null, owner);
-                    return result;
-                }
-
-				public static HTTPActivityDetails RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = HTTPActivityDetails.RetrieveHTTPActivityDetails("Content/TheBall.CORE/HTTPActivityDetails/" + contentName, containerOwner);
-					var result = HTTPActivityDetails.RetrieveHTTPActivityDetails("TheBall.CORE/HTTPActivityDetails/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)

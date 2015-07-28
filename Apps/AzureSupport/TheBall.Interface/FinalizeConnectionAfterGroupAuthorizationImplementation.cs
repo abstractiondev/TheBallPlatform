@@ -12,7 +12,7 @@ namespace TheBall.Interface
 
         public static Connection GetTarget_Connection(string connectionId)
         {
-            return Connection.RetrieveFromOwnerContent(Owner, connectionId);
+            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
 
         }
 

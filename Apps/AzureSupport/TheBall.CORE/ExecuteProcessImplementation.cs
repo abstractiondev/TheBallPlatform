@@ -11,7 +11,7 @@ namespace TheBall.CORE
 
         public static Process GetTarget_Process(string processId)
         {
-            return Process.RetrieveFromOwnerContent(Owner, processId);
+            return ObjectStorage.RetrieveFromOwnerContent<Process>(Owner, processId);
         }
 
         public static string GetTarget_ProcessLockLocation(Process process)

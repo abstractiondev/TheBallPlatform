@@ -21,7 +21,7 @@ namespace TheBall.CORE
 
         private static object executeRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
         {
-            AuthenticatedAsActiveDevice device = AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(InformationContext.CurrentOwner, deviceID);
+            AuthenticatedAsActiveDevice device = ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, deviceID);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
             request.Method = "POST";
             AesManaged aes = new AesManaged();

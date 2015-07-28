@@ -11,7 +11,7 @@ namespace AaltoGlobalImpact.OIP
         public static Connection GetTarget_Connection(Process process)
         {
             string connectionID = process.InitialArguments.First(ia => ia.ItemFullType == "ConnectionID").ItemValue;
-            return Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner, connectionID);
+            return ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner, connectionID);
         }
 
         public static string GetTarget_SourceContentRoot(Connection connection)

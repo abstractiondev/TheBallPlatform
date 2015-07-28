@@ -4,12 +4,12 @@ namespace TheBall.CORE
     {
         public static Process GetTarget_Process(string processId)
         {
-            return Process.RetrieveFromOwnerContent(InformationContext.CurrentOwner, processId);
+            return ObjectStorage.RetrieveFromOwnerContent<Process>(InformationContext.CurrentOwner, processId);
         }
 
         public static ProcessContainer GetTarget_OwnerProcessContainer()
         {
-            return ProcessContainer.RetrieveFromOwnerContent(InformationContext.CurrentOwner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<ProcessContainer>(InformationContext.CurrentOwner, "default");
         }
 
         public static void ExecuteMethod_ObtainLockRemoveFromContainerAndDeleteProcess(string processID, Process process, ProcessContainer ownerProcessContainer)

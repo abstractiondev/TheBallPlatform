@@ -29,7 +29,7 @@ namespace TheBall.Interface
         public void PerformBeforeStoreUpdate()
         {
             var owner = InformationContext.CurrentOwner;
-            var currentCollectionWrapper = GenericCollectionableObject.RetrieveFromOwnerContent(owner, ID);
+            var currentCollectionWrapper = ObjectStorage.RetrieveFromOwnerContent<GenericCollectionableObject>(owner, ID);
             if (IncludeInCollection)
             {
                 if (currentCollectionWrapper == null)
@@ -51,7 +51,7 @@ namespace TheBall.Interface
 
         partial void DoPostDeleteExecute(IContainerOwner owner)
         {
-            var currentCollectionWrapper = GenericCollectionableObject.RetrieveFromOwnerContent(owner, ID);
+            var currentCollectionWrapper = ObjectStorage.RetrieveFromOwnerContent<GenericCollectionableObject>(owner, ID);
             if(currentCollectionWrapper != null)
                 currentCollectionWrapper.DeleteInformationObject(owner);
         }

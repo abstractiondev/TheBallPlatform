@@ -16,7 +16,7 @@ namespace TheBall.Interface
         {
             if(string.IsNullOrEmpty(connectionCommunicationData.ReceivingSideConnectionID))
                 throw new InvalidDataException("ReceivingSideConnectionID be initialized to retrieve the connection");
-            return Connection.RetrieveFromOwnerContent(Owner, connectionCommunicationData.ReceivingSideConnectionID);
+            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionCommunicationData.ReceivingSideConnectionID);
         }
 
 

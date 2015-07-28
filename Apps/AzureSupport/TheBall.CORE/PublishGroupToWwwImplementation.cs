@@ -8,7 +8,7 @@ namespace TheBall.CORE
     {
         public static GroupContainer GetTarget_GroupContainer(IContainerOwner owner)
         {
-            var groupContainer = GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            var groupContainer = ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
             return groupContainer;
         }
 

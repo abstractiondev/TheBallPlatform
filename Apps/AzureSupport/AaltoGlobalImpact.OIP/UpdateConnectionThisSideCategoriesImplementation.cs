@@ -16,7 +16,7 @@ namespace AaltoGlobalImpact.OIP
         
         public static NodeSummaryContainer GetTarget_CurrentCategoryContainer()
         {
-            NodeSummaryContainer nodeSummaryContainer = NodeSummaryContainer.RetrieveFromOwnerContent(Owner, "default");
+            NodeSummaryContainer nodeSummaryContainer = ObjectStorage.RetrieveFromOwnerContent<NodeSummaryContainer>(Owner, "default");
             return nodeSummaryContainer;
         }
 
@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
         public static Connection GetTarget_Connection(Process process)
         {
             string connectionID = process.InitialArguments.First(arg => arg.ItemFullType == "ConnectionID").ItemValue;
-            return Connection.RetrieveFromOwnerContent(Owner, connectionID);
+            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionID);
         }
 
         public static void ExecuteMethod_UpdateThisSideCategories(Connection connection, Category[] activeCategories)

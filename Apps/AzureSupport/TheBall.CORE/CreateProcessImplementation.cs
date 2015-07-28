@@ -18,7 +18,7 @@ namespace TheBall.CORE
 
         public static ProcessContainer GetTarget_OwnerProcessContainer()
         {
-            var processContainer = ProcessContainer.RetrieveFromOwnerContent(InformationContext.CurrentOwner, "default");
+            var processContainer = ObjectStorage.RetrieveFromOwnerContent<ProcessContainer>(InformationContext.CurrentOwner, "default");
             if (processContainer == null)
             {
                 processContainer = new ProcessContainer();

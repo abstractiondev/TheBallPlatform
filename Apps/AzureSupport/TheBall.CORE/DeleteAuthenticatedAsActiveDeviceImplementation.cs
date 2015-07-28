@@ -6,7 +6,7 @@ namespace TheBall.CORE
     {
         public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticatedAsActiveDeviceId)
         {
-            return AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(owner, authenticatedAsActiveDeviceId);
+            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticatedAsActiveDeviceId);
         }
 
         public static void ExecuteMethod_DeleteAuthenticatedAsActiveDevice(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

@@ -127,20 +127,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static IndexingRequest RetrieveIndexingRequest(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (IndexingRequest) StorageSupport.RetrieveInformation(relativeLocation, typeof(IndexingRequest), null, owner);
-                    return result;
-                }
-
-				public static IndexingRequest RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = IndexingRequest.RetrieveIndexingRequest("Content/TheBall.Index/IndexingRequest/" + contentName, containerOwner);
-					var result = IndexingRequest.RetrieveIndexingRequest("TheBall.Index/IndexingRequest/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Index/IndexingRequest/" + contentName);
@@ -405,20 +391,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static QueryRequest RetrieveQueryRequest(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (QueryRequest) StorageSupport.RetrieveInformation(relativeLocation, typeof(QueryRequest), null, owner);
-                    return result;
-                }
-
-				public static QueryRequest RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = QueryRequest.RetrieveQueryRequest("Content/TheBall.Index/QueryRequest/" + contentName, containerOwner);
-					var result = QueryRequest.RetrieveQueryRequest("TheBall.Index/QueryRequest/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -718,20 +690,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static QueryResultItem RetrieveQueryResultItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (QueryResultItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(QueryResultItem), null, owner);
-                    return result;
-                }
-
-				public static QueryResultItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = QueryResultItem.RetrieveQueryResultItem("Content/TheBall.Index/QueryResultItem/" + contentName, containerOwner);
-					var result = QueryResultItem.RetrieveQueryResultItem("TheBall.Index/QueryResultItem/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)

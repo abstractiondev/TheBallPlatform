@@ -19,7 +19,7 @@ namespace AaltoGlobalImpact.OIP
         {
             string groupID = groupRoot.Group.ID;
             VirtualOwner owner = new VirtualOwner("grp", groupID);
-            var groupContainer = GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            var groupContainer = ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
             if (groupContainer == null)
             {
                 groupContainer = GroupContainer.CreateDefault();
@@ -107,7 +107,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 TBRAccountRoot accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
                 VirtualOwner owner = new VirtualOwner("acc", accountID);
-                var accountContainer = AccountContainer.RetrieveFromOwnerContent(owner, "default");
+                var accountContainer = ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(owner, "default");
                 AccountRootAndContainer accountRootAndContainer = new AccountRootAndContainer
                                                                       {
                                                                           AccountContainer = accountContainer,

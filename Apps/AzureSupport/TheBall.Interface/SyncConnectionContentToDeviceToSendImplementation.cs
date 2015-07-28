@@ -21,7 +21,7 @@ namespace TheBall.Interface
 
         public static Process GetTarget_PackageContentListingProcess(string packageContentListingProcessId)
         {
-            return Process.RetrieveFromOwnerContent(InformationContext.CurrentOwner, packageContentListingProcessId);
+            return ObjectStorage.RetrieveFromOwnerContent<Process>(InformationContext.CurrentOwner, packageContentListingProcessId);
         }
 
         public static ContentItemLocationWithMD5[] GetTarget_ContentListingResult(Process packageContentListingProcess)

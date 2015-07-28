@@ -22,7 +22,7 @@ namespace TheBall.Payments
 
             return result;
 
-            var groupSubscriptionPlan = GroupSubscriptionPlan.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+            var groupSubscriptionPlan = ObjectStorage.RetrieveFromOwnerContent<GroupSubscriptionPlan>(InformationContext.CurrentOwner,
                 planName);
             if(groupSubscriptionPlan == null)
                 throw new InvalidDataException("Cannot find GroupSubscriptionPlan with name: " + planName);

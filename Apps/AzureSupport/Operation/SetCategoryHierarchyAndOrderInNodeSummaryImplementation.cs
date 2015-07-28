@@ -33,7 +33,7 @@ namespace AaltoGlobalImpact.OIP
                 try
                 {
                     string currID = parentItem.id;
-                    Category cat = Category.RetrieveFromOwnerContent(owner, currID);
+                    Category cat = ObjectStorage.RetrieveFromOwnerContent<Category>(owner, currID);
                     if (cat != null && cat.ParentCategoryID != parentID)
                     {
                         cat.ParentCategoryID = parentID;
@@ -55,7 +55,7 @@ namespace AaltoGlobalImpact.OIP
         public static NodeSummaryContainer GetTarget_NodeSummaryContainer()
         {
             var owner = InformationContext.Current.Owner;
-            return NodeSummaryContainer.RetrieveFromOwnerContent(owner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<NodeSummaryContainer>(owner, "default");
         }
 
         public static void ExecuteMethod_SetCategoryOrder(ParentToChildren[] hierarchy, NodeSummaryContainer nodeSummaryContainer)

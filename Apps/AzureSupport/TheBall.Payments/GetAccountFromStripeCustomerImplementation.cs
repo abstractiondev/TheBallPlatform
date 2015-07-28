@@ -7,7 +7,7 @@ namespace TheBall.Payments
         public static CustomerAccount[] GetTarget_AllCustomerAccounts()
         {
             var masterCollection =
-                CustomerAccountCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner, "MasterCollection");
+                ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(InformationContext.CurrentOwner, "MasterCollection");
             return masterCollection.CollectionContent.ToArray();
         }
 

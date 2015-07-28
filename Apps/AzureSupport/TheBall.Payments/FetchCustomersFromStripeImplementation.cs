@@ -21,7 +21,7 @@ namespace TheBall.Payments
 
         public static CustomerAccountCollection GetTarget_CurrentCustomers(IContainerOwner owner)
         {
-            return CustomerAccountCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+            return ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(owner, "MasterCollection");
         }
 
         public static CustomerAccount[] GetTarget_NewCustomersToCreate(IContainerOwner owner, StripeCustomer[] stripeCustomers, CustomerAccountCollection currentCustomers)

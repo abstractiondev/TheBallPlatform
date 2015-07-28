@@ -32,7 +32,7 @@ namespace AaltoGlobalImpact.OIP
                 });
             string targetCategoryCollectionLocation = string.Format("{0}AaltoGlobalImpact.OIP/CategoryCollection/MasterCollection",
                                                                     targetContentRoot);
-            var targetCategoryCollection = CategoryCollection.RetrieveCategoryCollection(targetCategoryCollectionLocation, owner);
+            var targetCategoryCollection = ObjectStorage.RetrieveObject<CategoryCollection>(targetCategoryCollectionLocation, owner);
             process.ProcessItems.AddRange(processItemsToAdd);
             var processItemsToProcess = processItemsToAdd.Union(processItemsToUpdate);
             foreach (var processItem in processItemsToProcess)

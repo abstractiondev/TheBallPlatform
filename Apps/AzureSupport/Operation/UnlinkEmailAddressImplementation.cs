@@ -76,7 +76,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static AccountContainer GetTarget_AccountContainerAfterGroupRemoval(AccountContainer accountContainerBeforeGroupRemoval)
         {
-            return AccountContainer.RetrieveAccountContainer(accountContainerBeforeGroupRemoval.RelativeLocation);
+            return ObjectStorage.RetrieveObject<AccountContainer>(accountContainerBeforeGroupRemoval.RelativeLocation);
         }
 
         public static UpdateAccountContainerFromAccountRootParameters UpdateAccountContainer_GetParameters(string accountID)

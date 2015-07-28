@@ -10,7 +10,7 @@ namespace TheBall.Index
     {
         public static IndexingRequest GetTarget_IndexingRequest(IContainerOwner owner, string indexingRequestId)
         {
-            return IndexingRequest.RetrieveFromOwnerContent(owner, indexingRequestId);
+            return ObjectStorage.RetrieveFromOwnerContent<IndexingRequest>(owner, indexingRequestId);
         }
 
         public static string GetTarget_LuceneIndexFolder(IContainerOwner owner, string indexName, string indexStorageRootPath)

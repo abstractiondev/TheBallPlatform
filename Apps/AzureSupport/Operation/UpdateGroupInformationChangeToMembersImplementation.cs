@@ -9,7 +9,7 @@ namespace AaltoGlobalImpact.OIP
         public static GroupContainer GetTarget_GroupContainer(string groupId)
         {
             VirtualOwner owner = new VirtualOwner("grp", groupId);
-            return GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
         }
 
         public static string[] GetTarget_AccountIDs(GroupContainer groupContainer)
@@ -29,7 +29,7 @@ namespace AaltoGlobalImpact.OIP
                     try
                     {
                         GroupSummaryContainer summaryContainer =
-                            GroupSummaryContainer.RetrieveFromOwnerContent(accountOwner, "default");
+                            ObjectStorage.RetrieveFromOwnerContent<GroupSummaryContainer>(accountOwner, "default");
                         var groupToUpdate =
                             summaryContainer.GroupCollection.CollectionContent.FirstOrDefault(grp => grp.ID == groupId);
                         if (groupToUpdate != null)

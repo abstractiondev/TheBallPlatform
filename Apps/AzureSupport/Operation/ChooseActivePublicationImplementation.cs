@@ -7,7 +7,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static WebPublishInfo GetTarget_PublishInfo(IContainerOwner owner)
         {
-            WebPublishInfo publishInfo = WebPublishInfo.RetrieveFromOwnerContent(owner, "default");
+            WebPublishInfo publishInfo = ObjectStorage.RetrieveFromOwnerContent<WebPublishInfo>(owner, "default");
             if (publishInfo == null)
             {
                 publishInfo = WebPublishInfo.CreateDefault();

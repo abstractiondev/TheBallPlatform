@@ -205,20 +205,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InterfaceOperation RetrieveInterfaceOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InterfaceOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(InterfaceOperation), null, owner);
-                    return result;
-                }
-
-				public static InterfaceOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InterfaceOperation.RetrieveInterfaceOperation("Content/TheBall.Interface/InterfaceOperation/" + contentName, containerOwner);
-					var result = InterfaceOperation.RetrieveInterfaceOperation("TheBall.Interface/InterfaceOperation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/InterfaceOperation/" + contentName);
@@ -658,20 +644,6 @@ InterfaceOperation.ErrorMessage
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ConnectionCollection RetrieveConnectionCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ConnectionCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ConnectionCollection), null, owner);
-                    return result;
-                }
-
-				public static ConnectionCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ConnectionCollection.RetrieveConnectionCollection("Content/TheBall.Interface/ConnectionCollection/" + contentName, containerOwner);
-					var result = ConnectionCollection.RetrieveConnectionCollection("TheBall.Interface/ConnectionCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/ConnectionCollection/" + contentName);
@@ -891,7 +863,7 @@ InterfaceOperation.ErrorMessage
 
 				public static ConnectionCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return ConnectionCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<ConnectionCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -1169,20 +1141,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Connection RetrieveConnection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Connection) StorageSupport.RetrieveInformation(relativeLocation, typeof(Connection), null, owner);
-                    return result;
-                }
-
-				public static Connection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Connection.RetrieveConnection("Content/TheBall.Interface/Connection/" + contentName, containerOwner);
-					var result = Connection.RetrieveConnection("TheBall.Interface/Connection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -1516,20 +1474,6 @@ InterfaceOperation.ErrorMessage
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TransferPackage RetrieveTransferPackage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TransferPackage) StorageSupport.RetrieveInformation(relativeLocation, typeof(TransferPackage), null, owner);
-                    return result;
-                }
-
-				public static TransferPackage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TransferPackage.RetrieveTransferPackage("Content/TheBall.Interface/TransferPackage/" + contentName, containerOwner);
-					var result = TransferPackage.RetrieveTransferPackage("TheBall.Interface/TransferPackage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/TransferPackage/" + contentName);
@@ -1812,20 +1756,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CategoryLink RetrieveCategoryLink(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CategoryLink) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryLink), null, owner);
-                    return result;
-                }
-
-				public static CategoryLink RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CategoryLink.RetrieveCategoryLink("Content/TheBall.Interface/CategoryLink/" + contentName, containerOwner);
-					var result = CategoryLink.RetrieveCategoryLink("TheBall.Interface/CategoryLink/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -2196,20 +2126,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Category RetrieveCategory(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Category) StorageSupport.RetrieveInformation(relativeLocation, typeof(Category), null, owner);
-                    return result;
-                }
-
-				public static Category RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Category.RetrieveCategory("Content/TheBall.Interface/Category/" + contentName, containerOwner);
-					var result = Category.RetrieveCategory("TheBall.Interface/Category/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -2618,20 +2534,6 @@ InterfaceOperation.ErrorMessage
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static StatusSummary RetrieveStatusSummary(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StatusSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(StatusSummary), null, owner);
-                    return result;
-                }
-
-				public static StatusSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StatusSummary.RetrieveStatusSummary("Content/TheBall.Interface/StatusSummary/" + contentName, containerOwner);
-					var result = StatusSummary.RetrieveStatusSummary("TheBall.Interface/StatusSummary/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/StatusSummary/" + contentName);
@@ -2896,20 +2798,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InformationChangeItem RetrieveInformationChangeItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationChangeItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationChangeItem), null, owner);
-                    return result;
-                }
-
-				public static InformationChangeItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationChangeItem.RetrieveInformationChangeItem("Content/TheBall.Interface/InformationChangeItem/" + contentName, containerOwner);
-					var result = InformationChangeItem.RetrieveInformationChangeItem("TheBall.Interface/InformationChangeItem/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -3182,20 +3070,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static OperationExecutionItem RetrieveOperationExecutionItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (OperationExecutionItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(OperationExecutionItem), null, owner);
-                    return result;
-                }
-
-				public static OperationExecutionItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = OperationExecutionItem.RetrieveOperationExecutionItem("Content/TheBall.Interface/OperationExecutionItem/" + contentName, containerOwner);
-					var result = OperationExecutionItem.RetrieveOperationExecutionItem("TheBall.Interface/OperationExecutionItem/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -3622,20 +3496,6 @@ InterfaceOperation.ErrorMessage
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static GenericObjectCollection RetrieveGenericObjectCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GenericObjectCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(GenericObjectCollection), null, owner);
-                    return result;
-                }
-
-				public static GenericObjectCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GenericObjectCollection.RetrieveGenericObjectCollection("Content/TheBall.Interface/GenericObjectCollection/" + contentName, containerOwner);
-					var result = GenericObjectCollection.RetrieveGenericObjectCollection("TheBall.Interface/GenericObjectCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/GenericObjectCollection/" + contentName);
@@ -3855,7 +3715,7 @@ InterfaceOperation.ErrorMessage
 
 				public static GenericObjectCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return GenericObjectCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<GenericObjectCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -4133,20 +3993,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GenericCollectionableObject RetrieveGenericCollectionableObject(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GenericCollectionableObject) StorageSupport.RetrieveInformation(relativeLocation, typeof(GenericCollectionableObject), null, owner);
-                    return result;
-                }
-
-				public static GenericCollectionableObject RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GenericCollectionableObject.RetrieveGenericCollectionableObject("Content/TheBall.Interface/GenericCollectionableObject/" + contentName, containerOwner);
-					var result = GenericCollectionableObject.RetrieveGenericCollectionableObject("TheBall.Interface/GenericCollectionableObject/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -4518,20 +4364,6 @@ InterfaceOperation.ErrorMessage
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static GenericObject RetrieveGenericObject(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GenericObject) StorageSupport.RetrieveInformation(relativeLocation, typeof(GenericObject), null, owner);
-                    return result;
-                }
-
-				public static GenericObject RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GenericObject.RetrieveGenericObject("Content/TheBall.Interface/GenericObject/" + contentName, containerOwner);
-					var result = GenericObject.RetrieveGenericObject("TheBall.Interface/GenericObject/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/GenericObject/" + contentName);
@@ -4799,20 +4631,6 @@ InterfaceOperation.ErrorMessage
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GenericValue RetrieveGenericValue(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GenericValue) StorageSupport.RetrieveInformation(relativeLocation, typeof(GenericValue), null, owner);
-                    return result;
-                }
-
-				public static GenericValue RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GenericValue.RetrieveGenericValue("Content/TheBall.Interface/GenericValue/" + contentName, containerOwner);
-					var result = GenericValue.RetrieveGenericValue("TheBall.Interface/GenericValue/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)

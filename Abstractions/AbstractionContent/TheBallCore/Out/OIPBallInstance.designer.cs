@@ -385,20 +385,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBSystem RetrieveTBSystem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBSystem) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBSystem), null, owner);
-                    return result;
-                }
-
-				public static TBSystem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBSystem.RetrieveTBSystem("Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
-					var result = TBSystem.RetrieveTBSystem("AaltoGlobalImpact.OIP/TBSystem/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName);
@@ -755,20 +741,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static WebPublishInfo RetrieveWebPublishInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (WebPublishInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(WebPublishInfo), null, owner);
-                    return result;
-                }
-
-				public static WebPublishInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = WebPublishInfo.RetrieveWebPublishInfo("Content/AaltoGlobalImpact.OIP/WebPublishInfo/" + contentName, containerOwner);
-					var result = WebPublishInfo.RetrieveWebPublishInfo("AaltoGlobalImpact.OIP/WebPublishInfo/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -1237,20 +1209,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static PublicationPackageCollection RetrievePublicationPackageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (PublicationPackageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(PublicationPackageCollection), null, owner);
-                    return result;
-                }
-
-				public static PublicationPackageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = PublicationPackageCollection.RetrievePublicationPackageCollection("Content/AaltoGlobalImpact.OIP/PublicationPackageCollection/" + contentName, containerOwner);
-					var result = PublicationPackageCollection.RetrievePublicationPackageCollection("AaltoGlobalImpact.OIP/PublicationPackageCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -1730,20 +1688,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static PublicationPackage RetrievePublicationPackage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (PublicationPackage) StorageSupport.RetrieveInformation(relativeLocation, typeof(PublicationPackage), null, owner);
-                    return result;
-                }
-
-				public static PublicationPackage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = PublicationPackage.RetrievePublicationPackage("Content/AaltoGlobalImpact.OIP/PublicationPackage/" + contentName, containerOwner);
-					var result = PublicationPackage.RetrievePublicationPackage("AaltoGlobalImpact.OIP/PublicationPackage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/PublicationPackage/" + contentName);
@@ -2098,20 +2042,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBRLoginRoot RetrieveTBRLoginRoot(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBRLoginRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginRoot), null, owner);
-                    return result;
-                }
-
-				public static TBRLoginRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBRLoginRoot.RetrieveTBRLoginRoot("Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
-					var result = TBRLoginRoot.RetrieveTBRLoginRoot("AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -2515,20 +2445,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBRAccountRoot RetrieveTBRAccountRoot(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBRAccountRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRAccountRoot), null, owner);
-                    return result;
-                }
-
-				public static TBRAccountRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBRAccountRoot.RetrieveTBRAccountRoot("Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
-					var result = TBRAccountRoot.RetrieveTBRAccountRoot("AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName);
@@ -2916,20 +2832,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBRGroupRoot RetrieveTBRGroupRoot(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBRGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRGroupRoot), null, owner);
-                    return result;
-                }
-
-				public static TBRGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBRGroupRoot.RetrieveTBRGroupRoot("Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
-					var result = TBRGroupRoot.RetrieveTBRGroupRoot("AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -3321,20 +3223,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBRLoginGroupRoot RetrieveTBRLoginGroupRoot(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBRLoginGroupRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBRLoginGroupRoot), null, owner);
-                    return result;
-                }
-
-				public static TBRLoginGroupRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
-					var result = TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot("AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName);
@@ -3691,20 +3579,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBREmailRoot RetrieveTBREmailRoot(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBREmailRoot) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBREmailRoot), null, owner);
-                    return result;
-                }
-
-				public static TBREmailRoot RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBREmailRoot.RetrieveTBREmailRoot("Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
-					var result = TBREmailRoot.RetrieveTBREmailRoot("AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -4094,20 +3968,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBAccount RetrieveTBAccount(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccount), null, owner);
-                    return result;
-                }
-
-				public static TBAccount RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBAccount.RetrieveTBAccount("Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
-					var result = TBAccount.RetrieveTBAccount("AaltoGlobalImpact.OIP/TBAccount/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -4609,20 +4469,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBAccountCollaborationGroup RetrieveTBAccountCollaborationGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBAccountCollaborationGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroup), null, owner);
-                    return result;
-                }
-
-				public static TBAccountCollaborationGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
-					var result = TBAccountCollaborationGroup.RetrieveTBAccountCollaborationGroup("AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName);
@@ -4991,20 +4837,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBAccountCollaborationGroupCollection RetrieveTBAccountCollaborationGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBAccountCollaborationGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBAccountCollaborationGroupCollection), null, owner);
-                    return result;
-                }
-
-				public static TBAccountCollaborationGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("Content/AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
-					var result = TBAccountCollaborationGroupCollection.RetrieveTBAccountCollaborationGroupCollection("AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -5484,20 +5316,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBLoginInfo RetrieveTBLoginInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBLoginInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfo), null, owner);
-                    return result;
-                }
-
-				public static TBLoginInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBLoginInfo.RetrieveTBLoginInfo("Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
-					var result = TBLoginInfo.RetrieveTBLoginInfo("AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
@@ -5842,20 +5660,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBLoginInfoCollection RetrieveTBLoginInfoCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBLoginInfoCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBLoginInfoCollection), null, owner);
-                    return result;
-                }
-
-				public static TBLoginInfoCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("Content/AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
-					var result = TBLoginInfoCollection.RetrieveTBLoginInfoCollection("AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -6335,20 +6139,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBEmail RetrieveTBEmail(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmail), null, owner);
-                    return result;
-                }
-
-				public static TBEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBEmail.RetrieveTBEmail("Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
-					var result = TBEmail.RetrieveTBEmail("AaltoGlobalImpact.OIP/TBEmail/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName);
@@ -6703,20 +6493,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBEmailCollection RetrieveTBEmailCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBEmailCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailCollection), null, owner);
-                    return result;
-                }
-
-				public static TBEmailCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBEmailCollection.RetrieveTBEmailCollection("Content/AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
-					var result = TBEmailCollection.RetrieveTBEmailCollection("AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -7196,20 +6972,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBCollaboratorRole RetrieveTBCollaboratorRole(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBCollaboratorRole) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRole), null, owner);
-                    return result;
-                }
-
-				public static TBCollaboratorRole RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
-					var result = TBCollaboratorRole.RetrieveTBCollaboratorRole("AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
@@ -7621,20 +7383,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBCollaboratorRoleCollection RetrieveTBCollaboratorRoleCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBCollaboratorRoleCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratorRoleCollection), null, owner);
-                    return result;
-                }
-
-				public static TBCollaboratorRoleCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("Content/AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
-					var result = TBCollaboratorRoleCollection.RetrieveTBCollaboratorRoleCollection("AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -8114,20 +7862,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBCollaboratingGroup RetrieveTBCollaboratingGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBCollaboratingGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBCollaboratingGroup), null, owner);
-                    return result;
-                }
-
-				public static TBCollaboratingGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
-					var result = TBCollaboratingGroup.RetrieveTBCollaboratingGroup("AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
@@ -8527,20 +8261,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBEmailValidation RetrieveTBEmailValidation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBEmailValidation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBEmailValidation), null, owner);
-                    return result;
-                }
-
-				public static TBEmailValidation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBEmailValidation.RetrieveTBEmailValidation("Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
-					var result = TBEmailValidation.RetrieveTBEmailValidation("AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -9164,20 +8884,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBMergeAccountConfirmation RetrieveTBMergeAccountConfirmation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBMergeAccountConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBMergeAccountConfirmation), null, owner);
-                    return result;
-                }
-
-				public static TBMergeAccountConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBMergeAccountConfirmation.RetrieveTBMergeAccountConfirmation("Content/AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName, containerOwner);
-					var result = TBMergeAccountConfirmation.RetrieveTBMergeAccountConfirmation("AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName);
@@ -9536,20 +9242,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBGroupJoinConfirmation RetrieveTBGroupJoinConfirmation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBGroupJoinConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBGroupJoinConfirmation), null, owner);
-                    return result;
-                }
-
-				public static TBGroupJoinConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBGroupJoinConfirmation.RetrieveTBGroupJoinConfirmation("Content/AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName, containerOwner);
-					var result = TBGroupJoinConfirmation.RetrieveTBGroupJoinConfirmation("AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName);
@@ -9906,20 +9598,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TBDeviceJoinConfirmation RetrieveTBDeviceJoinConfirmation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBDeviceJoinConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBDeviceJoinConfirmation), null, owner);
-                    return result;
-                }
-
-				public static TBDeviceJoinConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBDeviceJoinConfirmation.RetrieveTBDeviceJoinConfirmation("Content/AaltoGlobalImpact.OIP/TBDeviceJoinConfirmation/" + contentName, containerOwner);
-					var result = TBDeviceJoinConfirmation.RetrieveTBDeviceJoinConfirmation("AaltoGlobalImpact.OIP/TBDeviceJoinConfirmation/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -10292,20 +9970,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBInformationInputConfirmation RetrieveTBInformationInputConfirmation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBInformationInputConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBInformationInputConfirmation), null, owner);
-                    return result;
-                }
-
-				public static TBInformationInputConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBInformationInputConfirmation.RetrieveTBInformationInputConfirmation("Content/AaltoGlobalImpact.OIP/TBInformationInputConfirmation/" + contentName, containerOwner);
-					var result = TBInformationInputConfirmation.RetrieveTBInformationInputConfirmation("AaltoGlobalImpact.OIP/TBInformationInputConfirmation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBInformationInputConfirmation/" + contentName);
@@ -10676,20 +10340,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBInformationOutputConfirmation RetrieveTBInformationOutputConfirmation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBInformationOutputConfirmation) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBInformationOutputConfirmation), null, owner);
-                    return result;
-                }
-
-				public static TBInformationOutputConfirmation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBInformationOutputConfirmation.RetrieveTBInformationOutputConfirmation("Content/AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName, containerOwner);
-					var result = TBInformationOutputConfirmation.RetrieveTBInformationOutputConfirmation("AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName);
@@ -11058,20 +10708,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static LoginProvider RetrieveLoginProvider(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LoginProvider) StorageSupport.RetrieveInformation(relativeLocation, typeof(LoginProvider), null, owner);
-                    return result;
-                }
-
-				public static LoginProvider RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LoginProvider.RetrieveLoginProvider("Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
-					var result = LoginProvider.RetrieveLoginProvider("AaltoGlobalImpact.OIP/LoginProvider/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -11466,20 +11102,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static LoginProviderCollection RetrieveLoginProviderCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LoginProviderCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(LoginProviderCollection), null, owner);
-                    return result;
-                }
-
-				public static LoginProviderCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LoginProviderCollection.RetrieveLoginProviderCollection("Content/AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
-					var result = LoginProviderCollection.RetrieveLoginProviderCollection("AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -11959,20 +11581,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TBPRegisterEmail RetrieveTBPRegisterEmail(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TBPRegisterEmail) StorageSupport.RetrieveInformation(relativeLocation, typeof(TBPRegisterEmail), null, owner);
-                    return result;
-                }
-
-				public static TBPRegisterEmail RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
-					var result = TBPRegisterEmail.RetrieveTBPRegisterEmail("AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
@@ -12317,20 +11925,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AccountSummary RetrieveAccountSummary(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountSummary) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSummary), null, owner);
-                    return result;
-                }
-
-				public static AccountSummary RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountSummary.RetrieveAccountSummary("Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
-					var result = AccountSummary.RetrieveAccountSummary("AaltoGlobalImpact.OIP/AccountSummary/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -12720,20 +12314,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AccountContainer RetrieveAccountContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountContainer), null, owner);
-                    return result;
-                }
-
-				public static AccountContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountContainer.RetrieveAccountContainer("Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
-					var result = AccountContainer.RetrieveAccountContainer("AaltoGlobalImpact.OIP/AccountContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -13178,20 +12758,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AccountModule RetrieveAccountModule(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountModule) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountModule), null, owner);
-                    return result;
-                }
-
-				public static AccountModule RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountModule.RetrieveAccountModule("Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
-					var result = AccountModule.RetrieveAccountModule("AaltoGlobalImpact.OIP/AccountModule/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -13749,20 +13315,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static LocationContainer RetrieveLocationContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LocationContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(LocationContainer), null, owner);
-                    return result;
-                }
-
-				public static LocationContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LocationContainer.RetrieveLocationContainer("Content/AaltoGlobalImpact.OIP/LocationContainer/" + contentName, containerOwner);
-					var result = LocationContainer.RetrieveLocationContainer("AaltoGlobalImpact.OIP/LocationContainer/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LocationContainer/" + contentName);
@@ -14153,20 +13705,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AddressAndLocationCollection RetrieveAddressAndLocationCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddressAndLocationCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddressAndLocationCollection), null, owner);
-                    return result;
-                }
-
-				public static AddressAndLocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
-					var result = AddressAndLocationCollection.RetrieveAddressAndLocationCollection("AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName);
@@ -14381,7 +13919,7 @@ namespace INT {
 
 				public static AddressAndLocationCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return AddressAndLocationCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<AddressAndLocationCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -14653,20 +14191,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AddressAndLocation RetrieveAddressAndLocation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddressAndLocation) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddressAndLocation), null, owner);
-                    return result;
-                }
-
-				public static AddressAndLocation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddressAndLocation.RetrieveAddressAndLocation("Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
-					var result = AddressAndLocation.RetrieveAddressAndLocation("AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -15154,20 +14678,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static StreetAddress RetrieveStreetAddress(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (StreetAddress) StorageSupport.RetrieveInformation(relativeLocation, typeof(StreetAddress), null, owner);
-                    return result;
-                }
-
-				public static StreetAddress RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = StreetAddress.RetrieveStreetAddress("Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
-					var result = StreetAddress.RetrieveStreetAddress("AaltoGlobalImpact.OIP/StreetAddress/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/StreetAddress/" + contentName);
@@ -15548,20 +15058,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AccountProfile RetrieveAccountProfile(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountProfile) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountProfile), null, owner);
-                    return result;
-                }
-
-				public static AccountProfile RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountProfile.RetrieveAccountProfile("Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
-					var result = AccountProfile.RetrieveAccountProfile("AaltoGlobalImpact.OIP/AccountProfile/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -16052,20 +15548,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AccountSecurity RetrieveAccountSecurity(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountSecurity) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountSecurity), null, owner);
-                    return result;
-                }
-
-				public static AccountSecurity RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountSecurity.RetrieveAccountSecurity("Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
-					var result = AccountSecurity.RetrieveAccountSecurity("AaltoGlobalImpact.OIP/AccountSecurity/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSecurity/" + contentName);
@@ -16508,20 +15990,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AccountRoles RetrieveAccountRoles(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AccountRoles) StorageSupport.RetrieveInformation(relativeLocation, typeof(AccountRoles), null, owner);
-                    return result;
-                }
-
-				public static AccountRoles RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AccountRoles.RetrieveAccountRoles("Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
-					var result = AccountRoles.RetrieveAccountRoles("AaltoGlobalImpact.OIP/AccountRoles/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -16985,20 +16453,6 @@ AccountRoles.OrganizationsImPartOf
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static PersonalInfoVisibility RetrievePersonalInfoVisibility(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (PersonalInfoVisibility) StorageSupport.RetrieveInformation(relativeLocation, typeof(PersonalInfoVisibility), null, owner);
-                    return result;
-                }
-
-				public static PersonalInfoVisibility RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
-					var result = PersonalInfoVisibility.RetrievePersonalInfoVisibility("AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName);
@@ -17343,20 +16797,6 @@ AccountRoles.OrganizationsImPartOf
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static ReferenceToInformation RetrieveReferenceToInformation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ReferenceToInformation) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceToInformation), null, owner);
-                    return result;
-                }
-
-				public static ReferenceToInformation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ReferenceToInformation.RetrieveReferenceToInformation("Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
-					var result = ReferenceToInformation.RetrieveReferenceToInformation("AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -17715,20 +17155,6 @@ AccountRoles.OrganizationsImPartOf
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static ReferenceCollection RetrieveReferenceCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ReferenceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ReferenceCollection), null, owner);
-                    return result;
-                }
-
-				public static ReferenceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ReferenceCollection.RetrieveReferenceCollection("Content/AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
-					var result = ReferenceCollection.RetrieveReferenceCollection("AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -18195,20 +17621,6 @@ AccountRoles.OrganizationsImPartOf
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static NodeSummaryContainer RetrieveNodeSummaryContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (NodeSummaryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(NodeSummaryContainer), null, owner);
-                    return result;
-                }
-
-				public static NodeSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = NodeSummaryContainer.RetrieveNodeSummaryContainer("Content/AaltoGlobalImpact.OIP/NodeSummaryContainer/" + contentName, containerOwner);
-					var result = NodeSummaryContainer.RetrieveNodeSummaryContainer("AaltoGlobalImpact.OIP/NodeSummaryContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -18936,20 +18348,6 @@ AccountRoles.OrganizationsImPartOf
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static RenderedNodeCollection RetrieveRenderedNodeCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (RenderedNodeCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(RenderedNodeCollection), null, owner);
-                    return result;
-                }
-
-				public static RenderedNodeCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = RenderedNodeCollection.RetrieveRenderedNodeCollection("Content/AaltoGlobalImpact.OIP/RenderedNodeCollection/" + contentName, containerOwner);
-					var result = RenderedNodeCollection.RetrieveRenderedNodeCollection("AaltoGlobalImpact.OIP/RenderedNodeCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/RenderedNodeCollection/" + contentName);
@@ -19425,20 +18823,6 @@ AccountRoles.OrganizationsImPartOf
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static RenderedNode RetrieveRenderedNode(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (RenderedNode) StorageSupport.RetrieveInformation(relativeLocation, typeof(RenderedNode), null, owner);
-                    return result;
-                }
-
-				public static RenderedNode RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = RenderedNode.RetrieveRenderedNode("Content/AaltoGlobalImpact.OIP/RenderedNode/" + contentName, containerOwner);
-					var result = RenderedNode.RetrieveRenderedNode("AaltoGlobalImpact.OIP/RenderedNode/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -20185,20 +19569,6 @@ RenderedNode.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ShortTextCollection RetrieveShortTextCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ShortTextCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ShortTextCollection), null, owner);
-                    return result;
-                }
-
-				public static ShortTextCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ShortTextCollection.RetrieveShortTextCollection("Content/AaltoGlobalImpact.OIP/ShortTextCollection/" + contentName, containerOwner);
-					var result = ShortTextCollection.RetrieveShortTextCollection("AaltoGlobalImpact.OIP/ShortTextCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ShortTextCollection/" + contentName);
@@ -20676,20 +20046,6 @@ RenderedNode.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ShortTextObject RetrieveShortTextObject(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ShortTextObject) StorageSupport.RetrieveInformation(relativeLocation, typeof(ShortTextObject), null, owner);
-                    return result;
-                }
-
-				public static ShortTextObject RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ShortTextObject.RetrieveShortTextObject("Content/AaltoGlobalImpact.OIP/ShortTextObject/" + contentName, containerOwner);
-					var result = ShortTextObject.RetrieveShortTextObject("AaltoGlobalImpact.OIP/ShortTextObject/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ShortTextObject/" + contentName);
@@ -21034,20 +20390,6 @@ RenderedNode.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static LongTextCollection RetrieveLongTextCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LongTextCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(LongTextCollection), null, owner);
-                    return result;
-                }
-
-				public static LongTextCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LongTextCollection.RetrieveLongTextCollection("Content/AaltoGlobalImpact.OIP/LongTextCollection/" + contentName, containerOwner);
-					var result = LongTextCollection.RetrieveLongTextCollection("AaltoGlobalImpact.OIP/LongTextCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -21527,20 +20869,6 @@ RenderedNode.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static LongTextObject RetrieveLongTextObject(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LongTextObject) StorageSupport.RetrieveInformation(relativeLocation, typeof(LongTextObject), null, owner);
-                    return result;
-                }
-
-				public static LongTextObject RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LongTextObject.RetrieveLongTextObject("Content/AaltoGlobalImpact.OIP/LongTextObject/" + contentName, containerOwner);
-					var result = LongTextObject.RetrieveLongTextObject("AaltoGlobalImpact.OIP/LongTextObject/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LongTextObject/" + contentName);
@@ -21890,20 +21218,6 @@ LongTextObject.Content
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static MapMarker RetrieveMapMarker(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapMarker) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapMarker), null, owner);
-                    return result;
-                }
-
-				public static MapMarker RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapMarker.RetrieveMapMarker("Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
-					var result = MapMarker.RetrieveMapMarker("AaltoGlobalImpact.OIP/MapMarker/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -22370,20 +21684,6 @@ MapMarker.PopupContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static MapMarkerCollection RetrieveMapMarkerCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapMarkerCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapMarkerCollection), null, owner);
-                    return result;
-                }
-
-				public static MapMarkerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapMarkerCollection.RetrieveMapMarkerCollection("Content/AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
-					var result = MapMarkerCollection.RetrieveMapMarkerCollection("AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -22863,20 +22163,6 @@ MapMarker.PopupContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ModeratorCollection RetrieveModeratorCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ModeratorCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ModeratorCollection), null, owner);
-                    return result;
-                }
-
-				public static ModeratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ModeratorCollection.RetrieveModeratorCollection("Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
-					var result = ModeratorCollection.RetrieveModeratorCollection("AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName);
@@ -23354,20 +22640,6 @@ MapMarker.PopupContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Moderator RetrieveModerator(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Moderator) StorageSupport.RetrieveInformation(relativeLocation, typeof(Moderator), null, owner);
-                    return result;
-                }
-
-				public static Moderator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Moderator.RetrieveModerator("Content/AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
-					var result = Moderator.RetrieveModerator("AaltoGlobalImpact.OIP/Moderator/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Moderator/" + contentName);
@@ -23724,20 +22996,6 @@ MapMarker.PopupContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CollaboratorCollection RetrieveCollaboratorCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CollaboratorCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CollaboratorCollection), null, owner);
-                    return result;
-                }
-
-				public static CollaboratorCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CollaboratorCollection.RetrieveCollaboratorCollection("Content/AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
-					var result = CollaboratorCollection.RetrieveCollaboratorCollection("AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -24217,20 +23475,6 @@ MapMarker.PopupContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Collaborator RetrieveCollaborator(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Collaborator) StorageSupport.RetrieveInformation(relativeLocation, typeof(Collaborator), null, owner);
-                    return result;
-                }
-
-				public static Collaborator RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Collaborator.RetrieveCollaborator("Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
-					var result = Collaborator.RetrieveCollaborator("AaltoGlobalImpact.OIP/Collaborator/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName);
@@ -24623,20 +23867,6 @@ MapMarker.PopupContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GroupSummaryContainer RetrieveGroupSummaryContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupSummaryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupSummaryContainer), null, owner);
-                    return result;
-                }
-
-				public static GroupSummaryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
-					var result = GroupSummaryContainer.RetrieveGroupSummaryContainer("AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -25153,20 +24383,6 @@ GroupSummaryContainer.SummaryBody
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GroupContainer RetrieveGroupContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupContainer), null, owner);
-                    return result;
-                }
-
-				public static GroupContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupContainer.RetrieveGroupContainer("Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
-					var result = GroupContainer.RetrieveGroupContainer("AaltoGlobalImpact.OIP/GroupContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -25779,20 +24995,6 @@ GroupSummaryContainer.SummaryBody
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static GroupIndex RetrieveGroupIndex(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupIndex) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupIndex), null, owner);
-                    return result;
-                }
-
-				public static GroupIndex RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupIndex.RetrieveGroupIndex("Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
-					var result = GroupIndex.RetrieveGroupIndex("AaltoGlobalImpact.OIP/GroupIndex/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupIndex/" + contentName);
@@ -26214,20 +25416,6 @@ GroupIndex.Summary
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AddAddressAndLocationInfo RetrieveAddAddressAndLocationInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddAddressAndLocationInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddAddressAndLocationInfo), null, owner);
-                    return result;
-                }
-
-				public static AddAddressAndLocationInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddAddressAndLocationInfo.RetrieveAddAddressAndLocationInfo("Content/AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName, containerOwner);
-					var result = AddAddressAndLocationInfo.RetrieveAddAddressAndLocationInfo("AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName);
@@ -26572,20 +25760,6 @@ GroupIndex.Summary
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AddImageInfo RetrieveAddImageInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddImageInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddImageInfo), null, owner);
-                    return result;
-                }
-
-				public static AddImageInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddImageInfo.RetrieveAddImageInfo("Content/AaltoGlobalImpact.OIP/AddImageInfo/" + contentName, containerOwner);
-					var result = AddImageInfo.RetrieveAddImageInfo("AaltoGlobalImpact.OIP/AddImageInfo/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -26934,20 +26108,6 @@ GroupIndex.Summary
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AddImageGroupInfo RetrieveAddImageGroupInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddImageGroupInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddImageGroupInfo), null, owner);
-                    return result;
-                }
-
-				public static AddImageGroupInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddImageGroupInfo.RetrieveAddImageGroupInfo("Content/AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName, containerOwner);
-					var result = AddImageGroupInfo.RetrieveAddImageGroupInfo("AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName);
@@ -27292,20 +26452,6 @@ GroupIndex.Summary
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AddEmailAddressInfo RetrieveAddEmailAddressInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddEmailAddressInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddEmailAddressInfo), null, owner);
-                    return result;
-                }
-
-				public static AddEmailAddressInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
-					var result = AddEmailAddressInfo.RetrieveAddEmailAddressInfo("AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -27654,20 +26800,6 @@ GroupIndex.Summary
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static CreateGroupInfo RetrieveCreateGroupInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CreateGroupInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(CreateGroupInfo), null, owner);
-                    return result;
-                }
-
-				public static CreateGroupInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CreateGroupInfo.RetrieveCreateGroupInfo("Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
-					var result = CreateGroupInfo.RetrieveCreateGroupInfo("AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName);
@@ -28012,20 +27144,6 @@ GroupIndex.Summary
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AddActivityInfo RetrieveAddActivityInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddActivityInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddActivityInfo), null, owner);
-                    return result;
-                }
-
-				public static AddActivityInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddActivityInfo.RetrieveAddActivityInfo("Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
-					var result = AddActivityInfo.RetrieveAddActivityInfo("AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -28374,20 +27492,6 @@ GroupIndex.Summary
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AddBlogPostInfo RetrieveAddBlogPostInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddBlogPostInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddBlogPostInfo), null, owner);
-                    return result;
-                }
-
-				public static AddBlogPostInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddBlogPostInfo.RetrieveAddBlogPostInfo("Content/AaltoGlobalImpact.OIP/AddBlogPostInfo/" + contentName, containerOwner);
-					var result = AddBlogPostInfo.RetrieveAddBlogPostInfo("AaltoGlobalImpact.OIP/AddBlogPostInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddBlogPostInfo/" + contentName);
@@ -28734,20 +27838,6 @@ GroupIndex.Summary
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AddCategoryInfo RetrieveAddCategoryInfo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AddCategoryInfo) StorageSupport.RetrieveInformation(relativeLocation, typeof(AddCategoryInfo), null, owner);
-                    return result;
-                }
-
-				public static AddCategoryInfo RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AddCategoryInfo.RetrieveAddCategoryInfo("Content/AaltoGlobalImpact.OIP/AddCategoryInfo/" + contentName, containerOwner);
-					var result = AddCategoryInfo.RetrieveAddCategoryInfo("AaltoGlobalImpact.OIP/AddCategoryInfo/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddCategoryInfo/" + contentName);
@@ -29092,20 +28182,6 @@ GroupIndex.Summary
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static GroupCollection RetrieveGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupCollection), null, owner);
-                    return result;
-                }
-
-				public static GroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupCollection.RetrieveGroupCollection("Content/AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
-					var result = GroupCollection.RetrieveGroupCollection("AaltoGlobalImpact.OIP/GroupCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -29583,20 +28659,6 @@ GroupIndex.Summary
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Group RetrieveGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Group) StorageSupport.RetrieveInformation(relativeLocation, typeof(Group), null, owner);
-                    return result;
-                }
-
-				public static Group RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Group.RetrieveGroup("Content/AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
-					var result = Group.RetrieveGroup("AaltoGlobalImpact.OIP/Group/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -30280,20 +29342,6 @@ Group.OrganizationsAndGroupsLinkedToUs
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Introduction RetrieveIntroduction(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Introduction) StorageSupport.RetrieveInformation(relativeLocation, typeof(Introduction), null, owner);
-                    return result;
-                }
-
-				public static Introduction RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Introduction.RetrieveIntroduction("Content/AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
-					var result = Introduction.RetrieveIntroduction("AaltoGlobalImpact.OIP/Introduction/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Introduction/" + contentName);
@@ -30657,20 +29705,6 @@ Introduction.Body
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ContentCategoryRankCollection RetrieveContentCategoryRankCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ContentCategoryRankCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContentCategoryRankCollection), null, owner);
-                    return result;
-                }
-
-				public static ContentCategoryRankCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ContentCategoryRankCollection.RetrieveContentCategoryRankCollection("Content/AaltoGlobalImpact.OIP/ContentCategoryRankCollection/" + contentName, containerOwner);
-					var result = ContentCategoryRankCollection.RetrieveContentCategoryRankCollection("AaltoGlobalImpact.OIP/ContentCategoryRankCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ContentCategoryRankCollection/" + contentName);
@@ -30890,7 +29924,7 @@ Introduction.Body
 
 				public static ContentCategoryRankCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return ContentCategoryRankCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRankCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -31168,20 +30202,6 @@ Introduction.Body
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static ContentCategoryRank RetrieveContentCategoryRank(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ContentCategoryRank) StorageSupport.RetrieveInformation(relativeLocation, typeof(ContentCategoryRank), null, owner);
-                    return result;
-                }
-
-				public static ContentCategoryRank RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ContentCategoryRank.RetrieveContentCategoryRank("Content/AaltoGlobalImpact.OIP/ContentCategoryRank/" + contentName, containerOwner);
-					var result = ContentCategoryRank.RetrieveContentCategoryRank("AaltoGlobalImpact.OIP/ContentCategoryRank/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -31578,20 +30598,6 @@ Introduction.Body
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static LinkToContentCollection RetrieveLinkToContentCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LinkToContentCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(LinkToContentCollection), null, owner);
-                    return result;
-                }
-
-				public static LinkToContentCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LinkToContentCollection.RetrieveLinkToContentCollection("Content/AaltoGlobalImpact.OIP/LinkToContentCollection/" + contentName, containerOwner);
-					var result = LinkToContentCollection.RetrieveLinkToContentCollection("AaltoGlobalImpact.OIP/LinkToContentCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LinkToContentCollection/" + contentName);
@@ -31806,7 +30812,7 @@ Introduction.Body
 
 				public static LinkToContentCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return LinkToContentCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<LinkToContentCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -32078,20 +31084,6 @@ Introduction.Body
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static LinkToContent RetrieveLinkToContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LinkToContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(LinkToContent), null, owner);
-                    return result;
-                }
-
-				public static LinkToContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LinkToContent.RetrieveLinkToContent("Content/AaltoGlobalImpact.OIP/LinkToContent/" + contentName, containerOwner);
-					var result = LinkToContent.RetrieveLinkToContent("AaltoGlobalImpact.OIP/LinkToContent/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -32658,20 +31650,6 @@ LinkToContent.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static EmbeddedContentCollection RetrieveEmbeddedContentCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (EmbeddedContentCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(EmbeddedContentCollection), null, owner);
-                    return result;
-                }
-
-				public static EmbeddedContentCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = EmbeddedContentCollection.RetrieveEmbeddedContentCollection("Content/AaltoGlobalImpact.OIP/EmbeddedContentCollection/" + contentName, containerOwner);
-					var result = EmbeddedContentCollection.RetrieveEmbeddedContentCollection("AaltoGlobalImpact.OIP/EmbeddedContentCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/EmbeddedContentCollection/" + contentName);
@@ -32886,7 +31864,7 @@ LinkToContent.Description
 
 				public static EmbeddedContentCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return EmbeddedContentCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<EmbeddedContentCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -33158,20 +32136,6 @@ LinkToContent.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static EmbeddedContent RetrieveEmbeddedContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (EmbeddedContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(EmbeddedContent), null, owner);
-                    return result;
-                }
-
-				public static EmbeddedContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = EmbeddedContent.RetrieveEmbeddedContent("Content/AaltoGlobalImpact.OIP/EmbeddedContent/" + contentName, containerOwner);
-					var result = EmbeddedContent.RetrieveEmbeddedContent("AaltoGlobalImpact.OIP/EmbeddedContent/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -33683,20 +32647,6 @@ EmbeddedContent.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static DynamicContentGroupCollection RetrieveDynamicContentGroupCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DynamicContentGroupCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContentGroupCollection), null, owner);
-                    return result;
-                }
-
-				public static DynamicContentGroupCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DynamicContentGroupCollection.RetrieveDynamicContentGroupCollection("Content/AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName, containerOwner);
-					var result = DynamicContentGroupCollection.RetrieveDynamicContentGroupCollection("AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName);
@@ -33916,7 +32866,7 @@ EmbeddedContent.Description
 
 				public static DynamicContentGroupCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return DynamicContentGroupCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<DynamicContentGroupCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -34194,20 +33144,6 @@ EmbeddedContent.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static DynamicContentGroup RetrieveDynamicContentGroup(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DynamicContentGroup) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContentGroup), null, owner);
-                    return result;
-                }
-
-				public static DynamicContentGroup RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DynamicContentGroup.RetrieveDynamicContentGroup("Content/AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName, containerOwner);
-					var result = DynamicContentGroup.RetrieveDynamicContentGroup("AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -34576,20 +33512,6 @@ EmbeddedContent.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static DynamicContentCollection RetrieveDynamicContentCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DynamicContentCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContentCollection), null, owner);
-                    return result;
-                }
-
-				public static DynamicContentCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DynamicContentCollection.RetrieveDynamicContentCollection("Content/AaltoGlobalImpact.OIP/DynamicContentCollection/" + contentName, containerOwner);
-					var result = DynamicContentCollection.RetrieveDynamicContentCollection("AaltoGlobalImpact.OIP/DynamicContentCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContentCollection/" + contentName);
@@ -34809,7 +33731,7 @@ EmbeddedContent.Description
 
 				public static DynamicContentCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return DynamicContentCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<DynamicContentCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -35087,20 +34009,6 @@ EmbeddedContent.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static DynamicContent RetrieveDynamicContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DynamicContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(DynamicContent), null, owner);
-                    return result;
-                }
-
-				public static DynamicContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DynamicContent.RetrieveDynamicContent("Content/AaltoGlobalImpact.OIP/DynamicContent/" + contentName, containerOwner);
-					var result = DynamicContent.RetrieveDynamicContent("AaltoGlobalImpact.OIP/DynamicContent/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -35635,20 +34543,6 @@ DynamicContent.RawContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static AttachedToObjectCollection RetrieveAttachedToObjectCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AttachedToObjectCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(AttachedToObjectCollection), null, owner);
-                    return result;
-                }
-
-				public static AttachedToObjectCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AttachedToObjectCollection.RetrieveAttachedToObjectCollection("Content/AaltoGlobalImpact.OIP/AttachedToObjectCollection/" + contentName, containerOwner);
-					var result = AttachedToObjectCollection.RetrieveAttachedToObjectCollection("AaltoGlobalImpact.OIP/AttachedToObjectCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AttachedToObjectCollection/" + contentName);
@@ -35868,7 +34762,7 @@ DynamicContent.RawContent
 
 				public static AttachedToObjectCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return AttachedToObjectCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<AttachedToObjectCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -36146,20 +35040,6 @@ DynamicContent.RawContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AttachedToObject RetrieveAttachedToObject(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AttachedToObject) StorageSupport.RetrieveInformation(relativeLocation, typeof(AttachedToObject), null, owner);
-                    return result;
-                }
-
-				public static AttachedToObject RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AttachedToObject.RetrieveAttachedToObject("Content/AaltoGlobalImpact.OIP/AttachedToObject/" + contentName, containerOwner);
-					var result = AttachedToObject.RetrieveAttachedToObject("AaltoGlobalImpact.OIP/AttachedToObject/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -36568,20 +35448,6 @@ DynamicContent.RawContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static CommentCollection RetrieveCommentCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CommentCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CommentCollection), null, owner);
-                    return result;
-                }
-
-				public static CommentCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CommentCollection.RetrieveCommentCollection("Content/AaltoGlobalImpact.OIP/CommentCollection/" + contentName, containerOwner);
-					var result = CommentCollection.RetrieveCommentCollection("AaltoGlobalImpact.OIP/CommentCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/CommentCollection/" + contentName);
@@ -36801,7 +35667,7 @@ DynamicContent.RawContent
 
 				public static CommentCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return CommentCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<CommentCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -37079,20 +35945,6 @@ DynamicContent.RawContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Comment RetrieveComment(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Comment) StorageSupport.RetrieveInformation(relativeLocation, typeof(Comment), null, owner);
-                    return result;
-                }
-
-				public static Comment RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Comment.RetrieveComment("Content/AaltoGlobalImpact.OIP/Comment/" + contentName, containerOwner);
-					var result = Comment.RetrieveComment("AaltoGlobalImpact.OIP/Comment/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -37574,20 +36426,6 @@ Comment.CommentText
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static SelectionCollection RetrieveSelectionCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SelectionCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SelectionCollection), null, owner);
-                    return result;
-                }
-
-				public static SelectionCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SelectionCollection.RetrieveSelectionCollection("Content/AaltoGlobalImpact.OIP/SelectionCollection/" + contentName, containerOwner);
-					var result = SelectionCollection.RetrieveSelectionCollection("AaltoGlobalImpact.OIP/SelectionCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SelectionCollection/" + contentName);
@@ -37807,7 +36645,7 @@ Comment.CommentText
 
 				public static SelectionCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return SelectionCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<SelectionCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -38085,20 +36923,6 @@ Comment.CommentText
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Selection RetrieveSelection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Selection) StorageSupport.RetrieveInformation(relativeLocation, typeof(Selection), null, owner);
-                    return result;
-                }
-
-				public static Selection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Selection.RetrieveSelection("Content/AaltoGlobalImpact.OIP/Selection/" + contentName, containerOwner);
-					var result = Selection.RetrieveSelection("AaltoGlobalImpact.OIP/Selection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -38515,20 +37339,6 @@ Comment.CommentText
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static TextContentCollection RetrieveTextContentCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TextContentCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(TextContentCollection), null, owner);
-                    return result;
-                }
-
-				public static TextContentCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TextContentCollection.RetrieveTextContentCollection("Content/AaltoGlobalImpact.OIP/TextContentCollection/" + contentName, containerOwner);
-					var result = TextContentCollection.RetrieveTextContentCollection("AaltoGlobalImpact.OIP/TextContentCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TextContentCollection/" + contentName);
@@ -38743,7 +37553,7 @@ Comment.CommentText
 
 				public static TextContentCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return TextContentCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<TextContentCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -39015,20 +37825,6 @@ Comment.CommentText
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static TextContent RetrieveTextContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (TextContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(TextContent), null, owner);
-                    return result;
-                }
-
-				public static TextContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = TextContent.RetrieveTextContent("Content/AaltoGlobalImpact.OIP/TextContent/" + contentName, containerOwner);
-					var result = TextContent.RetrieveTextContent("AaltoGlobalImpact.OIP/TextContent/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -39656,20 +38452,6 @@ TextContent.RawHtmlContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Map RetrieveMap(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Map) StorageSupport.RetrieveInformation(relativeLocation, typeof(Map), null, owner);
-                    return result;
-                }
-
-				public static Map RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Map.RetrieveMap("Content/AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
-					var result = Map.RetrieveMap("AaltoGlobalImpact.OIP/Map/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Map/" + contentName);
@@ -40014,20 +38796,6 @@ TextContent.RawHtmlContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static MapCollection RetrieveMapCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapCollection), null, owner);
-                    return result;
-                }
-
-				public static MapCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapCollection.RetrieveMapCollection("Content/AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
-					var result = MapCollection.RetrieveMapCollection("AaltoGlobalImpact.OIP/MapCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -40507,20 +39275,6 @@ TextContent.RawHtmlContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static MapResult RetrieveMapResult(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapResult) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResult), null, owner);
-                    return result;
-                }
-
-				public static MapResult RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapResult.RetrieveMapResult("Content/AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
-					var result = MapResult.RetrieveMapResult("AaltoGlobalImpact.OIP/MapResult/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResult/" + contentName);
@@ -40908,20 +39662,6 @@ TextContent.RawHtmlContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static MapResultCollection RetrieveMapResultCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapResultCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultCollection), null, owner);
-                    return result;
-                }
-
-				public static MapResultCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapResultCollection.RetrieveMapResultCollection("Content/AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
-					var result = MapResultCollection.RetrieveMapResultCollection("AaltoGlobalImpact.OIP/MapResultCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -41399,20 +40139,6 @@ TextContent.RawHtmlContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static MapResultsCollection RetrieveMapResultsCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MapResultsCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(MapResultsCollection), null, owner);
-                    return result;
-                }
-
-				public static MapResultsCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MapResultsCollection.RetrieveMapResultsCollection("Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
-					var result = MapResultsCollection.RetrieveMapResultsCollection("AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -41914,20 +40640,6 @@ TextContent.RawHtmlContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Video RetrieveVideo(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Video) StorageSupport.RetrieveInformation(relativeLocation, typeof(Video), null, owner);
-                    return result;
-                }
-
-				public static Video RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Video.RetrieveVideo("Content/AaltoGlobalImpact.OIP/Video/" + contentName, containerOwner);
-					var result = Video.RetrieveVideo("AaltoGlobalImpact.OIP/Video/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Video/" + contentName);
@@ -42341,20 +41053,6 @@ TextContent.RawHtmlContent
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static ImageCollection RetrieveImageCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (ImageCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(ImageCollection), null, owner);
-                    return result;
-                }
-
-				public static ImageCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = ImageCollection.RetrieveImageCollection("Content/AaltoGlobalImpact.OIP/ImageCollection/" + contentName, containerOwner);
-					var result = ImageCollection.RetrieveImageCollection("AaltoGlobalImpact.OIP/ImageCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ImageCollection/" + contentName);
@@ -42569,7 +41267,7 @@ TextContent.RawHtmlContent
 
 				public static ImageCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return ImageCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<ImageCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -42841,20 +41539,6 @@ TextContent.RawHtmlContent
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Image RetrieveImage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Image) StorageSupport.RetrieveInformation(relativeLocation, typeof(Image), null, owner);
-                    return result;
-                }
-
-				public static Image RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Image.RetrieveImage("Content/AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
-					var result = Image.RetrieveImage("AaltoGlobalImpact.OIP/Image/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -43440,20 +42124,6 @@ Image.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static BinaryFileCollection RetrieveBinaryFileCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (BinaryFileCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(BinaryFileCollection), null, owner);
-                    return result;
-                }
-
-				public static BinaryFileCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = BinaryFileCollection.RetrieveBinaryFileCollection("Content/AaltoGlobalImpact.OIP/BinaryFileCollection/" + contentName, containerOwner);
-					var result = BinaryFileCollection.RetrieveBinaryFileCollection("AaltoGlobalImpact.OIP/BinaryFileCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/BinaryFileCollection/" + contentName);
@@ -43673,7 +42343,7 @@ Image.Description
 
 				public static BinaryFileCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return BinaryFileCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<BinaryFileCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -43951,20 +42621,6 @@ Image.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static BinaryFile RetrieveBinaryFile(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (BinaryFile) StorageSupport.RetrieveInformation(relativeLocation, typeof(BinaryFile), null, owner);
-                    return result;
-                }
-
-				public static BinaryFile RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = BinaryFile.RetrieveBinaryFile("Content/AaltoGlobalImpact.OIP/BinaryFile/" + contentName, containerOwner);
-					var result = BinaryFile.RetrieveBinaryFile("AaltoGlobalImpact.OIP/BinaryFile/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -44453,20 +43109,6 @@ BinaryFile.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static MediaContent RetrieveMediaContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (MediaContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(MediaContent), null, owner);
-                    return result;
-                }
-
-				public static MediaContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = MediaContent.RetrieveMediaContent("Content/AaltoGlobalImpact.OIP/MediaContent/" + contentName, containerOwner);
-					var result = MediaContent.RetrieveMediaContent("AaltoGlobalImpact.OIP/MediaContent/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/MediaContent/" + contentName);
@@ -44772,20 +43414,6 @@ BinaryFile.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Longitude RetrieveLongitude(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Longitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Longitude), null, owner);
-                    return result;
-                }
-
-				public static Longitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Longitude.RetrieveLongitude("Content/AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
-					var result = Longitude.RetrieveLongitude("AaltoGlobalImpact.OIP/Longitude/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -45134,20 +43762,6 @@ BinaryFile.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Latitude RetrieveLatitude(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Latitude) StorageSupport.RetrieveInformation(relativeLocation, typeof(Latitude), null, owner);
-                    return result;
-                }
-
-				public static Latitude RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Latitude.RetrieveLatitude("Content/AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
-					var result = Latitude.RetrieveLatitude("AaltoGlobalImpact.OIP/Latitude/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Latitude/" + contentName);
@@ -45492,20 +44106,6 @@ BinaryFile.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Location RetrieveLocation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Location) StorageSupport.RetrieveInformation(relativeLocation, typeof(Location), null, owner);
-                    return result;
-                }
-
-				public static Location RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Location.RetrieveLocation("Content/AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
-					var result = Location.RetrieveLocation("AaltoGlobalImpact.OIP/Location/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -45962,20 +44562,6 @@ BinaryFile.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static LocationCollection RetrieveLocationCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (LocationCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(LocationCollection), null, owner);
-                    return result;
-                }
-
-				public static LocationCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = LocationCollection.RetrieveLocationCollection("Content/AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
-					var result = LocationCollection.RetrieveLocationCollection("AaltoGlobalImpact.OIP/LocationCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -46455,20 +45041,6 @@ BinaryFile.Description
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Date RetrieveDate(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Date) StorageSupport.RetrieveInformation(relativeLocation, typeof(Date), null, owner);
-                    return result;
-                }
-
-				public static Date RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Date.RetrieveDate("Content/AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
-					var result = Date.RetrieveDate("AaltoGlobalImpact.OIP/Date/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Date/" + contentName);
@@ -46841,20 +45413,6 @@ BinaryFile.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CategoryContainer RetrieveCategoryContainer(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CategoryContainer) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryContainer), null, owner);
-                    return result;
-                }
-
-				public static CategoryContainer RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CategoryContainer.RetrieveCategoryContainer("Content/AaltoGlobalImpact.OIP/CategoryContainer/" + contentName, containerOwner);
-					var result = CategoryContainer.RetrieveCategoryContainer("AaltoGlobalImpact.OIP/CategoryContainer/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -47245,20 +45803,6 @@ BinaryFile.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Category RetrieveCategory(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Category) StorageSupport.RetrieveInformation(relativeLocation, typeof(Category), null, owner);
-                    return result;
-                }
-
-				public static Category RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Category.RetrieveCategory("Content/AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
-					var result = Category.RetrieveCategory("AaltoGlobalImpact.OIP/Category/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -47785,20 +46329,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static CategoryCollection RetrieveCategoryCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CategoryCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CategoryCollection), null, owner);
-                    return result;
-                }
-
-				public static CategoryCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CategoryCollection.RetrieveCategoryCollection("Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
-					var result = CategoryCollection.RetrieveCategoryCollection("AaltoGlobalImpact.OIP/CategoryCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/CategoryCollection/" + contentName);
@@ -48013,7 +46543,7 @@ Category.Excerpt
 
 				public static CategoryCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return CategoryCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<CategoryCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -48285,20 +46815,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SubscriptionCollection RetrieveSubscriptionCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionCollection), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionCollection.RetrieveSubscriptionCollection("Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
-					var result = SubscriptionCollection.RetrieveSubscriptionCollection("AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -48778,20 +47294,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static Subscription RetrieveSubscription(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Subscription) StorageSupport.RetrieveInformation(relativeLocation, typeof(Subscription), null, owner);
-                    return result;
-                }
-
-				public static Subscription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Subscription.RetrieveSubscription("Content/AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
-					var result = Subscription.RetrieveSubscription("AaltoGlobalImpact.OIP/Subscription/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Subscription/" + contentName);
@@ -49194,20 +47696,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static QueueEnvelope RetrieveQueueEnvelope(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (QueueEnvelope) StorageSupport.RetrieveInformation(relativeLocation, typeof(QueueEnvelope), null, owner);
-                    return result;
-                }
-
-				public static QueueEnvelope RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = QueueEnvelope.RetrieveQueueEnvelope("Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
-					var result = QueueEnvelope.RetrieveQueueEnvelope("AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -49743,20 +48231,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static OperationRequestCollection RetrieveOperationRequestCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (OperationRequestCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(OperationRequestCollection), null, owner);
-                    return result;
-                }
-
-				public static OperationRequestCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = OperationRequestCollection.RetrieveOperationRequestCollection("Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
-					var result = OperationRequestCollection.RetrieveOperationRequestCollection("AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
@@ -50232,20 +48706,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static OperationRequest RetrieveOperationRequest(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (OperationRequest) StorageSupport.RetrieveInformation(relativeLocation, typeof(OperationRequest), null, owner);
-                    return result;
-                }
-
-				public static OperationRequest RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = OperationRequest.RetrieveOperationRequest("Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
-					var result = OperationRequest.RetrieveOperationRequest("AaltoGlobalImpact.OIP/OperationRequest/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -50979,20 +49439,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static SubscriptionChainRequestMessage RetrieveSubscriptionChainRequestMessage(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionChainRequestMessage) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionChainRequestMessage), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionChainRequestMessage RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionChainRequestMessage.RetrieveSubscriptionChainRequestMessage("Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName, containerOwner);
-					var result = SubscriptionChainRequestMessage.RetrieveSubscriptionChainRequestMessage("AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName);
@@ -51337,20 +49783,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SubscriptionChainRequestContent RetrieveSubscriptionChainRequestContent(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionChainRequestContent) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionChainRequestContent), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionChainRequestContent RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionChainRequestContent.RetrieveSubscriptionChainRequestContent("Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName, containerOwner);
-					var result = SubscriptionChainRequestContent.RetrieveSubscriptionChainRequestContent("AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -51792,20 +50224,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static SubscriptionTarget RetrieveSubscriptionTarget(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionTarget) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionTarget), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionTarget RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionTarget.RetrieveSubscriptionTarget("Content/AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName, containerOwner);
-					var result = SubscriptionTarget.RetrieveSubscriptionTarget("AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName);
@@ -52150,20 +50568,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SubscriptionTargetCollection RetrieveSubscriptionTargetCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionTargetCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionTargetCollection), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionTargetCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionTargetCollection.RetrieveSubscriptionTargetCollection("Content/AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName, containerOwner);
-					var result = SubscriptionTargetCollection.RetrieveSubscriptionTargetCollection("AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -52643,20 +51047,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static DeleteEntireOwnerOperation RetrieveDeleteEntireOwnerOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DeleteEntireOwnerOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeleteEntireOwnerOperation), null, owner);
-                    return result;
-                }
-
-				public static DeleteEntireOwnerOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
-					var result = DeleteEntireOwnerOperation.RetrieveDeleteEntireOwnerOperation("AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
@@ -53015,20 +51405,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static DeleteOwnerContentOperation RetrieveDeleteOwnerContentOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (DeleteOwnerContentOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(DeleteOwnerContentOperation), null, owner);
-                    return result;
-                }
-
-				public static DeleteOwnerContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
-					var result = DeleteOwnerContentOperation.RetrieveDeleteOwnerContentOperation("AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
@@ -53385,20 +51761,6 @@ Category.Excerpt
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SystemError RetrieveSystemError(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SystemError) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemError), null, owner);
-                    return result;
-                }
-
-				public static SystemError RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SystemError.RetrieveSystemError("Content/AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
-					var result = SystemError.RetrieveSystemError("AaltoGlobalImpact.OIP/SystemError/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -53867,20 +52229,6 @@ Category.Excerpt
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static SystemErrorItem RetrieveSystemErrorItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SystemErrorItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemErrorItem), null, owner);
-                    return result;
-                }
-
-				public static SystemErrorItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SystemErrorItem.RetrieveSystemErrorItem("Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
-					var result = SystemErrorItem.RetrieveSystemErrorItem("AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
@@ -54242,20 +52590,6 @@ SystemErrorItem.LongDescription
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SystemErrorItemCollection RetrieveSystemErrorItemCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SystemErrorItemCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(SystemErrorItemCollection), null, owner);
-                    return result;
-                }
-
-				public static SystemErrorItemCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
-					var result = SystemErrorItemCollection.RetrieveSystemErrorItemCollection("AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -54735,20 +53069,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static InformationSource RetrieveInformationSource(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationSource) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationSource), null, owner);
-                    return result;
-                }
-
-				public static InformationSource RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationSource.RetrieveInformationSource("Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
-					var result = InformationSource.RetrieveInformationSource("AaltoGlobalImpact.OIP/InformationSource/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName);
@@ -55173,20 +53493,6 @@ SystemErrorItem.LongDescription
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static InformationSourceCollection RetrieveInformationSourceCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (InformationSourceCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(InformationSourceCollection), null, owner);
-                    return result;
-                }
-
-				public static InformationSourceCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = InformationSourceCollection.RetrieveInformationSourceCollection("Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
-					var result = InformationSourceCollection.RetrieveInformationSourceCollection("AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -55666,20 +53972,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static RefreshDefaultViewsOperation RetrieveRefreshDefaultViewsOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (RefreshDefaultViewsOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(RefreshDefaultViewsOperation), null, owner);
-                    return result;
-                }
-
-				public static RefreshDefaultViewsOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = RefreshDefaultViewsOperation.RetrieveRefreshDefaultViewsOperation("Content/AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/" + contentName, containerOwner);
-					var result = RefreshDefaultViewsOperation.RetrieveRefreshDefaultViewsOperation("AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/" + contentName);
@@ -56036,20 +54328,6 @@ SystemErrorItem.LongDescription
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static UpdateWebContentOperation RetrieveUpdateWebContentOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (UpdateWebContentOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentOperation), null, owner);
-                    return result;
-                }
-
-				public static UpdateWebContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
-					var result = UpdateWebContentOperation.RetrieveUpdateWebContentOperation("AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -56499,20 +54777,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static UpdateWebContentHandlerItem RetrieveUpdateWebContentHandlerItem(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (UpdateWebContentHandlerItem) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentHandlerItem), null, owner);
-                    return result;
-                }
-
-				public static UpdateWebContentHandlerItem RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
-					var result = UpdateWebContentHandlerItem.RetrieveUpdateWebContentHandlerItem("AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName);
@@ -56869,20 +55133,6 @@ SystemErrorItem.LongDescription
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static UpdateWebContentHandlerCollection RetrieveUpdateWebContentHandlerCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (UpdateWebContentHandlerCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(UpdateWebContentHandlerCollection), null, owner);
-                    return result;
-                }
-
-				public static UpdateWebContentHandlerCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("Content/AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
-					var result = UpdateWebContentHandlerCollection.RetrieveUpdateWebContentHandlerCollection("AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -57362,20 +55612,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static PublishWebContentOperation RetrievePublishWebContentOperation(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (PublishWebContentOperation) StorageSupport.RetrieveInformation(relativeLocation, typeof(PublishWebContentOperation), null, owner);
-                    return result;
-                }
-
-				public static PublishWebContentOperation RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = PublishWebContentOperation.RetrievePublishWebContentOperation("Content/AaltoGlobalImpact.OIP/PublishWebContentOperation/" + contentName, containerOwner);
-					var result = PublishWebContentOperation.RetrievePublishWebContentOperation("AaltoGlobalImpact.OIP/PublishWebContentOperation/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/PublishWebContentOperation/" + contentName);
@@ -57758,20 +55994,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static SubscriberInput RetrieveSubscriberInput(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriberInput) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriberInput), null, owner);
-                    return result;
-                }
-
-				public static SubscriberInput RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriberInput.RetrieveSubscriberInput("Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
-					var result = SubscriberInput.RetrieveSubscriberInput("AaltoGlobalImpact.OIP/SubscriberInput/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
@@ -58152,20 +56374,6 @@ SystemErrorItem.LongDescription
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static Monitor RetrieveMonitor(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (Monitor) StorageSupport.RetrieveInformation(relativeLocation, typeof(Monitor), null, owner);
-                    return result;
-                }
-
-				public static Monitor RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = Monitor.RetrieveMonitor("Content/AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
-					var result = Monitor.RetrieveMonitor("AaltoGlobalImpact.OIP/Monitor/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -58582,20 +56790,6 @@ SystemErrorItem.LongDescription
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static IconTitleDescription RetrieveIconTitleDescription(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (IconTitleDescription) StorageSupport.RetrieveInformation(relativeLocation, typeof(IconTitleDescription), null, owner);
-                    return result;
-                }
-
-				public static IconTitleDescription RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = IconTitleDescription.RetrieveIconTitleDescription("Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
-					var result = IconTitleDescription.RetrieveIconTitleDescription("AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
@@ -58964,20 +57158,6 @@ IconTitleDescription.Description
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static AboutAGIApplications RetrieveAboutAGIApplications(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (AboutAGIApplications) StorageSupport.RetrieveInformation(relativeLocation, typeof(AboutAGIApplications), null, owner);
-                    return result;
-                }
-
-				public static AboutAGIApplications RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = AboutAGIApplications.RetrieveAboutAGIApplications("Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
-					var result = AboutAGIApplications.RetrieveAboutAGIApplications("AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)

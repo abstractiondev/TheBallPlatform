@@ -84,7 +84,7 @@ namespace TheBall.CORE
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
             VirtualOwner owner = VirtualOwner.FigureOwner(informationInput);
-            return AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(owner, authenticationID);
+            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
     }
 }

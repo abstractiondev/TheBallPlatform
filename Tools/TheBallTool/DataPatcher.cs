@@ -429,60 +429,6 @@ namespace TheBallTool
             }
         }
 
-        private static void testProcessWithWeconomySiteMigration(bool requestRemoteExecution)
-        {
-            throw new NotSupportedException("Not supported to rerun on content that's been altered after! - if this is known to happen, rerun conversion will replace/fix it in wrong kind of way");
-            //VirtualOwner owner = new VirtualOwner("grp", "d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
-            //VirtualOwner owner = new VirtualOwner("grp", "a6277825-83d0-46e5-b38f-e2fa1592629a");
-            VirtualOwner owner = null;
-            string processContainerName = "default";
-            ProcessContainer container = ProcessContainer.RetrieveFromOwnerContent(owner, processContainerName);
-            if (container == null)
-            {
-                container = new ProcessContainer();
-                container.SetLocationAsOwnerContent(owner, "default");
-            }
-            var migrationProcessID = container.ProcessIDs.SingleOrDefault();
-            Process migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcessID);
-            if (migrationProcess == null)
-            {
-                migrationProcess = new Process();
-                migrationProcess.SetLocationAsOwnerContent(owner, migrationProcess.ID);
-                container.ProcessIDs.Add(migrationProcess.ID);
-                migrationProcess.ProcessDescription = "Patch created AGI content migration process";
-                migrationProcess.ExecutingOperation = new SemanticInformationItem(
-                    "AaltoGlobalImpact.OIP.MigrateActivitiesAndBlogsToTextContents", null);
-                //migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/9798daca-afc4-4046-a99b-d0d88bb364e0"));
-                migrationProcess.InitialArguments.Add(new SemanticInformationItem("InputRoot", "WTMP/a0ea605a-1a3e-4424-9807-77b5423d615c"));
-                migrationProcess.StoreInformation(owner);
-            }
-            try
-            {
-                InformationContext.Current.Owner = owner;
-                if (requestRemoteExecution)
-                {
-                    RequestProcessExecution.Execute(new RequestProcessExecutionParameters
-                        {
-                            Owner = owner,
-                            ProcessID = migrationProcess.ID,
-                        });
-                }
-                else
-                {
-                    ExecuteProcess.Execute(new ExecuteProcessParameters { ProcessID = migrationProcess.ID });
-                    migrationProcess = Process.RetrieveFromOwnerContent(owner, migrationProcess.ID);
-                    container.ProcessIDs.Clear();
-                    container.ProcessIDs.Add(migrationProcess.ID);
-                }
-                container.StoreInformation();
-            }
-            finally
-            {
-                InformationContext.ProcessAndClearCurrent();
-                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-            }
-        }
-
         private static void PatchSubscriptionsToSubmitted()
         {
             string subscriptionChainLocation = SubscribeSupport.ChainRequestDirectory;
@@ -526,7 +472,7 @@ namespace TheBallTool
             {
                 if (tcBlob.Properties.LastModifiedUtc >= patchModifiedBeforeLimit)
                     continue;
-                var textContent = TextContent.RetrieveTextContent(tcBlob.Name, owner);
+                var textContent = ObjectStorage.RetrieveObject<TextContent>(tcBlob.Name, owner);
                 if (String.IsNullOrEmpty(textContent.RawHtmlContent))
                 {
                     textContent.RawHtmlContent = textContent.Body;

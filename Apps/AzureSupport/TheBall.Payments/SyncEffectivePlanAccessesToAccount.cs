@@ -31,7 +31,7 @@ namespace TheBall.Payments
 
         public static CustomerAccount GetTarget_Account(string accountID)
         {
-            return CustomerAccount.RetrieveFromOwnerContent(InformationContext.CurrentOwner, accountID);
+            return ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(InformationContext.CurrentOwner, accountID);
         }
 
         public static GroupSubscriptionPlan[] GetTarget_CurrentPlansBeforeSync(CustomerAccount account)
@@ -40,7 +40,7 @@ namespace TheBall.Payments
             var planStatuses =
                 subscriptionPlanStatusIDs.Select(
                     planStatusID =>
-                        SubscriptionPlanStatus.RetrieveFromOwnerContent(InformationContext.CurrentOwner, planStatusID))
+                        ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, planStatusID))
                     .Where(status => status != null).ToArray();
             var plans = planStatuses.Select(planStatus => GetGroupSubscriptionPlan(planStatus.SubscriptionPlan)).ToArray();
             return plans;
@@ -129,7 +129,7 @@ namespace TheBall.Payments
             var currentStatuses =
                 currentStatusIDs.Select(
                     statusID =>
-                        SubscriptionPlanStatus.RetrieveFromOwnerContent(InformationContext.CurrentOwner, statusID))
+                        ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, statusID))
                     .Where(status => status != null).ToArray();
             var statusesToRemove =
                 currentStatuses.Where(status => activePlanIDs.All(planID => planID != status.SubscriptionPlan))

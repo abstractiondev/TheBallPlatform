@@ -12,7 +12,7 @@ namespace TheBall.CORE
     {
         public static InformationOutput GetTarget_InformationOutput(IContainerOwner owner, string informationOutputId)
         {
-            return InformationOutput.RetrieveFromOwnerContent(owner, informationOutputId);
+            return ObjectStorage.RetrieveFromOwnerContent<InformationOutput>(owner, informationOutputId);
         }
 
         public static void ExecuteMethod_VerifyValidOutput(InformationOutput informationOutput)
@@ -50,7 +50,7 @@ namespace TheBall.CORE
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
             VirtualOwner owner = VirtualOwner.FigureOwner(informationOutput);
-            return AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(owner, authenticationID);
+            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
 
         public static void ExecuteMethod_PushToInformationOutput(IContainerOwner owner, InformationOutput informationOutput, string destinationUrl, string destinationContentName, string localContentUrl, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

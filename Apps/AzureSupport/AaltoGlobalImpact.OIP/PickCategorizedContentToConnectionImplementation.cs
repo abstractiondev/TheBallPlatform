@@ -12,7 +12,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static Connection GetTarget_Connection(string connectionId)
         {
-            Connection connection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+            Connection connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
                                                                         connectionId);
             return connection;
         }
@@ -25,7 +25,7 @@ namespace AaltoGlobalImpact.OIP
                               tCat => tCat.NativeCategoryDomainName == "AaltoGlobalImpact.OIP" &&
                                       tCat.NativeCategoryObjectName == "Category")
                           .ToArray();
-            CategoryCollection categoryCollection = CategoryCollection.RetrieveFromOwnerContent(
+            CategoryCollection categoryCollection = ObjectStorage.RetrieveFromOwnerContent<CategoryCollection>(
                 InformationContext.CurrentOwner, "MasterCollection");
             var sourceCategoryDict = categoryCollection.CollectionContent.ToDictionary(cat => cat.ID);
             var sourceCategoryList = categoryCollection.CollectionContent;
@@ -63,20 +63,20 @@ namespace AaltoGlobalImpact.OIP
         public static string[] GetTarget_ContentToTransferLocations(Dictionary<string, Category> categoriesToTransfer)
         {
             BinaryFileCollection binaryFiles =
-                BinaryFileCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                ObjectStorage.RetrieveFromOwnerContent<BinaryFileCollection>(InformationContext.CurrentOwner,
                                                               "MasterCollection");
             LinkToContentCollection linkToContents =
-                LinkToContentCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                ObjectStorage.RetrieveFromOwnerContent<LinkToContentCollection>(InformationContext.CurrentOwner,
                                                                  "MasterCollection");
             EmbeddedContentCollection embeddedContents =
-                EmbeddedContentCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                ObjectStorage.RetrieveFromOwnerContent<EmbeddedContentCollection>(InformationContext.CurrentOwner,
                                                                    "MasterCollection");
             ImageCollection images =
-                ImageCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                ObjectStorage.RetrieveFromOwnerContent<ImageCollection>(InformationContext.CurrentOwner,
                                                          "MasterCollection");
 
             TextContentCollection textContents =
-                TextContentCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                ObjectStorage.RetrieveFromOwnerContent<TextContentCollection>(InformationContext.CurrentOwner,
                                                                "MasterCollection");
             var locationCategoriesTuplesWithMedia = binaryFiles.CollectionContent
                                                                .Select(getBinaryFileTuple)

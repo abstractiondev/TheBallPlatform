@@ -65,7 +65,7 @@ namespace TheBall.Payments
             var ownerID = owner.GetIDFromLocationPrefix();
             if(ownerID != InstanceConfiguration.PaymentsGroupID)
                 throw new SecurityException("Not supported payment owner ID: " + ownerID);
-            CustomerAccount customerAccount = CustomerAccount.RetrieveFromOwnerContent(owner, accountID);
+            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountID);
             if (customerAccount == null)
             {
                 customerAccount = new CustomerAccount();

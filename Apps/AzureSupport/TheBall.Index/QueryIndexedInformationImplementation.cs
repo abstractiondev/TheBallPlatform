@@ -15,7 +15,7 @@ namespace TheBall.Index
     {
         public static QueryRequest GetTarget_QueryRequest(IContainerOwner owner, string queryRequestId)
         {
-            return QueryRequest.RetrieveFromOwnerContent(owner, queryRequestId);
+            return ObjectStorage.RetrieveFromOwnerContent<QueryRequest>(owner, queryRequestId);
         }
 
         public static string GetTarget_LuceneIndexFolder(IContainerOwner owner, string indexName, string indexStorageRootPath)

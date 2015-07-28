@@ -203,20 +203,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static GroupSubscriptionPlanCollection RetrieveGroupSubscriptionPlanCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupSubscriptionPlanCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupSubscriptionPlanCollection), null, owner);
-                    return result;
-                }
-
-				public static GroupSubscriptionPlanCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupSubscriptionPlanCollection.RetrieveGroupSubscriptionPlanCollection("Content/TheBall.Payments/GroupSubscriptionPlanCollection/" + contentName, containerOwner);
-					var result = GroupSubscriptionPlanCollection.RetrieveGroupSubscriptionPlanCollection("TheBall.Payments/GroupSubscriptionPlanCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/GroupSubscriptionPlanCollection/" + contentName);
@@ -436,7 +422,7 @@ namespace INT {
 
 				public static GroupSubscriptionPlanCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return GroupSubscriptionPlanCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<GroupSubscriptionPlanCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -716,20 +702,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static GroupSubscriptionPlan RetrieveGroupSubscriptionPlan(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (GroupSubscriptionPlan) StorageSupport.RetrieveInformation(relativeLocation, typeof(GroupSubscriptionPlan), null, owner);
-                    return result;
-                }
-
-				public static GroupSubscriptionPlan RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = GroupSubscriptionPlan.RetrieveGroupSubscriptionPlan("Content/TheBall.Payments/GroupSubscriptionPlan/" + contentName, containerOwner);
-					var result = GroupSubscriptionPlan.RetrieveGroupSubscriptionPlan("TheBall.Payments/GroupSubscriptionPlan/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/GroupSubscriptionPlan/" + contentName);
@@ -1000,20 +972,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static SubscriptionPlanStatus RetrieveSubscriptionPlanStatus(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (SubscriptionPlanStatus) StorageSupport.RetrieveInformation(relativeLocation, typeof(SubscriptionPlanStatus), null, owner);
-                    return result;
-                }
-
-				public static SubscriptionPlanStatus RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = SubscriptionPlanStatus.RetrieveSubscriptionPlanStatus("Content/TheBall.Payments/SubscriptionPlanStatus/" + contentName, containerOwner);
-					var result = SubscriptionPlanStatus.RetrieveSubscriptionPlanStatus("TheBall.Payments/SubscriptionPlanStatus/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
@@ -1352,20 +1310,6 @@ namespace INT {
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
 				}
 
-
-                public static CustomerAccountCollection RetrieveCustomerAccountCollection(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CustomerAccountCollection) StorageSupport.RetrieveInformation(relativeLocation, typeof(CustomerAccountCollection), null, owner);
-                    return result;
-                }
-
-				public static CustomerAccountCollection RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CustomerAccountCollection.RetrieveCustomerAccountCollection("Content/TheBall.Payments/CustomerAccountCollection/" + contentName, containerOwner);
-					var result = CustomerAccountCollection.RetrieveCustomerAccountCollection("TheBall.Payments/CustomerAccountCollection/" + contentName, containerOwner);
-					return result;
-				}
-
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
                 {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/CustomerAccountCollection/" + contentName);
@@ -1585,7 +1529,7 @@ namespace INT {
 
 				public static CustomerAccountCollection GetMasterCollectionInstance(IContainerOwner owner)
 				{
-					return CustomerAccountCollection.RetrieveFromOwnerContent(owner, "MasterCollection");
+					return ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(owner, "MasterCollection");
 				}
 
 				public void SubscribeToContentSource()
@@ -1863,20 +1807,6 @@ namespace INT {
 					bool initiated;
 					IInformationObject iObject = this;
 					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-
-                public static CustomerAccount RetrieveCustomerAccount(string relativeLocation, IContainerOwner owner = null)
-                {
-                    var result = (CustomerAccount) StorageSupport.RetrieveInformation(relativeLocation, typeof(CustomerAccount), null, owner);
-                    return result;
-                }
-
-				public static CustomerAccount RetrieveFromOwnerContent(IContainerOwner containerOwner, string contentName)
-				{
-					// var result = CustomerAccount.RetrieveCustomerAccount("Content/TheBall.Payments/CustomerAccount/" + contentName, containerOwner);
-					var result = CustomerAccount.RetrieveCustomerAccount("TheBall.Payments/CustomerAccount/" + contentName, containerOwner);
-					return result;
 				}
 
 				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)

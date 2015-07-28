@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
         public static GroupContainer GetTarget_GroupInternalContainer(string groupID)
         {
             VirtualOwner owner = new VirtualOwner("grp", groupID);
-            var groupContainer = GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            var groupContainer = ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
             return groupContainer;
         }
 

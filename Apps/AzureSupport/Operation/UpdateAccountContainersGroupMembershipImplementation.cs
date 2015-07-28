@@ -10,7 +10,7 @@ namespace AaltoGlobalImpact.OIP
         public static AccountContainer GetTarget_AccountContainer(string accountID)
         {
             VirtualOwner owner = new VirtualOwner("acc", accountID);
-            var accountContainer = AccountContainer.RetrieveFromOwnerContent(owner, "default");
+            var accountContainer = ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(owner, "default");
             if (accountContainer == null)
             {
                 accountContainer = AccountContainer.CreateDefault();
@@ -23,7 +23,7 @@ namespace AaltoGlobalImpact.OIP
         public static GroupSummaryContainer GetTarget_GroupSummaryContainer(string accountID)
         {
             VirtualOwner owner = new VirtualOwner("acc", accountID);
-            var groupSummaryContainer = GroupSummaryContainer.RetrieveFromOwnerContent(owner, "default");
+            var groupSummaryContainer = ObjectStorage.RetrieveFromOwnerContent<GroupSummaryContainer>(owner, "default");
             if (groupSummaryContainer == null)
             {
                 groupSummaryContainer = GroupSummaryContainer.CreateDefault();
@@ -99,7 +99,7 @@ namespace AaltoGlobalImpact.OIP
         public static GroupContainer GetTarget_GroupContainer(TBRGroupRoot groupRoot)
         {
             VirtualOwner groupOwner = new VirtualOwner("grp", groupRoot.Group.ID);
-            var groupContainer = GroupContainer.RetrieveFromOwnerContent(groupOwner, "default");
+            var groupContainer = ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(groupOwner, "default");
             if (groupContainer == null)
             {
                 groupContainer = GroupContainer.CreateDefault();

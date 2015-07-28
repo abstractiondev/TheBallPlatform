@@ -39,7 +39,7 @@ namespace AaltoGlobalImpact.OIP
                 if(foundIndex >= 0)
                     foundBlobs.Add(blob);
             }
-            return foundBlobs.Select(blob => TBRLoginGroupRoot.RetrieveTBRLoginGroupRoot(blob.Name)).ToArray();
+            return foundBlobs.Select(blob => ObjectStorage.RetrieveObject<TBRLoginGroupRoot>(blob.Name)).ToArray();
         }
 
         public static void ExecuteMethod_SynchronizeLoginGroupRoots(TBRAccountRoot accountRoot, TBRLoginGroupRoot[] loginGroupRoots)

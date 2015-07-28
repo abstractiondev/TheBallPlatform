@@ -26,7 +26,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static ContentCategoryRankCollection GetTarget_ContentRankingCollection()
         {
-            return ContentCategoryRankCollection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+            return ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRankCollection>(InformationContext.CurrentOwner,
                 "MasterCollection");
         }
 
@@ -58,7 +58,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 try
                 {
-                    var iObj = ContentCategoryRank.RetrieveFromOwnerContent(owner, itemToDelete.ID);
+                    var iObj = ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRank>(owner, itemToDelete.ID);
                     iObj.DeleteInformationObject();
                 }
                 catch 
@@ -87,7 +87,7 @@ namespace AaltoGlobalImpact.OIP
             {
                 try
                 {
-                    var iObj = ContentCategoryRank.RetrieveFromOwnerContent(owner, itemToModify.CurrentItem.ID);
+                    var iObj = ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRank>(owner, itemToModify.CurrentItem.ID);
                     iObj.RankValue = itemToModify.ModifiedItem.RankValue;
                     iObj.StoreInformation(owner);
                 }

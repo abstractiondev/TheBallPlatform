@@ -13,7 +13,7 @@ namespace AaltoGlobalImpact.OIP
         public static AccountContainer GetTarget_AccountContainer(TBRAccountRoot accountRoot)
         {
             TBAccount account = accountRoot.Account;
-            AccountContainer accountContainer = AccountContainer.RetrieveFromOwnerContent(account, "default");
+            AccountContainer accountContainer = ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(account, "default");
             if (accountContainer == null)
             {
                 accountContainer = AccountContainer.CreateDefault();

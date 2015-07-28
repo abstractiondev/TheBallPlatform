@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using AzureSupport.TheBall.CORE;
 using TheBall.CORE;
 
 namespace TheBall
@@ -12,9 +14,10 @@ namespace TheBall
             return RetrieveObject<T>(relativeLocation, owner);
         }
 
-        private static T RetrieveObject<T>(string relativeLocation, IContainerOwner owner)
+        public static T RetrieveObject<T>(string relativeLocation, IContainerOwner owner = null)
         {
-            return (T) StorageSupport.RetrieveInformation(relativeLocation, typeof (T));
+            var result = (T) StorageSupport.RetrieveInformation(relativeLocation, typeof (T));
+            return result;
         }
 
         public static string GetRelativeLocationFromID<T>(string id)
@@ -23,5 +26,16 @@ namespace TheBall
             string className = typeof (T).Name;
             return Path.Combine(namespaceName, className, id).Replace("\\", "/");
         }
+
+        public static T RetrieveFromOwnerContent<T>(IContainerOwner containerOwner, string contentName)
+        {
+            string namespaceName = typeof (T).Namespace;
+            string className = typeof (T).Name;
+            string locationPath = String.Format("{0}/{1}/{2}", namespaceName, className, contentName);
+            var result = RetrieveObject<T>(locationPath, containerOwner);
+            return result;
+        }
+
+
     }
 }

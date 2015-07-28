@@ -38,7 +38,7 @@ namespace TheBall.Payments
             string accountEmail = InformationContext.CurrentAccount.AccountEmail;
             if (String.IsNullOrEmpty(accountEmail))
                 throw new SecurityException("Cannot get customer account without valid email");
-            CustomerAccount customerAccount = CustomerAccount.RetrieveFromOwnerContent(owner, accountId);
+            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountId);
             if (customerAccount == null)
             {
                 customerAccount = new CustomerAccount();

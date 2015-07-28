@@ -12,7 +12,7 @@ namespace TheBall.Interface
     {
         public static Connection GetTarget_Connection(string connectionId)
         {
-            Connection connection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+            Connection connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
                                                                         connectionId);
             return connection;
         }
@@ -106,7 +106,7 @@ namespace TheBall.Interface
                 {
                     if (retryCount-- <= 0)
                         throw;
-                    connection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner, connection.ID);
+                    connection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner, connection.ID);
                     connection.OutgoingPackages.Add(transferPackage);
                 }
             }

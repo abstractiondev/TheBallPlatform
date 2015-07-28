@@ -35,7 +35,7 @@ namespace TheBall.Interface
             {
                 try
                 {
-                    var statusSummary = StatusSummary.RetrieveFromOwnerContent(owner, "default");
+                    var statusSummary = ObjectStorage.RetrieveFromOwnerContent<StatusSummary>(owner, "default");
                     if (statusSummary == null)
                     {
                         statusSummary = new StatusSummary();

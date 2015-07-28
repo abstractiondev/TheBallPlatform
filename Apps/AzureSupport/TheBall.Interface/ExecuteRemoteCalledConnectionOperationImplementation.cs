@@ -33,7 +33,7 @@ namespace TheBall.Interface
                                 ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
                                 ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
                             });
-                        Connection thisSideConnection = Connection.RetrieveFromOwnerContent(InformationContext.CurrentOwner,
+                        Connection thisSideConnection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
                                                                                             connectionCommunicationData.ReceivingSideConnectionID);
                         thisSideConnection.OtherSideCategories.Clear();
                         thisSideConnection.OtherSideCategories.AddRange(connectionCommunicationData.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()));

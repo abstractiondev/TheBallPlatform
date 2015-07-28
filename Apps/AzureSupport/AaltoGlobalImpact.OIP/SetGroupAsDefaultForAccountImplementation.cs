@@ -7,7 +7,7 @@ namespace AaltoGlobalImpact.OIP
     {
         public static AccountContainer GetTarget_AccountContainer()
         {
-            return AccountContainer.RetrieveFromOwnerContent(InformationContext.CurrentOwner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(InformationContext.CurrentOwner, "default");
         }
 
         public static string GetTarget_RedirectFromFolderBlobName()

@@ -4,7 +4,7 @@ namespace TheBall.CORE
     {
         public static InformationOutput GetTarget_InformationOutput(IContainerOwner owner, string informationOutputId)
         {
-            return InformationOutput.RetrieveFromOwnerContent(owner, informationOutputId);
+            return ObjectStorage.RetrieveFromOwnerContent<InformationOutput>(owner, informationOutputId);
         }
 
         public static void ExecuteMethod_SetInputValidAndActiveValue(bool isValidAndActive, InformationOutput informationOutput)

@@ -11,7 +11,7 @@ namespace TheBall.Payments
         public static CustomerAccount GetTarget_CustomerAccount(string accountId)
         {
             var owner = InformationContext.CurrentOwner;
-            CustomerAccount customerAccount = CustomerAccount.RetrieveFromOwnerContent(owner, accountId);
+            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountId);
             return customerAccount;
         }
 

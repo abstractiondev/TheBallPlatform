@@ -14,7 +14,7 @@ namespace TheBall.CORE
 
         public static GroupContainer GetTarget_GroupContainer(IContainerOwner groupAsOwner)
         {
-            return GroupContainer.RetrieveFromOwnerContent(groupAsOwner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(groupAsOwner, "default");
         }
 
         public static void ExecuteMethod_ValidateGroupContainerID(string groupId, GroupContainer groupContainer)

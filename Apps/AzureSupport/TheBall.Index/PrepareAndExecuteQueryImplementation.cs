@@ -11,7 +11,7 @@ namespace TheBall.Index
         {
             string queryRequestID = IndexSupport.GetRequestID(indexName, queryString, defaultFieldName);
             var owner = InformationContext.CurrentOwner;
-            QueryRequest queryRequest = QueryRequest.RetrieveFromOwnerContent(owner, queryRequestID);
+            QueryRequest queryRequest = ObjectStorage.RetrieveFromOwnerContent<QueryRequest>(owner, queryRequestID);
             if (queryRequest == null)
             {
                 queryRequest = new QueryRequest();

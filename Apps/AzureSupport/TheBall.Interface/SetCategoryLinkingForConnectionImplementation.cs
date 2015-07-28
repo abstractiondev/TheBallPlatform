@@ -23,7 +23,7 @@ namespace TheBall.Interface
 
         public static Connection GetTarget_Connection(CategoryLinkParameters categoryLinkingParameters)
         {
-            return Connection.RetrieveFromOwnerContent(Owner, categoryLinkingParameters.ConnectionID);
+            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, categoryLinkingParameters.ConnectionID);
         }
 
         public static void ExecuteMethod_SetConnectionLinkingData(Connection connection, CategoryLinkParameters categoryLinkingParameters)

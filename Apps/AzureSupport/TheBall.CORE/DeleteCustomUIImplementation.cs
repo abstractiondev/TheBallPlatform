@@ -8,7 +8,7 @@ namespace TheBall.CORE
     {
         public static GroupContainer GetTarget_GroupContainer(IContainerOwner owner)
         {
-            return GroupContainer.RetrieveFromOwnerContent(owner, "default");
+            return ObjectStorage.RetrieveFromOwnerContent<GroupContainer>(owner, "default");
         }
 
         public static string GetTarget_CustomUIFolder(IContainerOwner owner, string customUiName)

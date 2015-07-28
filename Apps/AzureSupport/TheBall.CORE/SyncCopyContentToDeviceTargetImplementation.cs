@@ -9,7 +9,7 @@ namespace TheBall.CORE
     {
         public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(string authenticatedAsActiveDeviceId)
         {
-            return AuthenticatedAsActiveDevice.RetrieveFromOwnerContent(InformationContext.CurrentOwner, authenticatedAsActiveDeviceId);
+            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, authenticatedAsActiveDeviceId);
         }
 
         public static string GetTarget_ContentRootLocation(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

@@ -104,7 +104,7 @@ namespace WebInterface
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
             string contentName = authTokens[3];
-            DeviceMembership deviceMembership = DeviceMembership.RetrieveFromOwnerContent(owner, trustID);
+            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(owner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
@@ -371,7 +371,7 @@ namespace WebInterface
             if (loginRoot != null)
             {
                 var currAccount = loginRoot.Account;
-                var accountContainer = AccountContainer.RetrieveFromOwnerContent(currAccount, "default");
+                var accountContainer = ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(currAccount, "default");
                 string accountName;
                 string accountID = currAccount.ID;
                 string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
