@@ -44,6 +44,16 @@ namespace TheBall
             return result;
         }
 
+        public static async Task<T> RetrieveFromOwnerContentA<T>(IContainerOwner containerOwner, string contentName)
+        {
+            string namespaceName = typeof(T).Namespace;
+            string className = typeof(T).Name;
+            string locationPath = String.Format("{0}/{1}/{2}", namespaceName, className, contentName);
+            var result = await RetrieveObjectA<T>(locationPath, containerOwner);
+            return result;
+        }
+
+
         public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null)
         {
             var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T));

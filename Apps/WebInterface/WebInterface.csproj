@@ -239,6 +239,7 @@
     <Compile Include="AuthorizedBlobStorageHandler.cs" />
     <Compile Include="AnonymousBlobStorageHandler.cs" />
     <Compile Include="AuthorizedRouteHandler.cs" />
+    <Compile Include="CacheSupport.cs" />
     <Compile Include="DynamicData\Content\GridViewPager.ascx.cs">
       <DependentUpon>GridViewPager.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

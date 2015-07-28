@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
@@ -252,14 +253,14 @@ namespace WebInterface
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
                 if (contentPath.StartsWith("op/"))
                 {
-                    SetCurrentAccountFromLogin(context);
+                    await SetCurrentAccountFromLogin(context);
                     await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
                 }
                 else
                 {
                     try // Piloting POST account identifying for InformationContext
                     {
-                        SetCurrentAccountFromLogin(context);
+                        await SetCurrentAccountFromLogin(context);
                     }
                     catch // We don't want any errors for this piloting
                     {
@@ -363,22 +364,21 @@ namespace WebInterface
             throw new NotSupportedException("Old legacy update no longer supported");
         }
 
-        private static void SetCurrentAccountFromLogin(HttpContext context)
+        private static async Task SetCurrentAccountFromLogin(HttpContext context)
         {
             var loginUrl = context.User.Identity.Name;
             string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            TBRLoginRoot loginRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRLoginRoot>(loginID);
+            TBRLoginRoot loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginID);
             if (loginRoot != null)
             {
                 var currAccount = loginRoot.Account;
-                var accountContainer = ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(currAccount, "default");
+                var accountContainer = await ObjectStorage.RetrieveFromOwnerContentA<AccountContainer>(currAccount, "default");
                 string accountName;
                 string accountID = currAccount.ID;
                 string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
                 if (accountEmail == null)
                     accountEmail = "";
-                if (accountContainer != null && accountContainer.AccountModule != null &&
-                    accountContainer.AccountModule.Profile != null)
+                if (accountContainer?.AccountModule?.Profile != null)
                 {
                     accountName = string.Format("{0} {1}",
                         accountContainer.AccountModule.Profile.FirstName,
@@ -568,7 +568,8 @@ namespace WebInterface
             // even when we wouldn't want them on 304 response...
             //var request = context.Request;
             //request.
-            response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
+            var maxAge = CacheSupport.GetExtensionBasedMaxAge(Path.GetExtension(blob.Name));
+            response.Cache.SetMaxAge(maxAge);
             response.Cache.SetCacheability(HttpCacheability.Private);
             var request = context.Request;
             await Task.Factory.FromAsync(blob.BeginFetchAttributes, blob.EndFetchAttributes, null);
@@ -759,5 +760,4 @@ namespace WebInterface
 
         #endregion
     }
-
 }
