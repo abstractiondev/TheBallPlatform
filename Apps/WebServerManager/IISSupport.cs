@@ -27,13 +27,15 @@ namespace TheBall.Infra.WebServerManager
                 appPool.ManagedPipelineMode = ManagedPipelineMode.Integrated;
                 appPool.ManagedRuntimeVersion = "v4.0";
                 appPool.ProcessModel.IdentityType = ProcessModelIdentityType.NetworkService;
+                appPool.AutoStart = true;
+                appPool.StartMode = StartMode.AlwaysRunning;
                 //iisManager.CommitChanges();
             }
             sites = iisManager.Sites;
             string bindingInformation = String.Format("*:443:{0}", hostAndSiteName);
-            existingSite = sites.Add(hostAndSiteName, "https", bindingInformation, websiteFolder);
-            existingSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
-            var binding = existingSite.Bindings[0];
+            var newSite = sites.Add(hostAndSiteName, "https", bindingInformation, websiteFolder);
+            newSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
+            var binding = newSite.Bindings[0];
             binding.SslFlags = SslFlags.CentralCertStore | SslFlags.Sni;
             iisManager.CommitChanges();
             return sites[hostAndSiteName];
