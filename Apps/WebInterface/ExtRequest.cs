@@ -14,12 +14,12 @@ namespace WebInterface
     {
         private const string AuthPersonalPrefix = "/auth/account/";
         private const string AuthGroupPrefix = "/auth/grp/";
-        private const string AuthAccountPrefix = "/auth/acc/";
+        //private const string AuthAccountPrefix = "/auth/acc/";
         private const string AuthPrefix = "/auth/";
         private const string AboutPrefix = "/about/";
         private static int AuthGroupPrefixLen;
         private static int AuthPersonalPrefixLen;
-        private static int AuthAccountPrefixLen;
+        //private static int AuthAccountPrefixLen;
         private static int AuthProcPrefixLen;
         private static int AuthPrefixLen;
         private static int GuidIDLen;
@@ -28,7 +28,7 @@ namespace WebInterface
         {
             AuthGroupPrefixLen = AuthGroupPrefix.Length;
             AuthPersonalPrefixLen = AuthPersonalPrefix.Length;
-            AuthAccountPrefixLen = AuthAccountPrefix.Length;
+            //AuthAccountPrefixLen = AuthAccountPrefix.Length;
             AuthPrefixLen = AuthPrefix.Length;
             GuidIDLen = Guid.Empty.ToString().Length;
         }
@@ -62,19 +62,9 @@ namespace WebInterface
             return isPersonalRequest(request.Path);
         }
 
-        public static bool IsAccountRequest(this HttpRequest request)
-        {
-            return isAccountRequest(request.Path);
-        }
-
         private static bool isGroupRequest(string path)
         {
             return path.StartsWith(AuthGroupPrefix);
-        }
-
-        private static bool isAccountRequest(string path)
-        {
-            return path.StartsWith(AuthAccountPrefix);
         }
 
         private static bool isPersonalRequest(string path)
@@ -86,8 +76,6 @@ namespace WebInterface
         {
             if(request.IsGroupRequest())
                 return request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            else if (request.IsAccountRequest())
-                return request.Path.Substring(AuthAccountPrefixLen + 1 + GuidIDLen + 1);
             else if (request.IsPersonalRequest())
                 return request.Path.Substring(AuthPersonalPrefixLen);
             throw new InvalidDataException("Owner content path not recognized properly: " + request.Path);
@@ -101,8 +89,6 @@ namespace WebInterface
                 return String.Empty;
             if(isGroupRequest(referrerPath))
                 return referrerPath.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            else if (isAccountRequest(referrerPath))
-                return referrerPath.Substring(AuthAccountPrefixLen + 1 + GuidIDLen + 1);
             else if (isPersonalRequest(referrerPath))
                 return referrerPath.Substring(AuthPersonalPrefixLen);
             throw new InvalidDataException("Owner content path not recognized properly: " + referrerPath);

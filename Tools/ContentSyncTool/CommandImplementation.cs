@@ -77,7 +77,11 @@ namespace ContentSyncTool
 
         public static void createConnection(CreateConnectionSubOptions createConnectionSubOptions)
         {
-            ClientExecute.CreateConnection(createConnectionSubOptions.HostName, createConnectionSubOptions.GroupID, createConnectionSubOptions.ConnectionName);
+            if ((createConnectionSubOptions.GroupID != null && createConnectionSubOptions.EmailAddress != null) ||
+                (createConnectionSubOptions.GroupID == null && createConnectionSubOptions.EmailAddress == null))
+                throw new ArgumentException("Either group or email address must be given, but not both");
+            string connectionTarget = createConnectionSubOptions.GroupID ?? createConnectionSubOptions.EmailAddress;
+            ClientExecute.CreateConnection(createConnectionSubOptions.HostName, connectionTarget, createConnectionSubOptions.ConnectionName);
         }
 
         public static void setStaging(SetStagingSubOptions setStagingSubOptions)

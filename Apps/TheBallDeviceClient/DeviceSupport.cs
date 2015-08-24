@@ -16,7 +16,7 @@ namespace TheBall.Support.DeviceClient
         }
 
         
-        public const string OperationPrefixStr = "OP-";
+        public const string OperationPrefixStr = "op/";
 
         public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
         {
@@ -35,7 +35,9 @@ namespace TheBall.Support.DeviceClient
 
         private static object executeRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
+            string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
+            string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
             aes.KeySize = AES_KEYSIZE;
@@ -46,9 +48,9 @@ namespace TheBall.Support.DeviceClient
             aes.Mode = AES_MODE;
             aes.FeedbackSize = AES_FEEDBACK_SIZE;
             var ivBase64 = Convert.ToBase64String(aes.IV);
-            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 
-                + ":" + device.EstablishedTrustID 
-                + ":" + String.Format("{0}{1}", OperationPrefixStr, operationName));
+            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64
+                                                 + ":" + device.EstablishedTrustID
+                                                 + ":" + device.AccountEmail);
             var requestStream = request.GetRequestStream();
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
             using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
@@ -104,7 +106,7 @@ namespace TheBall.Support.DeviceClient
             aes.Mode = AES_MODE;
             aes.FeedbackSize = AES_FEEDBACK_SIZE;
             var ivBase64 = Convert.ToBase64String(aes.IV);
-            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + device.EstablishedTrustID + ":" + destinationContentName);
+            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + device.EstablishedTrustID + ":" + device.AccountEmail);
             var requestStream = request.GetRequestStream();
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
             var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
@@ -123,7 +125,7 @@ namespace TheBall.Support.DeviceClient
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
-            request.Headers.Add("Authorization", "DeviceAES::" + establishedTrustID + ":");
+            request.Headers.Add("Authorization", "DeviceAES::" + establishedTrustID + ":" + device.AccountEmail);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("Authroized fetch failed with non-OK status code");

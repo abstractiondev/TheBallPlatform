@@ -76,10 +76,6 @@ namespace WebInterface
                 {
                     await HandleGroupRequest(context);
                 }
-                else if (request.IsAccountRequest())
-                {
-                    HandleAccountRequest(context);
-                }
             }
             catch (SecurityException securityException)
             {
@@ -97,14 +93,19 @@ namespace WebInterface
             IContainerOwner owner = null;
             if (request.IsGroupRequest())
             {
-                string groupID = request.GetGroupID();
                 owner = request.GetGroupAsOwner();
             }
+            else if (request.IsPersonalRequest())
+            {
+                string accountEmail = authTokens[3];
+                var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
+                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+                owner = emailRoot.Account;
+            }
             else
-                throw new NotSupportedException("Account device requests not yet supported");
+                throw new InvalidOperationException("Device request must be either group or account request");
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
-            string contentName = authTokens[3];
             DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(owner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
@@ -112,9 +113,9 @@ namespace WebInterface
                 throw new SecurityException("Device membership not valid and active");
             InformationContext.Current.Owner = owner;
             InformationContext.Current.ExecutingForDevice = deviceMembership;
+            string contentPath = request.GetOwnerContentPath();
             if (request.RequestType == "GET")
             {
-                string contentPath = request.GetOwnerContentPath();
                 if(contentPath.Contains("TheBall.CORE"))
                     throw new SecurityException("Invalid request location");
                 var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
@@ -136,9 +137,9 @@ namespace WebInterface
                 cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
-                if (contentName.StartsWith(DeviceSupport.OperationPrefixStr))
+                if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
-                    string operationName = contentName.Substring(DeviceSupport.OperationPrefixStr.Length);
+                    string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged decAES = new AesManaged
                         {
@@ -179,7 +180,7 @@ namespace WebInterface
                 else
                 {
                     string contentRoot = deviceMembership.RelativeLocation + "_Input";
-                    string blobName = contentRoot + "/" + contentName;
+                    string blobName = contentRoot + "/" + contentPath;
                     var blob = StorageSupport.GetOwnerBlobReference(owner, blobName);
                     if (blob.Name != blobName)
                         throw new InvalidDataException("Invalid content name");
@@ -210,11 +211,6 @@ namespace WebInterface
             if (!request.IsAboutRequest())
                 throw new NotSupportedException("Content path for other than about/ is not supported");
             return contentPath.Substring(1);
-        }
-
-        private void HandleAccountRequest(HttpContext context)
-        {
-            //TBRLoginRoot loginRoot = GetOrCreateLoginRoot(context);
         }
 
         private async Task HandleGroupRequest(HttpContext context)

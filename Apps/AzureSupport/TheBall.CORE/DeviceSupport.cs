@@ -8,7 +8,7 @@ namespace TheBall.CORE
 {
     public static class DeviceSupport
     {
-        public const string OperationPrefixStr = "OP-";
+        public const string OperationPrefixStr = "op/";
 
         public static TReturnType ExecuteRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
         {
@@ -22,7 +22,9 @@ namespace TheBall.CORE
         private static object executeRemoteOperation<TReturnType>(string deviceID, string operationName, object operationParameters)
         {
             AuthenticatedAsActiveDevice device = ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(InformationContext.CurrentOwner, deviceID);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(device.ConnectionURL);
+            string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
+            string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
             aes.KeySize = SymmetricSupport.AES_KEYSIZE;
@@ -35,7 +37,7 @@ namespace TheBall.CORE
             var ivBase64 = Convert.ToBase64String(aes.IV);
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 
                 + ":" + device.EstablishedTrustID 
-                + ":" + String.Format("{0}{1}", OperationPrefixStr, operationName));
+                + ":");
             var requestStream = request.GetRequestStream();
             var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
             using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))

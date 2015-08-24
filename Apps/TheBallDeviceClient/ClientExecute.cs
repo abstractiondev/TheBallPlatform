@@ -207,7 +207,7 @@ namespace TheBall.Support.DeviceClient
             var result = SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + hostName + "/websocket/NegotiateDeviceConnection?" + connectionTargetParameter,
                                                                              sharedSecret, "Connection from Tool with name: " + connectionName, sharedSecretPayload);
             string connectionUrl = isAccountConnection ? String.Format("{1}://{0}/auth/account/DEV", hostName, connectionProtocol)
-                : String.Format("{2}://{0}/auth/grp/{1}/DEV", hostName, groupIDOrAccountEmailAddress, connectionProtocol);
+                : String.Format("{2}://{0}/auth/grp/{1}/DEV", hostName, groupID, connectionProtocol);
             var connection = new Connection
                 {
                     Name = connectionName,
@@ -217,7 +217,8 @@ namespace TheBall.Support.DeviceClient
                         {
                             AESKey = result.AESKey,
                             ConnectionURL = connectionUrl,
-                            EstablishedTrustID = result.EstablishedTrustID
+                            EstablishedTrustID = result.EstablishedTrustID,
+                            AccountEmail = emailAddress
                         }
                 };
             UserSettings.CurrentSettings.Connections.Add(connection);

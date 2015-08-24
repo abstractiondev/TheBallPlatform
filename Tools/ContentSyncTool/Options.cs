@@ -167,8 +167,11 @@ namespace ContentSyncTool
 
     class CreateConnectionSubOptions : NamedConnectionSubOptions
     {
-        [Option('g', "groupID", HelpText = "Group ID to establish connection against", Required = true)]
+        [Option('g', "groupID", HelpText = "Group ID to establish connection against", MutuallyExclusiveSet = "Group")]
         public string GroupID { get; set; }
+
+        [Option('e', "emailAddress", HelpText = "Account email address to establish connection against", MutuallyExclusiveSet = "Account")]
+        public string EmailAddress { get; set; }
 
         [Option('h', "hostName", HelpText = "Host name of the Ball instance to connect to", Required = true)]
         public string HostName { get; set; }

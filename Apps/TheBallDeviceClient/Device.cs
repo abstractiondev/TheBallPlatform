@@ -8,5 +8,6 @@ namespace TheBall.Support.DeviceClient
         public string ConnectionURL;
         public byte[] AESKey;
         public string EstablishedTrustID;
+        public string AccountEmail;
     }
 }
