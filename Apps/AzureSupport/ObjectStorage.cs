@@ -24,7 +24,7 @@ namespace TheBall
 
         public static T RetrieveObject<T>(string relativeLocation, IContainerOwner owner = null)
         {
-            var result = (T) StorageSupport.RetrieveInformation(relativeLocation, typeof (T));
+            var result = (T)StorageSupport.RetrieveInformation(relativeLocation, typeof(T), null, owner);
             return result;
         }
 

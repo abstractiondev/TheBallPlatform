@@ -189,16 +189,25 @@ namespace TheBall.Support.DeviceClient
             UserSettings.CurrentSettings.Connections.Remove(connection);
         }
 
-        public static void CreateConnection(string hostName, string groupID, string connectionName)
+        public static void CreateConnection(string hostName, string groupIDOrAccountEmailAddress, string connectionName)
         {
             byte[] sharedSecretFullPayload = GetSharedSecretPayload(hostName);
             var sharedSecret = sharedSecretFullPayload.Take(32).ToArray();
             var sharedSecretPayload = sharedSecretFullPayload.Skip(32).ToArray();
             string protocol = hostName.StartsWith("localdev") ? "ws" : "wss";
             string connectionProtocol = hostName.StartsWith("localdev") ? "http" : "https";
-            var result = SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + hostName + "/websocket/NegotiateDeviceConnection?groupID=" + groupID,
+            bool isEmailAddress = groupIDOrAccountEmailAddress.Contains("@");
+            string groupID = isEmailAddress ? null : groupIDOrAccountEmailAddress;
+            string emailAddress = isEmailAddress ? groupIDOrAccountEmailAddress : null;
+            bool isAccountConnection = isEmailAddress;
+            string connectionTargetParameter = isEmailAddress
+                ? $"accountEmail={emailAddress}"
+                : $"groupID={groupID}";
+
+            var result = SecurityNegotiationManager.PerformEKEInitiatorAsBob(protocol + "://" + hostName + "/websocket/NegotiateDeviceConnection?" + connectionTargetParameter,
                                                                              sharedSecret, "Connection from Tool with name: " + connectionName, sharedSecretPayload);
-            string connectionUrl = String.Format("{2}://{0}/auth/grp/{1}/DEV", hostName, groupID, connectionProtocol);
+            string connectionUrl = isAccountConnection ? String.Format("{1}://{0}/auth/account/DEV", hostName, connectionProtocol)
+                : String.Format("{2}://{0}/auth/grp/{1}/DEV", hostName, groupIDOrAccountEmailAddress, connectionProtocol);
             var connection = new Connection
                 {
                     Name = connectionName,

@@ -1050,8 +1050,9 @@ namespace TheBall
                 options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
                 if (eTag != null)
                     options.AccessCondition = AccessCondition.IfMatch(eTag);
-                await
-                    Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, memoryStream, options);
+                //await
+                //    Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, memoryStream, options);
+                blob.DownloadToStream(memoryStream, options);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }

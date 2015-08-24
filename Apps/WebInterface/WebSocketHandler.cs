@@ -100,7 +100,7 @@ namespace WebInterface
             byte[] receiveBuffer = new byte[maxMessageSize];
             WebSocket socket = wsContext.WebSocket;
 
-            Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> OnReceiveMessage = HandleDeviceNegotiations;
+            Func<InformationContext, WebSocketContext, WebSocket, byte[], string, Task> onReceiveMessage = HandleDeviceNegotiations;
             Action<WebSocketContext, WebSocket> OnClose = HandleCloseMessage;
             //InformationContext informationContext = new InformationContext();
             InformationContext informationContext = InformationContext.Current;
@@ -158,7 +158,7 @@ namespace WebInterface
                     //var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
                     byte[] binaryMessage = new byte[count];
                     Array.Copy(receiveBuffer, binaryMessage, count);
-                    await OnReceiveMessage(informationContext, wsContext, socket, binaryMessage, null);
+                    await onReceiveMessage(informationContext, wsContext, socket, binaryMessage, null);
                 }
                 else
                 {
@@ -181,7 +181,7 @@ namespace WebInterface
                         count += receiveResult.Count;
                     }
                     var textMessage = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    await OnReceiveMessage(informationContext, wsContext, socket, null, textMessage);
+                    await onReceiveMessage(informationContext, wsContext, socket, null, textMessage);
                 }
             }
         }
