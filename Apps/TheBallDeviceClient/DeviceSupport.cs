@@ -95,7 +95,7 @@ namespace TheBall.Support.DeviceClient
         public static void PushContentToDevice(Device device, string localContentFileName, string destinationContentName)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + destinationContentName);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
             aes.KeySize = AES_KEYSIZE;
@@ -106,16 +106,23 @@ namespace TheBall.Support.DeviceClient
             aes.Mode = AES_MODE;
             aes.FeedbackSize = AES_FEEDBACK_SIZE;
             var ivBase64 = Convert.ToBase64String(aes.IV);
-            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64 + ":" + device.EstablishedTrustID + ":" + device.AccountEmail);
-            var requestStream = request.GetRequestStream();
-            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-            var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
-            var fileStream = File.OpenRead(localContentFileName);
-            fileStream.CopyTo(cryptoStream);
-            cryptoStream.Close();
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode != HttpStatusCode.OK)
-                throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
+            request.Headers.Add("Authorization",
+                "DeviceAES:" + ivBase64 + ":" + device.EstablishedTrustID + ":" + device.AccountEmail);
+            using (var requestStream = request.GetRequestStream())
+            {
+                var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
+                var fileStream = File.OpenRead(localContentFileName);
+                fileStream.CopyTo(cryptoStream);
+                cryptoStream.Close();
+            }
+
+            using (var response = (HttpWebResponse) request.GetResponse())
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                    throw new InvalidOperationException("PushToInformationOutput failed with Http status: " +
+                                                        response.StatusCode.ToString());
+            }
         }
 
         public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName)
