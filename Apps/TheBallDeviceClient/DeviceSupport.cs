@@ -7,9 +7,9 @@ namespace TheBall.Support.DeviceClient
 {
     public static class DeviceSupport
     {
-        public static DeviceOperationData ExecuteDeviceOperation(this Device device, DeviceOperationData operationParameters)
+        public static DeviceOperationData ExecuteDeviceOperation(this Device device, DeviceOperationData operationParameters, string ownerPrefix = null)
         {
-            var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device, "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters);
+            var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device, "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters, ownerPrefix);
             if(!dod.OperationResult)
                 throw new OperationCanceledException("Remote device operation failed");
             return dod;
@@ -18,13 +18,13 @@ namespace TheBall.Support.DeviceClient
         
         public const string OperationPrefixStr = "op/";
 
-        public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
+        public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters, string ownerPrefix = null)
         {
-            return (TReturnType)executeRemoteOperation<TReturnType>(device, operationName, operationParameters);
+            return (TReturnType)executeRemoteOperation<TReturnType>(device, operationName, operationParameters, ownerPrefix);
         }        
-        public static void ExecuteRemoteOperationVoid(Device device, string operationName, object operationParameters)
+        public static void ExecuteRemoteOperationVoid(Device device, string operationName, object operationParameters, string ownerPrefix = null)
         {
-            executeRemoteOperation<object>(device, operationName, operationParameters);
+            executeRemoteOperation<object>(device, operationName, operationParameters, ownerPrefix);
         }
 
         public const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
@@ -33,10 +33,12 @@ namespace TheBall.Support.DeviceClient
         public const int AES_KEYSIZE = 256;
         public const int AES_BLOCKSIZE = 128;
 
-        private static object executeRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters)
+        private static object executeRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters, string ownerPrefix)
         {
             string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
             string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
+            if (ownerPrefix != null)
+                url = replaceUrlAccountOwner(url, ownerPrefix);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
@@ -63,6 +65,11 @@ namespace TheBall.Support.DeviceClient
             if (typeof (TReturnType) == typeof (object))
                 return null;
             return getObjectFromResponseStream<TReturnType>(response, device.AESKey);
+        }
+
+        private static string replaceUrlAccountOwner(string url, string ownerPrefix)
+        {
+            return url.Replace("/auth/account/", "/auth/" + ownerPrefix + "/");
         }
 
         private static TReturnType getObjectFromResponseStream<TReturnType>(HttpWebResponse response, byte[] aesKey)
@@ -125,9 +132,11 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName)
+        public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName, string ownerPrefix)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + remoteContentFileName);
+            if (ownerPrefix != null)
+                url = replaceUrlAccountOwner(url, ownerPrefix);
             string establishedTrustID = device.EstablishedTrustID;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);

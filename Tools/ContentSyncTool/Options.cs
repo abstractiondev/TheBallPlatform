@@ -66,6 +66,9 @@ namespace ContentSyncTool
         [Option("putLIVE", HelpText = "Upload LIVE_ folder(s) ", Required = false)]
         public bool PutLIVE { get; set; }
 
+        [Option("getFA", HelpText = "Get Full Account Downsync", Required = false)]
+        public bool GetFullAccount { get; set; }
+
         public override void ExecuteCommand(string verb)
         {
             CommandImplementation.stageOperation(this);

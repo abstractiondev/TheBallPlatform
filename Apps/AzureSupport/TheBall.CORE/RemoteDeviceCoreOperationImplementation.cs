@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE.INT;
@@ -36,9 +37,23 @@ namespace TheBall.CORE
                 case "COPYSYNCEDCONTENTTOOWNER":
                     copySyncedContentToOwner(deviceOperationData);
                     break;
+                case "GETACCOUNTGROUPS":
+                    getAccountGroups(currentDevice, deviceOperationData);
+                    break;
                 default:
                     throw new NotImplementedException("Not implemented RemoteDevice operation for request string: " + deviceOperationData.OperationRequestString);
             }
+            deviceOperationData.OperationResult = true;
+        }
+
+        private static void getAccountGroups(DeviceMembership currentDevice, DeviceOperationData deviceOperationData)
+        {
+            var currAccount = InformationContext.CurrentOwner as TBAccount;
+            if(currAccount == null)
+                throw new InvalidOperationException("Account group operation requires that current owner is an account");
+            deviceOperationData.OperationReturnValues = currAccount.GroupRoleCollection.CollectionContent
+                .Where(role => TBCollaboratorRole.IsRoleStatusValidMember(role.RoleStatus))
+                .Select(role => role.GroupID).ToArray();
             deviceOperationData.OperationResult = true;
         }
 

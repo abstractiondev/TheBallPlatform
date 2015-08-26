@@ -35,6 +35,18 @@ namespace TheBall.Support.DeviceClient
             UpSync(connection, syncItem);
         }
 
+        public static string[] GetAccountGroups(Connection connection)
+        {
+            var device = connection.Device;
+            var dod = device.ExecuteDeviceOperation(new DeviceOperationData
+            {
+                OperationRequestString = "GETACCOUNTGROUPS"
+            });
+            if(dod.OperationResult == false)
+                throw new OperationCanceledException("Error on remote call operation: GETACCOUNTGROUPS");
+            return dod.OperationReturnValues;
+        }
+
         public static void UpSync(Connection connection, FolderSyncItem upSyncItem)
         {
             var rootFolder = upSyncItem.LocalFullPath;
@@ -78,7 +90,7 @@ namespace TheBall.Support.DeviceClient
             DownSync(connection, syncItem);
         }
 
-        public static void DownSync(Connection connection, FolderSyncItem downSyncItem)
+        public static void DownSync(Connection connection, FolderSyncItem downSyncItem, string ownerPrefix = null)
         {
             var rootItem = downSyncItem.LocalFullPath;
             var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootItem);
@@ -87,7 +99,7 @@ namespace TheBall.Support.DeviceClient
                 if(!downSyncItem.IsFile)
                     myDataItem.ContentLocation = downSyncItem.RemoteEntry + myDataItem.ContentLocation;
             }
-            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteEntry });
+            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteEntry }, ownerPrefix);
             var device = connection.Device;
             int stripRemoteFolderIndex = downSyncItem.IsFile ? 0 : downSyncItem.RemoteEntry.Length;
             SyncSupport.SynchronizeSourceListToTargetFolder(
@@ -107,26 +119,32 @@ namespace TheBall.Support.DeviceClient
                         }
                         //Console.Write("Copying: " + source.ContentLocation);
                         DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
-                                                             targetFullName);
+                                                             targetFullName, ownerPrefix);
                         //Console.WriteLine(" ... done");
-                        Console.WriteLine("Copied: " + source.ContentLocation);
+                        var copyItem = ownerPrefix != null
+                            ? ownerPrefix + "/" + source.ContentLocation
+                            : source.ContentLocation;
+                        Console.WriteLine("Copied: " + copyItem);
                     }, delegate(ContentItemLocationWithMD5 target)
                         {
                             string targetContentLocation = target.ContentLocation.Substring(stripRemoteFolderIndex);
                             string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, targetContentLocation);
                             File.Delete(targetFullName);
-                            Console.WriteLine("Deleted: " + targetContentLocation);
+                            var deleteItem = ownerPrefix != null
+                                ? ownerPrefix + "/" + targetContentLocation
+                                : targetContentLocation;
+                            Console.WriteLine("Deleted: " + deleteItem);
                         }, 10);
         }
 
-        public static ContentItemLocationWithMD5[] getConnectionContentMD5s(Connection connection, string[] downSyncFolders)
+        public static ContentItemLocationWithMD5[] getConnectionContentMD5s(Connection connection, string[] downSyncFolders, string ownerPrefix)
         {
             DeviceOperationData dod = new DeviceOperationData
                 {
                     OperationRequestString = "GETCONTENTMD5LIST",
                     OperationParameters = downSyncFolders
                 };
-            dod = connection.Device.ExecuteDeviceOperation(dod);
+            dod = connection.Device.ExecuteDeviceOperation(dod, ownerPrefix);
             return dod.OperationSpecificContentData;
         }
 
@@ -277,7 +295,7 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive)
+        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount)
         {
             var connection = GetConnection(connectionName);
             var stageDef = connection.StageDefinition;
@@ -286,27 +304,19 @@ namespace TheBall.Support.DeviceClient
             string stagingRootFolder = stageDef.LocalStagingRootFolder;
             if(String.IsNullOrEmpty(stagingRootFolder))
                 throw new InvalidDataException("Staging root folder definition is missing");
+            if (getFullAccount)
+            {
+                if(getData || putDev || putLive)
+                    throw new InvalidOperationException("StageOperation: getFA is exclusive and cannot be combined with other get/put operations");
+                var accountGroups = ClientExecute.GetAccountGroups(connection);
+                var dataFolders = stageDef.DataFolders;
+                downSyncFullAccount(connection, stagingRootFolder, dataFolders, accountGroups);
+                return;
+            }
             if (getData)
             {
-                if(stageDef.DataFolders.Count == 0)
-                    throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
-                var folderSyncItems = stageDef.DataFolders.Select(syncEntry =>
-                    {
-                        bool isFile = syncEntry.StartsWith("F:");
-                        if (!isFile)
-                        {
-                            string fullName = Path.Combine(stagingRootFolder, syncEntry);
-                            if (!Directory.Exists(fullName))
-                            {
-                                Directory.CreateDirectory(fullName);
-                            }
-                        }
-                        return FolderSyncItem.CreateFromStagingRemoteDataFolder(stagingRootFolder, syncEntry);
-                    }).Where(fsi => fsi != null).ToArray();
-                foreach (var folderSyncItem in folderSyncItems)
-                {
-                    DownSync(connection, folderSyncItem);
-                }
+                var dataFolders = stageDef.DataFolders;
+                downSyncData(connection, stagingRootFolder, dataFolders);
             }
             List<FolderSyncItem> upsyncItems = new List<FolderSyncItem>();
             if (putDev)
@@ -320,6 +330,44 @@ namespace TheBall.Support.DeviceClient
             foreach (var upSyncItem in upsyncItems)
             {
                 UpSync(connection, upSyncItem);
+            }
+        }
+
+        private static void downSyncFullAccount(Connection connection, string stagingRootFolder, List<string> dataFolders, string[] accountGroups)
+        {
+            if (dataFolders.Count == 0)
+                throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
+            // Grab account data under "account"
+            string accountRoot = Path.Combine(stagingRootFolder, "account");
+            downSyncData(connection, accountRoot, dataFolders);
+            foreach (var groupID in accountGroups)
+            {
+                var ownerPrefix = "grp/" + groupID;
+                var groupRoot = Path.Combine(stagingRootFolder, ownerPrefix);
+                downSyncData(connection, groupRoot, dataFolders, ownerPrefix);
+            }
+        }
+
+        private static void downSyncData(Connection connection, string stagingRootFolder, List<string> dataFolders, string ownerPrefix = null)
+        {
+            if (dataFolders.Count == 0)
+                throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
+            var folderSyncItems = dataFolders.Select(syncEntry =>
+            {
+                bool isFile = syncEntry.StartsWith("F:");
+                if (!isFile)
+                {
+                    string fullName = Path.Combine(stagingRootFolder, syncEntry);
+                    if (!Directory.Exists(fullName))
+                    {
+                        Directory.CreateDirectory(fullName);
+                    }
+                }
+                return FolderSyncItem.CreateFromStagingRemoteDataFolder(stagingRootFolder, syncEntry);
+            }).Where(fsi => fsi != null).ToArray();
+            foreach (var folderSyncItem in folderSyncItems)
+            {
+                DownSync(connection, folderSyncItem, ownerPrefix);
             }
         }
 
