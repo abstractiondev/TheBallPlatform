@@ -90,35 +90,61 @@ namespace WebInterface
             var response = context.Response;
             var authorization = request.Headers["Authorization"];
             var authTokens = authorization.Split(':');
-            IContainerOwner owner = null;
+            IContainerOwner contentOwner = null;
+            IContainerOwner deviceOwner = null;
+            string accountEmail = authTokens[3];
+            bool hasReadAccess = false;
+            bool hasWriteAccess = false;
             if (request.IsGroupRequest())
             {
-                owner = request.GetGroupAsOwner();
+                contentOwner = request.GetGroupAsOwner();
+                if (String.IsNullOrEmpty(accountEmail))
+                {
+                    deviceOwner = contentOwner;
+                    hasReadAccess = true;
+                    hasWriteAccess = true;
+                }
+                else
+                {
+                    var deviceOwnerAccount = getDeviceAccount(accountEmail);
+                    deviceOwner = deviceOwnerAccount;
+                    var groupID = request.GetGroupID();
+                    var activeRole =
+                        deviceOwnerAccount.GroupRoleCollection.CollectionContent.FirstOrDefault(
+                            role => role.GroupID == groupID && TBCollaboratorRole.IsRoleStatusValidMember(role.RoleStatus));
+                    if (activeRole != null)
+                    {
+                        hasReadAccess = TBCollaboratorRole.HasViewerRights(activeRole.GroupRole);
+                        hasWriteAccess = TBCollaboratorRole.HasCollaboratorRights(activeRole.GroupRole);
+                    }
+                }
             }
             else if (request.IsPersonalRequest())
             {
-                string accountEmail = authTokens[3];
-                var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-                TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
-                owner = emailRoot.Account;
+                deviceOwner = getDeviceAccount(accountEmail);
+                contentOwner = deviceOwner;
+                hasReadAccess = true;
+                hasWriteAccess = true;
             }
             else
                 throw new InvalidOperationException("Device request must be either group or account request");
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
-            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(owner, trustID);
+            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(deviceOwner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
                 throw new SecurityException("Device membership not valid and active");
-            InformationContext.Current.Owner = owner;
+            InformationContext.Current.Owner = contentOwner;
             InformationContext.Current.ExecutingForDevice = deviceMembership;
             string contentPath = request.GetOwnerContentPath();
             if (request.RequestType == "GET")
             {
+                if(!hasReadAccess)
+                    throw new SecurityException("No read access to requested path: " + contentPath);
                 if(contentPath.Contains("TheBall.CORE"))
                     throw new SecurityException("Invalid request location");
-                var blob = StorageSupport.GetOwnerBlobReference(owner, contentPath);
+                var blob = StorageSupport.GetOwnerBlobReference(contentOwner, contentPath);
 
                 AesManaged aes = new AesManaged();
                 aes.KeySize = SymmetricSupport.AES_KEYSIZE;
@@ -137,6 +163,8 @@ namespace WebInterface
                 cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
+                if (!hasWriteAccess)
+                    throw new SecurityException("No write access to requested path: " + contentPath);
                 if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
                     string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
@@ -181,7 +209,7 @@ namespace WebInterface
                 {
                     string contentRoot = deviceMembership.RelativeLocation + "_Input";
                     string blobName = contentRoot + "/" + contentPath;
-                    var blob = StorageSupport.GetOwnerBlobReference(owner, blobName);
+                    var blob = StorageSupport.GetOwnerBlobReference(contentOwner, blobName);
                     if (blob.Name != blobName)
                         throw new InvalidDataException("Invalid content name");
                     var reqStream = request.GetBufferedInputStream();
@@ -202,7 +230,14 @@ namespace WebInterface
             }
             else
                 throw new NotSupportedException("Device request type not supported: " + request.RequestType);
+        }
 
+        private static TBAccount getDeviceAccount(string accountEmail)
+        {
+            var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
+            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            var ownerAccount = emailRoot.Account;
+            return ownerAccount;
         }
 
         private static string GetBlobPath(HttpRequest request)
