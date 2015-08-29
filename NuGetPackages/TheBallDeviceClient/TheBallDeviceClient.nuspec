@@ -2,16 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.5-beta1</version>
+        <version>0.9.6-beta1</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
         <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>The Ball Device Client - Beta 0.9.5</description>
+        <description>The Ball Device Client - Beta 0.9.6</description>
         <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
         <releaseNotes>Developer preview - beta
+New in 0.9.6:
+- Full account sync (including all groups that account belongs to)
+- To serve as basis for full mobile hybrid (webview) app sync
 NOTES:
 - Uses JsonFx as bundled in due to MonoFramework/Android requirements, which don't find the package from NuGet
 - websocket-sharp is used normally from NuGet</releaseNotes>
