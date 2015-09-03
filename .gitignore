@@ -43,3 +43,4 @@ Apps/AzureConfiguration/Profiles/*
 Apps/WebInterface/Properties/PublishProfiles/*.pubxml
 .vs/config/applicationhost.config
 Apps/TheBallWebFarm/.vs/config/applicationhost.config
+**/.idea/workspace.xml
