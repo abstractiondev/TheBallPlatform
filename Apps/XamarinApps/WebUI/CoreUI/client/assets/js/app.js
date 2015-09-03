@@ -10,13 +10,12 @@
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations'
   ])
-    .config(config)
-    .run(run)
+    .config(config).run(run)
   ;
 
-  config.$inject = ['$urlRouterProvider', '$locationProvider'];
+  config.$inject = ['$urlRouterProvider', '$locationProvider', '$controllerProvider'];
 
-  function config($urlProvider, $locationProvider) {
+  function config($urlProvider, $locationProvider, $controllerProvider) {
     $urlProvider.otherwise('/');
 
     $locationProvider.html5Mode({
@@ -25,6 +24,8 @@
     });
 
     $locationProvider.hashPrefix('!');
+
+    $controllerProvider.allowGlobals();
   }
 
   function run() {
