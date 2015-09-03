@@ -4,23 +4,42 @@ url: /
 controller: HomeController
 ---
 
-<div class="grid-container">
+<div class="grid-container" ng-if="vm.isCreateFirstConnectionMode()">
   <form>
     <div class="grid-block">
       <div class="small-12 medium-6 grid-content">
-        <label><h4>The Ball Host Name {{vm.count}} + 2</h4></label>
-        <select>
-          <option ng-repeat="host in vm.hosts" value="{{host.value}}">{{host.displayName}}</option>
+        <label><h4>The Ball Host Name</h4></label>
+        <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
         </select>
       </div>
       <div class="small-12 medium-6 grid-content">
         <label><h4>Email Address</h4>
-          <input type="text" placeholder="Text field" ng-model="vm.email">
+          <input type="text" placeholder="Account Email Address" ng-model="vm.email">
         </label>
       </div>
     </div>
   </form>
+  <div class="small-12 small-centered columns text-center">
+    <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Connection</a>
+  </div>
 </div>
-<div class="small-12 small-centered columns text-center">
-  <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Connect...</a>
+<div class="grid-container" ng-if="vm.isManageConnectionsMode()">
+  <form>
+    <div class="grid-block">
+      <div class="small-12 medium-6 grid-content">
+        <label><h4>The Ball Host Name</h4></label>
+        <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
+        </select>
+      </div>
+      <div class="small-12 medium-6 grid-content">
+        <label><h4>Email Address</h4>
+          <input type="text" placeholder="Account Email Address" ng-model="vm.email">
+        </label>
+      </div>
+    </div>
+  </form>
+  <div class="small-12 small-centered columns text-center">
+    <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Connection</a>
+  </div>
 </div>
+
