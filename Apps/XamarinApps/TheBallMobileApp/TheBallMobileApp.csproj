@@ -44,17 +44,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.5-beta1\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.6-beta1\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="TheBallDeviceClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.5-beta1\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.6-beta1\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.42943, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
@@ -70,6 +71,9 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TBJS2OP.cs" />
+    <Compile Include="TBWebViewClient.cs" />
+    <Compile Include="TheBallHostManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted.Xamarin" />
@@ -88,6 +92,99 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\css\app.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\account.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\action.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\ban.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\bell.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\bookmark.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\cart.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\chevron.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\circle-check.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\circle-x.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\cog.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\comment-square.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\dashboard.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\document.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\envelope.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\flag.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\home.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\lock.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\magnifying-glass.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\person.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\reload.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\share-boxed.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\star.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\thumb.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\zoom.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\js\app.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\js\foundation.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\js\routes.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\assets\js\templates.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\templates\home\home.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

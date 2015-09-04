@@ -8,12 +8,16 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		MonoDroidDebug|Any CPU = MonoDroidDebug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.MonoDroidDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.MonoDroidDebug|Any CPU.Build.0 = Debug|Any CPU
+		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.MonoDroidDebug|Any CPU.Deploy.0 = Debug|Any CPU
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}.Release|Any CPU.Deploy.0 = Release|Any CPU

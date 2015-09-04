@@ -1,37 +1,56 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Webkit;
+using TheBall.Support.DeviceClient;
 using Xamarin;
 
 namespace TheBallMobileApp
 {
-    [Activity(Label = "TheBallMobileApp", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "The Ball Offline App", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen")]
     public class MainActivity : Activity
     {
-        int count = 1;
+
+        private WebView cWebView;
+        private TBJS2OP TBJSBridge;
 
         protected override void OnCreate(Bundle bundle)
         {
-            Insights.Initialize("13ee2f7f9d2bca655467bf4b4e217fcd4658384a", ApplicationContext);
+            //Insights.Initialize("", ApplicationContext);
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // Get our button from the layout resource,
-            // and attach an event to it
-            Button button = FindViewById<Button>(Resource.Id.MyButton);
-
-            button.Click += delegate
+            if (cWebView == null)
             {
-                button.Text = string.Format("{0} clicks!", count++); 
-                if(count > 2)
-                    throw new InvalidOperationException("Not expected operation (Xamarin Insight testing...)");
-            };
+                cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView));
+            }
+            
+        }
+
+        private WebView hookToWebView(WebView webView)
+        {
+            var settings = webView.Settings;
+            settings.JavaScriptEnabled = true;
+            TBJSBridge = new TBJS2OP(this);
+            TBJSBridge.RegisterOperation(TheBallHostManager.RegisterConnectionOperation);
+            var webViewClient = new TBWebViewClient(this);
+            webView.SetWebViewClient(webViewClient);
+            webView.LoadUrl("file:///android_asset/CoreUI/index.html");
+            return webView;
+        }
+
+        private void ReportException(Exception obj)
+        {
+            if (Insights.IsInitialized)
+                Insights.Report(obj);
         }
     }
 }
