@@ -3,6 +3,10 @@
  */
 
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
+///<reference path="../../services/ConnectionService.ts"/>
+
+module application {
+
 
   interface IHomeController {
     CreateConnection:()=>void;
@@ -37,9 +41,10 @@
       return this.hasConnections();
     }
 
-    constructor($scope) {
+    constructor($scope, service:ConnectionService) {
       $scope.vm = this;
       this.currentHost = this.hosts[2];
+      this.email = service.getHelloWorld();
     }
 
     CreateConnection() {
@@ -47,4 +52,7 @@
     }
   }
 
-
+  (<any>window).appModule.controller("HomeController",
+    ["$scope", "ConnectionService", ($scope, connectionService)
+      => new HomeController($scope, connectionService)]);
+}

@@ -45,6 +45,7 @@ var paths = {
   // These files are for your app's JavaScript
   appJS: [
     'client/assets/js/app.js',
+    'client/services/**/*.js',
     'client/templates/**/*.js'
   ]
 }
@@ -166,7 +167,11 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
   // Watch JavaScript
-  gulp.watch(['./client/assets/js/**/*', './js/**/*', './client/templates/**/*.js'], ['uglify:app']);
+  gulp.watch(['./client/assets/js/**/*',
+    './js/**/*',
+    './client/templates/**/*.js',
+    './client/services/**/*.js'
+  ], ['uglify:app']);
 
   // Watch static files
   gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['copy']);
