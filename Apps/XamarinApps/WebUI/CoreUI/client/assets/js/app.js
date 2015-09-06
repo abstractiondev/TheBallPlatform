@@ -10,7 +10,10 @@ var appModule;
     //foundation
     'foundation',
     'foundation.dynamicRouting',
-    'foundation.dynamicRouting.animations'
+    'foundation.dynamicRouting.animations',
+
+    // 3rd party
+    'angular-promise-cache'
   ])
     .config(config).run(run)
   ;

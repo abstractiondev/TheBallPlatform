@@ -15,7 +15,11 @@ var application;
             this.connections = [];
             $scope.vm = this;
             this.currentHost = this.hosts[2];
-            this.email = service.getHelloWorld();
+            var me = this;
+            service.getHelloWorld().then(function (result) {
+                var data = result.data;
+                me.email = data.email;
+            });
         }
         HomeController.prototype.hasConnections = function () {
             return this.connections.length > 0;

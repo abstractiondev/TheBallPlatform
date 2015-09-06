@@ -22,7 +22,8 @@ var paths = {
   assets: [
     './client/**/*.*',
     '!./client/templates/**/*.*',
-    '!./client/assets/{scss,js}/**/*.*'
+    '!./client/assets/{scss,js}/**/*.*',
+    '!./client/services/**/*.*'
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
@@ -40,7 +41,10 @@ var paths = {
     'bower_components/angular-ui-router/release/angular-ui-router.js',
     'bower_components/foundation-apps/js/vendor/**/*.js',
     'bower_components/foundation-apps/js/angular/**/*.js',
-    '!bower_components/foundation-apps/js/angular/app.js'
+    '!bower_components/foundation-apps/js/angular/app.js',
+
+    // third party...
+    'bower_components/angular-promise-cache/angular-promise-cache.js'
   ],
   // These files are for your app's JavaScript
   appJS: [

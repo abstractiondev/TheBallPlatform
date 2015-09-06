@@ -44,7 +44,11 @@ module application {
     constructor($scope, service:ConnectionService) {
       $scope.vm = this;
       this.currentHost = this.hosts[2];
-      this.email = service.getHelloWorld();
+      var me = this;
+      service.getHelloWorld().then(result => {
+        var data = result.data;
+        me.email = data.email;
+      });
     }
 
     CreateConnection() {

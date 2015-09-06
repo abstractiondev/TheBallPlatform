@@ -5,14 +5,21 @@
 var application;
 (function (application) {
     var ConnectionService = (function () {
-        function ConnectionService() {
+        function ConnectionService($http, $location, promiseCache) {
+            this.$http = $http;
+            this.promiseCache = promiseCache;
         }
         ConnectionService.prototype.getHelloWorld = function () {
-            return "Hello! Are you still there..?";
+            var me = this;
+            return this.promiseCache({
+                promise: function () {
+                    return me.$http.get('/data/ConnectionHosts.json');
+                }
+            });
         };
         return ConnectionService;
     })();
     application.ConnectionService = ConnectionService;
-    window.appModule.service('ConnectionService', ["$http", "$location", function ($http, $location) { return new ConnectionService(); }]);
+    window.appModule.factory('ConnectionService', ["$http", "$location", "promiseCache", function ($http, $location, promiseCache) { return new ConnectionService($http, $location, promiseCache); }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionService.js.map
