@@ -17,11 +17,7 @@ module application {
   class HomeController implements IHomeController {
     static $inject = ['$scope'];
 
-    hosts = [
-      {displayName: "test.theball.me", value: "test.theball.me"},
-      {displayName: "beta.diosphere.org", value: "beta.diosphere.org"},
-      {displayName: "localhost", value: "localhost"},
-    ];
+    hosts = [];
 
     currentHost:any;
 
@@ -45,9 +41,14 @@ module application {
       $scope.vm = this;
       this.currentHost = this.hosts[2];
       var me = this;
-      service.getHelloWorld().then(result => {
+      service.getConnectionPrefillData().then(result => {
         var data = result.data;
         me.email = data.email;
+        me.hosts = data.hosts;
+      });
+      service.getConnectionData().then(result => {
+        var data = result.data;
+        me.connections = data.connections;
       });
     }
 

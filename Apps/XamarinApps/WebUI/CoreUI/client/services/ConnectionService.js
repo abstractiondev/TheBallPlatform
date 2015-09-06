@@ -9,11 +9,19 @@ var application;
             this.$http = $http;
             this.promiseCache = promiseCache;
         }
-        ConnectionService.prototype.getHelloWorld = function () {
+        ConnectionService.prototype.getConnectionPrefillData = function () {
             var me = this;
             return this.promiseCache({
                 promise: function () {
                     return me.$http.get('/data/ConnectionHosts.json');
+                }
+            });
+        };
+        ConnectionService.prototype.getConnectionData = function () {
+            var me = this;
+            return this.promiseCache({
+                promise: function () {
+                    return me.$http.get('/data/Connections.json');
                 }
             });
         };

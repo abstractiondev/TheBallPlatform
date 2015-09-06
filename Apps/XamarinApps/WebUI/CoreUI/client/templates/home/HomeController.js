@@ -7,18 +7,19 @@ var application;
 (function (application) {
     var HomeController = (function () {
         function HomeController($scope, service) {
-            this.hosts = [
-                { displayName: "test.theball.me", value: "test.theball.me" },
-                { displayName: "beta.diosphere.org", value: "beta.diosphere.org" },
-                { displayName: "localhost", value: "localhost" },
-            ];
+            this.hosts = [];
             this.connections = [];
             $scope.vm = this;
             this.currentHost = this.hosts[2];
             var me = this;
-            service.getHelloWorld().then(function (result) {
+            service.getConnectionPrefillData().then(function (result) {
                 var data = result.data;
                 me.email = data.email;
+                me.hosts = data.hosts;
+            });
+            service.getConnectionData().then(function (result) {
+                var data = result.data;
+                me.connections = data.connections;
             });
         }
         HomeController.prototype.hasConnections = function () {

@@ -6,7 +6,7 @@
 
 module application {
   export class ConnectionService {
-    public getHelloWorld():any {
+    public getConnectionPrefillData():any {
       var me = this;
       return this.promiseCache({
         promise: function() {
@@ -14,6 +14,16 @@ module application {
         }
       });
     }
+
+    public getConnectionData():any {
+      var me = this;
+      return this.promiseCache({
+        promise: function() {
+          return me.$http.get('/data/Connections.json');
+        }
+      });
+    }
+
 
     constructor(private $http, $location, private promiseCache) {
 
