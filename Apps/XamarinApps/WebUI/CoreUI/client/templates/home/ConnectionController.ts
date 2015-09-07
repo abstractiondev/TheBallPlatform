@@ -4,13 +4,13 @@
 
 module application {
 
-  interface IHomeController {
+    interface IConnectionController {
     CreateConnection:()=>void;
     isCreateFirstConnectionMode:()=>Boolean;
     isManageConnectionsMode:()=>Boolean;
   }
 
-  class HomeController implements IHomeController {
+  class ConnectionController implements IConnectionController {
     static $inject = ['$scope'];
 
     hosts = [];
@@ -62,8 +62,8 @@ module application {
     }
   }
 
-  (<any>window).appModule.controller("HomeController",
+  (<any>window).appModule.controller("ConnectionController",
     ["$scope", "ConnectionService", "OperationService",
       ($scope, connectionService, operationService)
-      => new HomeController($scope, connectionService, operationService)]);
+      => new ConnectionController($scope, connectionService, operationService)]);
 }

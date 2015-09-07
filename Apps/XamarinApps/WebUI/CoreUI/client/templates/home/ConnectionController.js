@@ -3,8 +3,8 @@
 /// <reference path="../../services/ConnectionService.ts"/>
 var application;
 (function (application) {
-    var HomeController = (function () {
-        function HomeController($scope, connectionService, operationService) {
+    var ConnectionController = (function () {
+        function ConnectionController($scope, connectionService, operationService) {
             this.operationService = operationService;
             this.hosts = [];
             this.connections = [];
@@ -21,27 +21,27 @@ var application;
                 me.connections = data.connections;
             });
         }
-        HomeController.prototype.hasConnections = function () {
+        ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
         };
-        HomeController.prototype.isCreateFirstConnectionMode = function () {
+        ConnectionController.prototype.isCreateFirstConnectionMode = function () {
             return !this.hasConnections();
         };
-        HomeController.prototype.isManageConnectionsMode = function () {
+        ConnectionController.prototype.isManageConnectionsMode = function () {
             return this.hasConnections();
         };
-        HomeController.prototype.CreateConnection = function () {
+        ConnectionController.prototype.CreateConnection = function () {
             this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
                 "host": this.currentHost.hostname,
                 "email": this.email
             });
         };
-        HomeController.prototype.DeleteConnection = function (connectionID) {
+        ConnectionController.prototype.DeleteConnection = function (connectionID) {
             this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID });
         };
-        HomeController.$inject = ['$scope'];
-        return HomeController;
+        ConnectionController.$inject = ['$scope'];
+        return ConnectionController;
     })();
-    window.appModule.controller("HomeController", ["$scope", "ConnectionService", "OperationService", function ($scope, connectionService, operationService) { return new HomeController($scope, connectionService, operationService); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", function ($scope, connectionService, operationService) { return new ConnectionController($scope, connectionService, operationService); }]);
 })(application || (application = {}));
-//# sourceMappingURL=HomeController.js.map
+//# sourceMappingURL=ConnectionController.js.map
