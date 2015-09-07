@@ -26,25 +26,20 @@ controller: ConnectionController
 <div class="grid-container" ng-if="vm.isManageConnectionsMode()">
   <form>
     <div class="grid-block">
-      <div class="small-12 medium-6 grid-content">
-        <table>
-          <caption>Existing Connections</caption>
-          <tr><th>Host</th><th>Email Address</th></tr>
-          <tr ng-repeat="connection in vm.connections">
-            <td>{{connection.host}}</td>
-            <td>{{connection.email}}</td>
-            <td><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a> </td>
-          </tr>
-        </table>
-        {{connection.host}}
+      <h4>Existing Connections</h4>
+      <div class="small-12 grid-content" ng-repeat="connection in vm.connections">
+        <div class="small-12"><label>Host name: {{connection.host}}</label></div>
+        <div class="small-12"><label>Email: {{connection.email}}</label></div>
+        <div class="small-12"><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
       </div>
+      <h4 class="small-12 medium-12 large-12">New Connection</h4>
       <div class="small-12 medium-6 grid-content">
-        <label><h4>The Ball Host Name</h4></label>
+        <label><h5>The Ball Host Name</h5></label>
         <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
         </select>
       </div>
       <div class="small-12 medium-6 grid-content">
-        <label><h4>Email Address</h4>
+        <label><h5>Email Address</h5>
           <input type="text" placeholder="Account Email Address" ng-model="vm.email">
         </label>
       </div>
