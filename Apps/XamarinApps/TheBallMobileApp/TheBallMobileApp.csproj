@@ -76,6 +76,8 @@
     <Compile Include="TheBallHostManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />
+    <AndroidAsset Include="Assets\CoreUI\data\Connections.json" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -184,7 +186,7 @@
     <AndroidAsset Include="Assets\CoreUI\assets\js\templates.js" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\CoreUI\templates\home\home.html" />
+    <AndroidAsset Include="Assets\CoreUI\templates\home\connection.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

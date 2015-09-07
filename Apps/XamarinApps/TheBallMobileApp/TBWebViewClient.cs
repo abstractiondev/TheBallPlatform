@@ -28,6 +28,13 @@ namespace TheBallMobileApp
                     ParentActivity.Assets.Open(fixedUrl.Replace("file:///android_asset/", "")));
                 return intercept;
             }
+            if (url.StartsWith("file:///data/"))
+            {
+                var fixedUrl = url.Replace("file:///data/", "CoreUI/data/");
+                WebResourceResponse intercept = new WebResourceResponse("application/json", "utf-8",
+                    ParentActivity.Assets.Open(fixedUrl));
+                return intercept;
+            }
             var baseResult = base.ShouldInterceptRequest(view, url);
             return baseResult;
         }
