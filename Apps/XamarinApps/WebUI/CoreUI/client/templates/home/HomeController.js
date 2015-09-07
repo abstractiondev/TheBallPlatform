@@ -1,23 +1,22 @@
-/**
- * Created by Kalle on 1.9.2015.
- */
+///<reference path="..\..\services\OperationService.ts"/>
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-///<reference path="../../services/ConnectionService.ts"/>
+/// <reference path="../../services/ConnectionService.ts"/>
 var application;
 (function (application) {
     var HomeController = (function () {
-        function HomeController($scope, service) {
+        function HomeController($scope, connectionService, operationService) {
+            this.operationService = operationService;
             this.hosts = [];
             this.connections = [];
             $scope.vm = this;
             this.currentHost = this.hosts[2];
             var me = this;
-            service.getConnectionPrefillData().then(function (result) {
+            connectionService.getConnectionPrefillData().then(function (result) {
                 var data = result.data;
                 me.email = data.email;
                 me.hosts = data.hosts;
             });
-            service.getConnectionData().then(function (result) {
+            connectionService.getConnectionData().then(function (result) {
                 var data = result.data;
                 me.connections = data.connections;
             });
@@ -32,11 +31,17 @@ var application;
             return this.hasConnections();
         };
         HomeController.prototype.CreateConnection = function () {
-            alert(this.email + " for host: " + this.currentHost.value);
+            this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
+                "host": this.currentHost.hostname,
+                "email": this.email
+            });
+        };
+        HomeController.prototype.DeleteConnection = function (connectionID) {
+            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID });
         };
         HomeController.$inject = ['$scope'];
         return HomeController;
     })();
-    window.appModule.controller("HomeController", ["$scope", "ConnectionService", function ($scope, connectionService) { return new HomeController($scope, connectionService); }]);
+    window.appModule.controller("HomeController", ["$scope", "ConnectionService", "OperationService", function ($scope, connectionService, operationService) { return new HomeController($scope, connectionService, operationService); }]);
 })(application || (application = {}));
 //# sourceMappingURL=HomeController.js.map

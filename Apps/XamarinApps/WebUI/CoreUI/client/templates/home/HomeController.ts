@@ -1,12 +1,8 @@
-/**
- * Created by Kalle on 1.9.2015.
- */
-
+///<reference path="..\..\services\OperationService.ts"/>
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-///<reference path="../../services/ConnectionService.ts"/>
+/// <reference path="../../services/ConnectionService.ts"/>
 
 module application {
-
 
   interface IHomeController {
     CreateConnection:()=>void;
@@ -37,27 +33,37 @@ module application {
       return this.hasConnections();
     }
 
-    constructor($scope, service:ConnectionService) {
+    constructor($scope, connectionService:ConnectionService, private operationService:OperationService) {
       $scope.vm = this;
       this.currentHost = this.hosts[2];
       var me = this;
-      service.getConnectionPrefillData().then(result => {
+      connectionService.getConnectionPrefillData().then(result => {
         var data = result.data;
         me.email = data.email;
         me.hosts = data.hosts;
       });
-      service.getConnectionData().then(result => {
+      connectionService.getConnectionData().then(result => {
         var data = result.data;
         me.connections = data.connections;
       });
     }
 
     CreateConnection() {
-      alert(this.email + " for host: " + this.currentHost.value);
+      this.operationService.executeOperation("TheBall.LocalApp.CreateConnection",
+        {
+          "host": this.currentHost.hostname,
+          "email": this.email
+        });
+    }
+
+    DeleteConnection(connectionID:string) {
+      this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection",
+        { "connectionID": connectionID });
     }
   }
 
   (<any>window).appModule.controller("HomeController",
-    ["$scope", "ConnectionService", ($scope, connectionService)
-      => new HomeController($scope, connectionService)]);
+    ["$scope", "ConnectionService", "OperationService",
+      ($scope, connectionService, operationService)
+      => new HomeController($scope, connectionService, operationService)]);
 }

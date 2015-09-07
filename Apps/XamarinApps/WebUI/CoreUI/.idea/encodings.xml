@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/client/data/ConnectionHosts.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/data/Connections.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/services/ConnectionService.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/client/services/OperationService.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/templates/home/HomeController.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/templates/home/home.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gulpfile.js" charset="UTF-8" />

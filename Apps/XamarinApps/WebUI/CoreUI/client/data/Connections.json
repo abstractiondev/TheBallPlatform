@@ -1,8 +1,8 @@
 {
   "connections":[
-    { "host": "Host Name 1", "email": "Email Address 1" },
-    { "host": "Host Name 2", "email": "Email Address 2" },
-    { "host": "Host Name 3", "email": "Email Address 3" },
-    { "host": "Host Name 4", "email": "Email Address 4" }
+    { "id": "id-1", "host": "Host Name 1", "email": "Email Address 1" },
+    { "id": "id-2", "host": "Host Name 2", "email": "Email Address 2" },
+    { "id": "id-3", "host": "Host Name 3", "email": "Email Address 3" },
+    { "id": "id-4", "host": "Host Name 4", "email": "Email Address 4" }
   ]
 }

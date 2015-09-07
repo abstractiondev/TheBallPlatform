@@ -26,7 +26,16 @@ controller: HomeController
 <div class="grid-container" ng-if="vm.isManageConnectionsMode()">
   <form>
     <div class="grid-block">
-      <div class="small-12 medium-6 grid-content" ng-repeat="connection in vm.connections">
+      <div class="small-12 medium-6 grid-content">
+        <table>
+          <caption>Existing Connections</caption>
+          <tr><th>Host</th><th>Email Address</th></tr>
+          <tr ng-repeat="connection in vm.connections">
+            <td>{{connection.host}}</td>
+            <td>{{connection.email}}</td>
+            <td><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a> </td>
+          </tr>
+        </table>
         {{connection.host}}
       </div>
       <div class="small-12 medium-6 grid-content">
