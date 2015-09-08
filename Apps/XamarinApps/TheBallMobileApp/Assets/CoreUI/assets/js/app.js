@@ -121,7 +121,7 @@ var application;
             this.connections = [];
             this.LastOperationDump = "void";
             $scope.vm = this;
-            this.currentHost = this.hosts[2];
+            //this.currentHost = this.hosts[2];
             var me = this;
             connectionService.getConnectionPrefillData().then(function (result) {
                 var data = result.data;
@@ -143,10 +143,11 @@ var application;
             return this.hasConnections();
         };
         ConnectionController.prototype.CreateConnection = function () {
+            var me = this;
             this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
-                "host": this.currentHost.hostname,
+                "host": this.currentHost.value,
                 "email": this.email
-            });
+            }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
             var me = this;

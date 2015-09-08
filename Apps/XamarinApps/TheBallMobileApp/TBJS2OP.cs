@@ -50,7 +50,6 @@ namespace TheBallMobileApp
             //string locPart = getLocationString();
             //return true;
             var executionResult = ActiveOperations.Select(operation => operation(operationUrl.ToString(), operationData.ToString())).FirstOrDefault(result => result != null);
-            Toast.MakeText(context, "Ding ding", ToastLength.Long).Show();
             return "{ \"OperationResult\": " + (executionResult ?? "null") + " }";
         }
 

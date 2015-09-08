@@ -47,6 +47,7 @@
       <HintPath>..\packages\TheBallDeviceClient.0.9.6-beta1\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />

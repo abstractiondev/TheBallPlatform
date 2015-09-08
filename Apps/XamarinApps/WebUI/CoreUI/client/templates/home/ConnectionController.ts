@@ -37,7 +37,7 @@ module application {
 
     constructor($scope, connectionService:ConnectionService, private operationService:OperationService) {
       $scope.vm = this;
-      this.currentHost = this.hosts[2];
+      //this.currentHost = this.hosts[2];
       var me = this;
       connectionService.getConnectionPrefillData().then(result => {
         var data = result.data;
@@ -51,11 +51,12 @@ module application {
     }
 
     CreateConnection() {
+      var me = this;
       this.operationService.executeOperation("TheBall.LocalApp.CreateConnection",
         {
-          "host": this.currentHost.hostname,
+          "host": this.currentHost.value,
           "email": this.email
-        });
+        }).then(data => me.LastOperationDump = JSON.stringify(data));
     }
 
     DeleteConnection(connectionID:string) {
