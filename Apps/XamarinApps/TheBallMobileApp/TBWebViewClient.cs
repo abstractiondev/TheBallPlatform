@@ -1,15 +1,23 @@
+using System;
+using System.IO;
 using Android.App;
 using Android.Webkit;
+using Javax.Security.Auth;
 
 namespace TheBallMobileApp
 {
     public class TBWebViewClient : WebViewClient
     {
-        private readonly Activity ParentActivity;
+        public delegate Tuple<string, string, Stream> DataRetriever(string dataKey);
 
-        public TBWebViewClient(Activity parentActivity)
+        private readonly Activity ParentActivity;
+        private readonly DataRetriever CustomDataRetriever;
+        private const string DataPrefix = "file:///data/";
+
+        public TBWebViewClient(Activity parentActivity, DataRetriever customDataRetriever)
         {
             ParentActivity = parentActivity;
+            CustomDataRetriever = customDataRetriever;
         }
 
         public override WebResourceResponse ShouldInterceptRequest(WebView view, string url)
@@ -28,9 +36,16 @@ namespace TheBallMobileApp
                     ParentActivity.Assets.Open(fixedUrl.Replace("file:///android_asset/", "")));
                 return intercept;
             }
-            if (url.StartsWith("file:///data/"))
+            if (url.StartsWith(DataPrefix))
             {
-                var fixedUrl = url.Replace("file:///data/", "CoreUI/data/");
+                string dataKey = url.Substring(DataPrefix.Length);
+                var customData = CustomDataRetriever(dataKey);
+                if (customData != null)
+                {
+                    WebResourceResponse response = new WebResourceResponse(customData.Item1, customData.Item2, customData.Item3);
+                    return response;
+                }
+                var fixedUrl = url.Replace(DataPrefix, "CoreUI/data/");
                 WebResourceResponse intercept = new WebResourceResponse("application/json", "utf-8",
                     ParentActivity.Assets.Open(fixedUrl));
                 return intercept;

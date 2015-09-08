@@ -41,11 +41,36 @@ namespace TheBallMobileApp
             settings.JavaScriptEnabled = true;
             TBJSBridge = new TBJS2OP(this);
             TBJSBridge.RegisterOperation(TheBallHostManager.RegisterConnectionOperation);
-            var webViewClient = new TBWebViewClient(this);
+            var webViewClient = new TBWebViewClient(this, customDataRetriever);
             webView.SetWebViewClient(webViewClient);
             webView.LoadUrl("file:///android_asset/CoreUI/index.html");
             webView.AddJavascriptInterface(TBJSBridge, "TBJS2MobileBridge");
             return webView;
+        }
+
+        private Tuple<string, string, Stream> customDataRetriever(string datakey)
+        {
+            switch (datakey)
+            {
+                case "ConnectionHosts.json":
+                    byte[] data;
+                    using (var stream = new MemoryStream())
+                    {
+                        JSONSupport.SerializeToJSONStream(new
+                        {
+                            email = "test.email@from.json",
+                            hosts = new[]
+                            {
+                                new {displayName = "test.theball.me", value = "test.theball.me"},
+                                new {displayName = "localhost", value = "localhost"},
+                            }
+                        }, stream);
+                        data = stream.ToArray();
+                    }
+                    var dataStream = new MemoryStream(data);
+                    return new Tuple<string, string, Stream>("application/json", "utf-8", dataStream);
+            }
+            return null;
         }
 
         private void ReportException(Exception obj)
