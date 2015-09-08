@@ -21,6 +21,8 @@ module application {
 
     email:string;
 
+    LastOperationDump:string = "void";
+
     hasConnections():Boolean {
       return this.connections.length > 0;
     }
@@ -57,8 +59,9 @@ module application {
     }
 
     DeleteConnection(connectionID:string) {
+      var me = this;
       this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection",
-        { "connectionID": connectionID });
+        { "connectionID": connectionID }).then(data => me.LastOperationDump = JSON.stringify(data));
     }
   }
 

@@ -96,9 +96,6 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\CoreUI\index.html" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\css\app.css" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +184,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\templates\home\connection.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

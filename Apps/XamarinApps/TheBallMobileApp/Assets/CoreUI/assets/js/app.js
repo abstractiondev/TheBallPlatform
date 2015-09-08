@@ -79,22 +79,34 @@ var application;
 var application;
 (function (application) {
     var OperationService = (function () {
-        function OperationService($http, $location, promiseCache) {
+        function OperationService($http, $location, $q, promiseCache) {
             this.$http = $http;
+            this.$q = $q;
             this.promiseCache = promiseCache;
         }
         OperationService.prototype.executeOperation = function (operationName, operationParams) {
             var me = this;
-            return this.promiseCache({
-                promise: function () {
-                    return me.$http.post("/op/" + operationName, operationParams);
-                }
-            });
+            var wnd = window;
+            if (wnd.TBJS2MobileBridge) {
+                var stringParams = JSON.stringify(operationParams);
+                var result = wnd.TBJS2MobileBridge.ExecuteAjaxOperation(operationName, stringParams);
+                var data = JSON.parse(result);
+                var deferred = me.$q.defer();
+                deferred.resolve(data);
+                return deferred.promise;
+            }
+            else {
+                return this.promiseCache({
+                    promise: function () {
+                        return me.$http.post("/op/" + operationName, operationParams);
+                    }
+                });
+            }
         };
         return OperationService;
     })();
     application.OperationService = OperationService;
-    window.appModule.factory('OperationService', ["$http", "$location", "promiseCache", function ($http, $location, promiseCache) { return new OperationService($http, $location, promiseCache); }]);
+    window.appModule.factory('OperationService', ["$http", "$location", "$q", "promiseCache", function ($http, $location, $q, promiseCache) { return new OperationService($http, $location, $q, promiseCache); }]);
 })(application || (application = {}));
 //# sourceMappingURL=OperationService.js.map
 ///<reference path="..\..\services\OperationService.ts"/>
@@ -107,6 +119,7 @@ var application;
             this.operationService = operationService;
             this.hosts = [];
             this.connections = [];
+            this.LastOperationDump = "void";
             $scope.vm = this;
             this.currentHost = this.hosts[2];
             var me = this;
@@ -136,7 +149,8 @@ var application;
             });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
-            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID });
+            var me = this;
+            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;

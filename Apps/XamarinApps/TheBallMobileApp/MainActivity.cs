@@ -44,6 +44,7 @@ namespace TheBallMobileApp
             var webViewClient = new TBWebViewClient(this);
             webView.SetWebViewClient(webViewClient);
             webView.LoadUrl("file:///android_asset/CoreUI/index.html");
+            webView.AddJavascriptInterface(TBJSBridge, "TBJS2MobileBridge");
             return webView;
         }
 

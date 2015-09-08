@@ -8,6 +8,7 @@ var application;
             this.operationService = operationService;
             this.hosts = [];
             this.connections = [];
+            this.LastOperationDump = "void";
             $scope.vm = this;
             this.currentHost = this.hosts[2];
             var me = this;
@@ -37,7 +38,8 @@ var application;
             });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
-            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID });
+            var me = this;
+            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
