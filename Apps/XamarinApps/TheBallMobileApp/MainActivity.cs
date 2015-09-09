@@ -31,6 +31,23 @@ namespace TheBallMobileApp
             if (cWebView == null)
             {
                 cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView));
+                ClientExecute.ExecuteWithSettings(settings =>
+                {
+                    var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                    var tbRoot = "TB";
+                    foreach (var connection in settings.Connections)
+                    {
+                        var connRoot = Path.Combine(localPersonalPath, tbRoot, connection.HostName);
+                        var connName = connection.Name;
+                        ClientExecute.SetStaging(connName, connRoot,
+                            "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel");
+                        ClientExecute.StageOperation(connName, false, false, false, true);
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
+                    }
+                }, ReportException);
             }
             
         }
