@@ -46,6 +46,8 @@ namespace TheBallMobileApp
                     return response;
                 }
                 var fixedUrl = url.Replace(DataPrefix, "CoreUI/data/");
+                if (!File.Exists(fixedUrl))
+                    return null;
                 WebResourceResponse intercept = new WebResourceResponse("application/json", "utf-8",
                     ParentActivity.Assets.Open(fixedUrl));
                 return intercept;
@@ -54,5 +56,9 @@ namespace TheBallMobileApp
             return baseResult;
         }
 
+        public override void OnLoadResource(WebView view, string url)
+        {
+            base.OnLoadResource(view, url);
+        }
     }
 }
