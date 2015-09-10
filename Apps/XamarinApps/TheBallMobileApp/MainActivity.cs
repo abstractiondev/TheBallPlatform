@@ -30,31 +30,32 @@ namespace TheBallMobileApp
 
             if (cWebView == null)
             {
+                string connToSync = "members.onlinetaekwondo.net";
                 Connection primaryConnection = null;
                 ClientExecute.ExecuteWithSettings(settings =>
                 {
-                    primaryConnection = settings.Connections.FirstOrDefault();
+                    primaryConnection = settings.Connections.FirstOrDefault(conn => conn.HostName == connToSync);
                 }, ReportException);
 
                 string startupUrl = null;
+                string connectionRoot = null;
                 if (primaryConnection != null)
                 {
-                    string connectionRoot = getConnectionRootFolder(primaryConnection.HostName);
+                    connectionRoot = getConnectionRootFolder(primaryConnection.HostName);
                     startupUrl = getStartupUrlFromRoot(connectionRoot);
                 }
-
-                cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView), startupUrl);
+                cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView), startupUrl, connectionRoot);
                 bool updateOnStart = false;
                 if (updateOnStart)
                 {
                     ClientExecute.ExecuteWithSettings(settings =>
                     {
-                        foreach (var connection in settings.Connections)
+                        foreach (var connection in settings.Connections.Where(con => con.HostName == connToSync))
                         {
                             var connRoot = getConnectionRootFolder(connection.HostName);
                             var connName = connection.Name;
                             ClientExecute.SetStaging(connName, connRoot,
-                                "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel");
+                                "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
                             ClientExecute.StageOperation(connName, false, false, false, true);
                             GC.WaitForPendingFinalizers();
                             GC.Collect();
@@ -81,7 +82,7 @@ namespace TheBallMobileApp
             return rootFolder;
         }
 
-        private WebView hookToWebView(WebView webView, string startupUrl)
+        private WebView hookToWebView(WebView webView, string startupUrl, string connectionRoot)
         {
             string bridgeName = "TBJS2MobileBridge";
             if (startupUrl == null)
@@ -91,7 +92,7 @@ namespace TheBallMobileApp
             TBJSBridge = new TBJS2OP(this);
             TBJSBridge.RegisterOperation(TheBallHostManager.CreateConnectionOperation);
             TBJSBridge.RegisterOperation(TheBallHostManager.DeleteConnectionOperation);
-            var webViewClient = new TBWebViewClient(this, TheBallHostManager.CustomDataRetriever);
+            var webViewClient = new TBWebViewClient(this, TheBallHostManager.CustomDataRetriever, connectionRoot);
             webView.SetWebViewClient(webViewClient);
             webView.LoadUrl(startupUrl);
             webView.AddJavascriptInterface(TBJSBridge, bridgeName);

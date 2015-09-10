@@ -13,18 +13,21 @@ namespace TheBallMobileApp
         private readonly Activity ParentActivity;
         private readonly DataRetriever CustomDataRetriever;
         private const string DataPrefix = "file:///data/";
+        private readonly string ConnectionRootFolder;
 
-        public TBWebViewClient(Activity parentActivity, DataRetriever customDataRetriever)
+        public TBWebViewClient(Activity parentActivity, DataRetriever customDataRetriever, string connectionRoot)
         {
             ParentActivity = parentActivity;
             CustomDataRetriever = customDataRetriever;
+            ConnectionRootFolder = connectionRoot;
         }
 
         public override WebResourceResponse ShouldInterceptRequest(WebView view, string url)
         {
             if (url.StartsWith("file:///auth/"))
             {
-                string fixedUrl = url.Replace("file:///auth/", "file:///android_asset/tb/");
+                //string fixedUrl = url.Replace("file:///auth/", "file:///android_asset/tb/");
+                string fixedUrl = url.Replace("file:///auth", ConnectionRootFolder);
                 if (fixedUrl.EndsWith("/"))
                 {
                     fixedUrl += "<redirect address to add>";
@@ -32,8 +35,11 @@ namespace TheBallMobileApp
                     view.LoadUrl(fixedUrl);
                     return null;
                 }
+                if (!File.Exists(fixedUrl))
+                    return null;
                 WebResourceResponse intercept = new WebResourceResponse("text/html", "utf-8",
-                    ParentActivity.Assets.Open(fixedUrl.Replace("file:///android_asset/", "")));
+                    ParentActivity.Assets.Open(fixedUrl));
+//                    ParentActivity.Assets.Open(fixedUrl.Replace("file:///android_asset/", "")));
                 return intercept;
             }
             if (url.StartsWith(DataPrefix))
