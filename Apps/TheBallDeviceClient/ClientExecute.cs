@@ -11,8 +11,6 @@ namespace TheBall.Support.DeviceClient
 {
     public static class ClientExecute
     {
-        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
-
         public static Connection GetConnection(string connectionName)
         {
             var connection = UserSettings.CurrentSettings.Connections.Single(conn => conn.Name == connectionName);
@@ -94,15 +92,18 @@ namespace TheBall.Support.DeviceClient
 
         public static RelativeContentItemRetriever LocalContentItemRetriever =
             FileSystemSupport.GetContentRelativeFromRoot;
-
         public static TargetStreamRetriever LocalTargetStreamRetriever = 
             FileSystemSupport.GetLocalTargetAsIs;
 
+        public static TargetContentWriteFinalizer LocalTargetContentWriteFinalizer = 
+            FileSystemSupport.TargetContentWriteFinalizer;
         public static TargetContentRemover LocalTargetRemover =
             FileSystemSupport.RemoveLocalTarget;
 
-        public delegate Stream TargetStreamRetriever(string targetFullName);
+        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
 
+        public delegate void TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetContentItem);
+        public delegate Stream TargetStreamRetriever(ContentItemLocationWithMD5 targetContentItem);
         public delegate void TargetContentRemover(string targetFullName);
 
         public static void DownSync(Connection connection, FolderSyncItem downSyncItem, string ownerPrefix = null)
@@ -122,13 +123,20 @@ namespace TheBall.Support.DeviceClient
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
                         string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, target.ContentLocation.Substring(stripRemoteFolderIndex));
-                        var targetStream = LocalTargetStreamRetriever(targetFullName);
+                        var targetLocalContentItem = new ContentItemLocationWithMD5
+                        {
+                            ContentLocation = targetFullName,
+                            ContentMD5 = source.ContentMD5
+                        };
+                        var targetStream = LocalTargetStreamRetriever(targetLocalContentItem);
                         using(targetStream)
                         {
                             DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
                                                                  targetStream, ownerPrefix);
                             targetStream.Flush();
                         }
+                        if (LocalTargetContentWriteFinalizer != null)
+                            LocalTargetContentWriteFinalizer(targetLocalContentItem);
                         //Console.WriteLine(" ... done");
                         var copyItem = ownerPrefix != null
                             ? ownerPrefix + "/" + source.ContentLocation

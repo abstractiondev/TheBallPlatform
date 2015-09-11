@@ -60,8 +60,9 @@ namespace TheBall.Support.DeviceClient
             return Convert.ToBase64String(md5Hash);
         }
 
-        public static Stream GetLocalTargetAsIs(string targetFullName)
+        public static Stream GetLocalTargetAsIs(ContentItemLocationWithMD5 targetLocationItem)
         {
+            string targetFullName = targetLocationItem.ContentLocation;
             string targetDirectoryName = Path.GetDirectoryName(targetFullName);
             try
             {
@@ -78,6 +79,10 @@ namespace TheBall.Support.DeviceClient
         public static void RemoveLocalTarget(string targetfullname)
         {
             File.Delete(targetfullname);
+        }
+
+        public static void TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetcontentitem)
+        {
         }
     }
 }

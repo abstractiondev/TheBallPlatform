@@ -85,6 +85,7 @@
     <Compile Include="TBJS2OP.cs" />
     <Compile Include="TBWebViewClient.cs" />
     <Compile Include="TheBallHostManager.cs" />
+    <Compile Include="VirtualFS.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />

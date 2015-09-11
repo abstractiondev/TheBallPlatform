@@ -144,16 +144,20 @@ namespace TheBallMobileApp
         {
             ClientExecute.LocalContentItemRetriever = location =>
             {
-                var result = FileSystemSupport.GetContentRelativeFromRoot(location);
+                var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
                 return result;
             };
             ClientExecute.LocalTargetRemover = targetLocation =>
             {
-                FileSystemSupport.GetLocalTargetRemover(targetLocation);
+                VirtualFS.Current.RemoveLocalContent(targetLocation);
             };
-            ClientExecute.LocalTargetStreamRetriever = targetLocation =>
+            ClientExecute.LocalTargetStreamRetriever = targetLocationItem =>
             {
-                return FileSystemSupport.GetLocalTargetAsIs(targetLocation);
+                return VirtualFS.Current.GetLocalTargetStreamForWrite(targetLocationItem);
+            };
+            ClientExecute.LocalTargetContentWriteFinalizer = targetLocationItem =>
+            {
+                VirtualFS.Current.UpdateMetadataAfterWrite(targetLocationItem);
             };
         }
 
