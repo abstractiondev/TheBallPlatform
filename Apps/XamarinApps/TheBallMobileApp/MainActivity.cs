@@ -27,10 +27,12 @@ namespace TheBallMobileApp
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+            TheBallHostManager.SetDeviceClientHooks();
 
             if (cWebView == null)
             {
                 string connToSync = "members.onlinetaekwondo.net";
+                //string connToSync = "beta.diosphere.org";
                 Connection primaryConnection = null;
                 ClientExecute.ExecuteWithSettings(settings =>
                 {
@@ -44,8 +46,10 @@ namespace TheBallMobileApp
                     connectionRoot = getConnectionRootFolder(primaryConnection.HostName);
                     startupUrl = getStartupUrlFromRoot(connectionRoot);
                 }
+                startupUrl = null;
+                connectionRoot = null;
                 cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView), startupUrl, connectionRoot);
-                bool updateOnStart = false;
+                bool updateOnStart = true;
                 if (updateOnStart)
                 {
                     ClientExecute.ExecuteWithSettings(settings =>
@@ -96,6 +100,8 @@ namespace TheBallMobileApp
             webView.SetWebViewClient(webViewClient);
             webView.LoadUrl(startupUrl);
             webView.AddJavascriptInterface(TBJSBridge, bridgeName);
+            CookieManager.SetAcceptFileSchemeCookies(true);
+            CookieManager.Instance.SetCookie("file://", "TheBall_EMAIL=theballdemo@gmail.com");
             return webView;
         }
 

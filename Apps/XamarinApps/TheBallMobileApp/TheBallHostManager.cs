@@ -140,5 +140,22 @@ namespace TheBallMobileApp
             return TBJS2OP.TRUE_RESULT;
         };
 
+        public static void SetDeviceClientHooks()
+        {
+            ClientExecute.LocalContentItemRetriever = location =>
+            {
+                var result = FileSystemSupport.GetContentRelativeFromRoot(location);
+                return result;
+            };
+            ClientExecute.LocalTargetRemover = targetLocation =>
+            {
+                FileSystemSupport.GetLocalTargetRemover(targetLocation);
+            };
+            ClientExecute.LocalTargetStreamRetriever = targetLocation =>
+            {
+                return FileSystemSupport.GetLocalTargetAsIs(targetLocation);
+            };
+        }
+
     }
 }

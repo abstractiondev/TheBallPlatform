@@ -59,5 +59,25 @@ namespace TheBall.Support.DeviceClient
             var md5Hash = md5.ComputeHash(fileData);
             return Convert.ToBase64String(md5Hash);
         }
+
+        public static Stream GetLocalTargetAsIs(string targetFullName)
+        {
+            string targetDirectoryName = Path.GetDirectoryName(targetFullName);
+            try
+            {
+                if (Directory.Exists(targetDirectoryName) == false)
+                    Directory.CreateDirectory(targetDirectoryName);
+            }
+            catch
+            {
+            }
+            Stream targetStream = File.Create(targetFullName);
+            return targetStream;
+        }
+
+        public static void RemoveLocalTarget(string targetfullname)
+        {
+            File.Delete(targetfullname);
+        }
     }
 }

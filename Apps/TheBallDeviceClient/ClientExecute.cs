@@ -11,6 +11,8 @@ namespace TheBall.Support.DeviceClient
 {
     public static class ClientExecute
     {
+        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
+
         public static Connection GetConnection(string connectionName)
         {
             var connection = UserSettings.CurrentSettings.Connections.Single(conn => conn.Name == connectionName);
@@ -90,10 +92,23 @@ namespace TheBall.Support.DeviceClient
             DownSync(connection, syncItem);
         }
 
+        public static RelativeContentItemRetriever LocalContentItemRetriever =
+            FileSystemSupport.GetContentRelativeFromRoot;
+
+        public static TargetStreamRetriever LocalTargetStreamRetriever = 
+            FileSystemSupport.GetLocalTargetAsIs;
+
+        public static TargetContentRemover LocalTargetRemover =
+            FileSystemSupport.RemoveLocalTarget;
+
+        public delegate Stream TargetStreamRetriever(string targetFullName);
+
+        public delegate void TargetContentRemover(string targetFullName);
+
         public static void DownSync(Connection connection, FolderSyncItem downSyncItem, string ownerPrefix = null)
         {
             var rootItem = downSyncItem.LocalFullPath;
-            var myDataContents = FileSystemSupport.GetContentRelativeFromRoot(rootItem);
+            var myDataContents = LocalContentItemRetriever(rootItem);
             foreach (var myDataItem in myDataContents)
             {
                 if(!downSyncItem.IsFile)
@@ -107,19 +122,13 @@ namespace TheBall.Support.DeviceClient
                 delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
                         string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, target.ContentLocation.Substring(stripRemoteFolderIndex));
-                        string targetDirectoryName = Path.GetDirectoryName(targetFullName);
-                        try
+                        var targetStream = LocalTargetStreamRetriever(targetFullName);
+                        using(targetStream)
                         {
-                            if (Directory.Exists(targetDirectoryName) == false)
-                                Directory.CreateDirectory(targetDirectoryName);
+                            DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
+                                                                 targetStream, ownerPrefix);
+                            targetStream.Flush();
                         }
-                        catch
-                        {
-
-                        }
-                        //Console.Write("Copying: " + source.ContentLocation);
-                        DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
-                                                             targetFullName, ownerPrefix);
                         //Console.WriteLine(" ... done");
                         var copyItem = ownerPrefix != null
                             ? ownerPrefix + "/" + source.ContentLocation
@@ -129,7 +138,7 @@ namespace TheBall.Support.DeviceClient
                         {
                             string targetContentLocation = target.ContentLocation.Substring(stripRemoteFolderIndex);
                             string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, targetContentLocation);
-                            File.Delete(targetFullName);
+                            LocalTargetRemover(targetFullName);
                             var deleteItem = ownerPrefix != null
                                 ? ownerPrefix + "/" + targetContentLocation
                                 : targetContentLocation;
@@ -237,7 +246,8 @@ namespace TheBall.Support.DeviceClient
                             ConnectionURL = connectionUrl,
                             EstablishedTrustID = result.EstablishedTrustID,
                             AccountEmail = emailAddress
-                        }
+                        },
+                    EstablishedTrustID = result.EstablishedTrustID
                 };
             UserSettings.CurrentSettings.Connections.Add(connection);
         }

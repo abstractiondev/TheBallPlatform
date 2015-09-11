@@ -7,22 +7,29 @@ namespace TheBall.Support.DeviceClient
 {
     public static class DeviceSupport
     {
-        public static DeviceOperationData ExecuteDeviceOperation(this Device device, DeviceOperationData operationParameters, string ownerPrefix = null)
+        public static DeviceOperationData ExecuteDeviceOperation(this Device device,
+            DeviceOperationData operationParameters, string ownerPrefix = null)
         {
-            var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device, "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters, ownerPrefix);
-            if(!dod.OperationResult)
+            var dod = DeviceSupport.ExecuteRemoteOperation<DeviceOperationData>(device,
+                "TheBall.CORE.RemoteDeviceCoreOperation", operationParameters, ownerPrefix);
+            if (!dod.OperationResult)
                 throw new OperationCanceledException("Remote device operation failed");
             return dod;
         }
 
-        
+
         public const string OperationPrefixStr = "op/";
 
-        public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters, string ownerPrefix = null)
+        public static TReturnType ExecuteRemoteOperation<TReturnType>(Device device, string operationName,
+            object operationParameters, string ownerPrefix = null)
         {
-            return (TReturnType)executeRemoteOperation<TReturnType>(device, operationName, operationParameters, ownerPrefix);
-        }        
-        public static void ExecuteRemoteOperationVoid(Device device, string operationName, object operationParameters, string ownerPrefix = null)
+            return
+                (TReturnType)
+                    executeRemoteOperation<TReturnType>(device, operationName, operationParameters, ownerPrefix);
+        }
+
+        public static void ExecuteRemoteOperationVoid(Device device, string operationName, object operationParameters,
+            string ownerPrefix = null)
         {
             executeRemoteOperation<object>(device, operationName, operationParameters, ownerPrefix);
         }
@@ -33,13 +40,14 @@ namespace TheBall.Support.DeviceClient
         public const int AES_KEYSIZE = 256;
         public const int AES_BLOCKSIZE = 128;
 
-        private static object executeRemoteOperation<TReturnType>(Device device, string operationName, object operationParameters, string ownerPrefix)
+        private static object executeRemoteOperation<TReturnType>(Device device, string operationName,
+            object operationParameters, string ownerPrefix)
         {
             string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
             string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
             if (ownerPrefix != null)
                 url = replaceUrlAccountOwner(url, ownerPrefix);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "POST";
             AesManaged aes = new AesManaged();
             aes.KeySize = AES_KEYSIZE;
@@ -59,9 +67,10 @@ namespace TheBall.Support.DeviceClient
             {
                 JSONSupport.SerializeToJSONStream(operationParameters, cryptoStream);
             }
-            var response = (HttpWebResponse)request.GetResponse();
+            var response = (HttpWebResponse) request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
-                throw new InvalidOperationException("PushToInformationOutput failed with Http status: " + response.StatusCode.ToString());
+                throw new InvalidOperationException("PushToInformationOutput failed with Http status: " +
+                                                    response.StatusCode.ToString());
             if (typeof (TReturnType) == typeof (object))
                 return null;
             return getObjectFromResponseStream<TReturnType>(response, device.AESKey);
@@ -99,7 +108,7 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void PushContentToDevice(Device device, string localContentFileName, string destinationContentName)
+        public static void PushContentToDevice(Device device, Stream localContentStream, string destinationContentName)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + destinationContentName);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
@@ -119,8 +128,7 @@ namespace TheBall.Support.DeviceClient
             {
                 var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
                 var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
-                var fileStream = File.OpenRead(localContentFileName);
-                fileStream.CopyTo(cryptoStream);
+                localContentStream.CopyTo(cryptoStream);
                 cryptoStream.Close();
             }
 
@@ -130,19 +138,29 @@ namespace TheBall.Support.DeviceClient
                     throw new InvalidOperationException("PushToInformationOutput failed with Http status: " +
                                                         response.StatusCode.ToString());
             }
+
         }
 
-        public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName, string ownerPrefix)
+        public static void PushContentToDevice(Device device, string localContentFileName, string destinationContentName)
+        {
+            using (var fileStream = File.OpenRead(localContentFileName))
+            {
+                PushContentToDevice(device, fileStream, destinationContentName);
+            }
+        }
+
+        public static void FetchContentFromDevice(Device device, string remoteContentFileName, Stream localContentStream,
+            string ownerPrefix)
         {
             string url = device.ConnectionURL.Replace("/DEV", "/" + remoteContentFileName);
             if (ownerPrefix != null)
                 url = replaceUrlAccountOwner(url, ownerPrefix);
             string establishedTrustID = device.EstablishedTrustID;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "GET";
             request.Headers.Add("Authorization", "DeviceAES::" + establishedTrustID + ":" + device.AccountEmail);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("Authroized fetch failed with non-OK status code");
             using (MemoryStream memoryStream = new MemoryStream())
@@ -162,12 +180,20 @@ namespace TheBall.Support.DeviceClient
                 aes.FeedbackSize = AES_FEEDBACK_SIZE;
                 var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                 using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                using (FileStream fileStream = File.Create(localContentFileName))
                 {
-                    cryptoStream.CopyTo(fileStream);
-                    fileStream.Close();
+                    cryptoStream.CopyTo(localContentStream);
                 }
             }
+        }
+
+        public static void FetchContentFromDevice(Device device, string remoteContentFileName, string localContentFileName, string ownerPrefix)
+        {
+            using (FileStream fileStream = File.Create(localContentFileName))
+            {
+                FetchContentFromDevice(device, remoteContentFileName, fileStream, ownerPrefix);
+                fileStream.Close();
+            }
+
         }
     }
 }
