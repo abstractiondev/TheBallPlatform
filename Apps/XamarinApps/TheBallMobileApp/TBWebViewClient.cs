@@ -26,6 +26,9 @@ namespace TheBallMobileApp
         {
             if (url.StartsWith("file:///auth/"))
             {
+                int indexOfParams = url.IndexOf("?");
+                if (indexOfParams > 0)
+                    url = url.Substring(0, indexOfParams);
                 //string fixedUrl = url.Replace("file:///auth/", "file:///android_asset/tb/");
                 string fixedUrl = url.Replace("file:///auth", ConnectionRootFolder);
                 if (fixedUrl.EndsWith("/"))
