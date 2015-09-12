@@ -34,7 +34,7 @@ namespace TheBallMobileApp
             TheBallHostManager.SetDeviceClientHooks();
 
             string connToSync = "members.onlinetaekwondo.net";
-            bool updateOnStart = false;
+            bool updateOnStart = true;
             if (updateOnStart)
             {
                 ClientExecute.ExecuteWithSettings(settings =>

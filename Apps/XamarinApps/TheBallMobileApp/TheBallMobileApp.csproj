@@ -54,7 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta4\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -81,11 +81,11 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="TheBallDeviceClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta4\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="VirtualStorage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\VirtualStorage.dll</HintPath>
+    <Reference Include="VirtualStorage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta4\lib\MonoAndroid2.2\VirtualStorage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.36589, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">

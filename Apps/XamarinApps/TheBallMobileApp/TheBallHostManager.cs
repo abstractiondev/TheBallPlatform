@@ -163,53 +163,21 @@ namespace TheBallMobileApp
         {
             ClientExecute.LocalContentItemRetriever = location =>
             {
-                lock (VirtualFS.Current)
-                {
-                    var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
-                    var propertypes = result.Select(contentItem =>
-                    {
-                        return new TheBall.Support.DeviceClient.ContentItemLocationWithMD5
-                        {
-                            ContentLocation = contentItem.ContentLocation,
-                            ContentMD5 = contentItem.ContentMD5
-                        };
-                    }).ToArray();
-                    return propertypes;
-                }
+                var result = ClientExecute.VirtualContentItemRetriever(location);
+                return result;
             };
             ClientExecute.LocalTargetRemover = targetLocation =>
             {
-                lock (VirtualFS.Current)
-                {
-                    VirtualFS.Current.RemoveLocalContent(targetLocation);
-                }
+                ClientExecute.VirtualTargetRemover(targetLocation);
             };
             ClientExecute.LocalTargetStreamRetriever = targetLocationItem =>
             {
-                var properTypeItem = new ContentItemLocationWithMD5
-                {
-                    ContentLocation = targetLocationItem.ContentLocation,
-                    ContentMD5 = targetLocationItem.ContentMD5
-                };
-                lock (VirtualFS.Current)
-                {
-                    var streamTask = VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
-                    streamTask.Wait();
-                    return streamTask.Result;
-                }
+                var result = ClientExecute.VirtualTargetStreamRetriever(targetLocationItem);
+                return result;
             };
             ClientExecute.LocalTargetContentWriteFinalizer = targetLocationItem =>
             {
-                var properTypeItem = new ContentItemLocationWithMD5
-                {
-                    ContentLocation = targetLocationItem.ContentLocation,
-                    ContentMD5 = targetLocationItem.ContentMD5
-                };
-                lock (VirtualFS.Current)
-                {
-                    var updateTask = VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
-                    updateTask.Wait();
-                }
+                ClientExecute.VirtualTargetContentWriteFinalizer(targetLocationItem);
             };
         }
 

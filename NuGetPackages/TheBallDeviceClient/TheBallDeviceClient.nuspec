@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.7-beta3</version>
+        <version>0.9.7-beta4</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
