@@ -1,5 +1,8 @@
 ﻿using System.IO;
-using JsonFx.Json;
+using System.Text;
+//using Newtonsoft.Json;
+using JsonReader = JsonFx.Json.JsonReader;
+using JsonWriter = JsonFx.Json.JsonWriter;
 
 namespace TheBall.Support.DeviceClient
 {
@@ -28,11 +31,22 @@ namespace TheBall.Support.DeviceClient
 
         public static T GetObjectFromStream<T>(Stream stream)
         {
-            var reader = new JsonReader();
-            using (TextReader textReader = new StreamReader(stream))
+            using (TextReader textReader = new StreamReader(stream, Encoding.UTF8))
+            using(var reader = new Newtonsoft.Json.JsonTextReader(textReader))
+            {
+                var serializer = new Newtonsoft.Json.JsonSerializer();
+                var result = serializer.Deserialize<T>(reader);
+                return result;
+                //var result = reader.
+            }
+            //return JsonConvert.DeserializeObject<T>(stream);
+#if broken
+           var reader = new JsonReader();
+            using (TextReader textReader = new StreamReader(stream, Encoding.UTF8))
             {
                 return reader.Read<T>(textReader);
             }
+#endif
         }
     }
 }
