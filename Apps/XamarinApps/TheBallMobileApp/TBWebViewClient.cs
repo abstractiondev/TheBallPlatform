@@ -35,11 +35,10 @@ namespace TheBallMobileApp
                     view.LoadUrl(fixedUrl);
                     return null;
                 }
-                if (!File.Exists(fixedUrl))
+                var response = TheBallHostManager.GetWebResponseContent(fixedUrl);
+                if (response == null)
                     return null;
-                WebResourceResponse intercept = new WebResourceResponse("text/html", "utf-8",
-                    ParentActivity.Assets.Open(fixedUrl));
-//                    ParentActivity.Assets.Open(fixedUrl.Replace("file:///android_asset/", "")));
+                WebResourceResponse intercept = new WebResourceResponse(response.Item1, response.Item2, response.Item3);
                 return intercept;
             }
             if (url.StartsWith(DataPrefix))
@@ -66,5 +65,6 @@ namespace TheBallMobileApp
         {
             base.OnLoadResource(view, url);
         }
+
     }
 }
