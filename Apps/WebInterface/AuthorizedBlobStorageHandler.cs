@@ -163,7 +163,8 @@ namespace WebInterface
                 cryptoStream.Close();
             } else if (request.RequestType == "POST")
             {
-                if (!hasWriteAccess)
+                //if (!hasWriteAccess)
+                if(!hasReadAccess)
                     throw new SecurityException("No write access to requested path: " + contentPath);
                 if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
