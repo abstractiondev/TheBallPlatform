@@ -20,17 +20,21 @@ namespace TheBallMobileApp
         private WebView cWebView;
         private TBJS2OP TBJSBridge;
 
-        protected override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle bundle)
         {
             //Insights.Initialize("", ApplicationContext);
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+
+            //await VirtualFS.InitializeVFS();
+            await TheBall.Support.VirtualStorage.VirtualFS.InitializeVFS();
+
             TheBallHostManager.SetDeviceClientHooks();
 
             string connToSync = "members.onlinetaekwondo.net";
-            bool updateOnStart = true;
+            bool updateOnStart = false;
             if (updateOnStart)
             {
                 ClientExecute.ExecuteWithSettings(settings =>

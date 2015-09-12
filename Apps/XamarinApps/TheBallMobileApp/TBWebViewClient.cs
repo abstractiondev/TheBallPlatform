@@ -35,7 +35,9 @@ namespace TheBallMobileApp
                     view.LoadUrl(fixedUrl);
                     return null;
                 }
-                var response = TheBallHostManager.GetWebResponseContent(fixedUrl);
+                var responseTask = TheBallHostManager.GetWebResponseContent(fixedUrl);
+                responseTask.Wait();
+                var response = responseTask.Result;
                 if (response == null)
                     return null;
                 WebResourceResponse intercept = new WebResourceResponse(response.Item1, response.Item2, response.Item3);

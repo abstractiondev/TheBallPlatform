@@ -54,13 +54,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="JsonFx, Version=2.0.1209.2802, Culture=neutral, PublicKeyToken=315052dd637f8a52, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta1\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\JsonFx.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="mscorlib" />
+    <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\monoandroid\PCLStorage.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-portable-net.2.0.0.668\lib\portable-net45+wp8+win8\protobuf-net.dll</HintPath>
       <Private>True</Private>
@@ -69,14 +77,19 @@
     <Reference Include="System.Core" />
     <Reference Include="System.IO" />
     <Reference Include="System.Runtime" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="TheBallDeviceClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta1\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="websocket-sharp, Version=1.0.2.42943, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebSocketSharp.1.0.3-rc3\lib\websocket-sharp.dll</HintPath>
+    <Reference Include="VirtualStorage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta3\lib\MonoAndroid2.2\VirtualStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="websocket-sharp, Version=1.0.2.36589, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebSocketSharp.1.0.3-rc9\lib\websocket-sharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Xamarin.Insights, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -91,11 +104,11 @@
     <Compile Include="TBJS2OP.cs" />
     <Compile Include="TBWebViewClient.cs" />
     <Compile Include="TheBallHostManager.cs" />
-    <Compile Include="VirtualFS.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />
     <AndroidAsset Include="Assets\CoreUI\data\Connections.json" />
+    <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />

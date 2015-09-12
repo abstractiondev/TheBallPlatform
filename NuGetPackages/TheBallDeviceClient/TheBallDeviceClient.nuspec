@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.7-beta1</version>
+        <version>0.9.7-beta3</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
@@ -15,6 +15,7 @@
 New in 0.9.7:
 - Ability to provide custom delegates for realizing local files and folders
 - Ability to provide direct stream hooks for redirecting stream level to bypass fixed file requirement
+- Virtual Filesystem support 
 New in 0.9.6:
 - Full account sync (including all groups that account belongs to)
 - To serve as basis for full mobile hybrid (webview) app sync
@@ -24,18 +25,23 @@ NOTES:
         <copyright>Copyright 2014</copyright>
         <tags>TheBall Azure Device</tags>
         <dependencies>
-            <dependency id="WebSocketSharp" version="[1.0.3-rc3]" />
+            <dependency id="WebSocketSharp" version="[1.0.3-rc9]" />
+            <dependency id="protobuf-portable-net" version="[2.0.0.668]" />
+            <dependency id="PCLStorage" version="[1.0.2]" />
         </dependencies>
     </metadata>
     <files>
         <file src="lib\MonoAndroid2.2\JsonFx.dll" target="lib\MonoAndroid2.2\JsonFx.dll" />
         <file src="lib\MonoAndroid2.2\TheBallDeviceClient.dll" target="lib\MonoAndroid2.2\TheBallDeviceClient.dll" />
-        <file src="lib\net35\JsonFx.dll" target="lib\net35\JsonFx.dll" />
-        <file src="lib\net35\TheBallDeviceClient.dll" target="lib\net35\TheBallDeviceClient.dll" />
+        <file src="lib\MonoAndroid2.2\VirtualStorage.dll" target="lib\MonoAndroid2.2\VirtualStorage.dll" />
+        <file src="lib\net45\JsonFx.dll" target="lib\net45\JsonFx.dll" />
+        <file src="lib\net45\TheBallDeviceClient.dll" target="lib\net45\TheBallDeviceClient.dll" />
+        <file src="lib\net45\VirtualStorage.dll" target="lib\net45\VirtualStorage.dll" />
         <file src="tools\CommandLine.dll" target="tools\CommandLine.dll" />
         <file src="tools\ContentSyncTool.exe" target="tools\ContentSyncTool.exe" />
         <file src="tools\JsonFx.dll" target="tools\JsonFx.dll" />
         <file src="tools\TheBallDeviceClient.dll" target="tools\TheBallDeviceClient.dll" />
+        <file src="tools\VirtualStorage.dll" target="tools\VirtualStorage.dll" />
         <file src="tools\websocket-sharp.dll" target="tools\websocket-sharp.dll" />
     </files>
 </package>

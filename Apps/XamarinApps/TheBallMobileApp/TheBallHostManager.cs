@@ -1,9 +1,12 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Java.Net;
 using TheBall.Support.DeviceClient;
+using TheBall.Support.VirtualStorage;
 using Xamarin;
+using ContentItemLocationWithMD5 = TheBall.Support.VirtualStorage.ContentItemLocationWithMD5;
 
 namespace TheBallMobileApp
 {
@@ -74,15 +77,17 @@ namespace TheBallMobileApp
                 default:
                 {
                     var fullPath = "/data/" + datakey;
-                    return GetWebResponseContent(fullPath);
+                    var responseTask = GetWebResponseContent(fullPath);
+                    responseTask.Wait();
+                        return responseTask.Result;
                 }
             }
             return null;
         }
 
-        public static Tuple<string, string, Stream> GetWebResponseContent(string fullPath)
+        public static async Task<Tuple<string, string, Stream>> GetWebResponseContent(string fullPath)
         {
-            var readStream = VirtualFS.Current.GetLocalTargetStreamForRead(fullPath);
+            var readStream = await VirtualFS.Current.GetLocalTargetStreamForRead(fullPath);
             if (readStream == null)
                 return null;
             var mimeType = GetMimeType(fullPath);
@@ -158,20 +163,53 @@ namespace TheBallMobileApp
         {
             ClientExecute.LocalContentItemRetriever = location =>
             {
-                var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
-                return result;
+                lock (VirtualFS.Current)
+                {
+                    var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
+                    var propertypes = result.Select(contentItem =>
+                    {
+                        return new TheBall.Support.DeviceClient.ContentItemLocationWithMD5
+                        {
+                            ContentLocation = contentItem.ContentLocation,
+                            ContentMD5 = contentItem.ContentMD5
+                        };
+                    }).ToArray();
+                    return propertypes;
+                }
             };
             ClientExecute.LocalTargetRemover = targetLocation =>
             {
-                VirtualFS.Current.RemoveLocalContent(targetLocation);
+                lock (VirtualFS.Current)
+                {
+                    VirtualFS.Current.RemoveLocalContent(targetLocation);
+                }
             };
             ClientExecute.LocalTargetStreamRetriever = targetLocationItem =>
             {
-                return VirtualFS.Current.GetLocalTargetStreamForWrite(targetLocationItem);
+                var properTypeItem = new ContentItemLocationWithMD5
+                {
+                    ContentLocation = targetLocationItem.ContentLocation,
+                    ContentMD5 = targetLocationItem.ContentMD5
+                };
+                lock (VirtualFS.Current)
+                {
+                    var streamTask = VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
+                    streamTask.Wait();
+                    return streamTask.Result;
+                }
             };
             ClientExecute.LocalTargetContentWriteFinalizer = targetLocationItem =>
             {
-                VirtualFS.Current.UpdateMetadataAfterWrite(targetLocationItem);
+                var properTypeItem = new ContentItemLocationWithMD5
+                {
+                    ContentLocation = targetLocationItem.ContentLocation,
+                    ContentMD5 = targetLocationItem.ContentMD5
+                };
+                lock (VirtualFS.Current)
+                {
+                    var updateTask = VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
+                    updateTask.Wait();
+                }
             };
         }
 
