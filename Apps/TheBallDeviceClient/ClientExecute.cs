@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using TheBall.Support.VirtualStorage;
 
 namespace TheBall.Support.DeviceClient
 {
@@ -92,16 +93,74 @@ namespace TheBall.Support.DeviceClient
 
         public static RelativeContentItemRetriever LocalContentItemRetriever =
             FileSystemSupport.GetContentRelativeFromRoot;
+
         public static TargetStreamRetriever LocalTargetStreamRetriever = 
             FileSystemSupport.GetLocalTargetAsIs;
 
         public static TargetContentWriteFinalizer LocalTargetContentWriteFinalizer = 
             FileSystemSupport.TargetContentWriteFinalizer;
+
         public static TargetContentRemover LocalTargetRemover =
             FileSystemSupport.RemoveLocalTarget;
 
-        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
 
+        public static RelativeContentItemRetriever VirtualContentItemRetriever = location =>
+        {
+            lock (VirtualFS.Current.MyLock)
+            {
+                var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
+                var propertypes = result.Select(contentItem =>
+                {
+                    return new ContentItemLocationWithMD5
+                    {
+                        ContentLocation = contentItem.ContentLocation,
+                        ContentMD5 = contentItem.ContentMD5
+                    };
+                }).ToArray();
+                return propertypes;
+            }
+        };
+
+        public static TargetStreamRetriever VirtualTargetStreamRetriever = targetLocationItem =>
+        {
+            var properTypeItem = new VirtualStorage.ContentItemLocationWithMD5
+            {
+                ContentLocation = targetLocationItem.ContentLocation,
+                ContentMD5 = targetLocationItem.ContentMD5
+            };
+            lock (VirtualFS.Current.MyLock)
+            {
+                var streamTask = VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
+                streamTask.Wait();
+                return streamTask.Result;
+            }
+        };
+
+        public static TargetContentWriteFinalizer VirtualTargetContentWriteFinalizer = targetLocationItem =>
+        {
+            var properTypeItem = new VirtualStorage.ContentItemLocationWithMD5
+            {
+                ContentLocation = targetLocationItem.ContentLocation,
+                ContentMD5 = targetLocationItem.ContentMD5
+            };
+            lock (VirtualFS.Current.MyLock)
+            {
+                var updateTask = VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
+                updateTask.Wait();
+            }
+        };
+
+
+        public static TargetContentRemover VirtualTargetRemover = targetLocation =>
+        {
+            lock (VirtualFS.Current.MyLock)
+            {
+                VirtualFS.Current.RemoveLocalContent(targetLocation);
+            }
+        };
+
+
+        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
         public delegate void TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetContentItem);
         public delegate Stream TargetStreamRetriever(ContentItemLocationWithMD5 targetContentItem);
         public delegate void TargetContentRemover(string targetFullName);
@@ -129,14 +188,17 @@ namespace TheBall.Support.DeviceClient
                             ContentMD5 = source.ContentMD5
                         };
                         var targetStream = LocalTargetStreamRetriever(targetLocalContentItem);
-                        using(targetStream)
+                        if (targetStream != null)
                         {
-                            DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
-                                                                 targetStream, ownerPrefix);
-                            targetStream.Flush();
+                            using (targetStream)
+                            {
+                                DeviceSupport.FetchContentFromDevice(device, source.ContentLocation,
+                                                                     targetStream, ownerPrefix);
+                                targetStream.Close();
+                            }
+                            if (LocalTargetContentWriteFinalizer != null)
+                                LocalTargetContentWriteFinalizer(targetLocalContentItem);
                         }
-                        if (LocalTargetContentWriteFinalizer != null)
-                            LocalTargetContentWriteFinalizer(targetLocalContentItem);
                         //Console.WriteLine(" ... done");
                         var copyItem = ownerPrefix != null
                             ? ownerPrefix + "/" + source.ContentLocation
@@ -313,8 +375,10 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount)
+        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS = false)
         {
+            if(useVirtualFS && !getFullAccount)
+                throw new NotSupportedException("VirtualFS is only supported on getFA option");
             var connection = GetConnection(connectionName);
             var stageDef = connection.StageDefinition;
             if(stageDef == null)
@@ -326,10 +390,35 @@ namespace TheBall.Support.DeviceClient
             {
                 if(getData || putDev || putLive)
                     throw new InvalidOperationException("StageOperation: getFA is exclusive and cannot be combined with other get/put operations");
-                var accountGroups = ClientExecute.GetAccountGroups(connection);
-                var dataFolders = stageDef.DataFolders;
-                downSyncFullAccount(connection, stagingRootFolder, dataFolders, accountGroups);
-                return;
+                var localTargetContentWriteFinalizer = LocalTargetContentWriteFinalizer;
+                var localContentItemRetriever = LocalContentItemRetriever;
+                var localTargetRemover = LocalTargetRemover;
+                var localTargetStreamRetriever = LocalTargetStreamRetriever;
+                try
+                {
+                    if (useVirtualFS)
+                    {
+                        var initialization = VirtualFS.InitializeVFS();
+                        initialization.Wait();
+                        LocalTargetContentWriteFinalizer = VirtualTargetContentWriteFinalizer;
+                        LocalContentItemRetriever = VirtualContentItemRetriever;
+                        LocalTargetRemover = VirtualTargetRemover;
+                        LocalTargetStreamRetriever = VirtualTargetStreamRetriever;
+                    }
+
+                    var accountGroups = ClientExecute.GetAccountGroups(connection);
+                    var dataFolders = stageDef.DataFolders;
+                    downSyncFullAccount(connection, stagingRootFolder, dataFolders, accountGroups);
+                    return;
+                }
+                finally
+                {
+                    LocalTargetContentWriteFinalizer = localTargetContentWriteFinalizer;
+                    LocalContentItemRetriever = localContentItemRetriever;
+                    LocalTargetRemover = localTargetRemover;
+                    LocalTargetStreamRetriever = localTargetStreamRetriever;
+
+                }
             }
             if (getData)
             {

@@ -190,6 +190,9 @@ namespace ContentSyncTool
         [Option('c', "connectionName", HelpText = "Connection name used to identify/shortcut connection", Required = true)]
         public string ConnectionName { get; set; }
 
+        [Option("virtualFS", HelpText = "Use virtual FS for storage (only supported for getFA for now)", Required = false)]
+        public bool UseVirtualFS { get; set; }
+
         public abstract void ExecuteCommand(string verb);
     }
 

@@ -103,7 +103,8 @@ namespace ContentSyncTool
         {
             ClientExecute.StageOperation(stageOperationSubOptions.ConnectionName,
                                          stageOperationSubOptions.GetData, stageOperationSubOptions.PutDEV,
-                                         stageOperationSubOptions.PutLIVE, stageOperationSubOptions.GetFullAccount);
+                                         stageOperationSubOptions.PutLIVE, stageOperationSubOptions.GetFullAccount,
+                                         stageOperationSubOptions.UseVirtualFS);
         }
     }
 

@@ -33,6 +33,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\..\signable\keys\NuGetSigningKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="ContentItemLocationWithMD5.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +59,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\signable\keys\NuGetSigningKey.snk">
+      <Link>NuGetSigningKey.snk</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

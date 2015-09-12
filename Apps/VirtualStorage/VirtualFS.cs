@@ -13,7 +13,7 @@ namespace TheBall.Support.VirtualStorage
     [ProtoContract]
     public class VirtualFS
     {
-        private object MyLock = new object();
+        public readonly object MyLock = new object();
 
         [ProtoMember(1)]
         public readonly string StorageFolderLocation;
@@ -130,7 +130,8 @@ namespace TheBall.Support.VirtualStorage
                     ContentHashDictionary[contentHashKey] =
                         allContentLinks.Where(link => link.FileName != targetFullName).ToArray();
                 }
-                SaveChanges();
+                var saveTask = SaveChanges();
+                saveTask.Wait();
             }
         }
 
@@ -183,6 +184,23 @@ namespace TheBall.Support.VirtualStorage
                     Path.GetExtension(targetLocationItem.ContentLocation)
             };
             FileLocationDictionary.Add(targetLocationItem.ContentLocation, fsItem);
+            var contentHashKey = targetLocationItem.ContentMD5;
+
+            VFSItem[] existingItems;
+            VFSItem[] toAdd = new VFSItem[] {fsItem};
+            bool hasExistingContent = false;
+            if (ContentHashDictionary.TryGetValue(contentHashKey, out existingItems))
+            {
+                ContentHashDictionary[contentHashKey] = existingItems.Concat(toAdd).ToArray();
+                hasExistingContent = true;
+            }
+            else
+                ContentHashDictionary.Add(contentHashKey, toAdd);
+            await SaveChanges();
+
+            if (hasExistingContent)
+                return null;
+
             var storageFileName = getStorageFullPath(fsItem.StorageFileName);
             //return File.Create(storageFileName);
             var file = await FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
