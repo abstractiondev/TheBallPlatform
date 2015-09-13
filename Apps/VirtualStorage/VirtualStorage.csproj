@@ -41,7 +41,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ContentItemLocationWithMD5.cs" />
+    <Compile Include="ContentSyncRequest.cs" />
+    <Compile Include="ContentSyncResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SyncSupport.cs" />
     <Compile Include="VirtualFS.cs" />
   </ItemGroup>
   <ItemGroup>

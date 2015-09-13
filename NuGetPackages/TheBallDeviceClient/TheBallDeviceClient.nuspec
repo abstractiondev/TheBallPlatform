@@ -13,9 +13,10 @@
         <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
         <releaseNotes>Developer preview - beta
 New in 0.9.7:
-- Ability to provide custom delegates for realizing local files and folders
-- Ability to provide direct stream hooks for redirecting stream level to bypass fixed file requirement
-- Virtual Filesystem support 
+- Hooks for custom delegates for realizing local files and folders
+- Local storing allowing redirecting stream level to bypass fixed file requirement
+- Virtual Filesystem support for Android to bypass 127 char filename limitation
+- Using Json.NET to bypass debugger constant break-on-execution issue on Android
 New in 0.9.6:
 - Full account sync (including all groups that account belongs to)
 - To serve as basis for full mobile hybrid (webview) app sync
