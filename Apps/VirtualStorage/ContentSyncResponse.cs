@@ -1,4 +1,5 @@
-﻿using ProtoBuf;
+﻿using System.ServiceModel.Channels;
+using ProtoBuf;
 
 namespace TheBall.Support.VirtualStorage
 {
@@ -19,6 +20,7 @@ namespace TheBall.Support.VirtualStorage
             [ProtoMember(2)] public long ContentLength;
 
             public bool IsUnchanged => ContentLength == -1;
+            public bool IncludedInTransfer => !IsDeleted && !IsUnchanged;
         }
 
         [ProtoMember(0)]

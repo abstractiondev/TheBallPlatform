@@ -53,6 +53,11 @@ namespace TheBall.CORE
             groupOwners.CopyTo(owners, 1);
             var requestedFolders = syncRequest.RequestedFolders;
             var currentData = getOwnerRequestedContentData(owners, requestedFolders);
+            if (currentData.Count == 0)
+                return new ContentSyncResponse
+                {
+                    Contents = new ContentSyncResponse.ContentData[0]
+                };
             var ownerGroupedLQ = currentData.GroupBy(item => item.Owner);
             var ownerFolderGroupedLQ = ownerGroupedLQ.Select(grp => new
             {
@@ -149,6 +154,8 @@ namespace TheBall.CORE
                     ContentLength = 0,
                 })).ToArray()
             };
+            if (syncResponse.Contents.Length == 0)
+                syncResponse.Contents = null;
             return syncResponse;
         }
 
@@ -200,6 +207,17 @@ namespace TheBall.CORE
             using (GZipStream compressedStream = new GZipStream(outputStream, CompressionLevel.Fastest))
             {
                 RemoteSyncSupport.PutSyncResponseToStream(compressedStream, syncResponse);
+                if (syncResponse.Contents == null)
+                    return;
+                var random = new Random();
+                foreach (var transferItem in syncResponse.Contents.Where(content => content.IncludedInTransfer))
+                {
+                    var variantCount = transferItem.FullNames.Length;
+                    var pick = random.Next(0, variantCount - 1);
+                    var blobName = transferItem.FullNames[pick];
+                    var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
+                    blob.DownloadToStream(compressedStream);
+                }
             }
         }
     }
