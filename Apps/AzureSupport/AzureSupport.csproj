@@ -181,6 +181,7 @@
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeviceSupport.cs" />
+    <Compile Include="TheBall.CORE\DeviceSyncFullAccountOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\Extensions\StringExt.cs" />
     <Compile Include="TheBall.CORE\ExtProcessItem.cs" />
@@ -403,6 +404,10 @@
     <ProjectReference Include="..\SQLiteSupport\SQLiteSupport.csproj">
       <Project>{4944d743-f381-471e-980b-54d8387f5478}</Project>
       <Name>SQLiteSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VirtualStorage\VirtualStorage.csproj">
+      <Project>{c11070cd-4e20-4c7b-9b9b-d9e5f7feaca7}</Project>
+      <Name>VirtualStorage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

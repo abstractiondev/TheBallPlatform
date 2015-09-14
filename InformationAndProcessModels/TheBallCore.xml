@@ -1781,6 +1781,35 @@
           <Target name="ContentPackageObject"/>
         </OperationReturnValues>
       </Operation>
+      <Operation name="DeviceSyncFullAccountOperation">
+        <OperationSpec>
+          <Description>Device full account sync operation. Streams are encryption wrapped already, the operation will GZip compress handle them as well.</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="InputStream" dataType="System.IO.Stream" designDesc="Input stream for operation" state="implemented"/>
+          <Parameter name="OutputStream" dataType="System.IO.Stream" designDesc="Input stream for operation" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TheBall.Support.VirtualStorage.ContentSyncRequest" name="SyncRequest" designDesc="Content sync request data" state="implemented">
+              <Parameter name="InputStream"/>
+            </TargetDefinition>
+            <TargetDefinition name="AccountOwner" dataType="AaltoGlobalImpact.OIP.TBAccount" designDesc="Requesting account " state="implemented" />
+            <TargetDefinition name="GroupOwners" dataType="IContainerOwner[]" designDesc="Account's groups" state="implemented">
+              <Target name="AccountOwner"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="TheBall.Support.VirtualStorage.ContentSyncResponse" name="SyncResponse" designDesc="Sync response based on request and data" state="implemented">
+              <Target name="SyncRequest" />
+              <Target name="AccountOwner" />
+              <Target name="GroupOwners" />
+            </TargetDefinition>
+            <MethodExecute name="WriteResponseToStream" designDesc="Write full response to stream" state="implemented">
+              <Parameter name="OutputStream"/>
+              <Target name="SyncResponse"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="RemoteDeviceCoreOperation">
         <OperationSpec>
           <Description>Remote device core operation for primitive ops to deal with device-to-device actions</Description>

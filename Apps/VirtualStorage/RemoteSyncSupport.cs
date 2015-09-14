@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TheBall.Support.VirtualStorage
 {
-    public static class SyncSupport
+    public static class RemoteSyncSupport
     {
 
         public static ContentSyncRequest GetSyncRequestFromStream(Stream stream)

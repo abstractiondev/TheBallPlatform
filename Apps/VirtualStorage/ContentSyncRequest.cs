@@ -6,6 +6,16 @@ namespace TheBall.Support.VirtualStorage
     public class ContentSyncRequest
     {
         [ProtoContract]
+        public class ContentOwner
+        {
+            [ProtoMember(0)]
+            public string OwnerPrefix;
+
+            [ProtoMember(1)]
+            public ContentFolder[] ContentFolders;
+        }
+
+        [ProtoContract]
         public class ContentFolder
         {
             [ProtoMember(0)]
@@ -16,9 +26,13 @@ namespace TheBall.Support.VirtualStorage
         }
 
         [ProtoMember(0)]
-        public ContentFolder[] ContentFolders;
+        public ContentOwner[] ContentOwners;
 
-        [ProtoMember(1)]
+        [ProtoMember(1)] public string[] 
+        RequestedFolders;
+
+        [ProtoMember(2)]
         public string[] ContentMD5s;
+
     }
 }

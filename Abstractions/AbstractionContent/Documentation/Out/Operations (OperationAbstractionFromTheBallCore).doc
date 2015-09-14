@@ -1931,6 +1931,69 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Delete the object.
 		</div>
+		</p><h1>DeviceSyncFullAccountOperation (InputStream, OutputStream)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Device full account sync operation. Streams are encryption wrapped already, the operation will GZip compress handle them as well.
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Input stream for operation
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OutputStream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		System.IO.Stream
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Input stream for operation
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: SyncRequest ( InputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Content sync request data
+		</div>
+		</p><h2>Target Definition: AccountOwner</h2>
+		<p>		<div class="MsoNormal" >
+		Requesting account 
+		</div>
+		</p><h2>Target Definition: GroupOwners ( AccountOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Account's groups
+		</div>
+		</p><h2>Target Definition: SyncResponse ( SyncRequest, AccountOwner, GroupOwners )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync response based on request and data
+		</div>
+		</p><h2>Method Call: WriteResponseToStream ( SyncResponse, OutputStream )</h2>
+		<p>		<div class="MsoNormal" >
+		Write full response to stream
+		</div>
 		</p><h1>ExecuteProcess (ProcessID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

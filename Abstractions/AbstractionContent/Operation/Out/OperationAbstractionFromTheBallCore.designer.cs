@@ -1007,6 +1007,27 @@ using System.IO;
 		{
 				public ContentPackage ContentPackage ;
 				}
+				public class DeviceSyncFullAccountOperationParameters 
+		{
+				public System.IO.Stream InputStream ;
+				public System.IO.Stream OutputStream ;
+				}
+		
+		public class DeviceSyncFullAccountOperation 
+		{
+				private static void PrepareParameters(DeviceSyncFullAccountOperationParameters parameters)
+		{
+					}
+				public static void Execute(DeviceSyncFullAccountOperationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.Support.VirtualStorage.ContentSyncRequest SyncRequest = DeviceSyncFullAccountOperationImplementation.GetTarget_SyncRequest(parameters.InputStream);	
+				AaltoGlobalImpact.OIP.TBAccount AccountOwner = DeviceSyncFullAccountOperationImplementation.GetTarget_AccountOwner();	
+				IContainerOwner[] GroupOwners = DeviceSyncFullAccountOperationImplementation.GetTarget_GroupOwners(AccountOwner);	
+				TheBall.Support.VirtualStorage.ContentSyncResponse SyncResponse = DeviceSyncFullAccountOperationImplementation.GetTarget_SyncResponse(SyncRequest, AccountOwner, GroupOwners);	
+				DeviceSyncFullAccountOperationImplementation.ExecuteMethod_WriteResponseToStream(parameters.OutputStream, SyncResponse);		
+				}
+				}
 				public class RemoteDeviceCoreOperationParameters 
 		{
 				public System.IO.Stream InputStream ;

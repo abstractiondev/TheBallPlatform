@@ -1813,6 +1813,85 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeviceSyncFullAccountOperation (InputStream, OutputStream)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Device full account sync operation. Streams are encryption wrapped already, the operation will GZip compress handle them as well.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Input stream for operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OutputStream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>System.IO.Stream</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Input stream for operation</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncRequest ( InputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Content sync request data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountOwner" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Requesting account </TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupOwners ( AccountOwner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account's groups</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncResponse ( SyncRequest, AccountOwner, GroupOwners )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync response based on request and data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: WriteResponseToStream ( SyncResponse, OutputStream )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Write full response to stream</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExecuteProcess (ProcessID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
