@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using PCLStorage;
 using ProtoBuf;
@@ -108,6 +109,25 @@ namespace TheBall.Support.VirtualStorage
             }
         }
 
+        public void RemoveLocalContentByMD5(string contentMd5)
+        {
+            lock (MyLock)
+            {
+                var fsItems = ContentHashDictionary[contentMd5];
+                foreach (var fsItem in fsItems)
+                    FileLocationDictionary.Remove(fsItem.FileName);
+                ContentHashDictionary.Remove(contentMd5);
+                var storageFile = fsItems.First().StorageFileName;
+                var fileGet = FileSystem.Current.LocalStorage.GetFileAsync(storageFile);
+                fileGet.Wait();
+                var file = fileGet.Result;
+                var deletion = file.DeleteAsync();
+                deletion.Wait();
+                var saveTask = SaveChanges();
+                saveTask.Wait();
+            }
+        }
+
         public void RemoveLocalContent(string targetFullName)
         {
             lock (MyLock)
@@ -170,6 +190,16 @@ namespace TheBall.Support.VirtualStorage
             var storageFullName = getStorageFullPath(fsItem.StorageFileName);
             var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
             return await file.OpenAsync(FileAccess.Read);
+        }
+
+        public async Task<Stream> GetLocalTargetStreamForWrite(string contentHash)
+        {
+            var storageFileName = toFileNameSafeMD5(contentHash);
+            var file =
+                await
+                    FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
+                        CreationCollisionOption.FailIfExists);
+            return await file.OpenAsync(FileAccess.ReadAndWrite);
         }
 
         public async Task<Stream> GetLocalTargetStreamForWrite(ContentItemLocationWithMD5 targetLocationItem)
@@ -237,6 +267,40 @@ namespace TheBall.Support.VirtualStorage
                 ContentHashDictionary.Add(contentHashKey, new VFSItem[] {fsItem});
             }
             await SaveChanges();
+        }
+
+        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] toArray)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateContentNameData(string contentMd5, string[] fullNames)
+        {
+            lock (MyLock)
+            {
+                var fsContents = ContentHashDictionary[contentMd5];
+                var namesToAdd = fullNames.Where(name => fsContents.All(fsContent => fsContent.FileName != name)).ToArray();
+                var itemsToDelete = fsContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).ToArray();
+                var fsItemTemplate = fsContents.First();
+                var itemsToAdd = namesToAdd.Select(fileName =>
+                    new VFSItem
+                    {
+                        FileName = fileName,
+                        ContentLength = fsItemTemplate.ContentLength,
+                        ContentMD5 = contentMd5,
+                        StorageFileName = fsItemTemplate.StorageFileName
+                    }).ToArray();
+                
+                // Make modifications
+                ContentHashDictionary[contentMd5] = fsContents.Except(itemsToDelete).Concat(itemsToAdd).ToArray();
+
+                foreach (var itemToDelete in itemsToDelete)
+                    FileLocationDictionary.Remove(itemToDelete.FileName);
+
+                foreach (var itemToAdd in itemsToAdd)
+                    FileLocationDictionary.Add(itemToAdd.FileName, itemToAdd);
+
+            }
         }
     }
 }

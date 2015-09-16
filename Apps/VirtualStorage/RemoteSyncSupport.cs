@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,6 +27,11 @@ namespace TheBall.Support.VirtualStorage
         public static void PutSyncResponseToStream(Stream stream, ContentSyncResponse syncResponse)
         {
             ProtoBuf.Serializer.Serialize(stream, syncResponse);
+        }
+
+        public static ISyncStreamHandler GetFileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders)
+        {
+            return new FileSystemSyncHandler(syncRootFolder, ownerSyncedFolders);
         }
 
     }

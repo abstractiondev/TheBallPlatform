@@ -444,15 +444,11 @@ namespace TheBall.Support.DeviceClient
         {
             if (dataFolders.Count == 0)
                 throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
-            // Grab account data under "account"
-            string accountRoot = Path.Combine(stagingRootFolder, "account");
-            downSyncData(connection, accountRoot, dataFolders);
-            foreach (var groupID in accountGroups)
-            {
-                var ownerPrefix = "grp/" + groupID;
-                var groupRoot = Path.Combine(stagingRootFolder, ownerPrefix);
-                downSyncData(connection, groupRoot, dataFolders, ownerPrefix);
-            }
+
+            var syncRootFolder = stagingRootFolder;
+            var ownerSyncedFolders = connection.StageDefinition.DataFolders.ToArray();
+            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, ownerSyncedFolders);
+            DeviceSupport.ExecuteRemoteOperation(syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
         }
 
         private static void downSyncData(Connection connection, string stagingRootFolder, List<string> dataFolders, string ownerPrefix = null)

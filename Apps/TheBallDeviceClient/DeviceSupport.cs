@@ -34,12 +34,6 @@ namespace TheBall.Support.DeviceClient
             executeRemoteOperation<object>(device, operationName, operationParameters, ownerPrefix);
         }
 
-        public const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
-        public const CipherMode AES_MODE = CipherMode.CBC;
-        public const int AES_FEEDBACK_SIZE = 8;
-        public const int AES_KEYSIZE = 256;
-        public const int AES_BLOCKSIZE = 128;
-
         private static object executeRemoteOperation<TReturnType>(Device device, string operationName,
             object operationParameters, string ownerPrefix)
         {
@@ -49,20 +43,13 @@ namespace TheBall.Support.DeviceClient
                 url = replaceUrlAccountOwner(url, ownerPrefix);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "POST";
-            AesManaged aes = new AesManaged();
-            aes.KeySize = AES_KEYSIZE;
-            aes.BlockSize = AES_BLOCKSIZE;
-            aes.GenerateIV();
-            aes.Key = device.AESKey;
-            aes.Padding = PADDING_MODE;
-            aes.Mode = AES_MODE;
-            aes.FeedbackSize = AES_FEEDBACK_SIZE;
+            var aes = createAES(device.AESKey);
             var ivBase64 = Convert.ToBase64String(aes.IV);
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64
                                                  + ":" + device.EstablishedTrustID
                                                  + ":" + device.AccountEmail);
             var requestStream = request.GetRequestStream();
-            var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            var encryptor = aes.CreateEncryptor();
             using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
             {
                 JSONSupport.SerializeToJSONStream(operationParameters, cryptoStream);
@@ -74,6 +61,28 @@ namespace TheBall.Support.DeviceClient
             if (typeof (TReturnType) == typeof (object))
                 return null;
             return getObjectFromResponseStream<TReturnType>(response, device.AESKey);
+        }
+
+        private static AesManaged createAES(byte[] aesKey, byte[] iv = null)
+        {
+            const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
+            const CipherMode AES_MODE = CipherMode.CBC;
+            const int AES_FEEDBACK_SIZE = 8;
+            const int AES_KEYSIZE = 256;
+            const int AES_BLOCKSIZE = 128;
+
+            AesManaged aes = new AesManaged();
+            aes.KeySize = AES_KEYSIZE;
+            aes.BlockSize = AES_BLOCKSIZE;
+            if (iv == null)
+                aes.GenerateIV();
+            else
+                aes.IV = iv;
+            aes.Key = aesKey;
+            aes.Padding = PADDING_MODE;
+            aes.Mode = AES_MODE;
+            aes.FeedbackSize = AES_FEEDBACK_SIZE;
+            return aes;
         }
 
         private static string replaceUrlAccountOwner(string url, string ownerPrefix)
@@ -90,15 +99,8 @@ namespace TheBall.Support.DeviceClient
                 respStream.CopyTo(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                AesManaged aes = new AesManaged();
-                aes.KeySize = AES_KEYSIZE;
-                aes.BlockSize = AES_BLOCKSIZE;
-                aes.IV = Convert.FromBase64String(ivStr);
-                aes.Key = aesKey;
-                aes.Padding = PADDING_MODE;
-                aes.Mode = AES_MODE;
-                aes.FeedbackSize = AES_FEEDBACK_SIZE;
-                var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                var aes = createAES(aesKey, Convert.FromBase64String(ivStr));
+                var decryptor = aes.CreateDecryptor();
 
                 using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                 {
@@ -113,20 +115,13 @@ namespace TheBall.Support.DeviceClient
             string url = device.ConnectionURL.Replace("/DEV", "/" + destinationContentName);
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = "POST";
-            AesManaged aes = new AesManaged();
-            aes.KeySize = AES_KEYSIZE;
-            aes.BlockSize = AES_BLOCKSIZE;
-            aes.GenerateIV();
-            aes.Key = device.AESKey;
-            aes.Padding = PADDING_MODE;
-            aes.Mode = AES_MODE;
-            aes.FeedbackSize = AES_FEEDBACK_SIZE;
+            var aes = createAES(device.AESKey);
             var ivBase64 = Convert.ToBase64String(aes.IV);
             request.Headers.Add("Authorization",
                 "DeviceAES:" + ivBase64 + ":" + device.EstablishedTrustID + ":" + device.AccountEmail);
             using (var requestStream = request.GetRequestStream())
             {
-                var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                var encryptor = aes.CreateEncryptor();
                 var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write);
                 localContentStream.CopyTo(cryptoStream);
                 cryptoStream.Close();
@@ -170,15 +165,8 @@ namespace TheBall.Support.DeviceClient
                 respStream.CopyTo(memoryStream);
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                AesManaged aes = new AesManaged();
-                aes.KeySize = AES_KEYSIZE;
-                aes.BlockSize = AES_BLOCKSIZE;
-                aes.IV = Convert.FromBase64String(ivStr);
-                aes.Key = device.AESKey;
-                aes.Padding = PADDING_MODE;
-                aes.Mode = AES_MODE;
-                aes.FeedbackSize = AES_FEEDBACK_SIZE;
-                var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                AesManaged aes = createAES(device.AESKey, Convert.FromBase64String(ivStr));
+                var decryptor = aes.CreateDecryptor();
                 using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
                 {
                     cryptoStream.CopyTo(localContentStream);
@@ -194,6 +182,11 @@ namespace TheBall.Support.DeviceClient
                 fileStream.Close();
             }
 
+        }
+
+        public static void ExecuteRemoteOperation(Action<Stream> requestStreamHandler, Action<Stream> responseStreamHandler)
+        {
+            throw new NotImplementedException();
         }
     }
 }
