@@ -32,6 +32,8 @@ namespace TheBall.Support.VirtualStorage
             do
             {
                 var toRead = (int)Math.Min(bytesRequired - readSoFar, buffer.Length);
+                if (toRead == 0) // empty file
+                    break;
                 var readNow = await inStream.ReadAsync(buffer, 0, toRead);
                 if (readNow == 0) // end of stream
                     break;

@@ -17,11 +17,11 @@ namespace TheBall.Support.VirtualStorage
         [ProtoContract]
         public class ContentData
         {
-            [ProtoMember(0)]
+            [ProtoMember(1)]
             public string ContentMD5;
 
-            [ProtoMember(1)]
-            public string[] FullNames;
+            [ProtoMember(2)]
+            public string[] FullNames = new string[0];
 
 
             public ResponseContentType ResponseContentType => IsDeleted
@@ -29,17 +29,18 @@ namespace TheBall.Support.VirtualStorage
                 : ExistingContentNameData ? ResponseContentType.NameDataRefresh : ResponseContentType.IncludedInTransfer;
 
 
-            [ProtoMember(2)] public long ContentLength;
+            [ProtoMember(3)] public long ContentLength;
 
             private bool IsDeleted => FullNames == null || FullNames.Length == 0;
             private bool ExistingContentNameData => ContentLength == -1;
             //private bool IncludedInTransfer => !IsDeleted && !ExistingContentNameData;
         }
 
-        [ProtoMember(0)]
-        public ContentData[] Contents;
+        [ProtoMember(1)]
+        public ContentData[] Contents = new ContentData[0];
 
-        public bool IsUnchanged => Contents == null;
-        public bool IsEmpty => Contents != null && Contents.Length == 0;
+        [ProtoMember(2)] public bool IsUnchanged = false;
+
+        public bool IsEmpty => IsUnchanged == false && Contents.Length == 0;
     }
 }

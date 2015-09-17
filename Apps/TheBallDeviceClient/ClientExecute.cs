@@ -406,9 +406,8 @@ namespace TheBall.Support.DeviceClient
                         LocalTargetStreamRetriever = VirtualTargetStreamRetriever;
                     }
 
-                    var accountGroups = ClientExecute.GetAccountGroups(connection);
                     var dataFolders = stageDef.DataFolders;
-                    downSyncFullAccount(connection, stagingRootFolder, dataFolders, accountGroups);
+                    downSyncFullAccount(connection, stagingRootFolder, dataFolders.ToArray());
                     return;
                 }
                 finally
@@ -440,15 +439,14 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        private static void downSyncFullAccount(Connection connection, string stagingRootFolder, List<string> dataFolders, string[] accountGroups)
+        private static void downSyncFullAccount(Connection connection, string stagingRootFolder, string[] dataFolders)
         {
-            if (dataFolders.Count == 0)
+            if (dataFolders.Length == 0)
                 throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
 
             var syncRootFolder = stagingRootFolder;
-            var ownerSyncedFolders = connection.StageDefinition.DataFolders.ToArray();
-            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, ownerSyncedFolders);
-            DeviceSupport.ExecuteRemoteOperation(syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
+            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, dataFolders);
+            DeviceSupport.ExecuteRemoteOperation(connection.Device, "TheBall.CORE.DeviceSyncFullAccountOperation", syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
         }
 
         private static void downSyncData(Connection connection, string stagingRootFolder, List<string> dataFolders, string ownerPrefix = null)

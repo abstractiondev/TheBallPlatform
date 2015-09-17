@@ -138,6 +138,7 @@ namespace WebInterface
             InformationContext.Current.Owner = contentOwner;
             InformationContext.Current.ExecutingForDevice = deviceMembership;
             string contentPath = request.GetOwnerContentPath();
+            HttpContext.Current.Response.BufferOutput = true;
             if (request.RequestType == "GET")
             {
                 if(!hasReadAccess)
@@ -168,6 +169,7 @@ namespace WebInterface
                     throw new SecurityException("No write access to requested path: " + contentPath);
                 if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
+                    //response.BufferOutput = false;
                     string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged decAES = new AesManaged

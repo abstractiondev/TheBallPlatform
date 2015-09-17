@@ -198,7 +198,7 @@ namespace TheBall.Support.VirtualStorage
             var file =
                 await
                     FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
-                        CreationCollisionOption.FailIfExists);
+                        CreationCollisionOption.ReplaceExisting);
             return await file.OpenAsync(FileAccess.ReadAndWrite);
         }
 
@@ -269,9 +269,38 @@ namespace TheBall.Support.VirtualStorage
             await SaveChanges();
         }
 
-        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] toArray)
+        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] requestedFolders)
         {
-            throw new NotImplementedException();
+            lock (MyLock)
+            {
+                var allFiles = FileLocationDictionary.Keys.Where(key => key.StartsWith(stagingRoot)).ToArray();
+                var rootUri = new Uri(stagingRoot);
+                var syncItems = allFiles.Select(fileName =>
+                    new
+                    {
+                        LocalName = rootUri.MakeRelativeUri(new Uri(fileName)).LocalPath,
+                        FullName = fileName
+                    }).ToArray();
+                var groupItems = syncItems.Where(item => item.LocalName.StartsWith("grp")).ToArray();
+                var accountItems = syncItems.Where(item => item.LocalName.StartsWith("account"));
+                var groupOwnerGrp = groupItems.GroupBy(item =>
+                {
+                    var paths = item.LocalName.Split('/', '\\');
+                    return Path.Combine(paths[0], paths[1]).Replace('\\', '/');
+                });
+
+                var allMD5s =
+                    allFiles.Select(fileName => FileLocationDictionary[fileName].ContentMD5).Distinct().ToArray();
+
+                requestedFolders = new[] {"AaltoGlobalImpact.OIP"};
+                var syncRequest = new ContentSyncRequest
+                {
+                    ContentMD5s = allMD5s,
+                    RequestedFolders = requestedFolders,
+                    ContentOwners = new ContentSyncRequest.ContentOwner[0],
+                };
+                return syncRequest;
+            }
         }
 
         public void UpdateContentNameData(string contentMd5, string[] fullNames)

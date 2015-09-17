@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.Support.VirtualStorage;
@@ -48,7 +50,7 @@ namespace TheBall.CORE
 
         public static ContentSyncResponse GetTarget_SyncResponse(ContentSyncRequest syncRequest, IContainerOwner accountOwner, IContainerOwner[] groupOwners)
         {
-            IContainerOwner[] owners = new IContainerOwner[groupOwners.Length];
+            IContainerOwner[] owners = new IContainerOwner[groupOwners.Length + 1];
             owners[0] = accountOwner;
             groupOwners.CopyTo(owners, 1);
             var requestedFolders = syncRequest.RequestedFolders;
@@ -155,7 +157,7 @@ namespace TheBall.CORE
                 })).ToArray()
             };
             if (syncResponse.Contents.Length == 0)
-                syncResponse.Contents = null;
+                syncResponse.IsUnchanged = true;
             return syncResponse;
         }
 
@@ -204,19 +206,23 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_WriteResponseToStream(Stream outputStream, ContentSyncResponse syncResponse)
         {
-            using (GZipStream compressedStream = new GZipStream(outputStream, CompressionLevel.Fastest))
+            using (GZipStream compressedStream = new GZipStream(outputStream, CompressionLevel.Fastest, true))
             {
                 RemoteSyncSupport.PutSyncResponseToStream(compressedStream, syncResponse);
                 if (syncResponse.Contents == null)
                     return;
                 var random = new Random();
-                foreach (var transferItem in syncResponse.Contents.Where(content => content.IncludedInTransfer))
+                foreach (var transferItem in syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer))
                 {
-                    var variantCount = transferItem.FullNames.Length;
-                    var pick = random.Next(0, variantCount - 1);
-                    var blobName = transferItem.FullNames[pick];
-                    var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
-                    blob.DownloadToStream(compressedStream);
+                    if (transferItem.ContentLength > 0)
+                    {
+                        var variantCount = transferItem.FullNames.Length;
+                        var pick = random.Next(0, variantCount - 1);
+                        var blobName = transferItem.FullNames[pick];
+                        var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
+                        blob.DownloadToStream(compressedStream);
+                    }
+                    Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
                 }
             }
         }

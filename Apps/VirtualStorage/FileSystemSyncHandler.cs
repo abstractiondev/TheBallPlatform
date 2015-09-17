@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace TheBall.Support.VirtualStorage
         {
             using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress))
             {
-                var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(stream);
+                var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
                 SyncResponse = syncResponse;
                 var contentToExpect = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
                 foreach (var content in contentToExpect)
@@ -63,6 +64,7 @@ namespace TheBall.Support.VirtualStorage
             using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(content.ContentMD5))
             {
                 await compressedStream.CopyBytesAsync(outStream, content.ContentLength);
+                Debug.WriteLine("Wrote {0} bytes of {1}", content.ContentLength, content.ContentMD5);
             }
         }
 

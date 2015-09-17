@@ -63,6 +63,43 @@ namespace TheBall.Support.DeviceClient
             return getObjectFromResponseStream<TReturnType>(response, device.AESKey);
         }
 
+        private static void executeRemoteOperation(Device device, string operationName, string ownerPrefix, Action<Stream> requestStreamHandler,
+            Action<Stream> responseStreamHandler)
+        {
+            string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
+            string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
+            if (ownerPrefix != null)
+                url = replaceUrlAccountOwner(url, ownerPrefix);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            var encAes = createAES(device.AESKey);
+            var ivBase64 = Convert.ToBase64String(encAes.IV);
+            request.Headers.Add("Authorization", "DeviceAES:" + ivBase64
+                                                 + ":" + device.EstablishedTrustID
+                                                 + ":" + device.AccountEmail);
+            var requestStream = request.GetRequestStream();
+            var encryptor = encAes.CreateEncryptor();
+            using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
+            {
+                requestStreamHandler(cryptoStream);
+            }
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.OK)
+                throw new InvalidOperationException("ExecuteRemoteOperation failed with Http status: " +
+                                                    response.StatusCode.ToString());
+            string ivStr = response.Headers["IV"];
+            var decAes = createAES(device.AESKey);
+            decAes.IV = Convert.FromBase64String(ivStr);
+            var decryptor = decAes.CreateDecryptor();
+            var responseStream = response.GetResponseStream();
+
+            using (CryptoStream cryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read))
+            {
+                responseStreamHandler(cryptoStream);
+            }
+
+        }
+
         private static AesManaged createAES(byte[] aesKey, byte[] iv = null)
         {
             const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
@@ -184,9 +221,9 @@ namespace TheBall.Support.DeviceClient
 
         }
 
-        public static void ExecuteRemoteOperation(Action<Stream> requestStreamHandler, Action<Stream> responseStreamHandler)
+        public static void ExecuteRemoteOperation(Device device, string operationName, Action<Stream> requestStreamHandler, Action<Stream> responseStreamHandler)
         {
-            throw new NotImplementedException();
+            executeRemoteOperation(device, operationName, null, requestStreamHandler, responseStreamHandler);
         }
     }
 }
