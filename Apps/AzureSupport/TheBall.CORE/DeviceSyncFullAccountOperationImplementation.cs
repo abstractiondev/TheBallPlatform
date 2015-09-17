@@ -70,11 +70,18 @@ namespace TheBall.CORE
             var currentOwnerFolderHashes = ownerFolderGroupedLQ.SelectMany(grp =>
             {
                 var ownerPrefix = grp.Owner.IsAccountContainer() ? "account" : grp.Owner.GetOwnerPrefix();
+                MD5 md5 = MD5.Create();
                 var ownerFolderContent = grp.FolderContent.Select(folderGrp =>
                 {
                     var folderContent =
                         folderGrp.OrderBy(item => item.ContentMD5).ThenBy(item => item.RelativeName).ToArray();
-                    var fullMd5Hash = getFolderContentFullMd5Hash(folderContent);
+                    var fullMd5Hash =
+                        RemoteSyncSupport.GetFolderMD5Hash(
+                            folderContent.Select(src => new RemoteSyncSupport.FolderContent
+                            {
+                                ContentMD5 = src.ContentMD5,
+                                RelativeName = src.RelativeName
+                            }), md5.ComputeHash);
                     return new
                     {
                         OwnerPrefix = ownerPrefix,
@@ -124,6 +131,8 @@ namespace TheBall.CORE
                 bool removableWhenAllBelongToSkippable = removable.All(item =>
                 {
                     var ownerPrefix = item.Owner.GetOwnerPrefix();
+                    if (ownerPrefix.StartsWith("acc"))
+                        ownerPrefix = "account";
                     return
                         skippableFolders.Any(
                             skippable => skippable.OwnerPrefix == ownerPrefix && skippable.Folder == item.Folder);
@@ -159,26 +168,6 @@ namespace TheBall.CORE
             if (syncResponse.Contents.Length == 0)
                 syncResponse.IsUnchanged = true;
             return syncResponse;
-        }
-
-        private static string getFolderContentFullMd5Hash(BlobContent[] folderContent)
-        {
-            string fullMd5Hash;
-            using (var memStream = new MemoryStream())
-            {
-                foreach (var contentItem in folderContent)
-                {
-                    var md5ItemData = Convert.FromBase64String(contentItem.ContentMD5);
-                    var nameData = Encoding.UTF8.GetBytes(contentItem.RelativeName);
-                    memStream.Write(md5ItemData, 0, md5ItemData.Length);
-                    memStream.Write(nameData, 0, nameData.Length);
-                }
-                var dataToHash = memStream.ToArray();
-                var md5 = MD5.Create();
-                var hash = md5.ComputeHash(dataToHash);
-                fullMd5Hash = Convert.ToBase64String(hash);
-            }
-            return fullMd5Hash;
         }
 
         private static List<BlobContent> getOwnerRequestedContentData(IContainerOwner[] owners, string[] requestedFolders)

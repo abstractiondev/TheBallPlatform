@@ -269,66 +269,134 @@ namespace TheBall.Support.VirtualStorage
             await SaveChanges();
         }
 
-        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] requestedFolders)
+        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] requestedFolders, Func<byte[], byte[]> md5HashComputer)
         {
             lock (MyLock)
             {
                 var allFiles = FileLocationDictionary.Keys.Where(key => key.StartsWith(stagingRoot)).ToArray();
-                var rootUri = new Uri(stagingRoot);
+                Uri rootUri;
+                if(stagingRoot.EndsWith("\\") || stagingRoot.EndsWith("/"))
+                    rootUri = new Uri(stagingRoot);
+                else
+                    rootUri = new Uri(stagingRoot + "/");
                 var syncItems = allFiles.Select(fileName =>
                     new
                     {
-                        LocalName = rootUri.MakeRelativeUri(new Uri(fileName)).LocalPath,
+                        RelativeName = rootUri.MakeRelativeUri(new Uri(fileName)).OriginalString,
                         FullName = fileName
                     }).ToArray();
-                var groupItems = syncItems.Where(item => item.LocalName.StartsWith("grp")).ToArray();
-                var accountItems = syncItems.Where(item => item.LocalName.StartsWith("account"));
-                var groupOwnerGrp = groupItems.GroupBy(item =>
+                var groupAndAccountFiles = syncItems.Where(item => item.RelativeName.StartsWith("grp") || item.RelativeName.StartsWith("acc")).ToArray();
+                var ownerGrp = groupAndAccountFiles.GroupBy(item =>
                 {
-                    var paths = item.LocalName.Split('/', '\\');
+                    if (item.RelativeName.StartsWith("acc"))
+                        return "account";
+                    var paths = item.RelativeName.Split('/');
                     return Path.Combine(paths[0], paths[1]).Replace('\\', '/');
                 });
+                var ownerFolderGrouped = ownerGrp.Select(groupItems =>
+                {
+                    var ownerPrefix = groupItems.Key;
+
+                    var tempFolderGrp = groupItems.GroupBy(item =>
+                    {
+                        var paths = item.RelativeName.Split('/');
+                        return paths[2];
+                    });
+                    var folderContent = tempFolderGrp.Select(folderGrp =>
+                    {
+                        var folderName = folderGrp.Key;
+                        var folderContents = folderGrp.Select(item => new RemoteSyncSupport.FolderContent
+                        {
+                            ContentMD5 = FileLocationDictionary[item.FullName].ContentMD5,
+                            RelativeName = item.RelativeName.Substring(item.RelativeName.IndexOf('/', 4) + 1)
+                        });
+                        var fullMD5Hash = RemoteSyncSupport.GetFolderMD5Hash(folderContents, md5HashComputer);
+                        return new
+                        {
+                            FolderName = folderName,
+                            FullMD5Hash = fullMD5Hash
+                        };
+
+                    });
+                    return new
+                    {
+                        OwnerPrefix = ownerPrefix,
+                        Folders = folderContent
+                    };
+                }).ToArray();
 
                 var allMD5s =
                     allFiles.Select(fileName => FileLocationDictionary[fileName].ContentMD5).Distinct().ToArray();
 
-                requestedFolders = new[] {"TheBall.Interface"};
+                var contentOwners = ownerFolderGrouped.Select(ownerItem => new ContentSyncRequest.ContentOwner
+                {
+                    OwnerPrefix = ownerItem.OwnerPrefix,
+                    ContentFolders = ownerItem.Folders.Select(folderItem => new ContentSyncRequest.ContentFolder
+                    {
+                        Name = folderItem.FolderName,
+                        FullMD5Hash = folderItem.FullMD5Hash
+                    }).ToArray()
+                }).ToArray();
                 var syncRequest = new ContentSyncRequest
                 {
                     ContentMD5s = allMD5s,
                     RequestedFolders = requestedFolders,
-                    ContentOwners = new ContentSyncRequest.ContentOwner[0],
+                    ContentOwners = contentOwners
                 };
                 return syncRequest;
             }
         }
 
-        public void UpdateContentNameData(string contentMd5, string[] fullNames)
+        public void UpdateContentNameData(string contentMd5, string[] fullNames, bool initialAdd = false, long initialAddContentLength = -1)
         {
             lock (MyLock)
             {
-                var fsContents = ContentHashDictionary[contentMd5];
-                var namesToAdd = fullNames.Where(name => fsContents.All(fsContent => fsContent.FileName != name)).ToArray();
-                var itemsToDelete = fsContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).ToArray();
-                var fsItemTemplate = fsContents.First();
+                VFSItem[] existingContents = null;
+                string[] namesToAdd;
+                long contentLength;
+                string storageFileName;
+                VFSItem[] itemsToDelete = null;
+                var hasExistingContent = ContentHashDictionary.TryGetValue(contentMd5, out existingContents);
+                if(!initialAdd && !hasExistingContent)
+                    throw new InvalidOperationException("Non-existent content must be with initial add flag");
+                if (hasExistingContent)
+                {
+                    existingContents = ContentHashDictionary[contentMd5];
+                    var fsItemTemplate = existingContents.First();
+                    contentLength = fsItemTemplate.ContentLength;
+                    storageFileName = fsItemTemplate.StorageFileName;
+                    namesToAdd =
+                        fullNames.Where(name => existingContents.All(fsContent => fsContent.FileName != name)).ToArray();
+                    itemsToDelete = existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).ToArray();
+                    foreach (var itemToDelete in itemsToDelete)
+                        FileLocationDictionary.Remove(itemToDelete.FileName);
+                }
+                else
+                {
+                    namesToAdd = fullNames;
+                    contentLength = initialAddContentLength;
+                    storageFileName = toFileNameSafeMD5(contentMd5);
+                }
                 var itemsToAdd = namesToAdd.Select(fileName =>
                     new VFSItem
                     {
                         FileName = fileName,
-                        ContentLength = fsItemTemplate.ContentLength,
+                        ContentLength = contentLength,
                         ContentMD5 = contentMd5,
-                        StorageFileName = fsItemTemplate.StorageFileName
+                        StorageFileName = storageFileName
                     }).ToArray();
-                
+
+                if (hasExistingContent)
+                    ContentHashDictionary[contentMd5] =
+                        existingContents.Except(itemsToDelete).Concat(itemsToAdd).ToArray();
+                else
+                    ContentHashDictionary.Add(contentMd5, itemsToAdd);
+
                 // Make modifications
-                ContentHashDictionary[contentMd5] = fsContents.Except(itemsToDelete).Concat(itemsToAdd).ToArray();
-
-                foreach (var itemToDelete in itemsToDelete)
-                    FileLocationDictionary.Remove(itemToDelete.FileName);
-
                 foreach (var itemToAdd in itemsToAdd)
                     FileLocationDictionary.Add(itemToAdd.FileName, itemToAdd);
 
+                SaveChanges().Wait();
             }
         }
     }

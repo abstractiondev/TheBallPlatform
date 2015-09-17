@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using TheBall.Support.VirtualStorage;
 
@@ -445,7 +446,8 @@ namespace TheBall.Support.DeviceClient
                 throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
 
             var syncRootFolder = stagingRootFolder;
-            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, dataFolders);
+            MD5 md5 = MD5.Create();
+            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, dataFolders, md5.ComputeHash);
             DeviceSupport.ExecuteRemoteOperation(connection.Device, "TheBall.CORE.DeviceSyncFullAccountOperation", syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
         }
 

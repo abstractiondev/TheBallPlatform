@@ -12,11 +12,11 @@ namespace TheBall.Support.VirtualStorage
         public ContentSyncRequest SyncRequest { get; private set; }
         public ContentSyncResponse SyncResponse { get; private set; }
         public string SyncRootFolder { get; private set; }
-        public FileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders)
+        public FileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders, Func<byte[], byte[]> md5HashComputer)
         {
             SyncRootFolder = syncRootFolder;
             SyncRequest = VirtualFS.Current.CreateFullSyncRequest(syncRootFolder,
-                ownerSyncedFolders);
+                ownerSyncedFolders, md5HashComputer);
             RequestStreamHandler = handleRequestStream;
             ResponseStreamHandler = stream => handleResponseStream(stream).Wait();
         }
@@ -36,10 +36,8 @@ namespace TheBall.Support.VirtualStorage
                 var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
                 SyncResponse = syncResponse;
                 var contentToExpect = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
-                outputFileTotal = 0;
                 foreach (var content in contentToExpect)
-                    await streamToFile(content, compressedStream);
-                Debug.WriteLine("Outputted total bytes: {0}", outputFileTotal);
+                    await streamToFile(content, compressedStream, SyncRootFolder);
                 var contentToDelete = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
                 foreach (var content in contentToDelete)
                     deleteContent(content);
@@ -53,23 +51,25 @@ namespace TheBall.Support.VirtualStorage
 
         private static void refreshContentNameData(ContentSyncResponse.ContentData content, string syncRootFolder)
         {
-            VirtualFS.Current.UpdateContentNameData(content.ContentMD5, content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray());
+            var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
+            VirtualFS.Current.UpdateContentNameData(content.ContentMD5, fullNames);
         }
 
         private void deleteContent(ContentSyncResponse.ContentData content)
         {
             VirtualFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
+            Debug.WriteLine("Deleted content: {0}", content.ContentMD5);
         }
 
-        private long outputFileTotal = 0;
-
-        private async Task streamToFile(ContentSyncResponse.ContentData content, GZipStream compressedStream)
+        private static async Task streamToFile(ContentSyncResponse.ContentData content, GZipStream compressedStream, string syncRootFolder)
         {
-            using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(content.ContentMD5))
+            var contentMd5 = content.ContentMD5;
+            using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(contentMd5))
             {
                 await compressedStream.CopyBytesAsync(outStream, content.ContentLength);
-                outputFileTotal += content.ContentLength;
-                Debug.WriteLine("Wrote {0} bytes of {1}", content.ContentLength, content.ContentMD5);
+                var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
+                VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
+                Debug.WriteLine("Wrote {0} bytes of file(s): {1}", content.ContentLength, String.Join(", ", fullNames));
             }
         }
 
