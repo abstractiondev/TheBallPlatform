@@ -169,7 +169,8 @@ namespace WebInterface
                     throw new SecurityException("No write access to requested path: " + contentPath);
                 if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
-                    //response.BufferOutput = false;
+                    response.StatusCode = 200;
+                    response.BufferOutput = false;
                     string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
                     AesManaged decAES = new AesManaged
@@ -227,8 +228,8 @@ namespace WebInterface
                     var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                     CryptoStream cryptoStream = new CryptoStream(reqStream, decryptor, CryptoStreamMode.Read);
                     blob.UploadFromStream(cryptoStream);
+                    response.StatusCode = 200;
                 }
-                response.StatusCode = 200;
                 response.End();
             }
             else

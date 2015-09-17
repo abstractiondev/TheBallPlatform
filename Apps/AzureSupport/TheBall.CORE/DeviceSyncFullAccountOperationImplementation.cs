@@ -212,6 +212,7 @@ namespace TheBall.CORE
                 if (syncResponse.Contents == null)
                     return;
                 var random = new Random();
+                long outputTotal = 0;
                 foreach (var transferItem in syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer))
                 {
                     if (transferItem.ContentLength > 0)
@@ -220,10 +221,12 @@ namespace TheBall.CORE
                         var pick = random.Next(0, variantCount - 1);
                         var blobName = transferItem.FullNames[pick];
                         var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
+                        outputTotal += transferItem.ContentLength;
                         blob.DownloadToStream(compressedStream);
                     }
                     Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
                 }
+                Debug.WriteLine("Wrote total bytes: {0}", outputTotal);
             }
         }
     }

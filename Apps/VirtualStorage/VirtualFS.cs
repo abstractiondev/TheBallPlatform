@@ -292,7 +292,7 @@ namespace TheBall.Support.VirtualStorage
                 var allMD5s =
                     allFiles.Select(fileName => FileLocationDictionary[fileName].ContentMD5).Distinct().ToArray();
 
-                requestedFolders = new[] {"AaltoGlobalImpact.OIP"};
+                requestedFolders = new[] {"TheBall.Interface"};
                 var syncRequest = new ContentSyncRequest
                 {
                     ContentMD5s = allMD5s,

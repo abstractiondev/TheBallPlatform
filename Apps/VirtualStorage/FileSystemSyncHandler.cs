@@ -31,13 +31,15 @@ namespace TheBall.Support.VirtualStorage
 
         private async Task handleResponseStream(Stream stream)
         {
-            using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress))
+            using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress, true))
             {
                 var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
                 SyncResponse = syncResponse;
                 var contentToExpect = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
+                outputFileTotal = 0;
                 foreach (var content in contentToExpect)
                     await streamToFile(content, compressedStream);
+                Debug.WriteLine("Outputted total bytes: {0}", outputFileTotal);
                 var contentToDelete = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
                 foreach (var content in contentToDelete)
                     deleteContent(content);
@@ -59,11 +61,14 @@ namespace TheBall.Support.VirtualStorage
             VirtualFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
         }
 
+        private long outputFileTotal = 0;
+
         private async Task streamToFile(ContentSyncResponse.ContentData content, GZipStream compressedStream)
         {
             using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(content.ContentMD5))
             {
                 await compressedStream.CopyBytesAsync(outStream, content.ContentLength);
+                outputFileTotal += content.ContentLength;
                 Debug.WriteLine("Wrote {0} bytes of {1}", content.ContentLength, content.ContentMD5);
             }
         }
