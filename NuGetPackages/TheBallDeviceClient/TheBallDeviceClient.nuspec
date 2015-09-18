@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.7-beta5</version>
+        <version>0.9.7-beta6</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
@@ -13,6 +13,7 @@
         <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
         <releaseNotes>Developer preview - beta
 New in 0.9.7:
+- Full account sync in changes only request/response in one stream session
 - Hooks for custom delegates for realizing local files and folders
 - Local storing allowing redirecting stream level to bypass fixed file requirement
 - Virtual Filesystem support for Android to bypass 127 char filename limitation
