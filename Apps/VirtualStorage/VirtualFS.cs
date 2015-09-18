@@ -355,7 +355,7 @@ namespace TheBall.Support.VirtualStorage
                 string[] namesToAdd;
                 long contentLength;
                 string storageFileName;
-                VFSItem[] itemsToDelete = null;
+                string[] fileNamesToDelete = null;
                 var hasExistingContent = ContentHashDictionary.TryGetValue(contentMd5, out existingContents);
                 if(!initialAdd && !hasExistingContent)
                     throw new InvalidOperationException("Non-existent content must be with initial add flag");
@@ -367,16 +367,20 @@ namespace TheBall.Support.VirtualStorage
                     storageFileName = fsItemTemplate.StorageFileName;
                     namesToAdd =
                         fullNames.Where(name => existingContents.All(fsContent => fsContent.FileName != name)).ToArray();
-                    itemsToDelete = existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).ToArray();
-                    foreach (var itemToDelete in itemsToDelete)
-                        FileLocationDictionary.Remove(itemToDelete.FileName);
+                    fileNamesToDelete = existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).Select(fsItem => fsItem.FileName).ToArray();
                 }
                 else
                 {
                     namesToAdd = fullNames;
                     contentLength = initialAddContentLength;
                     storageFileName = toFileNameSafeMD5(contentMd5);
+                    fileNamesToDelete =
+                        fullNames.Where(fileName => FileLocationDictionary.ContainsKey(fileName)).ToArray();
                 }
+
+                foreach (var itemToDelete in fileNamesToDelete)
+                    FileLocationDictionary.Remove(itemToDelete);
+
                 var itemsToAdd = namesToAdd.Select(fileName =>
                     new VFSItem
                     {
@@ -388,7 +392,7 @@ namespace TheBall.Support.VirtualStorage
 
                 if (hasExistingContent)
                     ContentHashDictionary[contentMd5] =
-                        existingContents.Except(itemsToDelete).Concat(itemsToAdd).ToArray();
+                        existingContents.Where(fsItem => !fileNamesToDelete.Contains(fsItem.FileName)).Concat(itemsToAdd).ToArray();
                 else
                     ContentHashDictionary.Add(contentMd5, itemsToAdd);
 
