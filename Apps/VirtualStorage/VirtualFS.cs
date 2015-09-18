@@ -44,6 +44,22 @@ namespace TheBall.Support.VirtualStorage
             get { return Path.Combine(StorageFolderLocation, "VirtualFS.protobuf"); }
         }
 
+        private bool pendingSaves = false;
+        internal bool PendingSaves
+        {
+            get
+            {
+                return pendingSaves;
+            }
+            set
+            {
+                bool changed = pendingSaves != value;
+                pendingSaves = value;
+                if (changed)
+                    SaveChanges().Wait();
+            }
+        }
+
         private static async Task InitializeVFS(string storageFolderLocation)
         {
             Current = new VirtualFS(storageFolderLocation);
@@ -157,6 +173,8 @@ namespace TheBall.Support.VirtualStorage
 
         private async Task SaveChanges()
         {
+            if (PendingSaves)
+                return;
             var realFile = VFSMetaFileName;
             var tmpFile = realFile + "_tmp";
             var file = await FileSystem.Current.LocalStorage.CreateFileAsync(tmpFile, CreationCollisionOption.ReplaceExisting);

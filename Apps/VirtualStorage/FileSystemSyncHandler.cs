@@ -33,19 +33,32 @@ namespace TheBall.Support.VirtualStorage
         {
             using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress, true))
             {
-                var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
-                SyncResponse = syncResponse;
-                var contentToExpect = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
-                foreach (var content in contentToExpect)
-                    await streamToFile(content, compressedStream, SyncRootFolder);
-                var contentToDelete = syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
-                foreach (var content in contentToDelete)
-                    deleteContent(content);
-                var contentToRefresh =
-                    syncResponse.Contents.Where(
-                        content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
-                foreach (var content in contentToRefresh)
-                    refreshContentNameData(content, SyncRootFolder);
+                try
+                {
+                    VirtualFS.Current.PendingSaves = true;
+                    var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
+                    SyncResponse = syncResponse;
+                    var contentToExpect =
+                        syncResponse.Contents.Where(
+                            content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
+                    foreach (var content in contentToExpect)
+                        await streamToFile(content, compressedStream, SyncRootFolder);
+                    var contentToDelete =
+                        syncResponse.Contents.Where(
+                            content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
+                    foreach (var content in contentToDelete)
+                        deleteContent(content);
+                    var contentToRefresh =
+                        syncResponse.Contents.Where(
+                            content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
+                    foreach (var content in contentToRefresh)
+                        refreshContentNameData(content, SyncRootFolder);
+                }
+                finally
+                {
+                    VirtualFS.Current.PendingSaves = false;
+                }
+
             }
         }
 
