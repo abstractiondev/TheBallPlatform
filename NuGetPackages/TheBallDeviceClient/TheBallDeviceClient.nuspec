@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.7-beta6</version>
+        <version>0.9.7-beta8</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
@@ -17,7 +17,7 @@ New in 0.9.7:
 - Hooks for custom delegates for realizing local files and folders
 - Local storing allowing redirecting stream level to bypass fixed file requirement
 - Virtual Filesystem support for Android to bypass 127 char filename limitation
-- Using Json.NET to bypass debugger constant break-on-execution issue on Android
+- Swapped Json.Fx to Json.NET for better support on Xamarin builds and debugging
 New in 0.9.6:
 - Full account sync (including all groups that account belongs to)
 - To serve as basis for full mobile hybrid (webview) app sync
@@ -34,15 +34,14 @@ NOTES:
         </dependencies>
     </metadata>
     <files>
-        <file src="lib\MonoAndroid2.2\JsonFx.dll" target="lib\MonoAndroid2.2\JsonFx.dll" />
         <file src="lib\MonoAndroid2.2\TheBallDeviceClient.dll" target="lib\MonoAndroid2.2\TheBallDeviceClient.dll" />
         <file src="lib\MonoAndroid2.2\VirtualStorage.dll" target="lib\MonoAndroid2.2\VirtualStorage.dll" />
-        <file src="lib\net45\JsonFx.dll" target="lib\net45\JsonFx.dll" />
+        <file src="lib\Xamarin.iOS10\TheBallDeviceClient.dll" target="lib\Xamarin.iOS10\TheBallDeviceClient.dll" />
+        <file src="lib\Xamarin.iOS10\VirtualStorage.dll" target="lib\Xamarin.iOS10\VirtualStorage.dll" />
         <file src="lib\net45\TheBallDeviceClient.dll" target="lib\net45\TheBallDeviceClient.dll" />
         <file src="lib\net45\VirtualStorage.dll" target="lib\net45\VirtualStorage.dll" />
         <file src="tools\CommandLine.dll" target="tools\CommandLine.dll" />
         <file src="tools\ContentSyncTool.exe" target="tools\ContentSyncTool.exe" />
-        <file src="tools\JsonFx.dll" target="tools\JsonFx.dll" />
         <file src="tools\TheBallDeviceClient.dll" target="tools\TheBallDeviceClient.dll" />
         <file src="tools\VirtualStorage.dll" target="tools\VirtualStorage.dll" />
         <file src="tools\websocket-sharp.dll" target="tools\websocket-sharp.dll" />
