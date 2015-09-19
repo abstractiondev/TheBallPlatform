@@ -45,7 +45,14 @@ namespace TheBallMobileApp
                         var connName = connection.Name;
                         ClientExecute.SetStaging(connName, connRoot,
                             "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
-                        ClientExecute.StageOperation(connName, false, false, false, true);
+                        try
+                        {
+                            ClientExecute.StageOperation(connName, false, false, false, true);
+                        }
+                        catch
+                        {
+                            
+                        }
                         GC.WaitForPendingFinalizers();
                         GC.Collect();
                         GC.WaitForPendingFinalizers();
