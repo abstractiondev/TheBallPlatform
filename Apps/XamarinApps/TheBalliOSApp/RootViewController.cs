@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -41,7 +42,32 @@ namespace TheBalliOSApp
 
             // Perform any additional setup after loading the view, typically from a nib.
             //webView.LoadHtmlString("<html><h1>Are you still there?</h1></html>", NSBundle.MainBundle.BundleUrl);
-            webView.LoadRequest(new NSUrlRequest(new NSUrl("http://yle.fi", false)));
+            //webView.LoadRequest(new NSUrlRequest(new NSUrl("http://yle.fi", false)));
+
+            webView.LoadError += WebView_LoadError;
+            webView.LoadFinished += WebView_LoadFinished;
+            webView.LoadStarted += WebView_LoadStarted;
+            string fileName = "Content/CoreUI/index.html"; 
+            string localHtmlUrl = Path.Combine(NSBundle.MainBundle.BundlePath, fileName);
+            webView.LoadRequest(new NSUrlRequest(new NSUrl(localHtmlUrl, false)));
+            webView.ScalesPageToFit = false;
+
+        }
+
+        private void WebView_LoadStarted(object sender, EventArgs e)
+        {
+            var i = 0;
+        }
+
+        private void WebView_LoadFinished(object sender, EventArgs e)
+        {
+            var i = 0;
+        }
+
+        private void WebView_LoadError(object sender, UIWebErrorArgs e)
+        {
+            var i = 0;
+            var error = e.Error;
         }
 
         public override void ViewWillAppear(bool animated)

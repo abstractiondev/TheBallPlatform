@@ -87,6 +87,8 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="WebViewController.cs" />
+    <BundleResource Include="Content\CoreUI\data\ConnectionHosts.json" />
+    <BundleResource Include="Content\CoreUI\data\Connections.json" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -138,6 +140,37 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Content\CoreUI\assets\css\app.css" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\account.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\action.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\ban.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\bell.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\bookmark.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\cart.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\chevron.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\circle-check.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\circle-x.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\cog.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\comment-square.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\dashboard.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\document.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\envelope.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\flag.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\home.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\lock.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\magnifying-glass.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\person.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\reload.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\share-boxed.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\star.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\thumb.svg" />
+    <BundleResource Include="Content\CoreUI\assets\img\iconic\zoom.svg" />
+    <BundleResource Include="Content\CoreUI\assets\js\app.js" />
+    <BundleResource Include="Content\CoreUI\assets\js\foundation.js" />
+    <BundleResource Include="Content\CoreUI\assets\js\routes.js" />
+    <BundleResource Include="Content\CoreUI\assets\js\templates.js" />
+    <BundleResource Include="Content\CoreUI\index.html" />
+    <BundleResource Include="Content\CoreUI\templates\home\connection.html" />
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

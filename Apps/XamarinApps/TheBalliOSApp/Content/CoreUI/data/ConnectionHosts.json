@@ -1,0 +1,8 @@
+{
+  "email": "Email@from.json",
+  "hosts" : [
+    { "displayName": "test.theball.me", "value": "test.theball.me"},
+    { "displayName": "beta.diosphere.org", "value": "beta.diosphere.org"},
+    { "displayName": "localhost", "value": "localhost"}
+    ]
+}
