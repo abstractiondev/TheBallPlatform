@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="WebViewController.cs" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,7 +97,9 @@
       <DependentUpon>RootViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="RootViewController.cs" />
-    <InterfaceDefinition Include="MainStoryboard_iPad.storyboard" />
+    <InterfaceDefinition Include="MainStoryboard_iPad.storyboard">
+      <SubType>Designer</SubType>
+    </InterfaceDefinition>
     <InterfaceDefinition Include="MainStoryboard_iPhone.storyboard" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
   </ItemGroup>
