@@ -67,7 +67,7 @@ namespace ContentSyncTool
 
         public static void syncFolder(SyncFolderSubOptions syncFolderSubOptions)
         {
-            ClientExecute.SyncFolder(syncFolderSubOptions.ConnectionName, syncFolderSubOptions.SyncName);
+            ClientExecute.SyncFolder(syncFolderSubOptions.ConnectionName, syncFolderSubOptions.SyncName).Wait();
         }
 
         public static void deleteConnection(DeleteConnectionSubOptions deleteConnectionSubOptions)
@@ -104,7 +104,7 @@ namespace ContentSyncTool
             ClientExecute.StageOperation(stageOperationSubOptions.ConnectionName,
                                          stageOperationSubOptions.GetData, stageOperationSubOptions.PutDEV,
                                          stageOperationSubOptions.PutLIVE, stageOperationSubOptions.GetFullAccount,
-                                         stageOperationSubOptions.UseVirtualFS);
+                                         stageOperationSubOptions.UseVirtualFS).Wait();
         }
     }
 

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace TheBall.Support.DeviceClient
 {
     public static class FileSystemSupport
     {
-        public static ContentItemLocationWithMD5[] GetContentRelativeFromRoot(string rootItem)
+        public static async Task<ContentItemLocationWithMD5[]> GetContentRelativeFromRoot(string rootItem)
         {
             bool rootItemIsDir = Directory.Exists(rootItem);
             FileInfo[] fileInfos = null;
@@ -60,7 +61,7 @@ namespace TheBall.Support.DeviceClient
             return Convert.ToBase64String(md5Hash);
         }
 
-        public static Stream GetLocalTargetAsIs(ContentItemLocationWithMD5 targetLocationItem)
+        public static async Task<Stream> GetLocalTargetAsIs(ContentItemLocationWithMD5 targetLocationItem)
         {
             string targetFullName = targetLocationItem.ContentLocation;
             string targetDirectoryName = Path.GetDirectoryName(targetFullName);
@@ -76,12 +77,12 @@ namespace TheBall.Support.DeviceClient
             return targetStream;
         }
 
-        public static void RemoveLocalTarget(string targetfullname)
+        public static async Task RemoveLocalTarget(string targetfullname)
         {
             File.Delete(targetfullname);
         }
 
-        public static void TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetcontentitem)
+        public static async Task TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetcontentitem)
         {
         }
     }

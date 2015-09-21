@@ -12,16 +12,19 @@ namespace TheBall.Support.VirtualStorage
         public ContentSyncRequest SyncRequest { get; private set; }
         public ContentSyncResponse SyncResponse { get; private set; }
         public string SyncRootFolder { get; private set; }
-        public FileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders, Func<byte[], byte[]> md5HashComputer)
+
+        public static async Task<FileSystemSyncHandler> CreateFileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders, Func<byte[], byte[]> md5HashComputer)
         {
-            SyncRootFolder = syncRootFolder;
-            SyncRequest = VirtualFS.Current.CreateFullSyncRequest(syncRootFolder,
+            var result = new FileSystemSyncHandler();
+            result.SyncRootFolder = syncRootFolder;
+            result.SyncRequest = await VirtualFS.Current.CreateFullSyncRequest(syncRootFolder,
                 ownerSyncedFolders, md5HashComputer);
-            RequestStreamHandler = handleRequestStream;
-            ResponseStreamHandler = stream => handleResponseStream(stream).Wait();
+            result.RequestStreamHandler = result.handleRequestStream;
+            result.ResponseStreamHandler = result.handleResponseStream;
+            return result;
         }
 
-        private void handleRequestStream(Stream stream)
+        private async Task handleRequestStream(Stream stream)
         {
             using (GZipStream compressedStream = new GZipStream(stream, CompressionLevel.Fastest))
             {
@@ -35,7 +38,7 @@ namespace TheBall.Support.VirtualStorage
             {
                 try
                 {
-                    VirtualFS.Current.PendingSaves = true;
+                    await VirtualFS.Current.SetPendingSaves(true);
                     var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
                     SyncResponse = syncResponse;
                     var contentToExpect =
@@ -47,30 +50,30 @@ namespace TheBall.Support.VirtualStorage
                         syncResponse.Contents.Where(
                             content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
                     foreach (var content in contentToDelete)
-                        deleteContent(content);
+                        await deleteContent(content);
                     var contentToRefresh =
                         syncResponse.Contents.Where(
                             content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
                     foreach (var content in contentToRefresh)
-                        refreshContentNameData(content, SyncRootFolder);
+                        await refreshContentNameData(content, SyncRootFolder);
                 }
                 finally
                 {
-                    VirtualFS.Current.PendingSaves = false;
+                    await VirtualFS.Current.SetPendingSaves(false);
                 }
 
             }
         }
 
-        private static void refreshContentNameData(ContentSyncResponse.ContentData content, string syncRootFolder)
+        private static async Task refreshContentNameData(ContentSyncResponse.ContentData content, string syncRootFolder)
         {
             var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
-            VirtualFS.Current.UpdateContentNameData(content.ContentMD5, fullNames);
+            await VirtualFS.Current.UpdateContentNameData(content.ContentMD5, fullNames);
         }
 
-        private void deleteContent(ContentSyncResponse.ContentData content)
+        private static async Task deleteContent(ContentSyncResponse.ContentData content)
         {
-            VirtualFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
+            await VirtualFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
             Debug.WriteLine("Deleted content: {0}", content.ContentMD5);
         }
 
@@ -81,13 +84,13 @@ namespace TheBall.Support.VirtualStorage
             {
                 await compressedStream.CopyBytesAsync(outStream, content.ContentLength);
                 var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
-                VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
+                await VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
                 Debug.WriteLine("Wrote {0} bytes of file(s): {1}", content.ContentLength, String.Join(", ", fullNames));
             }
         }
 
 
-        public Action<Stream> RequestStreamHandler { get; set; }
-        public Action<Stream> ResponseStreamHandler { get; set; }
+        public Func<Stream, Task> RequestStreamHandler { get; set; }
+        public Func<Stream, Task> ResponseStreamHandler { get; set; }
     }
 }

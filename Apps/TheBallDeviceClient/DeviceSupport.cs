@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace TheBall.Support.DeviceClient
 {
@@ -63,8 +64,8 @@ namespace TheBall.Support.DeviceClient
             return getObjectFromResponseStream<TReturnType>(response, device.AESKey);
         }
 
-        private static void executeRemoteOperation(Device device, string operationName, string ownerPrefix, Action<Stream> requestStreamHandler,
-            Action<Stream> responseStreamHandler)
+        private static async Task executeRemoteOperationAsync(Device device, string operationName, string ownerPrefix, Func<Stream, Task> requestStreamHandler,
+            Func<Stream, Task> responseStreamHandler)
         {
             string operationUrl = String.Format("{0}{1}", OperationPrefixStr, operationName);
             string url = device.ConnectionURL.Replace("/DEV", "/" + operationUrl);
@@ -81,7 +82,7 @@ namespace TheBall.Support.DeviceClient
             var encryptor = encAes.CreateEncryptor();
             using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
             {
-                requestStreamHandler(cryptoStream);
+                await requestStreamHandler(cryptoStream);
             }
             var response = (HttpWebResponse)request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
@@ -95,7 +96,7 @@ namespace TheBall.Support.DeviceClient
 
             using (CryptoStream cryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read))
             {
-                responseStreamHandler(cryptoStream);
+                await responseStreamHandler(cryptoStream);
             }
 
         }
@@ -221,9 +222,9 @@ namespace TheBall.Support.DeviceClient
 
         }
 
-        public static void ExecuteRemoteOperation(Device device, string operationName, Action<Stream> requestStreamHandler, Action<Stream> responseStreamHandler)
+        public static async Task ExecuteRemoteOperationAsync(Device device, string operationName, Func<Stream, Task> requestStreamHandler, Func<Stream, Task> responseStreamHandler)
         {
-            executeRemoteOperation(device, operationName, null, requestStreamHandler, responseStreamHandler);
+            await executeRemoteOperationAsync(device, operationName, null, requestStreamHandler, responseStreamHandler);
         }
     }
 }

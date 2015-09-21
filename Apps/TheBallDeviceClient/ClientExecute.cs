@@ -7,6 +7,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using TheBall.Support.VirtualStorage;
 
 namespace TheBall.Support.DeviceClient
@@ -34,7 +35,7 @@ namespace TheBall.Support.DeviceClient
         {
             var connection = GetConnection(connectionName);
             var syncItem = GetFolderSyncItem(connectionName, syncItemName);
-            UpSync(connection, syncItem);
+            UpSync(connection, syncItem).Wait();
         }
 
         public static string[] GetAccountGroups(Connection connection)
@@ -49,10 +50,10 @@ namespace TheBall.Support.DeviceClient
             return dod.OperationReturnValues;
         }
 
-        public static void UpSync(Connection connection, FolderSyncItem upSyncItem)
+        public static async Task UpSync(Connection connection, FolderSyncItem upSyncItem)
         {
             var rootFolder = upSyncItem.LocalFullPath;
-            var sourceList = FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
+            var sourceList = await FileSystemSupport.GetContentRelativeFromRoot(rootFolder);
             string destinationPrefix = upSyncItem.SyncType == "DEV" ? "DEV_" : "";
             string destinationCopyRoot = destinationPrefix + upSyncItem.RemoteEntry;
             if (destinationCopyRoot.EndsWith("/") == false)
@@ -85,11 +86,11 @@ namespace TheBall.Support.DeviceClient
             Console.WriteLine("Finished copying data to owner location: " + destinationCopyRoot);
         }
 
-        public static void DownSync(string connectionName, string syncItemName)
+        public static async Task DownSync(string connectionName, string syncItemName)
         {
             var connection = GetConnection(connectionName);
             var syncItem = GetFolderSyncItem(connectionName, syncItemName);
-            DownSync(connection, syncItem);
+            await DownSync(connection, syncItem);
         }
 
         public static RelativeContentItemRetriever LocalContentItemRetriever =
@@ -105,82 +106,68 @@ namespace TheBall.Support.DeviceClient
             FileSystemSupport.RemoveLocalTarget;
 
 
-        public static RelativeContentItemRetriever VirtualContentItemRetriever = location =>
+        public static RelativeContentItemRetriever VirtualContentItemRetriever = async location =>
         {
-            lock (VirtualFS.Current.MyLock)
+            var result = await VirtualFS.Current.GetContentRelativeFromRoot(location);
+            var propertypes = result.Select(contentItem =>
             {
-                var result = VirtualFS.Current.GetContentRelativeFromRoot(location);
-                var propertypes = result.Select(contentItem =>
+                return new ContentItemLocationWithMD5
                 {
-                    return new ContentItemLocationWithMD5
-                    {
-                        ContentLocation = contentItem.ContentLocation,
-                        ContentMD5 = contentItem.ContentMD5
-                    };
-                }).ToArray();
-                return propertypes;
-            }
+                    ContentLocation = contentItem.ContentLocation,
+                    ContentMD5 = contentItem.ContentMD5
+                };
+            }).ToArray();
+            return propertypes;
         };
 
-        public static TargetStreamRetriever VirtualTargetStreamRetriever = targetLocationItem =>
+        public static TargetStreamRetriever VirtualTargetStreamRetriever = async targetLocationItem =>
         {
             var properTypeItem = new VirtualStorage.ContentItemLocationWithMD5
             {
                 ContentLocation = targetLocationItem.ContentLocation,
                 ContentMD5 = targetLocationItem.ContentMD5
             };
-            lock (VirtualFS.Current.MyLock)
-            {
-                var streamTask = VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
-                streamTask.Wait();
-                return streamTask.Result;
-            }
+            var stream = await VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
+            return stream;
         };
 
-        public static TargetContentWriteFinalizer VirtualTargetContentWriteFinalizer = targetLocationItem =>
+        public static TargetContentWriteFinalizer VirtualTargetContentWriteFinalizer = async targetLocationItem =>
         {
             var properTypeItem = new VirtualStorage.ContentItemLocationWithMD5
             {
                 ContentLocation = targetLocationItem.ContentLocation,
                 ContentMD5 = targetLocationItem.ContentMD5
             };
-            lock (VirtualFS.Current.MyLock)
-            {
-                var updateTask = VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
-                updateTask.Wait();
-            }
+            await VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
         };
 
 
-        public static TargetContentRemover VirtualTargetRemover = targetLocation =>
+        public static TargetContentRemover VirtualTargetRemover = async targetLocation =>
         {
-            lock (VirtualFS.Current.MyLock)
-            {
-                VirtualFS.Current.RemoveLocalContent(targetLocation);
-            }
+            await VirtualFS.Current.RemoveLocalContent(targetLocation);
         };
 
 
-        public delegate ContentItemLocationWithMD5[] RelativeContentItemRetriever(string rootLocation);
-        public delegate void TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetContentItem);
-        public delegate Stream TargetStreamRetriever(ContentItemLocationWithMD5 targetContentItem);
-        public delegate void TargetContentRemover(string targetFullName);
+        public delegate Task<ContentItemLocationWithMD5[]> RelativeContentItemRetriever(string rootLocation);
+        public delegate Task TargetContentWriteFinalizer(ContentItemLocationWithMD5 targetContentItem);
+        public delegate Task<Stream> TargetStreamRetriever(ContentItemLocationWithMD5 targetContentItem);
+        public delegate Task TargetContentRemover(string targetFullName);
 
-        public static void DownSync(Connection connection, FolderSyncItem downSyncItem, string ownerPrefix = null)
+        public static async Task DownSync(Connection connection, FolderSyncItem downSyncItem, string ownerPrefix = null)
         {
             var rootItem = downSyncItem.LocalFullPath;
-            var myDataContents = LocalContentItemRetriever(rootItem);
+            var myDataContents = await LocalContentItemRetriever(rootItem);
             foreach (var myDataItem in myDataContents)
             {
                 if(!downSyncItem.IsFile)
                     myDataItem.ContentLocation = downSyncItem.RemoteEntry + myDataItem.ContentLocation;
             }
-            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new string[] { downSyncItem.RemoteEntry }, ownerPrefix);
+            ContentItemLocationWithMD5[] remoteContentSourceList = getConnectionContentMD5s(connection, new[] { downSyncItem.RemoteEntry }, ownerPrefix);
             var device = connection.Device;
             int stripRemoteFolderIndex = downSyncItem.IsFile ? 0 : downSyncItem.RemoteEntry.Length;
             SyncSupport.SynchronizeSourceListToTargetFolder(
                 remoteContentSourceList, myDataContents,
-                delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
+                async delegate(ContentItemLocationWithMD5 source, ContentItemLocationWithMD5 target)
                     {
                         string targetFullName = downSyncItem.IsFile ? rootItem : Path.Combine(rootItem, target.ContentLocation.Substring(stripRemoteFolderIndex));
                         var targetLocalContentItem = new ContentItemLocationWithMD5
@@ -188,7 +175,7 @@ namespace TheBall.Support.DeviceClient
                             ContentLocation = targetFullName,
                             ContentMD5 = source.ContentMD5
                         };
-                        var targetStream = LocalTargetStreamRetriever(targetLocalContentItem);
+                        var targetStream = await LocalTargetStreamRetriever(targetLocalContentItem);
                         if (targetStream != null)
                         {
                             using (targetStream)
@@ -198,7 +185,7 @@ namespace TheBall.Support.DeviceClient
                                 targetStream.Close();
                             }
                             if (LocalTargetContentWriteFinalizer != null)
-                                LocalTargetContentWriteFinalizer(targetLocalContentItem);
+                                await LocalTargetContentWriteFinalizer(targetLocalContentItem);
                         }
                         //Console.WriteLine(" ... done");
                         var copyItem = ownerPrefix != null
@@ -234,7 +221,7 @@ namespace TheBall.Support.DeviceClient
                 {
                     OperationRequestString = "SYNCCOPYCONTENT",
                     OperationSpecificContentData = localContentToSyncTargetFrom,
-                    OperationParameters = new string[] { destinationCopyRoot}
+                    OperationParameters = new[] { destinationCopyRoot}
                 };
             dod = connection.Device.ExecuteDeviceOperation(dod);
             return dod.OperationSpecificContentData;
@@ -344,14 +331,14 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void SyncFolder(string connectionName, string syncItemName)
+        public static async Task SyncFolder(string connectionName, string syncItemName)
         {
             var connection = GetConnection(connectionName);
             var syncItem = GetFolderSyncItem(connectionName, syncItemName);
             if(syncItem.SyncDirection == "UP")
-                UpSync(connection, syncItem);
+                await UpSync(connection, syncItem);
             else if(syncItem.SyncDirection == "DOWN")
-                DownSync(connection, syncItem);
+                await DownSync(connection, syncItem);
             else 
                 throw new NotSupportedException("Sync direction not supported: " + syncItem.SyncDirection);
         }
@@ -376,7 +363,7 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
-        public static void StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS = false)
+        public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS = false)
         {
             if(useVirtualFS && !getFullAccount)
                 throw new NotSupportedException("VirtualFS is only supported on getFA option");
@@ -408,7 +395,7 @@ namespace TheBall.Support.DeviceClient
                     }
 
                     var dataFolders = stageDef.DataFolders;
-                    downSyncFullAccount(connection, stagingRootFolder, dataFolders.ToArray());
+                    await downSyncFullAccount(connection, stagingRootFolder, dataFolders.ToArray());
                     return;
                 }
                 finally
@@ -423,7 +410,7 @@ namespace TheBall.Support.DeviceClient
             if (getData)
             {
                 var dataFolders = stageDef.DataFolders;
-                downSyncData(connection, stagingRootFolder, dataFolders);
+                await downSyncData(connection, stagingRootFolder, dataFolders);
             }
             List<FolderSyncItem> upsyncItems = new List<FolderSyncItem>();
             if (putDev)
@@ -436,22 +423,22 @@ namespace TheBall.Support.DeviceClient
             }
             foreach (var upSyncItem in upsyncItems)
             {
-                UpSync(connection, upSyncItem);
+                await UpSync(connection, upSyncItem);
             }
         }
 
-        private static void downSyncFullAccount(Connection connection, string stagingRootFolder, string[] dataFolders)
+        private static async Task downSyncFullAccount(Connection connection, string stagingRootFolder, string[] dataFolders)
         {
             if (dataFolders.Length == 0)
                 throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
 
             var syncRootFolder = stagingRootFolder;
             MD5 md5 = MD5.Create();
-            var syncHandler = RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, dataFolders, md5.ComputeHash);
-            DeviceSupport.ExecuteRemoteOperation(connection.Device, "TheBall.CORE.DeviceSyncFullAccountOperation", syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
+            var syncHandler = await RemoteSyncSupport.GetFileSystemSyncHandler(syncRootFolder, dataFolders, md5.ComputeHash);
+            await DeviceSupport.ExecuteRemoteOperationAsync(connection.Device, "TheBall.CORE.DeviceSyncFullAccountOperation", syncHandler.RequestStreamHandler, syncHandler.ResponseStreamHandler);
         }
 
-        private static void downSyncData(Connection connection, string stagingRootFolder, List<string> dataFolders, string ownerPrefix = null)
+        private static async Task downSyncData(Connection connection, string stagingRootFolder, List<string> dataFolders, string ownerPrefix = null)
         {
             if (dataFolders.Count == 0)
                 throw new InvalidDataException("Staging data folders are not defined (getdata is not possible)");
@@ -470,7 +457,7 @@ namespace TheBall.Support.DeviceClient
             }).Where(fsi => fsi != null).ToArray();
             foreach (var folderSyncItem in folderSyncItems)
             {
-                DownSync(connection, folderSyncItem, ownerPrefix);
+                await DownSync(connection, folderSyncItem, ownerPrefix);
             }
         }
 

@@ -14,7 +14,7 @@ namespace TheBall.Support.VirtualStorage
     [ProtoContract]
     public class VirtualFS
     {
-        public readonly object MyLock = new object();
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
 
         [ProtoMember(1)]
         public readonly string StorageFolderLocation;
@@ -45,20 +45,22 @@ namespace TheBall.Support.VirtualStorage
         }
 
         private bool pendingSaves = false;
-        internal bool PendingSaves
+        public async Task SetPendingSaves(bool value)
         {
-            get
-            {
-                return pendingSaves;
-            }
-            set
+            await _semaphore.WaitAsync();
+            try
             {
                 bool changed = pendingSaves != value;
                 pendingSaves = value;
-                if (changed)
-                    SaveChanges().Wait();
+                if (changed && !pendingSaves)
+                    await SaveChanges();
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
+
 
         private static async Task InitializeVFS(string storageFolderLocation)
         {
@@ -68,21 +70,30 @@ namespace TheBall.Support.VirtualStorage
 
         private async Task<VirtualFS> LoadFrom()
         {
-            string vfsMetaFileName = VFSMetaFileName;
-            VirtualFS result;
-            if (await FileSystem.Current.LocalStorage.CheckExistsAsync(vfsMetaFileName) == ExistenceCheckResult.NotFound)
+            await _semaphore.WaitAsync();
+            try
             {
-                result = this;
-            }
-            else
-            {
-                var file = await FileSystem.Current.LocalStorage.GetFileAsync(vfsMetaFileName);
-                using (var stream = await file.OpenAsync(FileAccess.Read))
+                string vfsMetaFileName = VFSMetaFileName;
+                VirtualFS result;
+                if (await FileSystem.Current.LocalStorage.CheckExistsAsync(vfsMetaFileName) ==
+                    ExistenceCheckResult.NotFound)
                 {
-                    result = Serializer.Deserialize<VirtualFS>(stream);
+                    result = this;
                 }
+                else
+                {
+                    var file = await FileSystem.Current.LocalStorage.GetFileAsync(vfsMetaFileName);
+                    using (var stream = await file.OpenAsync(FileAccess.Read))
+                    {
+                        result = Serializer.Deserialize<VirtualFS>(stream);
+                    }
+                }
+                return result;
             }
-            return result;
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         [ProtoContract]
@@ -105,9 +116,10 @@ namespace TheBall.Support.VirtualStorage
             StorageFolderLocation = storageFolderLocation;
         }
 
-        public ContentItemLocationWithMD5[] GetContentRelativeFromRoot(string rootLocation)
+        public async Task<ContentItemLocationWithMD5[]> GetContentRelativeFromRoot(string rootLocation)
         {
-            lock (MyLock)
+            await _semaphore.WaitAsync();
+            try
             {
                 var allFileNames = FileLocationDictionary.Keys;
                 var filesBelongingToRootLQ = allFileNames.Where(fileName => fileName.StartsWith(rootLocation));
@@ -123,30 +135,36 @@ namespace TheBall.Support.VirtualStorage
                 }).ToArray();
                 return contentItems;
             }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
-        public void RemoveLocalContentByMD5(string contentMd5)
+        public async Task RemoveLocalContentByMD5(string contentMd5)
         {
-            lock (MyLock)
+            await _semaphore.WaitAsync();
+            try
             {
                 var fsItems = ContentHashDictionary[contentMd5];
                 foreach (var fsItem in fsItems)
                     FileLocationDictionary.Remove(fsItem.FileName);
                 ContentHashDictionary.Remove(contentMd5);
                 var storageFile = fsItems.First().StorageFileName;
-                var fileGet = FileSystem.Current.LocalStorage.GetFileAsync(storageFile);
-                fileGet.Wait();
-                var file = fileGet.Result;
-                var deletion = file.DeleteAsync();
-                deletion.Wait();
-                var saveTask = SaveChanges();
-                saveTask.Wait();
+                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFile);
+                await file.DeleteAsync();
+                await SaveChanges();
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
 
-        public void RemoveLocalContent(string targetFullName)
+        public async Task RemoveLocalContent(string targetFullName)
         {
-            lock (MyLock)
+            await _semaphore.WaitAsync();
+            try
             {
                 var fsItem = FileLocationDictionary[targetFullName];
                 var contentHashKey = fsItem.ContentMD5;
@@ -155,25 +173,25 @@ namespace TheBall.Support.VirtualStorage
                 if (allContentLinks.Length == 1)
                 {
                     ContentHashDictionary.Remove(contentHashKey);
-                    var fileGet = FileSystem.Current.LocalStorage.GetFileAsync(fsItem.StorageFileName);
-                    fileGet.Wait();
-                    var file = fileGet.Result;
-                    var deletion = file.DeleteAsync();
-                    deletion.Wait();
+                    var file = await FileSystem.Current.LocalStorage.GetFileAsync(fsItem.StorageFileName);
+                    await file.DeleteAsync();
                 }
                 else
                 {
                     ContentHashDictionary[contentHashKey] =
                         allContentLinks.Where(link => link.FileName != targetFullName).ToArray();
                 }
-                var saveTask = SaveChanges();
-                saveTask.Wait();
+                await SaveChanges();
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
 
         private async Task SaveChanges()
         {
-            if (PendingSaves)
+            if (pendingSaves)
                 return;
             var realFile = VFSMetaFileName;
             var tmpFile = realFile + "_tmp";
@@ -199,62 +217,87 @@ namespace TheBall.Support.VirtualStorage
 
         public async Task<Stream> GetLocalTargetStreamForRead(string targetFullName)
         {
-            VFSItem fsItem;
-            if (!FileLocationDictionary.TryGetValue(targetFullName, out fsItem))
+            await _semaphore.WaitAsync();
+            try
             {
-                string[] allKeys = FileLocationDictionary.Keys.Cast<string>().ToArray();
-                return null;
+                VFSItem fsItem;
+                if (!FileLocationDictionary.TryGetValue(targetFullName, out fsItem))
+                {
+                    string[] allKeys = FileLocationDictionary.Keys.Cast<string>().ToArray();
+                    return null;
+                }
+                var storageFullName = getStorageFullPath(fsItem.StorageFileName);
+                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
+                return await file.OpenAsync(FileAccess.Read);
             }
-            var storageFullName = getStorageFullPath(fsItem.StorageFileName);
-            var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
-            return await file.OpenAsync(FileAccess.Read);
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         public async Task<Stream> GetLocalTargetStreamForWrite(string contentHash)
         {
-            var storageFileName = toFileNameSafeMD5(contentHash);
-            var file =
-                await
-                    FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
-                        CreationCollisionOption.ReplaceExisting);
-            return await file.OpenAsync(FileAccess.ReadAndWrite);
+            await _semaphore.WaitAsync();
+            try
+            {
+                var storageFileName = toFileNameSafeMD5(contentHash);
+                var file =
+                    await
+                        FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
+                            CreationCollisionOption.ReplaceExisting);
+                return await file.OpenAsync(FileAccess.ReadAndWrite);
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
         }
 
         public async Task<Stream> GetLocalTargetStreamForWrite(ContentItemLocationWithMD5 targetLocationItem)
         {
-            if (fileExists(targetLocationItem.ContentLocation))
-                RemoveLocalContent(targetLocationItem.ContentLocation);
-            var fsItem = new VFSItem
+            await _semaphore.WaitAsync();
+            try
             {
-                ContentMD5 = targetLocationItem.ContentMD5,
-                FileName = targetLocationItem.ContentLocation,
-                StorageFileName =
-                    toFileNameSafeMD5(targetLocationItem.ContentMD5) +
-                    Path.GetExtension(targetLocationItem.ContentLocation)
-            };
-            FileLocationDictionary.Add(targetLocationItem.ContentLocation, fsItem);
-            var contentHashKey = targetLocationItem.ContentMD5;
+                if (fileExists(targetLocationItem.ContentLocation))
+                    await RemoveLocalContent(targetLocationItem.ContentLocation);
+                var fsItem = new VFSItem
+                {
+                    ContentMD5 = targetLocationItem.ContentMD5,
+                    FileName = targetLocationItem.ContentLocation,
+                    StorageFileName =
+                        toFileNameSafeMD5(targetLocationItem.ContentMD5) +
+                        Path.GetExtension(targetLocationItem.ContentLocation)
+                };
+                FileLocationDictionary.Add(targetLocationItem.ContentLocation, fsItem);
+                var contentHashKey = targetLocationItem.ContentMD5;
 
-            VFSItem[] existingItems;
-            VFSItem[] toAdd = new VFSItem[] {fsItem};
-            bool hasExistingContent = false;
-            if (ContentHashDictionary.TryGetValue(contentHashKey, out existingItems))
-            {
-                ContentHashDictionary[contentHashKey] = existingItems.Concat(toAdd).ToArray();
-                hasExistingContent = true;
+                VFSItem[] existingItems;
+                VFSItem[] toAdd = new VFSItem[] {fsItem};
+                bool hasExistingContent = false;
+                if (ContentHashDictionary.TryGetValue(contentHashKey, out existingItems))
+                {
+                    ContentHashDictionary[contentHashKey] = existingItems.Concat(toAdd).ToArray();
+                    hasExistingContent = true;
+                }
+                else
+                    ContentHashDictionary.Add(contentHashKey, toAdd);
+                await SaveChanges();
+
+                if (hasExistingContent)
+                    return null;
+
+                var storageFileName = getStorageFullPath(fsItem.StorageFileName);
+                //return File.Create(storageFileName);
+                var file = await FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
+                    CreationCollisionOption.ReplaceExisting);
+                return await file.OpenAsync(FileAccess.ReadAndWrite);
             }
-            else
-                ContentHashDictionary.Add(contentHashKey, toAdd);
-            await SaveChanges();
+            finally
+            {
+                _semaphore.Release();
+            }
 
-            if (hasExistingContent)
-                return null;
-
-            var storageFileName = getStorageFullPath(fsItem.StorageFileName);
-            //return File.Create(storageFileName);
-            var file = await FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
-                CreationCollisionOption.ReplaceExisting);
-            return await file.OpenAsync(FileAccess.ReadAndWrite);
         }
 
         private string getStorageFullPath(string storageFileName)
@@ -269,31 +312,40 @@ namespace TheBall.Support.VirtualStorage
 
         public async Task UpdateMetadataAfterWrite(ContentItemLocationWithMD5 targetLocationItem)
         {
-            var fsItem = FileLocationDictionary[targetLocationItem.ContentLocation];
-            //var file = await FileSystem.Current.LocalStorage.GetFileAsync(fsItem.StorageFileName);
-            //var fileInfo = new FileInfo(getStorageFullPath(fsItem.StorageFileName));
-            //fsItem.ContentLength = FileSystem.Current.LocalStorage.;
-            var contentHashKey = fsItem.ContentMD5;
-            VFSItem[] allLinkItems;
-            if (ContentHashDictionary.TryGetValue(contentHashKey, out allLinkItems))
+            await _semaphore.WaitAsync();
+            try
             {
-                allLinkItems = allLinkItems.Concat(new VFSItem[] {fsItem}).ToArray();
-                ContentHashDictionary[contentHashKey] = allLinkItems;
+                var fsItem = FileLocationDictionary[targetLocationItem.ContentLocation];
+                //var file = await FileSystem.Current.LocalStorage.GetFileAsync(fsItem.StorageFileName);
+                //var fileInfo = new FileInfo(getStorageFullPath(fsItem.StorageFileName));
+                //fsItem.ContentLength = FileSystem.Current.LocalStorage.;
+                var contentHashKey = fsItem.ContentMD5;
+                VFSItem[] allLinkItems;
+                if (ContentHashDictionary.TryGetValue(contentHashKey, out allLinkItems))
+                {
+                    allLinkItems = allLinkItems.Concat(new VFSItem[] {fsItem}).ToArray();
+                    ContentHashDictionary[contentHashKey] = allLinkItems;
+                }
+                else
+                {
+                    ContentHashDictionary.Add(contentHashKey, new VFSItem[] {fsItem});
+                }
+                await SaveChanges();
             }
-            else
+            finally
             {
-                ContentHashDictionary.Add(contentHashKey, new VFSItem[] {fsItem});
+                _semaphore.Release();
             }
-            await SaveChanges();
         }
 
-        public ContentSyncRequest CreateFullSyncRequest(string stagingRoot, string[] requestedFolders, Func<byte[], byte[]> md5HashComputer)
+        public async Task<ContentSyncRequest> CreateFullSyncRequest(string stagingRoot, string[] requestedFolders, Func<byte[], byte[]> md5HashComputer)
         {
-            lock (MyLock)
+            await _semaphore.WaitAsync();
+            try
             {
                 var allFiles = FileLocationDictionary.Keys.Where(key => key.StartsWith(stagingRoot)).ToArray();
                 Uri rootUri;
-                if(stagingRoot.EndsWith("\\") || stagingRoot.EndsWith("/"))
+                if (stagingRoot.EndsWith("\\") || stagingRoot.EndsWith("/"))
                     rootUri = new Uri(stagingRoot);
                 else
                     rootUri = new Uri(stagingRoot + "/");
@@ -303,7 +355,9 @@ namespace TheBall.Support.VirtualStorage
                         RelativeName = rootUri.MakeRelativeUri(new Uri(fileName)).OriginalString,
                         FullName = fileName
                     }).ToArray();
-                var groupAndAccountFiles = syncItems.Where(item => item.RelativeName.StartsWith("grp") || item.RelativeName.StartsWith("acc")).ToArray();
+                var groupAndAccountFiles =
+                    syncItems.Where(item => item.RelativeName.StartsWith("grp") || item.RelativeName.StartsWith("acc"))
+                        .ToArray();
                 var ownerGrp = groupAndAccountFiles.GroupBy(item =>
                 {
                     if (item.RelativeName.StartsWith("acc"))
@@ -363,11 +417,17 @@ namespace TheBall.Support.VirtualStorage
                 };
                 return syncRequest;
             }
+            finally
+            {
+                _semaphore.Release();
+            }
+
         }
 
-        public void UpdateContentNameData(string contentMd5, string[] fullNames, bool initialAdd = false, long initialAddContentLength = -1)
+        public async Task UpdateContentNameData(string contentMd5, string[] fullNames, bool initialAdd = false, long initialAddContentLength = -1)
         {
-            lock (MyLock)
+            await _semaphore.WaitAsync();
+            try
             {
                 VFSItem[] existingContents = null;
                 string[] namesToAdd;
@@ -375,7 +435,7 @@ namespace TheBall.Support.VirtualStorage
                 string storageFileName;
                 string[] fileNamesToDelete = null;
                 var hasExistingContent = ContentHashDictionary.TryGetValue(contentMd5, out existingContents);
-                if(!initialAdd && !hasExistingContent)
+                if (!initialAdd && !hasExistingContent)
                     throw new InvalidOperationException("Non-existent content must be with initial add flag");
                 if (hasExistingContent)
                 {
@@ -385,7 +445,10 @@ namespace TheBall.Support.VirtualStorage
                     storageFileName = fsItemTemplate.StorageFileName;
                     namesToAdd =
                         fullNames.Where(name => existingContents.All(fsContent => fsContent.FileName != name)).ToArray();
-                    fileNamesToDelete = existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName)).Select(fsItem => fsItem.FileName).ToArray();
+                    fileNamesToDelete =
+                        existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName))
+                            .Select(fsItem => fsItem.FileName)
+                            .ToArray();
                 }
                 else
                 {
@@ -410,7 +473,9 @@ namespace TheBall.Support.VirtualStorage
 
                 if (hasExistingContent)
                     ContentHashDictionary[contentMd5] =
-                        existingContents.Where(fsItem => !fileNamesToDelete.Contains(fsItem.FileName)).Concat(itemsToAdd).ToArray();
+                        existingContents.Where(fsItem => !fileNamesToDelete.Contains(fsItem.FileName))
+                            .Concat(itemsToAdd)
+                            .ToArray();
                 else
                     ContentHashDictionary.Add(contentMd5, itemsToAdd);
 
@@ -418,8 +483,13 @@ namespace TheBall.Support.VirtualStorage
                 foreach (var itemToAdd in itemsToAdd)
                     FileLocationDictionary.Add(itemToAdd.FileName, itemToAdd);
 
-                SaveChanges().Wait();
+                await SaveChanges();
+            }
+            finally
+            {
+                _semaphore.Release();
             }
         }
+
     }
 }

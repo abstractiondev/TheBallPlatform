@@ -33,9 +33,9 @@ namespace TheBall.Support.VirtualStorage
             //ProtoBuf.Serializer.Serialize(stream, syncResponse);
         }
 
-        public static ISyncStreamHandler GetFileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders, Func<byte[], byte[]> md5HashComputer)
+        public static async Task<ISyncStreamHandler> GetFileSystemSyncHandler(string syncRootFolder, string[] ownerSyncedFolders, Func<byte[], byte[]> md5HashComputer)
         {
-            return new FileSystemSyncHandler(syncRootFolder, ownerSyncedFolders, md5HashComputer);
+            return await FileSystemSyncHandler.CreateFileSystemSyncHandler(syncRootFolder, ownerSyncedFolders, md5HashComputer);
         }
 
         public static string GetFolderMD5Hash(IEnumerable<FolderContent> folderContent, Func<byte[], byte[]> md5HashComputer)
