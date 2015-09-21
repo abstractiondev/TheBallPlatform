@@ -363,6 +363,27 @@ namespace TheBall.Support.DeviceClient
             }
         }
 
+        public static async Task ExecuteWithSettingsAsync(Func<UserSettings, Task> executionAction, Action<Exception> exceptionHandling)
+        {
+            var currentSettings = UserSettings.GetCurrentSettings();
+            try
+            {
+                await executionAction(currentSettings);
+            }
+            catch (Exception ex)
+            {
+                if (exceptionHandling != null)
+                    exceptionHandling(ex);
+                else
+                    throw;
+            }
+            finally
+            {
+                UserSettings.SaveCurrentSettings();
+            }
+        }
+
+
         public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS = false)
         {
             if(useVirtualFS && !getFullAccount)

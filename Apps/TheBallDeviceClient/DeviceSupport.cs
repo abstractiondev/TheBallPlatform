@@ -1,8 +1,13 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using PCLCrypto;
+using CryptoStream = System.Security.Cryptography.CryptoStream;
+using CryptoStreamMode = System.Security.Cryptography.CryptoStreamMode;
+using SymmetricAlgorithm = PCLCrypto.SymmetricAlgorithm;
 
 namespace TheBall.Support.DeviceClient
 {
@@ -79,31 +84,51 @@ namespace TheBall.Support.DeviceClient
                                                  + ":" + device.EstablishedTrustID
                                                  + ":" + device.AccountEmail);
             var requestStream = request.GetRequestStream();
-            var encryptor = encAes.CreateEncryptor();
-            using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
+            var pclAESKey = createPCLAES(device.AESKey);
+            var encryptor = WinRTCrypto.CryptographicEngine.CreateEncryptor(pclAESKey, encAes.IV);
+            using (var cryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write))
             {
                 await requestStreamHandler(cryptoStream);
             }
-            var response = (HttpWebResponse)request.GetResponse();
+                /*
+                var encryptor = encAes.CreateEncryptor();
+                using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
+                {
+                    await requestStreamHandler(cryptoStream);
+                }*/
+                var response = (HttpWebResponse)request.GetResponse();
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("ExecuteRemoteOperation failed with Http status: " +
                                                     response.StatusCode.ToString());
             string ivStr = response.Headers["IV"];
             var decAes = createAES(device.AESKey);
             decAes.IV = Convert.FromBase64String(ivStr);
-            var decryptor = decAes.CreateDecryptor();
             var responseStream = response.GetResponseStream();
 
-            using (CryptoStream cryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read))
+            var decryptor = WinRTCrypto.CryptographicEngine.CreateDecryptor(pclAESKey, decAes.IV);
+            using (var cryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read))
             {
                 await responseStreamHandler(cryptoStream);
             }
 
+            /*
+            var decryptor = decAes.CreateDecryptor();
+            using (CryptoStream cryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read))
+            {
+                await responseStreamHandler(cryptoStream);
+            }*/
+
+        }
+
+        private static ICryptographicKey createPCLAES(byte[] aesKey)
+        {
+            var provider = WinRTCrypto.SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithm.AesCbcPkcs7);
+            return provider.CreateSymmetricKey(aesKey);
         }
 
         private static AesManaged createAES(byte[] aesKey, byte[] iv = null)
         {
-            const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
+            const PaddingMode PADDING_MODE = PaddingMode.ISO10126;
             const CipherMode AES_MODE = CipherMode.CBC;
             const int AES_FEEDBACK_SIZE = 8;
             const int AES_KEYSIZE = 256;

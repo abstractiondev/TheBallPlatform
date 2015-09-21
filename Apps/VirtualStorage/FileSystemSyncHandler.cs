@@ -77,12 +77,12 @@ namespace TheBall.Support.VirtualStorage
             Debug.WriteLine("Deleted content: {0}", content.ContentMD5);
         }
 
-        private static async Task streamToFile(ContentSyncResponse.ContentData content, GZipStream compressedStream, string syncRootFolder)
+        private static async Task streamToFile(ContentSyncResponse.ContentData content, Stream stream, string syncRootFolder)
         {
             var contentMd5 = content.ContentMD5;
             using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(contentMd5))
             {
-                await compressedStream.CopyBytesAsync(outStream, content.ContentLength);
+                await stream.CopyBytesAsync(outStream, content.ContentLength);
                 var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
                 await VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
                 Debug.WriteLine("Wrote {0} bytes of file(s): {1}", content.ContentLength, String.Join(", ", fullNames));
