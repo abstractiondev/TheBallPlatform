@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Java.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TheBall.Support.DeviceClient;
 using TheBall.Support.VirtualStorage;
 using Xamarin;
@@ -106,9 +108,10 @@ namespace TheBallMobileApp
                 return null;
             try
             {
-                var reader = new JsonFx.Json.JsonReader();
-                dynamic dynobj = reader.Read(data);
-                string connectionID = (string) dynobj["connectionID"];
+                //var reader = new Newtonsoft.Json
+                //dynamic dynobj = reader.Read(data);
+                var jobj = (JObject) JsonConvert.DeserializeObject(data);
+                string connectionID = (string) jobj["connectionID"];
                 ClientExecute.ExecuteWithSettings(userSettings =>
                 {
                     var connToDelete =
@@ -133,8 +136,9 @@ namespace TheBallMobileApp
                 return null;
             try
             {
-                var reader = new JsonFx.Json.JsonReader();
-                var obj = reader.Read<HostConnectionData>(data);
+                //var reader = new JsonFx.Json.JsonReader();
+                //var obj = reader.Read<HostConnectionData>(data);
+                var obj = JsonConvert.DeserializeObject<HostConnectionData>(data);
                 string hostName = obj.host;
                 string groupID = obj.groupID;
                 string emailAddress = obj.email;
@@ -166,18 +170,18 @@ namespace TheBallMobileApp
                 var result = ClientExecute.VirtualContentItemRetriever(location);
                 return result;
             };
-            ClientExecute.LocalTargetRemover = targetLocation =>
+            ClientExecute.LocalTargetRemover = async targetLocation =>
             {
-                ClientExecute.VirtualTargetRemover(targetLocation);
+                await ClientExecute.VirtualTargetRemover(targetLocation);
             };
-            ClientExecute.LocalTargetStreamRetriever = targetLocationItem =>
+            ClientExecute.LocalTargetStreamRetriever = async targetLocationItem =>
             {
-                var result = ClientExecute.VirtualTargetStreamRetriever(targetLocationItem);
+                var result = await ClientExecute.VirtualTargetStreamRetriever(targetLocationItem);
                 return result;
             };
-            ClientExecute.LocalTargetContentWriteFinalizer = targetLocationItem =>
+            ClientExecute.LocalTargetContentWriteFinalizer = async targetLocationItem =>
             {
-                ClientExecute.VirtualTargetContentWriteFinalizer(targetLocationItem);
+                await ClientExecute.VirtualTargetContentWriteFinalizer(targetLocationItem);
             };
         }
 

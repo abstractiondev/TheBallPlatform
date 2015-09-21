@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
+using TheBall.Support.DeviceClient;
 using UIKit;
 
 namespace TheBalliOSApp
@@ -36,9 +40,11 @@ namespace TheBalliOSApp
             //webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         }
 
-        public override void ViewDidLoad()
+        public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
+
+            await SyncFullAccount();
 
             // Perform any additional setup after loading the view, typically from a nib.
             //webView.LoadHtmlString("<html><h1>Are you still there?</h1></html>", NSBundle.MainBundle.BundleUrl);
@@ -91,5 +97,56 @@ namespace TheBalliOSApp
         }
 
         #endregion
+
+        private async Task SyncFullAccount()
+        {
+            await TheBall.Support.VirtualStorage.VirtualFS.InitializeVFS();
+
+            Debug.WriteLine("Done VFS initialization...");
+
+            await ClientExecute.ExecuteWithSettingsAsync(async settings =>
+            {
+                var testConnName = "tstConnY";
+                const string testHostName = "home.theball.me";
+                var testConn = settings.Connections.FirstOrDefault(conn => conn.Name == testConnName);
+                if (testConn == null)
+                {
+                    ClientExecute.CreateConnection(testHostName, "kalle.launiala@gmail.com", testConnName);
+                }
+                else
+                {
+                    var connRoot = getConnectionRootFolder(testConn.HostName);
+                    ClientExecute.SetStaging(testConn.Name, connRoot,
+                        "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
+                    try
+                    {
+                        await ClientExecute.StageOperation(testConn.Name, false, false, false, true, true);
+                        Debug.WriteLine("Done syncing without errors...");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                    }
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
+                }
+            }, exception =>
+            {
+                Debug.WriteLine("Conn error: " + exception.ToString());
+            });
+
+        }
+
+        private static string getConnectionRootFolder(string hostName)
+        {
+            var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            var tbRoot = "TB2";
+            string rootFolder = Path.Combine(localPersonalPath, tbRoot, hostName);
+            return rootFolder;
+        }
+
+
     }
 }

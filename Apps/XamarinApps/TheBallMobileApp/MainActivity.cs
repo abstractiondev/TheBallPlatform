@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Android.App;
@@ -33,11 +34,12 @@ namespace TheBallMobileApp
 
             TheBallHostManager.SetDeviceClientHooks();
 
-            string connToSync = "members.onlinetaekwondo.net";
+            //string connToSync = "members.onlinetaekwondo.net";
+            string connToSync = "home.theball.me";
             bool updateOnStart = true;
             if (updateOnStart)
             {
-                ClientExecute.ExecuteWithSettings(settings =>
+                await ClientExecute.ExecuteWithSettingsAsync(async settings =>
                 {
                     foreach (var connection in settings.Connections.Where(con => con.HostName == connToSync))
                     {
@@ -47,11 +49,11 @@ namespace TheBallMobileApp
                             "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
                         try
                         {
-                            ClientExecute.StageOperation(connName, false, false, false, true);
+                            await ClientExecute.StageOperation(connName, false, false, false, true, true);
                         }
-                        catch
+                        catch(Exception ex)
                         {
-                            
+                            System.Diagnostics.Debug.WriteLine(ex.ToString());
                         }
                         GC.WaitForPendingFinalizers();
                         GC.Collect();

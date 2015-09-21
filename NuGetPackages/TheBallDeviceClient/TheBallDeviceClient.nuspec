@@ -2,18 +2,21 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>TheBallDeviceClient</id>
-        <version>0.9.7-beta8</version>
+        <version>0.9.8-beta04</version>
         <title>The Ball Platform Client</title>
         <authors>Kalle Launiala</authors>
         <owners>Kalle Launiala</owners>
         <licenseUrl>https://github.com/abstractiondev/TheBallPlatform/blob/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/abstractiondev/TheBallPlatform/releases</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>The Ball Device Client - Beta 0.9.7</description>
+        <description>The Ball Device Client - Beta 0.9.8</description>
         <summary>The Ball Platform Device Client Library for .NET/Mono</summary>
         <releaseNotes>Developer preview - beta
+New in 0.9.8:
+- PCLCrypto replacing the Mono for properly working AES
 New in 0.9.7:
 - Full account sync in changes only request/response in one stream session
+- Full async/await stack
 - Hooks for custom delegates for realizing local files and folders
 - Local storing allowing redirecting stream level to bypass fixed file requirement
 - Virtual Filesystem support for Android to bypass 127 char filename limitation
@@ -31,6 +34,7 @@ NOTES:
             <dependency id="protobuf-portable-net" version="[2.0.0.668]" />
             <dependency id="PCLStorage" version="[1.0.2]" />
             <dependency id="Newtonsoft.Json" version="[7.0.1]" />
+            <dependency id="PCLCrypto" version="[1.0.2.15130]" />
         </dependencies>
     </metadata>
     <files>

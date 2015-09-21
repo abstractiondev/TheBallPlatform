@@ -110,6 +110,10 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PCLCrypto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d4421c8a4786956c, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLCrypto.1.0.2.15130\lib\Xamarin.iOS\PCLCrypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-Xamarin.iOS+Xamarin.Mac\PCLStorage.dll</HintPath>
       <Private>True</Private>
@@ -126,11 +130,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="TheBallDeviceClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta8\lib\Xamarin.iOS10\TheBallDeviceClient.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.8-beta04\lib\Xamarin.iOS10\TheBallDeviceClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtualStorage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.7-beta8\lib\Xamarin.iOS10\VirtualStorage.dll</HintPath>
+      <HintPath>..\packages\TheBallDeviceClient.0.9.8-beta04\lib\Xamarin.iOS10\VirtualStorage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.36589, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
