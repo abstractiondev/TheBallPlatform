@@ -86,15 +86,15 @@ namespace TheBall.Support.DeviceClient
             var requestStream = request.GetRequestStream();
             var pclAESKey = createPCLAES(device.AESKey);
             var encryptor = WinRTCrypto.CryptographicEngine.CreateEncryptor(pclAESKey, encAes.IV);
-            var reqCryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write);
-            try
-            {
-                await requestStreamHandler(reqCryptoStream);
-            }
-            finally
-            {
-                reqCryptoStream.Dispose();
-            }
+            using (var reqCryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write))
+                try
+                {
+                    await requestStreamHandler(reqCryptoStream);
+                }
+                finally
+                {
+                    //reqCryptoStream.Dispose();
+                }
                 /*
                 var encryptor = encAes.CreateEncryptor();
                 using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
@@ -111,15 +111,15 @@ namespace TheBall.Support.DeviceClient
             var responseStream = response.GetResponseStream();
 
             var decryptor = WinRTCrypto.CryptographicEngine.CreateDecryptor(pclAESKey, decAes.IV);
-            var respCryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read);
-            try
-            {
-                await responseStreamHandler(respCryptoStream);
-            }
-            finally
-            {
-                respCryptoStream.Dispose();
-            }
+            using (var respCryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read))
+                try
+                {
+                    await responseStreamHandler(respCryptoStream);
+                }
+                finally
+                {
+                    //respCryptoStream.Dispose();
+                }
 
             /*
             var decryptor = decAes.CreateDecryptor();
