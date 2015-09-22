@@ -34,34 +34,32 @@ namespace TheBall.Support.VirtualStorage
 
         private async Task handleResponseStream(Stream stream)
         {
-            using (GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress, true))
+            GZipStream compressedStream = new GZipStream(stream, CompressionMode.Decompress, true);
+            try
             {
-                try
-                {
-                    await VirtualFS.Current.SetPendingSaves(true);
-                    var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
-                    SyncResponse = syncResponse;
-                    var contentToExpect =
-                        syncResponse.Contents.Where(
-                            content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
-                    foreach (var content in contentToExpect)
-                        await streamToFile(content, compressedStream, SyncRootFolder);
-                    var contentToDelete =
-                        syncResponse.Contents.Where(
-                            content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
-                    foreach (var content in contentToDelete)
-                        await deleteContent(content);
-                    var contentToRefresh =
-                        syncResponse.Contents.Where(
-                            content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
-                    foreach (var content in contentToRefresh)
-                        await refreshContentNameData(content, SyncRootFolder);
-                }
-                finally
-                {
-                    await VirtualFS.Current.SetPendingSaves(false);
-                }
-
+                await VirtualFS.Current.SetPendingSaves(true);
+                var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(compressedStream);
+                SyncResponse = syncResponse;
+                var contentToExpect =
+                    syncResponse.Contents.Where(
+                        content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
+                foreach (var content in contentToExpect)
+                    await streamToFile(content, compressedStream, SyncRootFolder);
+                var contentToDelete =
+                    syncResponse.Contents.Where(
+                        content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
+                foreach (var content in contentToDelete)
+                    await deleteContent(content);
+                var contentToRefresh =
+                    syncResponse.Contents.Where(
+                        content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
+                foreach (var content in contentToRefresh)
+                    await refreshContentNameData(content, SyncRootFolder);
+            }
+            finally
+            {
+                await VirtualFS.Current.SetPendingSaves(false);
+                compressedStream.Dispose();
             }
         }
 
@@ -80,12 +78,17 @@ namespace TheBall.Support.VirtualStorage
         private static async Task streamToFile(ContentSyncResponse.ContentData content, Stream stream, string syncRootFolder)
         {
             var contentMd5 = content.ContentMD5;
-            using (var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(contentMd5))
+            var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(contentMd5);
+            try
             {
                 await stream.CopyBytesAsync(outStream, content.ContentLength);
                 var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
                 await VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
                 Debug.WriteLine("Wrote {0} bytes of file(s): {1}", content.ContentLength, String.Join(", ", fullNames));
+            }
+            finally
+            {
+                outStream.Dispose();
             }
         }
 

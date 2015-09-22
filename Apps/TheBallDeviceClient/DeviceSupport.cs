@@ -86,9 +86,14 @@ namespace TheBall.Support.DeviceClient
             var requestStream = request.GetRequestStream();
             var pclAESKey = createPCLAES(device.AESKey);
             var encryptor = WinRTCrypto.CryptographicEngine.CreateEncryptor(pclAESKey, encAes.IV);
-            using (var cryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write))
+            var reqCryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write);
+            try
             {
-                await requestStreamHandler(cryptoStream);
+                await requestStreamHandler(reqCryptoStream);
+            }
+            finally
+            {
+                reqCryptoStream.Dispose();
             }
                 /*
                 var encryptor = encAes.CreateEncryptor();
@@ -106,9 +111,14 @@ namespace TheBall.Support.DeviceClient
             var responseStream = response.GetResponseStream();
 
             var decryptor = WinRTCrypto.CryptographicEngine.CreateDecryptor(pclAESKey, decAes.IV);
-            using (var cryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read))
+            var respCryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read);
+            try
             {
-                await responseStreamHandler(cryptoStream);
+                await responseStreamHandler(respCryptoStream);
+            }
+            finally
+            {
+                respCryptoStream.Dispose();
             }
 
             /*
