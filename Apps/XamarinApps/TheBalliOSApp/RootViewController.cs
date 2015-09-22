@@ -118,15 +118,16 @@ namespace TheBalliOSApp
                     var connRoot = getConnectionRootFolder(testConn.HostName);
                     ClientExecute.SetStaging(testConn.Name, connRoot,
                         "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
-                    try
-                    {
+
+                    //try
+                    //{
                         await ClientExecute.StageOperation(testConn.Name, false, false, false, true, true);
                         Debug.WriteLine("Done syncing without errors...");
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.ToString());
-                    }
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    Debug.WriteLine(ex.ToString());
+                    //}
                     GC.WaitForPendingFinalizers();
                     GC.Collect();
                     GC.WaitForPendingFinalizers();

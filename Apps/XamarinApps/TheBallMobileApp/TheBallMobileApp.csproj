@@ -84,16 +84,8 @@
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="TheBallDeviceClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.8-beta04\lib\MonoAndroid2.2\TheBallDeviceClient.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Validation, Version=2.0.0.0, Culture=neutral, PublicKeyToken=2fc06f0d701809a7, processorArchitecture=MSIL">
       <HintPath>..\packages\Validation.2.0.6.15003\lib\portable-net40+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\Validation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="VirtualStorage, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5cf3ec2ceb75a772, processorArchitecture=MSIL">
-      <HintPath>..\packages\TheBallDeviceClient.0.9.8-beta04\lib\MonoAndroid2.2\VirtualStorage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.36589, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
@@ -226,6 +218,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TheBallDeviceClient\TheBallDeviceClient.csproj">
+      <Project>{19f4deb2-249d-450e-b5c7-bb2d977cf00a}</Project>
+      <Name>TheBallDeviceClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VirtualStorage\VirtualStorage.csproj">
+      <Project>{c11070cd-4e20-4c7b-9b9b-d9e5f7feaca7}</Project>
+      <Name>VirtualStorage</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

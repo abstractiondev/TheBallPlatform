@@ -407,8 +407,7 @@ namespace TheBall.Support.DeviceClient
                 {
                     if (useVirtualFS)
                     {
-                        var initialization = VirtualFS.InitializeVFS();
-                        initialization.Wait();
+                        await VirtualFS.InitializeVFS();
                         LocalTargetContentWriteFinalizer = VirtualTargetContentWriteFinalizer;
                         LocalContentItemRetriever = VirtualContentItemRetriever;
                         LocalTargetRemover = VirtualTargetRemover;
