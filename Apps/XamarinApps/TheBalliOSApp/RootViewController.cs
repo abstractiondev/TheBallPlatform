@@ -128,10 +128,6 @@ namespace TheBalliOSApp
                     //{
                     //    Debug.WriteLine(ex.ToString());
                     //}
-                    GC.WaitForPendingFinalizers();
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    GC.Collect();
                 }
             }, exception =>
             {
@@ -143,7 +139,7 @@ namespace TheBalliOSApp
         private static string getConnectionRootFolder(string hostName)
         {
             var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            var tbRoot = "TB2";
+            var tbRoot = "TB3";
             string rootFolder = Path.Combine(localPersonalPath, tbRoot, hostName);
             return rootFolder;
         }

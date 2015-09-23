@@ -195,28 +195,38 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_WriteResponseToStream(Stream outputStream, ContentSyncResponse syncResponse)
         {
+            /*
             using (GZipStream compressedStream = new GZipStream(outputStream, CompressionLevel.Fastest, true))
             {
-                RemoteSyncSupport.PutSyncResponseToStream(compressedStream, syncResponse);
-                if (syncResponse.Contents == null)
-                    return;
-                var random = new Random();
-                long outputTotal = 0;
-                foreach (var transferItem in syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer))
+                writeResponseToStream(syncResponse, compressedStream);
+            }*/
+            writeResponseToStream(syncResponse, outputStream);
+        }
+
+        private static void writeResponseToStream(ContentSyncResponse syncResponse, Stream stream)
+        {
+            RemoteSyncSupport.PutSyncResponseToStream(stream, syncResponse);
+            if (syncResponse.Contents == null)
+                return;
+            var random = new Random();
+            long outputTotal = 0;
+            foreach (
+                var transferItem in
+                    syncResponse.Contents.Where(content => content.ResponseContentType == ResponseContentType.IncludedInTransfer)
+                )
+            {
+                if (transferItem.ContentLength > 0)
                 {
-                    if (transferItem.ContentLength > 0)
-                    {
-                        var variantCount = transferItem.FullNames.Length;
-                        var pick = random.Next(0, variantCount - 1);
-                        var blobName = transferItem.FullNames[pick];
-                        var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
-                        outputTotal += transferItem.ContentLength;
-                        blob.DownloadToStream(compressedStream);
-                    }
-                    Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
+                    var variantCount = transferItem.FullNames.Length;
+                    var pick = random.Next(0, variantCount - 1);
+                    var blobName = transferItem.FullNames[pick];
+                    var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
+                    outputTotal += transferItem.ContentLength;
+                    blob.DownloadToStream(stream);
                 }
-                Debug.WriteLine("Wrote total bytes: {0}", outputTotal);
+                Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
             }
+            Debug.WriteLine("Wrote total bytes: {0}", outputTotal);
         }
     }
 }

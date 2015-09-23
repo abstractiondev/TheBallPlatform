@@ -1,3 +1,6 @@
+//#define DefaultNetCrypto
+#define NoCryptoResponse
+
 using System;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
@@ -8,6 +11,7 @@ using PCLCrypto;
 using CryptoStream = System.Security.Cryptography.CryptoStream;
 using CryptoStreamMode = System.Security.Cryptography.CryptoStreamMode;
 using SymmetricAlgorithm = PCLCrypto.SymmetricAlgorithm;
+
 
 namespace TheBall.Support.DeviceClient
 {
@@ -83,50 +87,85 @@ namespace TheBall.Support.DeviceClient
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64
                                                  + ":" + device.EstablishedTrustID
                                                  + ":" + device.AccountEmail);
+#if NoCryptoResponse
+            request.Headers.Add("CryptoMode", "None");
+            request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+#endif
             var requestStream = request.GetRequestStream();
+
+#if !DefaultNetCrypto
+#if InfernoCrypto
+#else
             var pclAESKey = createPCLAES(device.AESKey);
             var encryptor = WinRTCrypto.CryptographicEngine.CreateEncryptor(pclAESKey, encAes.IV);
-            using (var reqCryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write))
-                try
-                {
-                    await requestStreamHandler(reqCryptoStream);
-                }
-                finally
-                {
-                    //reqCryptoStream.Dispose();
-                }
-                /*
-                var encryptor = encAes.CreateEncryptor();
-                using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
-                {
-                    await requestStreamHandler(cryptoStream);
-                }*/
-                var response = (HttpWebResponse)request.GetResponse();
+            var reqCryptoStream = new PCLCrypto.CryptoStream(requestStream, encryptor, PCLCrypto.CryptoStreamMode.Write);
+            try
+            {
+                await requestStreamHandler(reqCryptoStream);
+            }
+            finally
+            {
+                reqCryptoStream.Dispose();
+            }
+#endif
+#else
+
+            var encryptor = encAes.CreateEncryptor();
+            using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))
+            {
+                await requestStreamHandler(cryptoStream);
+            }
+#endif
+
+            //var response = (HttpWebResponse)request.GetResponse();
+            var response = await request.GetResponseAsync();
+            var responseEncoding = response.Headers[HttpResponseHeader.ContentEncoding];
+            /*
             if (response.StatusCode != HttpStatusCode.OK)
                 throw new InvalidOperationException("ExecuteRemoteOperation failed with Http status: " +
-                                                    response.StatusCode.ToString());
+                                                    response.StatusCode.ToString());*/
+            var responseStream = response.GetResponseStream();
+
+#if NoCryptoResponse
+            try
+            {
+                await responseStreamHandler(responseStream);
+            }
+            finally
+            {
+                responseStream.Close();
+            }
+
+#else
             string ivStr = response.Headers["IV"];
             var decAes = createAES(device.AESKey);
             decAes.IV = Convert.FromBase64String(ivStr);
-            var responseStream = response.GetResponseStream();
+            //var responseStream = response.GetResponseStream();
 
+#if !DefaultNetCrypto
             var decryptor = WinRTCrypto.CryptographicEngine.CreateDecryptor(pclAESKey, decAes.IV);
-            using (var respCryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read))
-                try
-                {
-                    await responseStreamHandler(respCryptoStream);
-                }
-                finally
-                {
-                    //respCryptoStream.Dispose();
-                }
-
-            /*
-            var decryptor = decAes.CreateDecryptor();
-            using (CryptoStream cryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read))
+            var respCryptoStream = new PCLCrypto.CryptoStream(responseStream, decryptor, PCLCrypto.CryptoStreamMode.Read);
+            try
             {
-                await responseStreamHandler(cryptoStream);
-            }*/
+                await responseStreamHandler(respCryptoStream);
+            }
+            finally
+            {
+                respCryptoStream.Dispose();
+            }
+#else
+            var decryptor = decAes.CreateDecryptor();
+            CryptoStream respCryptoStream = new CryptoStream(responseStream, decryptor, CryptoStreamMode.Read);
+            try
+            {
+                await responseStreamHandler(respCryptoStream);
+            }
+            finally
+            {
+                respCryptoStream.Dispose();
+            }
+#endif
+#endif
 
         }
 
@@ -138,7 +177,7 @@ namespace TheBall.Support.DeviceClient
 
         private static AesManaged createAES(byte[] aesKey, byte[] iv = null)
         {
-            const PaddingMode PADDING_MODE = PaddingMode.ISO10126;
+            const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
             const CipherMode AES_MODE = CipherMode.CBC;
             const int AES_FEEDBACK_SIZE = 8;
             const int AES_KEYSIZE = 256;

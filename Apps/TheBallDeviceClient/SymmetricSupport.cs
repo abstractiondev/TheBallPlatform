@@ -135,10 +135,10 @@ namespace TheBall.Support.DeviceClient
             //byte[] key = dataToHash.Take(16).ToArray();
             //byte[] iv = dataToHash.Skip(16).ToArray();
             byte[] hash = sha256.ComputeHash(sharedData);
-            InitializeFromKeyAndIV(hash);
+            InitializeFromKeyAndIV128Bit(hash);
         }
 
-        public void InitializeFromKeyAndIV(byte[] keyAndIV)
+        public void InitializeFromKeyAndIV128Bit(byte[] keyAndIV)
         {
             CurrProvider.KeySize = 128;
             byte[] key = keyAndIV.Take(16).ToArray();
@@ -147,6 +147,16 @@ namespace TheBall.Support.DeviceClient
             CurrProvider.IV = iv;
         }
 
+        public void InitializeFromFull(byte[] keyAndIV)
+        {
+            CurrProvider.KeySize = 256;
+            byte[] key = keyAndIV.Take(32).ToArray();
+            byte[] iv = keyAndIV.Skip(32).ToArray();
+            CurrProvider.Key = key;
+            CurrProvider.IV = iv;
+        }
+
+
         public byte[] CurrentKey
         {
             get { return CurrProvider != null ? CurrProvider.Key : null; }
@@ -154,7 +164,7 @@ namespace TheBall.Support.DeviceClient
 
         public void InitializeNew()
         {
-            CurrProvider.KeySize = 128;
+            CurrProvider.KeySize = 256;
             CurrProvider.GenerateKey();
             CurrProvider.GenerateIV();
         }

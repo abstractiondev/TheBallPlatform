@@ -55,10 +55,6 @@ namespace TheBallMobileApp
                         {
                             System.Diagnostics.Debug.WriteLine(ex.ToString());
                         }
-                        GC.WaitForPendingFinalizers();
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                        GC.Collect();
                     }
                 }, ReportException);
             }
@@ -96,7 +92,7 @@ namespace TheBallMobileApp
         private static string getConnectionRootFolder(string hostName)
         {
             var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            var tbRoot = "TB";
+            var tbRoot = "TB9";
             string rootFolder = Path.Combine(localPersonalPath, tbRoot, hostName);
             return rootFolder;
         }
@@ -108,7 +104,7 @@ namespace TheBallMobileApp
                 startupUrl = "file:///android_asset/CoreUI/index.html";
             var settings = webView.Settings;
             settings.JavaScriptEnabled = true;
-            settings.AllowFileAccessFromFileURLs = true;
+            //settings.AllowFileAccessFromFileURLs = true;
             TBJSBridge = new TBJS2OP(this);
             TBJSBridge.RegisterOperation(TheBallHostManager.CreateConnectionOperation);
             TBJSBridge.RegisterOperation(TheBallHostManager.DeleteConnectionOperation);

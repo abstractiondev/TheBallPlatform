@@ -216,7 +216,7 @@ namespace TheBall.Support.DeviceClient
             {
                 var sessionKeyAndIV = PublicAndPrivateKeys.Decrypt(EncryptedSessionKey, false);
                 SessionKeyEnc = new SymmetricSupport();
-                SessionKeyEnc.InitializeFromKeyAndIV(sessionKeyAndIV);
+                SessionKeyEnc.InitializeFromFull(sessionKeyAndIV);
             }
 
             private void Alice1_3_SendEncryptedPublicKeyToBob()

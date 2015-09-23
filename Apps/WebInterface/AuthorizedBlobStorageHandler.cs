@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
@@ -173,6 +174,7 @@ namespace WebInterface
                     response.BufferOutput = false;
                     string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
+                    bool skipResponseEncryption = request.Headers["CryptoMode"] == "None";
                     AesManaged decAES = new AesManaged
                         {
                             KeySize = SymmetricSupport.AES_KEYSIZE,
@@ -185,28 +187,51 @@ namespace WebInterface
                         };
                     var reqDecryptor = decAES.CreateDecryptor(decAES.Key, decAES.IV);
 
-                    AesManaged encAES = new AesManaged
+                    var responseStream = response.OutputStream;
+                    if (skipResponseEncryption)
+                    {
+                        //response.Filter = new System.IO.Compression.DeflateStream(response.Filter,
+                        //                                        System.IO.Compression.CompressionMode.Compress);
+                        response.Headers.Remove("Content-Encoding");
+                        response.AppendHeader("Content-Encoding", "deflate");
+
+                        using (
+                            CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor,
+                                CryptoStreamMode.Read))
+                        using (var deflateStream = new DeflateStream(responseStream, CompressionMode.Compress))
                         {
-                            KeySize = SymmetricSupport.AES_KEYSIZE, 
+                            OperationSupport.ExecuteOperation(operationName,
+                                new Tuple<string, object>("InputStream", reqDecryptStream),
+                                new Tuple<string, object>("OutputStream", deflateStream));
+                        }
+                    }
+                    else
+                    {
+
+                        AesManaged encAES = new AesManaged
+                        {
+                            KeySize = SymmetricSupport.AES_KEYSIZE,
                             BlockSize = SymmetricSupport.AES_BLOCKSIZE,
                             Key = deviceMembership.ActiveSymmetricAESKey,
                             Padding = SymmetricSupport.PADDING_MODE,
                             Mode = SymmetricSupport.AES_MODE,
                             FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE
                         };
-                    encAES.GenerateIV();
-                    var respivBase64 = Convert.ToBase64String(encAES.IV);
-                    response.Headers.Add("IV", respivBase64);
-                    var responseStream = response.OutputStream;
-                    var respEncryptor = encAES.CreateEncryptor(encAES.Key, encAES.IV);
+                        encAES.GenerateIV();
+                        var respivBase64 = Convert.ToBase64String(encAES.IV);
+                        response.Headers.Add("IV", respivBase64);
+                        var respEncryptor = encAES.CreateEncryptor(encAES.Key, encAES.IV);
 
-
-                    using (CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor, CryptoStreamMode.Read),
-                            respEncryptedStream = new CryptoStream(responseStream, respEncryptor, CryptoStreamMode.Write))
-                    {
-                        OperationSupport.ExecuteOperation(operationName, 
-                            new Tuple<string, object>("InputStream", reqDecryptStream),
-                            new Tuple<string, object>("OutputStream", respEncryptedStream));
+                        using (
+                            CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor,
+                                CryptoStreamMode.Read),
+                                respEncryptedStream = new CryptoStream(responseStream, respEncryptor,
+                                    CryptoStreamMode.Write))
+                        {
+                            OperationSupport.ExecuteOperation(operationName,
+                                new Tuple<string, object>("InputStream", reqDecryptStream),
+                                new Tuple<string, object>("OutputStream", respEncryptedStream));
+                        }
                     }
                 }
                 else

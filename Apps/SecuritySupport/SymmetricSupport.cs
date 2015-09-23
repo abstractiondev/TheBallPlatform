@@ -11,7 +11,13 @@ namespace SecuritySupport
         private const string KeyBlobName = "SysInternal/AESKey";
         private const string IVBlobName = "SysInternal/AESIV";
 
-        private AesManaged CurrProvider = new AesManaged() {Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7};
+        private AesManaged CurrProvider = new AesManaged()
+        {
+            Mode = CipherMode.CBC,
+            Padding = PaddingMode.PKCS7,
+            BlockSize = AES_BLOCKSIZE,
+            FeedbackSize = AES_FEEDBACK_SIZE
+        };
         private static RNGCryptoServiceProvider RndSupport = new RNGCryptoServiceProvider();
 
         public const PaddingMode PADDING_MODE = PaddingMode.PKCS7;
@@ -135,10 +141,19 @@ namespace SecuritySupport
             //byte[] key = dataToHash.Take(16).ToArray();
             //byte[] iv = dataToHash.Skip(16).ToArray();
             byte[] hash = sha256.ComputeHash(sharedData);
-            InitializeFromKeyAndIV(hash);
+            InitializeFromKeyAndIV128Bit(hash);
         }
 
-        public void InitializeFromKeyAndIV(byte[] keyAndIV)
+        public void InitializeFromFull(byte[] keyAndIV)
+        {
+            CurrProvider.KeySize = AES_KEYSIZE;
+            byte[] key = keyAndIV.Take(32).ToArray();
+            byte[] iv = keyAndIV.Skip(32).ToArray();
+            CurrProvider.Key = key;
+            CurrProvider.IV = iv;
+        }
+
+        public void InitializeFromKeyAndIV128Bit(byte[] keyAndIV)
         {
             CurrProvider.KeySize = 128;
             byte[] key = keyAndIV.Take(16).ToArray();
@@ -154,7 +169,7 @@ namespace SecuritySupport
 
         public void InitializeNew()
         {
-            CurrProvider.KeySize = 128;
+            CurrProvider.KeySize = AES_KEYSIZE;
             CurrProvider.GenerateKey();
             CurrProvider.GenerateIV();
         }

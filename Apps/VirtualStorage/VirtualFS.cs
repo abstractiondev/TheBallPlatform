@@ -79,6 +79,7 @@ namespace TheBall.Support.VirtualStorage
                     ExistenceCheckResult.NotFound)
                 {
                     result = this;
+                    await SaveChanges();
                 }
                 else
                 {
