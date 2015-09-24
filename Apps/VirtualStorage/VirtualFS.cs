@@ -32,8 +32,9 @@ namespace TheBall.Support.VirtualStorage
 
         public static async Task InitializeVFS()
         {
-            var localPersonalPath = FileSystem.Current.LocalStorage.Path;
-            var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
+            //var localPersonalPath = FileSystem.Current.LocalStorage.Path;
+            //var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
+            var virtualFSPath = "VirtualFS";
             if (await FileSystem.Current.LocalStorage.CheckExistsAsync(virtualFSPath) == ExistenceCheckResult.NotFound)
                 await FileSystem.Current.LocalStorage.CreateFolderAsync(virtualFSPath, CreationCollisionOption.FailIfExists);
             await InitializeVFS(virtualFSPath);
@@ -202,7 +203,8 @@ namespace TheBall.Support.VirtualStorage
                 Serializer.Serialize(stream, this);
                 await stream.FlushAsync();
             }
-            await file.MoveAsync(realFile, NameCollisionOption.ReplaceExisting);
+            var realFileFullPath = Path.Combine(FileSystem.Current.LocalStorage.Path, realFile);
+            await file.MoveAsync(realFileFullPath, NameCollisionOption.ReplaceExisting);
             //File.Copy(tmpFile, realFile, true);
         }
 

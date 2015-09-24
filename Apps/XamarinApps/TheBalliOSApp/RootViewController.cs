@@ -100,10 +100,6 @@ namespace TheBalliOSApp
 
         private async Task SyncFullAccount()
         {
-            await TheBall.Support.VirtualStorage.VirtualFS.InitializeVFS();
-
-            Debug.WriteLine("Done VFS initialization...");
-
             await ClientExecute.ExecuteWithSettingsAsync(async settings =>
             {
                 var testConnName = "tstConnY";
