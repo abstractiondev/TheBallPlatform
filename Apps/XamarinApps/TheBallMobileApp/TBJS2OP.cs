@@ -4,6 +4,7 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Locations;
+using Android.Webkit;
 using Android.Widget;
 using Java.Interop;
 using Xamarin;
@@ -44,12 +45,14 @@ namespace TheBallMobileApp
         }
 
         [Export("ExecuteAjaxOperation")]
+        [JavascriptInterface]
         public string ExecuteAjaxOperation(Java.Lang.String operationUrl, Java.Lang.String operationData)
         {
             //Toast.MakeText(context, "Op call: " + operationUrl + " Data: " + operationData, ToastLength.Short).Show();
             //string locPart = getLocationString();
             //return true;
-            var executionResult = ActiveOperations.Select(operation => operation(operationUrl.ToString(), operationData.ToString())).FirstOrDefault(result => result != null);
+            var executionResult = ActiveOperations.Select(operation => operation(operationUrl.ToString(), operationData.ToString()))
+                .FirstOrDefault(result => result != null);
             return "{ \"OperationResult\": " + (executionResult ?? "null") + " }";
         }
 

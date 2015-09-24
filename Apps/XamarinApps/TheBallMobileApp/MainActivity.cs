@@ -122,7 +122,7 @@ namespace TheBallMobileApp
                 startupUrl = "file:///android_asset/CoreUI/index.html";
             var settings = webView.Settings;
             settings.JavaScriptEnabled = true;
-            //settings.AllowFileAccessFromFileURLs = true;
+            settings.AllowFileAccessFromFileURLs = true;
             TBJSBridge = new TBJS2OP(this);
             TBJSBridge.RegisterOperation(TheBallHostManager.CreateConnectionOperation);
             TBJSBridge.RegisterOperation(TheBallHostManager.DeleteConnectionOperation);
