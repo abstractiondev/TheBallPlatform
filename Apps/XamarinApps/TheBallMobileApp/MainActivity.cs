@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,12 +15,33 @@ using Xamarin;
 
 namespace TheBallMobileApp
 {
-    [Activity(Label = "The Ball Offline App", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen")]
+    [Activity(Label = "The Ball Offline App", MainLauncher = true, Icon = "@drawable/icon", Theme = "@android:style/Theme.Black.NoTitleBar.Fullscreen",
+        ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
     public class MainActivity : Activity
     {
 
         private WebView cWebView;
         private TBJS2OP TBJSBridge;
+
+        protected async override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+        }
+
+        protected async override void OnRestoreInstanceState(Bundle savedInstanceState)
+        {
+            base.OnRestoreInstanceState(savedInstanceState);
+        }
+
+        protected async override void OnResume()
+        {
+            base.OnResume();
+        }
+
+        protected async override void OnPause()
+        {
+            base.OnPause();
+        }
 
         protected async override void OnCreate(Bundle bundle)
         {
@@ -29,10 +51,6 @@ namespace TheBallMobileApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            //await VirtualFS.InitializeVFS();
-            await TheBall.Support.VirtualStorage.VirtualFS.InitializeVFS();
-
-            TheBallHostManager.SetDeviceClientHooks();
 
             //string connToSync = "members.onlinetaekwondo.net";
             string connToSync = "home.theball.me";
