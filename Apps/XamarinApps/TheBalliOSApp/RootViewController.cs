@@ -115,15 +115,8 @@ namespace TheBalliOSApp
                     ClientExecute.SetStaging(testConn.Name, connRoot,
                         "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
 
-                    //try
-                    //{
-                        await ClientExecute.StageOperation(testConn.Name, false, false, false, true, true);
-                        Debug.WriteLine("Done syncing without errors...");
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    Debug.WriteLine(ex.ToString());
-                    //}
+                    await ClientExecute.StageOperation(testConn.Name, false, false, false, true, true);
+                    Debug.WriteLine("Done syncing without errors...");
                 }
             }, exception =>
             {
@@ -134,9 +127,9 @@ namespace TheBalliOSApp
 
         private static string getConnectionRootFolder(string hostName)
         {
-            var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            var tbRoot = "TB3";
-            string rootFolder = Path.Combine(localPersonalPath, tbRoot, hostName);
+            var logicalRootPath = "/TheBall.Data";
+            var tbRoot = "FSRoot";
+            string rootFolder = Path.Combine(logicalRootPath, tbRoot, hostName);
             return rootFolder;
         }
 

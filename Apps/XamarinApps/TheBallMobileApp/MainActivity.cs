@@ -91,9 +91,9 @@ namespace TheBallMobileApp
 
         private static string getConnectionRootFolder(string hostName)
         {
-            var localPersonalPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            var tbRoot = "TB9";
-            string rootFolder = Path.Combine(localPersonalPath, tbRoot, hostName);
+            var logicalRootPath = "/TheBall.Data";
+            var tbRoot = "FSRoot";
+            string rootFolder = Path.Combine(logicalRootPath, tbRoot, hostName);
             return rootFolder;
         }
 
