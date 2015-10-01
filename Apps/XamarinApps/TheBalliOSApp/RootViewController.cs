@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
@@ -13,6 +14,8 @@ namespace TheBalliOSApp
 {
     public partial class RootViewController : UIViewController
     {
+        private TBWebView webView;
+
         static bool UserInterfaceIdiomIsPhone
         {
             get { return UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone; }
@@ -35,20 +38,20 @@ namespace TheBalliOSApp
         public override void ViewDidLayoutSubviews()
         {
             base.ViewDidLayoutSubviews();
-            //webView.Frame = CGRect.FromLTRB(0, 0, this.View.Frame.Size.Width, this.View.Frame.Size.Height);
-            //webView.BackgroundColor = UIColor.Cyan;
-            //webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
         }
 
         public async override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
-            await SyncFullAccount();
+            //await SyncFullAccount();
 
             // Perform any additional setup after loading the view, typically from a nib.
             //webView.LoadHtmlString("<html><h1>Are you still there?</h1></html>", NSBundle.MainBundle.BundleUrl);
             //webView.LoadRequest(new NSUrlRequest(new NSUrl("http://yle.fi", false)));
+
+            var frame = new CGRect(0, 20, 768, 1004);
+            webView = new TBWebView(frame);
 
             webView.LoadError += WebView_LoadError;
             webView.LoadFinished += WebView_LoadFinished;
@@ -58,6 +61,24 @@ namespace TheBalliOSApp
             webView.LoadRequest(new NSUrlRequest(new NSUrl(localHtmlUrl, false)));
             webView.ScalesPageToFit = false;
 
+            webView.ShouldStartLoad += ShouldStartLoad;
+
+            View.Add(webView);
+
+        }
+
+        private bool ShouldStartLoad(UIWebView webView, NSUrlRequest request, UIWebViewNavigationType navigationType)
+        {
+            if (request.Body != null && request.Body.Length > 0)
+            {
+                var bodyData = request.Body.ToArray();
+                var bodyString = Encoding.UTF8.GetString(bodyData);
+            }
+            if (request.HttpMethod == "POST")
+            {
+                return true;
+            }
+            return true;
         }
 
         private void WebView_LoadStarted(object sender, EventArgs e)

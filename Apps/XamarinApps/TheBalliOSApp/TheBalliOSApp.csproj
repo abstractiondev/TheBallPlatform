@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="OperationProtocol.cs" />
+    <Compile Include="TBWebView.cs" />
     <Compile Include="WebViewController.cs" />
     <BundleResource Include="Content\CoreUI\data\ConnectionHosts.json" />
     <BundleResource Include="Content\CoreUI\data\Connections.json" />

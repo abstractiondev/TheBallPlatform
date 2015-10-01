@@ -144,9 +144,11 @@ var application;
         };
         ConnectionController.prototype.CreateConnection = function () {
             var me = this;
+            var host = me.currentHost != null ? me.currentHost.value : "";
+            var email = me.email;
             this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
-                "host": this.currentHost.value,
-                "email": this.email
+                "host": host,
+                "email": email
             }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {

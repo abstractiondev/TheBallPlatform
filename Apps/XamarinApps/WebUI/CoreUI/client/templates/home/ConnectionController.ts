@@ -52,10 +52,12 @@ module application {
 
     CreateConnection() {
       var me = this;
+      var host = me.currentHost != null ? me.currentHost.value : "";
+      var email = me.email;
       this.operationService.executeOperation("TheBall.LocalApp.CreateConnection",
         {
-          "host": this.currentHost.value,
-          "email": this.email
+          "host": host,
+          "email": email
         }).then(data => me.LastOperationDump = JSON.stringify(data));
     }
 

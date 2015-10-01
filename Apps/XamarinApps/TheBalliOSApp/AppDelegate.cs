@@ -12,6 +12,12 @@ namespace TheBalliOSApp
     [Register("AppDelegate")]
     public partial class AppDelegate : UIApplicationDelegate
     {
+        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        {
+            NSUrlProtocol.RegisterClass(new ObjCRuntime.Class(typeof (OperationProtocol)));
+            return true;
+        }
+
         // class-level declarations
         public override UIWindow Window
         {
