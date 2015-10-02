@@ -27,4 +27,8 @@
     "angular-promise-cache": "~0.0.12",
     "isotope": "~2.2.2"
   },
+  "resolutions": {
+    "isotope": "~2.2.2",
+    "angular": "~1.3.4"
+  }
 }
