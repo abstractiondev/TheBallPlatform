@@ -46,42 +46,13 @@ namespace TheBalliOSApp
             var url = request.Url.AbsoluteString;
             if (url.StartsWith(DataPrefix))
             {
-                string dataKey = url.Substring(DataPrefix.Length);
-                var customData = CustomDataRetriever(dataKey);
-                if (customData != null)
-                {
-                    using (var response = new NSUrlResponse(request.Url, customData.Item1, -1, customData.Item2))
-                    {
-                        Client.ReceivedResponse(this, response, NSUrlCacheStoragePolicy.NotAllowed);
-                        this.InvokeOnMainThread(() =>
-                        {
-                            using (var data = NSData.FromStream(customData.Item3))
-                            {
-                                Client.DataLoaded(this, data);
-                            }
-                            Client.FinishedLoading(this);
-                        });
-                    }
-                    return;
-                }
-                var fixedUrl = url.Replace(DataPrefix, "Content/CoreUI/data/");
-                var fileName = Path.Combine(NSBundle.MainBundle.BundlePath, fixedUrl);
-                if (!File.Exists(fileName))
-                    return;
-                using (var response = new NSUrlResponse(request.Url, "application/json", -1, "utf-8"))
-                {
-                    Client.ReceivedResponse(this, response, NSUrlCacheStoragePolicy.NotAllowed);
-                    this.InvokeOnMainThread(() =>
-                    {
-                        using (var sourceStream = File.OpenRead(fileName))
-                        {
-                            using (var data = NSData.FromStream(sourceStream))
-                                Client.DataLoaded(this, data);
-                            Client.FinishedLoading(this);
-                        }
-
-                    });
-                }
+                handleDataRequest(request);
+                return;
+            }
+            var parsedUrl = Request.Url.Path;
+            if(parsedUrl.StartsWith("/op/"))
+            {
+                handleOperationRequest(request);
                 return;
             }
 
@@ -102,6 +73,54 @@ namespace TheBalliOSApp
                     });
                 }
             }*/
+        }
+
+        private void handleOperationRequest(NSUrlRequest request)
+        {
+            string opName = request.Url.Path.Substring(4);
+            string opParameters = null;
+            var body = request.Body;
+        }
+
+        private void handleDataRequest(NSUrlRequest request)
+        {
+            var url = request.Url.AbsoluteString;
+            string dataKey = url.Substring(DataPrefix.Length);
+            var customData = CustomDataRetriever(dataKey);
+            if (customData != null)
+            {
+                using (var response = new NSUrlResponse(request.Url, customData.Item1, -1, customData.Item2))
+                {
+                    Client.ReceivedResponse(this, response, NSUrlCacheStoragePolicy.NotAllowed);
+                    this.InvokeOnMainThread(() =>
+                    {
+                        using (var data = NSData.FromStream(customData.Item3))
+                        {
+                            Client.DataLoaded(this, data);
+                        }
+                        Client.FinishedLoading(this);
+                    });
+                }
+                return;
+            }
+            var fixedUrl = url.Replace(DataPrefix, "Content/CoreUI/data/");
+            var fileName = Path.Combine(NSBundle.MainBundle.BundlePath, fixedUrl);
+            if (!File.Exists(fileName))
+                return;
+            using (var response = new NSUrlResponse(request.Url, "application/json", -1, "utf-8"))
+            {
+                Client.ReceivedResponse(this, response, NSUrlCacheStoragePolicy.NotAllowed);
+                this.InvokeOnMainThread(() =>
+                {
+                    using (var sourceStream = File.OpenRead(fileName))
+                    {
+                        using (var data = NSData.FromStream(sourceStream))
+                            Client.DataLoaded(this, data);
+                        Client.FinishedLoading(this);
+                    }
+                });
+            }
+            return;
         }
 
         public override void StopLoading()

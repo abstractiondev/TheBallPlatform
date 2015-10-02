@@ -98,7 +98,15 @@ var application;
             else {
                 return this.promiseCache({
                     promise: function () {
-                        return me.$http.post("/op/" + operationName, operationParams);
+                        return me.$http.post("http://ioshost/op/" + operationName, operationParams);
+                        /*
+                        return me.$http({
+                            withCredentials: false,
+                            method: "post",
+                            url: "tbop:///op/_" + operationName,
+                            headers: { 'Content-Type': "application/x-www-form-urlencoded" },
+                            data: JSON.stringify(operationParams)
+                        });*/
                     }
                 });
             }
