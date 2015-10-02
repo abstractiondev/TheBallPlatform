@@ -44,7 +44,9 @@ var paths = {
     '!bower_components/foundation-apps/js/angular/app.js',
 
     // third party...
-    'bower_components/angular-promise-cache/angular-promise-cache.js'
+    'bower_components/angular-promise-cache/angular-promise-cache.js',
+    'bower_components/isotope/dist/isotope.pkgd.min.js',
+    'bower_components/angular-isotope/dist/angular-isotope.min.js'
   ],
   // These files are for your app's JavaScript
   appJS: [

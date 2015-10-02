@@ -19,7 +19,8 @@ module application {
       } else {
         return this.promiseCache({
           promise: function() {
-            return me.$http.post("/op/" + operationName,
+            /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
+            return me.$http.post("https://tbvirtualhost/op/" + operationName,
               operationParams);
           }
         });
