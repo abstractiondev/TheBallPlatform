@@ -1,6 +1,7 @@
 ///<reference path="..\..\services\OperationService.ts"/>
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../services/ConnectionService.ts"/>
+/// <reference path="../../../typings/lodash/lodash.d.ts" />
 var application;
 (function (application) {
     var ConnectionController = (function () {
@@ -9,6 +10,7 @@ var application;
             this.hosts = [];
             this.connections = [];
             this.LastOperationDump = "void";
+            this.cards = [];
             $scope.vm = this;
             //this.currentHost = this.hosts[2];
             var me = this;
@@ -20,12 +22,11 @@ var application;
             connectionService.getConnectionData().then(function (result) {
                 var data = result.data;
                 me.connections = data.connections;
-                //$scope.$emit("iso-init");
-                var elem = document.querySelector('.isotope-container2');
-                var wnd = window;
-                var iso = new wnd.Isotope(elem, {
-                    itemSelector: ".isotope-item",
-                    layoutMode: "fitRows"
+                me.cards = _.map(data.connections, function (conn) {
+                    return {
+                        template: "templates/home/conncard.html",
+                        connection: conn
+                    };
                 });
             });
         }

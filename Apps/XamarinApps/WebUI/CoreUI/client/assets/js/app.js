@@ -13,9 +13,13 @@ var appModule;
     'foundation.dynamicRouting.animations',
 
     // 3rd party
-    'angular-promise-cache'
+    'angular-promise-cache',
+    'dynamicLayout',
+    //'iso-directives'
   ])
-    .config(config).run(run)
+    .config(config)
+    .constant("_", window._)
+    .run(run)
   ;
 
   config.$inject = ['$urlRouterProvider', '$locationProvider', '$controllerProvider'];
@@ -33,7 +37,8 @@ var appModule;
     //$controllerProvider.allowGlobals();
   }
 
-  function run() {
+  function run($rootScope) {
+    $rootScope._ = window._;
     FastClick.attach(document.body);
   }
 

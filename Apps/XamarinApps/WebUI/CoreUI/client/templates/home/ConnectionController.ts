@@ -1,6 +1,7 @@
 ///<reference path="..\..\services\OperationService.ts"/>
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../services/ConnectionService.ts"/>
+/// <reference path="../../../typings/lodash/lodash.d.ts" />
 
 module application {
 
@@ -35,6 +36,8 @@ module application {
       return this.hasConnections();
     }
 
+    cards:any = [];
+
     constructor($scope, connectionService:ConnectionService, private operationService:OperationService) {
       $scope.vm = this;
       //this.currentHost = this.hosts[2];
@@ -47,13 +50,13 @@ module application {
       connectionService.getConnectionData().then(result => {
         var data = result.data;
         me.connections = data.connections;
-        //$scope.$emit("iso-init");
-        var elem:any = document.querySelector('.isotope-container2');
-        var wnd:any = window;
-        var iso = new wnd.Isotope(elem, {
-          itemSelector: ".isotope-item",
-          layoutMode: "fitRows"
+        me.cards = _.map(data.connections, conn => {
+          return {
+            template: "templates/home/conncard.html",
+            connection: conn
+          };
         });
+
       });
     }
 

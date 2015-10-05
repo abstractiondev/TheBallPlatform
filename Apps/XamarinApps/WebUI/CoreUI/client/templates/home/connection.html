@@ -24,27 +24,9 @@ controller: ConnectionController
   </div>
 </div>
 <div ng-if="vm.isManageConnectionsMode()">
-  <h4>Existing Connections</h4>
-  <div>
-    <!--
-    <div isotope-container="isotope-container" style="border: dashed 1px green;">
-      <div style="border: solid 1px red;width: 200px"  isotope-item="isotope-item" ng-repeat="connection in vm.connections">
-        <div><label>Host name: {{connection.host}}</label></div>
-        <div><label>Email: {{connection.email}}</label></div>
-        <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-      </div>
-    </div>
-    -->
-    <div class="isotope-container" style="border: dashed 1px green;">
-      <div style="border: solid 1px red;width: 200px"  class="isotope-item" ng-repeat="connection in vm.connections">
-        <div><label>Host name: {{connection.host}}</label></div>
-        <div><label>Email: {{connection.email}}</label></div>
-        <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-      </div>
-    </div>
-
-  </div>
   <div class="grid-container">
+    <h4>Existing Connections</h4>
+    <div dynamic-layout items="vm.cards" class="row" style="border: dashed 2px green;position: relative;height:200px"></div>
     <form>
       <h4 class="small-12 medium-12 large-12">New Connection</h4>
       <div class="small-12 medium-6 grid-content">
@@ -64,21 +46,3 @@ controller: ConnectionController
   </div>
 </div>
 <div>{{vm.LastOperationDump}}</div>
-
-<div class="isotope-container2" style="border: dashed 1px green;">
-  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
-    <div><label>Host name: {{connection.host}}</label></div>
-    <div><label>Email: {{connection.email}}</label></div>
-    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-  </div>
-  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
-    <div><label>Host name: {{connection.host}}</label></div>
-    <div><label>Email: {{connection.email}}</label></div>
-    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-  </div>
-  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
-    <div><label>Host name: {{connection.host}}</label></div>
-    <div><label>Email: {{connection.email}}</label></div>
-    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-  </div>
-</div>

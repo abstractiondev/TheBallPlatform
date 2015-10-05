@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/client/services/ConnectionService.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/services/OperationService.ts" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/templates/home/ConnectionController.ts" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/client/templates/home/conncard.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/templates/home/connection.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gulpfile.js" charset="UTF-8" />
   </component>
