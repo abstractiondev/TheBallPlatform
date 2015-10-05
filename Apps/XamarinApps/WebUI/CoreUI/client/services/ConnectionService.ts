@@ -24,7 +24,6 @@ module application {
       });
     }
 
-
     constructor(private $http, $location, private promiseCache) {
 
     }

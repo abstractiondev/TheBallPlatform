@@ -20,6 +20,13 @@ var application;
             connectionService.getConnectionData().then(function (result) {
                 var data = result.data;
                 me.connections = data.connections;
+                //$scope.$emit("iso-init");
+                var elem = document.querySelector('.isotope-container2');
+                var wnd = window;
+                var iso = new wnd.Isotope(elem, {
+                    itemSelector: ".isotope-item",
+                    layoutMode: "fitRows"
+                });
             });
         }
         ConnectionController.prototype.hasConnections = function () {

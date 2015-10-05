@@ -47,6 +47,13 @@ module application {
       connectionService.getConnectionData().then(result => {
         var data = result.data;
         me.connections = data.connections;
+        //$scope.$emit("iso-init");
+        var elem:any = document.querySelector('.isotope-container2');
+        var wnd:any = window;
+        var iso = new wnd.Isotope(elem, {
+          itemSelector: ".isotope-item",
+          layoutMode: "fitRows"
+        });
       });
     }
 

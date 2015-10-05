@@ -23,15 +23,29 @@ controller: ConnectionController
     <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create First Connection</a>
   </div>
 </div>
-<div class="grid-container" ng-if="vm.isManageConnectionsMode()">
-  <form>
-    <div class="grid-block">
-      <h4>Existing Connections</h4>
-      <div class="small-12 grid-content" ng-repeat="connection in vm.connections">
-        <div class="small-12"><label>Host name: {{connection.host}}</label></div>
-        <div class="small-12"><label>Email: {{connection.email}}</label></div>
-        <div class="small-12"><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
+<div ng-if="vm.isManageConnectionsMode()">
+  <h4>Existing Connections</h4>
+  <div>
+    <!--
+    <div isotope-container="isotope-container" style="border: dashed 1px green;">
+      <div style="border: solid 1px red;width: 200px"  isotope-item="isotope-item" ng-repeat="connection in vm.connections">
+        <div><label>Host name: {{connection.host}}</label></div>
+        <div><label>Email: {{connection.email}}</label></div>
+        <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
       </div>
+    </div>
+    -->
+    <div class="isotope-container" style="border: dashed 1px green;">
+      <div style="border: solid 1px red;width: 200px"  class="isotope-item" ng-repeat="connection in vm.connections">
+        <div><label>Host name: {{connection.host}}</label></div>
+        <div><label>Email: {{connection.email}}</label></div>
+        <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="grid-container">
+    <form>
       <h4 class="small-12 medium-12 large-12">New Connection</h4>
       <div class="small-12 medium-6 grid-content">
         <label><h5>The Ball Host Name</h5></label>
@@ -43,11 +57,28 @@ controller: ConnectionController
           <input type="text" placeholder="Account Email Address" ng-model="vm.email">
         </label>
       </div>
+    </form>
+    <div class="small-12 small-centered columns text-center">
+      <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Next Connection</a>
     </div>
-  </form>
-  <div class="small-12 small-centered columns text-center">
-    <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Next Connection</a>
   </div>
 </div>
 <div>{{vm.LastOperationDump}}</div>
 
+<div class="isotope-container2" style="border: dashed 1px green;">
+  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
+    <div><label>Host name: {{connection.host}}</label></div>
+    <div><label>Email: {{connection.email}}</label></div>
+    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
+  </div>
+  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
+    <div><label>Host name: {{connection.host}}</label></div>
+    <div><label>Email: {{connection.email}}</label></div>
+    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
+  </div>
+  <div style="border: solid 1px red;width: 200px"  class="isotope-item">
+    <div><label>Host name: {{connection.host}}</label></div>
+    <div><label>Email: {{connection.email}}</label></div>
+    <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
+  </div>
+</div>
