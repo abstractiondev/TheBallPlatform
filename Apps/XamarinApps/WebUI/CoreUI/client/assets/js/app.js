@@ -15,7 +15,7 @@ var appModule;
     // 3rd party
     'angular-promise-cache',
     //'dynamicLayout',
-    'iso.directives'
+    //'iso.directives'
   ])
     .config(config)
     .constant("_", window._)

@@ -45,9 +45,9 @@ var paths = {
 
     // third party...
     'bower_components/angular-promise-cache/angular-promise-cache.js',
-    "bower_components/jquery/dist/jquery.js",
+    //"bower_components/jquery/dist/jquery.js",
     'bower_components/isotope/dist/isotope.pkgd.min.js',
-    'bower_components/angular-isotope/dist/angular-isotope.min.js',
+    //'bower_components/angular-isotope/dist/angular-isotope.min.js',
     'bower_components/lodash/lodash.min.js',
     'bower_components/angular-underscore-module/angular-underscore-module.js',
     //'bower_components/angular-dynamic-layout/dist/angular-dynamic-layout.min.js'
