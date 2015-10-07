@@ -18,6 +18,8 @@ module application {
 
     currentHost:any;
 
+    scope:any;
+
     connections = [];
 
     email:string;
@@ -39,7 +41,17 @@ module application {
     cards:any = [];
 
     constructor($scope, connectionService:ConnectionService, private operationService:OperationService) {
+      this.scope = $scope;
       $scope.vm = this;
+      $scope.$watch(this.cards, () => {
+        var $isotopeContainer:any = $(".isotope-container");
+        $isotopeContainer.isotope({
+          itemSelector: ".isotope-item",
+          masonry: {
+            columnWidth: 200
+          }
+        });
+      });
       //this.currentHost = this.hosts[2];
       var me = this;
       connectionService.getConnectionPrefillData().then(result => {
@@ -56,8 +68,22 @@ module application {
             connection: conn
           };
         });
-
       });
+
+      $scope.$watch(() => me.connections, function() {
+        me.scope.$evalAsync(function() {
+          me.refreshIsotope();
+        });
+      });
+    }
+
+    refreshIsotope()
+    {
+      var elem = window.document.querySelector(".isotope-container");
+      if(!elem)
+        return;
+      var wnd:any = window;
+      var iso = new wnd.Isotope(elem, {});
     }
 
     CreateConnection() {

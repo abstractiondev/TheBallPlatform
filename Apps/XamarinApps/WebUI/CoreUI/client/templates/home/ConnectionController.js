@@ -11,7 +11,17 @@ var application;
             this.connections = [];
             this.LastOperationDump = "void";
             this.cards = [];
+            this.scope = $scope;
             $scope.vm = this;
+            $scope.$watch(this.cards, function () {
+                var $isotopeContainer = $(".isotope-container");
+                $isotopeContainer.isotope({
+                    itemSelector: ".isotope-item",
+                    masonry: {
+                        columnWidth: 200
+                    }
+                });
+            });
             //this.currentHost = this.hosts[2];
             var me = this;
             connectionService.getConnectionPrefillData().then(function (result) {
@@ -29,6 +39,11 @@ var application;
                     };
                 });
             });
+            $scope.$watch(function () { return me.connections; }, function () {
+                me.scope.$evalAsync(function () {
+                    me.refreshIsotope();
+                });
+            });
         }
         ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
@@ -38,6 +53,13 @@ var application;
         };
         ConnectionController.prototype.isManageConnectionsMode = function () {
             return this.hasConnections();
+        };
+        ConnectionController.prototype.refreshIsotope = function () {
+            var elem = window.document.querySelector(".isotope-container");
+            if (!elem)
+                return;
+            var wnd = window;
+            var iso = new wnd.Isotope(elem, {});
         };
         ConnectionController.prototype.CreateConnection = function () {
             var me = this;

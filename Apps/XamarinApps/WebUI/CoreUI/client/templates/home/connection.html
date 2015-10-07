@@ -26,7 +26,19 @@ controller: ConnectionController
 <div ng-if="vm.isManageConnectionsMode()">
   <div class="grid-container">
     <h4>Existing Connections</h4>
+    <!--
     <div class="container-fluid" dynamic-layout items="vm.cards" style="border: dashed 2px green;position: relative;height:200px"></div>
+
+    <div isotope-container="isotope-container" style="border:solid green 2px">
+    </div>
+    -->
+    <div class="isotope-container" style="border:solid green 2px">
+      <div class="kindling isotope-item=" style="border:dashed blue 1px; width:200px" ng-repeat="connection in vm.connections">
+        <div>{{connection.host}}</div>
+        <div>{{connection.email}}</div>
+        <div>Delete</div>
+      </div>
+    </div>
     <form>
       <h4 class="small-12 medium-12 large-12">New Connection</h4>
       <div class="small-12 medium-6 grid-content">
