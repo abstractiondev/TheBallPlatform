@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/bower.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/assets/js/app.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/client/assets/scss/_settings.scss" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/data/ConnectionHosts.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/data/Connections.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/client/services/ConnectionService.ts" charset="UTF-8" />

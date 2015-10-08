@@ -5,23 +5,14 @@
 var application;
 (function (application) {
     var ConnectionController = (function () {
-        function ConnectionController($scope, connectionService, operationService) {
+        function ConnectionController($scope, connectionService, operationService, foundationApi) {
             this.operationService = operationService;
+            this.foundationApi = foundationApi;
             this.hosts = [];
             this.connections = [];
             this.LastOperationDump = "void";
-            this.cards = [];
             this.scope = $scope;
             $scope.vm = this;
-            $scope.$watch(this.cards, function () {
-                var $isotopeContainer = $(".isotope-container");
-                $isotopeContainer.isotope({
-                    itemSelector: ".isotope-item",
-                    masonry: {
-                        columnWidth: 200
-                    }
-                });
-            });
             //this.currentHost = this.hosts[2];
             var me = this;
             connectionService.getConnectionPrefillData().then(function (result) {
@@ -32,12 +23,6 @@ var application;
             connectionService.getConnectionData().then(function (result) {
                 var data = result.data;
                 me.connections = data.connections;
-                me.cards = _.map(data.connections, function (conn) {
-                    return {
-                        template: "templates/home/conncard.html",
-                        connection: conn
-                    };
-                });
             });
             $scope.$watch(function () { return me.connections; }, function () {
                 me.scope.$evalAsync(function () {
@@ -72,11 +57,13 @@ var application;
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
             var me = this;
+            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
+            return;
             this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
     })();
-    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", function ($scope, connectionService, operationService) { return new ConnectionController($scope, connectionService, operationService); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", function ($scope, connectionService, operationService, foundationApi) { return new ConnectionController($scope, connectionService, operationService, foundationApi); }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionController.js.map

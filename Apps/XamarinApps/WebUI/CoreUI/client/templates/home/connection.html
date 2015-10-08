@@ -33,13 +33,15 @@ controller: ConnectionController
     </div>
     -->
     <div class="isotope-container" style="border:solid green 2px">
-      <div class="kindling isotope-item=" style="border:dashed blue 1px; width:200px" ng-repeat="connection in vm.connections">
+      <div class="card tbisobox isotope-item" ng-repeat="connection in vm.connections">
         <div>{{connection.host}}</div>
         <div>{{connection.email}}</div>
-        <div>Delete</div>
+        <div><a class="button alert" ng-click="vm.DeleteConnection(connection.id)" href="#">Delete</a></div>
       </div>
     </div>
-    <form>
+    <a class="button" zf-open="createConnectionModal">Add Connection</a>
+    <div id="createConnectionModal" zf-modal="">
+      <a class="close-button" zf-close="">x</a>
       <h4 class="small-12 medium-12 large-12">New Connection</h4>
       <div class="small-12 medium-6 grid-content">
         <label><h5>The Ball Host Name</h5></label>
@@ -51,10 +53,16 @@ controller: ConnectionController
           <input type="text" placeholder="Account Email Address" ng-model="vm.email">
         </label>
       </div>
-    </form>
-    <div class="small-12 small-centered columns text-center">
-      <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Next Connection</a>
+      <div class="small-12 small-centered columns text-center">
+        <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Next Connection</a>
+      </div>
     </div>
   </div>
 </div>
+<!--
+<a title="My notification" class="button" href="#" zf-notify="main-notifications" autoclose="3000" color="success" content="Notification example">Dynamic Notification</a>
+-->
+<zf-notification-set id="main-notifications" position="top-left"></zf-notification-set>
+
+
 <div>{{vm.LastOperationDump}}</div>
