@@ -13,9 +13,13 @@ var appModule;
     'foundation.dynamicRouting.animations',
 
     // 3rd party
-    'angular-promise-cache'
+    'angular-promise-cache',
+    //'dynamicLayout',
+    //'iso.directives'
   ])
-    .config(config).run(run)
+    .config(config)
+    .constant("_", window._)
+    .run(run)
   ;
 
   config.$inject = ['$urlRouterProvider', '$locationProvider', '$controllerProvider'];
@@ -33,7 +37,8 @@ var appModule;
     //$controllerProvider.allowGlobals();
   }
 
-  function run() {
+  function run($rootScope) {
+    $rootScope._ = window._;
     FastClick.attach(document.body);
   }
 
@@ -98,7 +103,8 @@ var application;
             else {
                 return this.promiseCache({
                     promise: function () {
-                        return me.$http.post("/op/" + operationName, operationParams);
+                        /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
+                        return me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams);
                     }
                 });
             }
@@ -112,14 +118,16 @@ var application;
 ///<reference path="..\..\services\OperationService.ts"/>
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../services/ConnectionService.ts"/>
+/// <reference path="../../../typings/lodash/lodash.d.ts" />
 var application;
 (function (application) {
     var ConnectionController = (function () {
-        function ConnectionController($scope, connectionService, operationService) {
+        function ConnectionController($scope, connectionService, operationService, foundationApi) {
             this.operationService = operationService;
+            this.foundationApi = foundationApi;
             this.hosts = [];
             this.connections = [];
-            this.LastOperationDump = "void";
+            this.scope = $scope;
             $scope.vm = this;
             //this.currentHost = this.hosts[2];
             var me = this;
@@ -132,7 +140,15 @@ var application;
                 var data = result.data;
                 me.connections = data.connections;
             });
+            $scope.$watch(function () { return me.connections; }, function () {
+                me.scope.$evalAsync(function () {
+                    me.refreshIsotope();
+                });
+            });
         }
+        /*
+        LastOperationDump:string = "void";
+        */
         ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
         };
@@ -142,20 +158,35 @@ var application;
         ConnectionController.prototype.isManageConnectionsMode = function () {
             return this.hasConnections();
         };
+        ConnectionController.prototype.refreshIsotope = function () {
+            var elem = window.document.querySelector(".isotope-container");
+            if (!elem)
+                return;
+            var wnd = window;
+            var iso = new wnd.Isotope(elem, {});
+        };
         ConnectionController.prototype.CreateConnection = function () {
             var me = this;
+            var host = me.currentHost != null ? me.currentHost.value : "";
+            var email = me.email;
             this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
-                "host": this.currentHost.value,
-                "email": this.email
-            }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
+                "host": host,
+                "email": email
+            }); /* .then(data => me.LastOperationDump = JSON.stringify(data));*/
+        };
+        ConnectionController.prototype.GoToConnection = function (connectionID) {
+            var me = this;
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
             var me = this;
-            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
+            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
+            return;
+            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
     })();
-    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", function ($scope, connectionService, operationService) { return new ConnectionController($scope, connectionService, operationService); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", function ($scope, connectionService, operationService, foundationApi) { return new ConnectionController($scope, connectionService, operationService, foundationApi); }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionController.js.map

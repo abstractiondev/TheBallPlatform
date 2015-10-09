@@ -106,9 +106,9 @@
     <Compile Include="TheBallHostManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />
     <AndroidAsset Include="Assets\CoreUI\data\Connections.json" />
-    <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -125,6 +125,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TheBallDeviceClient\TheBallDeviceClient.csproj">
+      <Project>{19f4deb2-249d-450e-b5c7-bb2d977cf00a}</Project>
+      <Name>TheBallDeviceClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\VirtualStorage\VirtualStorage.csproj">
+      <Project>{c11070cd-4e20-4c7b-9b9b-d9e5f7feaca7}</Project>
+      <Name>VirtualStorage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\index.html" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\css\app.css" />
@@ -214,20 +227,10 @@
     <AndroidAsset Include="Assets\CoreUI\assets\js\templates.js" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\templates\home\conncard.html" />
+  </ItemGroup>
+  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\templates\home\connection.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\CoreUI\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\TheBallDeviceClient\TheBallDeviceClient.csproj">
-      <Project>{19f4deb2-249d-450e-b5c7-bb2d977cf00a}</Project>
-      <Name>TheBallDeviceClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VirtualStorage\VirtualStorage.csproj">
-      <Project>{c11070cd-4e20-4c7b-9b9b-d9e5f7feaca7}</Project>
-      <Name>VirtualStorage</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

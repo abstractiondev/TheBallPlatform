@@ -12,8 +12,14 @@ using ContentItemLocationWithMD5 = TheBall.Support.VirtualStorage.ContentItemLoc
 
 namespace TheBallMobileApp
 {
+    internal delegate void LoadUIFromUrl(string urlPath, string urlRoot);
+
     internal class TheBallHostManager
     {
+
+
+        internal LoadUIFromUrl LoadUIHandler;
+
         public class HostConnectionData
         {
             public string host { get; set; }
@@ -26,7 +32,7 @@ namespace TheBallMobileApp
             }
         }
 
-        public static Tuple<string, string, Stream> CustomDataRetriever(string datakey)
+        public Tuple<string, string, Stream> CustomDataRetriever(string datakey)
         {
             switch (datakey)
             {
@@ -84,7 +90,6 @@ namespace TheBallMobileApp
                         return responseTask.Result;
                 }
             }
-            return null;
         }
 
         public static async Task<Tuple<string, string, Stream>> GetWebResponseContent(string fullPath)
@@ -102,7 +107,7 @@ namespace TheBallMobileApp
                 Insights.Report(obj);
         }
 
-        public static WebUIOperation DeleteConnectionOperation = (url, data) =>
+        public WebUIOperation DeleteConnectionOperation = (url, data) =>
         {
             if (!url.EndsWith("DeleteConnection"))
                 return null;
@@ -130,7 +135,51 @@ namespace TheBallMobileApp
             return TBJS2OP.TRUE_RESULT;
         };
 
-        public static WebUIOperation CreateConnectionOperation = (url, data) =>
+        public string GoToConnectionOperation(string url, string data) 
+        {
+            if (!url.EndsWith("GoToConnection"))
+                return null;
+            try
+            {
+                var jobj = (JObject) JsonConvert.DeserializeObject(data);
+                string connectionID = (string) jobj["connectionID"];
+                ClientExecute.ExecuteWithSettings(userSettings =>
+                {
+                    var connection =
+                        userSettings.Connections.FirstOrDefault(conn => conn.Device.EstablishedTrustID == connectionID);
+                    if (connection != null)
+                    {
+                        var connRoot = getConnectionRootFolder(connection.HostName);
+                        var connName = connection.Name;
+                        ClientExecute.SetStaging(connName, connRoot,
+                            "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
+                        try
+                        {
+                            ClientExecute.StageOperation(connName, false, false, false, true, true).Wait();
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine(ex.ToString());
+                        }
+                        if (LoadUIHandler != null)
+                        {
+                            //var startupUrl = getStartupUrlFromRoot(connRoot);
+                            var startupUrl = getStartupUrl();
+                            LoadUIHandler(startupUrl, connRoot);
+                        }
+
+                    }
+                }, TBJS2OP.ReportException);
+            }
+            catch (Exception exception)
+            {
+                TBJS2OP.ReportException(exception);
+            }
+
+            return TBJS2OP.TRUE_RESULT;
+        }
+
+        public WebUIOperation CreateConnectionOperation = (url, data) =>
         {
             if (!url.EndsWith("CreateConnection"))
                 return null;
@@ -163,6 +212,7 @@ namespace TheBallMobileApp
             return TBJS2OP.TRUE_RESULT;
         };
 
+        [Obsolete("Legacy, not anymore used", true)]
         public static void SetDeviceClientHooks()
         {
             ClientExecute.LocalContentItemRetriever = location =>
@@ -184,6 +234,29 @@ namespace TheBallMobileApp
                 await ClientExecute.VirtualTargetContentWriteFinalizer(targetLocationItem);
             };
         }
+
+        private static string getStartupUrl()
+        {
+            //string urlPath = "/auth/account/cpanel/html/account.html";
+            string urlPath = "/auth/acc/ecf14035-9cf5-4153-98c1-bfed7644b972/cpanel/html/account.html";
+            return "file://" + urlPath;
+        }
+
+        private static string getStartupUrlFromRoot(string rootFolder)
+        {
+            string urlPath = Path.Combine(rootFolder, "account", "cpanel", "html", "account.html");
+            return "file://" + urlPath;
+        }
+
+        private static string getConnectionRootFolder(string hostName)
+        {
+            var logicalRootPath = "/TheBall.Data";
+            var tbRoot = "FSRoot";
+            string rootFolder = Path.Combine(logicalRootPath, tbRoot, hostName);
+            return rootFolder;
+        }
+
+
 
         public static string GetMimeType(string fullNameOrExtension)
         {

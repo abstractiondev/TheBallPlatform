@@ -13,13 +13,23 @@ namespace TheBallMobileApp
         private readonly Activity ParentActivity;
         private readonly DataRetriever CustomDataRetriever;
         private const string DataPrefix = "file:///data/";
-        private readonly string ConnectionRootFolder;
+        private string ConnectionRootFolder;
+        private readonly WebView View;
 
-        public TBWebViewClient(Activity parentActivity, DataRetriever customDataRetriever, string connectionRoot)
+        internal TBWebViewClient(Activity parentActivity, TheBallHostManager hostManager, WebView view)
         {
             ParentActivity = parentActivity;
-            CustomDataRetriever = customDataRetriever;
-            ConnectionRootFolder = connectionRoot;
+            CustomDataRetriever = hostManager.CustomDataRetriever;
+            //ConnectionRootFolder = connectionRoot;
+            View = view;
+            hostManager.LoadUIHandler = (path, root) =>
+            {
+                ConnectionRootFolder = root;
+                View.Post(() =>
+                {
+                    View.LoadUrl(path);
+                });
+            };
         }
 
         public override WebResourceResponse ShouldInterceptRequest(WebView view, string url)
