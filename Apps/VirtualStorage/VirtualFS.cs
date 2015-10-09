@@ -442,6 +442,7 @@ namespace TheBall.Support.VirtualStorage
                 long contentLength;
                 string storageFileName;
                 string[] fileNamesToDelete = null;
+                VFSItem[] existingToUpdate = null;
                 var hasExistingContent = ContentHashDictionary.TryGetValue(contentMd5, out existingContents);
                 if (!initialAdd && !hasExistingContent)
                     throw new InvalidOperationException("Non-existent content must be with initial add flag");
@@ -457,6 +458,7 @@ namespace TheBall.Support.VirtualStorage
                         existingContents.Where(fsItem => !fullNames.Contains(fsItem.FileName))
                             .Select(fsItem => fsItem.FileName)
                             .ToArray();
+                    existingToUpdate = existingContents.Where(item => fileNamesToDelete.Contains(item.FileName) == false).ToArray();
                 }
                 else
                 {
@@ -465,6 +467,7 @@ namespace TheBall.Support.VirtualStorage
                     storageFileName = toFileNameSafeMD5(contentMd5);
                     fileNamesToDelete =
                         fullNames.Where(fileName => FileLocationDictionary.ContainsKey(fileName)).ToArray();
+                    existingToUpdate = new VFSItem[0];
                 }
 
                 foreach (var itemToDelete in fileNamesToDelete)
@@ -490,6 +493,24 @@ namespace TheBall.Support.VirtualStorage
                 // Make modifications
                 foreach (var itemToAdd in itemsToAdd)
                     FileLocationDictionary.Add(itemToAdd.FileName, itemToAdd);
+
+                // Update Existing Names
+                foreach (var updateExisting in existingToUpdate)
+                {
+                    var fileNameKey = updateExisting.FileName;
+                    if (FileLocationDictionary.ContainsKey(fileNameKey))
+                    {
+                        var toReplace = FileLocationDictionary[fileNameKey];
+                        bool isDifferent = toReplace.StorageFileName != updateExisting.StorageFileName ||
+                                           toReplace.ContentMD5 != updateExisting.ContentMD5;
+                        if (isDifferent)
+                        {
+                            FileLocationDictionary[fileNameKey] = updateExisting;
+                        }
+                    }
+                    else
+                        FileLocationDictionary.Add(fileNameKey, updateExisting);
+                }
 
                 await SaveChanges();
             }

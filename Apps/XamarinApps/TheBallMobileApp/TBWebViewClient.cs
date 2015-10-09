@@ -43,9 +43,13 @@ namespace TheBallMobileApp
                 string fixedUrl = url.Replace("file:///auth", ConnectionRootFolder);
                 if (fixedUrl.EndsWith("/"))
                 {
-                    fixedUrl += "<redirect address to add>";
-                    view.StopLoading();
-                    view.LoadUrl(fixedUrl);
+                    //fixedUrl += "<redirect address to add>";
+                    fixedUrl = url + "cpanel/html/cpanel.html";
+                    view.Post(() =>
+                    {
+                        view.StopLoading();
+                        view.LoadUrl(fixedUrl);
+                    });
                     return null;
                 }
                 var responseTask = TheBallHostManager.GetWebResponseContent(fixedUrl);

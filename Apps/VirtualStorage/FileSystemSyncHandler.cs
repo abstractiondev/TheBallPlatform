@@ -41,16 +41,16 @@ namespace TheBall.Support.VirtualStorage
                 await VirtualFS.Current.SetPendingSaves(true);
                 var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(usedStream);
                 SyncResponse = syncResponse;
-                var contentToExpect =
-                    syncResponse.Contents.Where(
-                        content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
-                foreach (var content in contentToExpect)
-                    await streamToFile(content, usedStream, SyncRootFolder);
                 var contentToDelete =
                     syncResponse.Contents.Where(
                         content => content.ResponseContentType == ResponseContentType.Deleted).ToArray();
                 foreach (var content in contentToDelete)
                     await deleteContent(content);
+                var contentToExpect =
+                    syncResponse.Contents.Where(
+                        content => content.ResponseContentType == ResponseContentType.IncludedInTransfer).ToArray();
+                foreach (var content in contentToExpect)
+                    await streamToFile(content, usedStream, SyncRootFolder);
                 var contentToRefresh =
                     syncResponse.Contents.Where(
                         content => content.ResponseContentType == ResponseContentType.NameDataRefresh).ToArray();
