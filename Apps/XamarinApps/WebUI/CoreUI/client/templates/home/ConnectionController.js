@@ -10,7 +10,6 @@ var application;
             this.foundationApi = foundationApi;
             this.hosts = [];
             this.connections = [];
-            this.LastOperationDump = "void";
             this.scope = $scope;
             $scope.vm = this;
             //this.currentHost = this.hosts[2];
@@ -30,6 +29,9 @@ var application;
                 });
             });
         }
+        /*
+        LastOperationDump:string = "void";
+        */
         ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
         };
@@ -53,13 +55,17 @@ var application;
             this.operationService.executeOperation("TheBall.LocalApp.CreateConnection", {
                 "host": host,
                 "email": email
-            }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
+            }); /* .then(data => me.LastOperationDump = JSON.stringify(data));*/
+        };
+        ConnectionController.prototype.GoToConnection = function (connectionID) {
+            var me = this;
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID });
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
             var me = this;
             me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
             return;
-            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }).then(function (data) { return me.LastOperationDump = JSON.stringify(data); });
+            this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;

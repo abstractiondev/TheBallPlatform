@@ -24,7 +24,9 @@ module application {
 
     email:string;
 
+    /*
     LastOperationDump:string = "void";
+    */
 
     hasConnections():Boolean {
       return this.connections.length > 0;
@@ -77,7 +79,14 @@ module application {
         {
           "host": host,
           "email": email
-        }).then(data => me.LastOperationDump = JSON.stringify(data));
+        });/* .then(data => me.LastOperationDump = JSON.stringify(data));*/
+    }
+
+    GoToConnection(connectionID:string)
+    {
+      var me = this;
+      me.operationService.executeOperation("TheBall.LocalApp.GoToConnection",
+        { "connectionID": connectionID});
     }
 
     DeleteConnection(connectionID:string) {
@@ -87,7 +96,7 @@ module application {
           color: "alert"});
       return;
       this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection",
-        { "connectionID": connectionID }).then(data => me.LastOperationDump = JSON.stringify(data));
+        { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
     }
   }
 
