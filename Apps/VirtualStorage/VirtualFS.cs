@@ -233,6 +233,10 @@ namespace TheBall.Support.VirtualStorage
                 var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
                 return await file.OpenAsync(FileAccess.Read);
             }
+            catch (Exception exception)
+            {
+                return null;
+            }
             finally
             {
                 _semaphore.Release();

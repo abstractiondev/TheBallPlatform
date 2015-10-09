@@ -12,6 +12,7 @@ namespace TheBalliOSApp
 
         public TBWebView(CGRect frame) : base(frame)
         {
+            OperationProtocol.CurrentWebView = this;
         }
 
         public override void LoadRequest(NSUrlRequest r)

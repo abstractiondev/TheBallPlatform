@@ -1,48 +1,49 @@
 
-<div class="grid-container" ng-if="vm.isCreateFirstConnectionMode()">
-  <form>
-    <div class="grid-block">
-      <div class="small-12 medium-6 grid-content">
-        <label><h4>The Ball Host Name</h4></label>
-        <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
-        </select>
-      </div>
-      <div class="small-12 medium-6 grid-content">
-        <label><h4>Email Address</h4>
-          <input type="text" placeholder="Account Email Address" ng-model="vm.email">
-        </label>
+<div class="grid-container">
+  <div ng-if="vm.isCreateFirstConnectionMode()">
+    <div>Start adding connections :-)</div>
+  </div>
+  <div ng-if="vm.isManageConnectionsMode()">
+    <!--
+    <div class="container-fluid" dynamic-layout items="vm.cards" style="border: dashed 2px green;position: relative;height:200px"></div>
+      <div isotope-container="isotope-container" style="border:solid green 2px">
+    </div>
+    -->
+    <div class="isotope-container">
+      <div align="center" class="card tbisobox isotope-item" ng-repeat="connection in vm.connections">
+        <h5>{{connection.host}}</h5>
+        <h5>{{connection.email}}</h5>
+        <div><button class="button hollow large" ng-click="vm.GoToConnection(connection.id)">Go To Connection</button></div>
+        <div><button class="button alert medium" ng-click="vm.DeleteConnection(connection.id)">Remove</button></div>
       </div>
     </div>
-  </form>
-  <div class="small-12 small-centered columns text-center">
-    <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create First Connection</a>
   </div>
-</div>
-<div class="grid-container" ng-if="vm.isManageConnectionsMode()">
-  <form>
-    <div class="grid-block">
-      <h4>Existing Connections</h4>
-      <div class="small-12 grid-content" ng-repeat="connection in vm.connections">
-        <div class="small-12"><label>Host name: {{connection.host}}</label></div>
-        <div class="small-12"><label>Email: {{connection.email}}</label></div>
-        <div class="small-12"><a class="button alert" ng-click="vm.DeleteConnection(connection.id)">Delete</a></div>
-      </div>
-      <h4 class="small-12 medium-12 large-12">New Connection</h4>
-      <div class="small-12 medium-6 grid-content">
-        <label><h5>The Ball Host Name</h5></label>
-        <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
-        </select>
-      </div>
-      <div class="small-12 medium-6 grid-content">
-        <label><h5>Email Address</h5>
-          <input type="text" placeholder="Account Email Address" ng-model="vm.email">
-        </label>
-      </div>
+  <div class="row" align="center">
+    <button class="button hollow large" zf-open="createConnectionModal">Add New Connection</button>
+  </div>
+  <div id="createConnectionModal" zf-modal="">
+    <a class="close-button" zf-close="">x</a>
+    <h4 class="small-12 medium-12 large-12">New Connection</h4>
+    <div class="small-12 medium-6 grid-content">
+      <label><h5>The Ball Host Name</h5></label>
+      <select ng-model="vm.currentHost" ng-options="host.displayName for host in vm.hosts">
+      </select>
     </div>
-  </form>
-  <div class="small-12 small-centered columns text-center">
-    <a class="hollow success button large radius" ng-click="vm.CreateConnection()" href="#">Create Next Connection</a>
+    <div class="small-12 medium-6 grid-content">
+      <label><h5>Email Address</h5>
+        <input type="text" placeholder="Account Email Address" ng-model="vm.email">
+      </label>
+    </div>
+    <div class="small-12 small-centered columns text-center">
+      <button class="hollow success button large" ng-click="vm.CreateConnection()">Create Next Connection</button>
+    </div>
   </div>
 </div>
-<div>{{vm.LastOperationDump}}</div>
+<!--
+<a title="My notification" class="button" href="#" zf-notify="main-notifications" autoclose="3000" color="success" content="Notification example">Dynamic Notification</a>
+-->
+<zf-notification-set id="main-notifications" position="top-left"></zf-notification-set>
 
+<!--
+<div>{{vm.LastOperationDump}}</div>
+-->
