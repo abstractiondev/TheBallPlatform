@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using TheBall.Support.DeviceClient;
+using TheBall.Support.VirtualStorage;
 using UIKit;
 
 namespace TheBalliOSApp
@@ -56,7 +57,12 @@ namespace TheBalliOSApp
             webView.LoadError += WebView_LoadError;
             webView.LoadFinished += WebView_LoadFinished;
             webView.LoadStarted += WebView_LoadStarted;
-            string fileName = "Content/CoreUI/index.html"; 
+            string fileName = "Content/CoreUI/index.html";
+
+
+
+            //string fileName = "/auth/acc/ecf14035-9cf5-4153-98c1-bfed7644b972/cpanel/html/account.html";
+            // "/auth/acc/ecf14035-9cf5-4153-98c1-bfed7644b972/cpanel/html/account.html"
             string localHtmlUrl = Path.Combine(NSBundle.MainBundle.BundlePath, fileName);
             webView.LoadRequest(new NSUrlRequest(new NSUrl(localHtmlUrl, false)));
             webView.ScalesPageToFit = false;

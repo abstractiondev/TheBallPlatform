@@ -34,7 +34,7 @@ namespace TheBall.Support.VirtualStorage
         {
             //var localPersonalPath = FileSystem.Current.LocalStorage.Path;
             //var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
-            var virtualFSPath = "VirtualFS";
+            var virtualFSPath = "_VFS2";
             if (await FileSystem.Current.LocalStorage.CheckExistsAsync(virtualFSPath) == ExistenceCheckResult.NotFound)
                 await FileSystem.Current.LocalStorage.CreateFolderAsync(virtualFSPath, CreationCollisionOption.FailIfExists);
             await InitializeVFS(virtualFSPath);
@@ -153,7 +153,8 @@ namespace TheBall.Support.VirtualStorage
                     FileLocationDictionary.Remove(fsItem.FileName);
                 ContentHashDictionary.Remove(contentMd5);
                 var storageFile = fsItems.First().StorageFileName;
-                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFile);
+                var storageFullName = getStorageFullPath(storageFile);
+                var file = await FileSystem.Current.LocalStorage.GetFileAsync(storageFullName);
                 await file.DeleteAsync();
                 await SaveChanges();
             }
@@ -175,7 +176,7 @@ namespace TheBall.Support.VirtualStorage
                 if (allContentLinks.Length == 1)
                 {
                     ContentHashDictionary.Remove(contentHashKey);
-                    var file = await FileSystem.Current.LocalStorage.GetFileAsync(fsItem.StorageFileName);
+                    var file = await FileSystem.Current.LocalStorage.GetFileAsync(getStorageFullPath(fsItem.StorageFileName));
                     await file.DeleteAsync();
                 }
                 else
@@ -249,9 +250,10 @@ namespace TheBall.Support.VirtualStorage
             try
             {
                 var storageFileName = toFileNameSafeMD5(contentHash);
+                var storageFullName = getStorageFullPath(storageFileName);
                 var file =
                     await
-                        FileSystem.Current.LocalStorage.CreateFileAsync(storageFileName,
+                        FileSystem.Current.LocalStorage.CreateFileAsync(storageFullName,
                             CreationCollisionOption.ReplaceExisting);
                 return await file.OpenAsync(FileAccess.ReadAndWrite);
             }
@@ -273,8 +275,7 @@ namespace TheBall.Support.VirtualStorage
                     ContentMD5 = targetLocationItem.ContentMD5,
                     FileName = targetLocationItem.ContentLocation,
                     StorageFileName =
-                        toFileNameSafeMD5(targetLocationItem.ContentMD5) +
-                        Path.GetExtension(targetLocationItem.ContentLocation)
+                        toFileNameSafeMD5(targetLocationItem.ContentMD5)
                 };
                 FileLocationDictionary.Add(targetLocationItem.ContentLocation, fsItem);
                 var contentHashKey = targetLocationItem.ContentMD5;

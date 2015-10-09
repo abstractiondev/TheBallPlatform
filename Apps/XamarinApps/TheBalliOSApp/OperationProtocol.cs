@@ -123,7 +123,7 @@ namespace TheBalliOSApp
         }
 
 
-        public async override void StartLoading()
+        public override void StartLoading()
         {
             var request = Request;
             var url = request.Url.AbsoluteString;
@@ -140,7 +140,15 @@ namespace TheBalliOSApp
             }
             if (parsedUrl.StartsWith("/auth/"))
             {
-                await handleTheBallRequest(request);
+                //await handleTheBallRequest(request);
+                try
+                {
+                    handleTheBallRequest(request);
+                }
+                catch (Exception exception)
+                {
+                    var msgLength = exception.Message.Length;
+                }
                 return;
             }
 
@@ -247,16 +255,16 @@ namespace TheBalliOSApp
         }
 
 
-        private async Task handleTheBallRequest(NSUrlRequest request)
+        private void handleTheBallRequest(NSUrlRequest request)
         {
             var url = request.Url.Path;
             var authStrippedUrl = url.Substring("/auth/".Length);
             var contentRoot = CurrentConnectionRoot ?? "/TheBall.Data/FSRoot/home.theball.me";
             string contentUrl = Path.Combine(contentRoot, authStrippedUrl);
-            //var contentTask = GetWebResponseContent(contentUrl);
-            //contentTask.Wait();
-            //var responseContent = contentTask.Result;
-            var responseContent = await GetWebResponseContent(contentUrl);
+            var responseTask = GetWebResponseContent(contentUrl);
+            responseTask.Wait();
+            var responseContent = responseTask.Result;
+            //var responseContent = await GetWebResponseContent(contentUrl);
             if (responseContent == null)
                 return;
             using (var response = new NSUrlResponse(request.Url, responseContent.Item1, -1, responseContent.Item2))
