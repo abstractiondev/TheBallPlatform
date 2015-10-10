@@ -99,6 +99,7 @@
     <None Include="..\..\..\signable\keys\NuGetSigningKey.snk">
       <Link>NuGetSigningKey.snk</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

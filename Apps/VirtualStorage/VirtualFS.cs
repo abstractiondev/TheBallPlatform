@@ -98,20 +98,6 @@ namespace TheBall.Support.VirtualStorage
             }
         }
 
-        [ProtoContract]
-        public class VFSItem
-        {
-            [ProtoMember(1)]
-            public string FileName;
-            [ProtoMember(2)]
-            public string StorageFileName;
-            [ProtoMember(3)]
-            public string ContentMD5;
-            [ProtoMember(4)]
-            public long ContentLength;
-            //public DateTime LastModifiedTime;
-        }
-
 
         private VirtualFS(string storageFolderLocation)
         {
