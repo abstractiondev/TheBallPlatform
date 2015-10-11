@@ -107,8 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />
-    <AndroidAsset Include="Assets\CoreUI\data\Connections.json" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -137,100 +135,46 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\CoreUI\index.html" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\css\app.css" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\account.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\action.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\ban.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\bell.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\bookmark.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\cart.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\chevron.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\circle-check.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\circle-x.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\cog.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\comment-square.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\dashboard.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\document.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\envelope.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\flag.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\home.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\lock.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\magnifying-glass.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\person.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\reload.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\share-boxed.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\star.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\thumb.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\img\iconic\zoom.svg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\js\app.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\js\foundation.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\js\routes.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\CoreUI\assets\js\templates.js" />
-  </ItemGroup>
-  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\data\ConnectionHosts.json" />
+    <AndroidAsset Include="Assets\CoreUI\data\Connections.json" />
+    <AndroidAsset Include="Assets\CoreUI\index.html" />
     <AndroidAsset Include="Assets\CoreUI\templates\home\conncard.html" />
+    <AndroidAsset Include="Assets\CoreUI\templates\home\connection.html" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\CoreUI\templates\home\connection.html" />
+    <AndroidAsset Include="Assets\CoreUI\data\1010_ball-thm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\CoreUI\data\ProtonIT_Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets" Condition="Exists('..\packages\Xamarin.Insights.1.10.5\build\MonoAndroid10\Xamarin.Insights.targets')" />

@@ -85,9 +85,16 @@ namespace TheBallMobileApp
                 default:
                 {
                     var fullPath = "/data/" + datakey;
-                    var responseTask = GetWebResponseContent(fullPath);
-                    responseTask.Wait();
+                    try
+                    {
+                        var responseTask = GetWebResponseContent(fullPath);
+                        responseTask.Wait();
                         return responseTask.Result;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
         }

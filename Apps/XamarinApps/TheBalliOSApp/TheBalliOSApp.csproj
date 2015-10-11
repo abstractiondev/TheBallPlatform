@@ -91,6 +91,7 @@
     <Compile Include="WebViewController.cs" />
     <BundleResource Include="Content\CoreUI\data\ConnectionHosts.json" />
     <BundleResource Include="Content\CoreUI\data\Connections.json" />
+    <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -173,6 +174,8 @@
     <BundleResource Include="Content\CoreUI\assets\js\templates.js" />
     <BundleResource Include="Content\CoreUI\index.html" />
     <BundleResource Include="Content\CoreUI\templates\home\connection.html" />
+    <Content Include="Content\CoreUI\assets\img\1010_ball-thm.png" />
+    <Content Include="Content\CoreUI\assets\img\ProtonIT_Logo.png" />
     <Content Include="Entitlements.plist" />
   </ItemGroup>
   <ItemGroup>

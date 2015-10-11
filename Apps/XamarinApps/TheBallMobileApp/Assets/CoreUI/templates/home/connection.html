@@ -13,8 +13,9 @@
       <div align="center" class="card tbisobox isotope-item" ng-repeat="connection in vm.connections">
         <h5>{{connection.host}}</h5>
         <h5>{{connection.email}}</h5>
-        <div><button class="button hollow large" ng-click="vm.GoToConnection(connection.id)">Go To Connection</button></div>
-        <div><button class="button alert medium" ng-click="vm.DeleteConnection(connection.id)">Remove</button></div>
+        <img src="/data/1010_ball-thm.png" class="tbisoboximg">
+        <div><button class="button hollow large tbisoboximg" ng-click="vm.GoToConnection(connection.id)">Go To Connection</button></div>
+        <div><button class="button alert medium tbisoboximg" ng-click="vm.DeleteConnection(connection.id)">Remove</button></div>
       </div>
     </div>
   </div>

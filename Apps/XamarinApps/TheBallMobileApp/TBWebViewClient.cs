@@ -70,9 +70,10 @@ namespace TheBallMobileApp
                     return response;
                 }
                 var fixedUrl = url.Replace(DataPrefix, "CoreUI/data/");
-                if (!File.Exists(fixedUrl))
-                    return null;
-                WebResourceResponse intercept = new WebResourceResponse("application/json", "utf-8",
+                //if (!File.Exists(fixedUrl))
+                //    return null;
+                var mimeType = TheBallHostManager.GetMimeType(fixedUrl);
+                WebResourceResponse intercept = new WebResourceResponse(mimeType, "utf-8",
                     ParentActivity.Assets.Open(fixedUrl));
                 return intercept;
             }
