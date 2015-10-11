@@ -7,6 +7,7 @@ using Foundation;
 using HealthKit;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SQLite.Net.Platform.XamarinIOS;
 using TheBall.Support.DeviceClient;
 using TheBall.Support.VirtualStorage;
 
@@ -203,9 +204,10 @@ namespace TheBalliOSApp
                         var connName = connection.Name;
                         ClientExecute.SetStaging(connName, connRoot,
                             "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
+                        var sqlitePlatform = new SQLitePlatformIOS();
                         try
                         {
-                            ClientExecute.StageOperation(connName, false, false, false, true, true).Wait();
+                            ClientExecute.StageOperation(connName, false, false, false, true, true, sqlitePlatform).Wait();
                         }
                         catch (Exception ex)
                         {
