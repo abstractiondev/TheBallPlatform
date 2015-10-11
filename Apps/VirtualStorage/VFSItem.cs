@@ -56,7 +56,12 @@ namespace TheBall.Support.VirtualStorage
             return contentMD5.Replace("+", "-").Replace("/", "_");
         }
 
+        public ContentStorageData()
+        {
+            FileNames = new List<FileNameData>();
+        }
+
         [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<FileNameData>  FileNames { get; set; }
+        public List<FileNameData> FileNames { get; set; }
     }
 }
