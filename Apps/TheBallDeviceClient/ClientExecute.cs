@@ -108,7 +108,7 @@ namespace TheBall.Support.DeviceClient
 
         public static RelativeContentItemRetriever VirtualContentItemRetriever = async location =>
         {
-            var result = await VirtualFS.Current.GetContentRelativeFromRoot(location);
+            var result = await SQLiteFS.Current.GetContentRelativeFromRoot(location);
             var propertypes = result.Select(contentItem =>
             {
                 return new ContentItemLocationWithMD5
@@ -127,7 +127,7 @@ namespace TheBall.Support.DeviceClient
                 ContentLocation = targetLocationItem.ContentLocation,
                 ContentMD5 = targetLocationItem.ContentMD5
             };
-            var stream = await VirtualFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
+            var stream = await SQLiteFS.Current.GetLocalTargetStreamForWrite(properTypeItem);
             return stream;
         };
 
@@ -138,13 +138,13 @@ namespace TheBall.Support.DeviceClient
                 ContentLocation = targetLocationItem.ContentLocation,
                 ContentMD5 = targetLocationItem.ContentMD5
             };
-            await VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
+            //await VirtualFS.Current.UpdateMetadataAfterWrite(properTypeItem);
         };
 
 
         public static TargetContentRemover VirtualTargetRemover = async targetLocation =>
         {
-            await VirtualFS.Current.RemoveLocalContent(targetLocation);
+            await SQLiteFS.Current.RemoveLocalContent(targetLocation);
         };
 
 
@@ -384,7 +384,7 @@ namespace TheBall.Support.DeviceClient
         }
 
 
-        public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS = false)
+        public static async Task StageOperation(string connectionName, bool getData, bool putDev, bool putLive, bool getFullAccount, bool useVirtualFS, object sqlitePlatform = null)
         {
             if(useVirtualFS && !getFullAccount)
                 throw new NotSupportedException("VirtualFS is only supported on getFA option");
@@ -407,7 +407,7 @@ namespace TheBall.Support.DeviceClient
                 {
                     if (useVirtualFS)
                     {
-                        await VirtualFS.InitializeVFS();
+                        await SQLiteFS.InitializeSQLiteFS(sqlitePlatform);
                         LocalTargetContentWriteFinalizer = VirtualTargetContentWriteFinalizer;
                         LocalContentItemRetriever = VirtualContentItemRetriever;
                         LocalTargetRemover = VirtualTargetRemover;

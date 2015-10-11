@@ -115,7 +115,7 @@ namespace TheBalliOSApp
 
         public static async Task<Tuple<string, string, Stream>> GetWebResponseContent(string fullPath)
         {
-            var readStream = await VirtualFS.Current.GetLocalTargetStreamForRead(fullPath);
+            var readStream = await SQLiteFS.Current.GetLocalTargetStreamForRead(fullPath);
             if (readStream == null)
                 return null;
             var mimeType = GetMimeType(fullPath);

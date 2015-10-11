@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Java.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SQLite.Net.Platform.XamarinAndroid;
 using TheBall.Support.DeviceClient;
 using TheBall.Support.VirtualStorage;
 using Xamarin;
@@ -17,7 +18,7 @@ namespace TheBallMobileApp
     internal class TheBallHostManager
     {
 
-
+        internal SQLitePlatformAndroid SQLitePlatform = new SQLitePlatformAndroid();
         internal LoadUIFromUrl LoadUIHandler;
 
         public class HostConnectionData
@@ -101,7 +102,7 @@ namespace TheBallMobileApp
 
         public static async Task<Tuple<string, string, Stream>> GetWebResponseContent(string fullPath)
         {
-            var readStream = await VirtualFS.Current.GetLocalTargetStreamForRead(fullPath);
+            var readStream = await SQLiteFS.Current.GetLocalTargetStreamForRead(fullPath);
             if (readStream == null)
                 return null;
             var mimeType = GetMimeType(fullPath);
@@ -162,7 +163,7 @@ namespace TheBallMobileApp
                             "AaltoGlobalImpact.OIP,TheBall.Interface,cpanel,webview");
                         try
                         {
-                            ClientExecute.StageOperation(connName, false, false, false, true, true).Wait();
+                            ClientExecute.StageOperation(connName, false, false, false, true, true, SQLitePlatform).Wait();
                         }
                         catch (Exception ex)
                         {

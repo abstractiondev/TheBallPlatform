@@ -17,7 +17,7 @@ namespace TheBall.Support.VirtualStorage
         {
             var result = new FileSystemSyncHandler();
             result.SyncRootFolder = syncRootFolder;
-            result.SyncRequest = await VirtualFS.Current.CreateFullSyncRequest(syncRootFolder,
+            result.SyncRequest = await SQLiteFS.Current.CreateFullSyncRequest(syncRootFolder,
                 ownerSyncedFolders, md5HashComputer);
             result.RequestStreamHandler = result.handleRequestStream;
             result.ResponseStreamHandler = result.handleResponseStream;
@@ -38,7 +38,7 @@ namespace TheBall.Support.VirtualStorage
             var usedStream = originalStream;
             try
             {
-                await VirtualFS.Current.SetPendingSaves(true);
+                //await VirtualFS.Current.SetPendingSaves(true);
                 var syncResponse = RemoteSyncSupport.GetSyncResponseFromStream(usedStream);
                 SyncResponse = syncResponse;
                 var contentToDelete =
@@ -59,7 +59,7 @@ namespace TheBall.Support.VirtualStorage
             }
             finally
             {
-                await VirtualFS.Current.SetPendingSaves(false);
+                //await VirtualFS.Current.SetPendingSaves(false);
                 //compressedStream.Dispose();
             }
         }
@@ -67,24 +67,24 @@ namespace TheBall.Support.VirtualStorage
         private static async Task refreshContentNameData(ContentSyncResponse.ContentData content, string syncRootFolder)
         {
             var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
-            await VirtualFS.Current.UpdateContentNameData(content.ContentMD5, fullNames);
+            await SQLiteFS.Current.UpdateContentNameData(content.ContentMD5, fullNames);
         }
 
         private static async Task deleteContent(ContentSyncResponse.ContentData content)
         {
-            await VirtualFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
+            await SQLiteFS.Current.RemoveLocalContentByMD5(content.ContentMD5);
             Debug.WriteLine("Deleted content: {0}", content.ContentMD5);
         }
 
         private static async Task streamToFile(ContentSyncResponse.ContentData content, Stream stream, string syncRootFolder)
         {
             var contentMd5 = content.ContentMD5;
-            var outStream = await VirtualFS.Current.GetLocalTargetStreamForWrite(contentMd5);
+            var outStream = await SQLiteFS.Current.GetLocalTargetStreamForWrite(contentMd5);
             try
             {
                 await stream.CopyBytesAsync(outStream, content.ContentLength);
                 var fullNames = content.FullNames.Select(name => Path.Combine(syncRootFolder, name)).ToArray();
-                await VirtualFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
+                await SQLiteFS.Current.UpdateContentNameData(contentMd5, fullNames, true, content.ContentLength);
                 Debug.WriteLine("Wrote {0} bytes of file(s): {1}", content.ContentLength, String.Join(", ", fullNames));
             }
             finally

@@ -22,8 +22,9 @@ namespace TheBall.Support.VirtualStorage
 
         public static SQLiteFS Current { get; private set; }
 
-        public static async Task InitializeSQLiteFS(ISQLitePlatform sqlitePlatform)
+        public static async Task InitializeSQLiteFS(object sqlitePlatformObject)
         {
+            ISQLitePlatform sqlitePlatform = (ISQLitePlatform) sqlitePlatformObject;
             //var localPersonalPath = FileSystem.Current.LocalStorage.Path;
             //var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
             var fsFolder = "_SQLFS";
@@ -59,6 +60,7 @@ namespace TheBall.Support.VirtualStorage
             SQLConnection = new SQLiteAsyncConnection(connectionFactory);
 
             await SQLConnection.CreateTablesAsync(typeof (FileNameData), typeof (ContentStorageData));
+            await SyncContentWithMetadata();
         }
 
         private SQLiteFS(string fsFolder, ISQLitePlatform sqlitePlatform)
@@ -99,7 +101,7 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
-                var contentData = SQLConnection.GetAsync<ContentStorageData>(contentMd5);
+                var contentData = await SQLConnection.GetAsync<ContentStorageData>(contentMd5);
                 await SQLConnection.DeleteAsync(contentData, recursive: true);
                 var storageFile = ContentStorageData.getStorageFileName(contentMd5);
                 var storageFullName = getStorageFullPath(storageFile);
@@ -112,7 +114,7 @@ namespace TheBall.Support.VirtualStorage
             }
         }
 
-        public async Task RemoveLocalContent(string targetFullName, bool ignoreMissing)
+        public async Task RemoveLocalContent(string targetFullName, bool ignoreMissing = false)
         {
             await _semaphore.WaitAsync();
             try
@@ -171,6 +173,12 @@ namespace TheBall.Support.VirtualStorage
             await _semaphore.WaitAsync();
             try
             {
+                var storageData = new ContentStorageData
+                {
+                    ContentMD5 = contentMD5,
+                    ContentLength = -1
+                };
+                await SQLConnection.InsertAsync(storageData);
                 var storageFileName = toFileNameSafeMD5(contentMD5);
                 var storageFullName = getStorageFullPath(storageFileName);
                 var file =
@@ -235,6 +243,77 @@ namespace TheBall.Support.VirtualStorage
         private string getStorageFullPath(string storageFileName)
         {
             return Path.Combine(ContentDataFolder, storageFileName);
+        }
+
+        private async Task SyncContentWithMetadata()
+        {
+            var contentFolder = await FileSystem.Current.LocalStorage.GetFolderAsync(ContentDataFolder);
+            var actualContent = await contentFolder.GetFilesAsync();
+            var fileContent = actualContent.ToList();
+            fileContent.Sort((a, b) => String.CompareOrdinal(a.Name, b.Name));
+
+            var contentMetadataTable = SQLConnection.Table<ContentStorageData>();
+            var storageMetadata = await contentMetadataTable.ToListAsync();
+            storageMetadata.Sort((a, b) => String.CompareOrdinal(a.StorageFileName, b.StorageFileName));
+
+            var fileNameMetadataTable = SQLConnection.Table<FileNameData>();
+            var fileNameMetaItems = await fileNameMetadataTable.ToListAsync();
+            fileNameMetaItems.Sort((a, b) => String.CompareOrdinal(a.StorageFileName, b.StorageFileName));
+            var fileNameMetadata = fileNameMetaItems.GroupBy(item => item.StorageFileName).ToList();
+
+            // Step-by-step with all lists in parallel, remove all matching elements
+            int fileIX = 0;
+            int fileCount = fileContent.Count;
+            int storageMetaIX = 0;
+            int storageMetaCount = storageMetadata.Count;
+            int fileNameMetaIX = 0;
+            int fileNameMetaCount = fileNameMetadata.Count;
+            while (fileIX < fileCount && storageMetaIX < storageMetaCount && fileNameMetaIX < fileNameMetaCount)
+            {
+                var file = fileContent[fileIX];
+                var storageMeta = storageMetadata[storageMetaIX];
+                var fileNameMeta = fileNameMetadata[fileNameMetaIX];
+                bool allMatching = getMatchingOrAdvanceSmallest(file, ref fileIX, storageMeta, ref storageMetaIX,
+                    fileNameMeta, ref fileNameMetaIX);
+                if (allMatching)
+                {
+                    fileContent[fileIX++] = null;
+                    storageMetadata[storageMetaIX++] = null;
+                    fileNameMetadata[fileNameMetaIX++] = null;
+                }
+            }
+
+            var filesToDelete = fileContent.Where(item => item != null).ToArray();
+            var storageMetaToDelete = storageMetadata.Where(item => item != null).ToArray();
+            var fileNameMetaToDelete = fileNameMetadata.Where(item => item != null).SelectMany(item => item).ToArray();
+
+            foreach (var file in filesToDelete)
+                await file.DeleteAsync();
+
+            await SQLConnection.RunInTransactionAsync((SQLiteConnection conn) =>
+            {
+                conn.DeleteAll(fileNameMetaToDelete);
+                conn.DeleteAll(storageMetaToDelete);
+            });
+        }
+
+        private bool getMatchingOrAdvanceSmallest(IFile file, ref int fileIx, ContentStorageData storageMeta, ref int storageMetaIx, IGrouping<string, FileNameData> fileNameMeta, ref int fileNameMetaIx)
+        {
+            string fileName = file.Name;
+            string storageName = storageMeta.StorageFileName;
+            string fileMetaName = fileNameMeta.Key;
+            if (fileName == storageName && fileName == fileMetaName)
+                return true;
+            string smallest = String.CompareOrdinal(fileName, storageName) < 0
+                ? fileName
+                : (String.CompareOrdinal(storageName, fileMetaName) < 0 ? storageName : fileMetaName);
+            if (fileName == smallest)
+                fileIx++;
+            if (storageName == smallest)
+                storageMetaIx++;
+            if (fileMetaName == smallest)
+                fileNameMetaIx++;
+            return false;
         }
 
         public async Task<ContentSyncRequest> CreateFullSyncRequest(string stagingRoot, string[] requestedFolders, Func<byte[], byte[]> md5HashComputer)
@@ -336,18 +415,25 @@ namespace TheBall.Support.VirtualStorage
                     storageData.ContentLength = initialAddContentLength;
                 var existingNameData = storageData.FileNames;
                 var namesToDelete = existingNameData.Where(item => fullNames.Contains(item.FileName) == false);
+                var nameDataTable = SQLConnection.Table<FileNameData>();
+                var namesToUpdate = await nameDataTable.Where(item => fullNames.Contains(item.FileName)).ToListAsync();
                 var namesToAdd =
-                    fullNames.Where(name => existingNameData.All(item => item.FileName != name)).ToArray();
+                    fullNames.Where(name => existingNameData.All(item => item.FileName != name) && namesToUpdate.All(item => item.FileName != name)).ToArray();
+
                 var nameDataToAdd = namesToAdd.Select(fileName => new FileNameData
                 {
                     FileName = fileName,
                     ContentMD5 = storageData.ContentMD5
                 }).ToArray();
+
+                foreach (var name in namesToUpdate)
+                    name.ContentMD5 = storageData.ContentMD5;
+
                 await SQLConnection.RunInTransactionAsync((SQLiteConnection conn) =>
                 {
                     conn.DeleteAll(namesToDelete);
                     conn.InsertAll(nameDataToAdd);
-                    conn.Commit();
+                    conn.UpdateAll(namesToUpdate);
                 });
             }
             finally

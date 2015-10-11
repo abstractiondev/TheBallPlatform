@@ -12,6 +12,7 @@ namespace TheBall.Support.VirtualStorage
 {
 
     [ProtoContract]
+    [Obsolete("Replace with SQLiteFS until properly fixed", true)]
     public class VirtualFS
     {
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);

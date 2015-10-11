@@ -30,6 +30,8 @@ namespace TheBallMobileApp
 			global::PCLCrypto.Resource.String.Hello = global::TheBallMobileApp.Resource.String.Hello;
 			global::PCLStorage.Resource.String.ApplicationName = global::TheBallMobileApp.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::TheBallMobileApp.Resource.String.Hello;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::TheBallMobileApp.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::TheBallMobileApp.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
