@@ -1,0 +1,83 @@
+{
+  "properties": {
+    "pre-rendered": false
+  },
+  "images": [
+    {
+      "idiom": "iphone",
+      "scale": "2x",
+      "filename": "iconbase (Custom).png",
+      "size": "29x29"
+    },
+    {
+      "idiom": "iphone",
+      "scale": "3x",
+      "filename": "iconbase (Custom) (2).png",
+      "size": "29x29"
+    },
+    {
+      "idiom": "iphone",
+      "scale": "2x",
+      "filename": "iconbase (Custom) (3).png",
+      "size": "40x40"
+    },
+    {
+      "idiom": "iphone",
+      "scale": "3x",
+      "filename": "iconbase (Custom) (4).png",
+      "size": "40x40"
+    },
+    {
+      "idiom": "iphone",
+      "scale": "2x",
+      "filename": "iconbase (Custom) (4).png",
+      "size": "60x60"
+    },
+    {
+      "idiom": "iphone",
+      "scale": "3x",
+      "filename": "iconbase (Custom) (5).png",
+      "size": "60x60"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "1x",
+      "filename": "iconbase (Custom) (6).png",
+      "size": "29x29"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "2x",
+      "filename": "iconbase (Custom).png",
+      "size": "29x29"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "1x",
+      "filename": "iconbase (Custom) (7).png",
+      "size": "40x40"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "2x",
+      "filename": "iconbase (Custom) (3).png",
+      "size": "40x40"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "1x",
+      "filename": "iconbase (Custom) (8).png",
+      "size": "76x76"
+    },
+    {
+      "idiom": "ipad",
+      "scale": "2x",
+      "filename": "iconbase (Custom) (9).png",
+      "size": "76x76"
+    }
+  ],
+  "info": {
+    "version": 1,
+    "author": ""
+  }
+}

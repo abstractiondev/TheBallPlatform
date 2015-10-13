@@ -51,7 +51,9 @@ namespace TheBalliOSApp
             //webView.LoadHtmlString("<html><h1>Are you still there?</h1></html>", NSBundle.MainBundle.BundleUrl);
             //webView.LoadRequest(new NSUrlRequest(new NSUrl("http://yle.fi", false)));
 
-            var frame = new CGRect(0, 20, 768, 1004);
+            //var frame = new CGRect(0, 20, 768, 1004);
+            var frame = new CGRect(0, 0, View.Frame.Size.Width, View.Frame.Size.Height);
+
             webView = new TBWebView(frame);
 
             webView.LoadError += WebView_LoadError;
@@ -160,6 +162,10 @@ namespace TheBalliOSApp
             return rootFolder;
         }
 
-
+        public override void WillAnimateRotation(UIInterfaceOrientation toInterfaceOrientation, double duration)
+        {
+            webView.Frame = new CGRect(0, 0, View.Frame.Size.Width, View.Frame.Size.Height);
+            //base.WillAnimateRotation(toInterfaceOrientation, duration);
+        }
     }
 }

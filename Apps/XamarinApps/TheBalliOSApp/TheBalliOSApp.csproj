@@ -200,5 +200,109 @@
       <Name>VirtualStorage</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(2).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(3).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(3).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(4).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(4).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(5).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(6).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(7).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(8).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom)%20(9).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/AppIcons.appiconset/iconbase%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(2).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(2).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(2).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(3).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(3).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(3).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(4).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(4).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(4).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(5).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(5).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(5).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(6).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(6).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom)%20(6).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/1010_ball-thm%20(Custom).png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources/AppImages.xcassets/LaunchImages.launchimage/Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

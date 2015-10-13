@@ -19,7 +19,6 @@ namespace TheBalliOSApp
         public static bool canInitWithRequest(NSUrlRequest request)
         {
             var urlPath = request.Url.Path;
-            var len = urlPath.Length;
             if (urlPath != null)
             {
                 bool isOperation = urlPath.Contains("/op/");
