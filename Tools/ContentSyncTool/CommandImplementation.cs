@@ -2,6 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+//using SQLite.Net.Platform.Win32;
 using TheBall.Support.DeviceClient;
 
 namespace ContentSyncTool
@@ -101,10 +103,11 @@ namespace ContentSyncTool
 
         public static void stageOperation(StageOperationSubOptions stageOperationSubOptions)
         {
+            object sqlitePlatform = null;
             ClientExecute.StageOperation(stageOperationSubOptions.ConnectionName,
                                          stageOperationSubOptions.GetData, stageOperationSubOptions.PutDEV,
                                          stageOperationSubOptions.PutLIVE, stageOperationSubOptions.GetFullAccount,
-                                         stageOperationSubOptions.UseVirtualFS).Wait();
+                                         stageOperationSubOptions.UseVirtualFS, sqlitePlatform).Wait();
         }
     }
 
