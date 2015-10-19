@@ -22,12 +22,12 @@ namespace TheBall.Support.VirtualStorage
 
         public static SQLiteFS Current { get; private set; }
 
-        public static async Task InitializeSQLiteFS(object sqlitePlatformObject)
+        public static async Task InitializeSQLiteFS(object sqlitePlatformObject, string connectionSubFolderName)
         {
             ISQLitePlatform sqlitePlatform = (ISQLitePlatform) sqlitePlatformObject;
             //var localPersonalPath = FileSystem.Current.LocalStorage.Path;
             //var virtualFSPath = Path.Combine(localPersonalPath, "VFS");
-            var fsFolder = "_SQLFS";
+            var fsFolder = Path.Combine("_SQLFS", connectionSubFolderName);
             await InitializeSQLiteFS(fsFolder, sqlitePlatform);
         }
 

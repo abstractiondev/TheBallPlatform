@@ -407,7 +407,7 @@ namespace TheBall.Support.DeviceClient
                 {
                     if (useVirtualFS)
                     {
-                        await SQLiteFS.InitializeSQLiteFS(sqlitePlatform);
+                        await SQLiteFS.InitializeSQLiteFS(sqlitePlatform, connectionName);
                         LocalTargetContentWriteFinalizer = VirtualTargetContentWriteFinalizer;
                         LocalContentItemRetriever = VirtualContentItemRetriever;
                         LocalTargetRemover = VirtualTargetRemover;
