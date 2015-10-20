@@ -45,14 +45,14 @@ $include-css: (
    card: true,
 //   coloring: true,
 //   extras: true,
-//   forms: true,
+  forms: true,
 //   grid: true,
 //   iconic: true,
 //   label: true,
 //   badge: true,
 //   list: true,
 //   menu-bar: true,
-//   modal: true,
+    modal: true,
 //   motion: true,
 //   notification: true,
 //   off-canvas: true,
@@ -69,7 +69,7 @@ $include-css: (
 // - - - - - - - - - - - - - - -
 
 // This sets 1rem to be 16px
-// $rem-base: 16px;
+$rem-base: 16px;
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.
@@ -77,13 +77,13 @@ $include-css: (
 // Since the typical default browser font-size is 16px, that makes the calculation for grid size.
 // If you want your base font-size to be different and not have it affect the grid breakpoints,
 // set $rem-base to $base-font-size and make sure $base-font-size is a px value.
-// $base-font-size: 100%;
+$base-font-size: 100%;
 
 // $base-line-height is 24px while $base-font-size is 16px
-// $base-line-height: 1.5;
+$base-line-height: 1.5;
 
 // Text selector helpers
-// $headers: "h1,h2,h3,h4,h5,h6";
+$headers: "h1,h2,h3,h4,h5,h6";
 
 // We use these to define default font weights
 $font-weight-normal: normal;
@@ -136,52 +136,52 @@ $global-spacing: rem-calc(15);
 // - - - - - - - - - - - - - - -
 
 // We use these to control header font styles
-// $header-font-family: $body-font-family;
-// $header-font-weight: $font-weight-normal;
-// $header-font-style: $font-weight-normal;
-// $header-font-color: #222;
-// $header-line-height: 1.4;
-// $header-top-margin: .2rem;
-// $header-bottom-margin: .5rem;
-// $header-text-rendering: optimizeLegibility;
+$header-font-family: $body-font-family;
+$header-font-weight: $font-weight-normal;
+$header-font-style: $font-weight-normal;
+$header-font-color: #222;
+$header-line-height: 1.4;
+$header-top-margin: .2rem;
+$header-bottom-margin: .5rem;
+$header-text-rendering: optimizeLegibility;
 
 // We use these to control header font sizes
-// $h1-font-size: rem-calc(44);
-// $h2-font-size: rem-calc(37);
-// $h3-font-size: rem-calc(27);
-// $h4-font-size: rem-calc(23);
-// $h5-font-size: rem-calc(18);
-// $h6-font-size: 1rem;
+$h1-font-size: rem-calc(44);
+$h2-font-size: rem-calc(37);
+$h3-font-size: rem-calc(27);
+$h4-font-size: rem-calc(23);
+$h5-font-size: rem-calc(18);
+$h6-font-size: 1rem;
 
 // We use these to control header size reduction on small screens
-// $h1-font-reduction: rem-calc(10);
-// $h2-font-reduction: rem-calc(10);
-// $h3-font-reduction: rem-calc(5);
-// $h4-font-reduction: rem-calc(5);
-// $h5-font-reduction: 0;
-// $h6-font-reduction: 0;
+$h1-font-reduction: rem-calc(10);
+$h2-font-reduction: rem-calc(10);
+$h3-font-reduction: rem-calc(5);
+$h4-font-reduction: rem-calc(5);
+$h5-font-reduction: 0;
+$h6-font-reduction: 0;
 
 // These control how subheaders are styled.
-// $subheader-line-height: 1.4;
-// $subheader-font-color: scale-color($header-font-color, $lightness: 35%);
-// $subheader-font-weight: $font-weight-normal;
-// $subheader-top-margin: .2rem;
-// $subheader-bottom-margin: .5rem;
+$subheader-line-height: 1.4;
+$subheader-font-color: scale-color($header-font-color, $lightness: 35%);
+$subheader-font-weight: $font-weight-normal;
+$subheader-top-margin: .2rem;
+$subheader-bottom-margin: .5rem;
 
 // A general <small> styling
-// $small-font-size: 60%;
-// $small-font-color: scale-color($header-font-color, $lightness: 35%);
+$small-font-size: 60%;
+$small-font-color: scale-color($header-font-color, $lightness: 35%);
 
 // We use these to style paragraphs
-// $paragraph-font-family: inherit;
-// $paragraph-font-weight: $font-weight-normal;
-// $paragraph-font-size: 1rem;
-// $paragraph-line-height: 1.6;
-// $paragraph-margin-bottom: rem-calc(20);
-// $paragraph-aside-font-size: rem-calc(14);
-// $paragraph-aside-line-height: 1.35;
-// $paragraph-aside-font-style: italic;
-// $paragraph-text-rendering: optimizeLegibility;
+$paragraph-font-family: inherit;
+$paragraph-font-weight: $font-weight-normal;
+$paragraph-font-size: 1rem;
+$paragraph-line-height: 1.6;
+$paragraph-margin-bottom: rem-calc(20);
+$paragraph-aside-font-size: rem-calc(14);
+$paragraph-aside-line-height: 1.35;
+$paragraph-aside-font-style: italic;
+$paragraph-text-rendering: optimizeLegibility;
 
 // We use these to style <code> tags
 // $code-color: grayscale($primary-color);
@@ -194,10 +194,10 @@ $global-spacing: rem-calc(15);
 // $code-padding: rem-calc(2) rem-calc(5) rem-calc(1);
 
 // We use these to style anchors
-// $anchor-text-decoration: none;
-// $anchor-text-decoration-hover: none;
-// $anchor-font-color: $primary-color;
-// $anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
+$anchor-text-decoration: none;
+$anchor-text-decoration-hover: none;
+$anchor-font-color: $primary-color;
+$anchor-font-color-hover: scale-color($anchor-font-color, $lightness: -14%);
 
 // We use these to style the <hr> element
 // $hr-border-width: 1px;
@@ -348,55 +348,57 @@ $card-divider-background: smartscale($card-background, 7%);
 // - - - - - - - - - - - - - - -
 
 // Basic form variables
-// $form-fontsize: 1rem;
-// $form-padding: 0.5rem;
+$form-fontsize: 1rem;
+$form-padding: 0.5rem;
 
 // Text fields
-// $input-color: #000;
-// $input-color-hover: $input-color;
-// $input-color-focus: $input-color;
-// $input-background: #fff;
-// $input-background-hover: $input-background;
-// $input-background-focus: $input-background;
-// $input-background-disabled: smartscale($input-background);
-// $input-border: 1px solid #ccc;
-// $input-border-hover: 1px solid #bbb;
-// $input-border-focus: 1px solid #999;
-// $input-cursor-disabled: not-allowed;
+$input-color: #000;
+$input-color-hover: $input-color;
+$input-color-focus: $input-color;
+$input-background: #fff;
+$input-background-hover: $input-background;
+$input-background-focus: $input-background;
+$input-background-disabled: smartscale($input-background);
+$input-border: 1px solid #ccc;
+$input-border-hover: 1px solid #bbb;
+$input-border-focus: 1px solid #999;
+$input-cursor-disabled: not-allowed;
 
 // Select menus
-// $select-color: #000;
-// $select-background: #fafafa;
-// $select-background-hover: smartscale($select-background, 4%);
-// $select-arrow: true;
-// $select-arrow-color: $select-color;
+$select-color: #000;
+$select-background: #fafafa;
+$select-background-hover: smartscale($select-background, 4%);
+$select-arrow: true;
+$select-arrow-color: $select-color;
 
 // Labels
-// $form-label-fontsize: 0.9rem;
-// $form-label-margin: 0.5rem;
-// $form-label-color: #333;
+$form-label-fontsize: 0.9rem;
+$form-label-margin: 0.5rem;
+$form-label-color: #333;
 
 // Inline labels
-// $inlinelabel-color: #333;
-// $inlinelabel-background: #eee;
-// $inlinelabel-border: $input-border;
+$inlinelabel-color: #333;
+$inlinelabel-background: #eee;
+$inlinelabel-border: $input-border;
 
 // Range slider
-// $slider-background: #ddd;
-// $slider-height: 1rem;
-// $slider-radius: 0px;
-// $slider-thumb-height: 1.5rem;
-// $slider-thumb-color: $primary-color;
-// $slider-thumb-radius: 0px;
+$slider-background: #ddd;
+$slider-height: 1rem;
+$slider-radius: 0px;
+$slider-thumb-height: 1.5rem;
+$slider-thumb-color: $primary-color;
+$slider-thumb-radius: 0px;
 
 // Progress and meter
-// $meter-height: 1.5rem;
-// $meter-background: #ccc;
-// $meter-fill: $primary-color;
-// $meter-fill-high: $success-color;
-// $meter-fill-medium: #e7cf00;
-// $meter-fill-low: $alert-color;
-// $meter-radius: 0;
+$meter-height: 1.5rem;
+$meter-background: #888;
+$meter-fill: $primary-color;
+$meter-fill-high: $success-color;
+$meter-fill-medium: #e7cf00;
+$meter-fill-low: $alert-color;
+$meter-radius: 0;
+//$meter-color: blue;
+//$meter-background-color: cyan;
 
 // 14. Iconic
 // - - - - - - - - - - - - - - -
@@ -440,8 +442,8 @@ $card-divider-background: smartscale($card-background, 7%);
 
 $modal-background: #fff;
 $modal-border: 0;
-$modal-radius: 0px;
-$modal-shadow: none;
+$modal-radius: $global-radius/2;
+$modal-shadow: 0;
 $modal-zindex: 1000;
 $modal-sizes: (
   tiny: 300px,

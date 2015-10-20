@@ -5,13 +5,16 @@
 var application;
 (function (application) {
     var ConnectionController = (function () {
-        function ConnectionController($scope, connectionService, operationService, foundationApi) {
+        function ConnectionController($scope, connectionService, operationService, foundationApi, $timeout) {
             this.operationService = operationService;
             this.foundationApi = foundationApi;
+            this.$timeout = $timeout;
             this.hosts = [];
             this.connections = [];
             this.scope = $scope;
             $scope.vm = this;
+            $scope.progressMax = 300;
+            $scope.progressCurrent = 0;
             //this.currentHost = this.hosts[2];
             var me = this;
             connectionService.getConnectionPrefillData().then(function (result) {
@@ -61,15 +64,30 @@ var application;
             var me = this;
             me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID });
         };
+        ConnectionController.prototype.UpdateTimeOut = function () {
+            setTimeout(this.UpdateTimeOut, 1000);
+        };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
+            var wnd = window;
             var me = this;
-            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
+            //(<any>$("#progressBarModal")).foundation("reveal", "open");
+            //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
+            me.foundationApi.publish("progressBarModal", "open");
+            var repeat = function () {
+                me.scope.progressCurrent += 10;
+                if (me.scope.progressCurrent < me.scope.progressMax)
+                    me.$timeout(repeat, 200);
+                //else
+                //  me.foundationApi.publish("progressBarModal", "close");
+            };
+            me.$timeout(repeat, 200);
             return;
+            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
             this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
     })();
-    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", function ($scope, connectionService, operationService, foundationApi) { return new ConnectionController($scope, connectionService, operationService, foundationApi); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", "$timeout", function ($scope, connectionService, operationService, foundationApi, $timeout) { return new ConnectionController($scope, connectionService, operationService, foundationApi, $timeout); }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionController.js.map

@@ -17,6 +17,8 @@ module application {
     hosts = [];
 
     currentHost:any;
+    //progressMax:any;
+    //progressCurrent:any;
 
     scope:any;
 
@@ -40,9 +42,11 @@ module application {
       return this.hasConnections();
     }
 
-    constructor($scope, connectionService:ConnectionService, private operationService:OperationService, private foundationApi:any) {
+    constructor($scope, connectionService:ConnectionService, private operationService:OperationService, private foundationApi:any, private $timeout:any) {
       this.scope = $scope;
       $scope.vm = this;
+      $scope.progressMax = 300;
+      $scope.progressCurrent = 0;
       //this.currentHost = this.hosts[2];
       var me = this;
       connectionService.getConnectionPrefillData().then(result => {
@@ -89,19 +93,36 @@ module application {
         { "connectionID": connectionID});
     }
 
+    UpdateTimeOut()
+    {
+      setTimeout(this.UpdateTimeOut, 1000);
+    }
+
     DeleteConnection(connectionID:string) {
+      var wnd:any = window;
       var me = this;
+      //(<any>$("#progressBarModal")).foundation("reveal", "open");
+      //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
+      me.foundationApi.publish("progressBarModal", "open");
+      var repeat = function() {
+        me.scope.progressCurrent += 10;
+        if(me.scope.progressCurrent < me.scope.progressMax)
+          me.$timeout(repeat, 200);
+        //else
+        //  me.foundationApi.publish("progressBarModal", "close");
+      };
+      me.$timeout(repeat, 200);
+      return;
       me.foundationApi.publish('main-notifications',
         { title: 'Deleting Connection', content: connectionID, autoclose: "3000",
           color: "alert"});
-      return;
       this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection",
         { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
     }
   }
 
   (<any>window).appModule.controller("ConnectionController",
-    ["$scope", "ConnectionService", "OperationService", "FoundationApi",
-      ($scope, connectionService, operationService, foundationApi)
-      => new ConnectionController($scope, connectionService, operationService, foundationApi)]);
+    ["$scope", "ConnectionService", "OperationService", "FoundationApi", "$timeout",
+      ($scope, connectionService, operationService, foundationApi, $timeout)
+      => new ConnectionController($scope, connectionService, operationService, foundationApi, $timeout)]);
 }
