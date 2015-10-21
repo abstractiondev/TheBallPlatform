@@ -15,6 +15,19 @@ namespace TheBalliOSApp
 {
     public class OperationProtocol : NSUrlProtocol
     {
+        public class HostConnectionData
+        {
+            public string host { get; set; }
+            public string email { get; set; }
+            public string groupID { get; set; }
+
+            internal bool isFullAccountSync
+            {
+                get { return !String.IsNullOrEmpty(email); }
+            }
+        }
+
+
         [Export("canInitWithRequest:")]
         public static bool canInitWithRequest(NSUrlRequest request)
         {
@@ -181,8 +194,42 @@ namespace TheBalliOSApp
                 var bodyData = body.ToArray();
                 var bodyAsString = Encoding.UTF8.GetString(bodyData);
                 GoToConnectionOperation(opName, bodyAsString);
+                CreateConnectionOperation(opName, bodyAsString);
             }
         }
+
+        public void CreateConnectionOperation(string url, string data)
+        {
+            if (!url.EndsWith("CreateConnection"))
+                return;
+            try
+            {
+                //var reader = new JsonFx.Json.JsonReader();
+                //var obj = reader.Read<HostConnectionData>(data);
+                var obj = JsonConvert.DeserializeObject<HostConnectionData>(data);
+                string hostName = obj.host;
+                string groupID = obj.groupID;
+                string emailAddress = obj.email;
+                if (String.IsNullOrWhiteSpace(hostName) || (String.IsNullOrWhiteSpace(groupID) && String.IsNullOrWhiteSpace(emailAddress)))
+                    throw new Exception("HostName or GroupID missing");
+                string connectionName = String.Format("{0}_{1}_{2}", hostName, emailAddress, groupID);
+                ClientExecute.ExecuteWithSettings(userSettings =>
+                {
+                    var existingConnection = userSettings.Connections.Any(conn => conn.Name == connectionName);
+                    if (!existingConnection)
+                    {
+                        string connectionTargetToken = emailAddress ?? groupID;
+                        ClientExecute.CreateConnection(hostName, connectionTargetToken, connectionName);
+                    }
+                }, ReportException);
+                //TBJS2OP.ReportSuccess("Connection registered succesfully");
+            }
+            catch (Exception exception)
+            {
+                ReportException(exception);
+            }
+        }
+
 
 
         public void GoToConnectionOperation(string url, string data)
