@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Java.Net;
 using Newtonsoft.Json;
@@ -143,10 +145,21 @@ namespace TheBallMobileApp
             return TBJS2OP.TRUE_RESULT;
         };
 
+        private string currentOperationID;
+
         public string GoToConnectionOperation(string url, string data) 
         {
             if (!url.EndsWith("GoToConnection"))
                 return null;
+
+            ThreadPool.QueueUserWorkItem(o =>
+            {
+                Thread.Sleep(5000);
+                LoadUIHandler("javascript:application.OperationService.SuccessPendingOperation(" + currentOperationID +  ", 'huppista')", null);
+            });
+
+            currentOperationID = "12345";
+            return currentOperationID;
             try
             {
                 var jobj = (JObject) JsonConvert.DeserializeObject(data);

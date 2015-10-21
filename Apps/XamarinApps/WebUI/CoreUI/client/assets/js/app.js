@@ -14,7 +14,8 @@ var appModule;
 
     // 3rd party
     'angular-promise-cache',
-    'mm.foundation'
+    'mm.foundation',
+    //'blockUI'
     //'dynamicLayout',
     //'iso.directives'
   ])

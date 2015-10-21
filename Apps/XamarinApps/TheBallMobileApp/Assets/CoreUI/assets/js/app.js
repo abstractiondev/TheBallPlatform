@@ -14,6 +14,8 @@ var appModule;
 
     // 3rd party
     'angular-promise-cache',
+    'mm.foundation',
+    //'blockUI'
     //'dynamicLayout',
     //'iso.directives'
   ])
@@ -89,18 +91,45 @@ var application;
             this.$q = $q;
             this.promiseCache = promiseCache;
         }
+        OperationService.SuccessPendingOperation = function (operationID, successParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            //deferredData.serviceInstance.blockUI.stop();
+            var wnd = window;
+            wnd.$.unblockUI();
+            deferred.resolve(successParams);
+            delete OperationService.pendingOperations[operationID];
+        };
+        OperationService.FailPendingOperation = function (operationID, failParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            var wnd = window;
+            wnd.$.unblockUI();
+            deferred.reject(failParams);
+            //deferredData.serviceInstance.blockUI.stop();
+            delete OperationService.pendingOperations[operationID];
+        };
+        OperationService.ProgressPendingOperation = function (operationID, progressParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            deferred.notify(progressParams);
+        };
         OperationService.prototype.executeOperation = function (operationName, operationParams) {
             var me = this;
             var wnd = window;
             if (wnd.TBJS2MobileBridge) {
                 var stringParams = JSON.stringify(operationParams);
                 var result = wnd.TBJS2MobileBridge.ExecuteAjaxOperation(operationName, stringParams);
-                var data = JSON.parse(result);
+                var resultObj = JSON.parse(result);
+                var operationID = resultObj.OperationResult;
+                //var success =
                 var deferred = me.$q.defer();
-                deferred.resolve(data);
+                OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
+                wnd.$.blockUI({ message: "Piip: " + operationID});
                 return deferred.promise;
             }
             else {
+                wnd.$.blockUI({ message: "Piip!" });
                 return this.promiseCache({
                     promise: function () {
                         /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
@@ -109,6 +138,7 @@ var application;
                 });
             }
         };
+        OperationService.pendingOperations = {};
         return OperationService;
     })();
     application.OperationService = OperationService;
@@ -122,13 +152,17 @@ var application;
 var application;
 (function (application) {
     var ConnectionController = (function () {
-        function ConnectionController($scope, connectionService, operationService, foundationApi) {
+        function ConnectionController($scope, connectionService, operationService, foundationApi, $timeout) {
             this.operationService = operationService;
             this.foundationApi = foundationApi;
+            this.$timeout = $timeout;
             this.hosts = [];
             this.connections = [];
+            this.LastOperationDump = "void";
             this.scope = $scope;
             $scope.vm = this;
+            $scope.progressMax = 300;
+            $scope.progressCurrent = 0;
             //this.currentHost = this.hosts[2];
             var me = this;
             connectionService.getConnectionPrefillData().then(function (result) {
@@ -146,9 +180,6 @@ var application;
                 });
             });
         }
-        /*
-        LastOperationDump:string = "void";
-        */
         ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
         };
@@ -176,17 +207,32 @@ var application;
         };
         ConnectionController.prototype.GoToConnection = function (connectionID) {
             var me = this;
-            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID });
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) { return me.LastOperationDump = JSON.stringify(successData); }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) { return me.LastOperationDump = "Update: " + JSON.stringify(updateData); });
+        };
+        ConnectionController.prototype.UpdateTimeOut = function () {
+            setTimeout(this.UpdateTimeOut, 1000);
         };
         ConnectionController.prototype.DeleteConnection = function (connectionID) {
+            var wnd = window;
             var me = this;
-            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
+            //(<any>$("#progressBarModal")).foundation("reveal", "open");
+            //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
+            me.foundationApi.publish("progressBarModal", "open");
+            var repeat = function () {
+                me.scope.progressCurrent += 10;
+                if (me.scope.progressCurrent < me.scope.progressMax)
+                    me.$timeout(repeat, 200);
+                //else
+                //  me.foundationApi.publish("progressBarModal", "close");
+            };
+            me.$timeout(repeat, 200);
             return;
+            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
             this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
     })();
-    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", function ($scope, connectionService, operationService, foundationApi) { return new ConnectionController($scope, connectionService, operationService, foundationApi); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", "$timeout", function ($scope, connectionService, operationService, foundationApi, $timeout) { return new ConnectionController($scope, connectionService, operationService, foundationApi, $timeout); }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionController.js.map

@@ -26,9 +26,7 @@ module application {
 
     email:string;
 
-    /*
     LastOperationDump:string = "void";
-    */
 
     hasConnections():Boolean {
       return this.connections.length > 0;
@@ -90,7 +88,10 @@ module application {
     {
       var me = this;
       me.operationService.executeOperation("TheBall.LocalApp.GoToConnection",
-        { "connectionID": connectionID});
+        { "connectionID": connectionID}).then(
+          successData => me.LastOperationDump = JSON.stringify(successData),
+          failedData => me.LastOperationDump = "Failed: " + JSON.stringify(failedData),
+          updateData => me.LastOperationDump = "Update: " + JSON.stringify(updateData));
     }
 
     UpdateTimeOut()

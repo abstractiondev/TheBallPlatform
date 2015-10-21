@@ -10,18 +10,45 @@ var application;
             this.$q = $q;
             this.promiseCache = promiseCache;
         }
+        OperationService.SuccessPendingOperation = function (operationID, successParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            //deferredData.serviceInstance.blockUI.stop();
+            var wnd = window;
+            wnd.$.unblockUI();
+            deferred.resolve(successParams);
+            delete OperationService.pendingOperations[operationID];
+        };
+        OperationService.FailPendingOperation = function (operationID, failParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            var wnd = window;
+            wnd.$.unblockUI();
+            deferred.reject(failParams);
+            //deferredData.serviceInstance.blockUI.stop();
+            delete OperationService.pendingOperations[operationID];
+        };
+        OperationService.ProgressPendingOperation = function (operationID, progressParams) {
+            var deferredData = OperationService.pendingOperations[operationID];
+            var deferred = deferredData.deferred;
+            deferred.notify(progressParams);
+        };
         OperationService.prototype.executeOperation = function (operationName, operationParams) {
             var me = this;
             var wnd = window;
             if (wnd.TBJS2MobileBridge) {
                 var stringParams = JSON.stringify(operationParams);
                 var result = wnd.TBJS2MobileBridge.ExecuteAjaxOperation(operationName, stringParams);
-                var data = JSON.parse(result);
+                var resultObj = JSON.parse(result);
+                var operationID = resultObj.OperationResult;
+                //var success =
                 var deferred = me.$q.defer();
-                deferred.resolve(data);
+                OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
+                wnd.$.blockUI({ message: "Piip: " + operationID });
                 return deferred.promise;
             }
             else {
+                wnd.$.blockUI({ message: "Piip!" });
                 return this.promiseCache({
                     promise: function () {
                         /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
@@ -30,6 +57,7 @@ var application;
                 });
             }
         };
+        OperationService.pendingOperations = {};
         return OperationService;
     })();
     application.OperationService = OperationService;

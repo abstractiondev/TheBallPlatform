@@ -11,6 +11,7 @@ var application;
             this.$timeout = $timeout;
             this.hosts = [];
             this.connections = [];
+            this.LastOperationDump = "void";
             this.scope = $scope;
             $scope.vm = this;
             $scope.progressMax = 300;
@@ -32,9 +33,6 @@ var application;
                 });
             });
         }
-        /*
-        LastOperationDump:string = "void";
-        */
         ConnectionController.prototype.hasConnections = function () {
             return this.connections.length > 0;
         };
@@ -62,7 +60,7 @@ var application;
         };
         ConnectionController.prototype.GoToConnection = function (connectionID) {
             var me = this;
-            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID });
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) { return me.LastOperationDump = JSON.stringify(successData); }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) { return me.LastOperationDump = "Update: " + JSON.stringify(updateData); });
         };
         ConnectionController.prototype.UpdateTimeOut = function () {
             setTimeout(this.UpdateTimeOut, 1000);
