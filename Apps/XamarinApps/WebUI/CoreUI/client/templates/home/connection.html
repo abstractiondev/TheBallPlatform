@@ -16,16 +16,16 @@ controller: ConnectionController
     -->
     <div class="isotope-container">
       <div align="center" class="card tbisobox isotope-item" ng-repeat="connection in vm.connections">
-        <h5>{{connection.host}}</h5>
-        <h5>{{connection.email}}</h5>
+        <h5 class="tbshadowtext">{{connection.host}}</h5>
+        <h5 class="tbshadowtext">{{connection.email}}</h5>
         <img src="../../assets/img/portal2_looping_giphy.gif" class="tbisoboximg">
-        <div><button class="button hollow large tbisoboximg" ng-click="vm.GoToConnection(connection.id)">Go To Connection</button></div>
-        <div><button class="button alert medium tbisoboximg" ng-click="vm.DeleteConnection(connection.id)">Remove</button></div>
+        <div><button class="button hollow large tbisoboximg" ng-click="vm.GoToConnection(connection.id)"><div class="tbshadowtext">Go To Connection</div></button></div>
+        <div><button class="button alert medium tbisoboximg" ng-click="vm.DeleteConnection(connection.id)"><div class="tbshadowtext">Remove</div></button></div>
       </div>
     </div>
   </div>
   <div class="row" align="center">
-    <button class="button hollow large tbisoboximg" zf-open="createConnectionModal">Add New Connection</button>
+    <button class="button hollow large tbisoboximg" zf-open="createConnectionModal"><div class="tbshadowtext">Add New Connection</div></button>
   </div>
   <div id="createConnectionModal" zf-modal="" overlay-close="false">
     <a class="close-button" zf-close="">x</a>
@@ -41,7 +41,7 @@ controller: ConnectionController
       </label>
     </div>
     <div class="small-12 small-centered columns text-center">
-      <button class="hollow success button large tbisoboximg" ng-click="vm.CreateConnection()">Create Next Connection</button>
+      <button class="hollow success button large tbisoboximg" ng-click="vm.CreateConnection()"><div class="tbshadowtext">Create Next Connection</div></button>
     </div>
   </div>
 </div>
