@@ -87,11 +87,14 @@ module application {
     GoToConnection(connectionID:string)
     {
       var me = this;
+      me.foundationApi.publish("progressBarModal", "open");
       me.operationService.executeOperation("TheBall.LocalApp.GoToConnection",
         { "connectionID": connectionID}).then(
-          successData => me.LastOperationDump = JSON.stringify(successData),
+          successData => { me.foundationApi.publish("progressBarModal", "close") },
           failedData => me.LastOperationDump = "Failed: " + JSON.stringify(failedData),
-          updateData => me.LastOperationDump = "Update: " + JSON.stringify(updateData));
+          updateData => {
+            me.scope.progressCurrent = me.scope.progressMax * updateData.progress;
+          } );
     }
 
     UpdateTimeOut()
@@ -106,7 +109,6 @@ module application {
       //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
       me.foundationApi.publish("progressBarModal", "open");
       var repeat = function() {
-        me.scope.progressCurrent += 10;
         if(me.scope.progressCurrent < me.scope.progressMax)
           me.$timeout(repeat, 200);
         //else

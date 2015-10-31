@@ -60,7 +60,12 @@ var application;
         };
         ConnectionController.prototype.GoToConnection = function (connectionID) {
             var me = this;
-            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) { return me.LastOperationDump = JSON.stringify(successData); }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) { return me.LastOperationDump = "Update: " + JSON.stringify(updateData); });
+            me.foundationApi.publish("progressBarModal", "open");
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) {
+                me.foundationApi.publish("progressBarModal", "close");
+            }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) {
+                me.scope.progressCurrent = me.scope.progressMax * updateData.progress;
+            });
         };
         ConnectionController.prototype.UpdateTimeOut = function () {
             setTimeout(this.UpdateTimeOut, 1000);
@@ -72,7 +77,6 @@ var application;
             //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
             me.foundationApi.publish("progressBarModal", "open");
             var repeat = function () {
-                me.scope.progressCurrent += 10;
                 if (me.scope.progressCurrent < me.scope.progressMax)
                     me.$timeout(repeat, 200);
                 //else

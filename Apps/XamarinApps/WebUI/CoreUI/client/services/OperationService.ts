@@ -48,6 +48,7 @@ module application {
     public executeOperation(operationName:string, operationParams:any):any {
       var me = this;
       var wnd:any = window;
+      var simulateServiceProgress:boolean = me.$location.protocol() == "http" && me.$location.host() == "localhost";
       if(wnd.TBJS2MobileBridge) {
         var stringParams = JSON.stringify(operationParams);
         var result = wnd.TBJS2MobileBridge.ExecuteAjaxOperation(operationName, stringParams);
@@ -56,9 +57,8 @@ module application {
         //var success =
         var deferred = me.$q.defer();
         OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
-        wnd.$.blockUI( { message: "Piip: " + operationID});
         return deferred.promise;
-      } else {
+      } else if(!simulateServiceProgress) {
         wnd.$.blockUI( { message: "Piip!"});
         return this.promiseCache({
           promise: function() {
@@ -67,17 +67,34 @@ module application {
               operationParams);
           }
         });
+      } else { // simulate service progress
+        var deferred = me.$q.defer();
+        var progressCurrent:number = 0;
+        var progressSimulation = function() {
+          progressCurrent += 5;
+          if(progressCurrent >= 100) {
+            deferred.resolve();
+          }
+          else {
+            deferred.notify({ progress: progressCurrent / 100, statusMessage: "Proceeding: " + progressCurrent});
+            me.$timeout(progressSimulation, 200)
+          }
+          //else
+          //  me.foundationApi.publish("progressBarModal", "close");
+        };
+        me.$timeout(progressSimulation, 200);
+        return deferred.promise;
       }
     }
 
-    constructor(private $http, $location, private $q, private promiseCache) {
+    constructor(private $http, private $location, private $q, private $timeout, private promiseCache) {
 
     }
   }
 
 
-  (<any>window).appModule.factory('OperationService', ["$http", "$location", "$q", "promiseCache", ($http, $location, $q, promiseCache)
-    => new OperationService($http, $location, $q, promiseCache)]);
+  (<any>window).appModule.factory('OperationService', ["$http", "$location", "$q", "$timeout", "promiseCache", ($http, $location, $q, $timeout, promiseCache)
+    => new OperationService($http, $location, $q, $timeout, promiseCache)]);
 
 }
 
