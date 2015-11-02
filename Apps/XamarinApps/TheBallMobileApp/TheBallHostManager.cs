@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 using Java.Net;
@@ -147,16 +149,72 @@ namespace TheBallMobileApp
 
         private string currentOperationID;
 
+
+        private int currProgress = 0;
+        private void proceedAndFinish()
+        {
+            if (currentOperationID == null)
+            {
+                ThreadPool.QueueUserWorkItem(o =>
+                {
+                    Thread.Sleep(200);
+                    proceedAndFinish();
+                });
+                return;
+            }
+            currProgress += 10;
+            if (currProgress >= 100)
+                finishProgress();
+            else
+            {
+                updateProgress();
+                ThreadPool.QueueUserWorkItem(o =>
+                {
+                    Thread.Sleep(200);
+                    proceedAndFinish();
+                });
+            }
+        }
+
+        private void updateProgress()
+        {
+            var progressCurrent = currProgress / 100.0;
+            //string parameters = "{ progress: " + progressCurrent + " / 100, statusMessage: 'Proceeding: " + progressCurrent + "'}";
+            //var escapedParams = EscapeJsString(parameters);
+            string javaScript = "javascript:application.OperationService.ProgressPendingOperation(" + currentOperationID +", " + progressCurrent.ToString(CultureInfo.InvariantCulture) + ")";
+            LoadUIHandler(javaScript, null);
+        }
+
+        protected static string EscapeJsString(String s)
+        {
+            if (s == null)
+            {
+                return "";
+            }
+
+            return s.Replace("'", "\\'").Replace("\"", "\\\"");
+        }
+
+        private void finishProgress()
+        {
+            string javaScript = "javascript:application.OperationService.SuccessPendingOperation(" + currentOperationID + ")"; // ", 'huppista')";
+            LoadUIHandler(javaScript, null);
+        }
+
+
         public string GoToConnectionOperation(string url, string data) 
         {
             if (!url.EndsWith("GoToConnection"))
                 return null;
 
+            /*
             ThreadPool.QueueUserWorkItem(o =>
             {
                 Thread.Sleep(5000);
                 LoadUIHandler("javascript:application.OperationService.SuccessPendingOperation(" + currentOperationID +  ", 'huppista')", null);
-            });
+            });*/
+            currProgress = 0;
+            proceedAndFinish();
 
             currentOperationID = "12345";
             return currentOperationID;

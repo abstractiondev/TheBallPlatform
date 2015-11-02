@@ -12,27 +12,32 @@ var application;
             this.$timeout = $timeout;
             this.promiseCache = promiseCache;
         }
-        OperationService.SuccessPendingOperation = function (operationID, successParams) {
+        OperationService.SuccessPendingOperation = function (operationID, successParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
             //deferredData.serviceInstance.blockUI.stop();
             var wnd = window;
-            wnd.$.unblockUI();
+            var successParams = null;
+            if (successParamsString)
+                successParams = JSON.parse(successParamsString);
             deferred.resolve(successParams);
             delete OperationService.pendingOperations[operationID];
         };
-        OperationService.FailPendingOperation = function (operationID, failParams) {
+        OperationService.FailPendingOperation = function (operationID, failParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
             var wnd = window;
             wnd.$.unblockUI();
+            var failParams = JSON.parse(failParamsString);
             deferred.reject(failParams);
             //deferredData.serviceInstance.blockUI.stop();
             delete OperationService.pendingOperations[operationID];
         };
-        OperationService.ProgressPendingOperation = function (operationID, progressParams) {
+        OperationService.ProgressPendingOperation = function (operationID, progressParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
+            //var progressParams = JSON.parse(progressParamsString);
+            var progressParams = { progress: parseFloat(progressParamsString) };
             deferred.notify(progressParams);
         };
         OperationService.prototype.executeOperation = function (operationName, operationParams) {
@@ -50,13 +55,13 @@ var application;
                 return deferred.promise;
             }
             else if (!simulateServiceProgress) {
-                wnd.$.blockUI({ message: "Piip!" });
-                return this.promiseCache({
-                    promise: function () {
-                        /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
-                        return me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams);
-                    }
+                var deferred = me.$q.defer();
+                me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams).then(function (response) {
+                    var resultObj = JSON.parse(response.data);
+                    var operationID = resultObj.OperationResult;
+                    OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
                 });
+                return deferred.promise;
             }
             else {
                 var deferred = me.$q.defer();

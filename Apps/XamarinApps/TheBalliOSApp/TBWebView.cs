@@ -9,7 +9,6 @@ namespace TheBalliOSApp
 {
     public class TBWebView : UIWebView
     {
-
         public TBWebView(CGRect frame) : base(frame)
         {
             OperationProtocol.CurrentWebView = this;

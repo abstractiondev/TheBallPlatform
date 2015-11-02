@@ -55,6 +55,7 @@ namespace TheBalliOSApp
             var frame = new CGRect(0, 0, View.Frame.Size.Width, View.Frame.Size.Height);
 
             webView = new TBWebView(frame);
+            webView.WeakDelegate = webView;
 
             webView.LoadError += WebView_LoadError;
             webView.LoadFinished += WebView_LoadFinished;

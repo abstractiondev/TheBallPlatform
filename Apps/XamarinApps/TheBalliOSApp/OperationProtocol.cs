@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Foundation;
 using HealthKit;
@@ -10,6 +12,7 @@ using Newtonsoft.Json.Linq;
 using SQLite.Net.Platform.XamarinIOS;
 using TheBall.Support.DeviceClient;
 using TheBall.Support.VirtualStorage;
+using UIKit;
 
 namespace TheBalliOSApp
 {
@@ -123,7 +126,6 @@ namespace TheBalliOSApp
         };
 
         private string CurrentConnectionRoot = null;
-
         public delegate Tuple<string, string, Stream> DataRetriever(string dataKey);
 
         public static async Task<Tuple<string, string, Stream>> GetWebResponseContent(string fullPath)
@@ -193,7 +195,7 @@ namespace TheBalliOSApp
             {
                 var bodyData = body.ToArray();
                 var bodyAsString = Encoding.UTF8.GetString(bodyData);
-                GoToConnectionOperation(opName, bodyAsString);
+                GoToConnectionOperation(request, opName, bodyAsString);
                 CreateConnectionOperation(opName, bodyAsString);
             }
         }
@@ -231,13 +233,81 @@ namespace TheBalliOSApp
         }
 
 
+        private int currProgress = 0;
+        private void proceedAndFinish()
+        {
+                currProgress += 10;
+                if (currProgress >= 100)
+                    finishProgress();
+                else
+                {
+                    updateProgress();
+                    var thread = new Thread(() =>
+                    {
+                        Thread.Sleep(200);
+                        this.InvokeOnMainThread(proceedAndFinish);
+                    });
+                    thread.Start();
+                }
+        }
 
-        public void GoToConnectionOperation(string url, string data)
+        private void updateProgress()
+        {
+            string currentOperationID = "123457";
+            var progressCurrent = currProgress / 100.0;
+            //string parameters = "{ progress: " + progressCurrent + " / 100, statusMessage: 'Proceeding: " + progressCurrent + "'}";
+            //var escapedParams = EscapeJsString(parameters);
+            /*
+            string javaScript = "application.OperationService.ProgressPendingOperation(" + currentOperationID +
+                                ", '"+ escapedParams + "')";*/
+            string javaScript = "window.application.OperationService.ProgressPendingOperation(" + currentOperationID + ", " + progressCurrent.ToString(CultureInfo.InvariantCulture) + ")";
+
+            CurrentWebView.EvaluateJavascript(javaScript);
+            //CurrentWebView.LoadHtmlString("<h1>Hello!</h1>", null);
+        }
+
+        protected static string EscapeJsString(String s)
+        {
+            if (s == null)
+            {
+                return "";
+            }
+
+            return s.Replace("'", "\\'").Replace("\"", "\\\"");
+        }
+
+        private void finishProgress()
+        {
+            string currentOperationID = "123457";
+            //string javaScript = "application.OperationService.SuccessPendingOperation(" + currentOperationID + ", 'huppista')";
+            string javaScript = "window.application.OperationService.SuccessPendingOperation(" + currentOperationID + ")"; // ", 'huppista')";
+            CurrentWebView.EvaluateJavascript(javaScript);
+        }
+
+
+        public void GoToConnectionOperation(NSUrlRequest request, string url, string data)
         {
             if (!url.EndsWith("GoToConnection"))
                 return;
             try
             {
+                string currentOperationID = "123457";
+
+                using (var response = new NSUrlResponse(request.Url, "application/json", -1, "utf-8"))
+                {
+                    Client.ReceivedResponse(this, response, NSUrlCacheStoragePolicy.NotAllowed);
+                    string responseData = "{ \"OperationResult\": " + (currentOperationID ?? "null") + " }";
+                    Client.DataLoaded(this, NSData.FromString(responseData));
+                }
+
+
+                var thread = new Thread(() =>
+                    this.InvokeOnMainThread(proceedAndFinish));
+                thread.Start();
+
+                return;
+
+
                 var jobj = (JObject)JsonConvert.DeserializeObject(data);
                 string connectionID = (string)jobj["connectionID"];
                 ClientExecute.ExecuteWithSettings(userSettings =>

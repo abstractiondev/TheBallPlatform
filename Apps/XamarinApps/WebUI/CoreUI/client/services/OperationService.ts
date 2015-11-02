@@ -16,32 +16,37 @@ module application {
     private static pendingOperations: { [operationID: string] : IDeferredData; } = {};
      private blockUI:any;
 
-     public static SuccessPendingOperation(operationID:string, successParams:any)
+     public static SuccessPendingOperation(operationID:string, successParamsString:string)
      {
        var deferredData = OperationService.pendingOperations[operationID];
        var deferred = deferredData.deferred;
        //deferredData.serviceInstance.blockUI.stop();
        var wnd:any = window;
-       wnd.$.unblockUI();
+       var successParams = null;
+       if(successParamsString)
+         successParams = JSON.parse(successParamsString);
        deferred.resolve(successParams);
        delete OperationService.pendingOperations[operationID];
      }
 
-     public static FailPendingOperation(operationID:string, failParams:any)
+     public static FailPendingOperation(operationID:string, failParamsString:string)
      {
        var deferredData = OperationService.pendingOperations[operationID];
        var deferred = deferredData.deferred;
        var wnd:any = window;
        wnd.$.unblockUI();
+       var failParams = JSON.parse(failParamsString);
        deferred.reject(failParams);
        //deferredData.serviceInstance.blockUI.stop();
        delete OperationService.pendingOperations[operationID];
      }
 
-     public static ProgressPendingOperation(operationID:string, progressParams:any)
+     public static ProgressPendingOperation(operationID:string, progressParamsString:string)
      {
        var deferredData = OperationService.pendingOperations[operationID];
        var deferred = deferredData.deferred;
+       //var progressParams = JSON.parse(progressParamsString);
+       var progressParams = { progress: parseFloat(progressParamsString) };
        deferred.notify(progressParams);
      }
 
@@ -59,14 +64,13 @@ module application {
         OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
         return deferred.promise;
       } else if(!simulateServiceProgress) {
-        wnd.$.blockUI( { message: "Piip!"});
-        return this.promiseCache({
-          promise: function() {
-            /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
-            return me.$http.post("https://tbvirtualhost/op/" + operationName,
-              operationParams);
-          }
+        var deferred = me.$q.defer();
+        me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams).then(response => {
+          var resultObj = JSON.parse(response.data);
+          var operationID = resultObj.OperationResult;
+          OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance:me };
         });
+        return deferred.promise;
       } else { // simulate service progress
         var deferred = me.$q.defer();
         var progressCurrent:number = 0;

@@ -1901,11 +1901,11 @@ progress, meter {
   width: 100%;
   height: 1.5rem;
   margin-bottom: 1rem;
-  background: #ccc;
+  background: #888;
   border: 0; }
 
 progress::-webkit-progress-bar {
-  background: #ccc; }
+  background: #888; }
 
 progress::-webkit-progress-value {
   background: #8b0987; }
@@ -1932,9 +1932,9 @@ progress.low::-moz-progress-bar {
   background: #F04124; }
 
 meter {
-  background: #ccc; }
+  background: #888; }
   meter::-webkit-meter-bar {
-    background: #ccc; }
+    background: #888; }
   meter::-webkit-meter-optimum-value {
     background: #43AC6A; }
   meter::-webkit-meter-suboptimum-value {
@@ -4375,7 +4375,8 @@ meter {
 
 .modal {
   max-width: 600px;
-  border-radius: 0px; }
+  border-radius: 10px;
+  box-shadow: 0; }
   .tiny > .modal {
     max-width: 300px; }
   .small > .modal {

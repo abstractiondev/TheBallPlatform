@@ -86,37 +86,45 @@ var application;
 var application;
 (function (application) {
     var OperationService = (function () {
-        function OperationService($http, $location, $q, promiseCache) {
+        function OperationService($http, $location, $q, $timeout, promiseCache) {
             this.$http = $http;
+            this.$location = $location;
             this.$q = $q;
+            this.$timeout = $timeout;
             this.promiseCache = promiseCache;
         }
-        OperationService.SuccessPendingOperation = function (operationID, successParams) {
+        OperationService.SuccessPendingOperation = function (operationID, successParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
             //deferredData.serviceInstance.blockUI.stop();
             var wnd = window;
-            wnd.$.unblockUI();
+            var successParams = null;
+            if (successParamsString)
+                successParams = JSON.parse(successParamsString);
             deferred.resolve(successParams);
             delete OperationService.pendingOperations[operationID];
         };
-        OperationService.FailPendingOperation = function (operationID, failParams) {
+        OperationService.FailPendingOperation = function (operationID, failParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
             var wnd = window;
             wnd.$.unblockUI();
+            var failParams = JSON.parse(failParamsString);
             deferred.reject(failParams);
             //deferredData.serviceInstance.blockUI.stop();
             delete OperationService.pendingOperations[operationID];
         };
-        OperationService.ProgressPendingOperation = function (operationID, progressParams) {
+        OperationService.ProgressPendingOperation = function (operationID, progressParamsString) {
             var deferredData = OperationService.pendingOperations[operationID];
             var deferred = deferredData.deferred;
+            //var progressParams = JSON.parse(progressParamsString);
+            var progressParams = { progress: parseFloat(progressParamsString) };
             deferred.notify(progressParams);
         };
         OperationService.prototype.executeOperation = function (operationName, operationParams) {
             var me = this;
             var wnd = window;
+            var simulateServiceProgress = me.$location.protocol() == "http" && me.$location.host() == "localhost";
             if (wnd.TBJS2MobileBridge) {
                 var stringParams = JSON.stringify(operationParams);
                 var result = wnd.TBJS2MobileBridge.ExecuteAjaxOperation(operationName, stringParams);
@@ -125,24 +133,41 @@ var application;
                 //var success =
                 var deferred = me.$q.defer();
                 OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
-                wnd.$.blockUI({ message: "Piip: " + operationID});
+                return deferred.promise;
+            }
+            else if (!simulateServiceProgress) {
+                var deferred = me.$q.defer();
+                me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams).then(function (response) {
+                    var resultObj = JSON.parse(response.data);
+                    var operationID = resultObj.OperationResult;
+                    OperationService.pendingOperations[operationID] = { deferred: deferred, serviceInstance: me };
+                });
                 return deferred.promise;
             }
             else {
-                wnd.$.blockUI({ message: "Piip!" });
-                return this.promiseCache({
-                    promise: function () {
-                        /* iOS WebView requires the use of http(s)-protocol to provide body in POST request */
-                        return me.$http.post("https://tbvirtualhost/op/" + operationName, operationParams);
+                var deferred = me.$q.defer();
+                var progressCurrent = 0;
+                var progressSimulation = function () {
+                    progressCurrent += 5;
+                    if (progressCurrent >= 100) {
+                        deferred.resolve();
                     }
-                });
+                    else {
+                        deferred.notify({ progress: progressCurrent / 100, statusMessage: "Proceeding: " + progressCurrent });
+                        me.$timeout(progressSimulation, 200);
+                    }
+                    //else
+                    //  me.foundationApi.publish("progressBarModal", "close");
+                };
+                me.$timeout(progressSimulation, 200);
+                return deferred.promise;
             }
         };
         OperationService.pendingOperations = {};
         return OperationService;
     })();
     application.OperationService = OperationService;
-    window.appModule.factory('OperationService', ["$http", "$location", "$q", "promiseCache", function ($http, $location, $q, promiseCache) { return new OperationService($http, $location, $q, promiseCache); }]);
+    window.appModule.factory('OperationService', ["$http", "$location", "$q", "$timeout", "promiseCache", function ($http, $location, $q, $timeout, promiseCache) { return new OperationService($http, $location, $q, $timeout, promiseCache); }]);
 })(application || (application = {}));
 //# sourceMappingURL=OperationService.js.map
 ///<reference path="..\..\services\OperationService.ts"/>
@@ -207,7 +232,12 @@ var application;
         };
         ConnectionController.prototype.GoToConnection = function (connectionID) {
             var me = this;
-            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) { return me.LastOperationDump = JSON.stringify(successData); }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) { return me.LastOperationDump = "Update: " + JSON.stringify(updateData); });
+            me.foundationApi.publish("progressBarModal", "open");
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) {
+                me.foundationApi.publish("progressBarModal", "close");
+            }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) {
+                me.scope.progressCurrent = me.scope.progressMax * updateData.progress;
+            });
         };
         ConnectionController.prototype.UpdateTimeOut = function () {
             setTimeout(this.UpdateTimeOut, 1000);
@@ -219,7 +249,6 @@ var application;
             //(<any>$("#progressBarModal")).data("revealInit").close_on_background_click = false;
             me.foundationApi.publish("progressBarModal", "open");
             var repeat = function () {
-                me.scope.progressCurrent += 10;
                 if (me.scope.progressCurrent < me.scope.progressMax)
                     me.$timeout(repeat, 200);
                 //else
