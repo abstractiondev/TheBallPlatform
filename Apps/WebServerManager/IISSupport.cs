@@ -13,6 +13,8 @@ namespace TheBall.Infra.WebServerManager
     {
         public static Site CreateOrRetrieveCCSWebSite(string websiteFolder, string hostAndSiteName)
         {
+            if (websiteFolder == null)
+                throw new ArgumentNullException(nameof(websiteFolder));
             ServerManager iisManager = new ServerManager();
             var sites = iisManager.Sites;
             var existingSite = sites[hostAndSiteName];
@@ -41,16 +43,32 @@ namespace TheBall.Infra.WebServerManager
             return sites[hostAndSiteName];
         }
 
-        public static void UpdateSite(string fullLivePath, string hostAndSiteName, Action action)
+        public static void SetHostHeaders(string siteName, string[] hostHeaders)
         {
-            var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
-            //site.Stop();
-            //while(site.State != ObjectState.Stopped)
-            //    Thread.Sleep(200);
-            action();
-            //site.Start();
-            //while(site.State != ObjectState.Started)
-            //    Thread.Sleep(200);
+            UpdateExistingSite(siteName, site =>
+            {
+                var bindings = site.Bindings;
+                foreach (var hostHeader in hostHeaders)
+                {
+                    bool existingBinding = bindings.Any(binding => String.Compare(binding.Host, hostHeader, StringComparison.OrdinalIgnoreCase) == 0);
+                    if (!existingBinding)
+                    {
+                        string bindingInformation = string.Format("*:80:{0}", hostHeader);
+                        string bindingProtocol = "http";
+                        var binding = site.Bindings.Add(bindingInformation, bindingProtocol);
+                    }
+                }
+            });
+        }
+
+
+        public static void UpdateExistingSite(string siteName, Action<Site> action)
+        {
+            ServerManager iisManager = new ServerManager();
+            var sites = iisManager.Sites;
+            var site = sites[siteName];
+            action(site);
+            iisManager.CommitChanges();
         }
 
         public static void UpdateSiteWithDeploy(bool needsContentUpdating, string tempSitePath, string fullLivePath, string hostAndSiteName)
@@ -65,5 +83,6 @@ namespace TheBall.Infra.WebServerManager
                 }
             }
         }
+
     }
 }

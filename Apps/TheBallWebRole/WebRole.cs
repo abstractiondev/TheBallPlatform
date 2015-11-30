@@ -90,23 +90,35 @@ namespace TheBallWebRole
         private void PollAndSyncWebsitesFromStorage()
         {
             var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
-            foreach (CloudBlockBlob blob in blobs)
+            var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
+            foreach (CloudBlockBlob blob in blobsInOrder)
             {
                 string fileName = blob.Name;
                 string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
                 string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
                 FileInfo currentFile = new FileInfo(tempFile);
                 var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
-                bool needsUnzipping = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
+                bool needsProcessing = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
                 try
                 {
-                    if (needsUnzipping)
+                    if (needsProcessing)
                     {
                         blob.DownloadToFile(tempFile, FileMode.Create);
                         currentFile.Refresh();
                         currentFile.LastWriteTimeUtc = blobLastModified;
                     }
-                    UpdateIISSite(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsUnzipping);
+                    bool isZip = fileName.ToLower().EndsWith(".zip");
+                    bool isTxt = fileName.ToLower().EndsWith(".txt");
+                    if(isZip)
+                        UpdateIISSiteFromZip(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsProcessing);
+                    else if (isTxt)
+                    {
+                        if (needsProcessing)
+                        {
+                            var txtData = blob.DownloadText();
+                            UpdateIISSiteFromTxt(hostAndSiteName, txtData);
+                        }
+                    }
                 }
                 catch
                 {
@@ -114,7 +126,13 @@ namespace TheBallWebRole
             }
         }
 
-        private void UpdateIISSite(string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder, bool needsUnzipping)
+        private void UpdateIISSiteFromTxt(string siteName, string txtData)
+        {
+            var hostHeaders = txtData.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            IISSupport.SetHostHeaders(siteName, hostHeaders);
+        }
+
+        private void UpdateIISSiteFromZip(string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder, bool needsUnzipping)
         {
             if (needsUnzipping)
             {
