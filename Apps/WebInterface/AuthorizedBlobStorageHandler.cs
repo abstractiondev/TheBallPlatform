@@ -345,14 +345,14 @@ namespace WebInterface
             string operationName)
         {
             var operationAssembly = typeof (OperationSupport).Assembly;
-            Type operationType = operationAssembly.GetType(operationName);
-            if (operationType == null)
-                operationType = OperationSupport.GetLegacyMappedType(operationName);
+            Type operationType = operationAssembly.GetType(operationName) ??
+                                 OperationSupport.GetLegacyMappedType(operationName);
             if (operationType == null)
             {
                 EndResponseWithStatusCode(context, 404);
                 return;
             }
+            operationName = operationType.FullName;
             var request = context.Request;
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
