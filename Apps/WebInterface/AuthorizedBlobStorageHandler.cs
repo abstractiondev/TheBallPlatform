@@ -357,10 +357,13 @@ namespace WebInterface
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
                 String.Empty);
-            string operationID = OperationSupport.QueueHttpOperation(operationData);
+            //string operationID = OperationSupport.QueueHttpOperation(operationData);
+            OperationSupport.ExecuteHttpOperation(operationData);
+            string operationID = "0";
             var response = context.Response;
             response.Write(String.Format("{{ \"OperationID\": {0} }}", operationID));
-            EndResponseWithStatusCode(context, 202);
+            //EndResponseWithStatusCode(context, 202);
+            EndResponseWithStatusCode(context, 200);
         }
 
         private static void EndResponseWithStatusCode(HttpContext context, int statusCode)
