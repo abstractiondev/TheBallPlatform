@@ -85,6 +85,11 @@ namespace TheBall
             {
                 foreach (var param in parameterFields)
                 {
+                    if (param.Name == "Owner")
+                    {
+                        param.SetValue(paramObj, InformationContext.CurrentOwner);
+                        continue;
+                    }
                     if (param.Name != "FileCollection")
                     {
                         string fieldValue;
