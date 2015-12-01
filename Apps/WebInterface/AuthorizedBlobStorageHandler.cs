@@ -326,6 +326,7 @@ namespace WebInterface
                         response.ContentType = "application/json";
                         response.StatusCode = 500;
                         response.TrySkipIisCustomErrors = true;
+                        ErrorSupport.ReportException(ex);
                         return;
                     }
                 }
@@ -504,6 +505,7 @@ namespace WebInterface
                 response.ContentType = "application/json";
                 response.StatusCode = 500;
                 response.TrySkipIisCustomErrors = true;
+                ErrorSupport.ReportException(ex);
                 return;
             }
             if (operationResult != null)
