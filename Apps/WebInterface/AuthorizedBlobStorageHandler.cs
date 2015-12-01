@@ -313,8 +313,21 @@ namespace WebInterface
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
                 if (contentPath.StartsWith("op/"))
                 {
-                    await SetCurrentAccountFromLogin(context);
-                    await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
+                    try
+                    {
+                        await SetCurrentAccountFromLogin(context);
+                        await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
+                    }
+                    catch (Exception ex)
+                    {
+                        var response = HttpContext.Current.Response;
+                        response.ContentEncoding = Encoding.UTF8;
+                        response.Write(String.Format("{{ \"ErrorType\": \"{0}\", \"ErrorText\": {1} }}", ex.GetType().Name, WebSupport.EncodeJsString(ex.Message)));
+                        response.ContentType = "application/json";
+                        response.StatusCode = 500;
+                        response.TrySkipIisCustomErrors = true;
+                        return;
+                    }
                 }
                 else
                 {
