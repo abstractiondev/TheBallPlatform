@@ -100,8 +100,8 @@ namespace AaltoGlobalImpact.OIP
                 {
                     string emailRootID = TBREmailRoot.GetIDFromEmailAddress(email);
                     TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
-                    return emailRoot.Account.ID;
-                }).Distinct().ToArray();
+                    return emailRoot?.Account.ID;
+                }).Where(item => item != null).Distinct().ToArray();
             List<AccountRootAndContainer> result = new List<AccountRootAndContainer>();
             foreach(var accountID in accountIDs)
             {

@@ -545,6 +545,9 @@ namespace TheBallTool
             if (skip == false)
                 throw new NotSupportedException("Skip this with debugger");
 
+            //PatchSubscriptionsToSubmitted();
+            UpdateAccountAndGroups(accountEmail:"maijahseppala@gmail.com");
+
             //testProcessWithAGISiteMigration(true);
             //testProcessWithWeconomySiteMigration(true);
             //resendIndexingRequests("d6347c47-aeee-4ce2-8f1f-601e52ecd7ac");
@@ -552,7 +555,6 @@ namespace TheBallTool
 
             //ReconnectAccountsMastersAndCollections();
 
-            PatchSubscriptionsToSubmitted();
             //PatchCollectionsToNodeSummaries();
             //PatchEmbeddedAndLinkToContentToGroupNodeSummaries();
             //FixGroupMastersAndCollections("f0a2650b-9c42-4098-95e2-0979be189b8e"); // Proj2
@@ -566,7 +568,7 @@ namespace TheBallTool
 
             //PatchCategoriesAndTextContentCollectionNodeSummarySpecificGroup("b9ba3208-bf89-4fa8-bad5-c2cb524b5fd9");
             //FixGroupMastersAndCollections("b9ba3208-bf89-4fa8-bad5-c2cb524b5fd9"); // Proj1
-            
+
             //PatchTextContentCollectionNodeSummarySpecificGroup("9798daca-afc4-4046-a99b-d0d88bb364e0");
             //FixGroupMastersAndCollections("9798daca-afc4-4046-a99b-d0d88bb364e0");
 
@@ -588,7 +590,7 @@ namespace TheBallTool
             //FixGroupMastersAndCollections("a0ea605a-1a3e-4424-9807-77b5423d615c");
             //FixGroupMastersAndCollections("705dbb02-ea90-4b4c-b802-085287ca2264");
 
-            
+
             //InitBlogAndActivityLocationCollectionsOnce();
             //InitBlogGroupActivityImageGroupCollectionsOnce();
 
@@ -604,7 +606,7 @@ namespace TheBallTool
             //TestWorkerSubscriberChainExecutionPerformance();
             //TestSubscriptionExecution();
             //TestSubscriptionChainPick();
-            
+
             //ExecuteSubscriptionChain(RenderWebSupport.DefaultGroupID);
             //PatchAccountsUpToDateWithRoot();
             //PatchBlogsAndActivitiesSelectedCollections();
