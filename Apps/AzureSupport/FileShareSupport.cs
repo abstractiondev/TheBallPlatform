@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Amazon.AutoScaling.Model;
 using TheBall;
 
 namespace AzureSupport

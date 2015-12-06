@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
 using Amazon;
+using Amazon.Runtime;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
 using Microsoft.WindowsAzure;
@@ -37,14 +38,13 @@ namespace TheBall
                             .Split(',')
                             .ToList();
 
-                    Destination destination = new Destination();
-                    destination.WithToAddresses(to);
+                    Destination destination = new Destination(to);
                     //destination.WithCcAddresses(cc);
                     //destination.WithBccAddresses(bcc);
 
                     Content subject = new Content();
-                    subject.WithCharset("UTF-8");
-                    subject.WithData(Subject);
+                    subject.Charset = "UTF-8";
+                    subject.Data = Subject;
 
                     Body body = new Body();
 
@@ -52,33 +52,32 @@ namespace TheBall
                     if (HTML != null)
                     {
                         Content html = new Content();
-                        html.WithCharset("UTF-8");
-                        html.WithData(HTML);
-                        body.WithHtml(html);
+                        html.Charset = "UTF-8";
+                        html.Data = HTML;
+                        body.Html = html;
                     }
 
                     if (Text != null)
                     {
                         Content text = new Content();
-                        text.WithCharset("UTF-8");
-                        text.WithData(Text);
-                        body.WithText(text);
+                        text.Charset = "UTF-8";
+                        text.Data = Text;
+                        body.Text = text;
                     }
 
                     Message message = new Message();
-                    message.WithBody(body);
-                    message.WithSubject(subject);
+                    message.Body = body;
+                    message.Subject = subject;
 
                     string awsAccessKey = AWSAccessKey;
                     string awsSecretKey = AWSSecretKey;
                     //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
-                    AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(awsAccessKey,
-                                                                                                         awsSecretKey);
+                    AmazonSimpleEmailServiceClient ses = new AmazonSimpleEmailServiceClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey), RegionEndpoint.EUWest1);
 
                     SendEmailRequest request = new SendEmailRequest();
-                    request.WithDestination(destination);
-                    request.WithMessage(message);
-                    request.WithSource(from);
+                    request.Destination = destination;
+                    request.Message = message;
+                    request.Source = from;
 
                     if (emailReplyTo != null)
                     {
@@ -88,21 +87,19 @@ namespace TheBall
                                 .Split(',')
                                 .ToList();
 
-                        request.WithReplyToAddresses(replyto);
+                        request.ReplyToAddresses = replyto;
                     }
 
                     if (returnPath != null)
                     {
-                        request.WithReturnPath(returnPath);
+                        request.ReturnPath = returnPath;
                     }
 
                     SendEmailResponse response = ses.SendEmail(request);
 
-                    SendEmailResult result = response.SendEmailResult;
-
                     Console.WriteLine("Email sent.");
                     Console.WriteLine(String.Format("Message ID: {0}",
-                                                    result.MessageId));
+                                                    response.MessageId));
 
                     return true;
                 }

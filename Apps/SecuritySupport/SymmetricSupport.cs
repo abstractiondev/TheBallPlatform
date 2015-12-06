@@ -8,9 +8,6 @@ namespace SecuritySupport
 {
     public class SymmetricSupport
     {
-        private const string KeyBlobName = "SysInternal/AESKey";
-        private const string IVBlobName = "SysInternal/AESIV";
-
         private AesManaged CurrProvider = new AesManaged()
         {
             Mode = CipherMode.CBC,

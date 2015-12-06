@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
-using Amazon.IdentityManagement.Model;
 using DiagnosticsUtils;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
