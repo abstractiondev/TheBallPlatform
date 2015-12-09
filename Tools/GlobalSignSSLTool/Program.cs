@@ -5,6 +5,11 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using GlobalSignSSLTool.GlobalSignSSLSvc;
+using GlobalSignSSLTool.GlobalSignGASSvc;
+using SSL = GlobalSignSSLTool.GlobalSignSSLSvc;
+using GAS = GlobalSignSSLTool.GlobalSignGASSvc;
+using SSLAuthToken = GlobalSignSSLTool.GlobalSignSSLSvc.AuthToken;
+using GASAuthToken = GlobalSignSSLTool.GlobalSignGASSvc.AuthToken;
 
 namespace GlobalSignSSLTool
 {
@@ -15,64 +20,126 @@ namespace GlobalSignSSLTool
             string userName = args[0];
             string passWord = args[1];
 
-            GlobalSignSSLSvc.ServerSSLV1Client client = new ServerSSLV1Client();
-            DVDNSOrder order = new DVDNSOrder();
-            order.Request = new QbV1DvDnsOrderRequest();
-            order.Request.ContactInfo = new ContactInfo()
-            {
-                Email = "kalle.launiala@protonit.net",
-                FirstName = "Kalle",
-                LastName = "Launiala",
-                Phone = "+358445575665"
-            }; 
-            order.Request.SecondContactInfo = new SecondContactInfo
-            {
-                Email = "",
-                FirstName = "",
-                LastName = "",
-            };
-            order.Request.OrderRequestParameter = new OrderRequestParameter
-            {
-                ProductCode = "DV_LOW_DNS",
-                BaseOption = "wildcard",
-                OrderKind = "new",
-                Licenses = "1",
-                ValidityPeriod = new ValidityPeriod { Months = "12" },
-                CSR =
-@"-----BEGIN NEW CERTIFICATE REQUEST-----
-MIIEajCCA1ICAQAwgYMxCzAJBgNVBAYTAkZJMRAwDgYDVQQIDAdub3QgYW55MRIw
-EAYDVQQHDAlUZXN0IENpdHkxGjAYBgNVBAoMEVRlc3Qgb3JnYW5pc2F0aW9uMRIw
-EAYDVQQLDAlUZXN0IHVuaXQxHjAcBgNVBAMMFXRlc3RyZXEubG9jYWxob3N0Lm5v
-dDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMt/1ROuule5weBxVsNU
-Y6fuaudTYta+evd65IpWI7Rjvk7mc+IhjhAitJKtboQ3zrT8NnFJFcJclJBaesxd
-sFe3QGf6YkVlvXOPl7+n3d/BadOpe1etqPTBbCsu6l9JBZ0zyMehEr9SUaKRZdMO
-p2aILa0vc4deAk6jBQxaR7V+BL5MGfETgW0oLPriahMTGGksOj3S9H4RrPlRJV/W
-5Rv5DzJ4Thn3ub9fF1173M9m6MIGFYqwRhQEt8ONkQNkIwRx7TxvPcVa40pFDY9H
-sHpv9HyP1mhuxnF5A8eanzdRHClHX3yWMgkXsBK9hN2ANW1867h4zur4Uwe24u8C
-DlUCAwEAAaCCAZ8wHAYKKwYBBAGCNw0CAzEOFgwxMC4wLjEwMjQwLjIwOQYJKwYB
-BAGCNxUUMSwwKgIBBQwIdGhlYmFsbDQMDlRIRUJBTEw0XEthbGxlDAtJbmV0TWdy
-LmV4ZTByBgorBgEEAYI3DQICMWQwYgIBAR5aAE0AaQBjAHIAbwBzAG8AZgB0ACAA
-UgBTAEEAIABTAEMAaABhAG4AbgBlAGwAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgA
-aQBjACAAUAByAG8AdgBpAGQAZQByAwEAMIHPBgkqhkiG9w0BCQ4xgcEwgb4wDgYD
-VR0PAQH/BAQDAgTwMBMGA1UdJQQMMAoGCCsGAQUFBwMBMHgGCSqGSIb3DQEJDwRr
-MGkwDgYIKoZIhvcNAwICAgCAMA4GCCqGSIb3DQMEAgIAgDALBglghkgBZQMEASow
-CwYJYIZIAWUDBAEtMAsGCWCGSAFlAwQBAjALBglghkgBZQMEAQUwBwYFKw4DAgcw
-CgYIKoZIhvcNAwcwHQYDVR0OBBYEFINL49lFkKAaTF17vUp8PuYF3lnuMA0GCSqG
-SIb3DQEBBQUAA4IBAQBVKPU1oZ3oKrcPlPciNKnZ9Wf23A2FwT15pBOlAg3T5byk
-2VD6I9iueQVM1OL+nek/X7OQZk7eJ3cnv6yiJzSE5Np8QyzAjRXiPZQAntZgiOSR
-XbEZt4qVsgSHH3m5nSEuNwRmKu73GkeUQ+1a8cykdg5fCs8fWsl8c/scu/Zoz9Vp
-tNEBNZ2DsVg6iiOoAdLMex91gt/6gbr9jdCrCifKzW5jAek2stPLXekLeyqUIYys
-DZgxn5TF32NdJ5H3i8qZx9RnFN4Lv/HbgploRfYFgnY51WdYZJadow447zyLHsdm
-U84GnPPAJbWQfdmwftUfeXtdUUcn5Tbq8bDlezcs
------END NEW CERTIFICATE REQUEST-----"
-            };
-            order.Request.OrderRequestHeader = new OrderRequestHeader
-            {
-                AuthToken = new AuthToken {UserName = userName, Password = passWord}
-            };
+            // https://system.globalsign.com/kb/ws/v1/ServerSSLService
+            // https://testsystem.globalsign.com/kb/ws/v1/ServerSSLService
+            ServerSSLV1Client client = new ServerSSLV1Client("ServerSSLV1Port",
+                "https://testsystem.globalsign.com/kb/ws/v1/ServerSSLService");
 
-            var response = client.DVDNSOrder(order.Request);
+            // https://system.globalsign.com/kb/ws/v1/GASService
+            // https://testsystem.globalsign.com/kb/ws/v1/GASService
+            GASV1Client gasClient = new GASV1Client("GASV1Port",
+                "https://testsystem.globalsign.com/kb/ws/v1/GASService");
 
+
+            GASAuthToken gasAuthToken = new GASAuthToken { UserName = userName, Password = passWord };
+            SSLAuthToken sslAuthToken = new SSLAuthToken { UserName = userName, Password = passWord };
+
+            string csr = @"-----BEGIN NEW CERTIFICATE REQUEST-----
+MIIETzCCAzcCAQAwaTELMAkGA1UEBhMCRkkxDDAKBgNVBAgMA24vYTEQMA4GA1UE
+BwwHVGFtcGVyZTETMBEGA1UECgwKRGlvcnkgTHRkLjELMAkGA1UECwwCSVQxGDAW
+BgNVBAMMDyouZGlvc3BoZXJlLm9yZzCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+AQoCggEBAKQHuuH2Um99s37cc5z2wKNQb48sL1qVzYJS7ZfmdCnwSFwAKNkyRo4a
+DGVcZXHxr50RLLucfuNXyYGjqze6oKkL2V07T2rYGMJrW/j02Tx9MF2gUSGI84kN
+TnoJMrTBHwfnReBWHnfltqeGPQSHYI71NqNMb0MUneac+izdToUF/uW1Q9N4Ewei
+GJQDa/Ve23D3qLlsF1p5lHGQE/yPBj4bcfx6FQD5Sw9TddMeK2RWGcvEBi7Wl5Tt
+asVr1GT/uJTtWbhhPkLQKLaP+3BMzKKbFwNVOXI8Td78JeoLeGCQiev/FhUjdlXN
+1IudE1oArWztqVLpQlE0mG83QwP1TI8CAwEAAaCCAZ8wHAYKKwYBBAGCNw0CAzEO
+FgwxMC4wLjEwMjQwLjIwOQYJKwYBBAGCNxUUMSwwKgIBBQwIdGhlYmFsbDQMDlRI
+RUJBTEw0XEthbGxlDAtJbmV0TWdyLmV4ZTByBgorBgEEAYI3DQICMWQwYgIBAR5a
+AE0AaQBjAHIAbwBzAG8AZgB0ACAAUgBTAEEAIABTAEMAaABhAG4AbgBlAGwAIABD
+AHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByAwEAMIHP
+BgkqhkiG9w0BCQ4xgcEwgb4wDgYDVR0PAQH/BAQDAgTwMBMGA1UdJQQMMAoGCCsG
+AQUFBwMBMHgGCSqGSIb3DQEJDwRrMGkwDgYIKoZIhvcNAwICAgCAMA4GCCqGSIb3
+DQMEAgIAgDALBglghkgBZQMEASowCwYJYIZIAWUDBAEtMAsGCWCGSAFlAwQBAjAL
+BglghkgBZQMEAQUwBwYFKw4DAgcwCgYIKoZIhvcNAwcwHQYDVR0OBBYEFEQ7j3w5
+aq9FpNil4wQTeo6qpM+YMA0GCSqGSIb3DQEBBQUAA4IBAQBnt/6ikLB87AKtu7GO
+eobABi+9eTAbvyGm76ViVFw8Yrh0kx6tzmK0+OeHTPYc+tqCFoAsRemSddPyq308
+VxttbX98fbQnyJp0q4Hqa4C6+1awbslSv57+WFENpXhx5ELAvFAg241BlJR3KOQH
+Av3fjFPjchNfecF8uHlUVo4br8i2wrTcowtnlwls1yAb/fG+mI/wXc0/cRjnYDKT
+mrrMSG6H5pmVTc9uFjW5rzFITvFRUAb1VAdF0Xov4yxC/k7yhzj8Z/C3v7nTA6XI
+Lkv6WVyjAul1uswGIotte5i5GPBwPwJNtT5qOx7GEub55SHQoJJy80yFR39+mQP9
+UVKM
+-----END NEW CERTIFICATE REQUEST-----";
+
+            DecodeCSR decodeCsr = CreateDecodeCSR(csr, gasAuthToken);
+            var gasCSRResponse = gasClient.DecodeCSR(decodeCsr.Request);
+
+            /*
+            var commonName = gasCSRResponse.CSRData.CommonName;
+            string fqdn = commonName.Substring(commonName.IndexOf("."));
+            var getDVApproverList = CreateGetDVApproverList(fqdn, gasAuthToken);
+            */
+
+            string orderID = null;
+            var order = CreateDvdnsOrder(csr, orderID, sslAuthToken);
+            var sslResponse = client.DVDNSOrder(order.Request);
+
+        }
+
+        private static GetDVApproverList CreateGetDVApproverList(string fqdn, GASAuthToken gasAuthToken)
+        {
+            var getDVAApproverList = new GetDVApproverList
+            {
+                Request = new QbV1GetDVApproverListRequest
+                {
+                    //FQDN = 
+                }
+            };
+            return getDVAApproverList;
+        }
+
+        private static DecodeCSR CreateDecodeCSR(string csr, GASAuthToken gasAuthToken)
+        {
+            var decodeCSR = new GAS.DecodeCSR
+            {
+                Request = new QbV1DecodeCsrRequest
+                {
+                    CSR = csr,
+                    ProductType = "DV_LOW",
+                    QueryRequestHeader = new GAS.QueryRequestHeader
+                    {
+                        AuthToken = gasAuthToken
+                    }
+                }
+            };
+            return decodeCSR;
+        }
+
+        private static DVDNSOrder CreateDvdnsOrder(string csr, string orderID, SSLAuthToken authToken)
+        {
+            DVDNSOrder order = new DVDNSOrder
+            {
+                Request = new QbV1DvDnsOrderRequest
+                {
+                    ContactInfo = new SSL.ContactInfo()
+                    {
+                        Email = "kalle.launiala@protonit.net",
+                        FirstName = "Kalle",
+                        LastName = "Launiala",
+                        Phone = "+358445575665"
+                    },
+                    SecondContactInfo = new SSL.SecondContactInfo
+                    {
+                        Email = "kalle.launiala@protonit.net",
+                        FirstName = "Kalle",
+                        LastName = "Launiala",
+                    },
+                    OrderRequestParameter = new SSL.OrderRequestParameter
+                    {
+                        ProductCode = "DV_LOW_DNS",
+                        BaseOption = "wildcard",
+                        OrderKind = "new",
+                        Licenses = "1",
+                        ValidityPeriod = new SSL.ValidityPeriod {Months = "12"},
+                        CSR = csr,
+                    },
+                    OrderRequestHeader = new SSL.OrderRequestHeader
+                    {
+                        AuthToken = authToken
+                    },
+                }
+            };
+            return order;
         }
     }
 }

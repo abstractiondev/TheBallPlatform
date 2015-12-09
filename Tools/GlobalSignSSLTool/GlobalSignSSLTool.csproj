@@ -51,6 +51,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\GlobalSignGASSvc\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\GlobalSignSSLSvc\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -60,6 +65,73 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Service References\GlobalSignGASSvc\GASService.wsdl" />
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.DecodeCSRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.DeletePkcs12Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.GetCertificateOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.GetModifiedOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.GetOrderByDateRangeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.GetOrderByExpirationDateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.GetOrderByOrderIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1DecodeCsrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1DeletePkcs12Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1GetCertificateOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1GetModifiedOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1GetOrderByDateRangeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1GetOrderByExpirationDateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1GetOrderByOrderIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1ReIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1ReIssueWithoutCSRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1ToggleRenewalNoticeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.QbV1ValidateOrderParametersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.ReIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.ReIssueWithoutCSRResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.ToggleRenewalNoticeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GlobalSignGASSvc\GlobalSignSSLTool.GlobalSignGASSvc.ValidateOrderParametersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\GlobalSignSSLSvc\GlobalSignSSLTool.GlobalSignSSLSvc.CertInviteOrderResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -174,6 +246,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GlobalSignGASSvc\" />
     <WCFMetadataStorage Include="Service References\GlobalSignSSLSvc\" />
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +257,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\GlobalSignSSLSvc\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GlobalSignGASSvc\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GlobalSignGASSvc\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GlobalSignGASSvc\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
