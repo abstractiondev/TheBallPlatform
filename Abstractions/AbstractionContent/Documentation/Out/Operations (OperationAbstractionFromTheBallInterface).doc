@@ -944,6 +944,106 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Negotiate device connection
 		</div>
+		</p><h1>LockAndExecuteInterfaceOperationsByOwner</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner
+		</div>
+		</p><h2>Target Definition: QueueOwner</h2>
+		<p>		<div class="MsoNormal" >
+		Get system as queue owner
+		</div>
+		</p><h2>Target Definition: QueueLocation</h2>
+		<p>		<div class="MsoNormal" >
+		Queue root folder location
+		</div>
+		</p><h2>Target Definition: OwnerGroupedItems ( QueueOwner, QueueLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Grouped data by owner; preserving alphabetical order for oldest-first
+		</div>
+		</p><h2>Target Definition: LockFileNameFormat</h2>
+		<p>		<div class="MsoNormal" >
+		Lock file name as: _ownerprefix_ownerid.lock
+		</div>
+		</p><h2>Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat )</h2>
+		<p>		<div class="MsoNormal" >
+		Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content.
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LockedOwnerPrefix
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Locked owner prefix acc or grp (if lock acquired)
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LockedOwnerID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Locked owner ID (if lock acquired)
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationIDs
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation IDs of obtained lock or null if failed to get lock
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LockBlobFullPath
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Lock blobs full path
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ExecuteOperationsAndReleaseLock ( AcquireFirstObtainableLockOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute operations one by one, delete queue items after each execution, delete lock item after all executed.
+		</div>
 		</p><h1>PackageAndPushCollaborationContent (ConnectionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1111,6 +1211,56 @@ div.WordSection1
 		</p><h2>Method Call: CallOtherSideProcessingForCopiedContent ( Connection, CallDeviceSyncToSendContentOutput )</h2>
 		<p>		<div class="MsoNormal" >
 		Call other side to process copied content
+		</div>
+		</p><h1>PutInterfaceOperationToQueue (OperationID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Put interface operation to queue
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: QueueOwner</h2>
+		<p>		<div class="MsoNormal" >
+		Get system as queue owner
+		</div>
+		</p><h2>Target Definition: QueueLocation</h2>
+		<p>		<div class="MsoNormal" >
+		Queue root folder location
+		</div>
+		</p><h2>Target Definition: OperationOwner</h2>
+		<p>		<div class="MsoNormal" >
+		Operation item owner from Context.CurrentOwner
+		</div>
+		</p><h2>Target Definition: QueueItemFileNameFormat</h2>
+		<p>		<div class="MsoNormal" >
+		Queue item file name as: timestamp_ownerprefix_ownerid_operationid
+		</div>
+		</p><h2>Target Definition: QueueItemFullPath ( QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner, OperationID )</h2>
+		<p>		<div class="MsoNormal" >
+		Queue item filename format populated with data and combined with queue owner and location
+		</div>
+		</p><h2>Method Call: CreateQueueEntry ( QueueItemFullPath, OperationID )</h2>
+		<p>		<div class="MsoNormal" >
+		Create queue entry to item with content of OperationID within
 		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>

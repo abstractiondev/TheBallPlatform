@@ -169,6 +169,48 @@ using System.IO;
 				DeleteInterfaceOperationImplementation.ExecuteMethod_DeleteOperationWithData(OperationBlobLocation, OperationDataBlobLocation);		
 				}
 				}
+				public class PutInterfaceOperationToQueueParameters 
+		{
+				public string OperationID ;
+				}
+		
+		public class PutInterfaceOperationToQueue 
+		{
+				private static void PrepareParameters(PutInterfaceOperationToQueueParameters parameters)
+		{
+					}
+				public static void Execute(PutInterfaceOperationToQueueParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = PutInterfaceOperationToQueueImplementation.GetTarget_QueueLocation();	
+				TheBall.CORE.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
+				string QueueItemFileNameFormat = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFileNameFormat();	
+				string QueueItemFullPath = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFullPath(parameters.OperationID, QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner);	
+				PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntry(parameters.OperationID, QueueItemFullPath);		
+				}
+				}
+		
+		public class LockAndExecuteInterfaceOperationsByOwner 
+		{
+				public class AcquireFirstObtainableLockReturnValue 
+		{
+				public string LockedOwnerPrefix ;
+				public string LockedOwnerID ;
+				public string[] OperationIDs ;
+				public string LockBlobFullPath ;
+				}
+				public static void Execute()
+		{
+						
+					TheBall.CORE.IContainerOwner QueueOwner = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
+				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
+				string LockFileNameFormat = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
+				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput = LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLock(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
+				LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(AcquireFirstObtainableLockOutput);		
+				}
+				}
 				public class UpdateStatusSummaryParameters 
 		{
 				public TheBall.CORE.IContainerOwner Owner ;

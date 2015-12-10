@@ -411,6 +411,62 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="PutInterfaceOperationToQueue">
+        <OperationSpec>
+          <Description>Put interface operation to queue</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="string" name="OperationID" designDesc="Operation ID" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
+            <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
+            <TargetDefinition name="OperationOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Operation item owner from Context.CurrentOwner" state="implemented" />
+            <TargetDefinition name="QueueItemFileNameFormat" dataType="string" designDesc="Queue item file name as: timestamp_ownerprefix_ownerid_operationid" state="implemented" />
+            <TargetDefinition name="QueueItemFullPath" dataType="string" designDesc="Queue item filename format populated with data and combined with queue owner and location" state="implemented">
+              <Parameter name="OperationID"/>
+              <Target name="QueueItemFileNameFormat"/>
+              <Target name="QueueOwner"/>
+              <Target name="QueueLocation"/>
+              <Target name="OperationOwner"/>
+            </TargetDefinition>
+            <MethodExecute name="CreateQueueEntry" designDesc="Create queue entry to item with content of OperationID within" state="implemented">
+              <Parameter name="OperationID"/>
+              <Target name="QueueItemFullPath"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="LockAndExecuteInterfaceOperationsByOwner">
+        <OperationSpec>
+          <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
+            <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
+            <TargetDefinition name="OwnerGroupedItems" dataType="IEnumerable&lt;System.Linq.IGrouping&lt;string, string&gt;&gt;" designDesc="Grouped data by owner; preserving alphabetical order for oldest-first" state="implemented">
+              <Target name="QueueOwner"/>
+              <Target name="QueueLocation"/>
+            </TargetDefinition>
+            <TargetDefinition name="LockFileNameFormat" dataType="string" designDesc="Lock file name as: _ownerprefix_ownerid.lock" state="implemented" />
+            <MethodExecute name="AcquireFirstObtainableLock" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented">
+              <Target name="OwnerGroupedItems"/>
+              <Target name="QueueOwner"/>
+              <Target name="QueueLocation"/>
+              <Target name="LockFileNameFormat"/>
+              <ReturnValue dataType="string" name="LockedOwnerPrefix" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented"/>
+              <ReturnValue dataType="string" name="LockedOwnerID" designDesc="Locked owner ID (if lock acquired)" state="implemented"/>
+              <ReturnValue dataType="string[]" name="OperationIDs" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented"/>
+              <ReturnValue dataType="string" name="LockBlobFullPath" designDesc="Lock blobs full path" state="implemented"/>
+            </MethodExecute>
+            <MethodExecute name="ExecuteOperationsAndReleaseLock" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." state="implemented">
+              <Target name="AcquireFirstObtainableLockOutput" />
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="UpdateStatusSummary">
         <OperationSpec>
           <Description>

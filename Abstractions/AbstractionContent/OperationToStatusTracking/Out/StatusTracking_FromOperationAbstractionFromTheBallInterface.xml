@@ -139,6 +139,45 @@
     <StatusItem name="DeleteInterfaceOperation_DeleteOperationWithData" displayName="MethodExecuteType: DeleteOperationWithData" description="Delete interface operation with its associated data">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_OperationID" displayName="VariableType: OperationID" description="Operation ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_QueueOwner" displayName="TargetDefinitionType: QueueOwner" description="Get system as queue owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_QueueLocation" displayName="TargetDefinitionType: QueueLocation" description="Queue root folder location">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_OperationOwner" displayName="TargetDefinitionType: OperationOwner" description="Operation item owner from Context.CurrentOwner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_QueueItemFileNameFormat" displayName="TargetDefinitionType: QueueItemFileNameFormat" description="Queue item file name as: timestamp_ownerprefix_ownerid_operationid">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_QueueItemFullPath" displayName="TargetDefinitionType: QueueItemFullPath" description="Queue item filename format populated with data and combined with queue owner and location">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PutInterfaceOperationToQueue_CreateQueueEntry" displayName="MethodExecuteType: CreateQueueEntry" description="Create queue entry to item with content of OperationID within">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_QueueOwner" displayName="TargetDefinitionType: QueueOwner" description="Get system as queue owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_QueueLocation" displayName="TargetDefinitionType: QueueLocation" description="Queue root folder location">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_OwnerGroupedItems" displayName="TargetDefinitionType: OwnerGroupedItems" description="Grouped data by owner; preserving alphabetical order for oldest-first">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_LockFileNameFormat" displayName="TargetDefinitionType: LockFileNameFormat" description="Lock file name as: _ownerprefix_ownerid.lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_AcquireFirstObtainableLock" displayName="MethodExecuteType: AcquireFirstObtainableLock" description="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="LockAndExecuteInterfaceOperationsByOwner_ExecuteOperationsAndReleaseLock" displayName="MethodExecuteType: ExecuteOperationsAndReleaseLock" description="Execute operations one by one, delete queue items after each execution, delete lock item after all executed.">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="UpdateStatusSummary_Owner" displayName="VariableType: Owner" description="Owner of the operation context">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -380,6 +419,23 @@
       <ItemRef itemName="DeleteInterfaceOperation_OperationBlobLocation" />
       <ItemRef itemName="DeleteInterfaceOperation_OperationDataBlobLocation" />
       <ItemRef itemName="DeleteInterfaceOperation_DeleteOperationWithData" />
+    </Group>
+    <Group name="PutInterfaceOperationToQueue">
+      <ItemRef itemName="PutInterfaceOperationToQueue_OperationID" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_QueueOwner" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_QueueLocation" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_OperationOwner" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_QueueItemFileNameFormat" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_QueueItemFullPath" />
+      <ItemRef itemName="PutInterfaceOperationToQueue_CreateQueueEntry" />
+    </Group>
+    <Group name="LockAndExecuteInterfaceOperationsByOwner">
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_QueueOwner" />
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_QueueLocation" />
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_OwnerGroupedItems" />
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_LockFileNameFormat" />
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_AcquireFirstObtainableLock" />
+      <ItemRef itemName="LockAndExecuteInterfaceOperationsByOwner_ExecuteOperationsAndReleaseLock" />
     </Group>
     <Group name="UpdateStatusSummary">
       <ItemRef itemName="UpdateStatusSummary_Owner" />

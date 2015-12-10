@@ -888,6 +888,112 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="LockAndExecuteInterfaceOperationsByOwner" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueOwner" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get system as queue owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueLocation" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue root folder location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerGroupedItems ( QueueOwner, QueueLocation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Grouped data by owner; preserving alphabetical order for oldest-first</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LockFileNameFormat" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Lock file name as: _ownerprefix_ownerid.lock</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content.</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerPrefix</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner prefix acc or grp (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner ID (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OperationIDs</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation IDs of obtained lock or null if failed to get lock</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockBlobFullPath</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Lock blobs full path</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( AcquireFirstObtainableLockOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute operations one by one, delete queue items after each execution, delete lock item after all executed.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PackageAndPushCollaborationContent (ConnectionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1114,6 +1220,81 @@
               <Paragraph>
                 <Text>
                   <TextContent>Call other side to process copied content</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PutInterfaceOperationToQueue (OperationID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Put interface operation to queue</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OperationID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueOwner" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get system as queue owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueLocation" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue root folder location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OperationOwner" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Operation item owner from Context.CurrentOwner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueItemFileNameFormat" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue item file name as: timestamp_ownerprefix_ownerid_operationid</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: QueueItemFullPath ( QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner, OperationID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue item filename format populated with data and combined with queue owner and location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CreateQueueEntry ( QueueItemFullPath, OperationID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create queue entry to item with content of OperationID within</TextContent>
                 </Text>
               </Paragraph>
             </Header>

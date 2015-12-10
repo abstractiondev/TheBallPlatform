@@ -204,6 +204,9 @@ namespace TheBall
             // { "", typeof(object)},
         };
 
+        public const string QueueFileNameFormat = "{0:yyyy-MM-dd_HH-mm-ss}_{1}_{2}_{3}";
+        public const string LockFileNameFormat = "_{0}.lock";
+
         public static Type GetLegacyMappedType(string operationLegacyName)
         {
             Tuple<Type, ParameterManipulator> legacyMappedType;
@@ -213,5 +216,16 @@ namespace TheBall
         }
 
         public const string HttpOperationDataType = "HTTPREQUEST";
+        public const string OperationQueueLocationName = "OPQueue";
+
+        public static void GetQueueItemComponents(string fileNamePart, out string timestampPart, out string ownerPrefix,
+            out string ownerID, out string operationID)
+        {
+            var split = fileNamePart.Split('_');
+            timestampPart = split[0];
+            ownerPrefix = split[1];
+            ownerID = split[2];
+            operationID = split[3];
+        }
     }
 }
