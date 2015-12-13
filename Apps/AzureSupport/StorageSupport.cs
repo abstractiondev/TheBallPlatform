@@ -187,6 +187,13 @@ namespace TheBall
         }
 
 
+        public static async Task<CloudBlockBlob> UploadBlobTextAsync(this CloudBlobContainer container,
+            string blobPath, string textContent)
+        {
+            var blob = container.GetBlockBlobReference(blobPath);
+            await UploadBlobTextAsync(blob, textContent);
+            return blob;
+        }
 
         public static CloudBlockBlob UploadBlobText(this CloudBlobContainer container,
             string blobPath, string textContent)
@@ -195,6 +202,17 @@ namespace TheBall
             UploadBlobText(blob, textContent);
             return blob;
         }
+
+        public static async Task UploadBlobTextAsync(this CloudBlockBlob blob, string textContent, bool requireNonExistentBlob = false)
+        {
+            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
+            BlobRequestOptions options = new BlobRequestOptions();
+            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            if (requireNonExistentBlob)
+                options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            blob.UploadText(textContent, Encoding.UTF8, options);
+        }
+
 
         public static void UploadBlobText(this CloudBlob blob, string textContent, bool requireNonExistentBlob = false)
         {

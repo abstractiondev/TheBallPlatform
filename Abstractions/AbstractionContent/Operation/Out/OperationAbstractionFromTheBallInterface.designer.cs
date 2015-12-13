@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 		namespace TheBall.Interface { 
 				public class ExecuteRemoteCalledConnectionOperationParameters 
@@ -185,9 +186,21 @@ using System.IO;
 					TheBall.CORE.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
 				string QueueLocation = PutInterfaceOperationToQueueImplementation.GetTarget_QueueLocation();	
 				TheBall.CORE.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
+				TheBall.CORE.IAccountInfo InvokerAccount = PutInterfaceOperationToQueueImplementation.GetTarget_InvokerAccount();	
 				string QueueItemFileNameFormat = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFileNameFormat();	
 				string QueueItemFullPath = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFullPath(parameters.OperationID, QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner);	
-				PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntry(parameters.OperationID, QueueItemFullPath);		
+				PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntry(parameters.OperationID, QueueItemFullPath, InvokerAccount);		
+				}
+				public static async Task ExecuteAsync(PutInterfaceOperationToQueueParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = PutInterfaceOperationToQueueImplementation.GetTarget_QueueLocation();	
+				TheBall.CORE.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
+				TheBall.CORE.IAccountInfo InvokerAccount = PutInterfaceOperationToQueueImplementation.GetTarget_InvokerAccount();	
+				string QueueItemFileNameFormat = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFileNameFormat();	
+				string QueueItemFullPath = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFullPath(parameters.OperationID, QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner);	
+				 await PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntryAsync(parameters.OperationID, QueueItemFullPath, InvokerAccount);		
 				}
 				}
 		
@@ -209,6 +222,16 @@ using System.IO;
 				string LockFileNameFormat = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
 				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput = LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLock(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
 				LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(AcquireFirstObtainableLockOutput);		
+				}
+				public static async Task ExecuteAsync()
+		{
+						
+					TheBall.CORE.IContainerOwner QueueOwner = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
+				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
+				string LockFileNameFormat = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
+				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
+				 await LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(AcquireFirstObtainableLockOutput);		
 				}
 				}
 				public class UpdateStatusSummaryParameters 

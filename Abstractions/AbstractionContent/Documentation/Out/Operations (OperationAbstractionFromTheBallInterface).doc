@@ -1250,6 +1250,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Operation item owner from Context.CurrentOwner
 		</div>
+		</p><h2>Target Definition: InvokerAccount</h2>
+		<p>		<div class="MsoNormal" >
+		Operation requesting account
+		</div>
 		</p><h2>Target Definition: QueueItemFileNameFormat</h2>
 		<p>		<div class="MsoNormal" >
 		Queue item file name as: timestamp_ownerprefix_ownerid_operationid
@@ -1258,9 +1262,9 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Queue item filename format populated with data and combined with queue owner and location
 		</div>
-		</p><h2>Method Call: CreateQueueEntry ( QueueItemFullPath, OperationID )</h2>
+		</p><h2>Method Call: CreateQueueEntry ( QueueItemFullPath, InvokerAccount, OperationID )</h2>
 		<p>		<div class="MsoNormal" >
-		Create queue entry to item with content of OperationID within
+		Create queue entry to item with content of invoker account within
 		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>

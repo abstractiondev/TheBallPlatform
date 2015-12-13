@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerManager", "Apps\We
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerManagerTests", "WebServerManagerTests\WebServerManagerTests.csproj", "{576930B0-D8B7-407D-981D-792A86A26E42}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{576930B0-D8B7-407D-981D-792A86A26E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576930B0-D8B7-407D-981D-792A86A26E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576930B0-D8B7-407D-981D-792A86A26E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

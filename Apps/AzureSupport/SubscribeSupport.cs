@@ -200,31 +200,6 @@ namespace TheBall
                                                          {Owner = owner, TargetLocation = targetLocation};
             ictx.AddSubscriptionUpdateTarget(subscriptionItem);
             return;
-
-            if(subscriptionCollection != null)
-            {
-                foreach(var subscription in subscriptionCollection.CollectionContent)
-                {
-                    OperationRequest operationRequest = new OperationRequest
-                                                            {
-                                                                SubscriberNotification = subscription
-                                                            };
-                    //QueueSupport.PutToOperationQueue(operationRequest);
-                    ictx.AddOperationRequestToFinalizingQueue(operationRequest);
-                }
-            }
-            if(parentSubscriptionCollection != null)
-            {
-                foreach (var subscription in parentSubscriptionCollection.CollectionContent)
-                {
-                    OperationRequest operationRequest = new OperationRequest
-                    {
-                        SubscriberNotification = subscription
-                    };
-                    //QueueSupport.PutToOperationQueue(operationRequest);
-                    ictx.AddOperationRequestToFinalizingQueue(operationRequest);
-                }
-            }
         }
 
         public static void DeleteSubscriptions(string targetLocation)

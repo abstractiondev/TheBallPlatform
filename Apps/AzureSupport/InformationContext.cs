@@ -40,7 +40,6 @@ namespace TheBall
 
         public InformationContext()
         {
-            FinalizingOperationQueue = new List<OperationRequest>();
             SubscriptionChainTargetsToUpdate = new List<OwnerSubscriptionItem>();
         }
 
@@ -187,11 +186,6 @@ namespace TheBall
             SubscriptionChainTargetsToUpdate.Add(targetLocation);
         }
 
-        public void AddOperationRequestToFinalizingQueue(OperationRequest operationRequest)
-        {
-            FinalizingOperationQueue.Add(operationRequest);
-        }
-
         public void PerformFinalizingActions()
         {
             updateStatusSummary();
@@ -202,7 +196,6 @@ namespace TheBall
                 var targetLocations = grpItem.Select(item => item.TargetLocation).Distinct().ToArray();
                 SubscribeSupport.AddPendingRequests(grpItem.Key, targetLocations);
             }
-            FinalizingOperationQueue.ForEach(oper => QueueSupport.PutToOperationQueue(oper));
             if (isResourceMeasuring)
             {
                 // Complete resource measuring - add one more transaction because the RRU item is stored itself
@@ -232,8 +225,6 @@ namespace TheBall
                 FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = IndexedIDInfos.ToArray() });
             }
         }
-
-        protected List<OperationRequest> FinalizingOperationQueue { get; private set; }
 
         public string InitializedContainerName { get; private set; }
         public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)

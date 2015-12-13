@@ -54,7 +54,6 @@ namespace AaltoGlobalImpact.OIP
             operationRequest.DeleteEntireOwner.ContainerName = groupToDelete.Group.ContainerName;
             operationRequest.DeleteEntireOwner.LocationPrefix = groupToDelete.Group.LocationPrefix;
             //QueueSupport.PutToOperationQueue(operationRequest);
-            InformationContext.Current.AddOperationRequestToFinalizingQueue(operationRequest);
         }
     }
 }

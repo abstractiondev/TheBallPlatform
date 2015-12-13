@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerConsole", "Apps\Worke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -184,6 +186,18 @@ Global
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|x86.ActiveCfg = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|x86.Build.0 = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|x86.Build.0 = Debug|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|x86.ActiveCfg = Release|Any CPU
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,5 +214,6 @@ Global
 		{4944D743-F381-471E-980B-54D8387F5478} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA} = {729DDCC1-5D06-448D-9490-94F1AA750C2B}
 		{45AEA585-230C-40D3-A058-01F8D5AB436A} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
+		{C5D4D065-D884-4590-A3F5-BB2566C0A890} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 	EndGlobalSection
 EndGlobal

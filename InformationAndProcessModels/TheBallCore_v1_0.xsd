@@ -165,7 +165,7 @@ Useful to NOT have in system-internal objects such as queue operations where the
 			<xs:element name="Target" type="TargetType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="ReturnValue" type="VariableType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="DefinitionTypeAttributes"/>
 		<xs:attributeGroup ref="DesignAttributes"/>
 	</xs:complexType>
 	<xs:complexType name="MethodsType">
@@ -233,7 +233,7 @@ This is required for operations that take part of requirement and provider depen
 			<xs:element name="Target" type="TargetType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="ReturnValue" type="VariableType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="DefinitionTypeAttributes"/>
 		<xs:attribute name="targetOperationName" type="xs:string" use="required"/>
 		<xs:attributeGroup ref="DesignAttributes"/>
 	</xs:complexType>
@@ -511,7 +511,7 @@ The requirement definition is done separately, but some categories (such as Perf
 			<xs:element name="Parameter" type="TargetType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Target" type="TargetType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="DefinitionTypeAttributes"/>
 		<xs:attribute name="dataType" type="xs:string" use="required"/>
 		<xs:attributeGroup ref="DesignAttributes"/>
 	</xs:complexType>
@@ -550,6 +550,21 @@ Depending on the process, the "designApproved" might come from separate auditing
 					<xs:enumeration value="underDesign"/>
 					<xs:enumeration value="designApproved"/>
 					<xs:enumeration value="implemented"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="DefinitionTypeAttributes">
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute default="SyncOnly" name="asyncSupportMode">
+			<xs:annotation>
+				<xs:documentation>(Opt = false) If true, async/await call is generated for Async-operation</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="SyncOnly"/>
+					<xs:enumeration value="AsyncOnly"/>
+					<xs:enumeration value="Both"/>
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>

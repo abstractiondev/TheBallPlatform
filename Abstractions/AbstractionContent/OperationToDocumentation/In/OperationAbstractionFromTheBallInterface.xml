@@ -239,6 +239,7 @@
           <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
           <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
           <TargetDefinition name="OperationOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Operation item owner from Context.CurrentOwner" state="implemented" />
+          <TargetDefinition name="InvokerAccount" dataType="TheBall.CORE.IAccountInfo" designDesc="Operation requesting account" state="implemented" />
           <TargetDefinition name="QueueItemFileNameFormat" dataType="string" designDesc="Queue item file name as: timestamp_ownerprefix_ownerid_operationid" state="implemented" />
           <TargetDefinition name="QueueItemFullPath" dataType="string" designDesc="Queue item filename format populated with data and combined with queue owner and location" state="implemented">
             <Parameter name="OperationID" />
@@ -247,9 +248,10 @@
             <Target name="QueueLocation" />
             <Target name="OperationOwner" />
           </TargetDefinition>
-          <MethodExecute name="CreateQueueEntry" designDesc="Create queue entry to item with content of OperationID within" state="implemented">
+          <MethodExecute name="CreateQueueEntry" asyncSupportMode="Both" designDesc="Create queue entry to item with content of invoker account within" state="implemented">
             <Parameter name="OperationID" />
             <Target name="QueueItemFullPath" />
+            <Target name="InvokerAccount" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>
@@ -267,7 +269,7 @@
             <Target name="QueueLocation" />
           </TargetDefinition>
           <TargetDefinition name="LockFileNameFormat" dataType="string" designDesc="Lock file name as: _ownerprefix_ownerid.lock" state="implemented" />
-          <MethodExecute name="AcquireFirstObtainableLock" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented">
+          <MethodExecute name="AcquireFirstObtainableLock" asyncSupportMode="Both" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented">
             <Target name="OwnerGroupedItems" />
             <Target name="QueueOwner" />
             <Target name="QueueLocation" />
@@ -277,7 +279,7 @@
             <ReturnValue name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
             <ReturnValue name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="ExecuteOperationsAndReleaseLock" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." state="implemented">
+          <MethodExecute name="ExecuteOperationsAndReleaseLock" asyncSupportMode="Both" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." state="implemented">
             <Target name="AcquireFirstObtainableLockOutput" />
           </MethodExecute>
         </SequentialExecution>

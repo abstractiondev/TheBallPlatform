@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -6,32 +9,52 @@ namespace TheBall.Interface
     {
         public static IContainerOwner GetTarget_QueueOwner()
         {
-            throw new System.NotImplementedException();
+            return SystemSupport.SystemOwner;
         }
 
         public static string GetTarget_QueueLocation()
         {
-            throw new System.NotImplementedException();
+            return OperationSupport.OperationQueueLocationName;
         }
 
         public static IContainerOwner GetTarget_OperationOwner()
         {
-            throw new System.NotImplementedException();
+            return InformationContext.CurrentOwner;
         }
 
         public static string GetTarget_QueueItemFileNameFormat()
         {
-            throw new System.NotImplementedException();
+            return OperationSupport.QueueFileNameFormat;
         }
 
         public static string GetTarget_QueueItemFullPath(string operationID, string queueItemFileNameFormat, IContainerOwner queueOwner, string queueLocation, IContainerOwner operationOwner)
         {
-            throw new System.NotImplementedException();
+            DateTime timestamp = DateTime.UtcNow;
+            var queueItemFileName = String.Format(queueItemFileNameFormat, timestamp, queueOwner.ContainerName, queueOwner.LocationPrefix, operationID);
+            var fullPath = Path.Combine(queueOwner.GetOwnerPrefix(), queueLocation, queueItemFileName)
+                .Replace(@"\", "/");
+            return fullPath;
         }
 
-        public static void ExecuteMethod_CreateQueueEntry(string operationID, string queueItemFullPath)
+        public static IAccountInfo GetTarget_InvokerAccount()
         {
-            throw new System.NotImplementedException();
+            return InformationContext.CurrentAccount;
+        }
+
+        public static void ExecuteMethod_CreateQueueEntry(string operationID, string queueItemFullPath, IAccountInfo invokerAccount)
+        {
+            string content = String.Join(Environment.NewLine,
+                new string[]
+                {operationID, invokerAccount.AccountID, invokerAccount.AccountEmail, invokerAccount.AccountName});
+            StorageSupport.CurrActiveContainer.UploadBlobText(queueItemFullPath, content);
+        }
+
+        public static async Task ExecuteMethod_CreateQueueEntryAsync(string operationID, string queueItemFullPath, IAccountInfo invokerAccount)
+        {
+            string content = String.Join(Environment.NewLine,
+                new string[]
+                {operationID, invokerAccount.AccountID, invokerAccount.AccountEmail, invokerAccount.AccountName});
+            await StorageSupport.CurrActiveContainer.UploadBlobTextAsync(queueItemFullPath, content);
         }
     }
 }
