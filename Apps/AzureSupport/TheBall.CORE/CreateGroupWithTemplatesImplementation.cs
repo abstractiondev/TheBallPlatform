@@ -21,7 +21,7 @@ namespace TheBall.CORE
         {
             string[] templates = templateNameList.Split(',');
             foreach(var templateName in templates)
-                RenderWebSupport.RefreshGroupTemplate(executeCreateGroupOutput, templateName, false);
+                RenderWebSupport.RefreshGroupTemplate(executeCreateGroupOutput, templateName);
         }
 
         public static void ExecuteMethod_RedirectToGivenUrl(string redirectUrlAfterCreation, string executeCreateGroupOutput)

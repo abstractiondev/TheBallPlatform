@@ -208,7 +208,6 @@
     <Compile Include="TheBall.CORE\ReleaseSystemProcessLockImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoteDeviceCoreOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoveAccountFromGroupImplementation.cs" />
-    <Compile Include="TheBall.CORE\RequestProcessExecutionImplementation.cs" />
     <Compile Include="TheBall.CORE\SemanticInformationItem.cs" />
     <Compile Include="TheBall.CORE\SetObjectTreeValuesImplementation.cs" />
     <Compile Include="TheBall.CORE\SyncCopyContentToDeviceTargetImplementation.cs" />
@@ -290,7 +289,6 @@
     <Compile Include="IBeforeStoreHandler.cs" />
     <Compile Include="IContainerOwner.cs" />
     <Compile Include="InformationContext.cs" />
-    <Compile Include="InformationSourceSupport.cs" />
     <Compile Include="IPublisher.cs" />
     <Compile Include="Operation\UpdatePageContentImplementation.cs" />
     <Compile Include="OwnerSubscriptionItem.cs" />
@@ -303,8 +301,6 @@
     <Compile Include="Partials\Group.cs" />
     <Compile Include="Partials\GroupContainer.cs" />
     <Compile Include="Partials\IInformationObject.cs" />
-    <Compile Include="Partials\InformationSource.cs" />
-    <Compile Include="Partials\InformationSourceCollection.cs" />
     <Compile Include="Partials\Location.cs" />
     <Compile Include="Partials\LocationCollection.cs" />
     <Compile Include="Partials\MapMarker.cs" />
@@ -326,8 +322,6 @@
     <Compile Include="StackContextItem.cs" />
     <Compile Include="StorageSupport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubcriptionGraphItem.cs" />
-    <Compile Include="SubscribeSupport.cs" />
     <Compile Include="Partials\TBAccount.cs" />
     <Compile Include="Partials\TBCollaboratingGroup.cs" />
     <Compile Include="Partials\TBRLoginGroupRoot.cs" />

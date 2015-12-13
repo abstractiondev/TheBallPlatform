@@ -53,6 +53,13 @@ namespace TheBall
             get { return Guid.Empty; }
         }
 
+        public static string GetParentDirectoryTarget(string targetLocation)
+        {
+            int lastDirectorySlashIndex = targetLocation.LastIndexOf("/");
+            string directoryLocation = targetLocation.Substring(0, lastDirectorySlashIndex + 1);
+            return directoryLocation;
+        }
+
         public static string GetBlobInformationType(this CloudBlob blob)
         {
             //FetchMetadataIfMissing(blob);
@@ -106,18 +113,6 @@ namespace TheBall
             //CurrTemplateContainer = activeTemplateContainer;
             QueueSupport.InitializeAfterStorage(debugMode:debugMode);
         }
-
-        /*
-        public static void CreatePersonalContainer(TBAccount account)
-        {
-            CloudBlobContainer container = GetPersonalContainer(account);
-            container.CreateIfNotExist();
-        }
-
-        public static CloudBlobContainer GetPersonalContainer(TBAccount account)
-        {
-            return CurrBlobClient.GetContainerReference("acc" + account.ID);
-        }*/
 
         public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
         {
@@ -875,7 +870,6 @@ namespace TheBall
                     continue;
                 FixOwnerLocation(referenceMaster, owner);
                 var realMaster = referenceMaster.RetrieveMaster(true);
-                SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject, masterInstance: realMaster, referenceInstance: referenceMaster);
                 if (updateContents)
                 {
                     if (referenceMaster.MasterETag != realMaster.ETag)
@@ -895,9 +889,6 @@ namespace TheBall
                 // Don't self master
                 if (masterLocation == referringObject.RelativeLocation)
                     continue;
-                SubscribeSupport.SetCollectionSubscriptionToMaster(containerObject: informationObject,
-                                                                   masterCollectionLocation: masterLocation,
-                                                                   collectionType: referringCollection.GetType());
                 if(updateContents)
                 {
                     var masterInstance = referringCollection.GetMasterInstance();
@@ -934,8 +925,6 @@ namespace TheBall
                 // TODO: 
                 bool masterDidNotExist;
                 var realMaster = referenceInstance.RetrieveMaster(true, out masterDidNotExist);
-                SubscribeSupport.SetReferenceSubscriptionToMaster(containerObject: informationObject,
-                                                 referenceInstance: referenceInstance, masterInstance: realMaster);
                 // Compare MasterEtag for reference vs master - throw Exception on mismatch
                 if(masterDidNotExist == false)
                 {
@@ -999,12 +988,7 @@ namespace TheBall
                     InformationContext.AddStorageTransactionToCurrent();
                 }
             }
-            if (isNewBlob)
-            {
-                informationObject.InitializeDefaultSubscribers(owner);
-            }
             informationObject.PostStoringExecute(owner);
-            SubscribeSupport.NotifySubscribers(informationObject.RelativeLocation);
             Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
             InformationContext.Current.ObjectStoredNotification(informationObject, 
@@ -1429,22 +1413,12 @@ namespace TheBall
 
         public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
         {
-            if (blob.IsStoredInActiveContainer() && blob.CanContainExternalMetadata())
-            {
-                SubscribeSupport.DeleteSubscriptions(blob.Name);
-                InformationSourceSupport.DeleteInformationSources(blob.Name);
-            }
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }
 
         public static void DeleteAndFireSubscriptions(this CloudBlob blob)
         {
-            if (blob.IsStoredInActiveContainer() && blob.CanContainExternalMetadata())
-            {
-                SubscribeSupport.DeleteAfterFiringSubscriptions(targetLocation: blob.Name);
-                InformationSourceSupport.DeleteInformationSources(targetLocation: blob.Name);
-            }
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }

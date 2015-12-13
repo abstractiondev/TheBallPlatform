@@ -6,7 +6,7 @@ namespace TheBall
 {
     public static class ErrorSupport
     {
-        public static void ReportError(SystemError error)
+        public static void ReportError(string error)
         {
             QueueSupport.PutToErrorQueue(error);
         }
@@ -16,7 +16,7 @@ namespace TheBall
             // Under NO circumstances the exception reporting shall cause another exception to be thrown unhandled
             try
             {
-                SystemError error = GetErrorFromExcetion(exception);
+                string error = GetErrorFromExcetion(exception);
                 ReportError(error);
             } catch
             {
@@ -24,67 +24,13 @@ namespace TheBall
             }
         }
 
-        public static void ReportMessageError(CloudQueueMessage message)
+        public static string GetErrorFromExcetion(Exception exception)
         {
-            SystemError error = GetErrorFromMessage(message);
-            ReportError(error);
+            return string.Format("Error: {1}{0}Occurred: {2}{0}Description: {3}{0}", Environment.NewLine,
+                exception.GetType().Name,
+                DateTime.UtcNow.ToLongDateString(), exception.ToString())
+            ;
         }
 
-        private static SystemError GetErrorFromMessage(CloudQueueMessage message)
-        {
-            SystemError error = new SystemError
-                                    {
-                                        ErrorTitle = "Cloud Message: " + message.Id,
-                                        OccurredAt = DateTime.UtcNow,
-                                        SystemErrorItems = new SystemErrorItemCollection()
-                                    };
-            error.SystemErrorItems.CollectionContent.Add(new SystemErrorItem()
-                                                             {
-                                                                 ShortDescription = "Message content",
-                                                                 LongDescription = message.AsString
-                                                             });
-            return error;
-        }
-
-        public static SystemError GetErrorFromExcetion(Exception exception)
-        {
-            SystemError error = new SystemError
-                                    {
-                                        ErrorTitle = "Exception: " + exception.GetType().Name,
-                                        OccurredAt = DateTime.UtcNow,
-                                        SystemErrorItems = new SystemErrorItemCollection()
-                                    };
-            error.SystemErrorItems.CollectionContent.Add(new SystemErrorItem()
-                                                             {
-                                                                 ShortDescription = exception.Message,
-                                                                 LongDescription = exception.ToString()
-                                                             });
-            return error;
-        }
-
-        public static void ReportEnvelopeWithException(QueueEnvelope envelope, Exception exception)
-        {
-            SystemError error = GetErrorFromExcetion(exception);
-            error.MessageContent = envelope;
-            ReportError(error);
-        }
-
-        public static QueueEnvelope RetrieveRetryableEnvelope(out CloudQueueMessage message)
-        {
-            SystemError error = QueueSupport.GetFromErrorQueue(out message);
-            while(error != null)
-            {
-                if(error.MessageContent == null)
-                {
-                    QueueSupport.CurrErrorQueue.DeleteMessage(message);
-                    error = QueueSupport.GetFromErrorQueue(out message);
-                }
-                else
-                {
-                    return error.MessageContent;
-                }
-            }
-            return null;
-        }
     }
 }

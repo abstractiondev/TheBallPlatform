@@ -81,67 +81,10 @@ namespace TheBall
             return queue;
         }
 
-        public static void PutToDefaultQueue(QueueEnvelope queueEnvelope)
+        public static void PutToErrorQueue(string error)
         {
-            string xmlString = queueEnvelope.SerializeToXml();
-            CloudQueueMessage message = new CloudQueueMessage(xmlString);
-            CurrDefaultQueue.AddMessage(message);
-        }
-
-        public static QueueEnvelope GetFromDefaultQueue(out CloudQueueMessage message)
-        {
-            message = CurrDefaultQueue.GetMessage(TimeSpan.FromMinutes(5));
-            if (message == null)
-                return null;
-            try
-            {
-                QueueEnvelope queueEnvelope = QueueEnvelope.DeserializeFromXml(message.AsString);
-                return queueEnvelope;
-            } catch
-            {
-                return null;
-            }
-        }
-
-        public static void PutToErrorQueue(SystemError error)
-        {
-            string xmlString = error.SerializeToXml();
-            CloudQueueMessage message = new CloudQueueMessage(xmlString);
+            CloudQueueMessage message = new CloudQueueMessage(error);
             CurrErrorQueue.AddMessage(message);
-        }
-
-        public static SystemError GetFromErrorQueue(out CloudQueueMessage message)
-        {
-            message = CurrErrorQueue.GetMessage();
-            if (message == null)
-                return null;
-            try
-            {
-                SystemError error = SystemError.DeserializeFromXml(message.AsString);
-                return error;
-            } catch
-            {
-                return null;
-            }
-        }
-
-        public static void PutToOperationQueue(params OperationRequest[] operationRequests)
-        {
-            if (operationRequests == null)
-                throw new ArgumentNullException("operationRequests");
-            if (operationRequests.Length == 0)
-                return;
-            QueueEnvelope envelope = new QueueEnvelope();
-            envelope.ActiveContainerName = StorageSupport.CurrActiveContainer.Name;
-            if (operationRequests.Length == 1)
-                envelope.SingleOperation = operationRequests[0];
-            else
-            {
-                envelope.OrderDependentOperationSequence = OperationRequestCollection.CreateDefault();
-                envelope.OrderDependentOperationSequence.CollectionContent.
-                    AddRange(operationRequests.Where(oper => oper != null));
-            }
-            PutToDefaultQueue(envelope);
         }
 
         public static void WriteObjectAsJSONToQueue<T>(string queueName, T objectToWrite)

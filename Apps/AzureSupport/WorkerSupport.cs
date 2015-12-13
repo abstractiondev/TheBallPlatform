@@ -30,65 +30,6 @@ namespace TheBall
 
         public delegate bool PerformCustomOperation(CloudBlob source, CloudBlob target, SyncOperationType operationType);
 
-        public static void ExecuteSubscription(Subscription subscription)
-        {
-            if (String.IsNullOrEmpty(subscription.SubscriptionType))
-                return;
-            if(subscription.TargetRelativeLocation == subscription.SubscriberRelativeLocation)
-                throw new InvalidDataException("Self-circular subscription for target: " + subscription.TargetRelativeLocation);
-            if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource)
-            {
-                throw new NotSupportedException();
-            }
-            else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_MasterToReferenceUpdate)
-            {
-                try
-                {
-                    string containerLocation = subscription.SubscriberRelativeLocation;
-                    string containerType = subscription.SubscriberInformationObjectType;
-                    string masterLocation = subscription.TargetRelativeLocation;
-                    string masterType = subscription.TargetInformationObjectType;
-                    UpdateContainerFromMaster(containerLocation, containerType, masterLocation, masterType);
-                } catch(Exception ex)
-                {
-                    StorageClientException storageClientException = ex as StorageClientException;
-                    if (storageClientException != null)
-                    {
-                        if (storageClientException.ErrorCode == StorageErrorCode.BlobNotFound)
-                            return;
-                    }
-                    ErrorSupport.ReportException(ex);
-                }
-            } else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_DirectoryToCollection)
-            {
-                string directoryLocation = subscription.TargetRelativeLocation;
-                string collectionType = subscription.SubscriberInformationObjectType;
-                string collectionLocation = subscription.SubscriberRelativeLocation;
-                UpdateCollectionFromDirectory(collectionType, collectionLocation, directoryLocation);
-            } else if(subscription.SubscriptionType == SubscribeSupport.SubscribeType_CollectionToCollectionUpdate)
-            {
-                string masterCollectionLocation = subscription.TargetRelativeLocation;
-                string masterCollectionType = subscription.TargetInformationObjectType;
-                string referenceCollectionLocation = subscription.SubscriberRelativeLocation;
-                string referenceCollectionType = subscription.SubscriberInformationObjectType;
-                UpdateCollectionFromMasterCollection(referenceCollectionType, referenceCollectionLocation,
-                                                     masterCollectionType, masterCollectionLocation);
-            }
-            else if (subscription.SubscriptionType == SubscribeSupport.SubscribeType_MasterCollectionToContainerUpdate)
-            {
-                string masterCollectionLocation = subscription.TargetRelativeLocation;
-                string masterCollectionType = subscription.TargetInformationObjectType;
-                string containerLocation = subscription.SubscriberRelativeLocation;
-                string containerType = subscription.SubscriberInformationObjectType;
-                UpdateContainerFromMasterCollection(containerType, containerLocation,
-                                                     masterCollectionType, masterCollectionLocation);
-            }
-            else
-                throw new InvalidDataException(String.Format(
-                    "Unsupported subscription type {0} for object: {1} by {2}", subscription.SubscriptionType,
-                    subscription.TargetRelativeLocation, subscription.SubscriberRelativeLocation));
-        }
-
         private static void UpdateContainerFromMasterCollection(string containerType, string containerLocation, string masterCollectionType, string masterCollectionLocation)
         {
             IInformationObject containerObject = StorageSupport.RetrieveInformation(containerLocation, containerType);
@@ -287,339 +228,7 @@ namespace TheBall
         }
 
         private static int counter = 0;
-        public static void ProcessMessage(QueueEnvelope envelope, bool reportEnvelopeError = true)
-        {
-            if (envelope.SingleOperation != null && envelope.SingleOperation.ProcessIDToExecute != null)
-            {
-                executeProcessRequestEnvelope(envelope, reportEnvelopeError);
-                return;
-            }
-            try
-            {
-                InformationContext.Current.InitializeCloudStorageAccess(envelope.ActiveContainerName);
-                if (envelope.SingleOperation != null)
-                    ProcessSingleOperation(envelope.SingleOperation);
-                if (envelope.OrderDependentOperationSequence != null)
-                {
-                    Exception firstException = null;
-                    //envelope.OrderDependentOperationSequence.CollectionContent.ForEach(ProcessSingleOperation);
-                    foreach(var singleOperation in envelope.OrderDependentOperationSequence.CollectionContent)
-                    {
-                        try
-                        {
-                            ProcessSingleOperation(singleOperation);
-                        } catch(Exception ex)
-                        {
-                            firstException = ex;
-                            ErrorSupport.ReportException(ex);
-                        }
-                    }
-                    if (firstException != null)
-                        throw firstException;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (reportEnvelopeError)
-                    ErrorSupport.ReportEnvelopeWithException(envelope, ex);
-                throw;
-            } finally
-            {
-                InformationContext.ProcessAndClearCurrent();
-            }
 
-            counter++;
-            if (counter >= 1000)
-            {
-                QueueSupport.ReportStatistics("Processed " + counter + " messages...");
-                counter = 0;
-            }
-
-        }
-
-        private static void executeProcessRequestEnvelope(QueueEnvelope envelope, bool reportEnvelopeError)
-        {
-            var processID = envelope.SingleOperation.ProcessIDToExecute;
-            string containerName = envelope.ActiveContainerName;
-            string ownerPrefix = envelope.OwnerPrefix;
-            if (String.IsNullOrEmpty(containerName) || String.IsNullOrEmpty(ownerPrefix))
-                throw new InvalidDataException("Container or owner missing from ProcessIDExecute envelope");
-            IContainerOwner owner = VirtualOwner.FigureOwner(ownerPrefix);
-            try
-            {
-                InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
-                InformationContext.Current.Owner = owner;
-                InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
-                ExecuteProcess.Execute(new ExecuteProcessParameters
-                    {
-                        ProcessID = processID
-                    });
-            }
-            catch (Exception ex)
-            {
-                if (reportEnvelopeError)
-                    ErrorSupport.ReportEnvelopeWithException(envelope, ex);
-                throw;
-            }
-            finally
-            {
-                InformationContext.ProcessAndClearCurrent();
-            }
-        }
-
-        private static void ProcessSingleOperation(OperationRequest operationRequest)
-        {
-            if (operationRequest.PublishWebContent != null)
-                ProcessPublishWebContent(operationRequest.PublishWebContent);
-            if (operationRequest.UpdateWebContentOperation != null)
-                ProcessUpdateWebContent(operationRequest.UpdateWebContentOperation);
-            if (operationRequest.SubscriberNotification != null)
-                WorkerSupport.ExecuteSubscription(operationRequest.SubscriberNotification);
-            if (operationRequest.RefreshDefaultViewsOperation != null)
-                WorkerSupport.RefreshDefaultViews(operationRequest.RefreshDefaultViewsOperation);
-            if (operationRequest.DeleteEntireOwner != null)
-            {
-                VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteEntireOwner.ContainerName,
-                    operationRequest.DeleteEntireOwner.LocationPrefix);
-                DeleteEntireOwner(virtualOwner);
-            }
-            if(operationRequest.DeleteOwnerContent != null)
-            {
-                VirtualOwner virtualOwner = new VirtualOwner(operationRequest.DeleteOwnerContent.ContainerName,
-                    operationRequest.DeleteOwnerContent.LocationPrefix);
-                DeleteOwnerContent(virtualOwner);
-            }
-            if(operationRequest.SubscriptionChainRequest != null)
-                WorkerSupport.ExecuteSubscriptionChain(operationRequest.SubscriptionChainRequest);
-        }
-
-        public static bool ProcessOwnerSubscriptionChains(IContainerOwner lockedOwner, string acquiredEtag, string containerName)
-        {
-            try
-            {
-                InformationContext.InitializeToLogicalContext();
-                InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
-                InformationContext.Current.Owner = lockedOwner;
-                InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerRole);
-
-                string[] blobs = SubscribeSupport.GetChainRequestList(lockedOwner);
-                var chainContent = blobs.Select(blob => StorageSupport.RetrieveInformation(blob, typeof(SubscriptionChainRequestContent))).Cast<SubscriptionChainRequestContent>().ToArray();
-                const double invalidSubscriptionSubmissionTimeInSeconds = 3600;
-                if (chainContent.Any(item => item.SubmitTime < DateTime.UtcNow.AddSeconds(-invalidSubscriptionSubmissionTimeInSeconds)))
-                    return false;
-                var affectedDomains = WorkerSupport.ExecuteSubscriptionChains(chainContent);
-                foreach (string blob in blobs)
-                    StorageSupport.DeleteBlob(blob);
-                if (InstanceConfiguration.UseSQLiteMasterDatabase)
-                {
-                    foreach (string semanticDomain in affectedDomains)
-                    {
-                        try
-                        {
-                            UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
-                            {
-                                Owner = lockedOwner,
-                                SemanticDomain = semanticDomain
-                            });
-                        }
-                        catch (Exception ex) // Shh for now
-                        {
-                            ErrorSupport.ReportException(ex);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorSupport.ReportException(ex);
-                throw;
-            }
-            finally
-            {
-                SubscribeSupport.ReleaseChainLock(lockedOwner, acquiredEtag);
-                InformationContext.ProcessAndClearCurrent();
-                InformationContext.RemoveFromLogicalContext();
-            }
-            counter++;
-            if (counter >= 1000)
-            {
-                QueueSupport.ReportStatistics("Processed " + counter + " messages...");
-                counter = 0;
-            }
-            return true;
-        }
-
-
-        public static string[] ExecuteSubscriptionChains(params SubscriptionChainRequestContent[] contentList)
-        {
-            InformationContext.Current.IsExecutingSubscriptions = true;
-            try
-            {
-
-                string[] subscriptionTargetList =
-                    contentList.SelectMany(reqContent => reqContent.SubscriptionTargetCollection.CollectionContent).Select(subTarget => subTarget.BlobLocation)
-                        .ToArray();
-                var subscriptions = SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(subscriptionTargetList);
-                int currSubscription = 1;
-                var informationObjectSubscriptions =
-                    subscriptions.Where(sub => sub.SubscriptionType != SubscribeSupport.SubscribeType_WebPageToSource).
-                        ToArray();
-                var webPageSubscriptions =
-                    subscriptions.Where(sub => sub.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource).
-                        ToArray();
-                List<string> domainsAffected = new List<string>();
-                foreach (var subscription in informationObjectSubscriptions)
-                {
-                    ExecuteSubscription(subscription);
-                    Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
-                        subscription.SubscriberRelativeLocation);
-                    if (InstanceConfiguration.UseSQLiteMasterDatabase)
-                    {
-                        try
-                        {
-                            subscription.TargetRelativeLocation.ExecuteForObject(
-                                delegate(IContainerOwner owner, string semanticDomain, string objectType,
-                                    string objectId,
-                                    string fullPath)
-                                {
-                                    if (!domainsAffected.Contains(semanticDomain))
-                                        domainsAffected.Add(semanticDomain);
-                                });
-                        }
-                        catch(Exception ex) // Shh for now
-                        {
-                            ErrorSupport.ReportException(ex);
-                        }
-                    }
-                }
-                foreach (var subscription in webPageSubscriptions)
-                {
-                    //ExecuteSubscription(subscription);
-                    OperationRequest operationRequest = new OperationRequest();
-                    operationRequest.SubscriberNotification = subscription;
-                    QueueSupport.PutToOperationQueue(operationRequest);
-                    Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
-                        subscription.SubscriberRelativeLocation);
-                }
-                return domainsAffected.ToArray();
-            }
-            finally
-            {
-                InformationContext.Current.IsExecutingSubscriptions = false;
-            }
-        }
-
-        public static void ExecuteSubscriptionChain(SubscriptionChainRequestMessage subscriptionChainRequest)
-        {
-            InformationContext.Current.IsExecutingSubscriptions = true;
-            SubscriptionChainRequestContent requestContent =
-                ObjectStorage.RetrieveFromDefaultLocation<SubscriptionChainRequestContent>(subscriptionChainRequest.ContentItemID);
-            requestContent.ProcessingStartTime = DateTime.UtcNow;
-            requestContent.StoreInformation();
-            string[] subscriptionTargetList =
-                requestContent.SubscriptionTargetCollection.CollectionContent.Select(subTarget => subTarget.BlobLocation)
-                    .ToArray();
-            var subscriptions = SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(subscriptionTargetList);
-            int currSubscription = 1;
-            var informationObjectSubscriptions =
-                subscriptions.Where(sub => sub.SubscriptionType != SubscribeSupport.SubscribeType_WebPageToSource).
-                    ToArray();
-            var webPageSubscriptions =
-                subscriptions.Where(sub => sub.SubscriptionType == SubscribeSupport.SubscribeType_WebPageToSource).
-                    ToArray();
-            foreach (var subscription in informationObjectSubscriptions)
-            {
-                ExecuteSubscription(subscription);
-                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
-                    subscription.SubscriberRelativeLocation);
-            }
-            requestContent.ProcessingEndTimeInformationObjects = DateTime.UtcNow;
-            requestContent.StoreInformation();
-            foreach (var subscription in webPageSubscriptions)
-            {
-                //ExecuteSubscription(subscription);
-                OperationRequest operationRequest = new OperationRequest();
-                operationRequest.SubscriberNotification = subscription;
-                QueueSupport.PutToOperationQueue(operationRequest);
-                Debug.WriteLine("Executing subscription {0} of total {1} of {2} for {3}", currSubscription++, subscriptions.Length, subscription.SubscriptionType,
-                    subscription.SubscriberRelativeLocation);
-            }
-            requestContent.ProcessingEndTimeWebTemplatesRendering = DateTime.UtcNow;
-            requestContent.ProcessingEndTime = DateTime.UtcNow;
-            requestContent.StoreInformation();
-            InformationContext.Current.IsExecutingSubscriptions = false;
-        }
-
-        public static void RefreshDefaultViews(RefreshDefaultViewsOperation refreshDefaultViewsOperation)
-        {
-            throw new NotSupportedException();
-            /*
-            Type type = Assembly.GetExecutingAssembly().GetType(refreshDefaultViewsOperation.TypeNameToRefresh);
-            DefaultViewSupport.RefreshDefaultViews(refreshDefaultViewsOperation.ViewLocation, type);
-             * */
-        }
-
-        private static void DeleteOwnerContent(VirtualOwner containerOwner)
-        {
-            StorageSupport.DeleteContentsFromOwner(containerOwner);
-        }
-
-        public static void ProcessPublishWebContent(PublishWebContentOperation publishWebContent)
-        {
-            string targetContainerName = publishWebContent.TargetContainerName;
-            // Hardcoded double-verify for valid container
-            var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            var blobData = blob.DownloadText();
-            string[] contentArr = blobData.Split(':');
-            if (contentArr.Length < 2 || contentArr[1] != publishWebContent.SourceOwner)
-                return;
-            DateTime currPublishTimeUtc = DateTime.UtcNow;
-            string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_HH-mm-ss");
-            string sourceOwner = publishWebContent.SourceOwner;
-            string sourceRoot = publishWebContent.SourcePathRoot;
-            string sourceContainerName = publishWebContent.SourceContainerName;
-            // Sync website
-            string targetWebsiteRoot = targetRootFolderName;
-            VirtualOwner owner = VirtualOwner.FigureOwner(sourceOwner);
-            string sourceWebsiteRoot = sourceOwner + "/" + sourceRoot;
-            WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,
-                           RenderWebSupport.CopyAsIsSyncHandler);
-            // Copy Media
-            /*
-            string mediaFolderName = "AaltoGlobalImpact.OIP/MediaContent";
-            string targetMediaRoot = targetRootFolderName + "/" + mediaFolderName;
-            string sourceMediaRoot = sourceOwner + "/" + mediaFolderName;
-            WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
-                           RenderWebSupport.CopyAsIsSyncHandler);
-             */
-            // Copy required data to go with website stuff
-            string[] foldersToCopy = new string[] { 
-                "AaltoGlobalImpact.OIP/NodeSummaryContainer", 
-                "AaltoGlobalImpact.OIP/TextContent",
-                "AaltoGlobalImpact.OIP/EmbeddedContent",
-                "AaltoGlobalImpact.OIP/AddressAndLocationCollection", 
-                "AaltoGlobalImpact.OIP/MediaContent", 
-                "AaltoGlobalImpact.OIP/GroupContainer",
-                "AaltoGlobalImpact.OIP/AttachedToObjectCollection",
-                "AaltoGlobalImpact.OIP/BinaryFileCollection",
-                "AaltoGlobalImpact.OIP/LinkToContentCollection",
-                "AaltoGlobalImpact.OIP/EmbeddedContentCollection",
-                "AaltoGlobalImpact.OIP/CategoryCollection",
-                "AaltoGlobalImpact.OIP/ContentCategoryRankCollection",
-                "AaltoGlobalImpact.OIP/DynamicContentCollection"
-            };
-            foreach (string renderRequiredFolder in foldersToCopy)
-            {
-                string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
-                string sourceFolder = sourceOwner + "/" + renderRequiredFolder;
-                WebContentSync(sourceContainerName, sourceFolder, targetContainerName, targetFolder,
-                               RenderWebSupport.CopyAsIsSyncHandler);
-            }
-            var lastUpdateFileBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
-            lastUpdateFileBlob.UploadBlobText(targetRootFolderName);
-            var currentToServeBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
-            currentToServeBlob.UploadBlobText(targetRootFolderName + ":" + sourceOwner);
-        }
         
         public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
         {
@@ -721,6 +330,59 @@ namespace TheBall
 
                 }
             }
+        }
+
+        public static void ProcessPublishWebContent(string sourceContainerName, string sourceOwner, string sourceRoot, string targetContainerName)
+        {
+            // Hardcoded double-verify for valid container
+            var blob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
+            var blobData = blob.DownloadText();
+            string[] contentArr = blobData.Split(':');
+            if (contentArr.Length < 2 || contentArr[1] != sourceOwner)
+                return;
+            DateTime currPublishTimeUtc = DateTime.UtcNow;
+            string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_HH-mm-ss");
+            // Sync website
+            string targetWebsiteRoot = targetRootFolderName;
+            VirtualOwner owner = VirtualOwner.FigureOwner(sourceOwner);
+            string sourceWebsiteRoot = sourceOwner + "/" + sourceRoot;
+            WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,
+                           RenderWebSupport.CopyAsIsSyncHandler);
+            // Copy Media
+            /*
+            string mediaFolderName = "AaltoGlobalImpact.OIP/MediaContent";
+            string targetMediaRoot = targetRootFolderName + "/" + mediaFolderName;
+            string sourceMediaRoot = sourceOwner + "/" + mediaFolderName;
+            WebContentSync(sourceContainerName, sourceMediaRoot, targetContainerName, targetMediaRoot,
+                           RenderWebSupport.CopyAsIsSyncHandler);
+             */
+            // Copy required data to go with website stuff
+            string[] foldersToCopy = new string[] {
+                "AaltoGlobalImpact.OIP/NodeSummaryContainer",
+                "AaltoGlobalImpact.OIP/TextContent",
+                "AaltoGlobalImpact.OIP/EmbeddedContent",
+                "AaltoGlobalImpact.OIP/AddressAndLocationCollection",
+                "AaltoGlobalImpact.OIP/MediaContent",
+                "AaltoGlobalImpact.OIP/GroupContainer",
+                "AaltoGlobalImpact.OIP/AttachedToObjectCollection",
+                "AaltoGlobalImpact.OIP/BinaryFileCollection",
+                "AaltoGlobalImpact.OIP/LinkToContentCollection",
+                "AaltoGlobalImpact.OIP/EmbeddedContentCollection",
+                "AaltoGlobalImpact.OIP/CategoryCollection",
+                "AaltoGlobalImpact.OIP/ContentCategoryRankCollection",
+                "AaltoGlobalImpact.OIP/DynamicContentCollection"
+            };
+            foreach (string renderRequiredFolder in foldersToCopy)
+            {
+                string targetFolder = targetRootFolderName + "/" + renderRequiredFolder;
+                string sourceFolder = sourceOwner + "/" + renderRequiredFolder;
+                WebContentSync(sourceContainerName, sourceFolder, targetContainerName, targetFolder,
+                               RenderWebSupport.CopyAsIsSyncHandler);
+            }
+            var lastUpdateFileBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.LastUpdateFileName);
+            lastUpdateFileBlob.UploadBlobText(targetRootFolderName);
+            var currentToServeBlob = StorageSupport.GetBlob(targetContainerName, RenderWebSupport.CurrentToServeFileName);
+            currentToServeBlob.UploadBlobText(targetRootFolderName + ":" + sourceOwner);
         }
     }
 }

@@ -76,7 +76,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = ContentCategoryRankCollection.GetMasterCollectionInstance(owner);
@@ -88,7 +87,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = LinkToContentCollection.GetMasterCollectionInstance(owner);
@@ -100,7 +98,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = EmbeddedContentCollection.GetMasterCollectionInstance(owner);
@@ -112,7 +109,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = DynamicContentGroupCollection.GetMasterCollectionInstance(owner);
@@ -124,7 +120,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = DynamicContentCollection.GetMasterCollectionInstance(owner);
@@ -136,7 +131,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = AttachedToObjectCollection.GetMasterCollectionInstance(owner);
@@ -148,7 +142,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = CommentCollection.GetMasterCollectionInstance(owner);
@@ -160,7 +153,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = SelectionCollection.GetMasterCollectionInstance(owner);
@@ -172,7 +164,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = TextContentCollection.GetMasterCollectionInstance(owner);
@@ -184,7 +175,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = ImageCollection.GetMasterCollectionInstance(owner);
@@ -196,7 +186,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = BinaryFileCollection.GetMasterCollectionInstance(owner);
@@ -208,7 +197,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = CategoryCollection.GetMasterCollectionInstance(owner);
@@ -220,7 +208,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
             }
 
@@ -390,13 +377,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBSystem/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBSystem/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -748,13 +728,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/WebPublishInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/WebPublishInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -1217,13 +1190,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/PublicationPackageCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -1408,18 +1374,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<PublicationPackage>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -1693,13 +1654,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/PublicationPackage/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/PublicationPackage/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -2049,13 +2003,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBRLoginRoot/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -2451,13 +2398,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBRAccountRoot/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -2839,13 +2779,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBRGroupRoot/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -3229,13 +3162,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBRLoginGroupRoot/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -3586,13 +3512,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBREmailRoot/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -3975,13 +3894,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBAccount/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBAccount/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -4475,13 +4387,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBAccountCollaborationGroup/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -4845,13 +4750,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBAccountCollaborationGroupCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -5036,18 +4934,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBAccountCollaborationGroup>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -5321,13 +5214,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBLoginInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -5668,13 +5554,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBLoginInfoCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -5859,18 +5738,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBLoginInfo>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -6144,13 +6018,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmail/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBEmail/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -6501,13 +6368,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBEmailCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -6692,18 +6552,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBEmail>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -6977,13 +6832,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratorRole/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -7391,13 +7239,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratorRoleCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -7582,18 +7423,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TBCollaboratorRole>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -7867,13 +7703,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBCollaboratingGroup/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -8268,13 +8097,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBEmailValidation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -8890,13 +8712,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBMergeAccountConfirmation/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -9248,13 +9063,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBGroupJoinConfirmation/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -9605,13 +9413,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBDeviceJoinConfirmation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBDeviceJoinConfirmation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -9976,13 +9777,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBInformationInputConfirmation/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -10346,13 +10140,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBInformationOutputConfirmation/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -10715,13 +10502,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LoginProvider/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LoginProvider/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -11110,13 +10890,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LoginProviderCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -11301,18 +11074,13 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LoginProvider>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -11586,13 +11354,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TBPRegisterEmail/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -11932,13 +11693,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountSummary/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountSummary/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -12321,13 +12075,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountContainer/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountContainer/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -12765,13 +12512,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountModule/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountModule/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -13321,13 +13061,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LocationContainer/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -13711,13 +13444,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -13899,7 +13625,7 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AddressAndLocation>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -13921,15 +13647,6 @@ namespace INT {
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<AddressAndLocationCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(AddressAndLocationCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/AddressAndLocationCollection/" + "MasterCollection");
@@ -14198,13 +13915,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddressAndLocation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -14684,13 +14394,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/StreetAddress/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -15065,13 +14768,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountProfile/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountProfile/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -15554,13 +15250,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountSecurity/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -15997,13 +15686,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AccountRoles/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AccountRoles/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -16459,13 +16141,6 @@ AccountRoles.OrganizationsImPartOf
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/PersonalInfoVisibility/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -16804,13 +16479,6 @@ AccountRoles.OrganizationsImPartOf
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ReferenceToInformation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -17163,13 +16831,6 @@ AccountRoles.OrganizationsImPartOf
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ReferenceCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -17349,18 +17010,13 @@ AccountRoles.OrganizationsImPartOf
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ReferenceToInformation>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -17628,13 +17284,6 @@ AccountRoles.OrganizationsImPartOf
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/NodeSummaryContainer/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/NodeSummaryContainer/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -18354,13 +18003,6 @@ AccountRoles.OrganizationsImPartOf
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/RenderedNodeCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -18545,18 +18187,13 @@ AccountRoles.OrganizationsImPartOf
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RenderedNode>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -18830,13 +18467,6 @@ AccountRoles.OrganizationsImPartOf
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/RenderedNode/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/RenderedNode/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -19575,13 +19205,6 @@ RenderedNode.Excerpt
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ShortTextCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -19766,18 +19389,13 @@ RenderedNode.Excerpt
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ShortTextObject>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -20051,13 +19669,6 @@ RenderedNode.Excerpt
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ShortTextObject/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ShortTextObject/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -20398,13 +20009,6 @@ RenderedNode.Excerpt
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LongTextCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -20589,18 +20193,13 @@ RenderedNode.Excerpt
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LongTextObject>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -20874,13 +20473,6 @@ RenderedNode.Excerpt
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LongTextObject/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LongTextObject/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -21225,13 +20817,6 @@ LongTextObject.Content
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/MapMarker/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapMarker/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -21692,13 +21277,6 @@ MapMarker.PopupContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapMarkerCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -21883,18 +21461,13 @@ MapMarker.PopupContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapMarker>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -22169,13 +21742,6 @@ MapMarker.PopupContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ModeratorCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -22360,18 +21926,13 @@ MapMarker.PopupContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Moderator>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -22645,13 +22206,6 @@ MapMarker.PopupContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Moderator/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Moderator/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -23004,13 +22558,6 @@ MapMarker.PopupContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/CollaboratorCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -23195,18 +22742,13 @@ MapMarker.PopupContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Collaborator>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -23480,13 +23022,6 @@ MapMarker.PopupContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Collaborator/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Collaborator/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -23874,13 +23409,6 @@ MapMarker.PopupContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/GroupSummaryContainer/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -24390,13 +23918,6 @@ GroupSummaryContainer.SummaryBody
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/GroupContainer/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/GroupContainer/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -25001,13 +24522,6 @@ GroupSummaryContainer.SummaryBody
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/GroupIndex/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -25422,13 +24936,6 @@ GroupIndex.Summary
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddAddressAndLocationInfo/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -25767,13 +25274,6 @@ GroupIndex.Summary
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddImageInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddImageInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -26114,13 +25614,6 @@ GroupIndex.Summary
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddImageGroupInfo/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -26459,13 +25952,6 @@ GroupIndex.Summary
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddEmailAddressInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -26806,13 +26292,6 @@ GroupIndex.Summary
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/CreateGroupInfo/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -27151,13 +26630,6 @@ GroupIndex.Summary
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddActivityInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -27498,13 +26970,6 @@ GroupIndex.Summary
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddBlogPostInfo/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -27843,13 +27308,6 @@ GroupIndex.Summary
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AddCategoryInfo/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AddCategoryInfo/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -28190,13 +27648,6 @@ GroupIndex.Summary
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/GroupCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -28381,18 +27832,13 @@ GroupIndex.Summary
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Group>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -28666,13 +28112,6 @@ GroupIndex.Summary
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Group/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Group/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -29348,13 +28787,6 @@ Group.OrganizationsAndGroupsLinkedToUs
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Introduction/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -29711,13 +29143,6 @@ Introduction.Body
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ContentCategoryRankCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -29904,7 +29329,7 @@ Introduction.Body
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentCategoryRank>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -29926,15 +29351,6 @@ Introduction.Body
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<ContentCategoryRankCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ContentCategoryRankCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/ContentCategoryRankCollection/" + "MasterCollection");
@@ -30209,13 +29625,6 @@ Introduction.Body
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/ContentCategoryRank/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ContentCategoryRank/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -30604,13 +30013,6 @@ Introduction.Body
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LinkToContentCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -30792,7 +30194,7 @@ Introduction.Body
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<LinkToContent>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -30814,15 +30216,6 @@ Introduction.Body
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<LinkToContentCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(LinkToContentCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/LinkToContentCollection/" + "MasterCollection");
@@ -31091,13 +30484,6 @@ Introduction.Body
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/LinkToContent/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LinkToContent/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -31656,13 +31042,6 @@ LinkToContent.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/EmbeddedContentCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -31844,7 +31223,7 @@ LinkToContent.Description
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<EmbeddedContent>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -31866,15 +31245,6 @@ LinkToContent.Description
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<EmbeddedContentCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(EmbeddedContentCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/EmbeddedContentCollection/" + "MasterCollection");
@@ -32143,13 +31513,6 @@ LinkToContent.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/EmbeddedContent/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/EmbeddedContent/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -32653,13 +32016,6 @@ EmbeddedContent.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -32846,7 +32202,7 @@ EmbeddedContent.Description
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContentGroup>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -32868,15 +32224,6 @@ EmbeddedContent.Description
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<DynamicContentGroupCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(DynamicContentGroupCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/DynamicContentGroupCollection/" + "MasterCollection");
@@ -33151,13 +32498,6 @@ EmbeddedContent.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContentGroup/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -33518,13 +32858,6 @@ EmbeddedContent.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContentCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -33711,7 +33044,7 @@ EmbeddedContent.Description
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DynamicContent>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -33733,15 +33066,6 @@ EmbeddedContent.Description
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<DynamicContentCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(DynamicContentCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/DynamicContentCollection/" + "MasterCollection");
@@ -34016,13 +33340,6 @@ EmbeddedContent.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DynamicContent/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DynamicContent/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -34549,13 +33866,6 @@ DynamicContent.RawContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AttachedToObjectCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -34742,7 +34052,7 @@ DynamicContent.RawContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AttachedToObject>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -34764,15 +34074,6 @@ DynamicContent.RawContent
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<AttachedToObjectCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(AttachedToObjectCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/AttachedToObjectCollection/" + "MasterCollection");
@@ -35047,13 +34348,6 @@ DynamicContent.RawContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AttachedToObject/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AttachedToObject/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -35454,13 +34748,6 @@ DynamicContent.RawContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/CommentCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -35647,7 +34934,7 @@ DynamicContent.RawContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Comment>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -35669,15 +34956,6 @@ DynamicContent.RawContent
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<CommentCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(CommentCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/CommentCollection/" + "MasterCollection");
@@ -35952,13 +35230,6 @@ DynamicContent.RawContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Comment/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Comment/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -36432,13 +35703,6 @@ Comment.CommentText
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SelectionCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -36625,7 +35889,7 @@ Comment.CommentText
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Selection>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -36647,15 +35911,6 @@ Comment.CommentText
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<SelectionCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(SelectionCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/SelectionCollection/" + "MasterCollection");
@@ -36930,13 +36185,6 @@ Comment.CommentText
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Selection/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Selection/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -37345,13 +36593,6 @@ Comment.CommentText
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TextContentCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -37533,7 +36774,7 @@ Comment.CommentText
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<TextContent>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -37555,15 +36796,6 @@ Comment.CommentText
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<TextContentCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(TextContentCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/TextContentCollection/" + "MasterCollection");
@@ -37832,13 +37064,6 @@ Comment.CommentText
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/TextContent/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/TextContent/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -38458,13 +37683,6 @@ TextContent.RawHtmlContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Map/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -38804,13 +38022,6 @@ TextContent.RawHtmlContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -38995,18 +38206,13 @@ TextContent.RawHtmlContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Map>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -39280,13 +38486,6 @@ TextContent.RawHtmlContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResult/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapResult/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -39670,13 +38869,6 @@ TextContent.RawHtmlContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapResultCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -39861,18 +39053,13 @@ TextContent.RawHtmlContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<MapResult>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -40146,13 +39333,6 @@ TextContent.RawHtmlContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MapResultsCollection/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -40646,13 +39826,6 @@ TextContent.RawHtmlContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Video/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -41059,13 +40232,6 @@ TextContent.RawHtmlContent
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/ImageCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -41247,7 +40413,7 @@ TextContent.RawHtmlContent
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Image>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -41269,15 +40435,6 @@ TextContent.RawHtmlContent
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<ImageCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ImageCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/ImageCollection/" + "MasterCollection");
@@ -41546,13 +40703,6 @@ TextContent.RawHtmlContent
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Image/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Image/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -42130,13 +41280,6 @@ Image.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/BinaryFileCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -42323,7 +41466,7 @@ Image.Description
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<BinaryFile>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -42345,15 +41488,6 @@ Image.Description
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<BinaryFileCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(BinaryFileCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/BinaryFileCollection/" + "MasterCollection");
@@ -42628,13 +41762,6 @@ Image.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/BinaryFile/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/BinaryFile/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -43115,13 +42242,6 @@ BinaryFile.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/MediaContent/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -43421,13 +42541,6 @@ BinaryFile.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Longitude/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Longitude/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -43768,13 +42881,6 @@ BinaryFile.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Latitude/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -44113,13 +43219,6 @@ BinaryFile.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Location/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Location/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -44570,13 +43669,6 @@ BinaryFile.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/LocationCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -44761,18 +43853,13 @@ BinaryFile.Description
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Location>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -45046,13 +44133,6 @@ BinaryFile.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Date/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Date/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -45420,13 +44500,6 @@ BinaryFile.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/CategoryContainer/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/CategoryContainer/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -45810,13 +44883,6 @@ BinaryFile.Description
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Category/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Category/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -46335,13 +45401,6 @@ Category.Excerpt
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/CategoryCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -46523,7 +45582,7 @@ Category.Excerpt
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -46545,15 +45604,6 @@ Category.Excerpt
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<CategoryCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(CategoryCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "AaltoGlobalImpact.OIP/CategoryCollection/" + "MasterCollection");
@@ -46753,7519 +45803,6 @@ Category.Excerpt
 			}
 			[DataContract] 
 			[Serializable]
-			public partial class SubscriptionCollection : IInformationObject , IInformationCollection
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriptionCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriptionCollection";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionCollection), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionCollection>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriptionCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriptionCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriptionCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriptionCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Subscription>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static SubscriptionCollection CreateDefault()
-				{
-					var result = new SubscriptionCollection();
-					return result;
-				}
-
-				/*
-				public static SubscriptionCollection CreateDemoDefault()
-				{
-					SubscriptionCollection customDemo = null;
-					SubscriptionCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriptionCollection();
-					result.CollectionContent.Add(Subscription.CreateDemoDefault());
-					//result.CollectionContent.Add(Subscription.CreateDemoDefault());
-					//result.CollectionContent.Add(Subscription.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
-				private Subscription[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public Subscription[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (Subscription )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(SubscriptionCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class Subscription : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public Subscription()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Subscription";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/Subscription/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Subscription), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Subscription>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: Subscription");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Subscription), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Subscription/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Subscription/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((Subscription) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Subscription));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Subscription DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Subscription));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Subscription) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Subscription", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Subscription", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref Subscription customDemoObject);
-
-
-
-				public static Subscription CreateDefault()
-				{
-					var result = new Subscription();
-					return result;
-				}
-				/*
-				public static Subscription CreateDemoDefault()
-				{
-					Subscription customDemo = null;
-					Subscription.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new Subscription();
-					result.TargetRelativeLocation = @"Subscription.TargetRelativeLocation";
-
-					result.TargetInformationObjectType = @"Subscription.TargetInformationObjectType";
-
-					result.SubscriberRelativeLocation = @"Subscription.SubscriberRelativeLocation";
-
-					result.SubscriberInformationObjectType = @"Subscription.SubscriberInformationObjectType";
-
-					result.SubscriptionType = @"Subscription.SubscriptionType";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(Priority != _unmodified_Priority)
-							return true;
-						if(TargetRelativeLocation != _unmodified_TargetRelativeLocation)
-							return true;
-						if(TargetInformationObjectType != _unmodified_TargetInformationObjectType)
-							return true;
-						if(SubscriberRelativeLocation != _unmodified_SubscriberRelativeLocation)
-							return true;
-						if(SubscriberInformationObjectType != _unmodified_SubscriberInformationObjectType)
-							return true;
-						if(SubscriptionType != _unmodified_SubscriptionType)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(Subscription sourceObject)
-				{
-					Priority = sourceObject.Priority;
-					TargetRelativeLocation = sourceObject.TargetRelativeLocation;
-					TargetInformationObjectType = sourceObject.TargetInformationObjectType;
-					SubscriberRelativeLocation = sourceObject.SubscriberRelativeLocation;
-					SubscriberInformationObjectType = sourceObject.SubscriberInformationObjectType;
-					SubscriptionType = sourceObject.SubscriptionType;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_Priority = Priority;
-					_unmodified_TargetRelativeLocation = TargetRelativeLocation;
-					_unmodified_TargetInformationObjectType = TargetInformationObjectType;
-					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
-					_unmodified_SubscriberInformationObjectType = SubscriberInformationObjectType;
-					_unmodified_SubscriptionType = SubscriptionType;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Priority":
-							Priority = long.Parse(value);
-							break;
-						case "TargetRelativeLocation":
-							TargetRelativeLocation = value;
-							break;
-						case "TargetInformationObjectType":
-							TargetInformationObjectType = value;
-							break;
-						case "SubscriberRelativeLocation":
-							SubscriberRelativeLocation = value;
-							break;
-						case "SubscriberInformationObjectType":
-							SubscriberInformationObjectType = value;
-							break;
-						case "SubscriptionType":
-							SubscriptionType = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public long Priority { get; set; }
-			private long _unmodified_Priority;
-			[DataMember] 
-			public string TargetRelativeLocation { get; set; }
-			private string _unmodified_TargetRelativeLocation;
-			[DataMember] 
-			public string TargetInformationObjectType { get; set; }
-			private string _unmodified_TargetInformationObjectType;
-			[DataMember] 
-			public string SubscriberRelativeLocation { get; set; }
-			private string _unmodified_SubscriberRelativeLocation;
-			[DataMember] 
-			public string SubscriberInformationObjectType { get; set; }
-			private string _unmodified_SubscriberInformationObjectType;
-			[DataMember] 
-			public string SubscriptionType { get; set; }
-			private string _unmodified_SubscriptionType;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class QueueEnvelope : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public QueueEnvelope()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "QueueEnvelope";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/QueueEnvelope/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(QueueEnvelope), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<QueueEnvelope>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: QueueEnvelope");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(QueueEnvelope), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/QueueEnvelope/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((QueueEnvelope) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static QueueEnvelope DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(QueueEnvelope));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (QueueEnvelope) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "QueueEnvelope", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "QueueEnvelope", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref QueueEnvelope customDemoObject);
-
-
-
-				public static QueueEnvelope CreateDefault()
-				{
-					var result = new QueueEnvelope();
-					result.SingleOperation = OperationRequest.CreateDefault();
-					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDefault();
-					result.ErrorContent = SystemError.CreateDefault();
-					return result;
-				}
-				/*
-				public static QueueEnvelope CreateDemoDefault()
-				{
-					QueueEnvelope customDemo = null;
-					QueueEnvelope.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new QueueEnvelope();
-					result.ActiveContainerName = @"QueueEnvelope.ActiveContainerName";
-
-					result.OwnerPrefix = @"QueueEnvelope.OwnerPrefix";
-
-					result.SingleOperation = OperationRequest.CreateDemoDefault();
-					result.OrderDependentOperationSequence = OperationRequestCollection.CreateDemoDefault();
-					result.ErrorContent = SystemError.CreateDemoDefault();
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(SingleOperation != null) {
-						((IInformationObject) SingleOperation).UpdateCollections(masterInstance);
-					}
-
-					if(OrderDependentOperationSequence != null) {
-						((IInformationObject) OrderDependentOperationSequence).UpdateCollections(masterInstance);
-					}
-
-					if(ErrorContent != null) {
-						((IInformationObject) ErrorContent).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = SingleOperation;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = OrderDependentOperationSequence;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = ErrorContent;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = SingleOperation;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = OrderDependentOperationSequence;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = ErrorContent;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) SingleOperation;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) OrderDependentOperationSequence;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) ErrorContent;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ActiveContainerName != _unmodified_ActiveContainerName)
-							return true;
-						if(OwnerPrefix != _unmodified_OwnerPrefix)
-							return true;
-						if(CurrentRetryCount != _unmodified_CurrentRetryCount)
-							return true;
-						if(SingleOperation != _unmodified_SingleOperation)
-							return true;
-						if(OrderDependentOperationSequence != _unmodified_OrderDependentOperationSequence)
-							return true;
-						if(ErrorContent != _unmodified_ErrorContent)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) SingleOperation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) OrderDependentOperationSequence;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ErrorContent;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					if(SingleOperation != null) {
-						if(SingleOperation.ID == replacingObject.ID)
-							SingleOperation = (OperationRequest) replacingObject;
-						else {
-							IInformationObject iObject = SingleOperation;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(OrderDependentOperationSequence != null) {
-						if(OrderDependentOperationSequence.ID == replacingObject.ID)
-							OrderDependentOperationSequence = (OperationRequestCollection) replacingObject;
-						else {
-							IInformationObject iObject = OrderDependentOperationSequence;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(ErrorContent != null) {
-						if(ErrorContent.ID == replacingObject.ID)
-							ErrorContent = (SystemError) replacingObject;
-						else {
-							IInformationObject iObject = ErrorContent;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-
-				private void CopyContentFrom(QueueEnvelope sourceObject)
-				{
-					ActiveContainerName = sourceObject.ActiveContainerName;
-					OwnerPrefix = sourceObject.OwnerPrefix;
-					CurrentRetryCount = sourceObject.CurrentRetryCount;
-					SingleOperation = sourceObject.SingleOperation;
-					OrderDependentOperationSequence = sourceObject.OrderDependentOperationSequence;
-					ErrorContent = sourceObject.ErrorContent;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ActiveContainerName = ActiveContainerName;
-					_unmodified_OwnerPrefix = OwnerPrefix;
-					_unmodified_CurrentRetryCount = CurrentRetryCount;
-				
-					_unmodified_SingleOperation = SingleOperation;
-					if(SingleOperation != null)
-						((IInformationObject) SingleOperation).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_OrderDependentOperationSequence = OrderDependentOperationSequence;
-					if(OrderDependentOperationSequence != null)
-						((IInformationObject) OrderDependentOperationSequence).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_ErrorContent = ErrorContent;
-					if(ErrorContent != null)
-						((IInformationObject) ErrorContent).SetInstanceTreeValuesAsUnmodified();
-
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ActiveContainerName":
-							ActiveContainerName = value;
-							break;
-						case "OwnerPrefix":
-							OwnerPrefix = value;
-							break;
-						case "CurrentRetryCount":
-							CurrentRetryCount = long.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ActiveContainerName { get; set; }
-			private string _unmodified_ActiveContainerName;
-			[DataMember] 
-			public string OwnerPrefix { get; set; }
-			private string _unmodified_OwnerPrefix;
-			[DataMember] 
-			public long CurrentRetryCount { get; set; }
-			private long _unmodified_CurrentRetryCount;
-			[DataMember] 
-			public OperationRequest SingleOperation { get; set; }
-			private OperationRequest _unmodified_SingleOperation;
-			[DataMember] 
-			public OperationRequestCollection OrderDependentOperationSequence { get; set; }
-			private OperationRequestCollection _unmodified_OrderDependentOperationSequence;
-			[DataMember] 
-			public SystemError ErrorContent { get; set; }
-			private SystemError _unmodified_ErrorContent;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class OperationRequestCollection : IInformationObject , IInformationCollection
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public OperationRequestCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "OperationRequestCollection";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/OperationRequestCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(OperationRequestCollection), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequestCollection>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequestCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequestCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/OperationRequestCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((OperationRequestCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequestCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static OperationRequestCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequestCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (OperationRequestCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequestCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OperationRequestCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref OperationRequestCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequest>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static OperationRequestCollection CreateDefault()
-				{
-					var result = new OperationRequestCollection();
-					return result;
-				}
-
-				/*
-				public static OperationRequestCollection CreateDemoDefault()
-				{
-					OperationRequestCollection customDemo = null;
-					OperationRequestCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new OperationRequestCollection();
-					result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
-					//result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
-					//result.CollectionContent.Add(OperationRequest.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<OperationRequest> CollectionContent = new List<OperationRequest>();
-				private OperationRequest[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public OperationRequest[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (OperationRequest )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(OperationRequestCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class OperationRequest : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public OperationRequest()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "OperationRequest";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/OperationRequest/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(OperationRequest), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<OperationRequest>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: OperationRequest");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(OperationRequest), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/OperationRequest/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/OperationRequest/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((OperationRequest) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequest));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static OperationRequest DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(OperationRequest));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (OperationRequest) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "OperationRequest", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "OperationRequest", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref OperationRequest customDemoObject);
-
-
-
-				public static OperationRequest CreateDefault()
-				{
-					var result = new OperationRequest();
-					result.SubscriberNotification = Subscription.CreateDefault();
-					result.SubscriptionChainRequest = SubscriptionChainRequestMessage.CreateDefault();
-					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDefault();
-					result.RefreshDefaultViewsOperation = RefreshDefaultViewsOperation.CreateDefault();
-					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDefault();
-					result.DeleteOwnerContent = DeleteOwnerContentOperation.CreateDefault();
-					result.PublishWebContent = PublishWebContentOperation.CreateDefault();
-					return result;
-				}
-				/*
-				public static OperationRequest CreateDemoDefault()
-				{
-					OperationRequest customDemo = null;
-					OperationRequest.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new OperationRequest();
-					result.SubscriberNotification = Subscription.CreateDemoDefault();
-					result.SubscriptionChainRequest = SubscriptionChainRequestMessage.CreateDemoDefault();
-					result.UpdateWebContentOperation = UpdateWebContentOperation.CreateDemoDefault();
-					result.RefreshDefaultViewsOperation = RefreshDefaultViewsOperation.CreateDemoDefault();
-					result.DeleteEntireOwner = DeleteEntireOwnerOperation.CreateDemoDefault();
-					result.DeleteOwnerContent = DeleteOwnerContentOperation.CreateDemoDefault();
-					result.PublishWebContent = PublishWebContentOperation.CreateDemoDefault();
-					result.ProcessIDToExecute = @"OperationRequest.ProcessIDToExecute";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(SubscriberNotification != null) {
-						((IInformationObject) SubscriberNotification).UpdateCollections(masterInstance);
-					}
-
-					if(SubscriptionChainRequest != null) {
-						((IInformationObject) SubscriptionChainRequest).UpdateCollections(masterInstance);
-					}
-
-					if(UpdateWebContentOperation != null) {
-						((IInformationObject) UpdateWebContentOperation).UpdateCollections(masterInstance);
-					}
-
-					if(RefreshDefaultViewsOperation != null) {
-						((IInformationObject) RefreshDefaultViewsOperation).UpdateCollections(masterInstance);
-					}
-
-					if(DeleteEntireOwner != null) {
-						((IInformationObject) DeleteEntireOwner).UpdateCollections(masterInstance);
-					}
-
-					if(DeleteOwnerContent != null) {
-						((IInformationObject) DeleteOwnerContent).UpdateCollections(masterInstance);
-					}
-
-					if(PublishWebContent != null) {
-						((IInformationObject) PublishWebContent).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = SubscriberNotification;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = SubscriptionChainRequest;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = UpdateWebContentOperation;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = RefreshDefaultViewsOperation;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = DeleteEntireOwner;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = DeleteOwnerContent;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = PublishWebContent;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = SubscriberNotification;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = SubscriptionChainRequest;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = UpdateWebContentOperation;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = RefreshDefaultViewsOperation;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = DeleteEntireOwner;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = DeleteOwnerContent;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = PublishWebContent;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) SubscriberNotification;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) SubscriptionChainRequest;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) UpdateWebContentOperation;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) RefreshDefaultViewsOperation;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) DeleteEntireOwner;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) DeleteOwnerContent;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) PublishWebContent;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(SubscriberNotification != _unmodified_SubscriberNotification)
-							return true;
-						if(SubscriptionChainRequest != _unmodified_SubscriptionChainRequest)
-							return true;
-						if(UpdateWebContentOperation != _unmodified_UpdateWebContentOperation)
-							return true;
-						if(RefreshDefaultViewsOperation != _unmodified_RefreshDefaultViewsOperation)
-							return true;
-						if(DeleteEntireOwner != _unmodified_DeleteEntireOwner)
-							return true;
-						if(DeleteOwnerContent != _unmodified_DeleteOwnerContent)
-							return true;
-						if(PublishWebContent != _unmodified_PublishWebContent)
-							return true;
-						if(ProcessIDToExecute != _unmodified_ProcessIDToExecute)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) SubscriberNotification;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) SubscriptionChainRequest;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) UpdateWebContentOperation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) RefreshDefaultViewsOperation;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) DeleteEntireOwner;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) DeleteOwnerContent;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) PublishWebContent;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					if(SubscriberNotification != null) {
-						if(SubscriberNotification.ID == replacingObject.ID)
-							SubscriberNotification = (Subscription) replacingObject;
-						else {
-							IInformationObject iObject = SubscriberNotification;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(SubscriptionChainRequest != null) {
-						if(SubscriptionChainRequest.ID == replacingObject.ID)
-							SubscriptionChainRequest = (SubscriptionChainRequestMessage) replacingObject;
-						else {
-							IInformationObject iObject = SubscriptionChainRequest;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(UpdateWebContentOperation != null) {
-						if(UpdateWebContentOperation.ID == replacingObject.ID)
-							UpdateWebContentOperation = (UpdateWebContentOperation) replacingObject;
-						else {
-							IInformationObject iObject = UpdateWebContentOperation;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(RefreshDefaultViewsOperation != null) {
-						if(RefreshDefaultViewsOperation.ID == replacingObject.ID)
-							RefreshDefaultViewsOperation = (RefreshDefaultViewsOperation) replacingObject;
-						else {
-							IInformationObject iObject = RefreshDefaultViewsOperation;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(DeleteEntireOwner != null) {
-						if(DeleteEntireOwner.ID == replacingObject.ID)
-							DeleteEntireOwner = (DeleteEntireOwnerOperation) replacingObject;
-						else {
-							IInformationObject iObject = DeleteEntireOwner;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(DeleteOwnerContent != null) {
-						if(DeleteOwnerContent.ID == replacingObject.ID)
-							DeleteOwnerContent = (DeleteOwnerContentOperation) replacingObject;
-						else {
-							IInformationObject iObject = DeleteOwnerContent;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(PublishWebContent != null) {
-						if(PublishWebContent.ID == replacingObject.ID)
-							PublishWebContent = (PublishWebContentOperation) replacingObject;
-						else {
-							IInformationObject iObject = PublishWebContent;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-
-				private void CopyContentFrom(OperationRequest sourceObject)
-				{
-					SubscriberNotification = sourceObject.SubscriberNotification;
-					SubscriptionChainRequest = sourceObject.SubscriptionChainRequest;
-					UpdateWebContentOperation = sourceObject.UpdateWebContentOperation;
-					RefreshDefaultViewsOperation = sourceObject.RefreshDefaultViewsOperation;
-					DeleteEntireOwner = sourceObject.DeleteEntireOwner;
-					DeleteOwnerContent = sourceObject.DeleteOwnerContent;
-					PublishWebContent = sourceObject.PublishWebContent;
-					ProcessIDToExecute = sourceObject.ProcessIDToExecute;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ProcessIDToExecute = ProcessIDToExecute;
-				
-					_unmodified_SubscriberNotification = SubscriberNotification;
-					if(SubscriberNotification != null)
-						((IInformationObject) SubscriberNotification).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_SubscriptionChainRequest = SubscriptionChainRequest;
-					if(SubscriptionChainRequest != null)
-						((IInformationObject) SubscriptionChainRequest).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_UpdateWebContentOperation = UpdateWebContentOperation;
-					if(UpdateWebContentOperation != null)
-						((IInformationObject) UpdateWebContentOperation).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_RefreshDefaultViewsOperation = RefreshDefaultViewsOperation;
-					if(RefreshDefaultViewsOperation != null)
-						((IInformationObject) RefreshDefaultViewsOperation).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_DeleteEntireOwner = DeleteEntireOwner;
-					if(DeleteEntireOwner != null)
-						((IInformationObject) DeleteEntireOwner).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_DeleteOwnerContent = DeleteOwnerContent;
-					if(DeleteOwnerContent != null)
-						((IInformationObject) DeleteOwnerContent).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_PublishWebContent = PublishWebContent;
-					if(PublishWebContent != null)
-						((IInformationObject) PublishWebContent).SetInstanceTreeValuesAsUnmodified();
-
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ProcessIDToExecute":
-							ProcessIDToExecute = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public Subscription SubscriberNotification { get; set; }
-			private Subscription _unmodified_SubscriberNotification;
-			[DataMember] 
-			public SubscriptionChainRequestMessage SubscriptionChainRequest { get; set; }
-			private SubscriptionChainRequestMessage _unmodified_SubscriptionChainRequest;
-			[DataMember] 
-			public UpdateWebContentOperation UpdateWebContentOperation { get; set; }
-			private UpdateWebContentOperation _unmodified_UpdateWebContentOperation;
-			[DataMember] 
-			public RefreshDefaultViewsOperation RefreshDefaultViewsOperation { get; set; }
-			private RefreshDefaultViewsOperation _unmodified_RefreshDefaultViewsOperation;
-			[DataMember] 
-			public DeleteEntireOwnerOperation DeleteEntireOwner { get; set; }
-			private DeleteEntireOwnerOperation _unmodified_DeleteEntireOwner;
-			[DataMember] 
-			public DeleteOwnerContentOperation DeleteOwnerContent { get; set; }
-			private DeleteOwnerContentOperation _unmodified_DeleteOwnerContent;
-			[DataMember] 
-			public PublishWebContentOperation PublishWebContent { get; set; }
-			private PublishWebContentOperation _unmodified_PublishWebContent;
-			[DataMember] 
-			public string ProcessIDToExecute { get; set; }
-			private string _unmodified_ProcessIDToExecute;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SubscriptionChainRequestMessage : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriptionChainRequestMessage()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriptionChainRequestMessage";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionChainRequestMessage), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestMessage>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionChainRequestMessage");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionChainRequestMessage), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionChainRequestMessage/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriptionChainRequestMessage) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestMessage));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriptionChainRequestMessage DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestMessage));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriptionChainRequestMessage) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionChainRequestMessage", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriptionChainRequestMessage customDemoObject);
-
-
-
-				public static SubscriptionChainRequestMessage CreateDefault()
-				{
-					var result = new SubscriptionChainRequestMessage();
-					return result;
-				}
-				/*
-				public static SubscriptionChainRequestMessage CreateDemoDefault()
-				{
-					SubscriptionChainRequestMessage customDemo = null;
-					SubscriptionChainRequestMessage.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriptionChainRequestMessage();
-					result.ContentItemID = @"SubscriptionChainRequestMessage.ContentItemID";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ContentItemID != _unmodified_ContentItemID)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(SubscriptionChainRequestMessage sourceObject)
-				{
-					ContentItemID = sourceObject.ContentItemID;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ContentItemID = ContentItemID;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ContentItemID":
-							ContentItemID = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ContentItemID { get; set; }
-			private string _unmodified_ContentItemID;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SubscriptionChainRequestContent : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriptionChainRequestContent()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriptionChainRequestContent";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionChainRequestContent), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionChainRequestContent>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionChainRequestContent");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionChainRequestContent), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionChainRequestContent/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriptionChainRequestContent) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestContent));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriptionChainRequestContent DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionChainRequestContent));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriptionChainRequestContent) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionChainRequestContent", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriptionChainRequestContent customDemoObject);
-
-
-
-				public static SubscriptionChainRequestContent CreateDefault()
-				{
-					var result = new SubscriptionChainRequestContent();
-					result.SubscriptionTargetCollection = SubscriptionTargetCollection.CreateDefault();
-					return result;
-				}
-				/*
-				public static SubscriptionChainRequestContent CreateDemoDefault()
-				{
-					SubscriptionChainRequestContent customDemo = null;
-					SubscriptionChainRequestContent.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriptionChainRequestContent();
-					result.SubscriptionTargetCollection = SubscriptionTargetCollection.CreateDemoDefault();
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(SubscriptionTargetCollection != null) {
-						((IInformationObject) SubscriptionTargetCollection).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = SubscriptionTargetCollection;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = SubscriptionTargetCollection;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) SubscriptionTargetCollection;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(SubmitTime != _unmodified_SubmitTime)
-							return true;
-						if(ProcessingStartTime != _unmodified_ProcessingStartTime)
-							return true;
-						if(ProcessingEndTimeInformationObjects != _unmodified_ProcessingEndTimeInformationObjects)
-							return true;
-						if(ProcessingEndTimeWebTemplatesRendering != _unmodified_ProcessingEndTimeWebTemplatesRendering)
-							return true;
-						if(ProcessingEndTime != _unmodified_ProcessingEndTime)
-							return true;
-						if(SubscriptionTargetCollection != _unmodified_SubscriptionTargetCollection)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) SubscriptionTargetCollection;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					if(SubscriptionTargetCollection != null) {
-						if(SubscriptionTargetCollection.ID == replacingObject.ID)
-							SubscriptionTargetCollection = (SubscriptionTargetCollection) replacingObject;
-						else {
-							IInformationObject iObject = SubscriptionTargetCollection;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-
-				private void CopyContentFrom(SubscriptionChainRequestContent sourceObject)
-				{
-					SubmitTime = sourceObject.SubmitTime;
-					ProcessingStartTime = sourceObject.ProcessingStartTime;
-					ProcessingEndTimeInformationObjects = sourceObject.ProcessingEndTimeInformationObjects;
-					ProcessingEndTimeWebTemplatesRendering = sourceObject.ProcessingEndTimeWebTemplatesRendering;
-					ProcessingEndTime = sourceObject.ProcessingEndTime;
-					SubscriptionTargetCollection = sourceObject.SubscriptionTargetCollection;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_SubmitTime = SubmitTime;
-					_unmodified_ProcessingStartTime = ProcessingStartTime;
-					_unmodified_ProcessingEndTimeInformationObjects = ProcessingEndTimeInformationObjects;
-					_unmodified_ProcessingEndTimeWebTemplatesRendering = ProcessingEndTimeWebTemplatesRendering;
-					_unmodified_ProcessingEndTime = ProcessingEndTime;
-				
-					_unmodified_SubscriptionTargetCollection = SubscriptionTargetCollection;
-					if(SubscriptionTargetCollection != null)
-						((IInformationObject) SubscriptionTargetCollection).SetInstanceTreeValuesAsUnmodified();
-
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "SubmitTime":
-							SubmitTime = DateTime.Parse(value);
-							break;
-						case "ProcessingStartTime":
-							ProcessingStartTime = DateTime.Parse(value);
-							break;
-						case "ProcessingEndTimeInformationObjects":
-							ProcessingEndTimeInformationObjects = DateTime.Parse(value);
-							break;
-						case "ProcessingEndTimeWebTemplatesRendering":
-							ProcessingEndTimeWebTemplatesRendering = DateTime.Parse(value);
-							break;
-						case "ProcessingEndTime":
-							ProcessingEndTime = DateTime.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public DateTime SubmitTime { get; set; }
-			private DateTime _unmodified_SubmitTime;
-			[DataMember] 
-			public DateTime ProcessingStartTime { get; set; }
-			private DateTime _unmodified_ProcessingStartTime;
-			[DataMember] 
-			public DateTime ProcessingEndTimeInformationObjects { get; set; }
-			private DateTime _unmodified_ProcessingEndTimeInformationObjects;
-			[DataMember] 
-			public DateTime ProcessingEndTimeWebTemplatesRendering { get; set; }
-			private DateTime _unmodified_ProcessingEndTimeWebTemplatesRendering;
-			[DataMember] 
-			public DateTime ProcessingEndTime { get; set; }
-			private DateTime _unmodified_ProcessingEndTime;
-			[DataMember] 
-			public SubscriptionTargetCollection SubscriptionTargetCollection { get; set; }
-			private SubscriptionTargetCollection _unmodified_SubscriptionTargetCollection;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SubscriptionTarget : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriptionTarget()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriptionTarget";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionTarget/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionTarget), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionTarget");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionTarget), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionTarget/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriptionTarget) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTarget));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriptionTarget DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTarget));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriptionTarget) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTarget", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionTarget", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriptionTarget customDemoObject);
-
-
-
-				public static SubscriptionTarget CreateDefault()
-				{
-					var result = new SubscriptionTarget();
-					return result;
-				}
-				/*
-				public static SubscriptionTarget CreateDemoDefault()
-				{
-					SubscriptionTarget customDemo = null;
-					SubscriptionTarget.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriptionTarget();
-					result.BlobLocation = @"SubscriptionTarget.BlobLocation";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(BlobLocation != _unmodified_BlobLocation)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(SubscriptionTarget sourceObject)
-				{
-					BlobLocation = sourceObject.BlobLocation;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_BlobLocation = BlobLocation;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "BlobLocation":
-							BlobLocation = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string BlobLocation { get; set; }
-			private string _unmodified_BlobLocation;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SubscriptionTargetCollection : IInformationObject , IInformationCollection
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriptionTargetCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriptionTargetCollection";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriptionTargetCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriptionTargetCollection), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTargetCollection>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriptionTargetCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriptionTargetCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriptionTargetCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriptionTargetCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTargetCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriptionTargetCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionTargetCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriptionTargetCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriptionTargetCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriptionTargetCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<SubscriptionTarget>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static SubscriptionTargetCollection CreateDefault()
-				{
-					var result = new SubscriptionTargetCollection();
-					return result;
-				}
-
-				/*
-				public static SubscriptionTargetCollection CreateDemoDefault()
-				{
-					SubscriptionTargetCollection customDemo = null;
-					SubscriptionTargetCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriptionTargetCollection();
-					result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
-					//result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
-					//result.CollectionContent.Add(SubscriptionTarget.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<SubscriptionTarget> CollectionContent = new List<SubscriptionTarget>();
-				private SubscriptionTarget[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public SubscriptionTarget[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (SubscriptionTarget )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(SubscriptionTargetCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class DeleteEntireOwnerOperation : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public DeleteEntireOwnerOperation()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "DeleteEntireOwnerOperation";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(DeleteEntireOwnerOperation), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeleteEntireOwnerOperation>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteEntireOwnerOperation");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteEntireOwnerOperation), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DeleteEntireOwnerOperation/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((DeleteEntireOwnerOperation) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteEntireOwnerOperation));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static DeleteEntireOwnerOperation DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteEntireOwnerOperation));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (DeleteEntireOwnerOperation) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DeleteEntireOwnerOperation", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref DeleteEntireOwnerOperation customDemoObject);
-
-
-
-				public static DeleteEntireOwnerOperation CreateDefault()
-				{
-					var result = new DeleteEntireOwnerOperation();
-					return result;
-				}
-				/*
-				public static DeleteEntireOwnerOperation CreateDemoDefault()
-				{
-					DeleteEntireOwnerOperation customDemo = null;
-					DeleteEntireOwnerOperation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new DeleteEntireOwnerOperation();
-					result.ContainerName = @"DeleteEntireOwnerOperation.ContainerName";
-
-					result.LocationPrefix = @"DeleteEntireOwnerOperation.LocationPrefix";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ContainerName != _unmodified_ContainerName)
-							return true;
-						if(LocationPrefix != _unmodified_LocationPrefix)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(DeleteEntireOwnerOperation sourceObject)
-				{
-					ContainerName = sourceObject.ContainerName;
-					LocationPrefix = sourceObject.LocationPrefix;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ContainerName = ContainerName;
-					_unmodified_LocationPrefix = LocationPrefix;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ContainerName":
-							ContainerName = value;
-							break;
-						case "LocationPrefix":
-							LocationPrefix = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ContainerName { get; set; }
-			private string _unmodified_ContainerName;
-			[DataMember] 
-			public string LocationPrefix { get; set; }
-			private string _unmodified_LocationPrefix;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class DeleteOwnerContentOperation : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public DeleteOwnerContentOperation()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "DeleteOwnerContentOperation";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(DeleteOwnerContentOperation), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<DeleteOwnerContentOperation>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: DeleteOwnerContentOperation");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeleteOwnerContentOperation), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/DeleteOwnerContentOperation/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((DeleteOwnerContentOperation) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteOwnerContentOperation));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static DeleteOwnerContentOperation DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(DeleteOwnerContentOperation));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (DeleteOwnerContentOperation) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "DeleteOwnerContentOperation", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref DeleteOwnerContentOperation customDemoObject);
-
-
-
-				public static DeleteOwnerContentOperation CreateDefault()
-				{
-					var result = new DeleteOwnerContentOperation();
-					return result;
-				}
-				/*
-				public static DeleteOwnerContentOperation CreateDemoDefault()
-				{
-					DeleteOwnerContentOperation customDemo = null;
-					DeleteOwnerContentOperation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new DeleteOwnerContentOperation();
-					result.ContainerName = @"DeleteOwnerContentOperation.ContainerName";
-
-					result.LocationPrefix = @"DeleteOwnerContentOperation.LocationPrefix";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ContainerName != _unmodified_ContainerName)
-							return true;
-						if(LocationPrefix != _unmodified_LocationPrefix)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(DeleteOwnerContentOperation sourceObject)
-				{
-					ContainerName = sourceObject.ContainerName;
-					LocationPrefix = sourceObject.LocationPrefix;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ContainerName = ContainerName;
-					_unmodified_LocationPrefix = LocationPrefix;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ContainerName":
-							ContainerName = value;
-							break;
-						case "LocationPrefix":
-							LocationPrefix = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ContainerName { get; set; }
-			private string _unmodified_ContainerName;
-			[DataMember] 
-			public string LocationPrefix { get; set; }
-			private string _unmodified_LocationPrefix;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SystemError : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SystemError()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SystemError";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SystemError/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SystemError), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemError>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemError");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemError), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemError/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SystemError/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SystemError) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemError));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SystemError DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemError));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SystemError) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemError", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemError", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SystemError customDemoObject);
-
-
-
-				public static SystemError CreateDefault()
-				{
-					var result = new SystemError();
-					result.SystemErrorItems = SystemErrorItemCollection.CreateDefault();
-					result.MessageContent = QueueEnvelope.CreateDefault();
-					return result;
-				}
-				/*
-				public static SystemError CreateDemoDefault()
-				{
-					SystemError customDemo = null;
-					SystemError.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SystemError();
-					result.ErrorTitle = @"SystemError.ErrorTitle";
-
-					result.SystemErrorItems = SystemErrorItemCollection.CreateDemoDefault();
-					result.MessageContent = QueueEnvelope.CreateDemoDefault();
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(SystemErrorItems != null) {
-						((IInformationObject) SystemErrorItems).UpdateCollections(masterInstance);
-					}
-
-					if(MessageContent != null) {
-						((IInformationObject) MessageContent).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = SystemErrorItems;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = MessageContent;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = SystemErrorItems;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = MessageContent;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) SystemErrorItems;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) MessageContent;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ErrorTitle != _unmodified_ErrorTitle)
-							return true;
-						if(OccurredAt != _unmodified_OccurredAt)
-							return true;
-						if(SystemErrorItems != _unmodified_SystemErrorItems)
-							return true;
-						if(MessageContent != _unmodified_MessageContent)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) SystemErrorItems;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) MessageContent;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					if(SystemErrorItems != null) {
-						if(SystemErrorItems.ID == replacingObject.ID)
-							SystemErrorItems = (SystemErrorItemCollection) replacingObject;
-						else {
-							IInformationObject iObject = SystemErrorItems;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(MessageContent != null) {
-						if(MessageContent.ID == replacingObject.ID)
-							MessageContent = (QueueEnvelope) replacingObject;
-						else {
-							IInformationObject iObject = MessageContent;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-
-				private void CopyContentFrom(SystemError sourceObject)
-				{
-					ErrorTitle = sourceObject.ErrorTitle;
-					OccurredAt = sourceObject.OccurredAt;
-					SystemErrorItems = sourceObject.SystemErrorItems;
-					MessageContent = sourceObject.MessageContent;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ErrorTitle = ErrorTitle;
-					_unmodified_OccurredAt = OccurredAt;
-				
-					_unmodified_SystemErrorItems = SystemErrorItems;
-					if(SystemErrorItems != null)
-						((IInformationObject) SystemErrorItems).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_MessageContent = MessageContent;
-					if(MessageContent != null)
-						((IInformationObject) MessageContent).SetInstanceTreeValuesAsUnmodified();
-
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ErrorTitle":
-							ErrorTitle = value;
-							break;
-						case "OccurredAt":
-							OccurredAt = DateTime.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ErrorTitle { get; set; }
-			private string _unmodified_ErrorTitle;
-			[DataMember] 
-			public DateTime OccurredAt { get; set; }
-			private DateTime _unmodified_OccurredAt;
-			[DataMember] 
-			public SystemErrorItemCollection SystemErrorItems { get; set; }
-			private SystemErrorItemCollection _unmodified_SystemErrorItems;
-			[DataMember] 
-			public QueueEnvelope MessageContent { get; set; }
-			private QueueEnvelope _unmodified_MessageContent;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SystemErrorItem : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SystemErrorItem()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SystemErrorItem";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SystemErrorItem/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SystemErrorItem), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItem");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItem), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SystemErrorItem/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SystemErrorItem) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItem));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SystemErrorItem DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItem));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SystemErrorItem) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItem", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemErrorItem", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SystemErrorItem customDemoObject);
-
-
-
-				public static SystemErrorItem CreateDefault()
-				{
-					var result = new SystemErrorItem();
-					return result;
-				}
-				/*
-				public static SystemErrorItem CreateDemoDefault()
-				{
-					SystemErrorItem customDemo = null;
-					SystemErrorItem.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SystemErrorItem();
-					result.ShortDescription = @"SystemErrorItem.ShortDescription";
-
-					result.LongDescription = @"SystemErrorItem.LongDescription
-SystemErrorItem.LongDescription
-SystemErrorItem.LongDescription
-SystemErrorItem.LongDescription
-SystemErrorItem.LongDescription
-";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ShortDescription != _unmodified_ShortDescription)
-							return true;
-						if(LongDescription != _unmodified_LongDescription)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(SystemErrorItem sourceObject)
-				{
-					ShortDescription = sourceObject.ShortDescription;
-					LongDescription = sourceObject.LongDescription;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ShortDescription = ShortDescription;
-					_unmodified_LongDescription = LongDescription;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ShortDescription":
-							ShortDescription = value;
-							break;
-						case "LongDescription":
-							LongDescription = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ShortDescription { get; set; }
-			private string _unmodified_ShortDescription;
-			[DataMember] 
-			public string LongDescription { get; set; }
-			private string _unmodified_LongDescription;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SystemErrorItemCollection : IInformationObject , IInformationCollection
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SystemErrorItemCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SystemErrorItemCollection";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SystemErrorItemCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SystemErrorItemCollection), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItemCollection>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SystemErrorItemCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SystemErrorItemCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SystemErrorItemCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SystemErrorItemCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItemCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SystemErrorItemCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SystemErrorItemCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SystemErrorItemCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SystemErrorItemCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SystemErrorItemCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SystemErrorItemCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<SystemErrorItem>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static SystemErrorItemCollection CreateDefault()
-				{
-					var result = new SystemErrorItemCollection();
-					return result;
-				}
-
-				/*
-				public static SystemErrorItemCollection CreateDemoDefault()
-				{
-					SystemErrorItemCollection customDemo = null;
-					SystemErrorItemCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SystemErrorItemCollection();
-					result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
-					//result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
-					//result.CollectionContent.Add(SystemErrorItem.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<SystemErrorItem> CollectionContent = new List<SystemErrorItem>();
-				private SystemErrorItem[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public SystemErrorItem[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (SystemErrorItem )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(SystemErrorItemCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class InformationSource : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public InformationSource()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "InformationSource";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/InformationSource/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InformationSource), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationSource>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSource");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSource), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSource/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/InformationSource/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((InformationSource) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSource));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static InformationSource DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSource));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (InformationSource) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSource", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "InformationSource", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref InformationSource customDemoObject);
-
-
-
-				public static InformationSource CreateDefault()
-				{
-					var result = new InformationSource();
-					return result;
-				}
-				/*
-				public static InformationSource CreateDemoDefault()
-				{
-					InformationSource customDemo = null;
-					InformationSource.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new InformationSource();
-					result.SourceName = @"InformationSource.SourceName";
-
-					result.SourceLocation = @"InformationSource.SourceLocation";
-
-					result.SourceType = @"InformationSource.SourceType";
-
-					result.SourceInformationObjectType = @"InformationSource.SourceInformationObjectType";
-
-					result.SourceETag = @"InformationSource.SourceETag";
-
-					result.SourceMD5 = @"InformationSource.SourceMD5";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(SourceName != _unmodified_SourceName)
-							return true;
-						if(SourceLocation != _unmodified_SourceLocation)
-							return true;
-						if(SourceType != _unmodified_SourceType)
-							return true;
-						if(IsDynamic != _unmodified_IsDynamic)
-							return true;
-						if(SourceInformationObjectType != _unmodified_SourceInformationObjectType)
-							return true;
-						if(SourceETag != _unmodified_SourceETag)
-							return true;
-						if(SourceMD5 != _unmodified_SourceMD5)
-							return true;
-						if(SourceLastModified != _unmodified_SourceLastModified)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(InformationSource sourceObject)
-				{
-					SourceName = sourceObject.SourceName;
-					SourceLocation = sourceObject.SourceLocation;
-					SourceType = sourceObject.SourceType;
-					IsDynamic = sourceObject.IsDynamic;
-					SourceInformationObjectType = sourceObject.SourceInformationObjectType;
-					SourceETag = sourceObject.SourceETag;
-					SourceMD5 = sourceObject.SourceMD5;
-					SourceLastModified = sourceObject.SourceLastModified;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_SourceName = SourceName;
-					_unmodified_SourceLocation = SourceLocation;
-					_unmodified_SourceType = SourceType;
-					_unmodified_IsDynamic = IsDynamic;
-					_unmodified_SourceInformationObjectType = SourceInformationObjectType;
-					_unmodified_SourceETag = SourceETag;
-					_unmodified_SourceMD5 = SourceMD5;
-					_unmodified_SourceLastModified = SourceLastModified;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "SourceName":
-							SourceName = value;
-							break;
-						case "SourceLocation":
-							SourceLocation = value;
-							break;
-						case "SourceType":
-							SourceType = value;
-							break;
-						case "IsDynamic":
-							IsDynamic = bool.Parse(value);
-							break;
-						case "SourceInformationObjectType":
-							SourceInformationObjectType = value;
-							break;
-						case "SourceETag":
-							SourceETag = value;
-							break;
-						case "SourceMD5":
-							SourceMD5 = value;
-							break;
-						case "SourceLastModified":
-							SourceLastModified = DateTime.Parse(value);
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string SourceName { get; set; }
-			private string _unmodified_SourceName;
-			[DataMember] 
-			public string SourceLocation { get; set; }
-			private string _unmodified_SourceLocation;
-			[DataMember] 
-			public string SourceType { get; set; }
-			private string _unmodified_SourceType;
-			[DataMember] 
-			public bool IsDynamic { get; set; }
-			private bool _unmodified_IsDynamic;
-			[DataMember] 
-			public string SourceInformationObjectType { get; set; }
-			private string _unmodified_SourceInformationObjectType;
-			[DataMember] 
-			public string SourceETag { get; set; }
-			private string _unmodified_SourceETag;
-			[DataMember] 
-			public string SourceMD5 { get; set; }
-			private string _unmodified_SourceMD5;
-			[DataMember] 
-			public DateTime SourceLastModified { get; set; }
-			private DateTime _unmodified_SourceLastModified;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class InformationSourceCollection : IInformationObject , IInformationCollection
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public InformationSourceCollection()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "InformationSourceCollection";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/InformationSourceCollection/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(InformationSourceCollection), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<InformationSourceCollection>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationSourceCollection");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationSourceCollection), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/InformationSourceCollection/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((InformationSourceCollection) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSourceCollection));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static InformationSourceCollection DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(InformationSourceCollection));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (InformationSourceCollection) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "InformationSourceCollection", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "InformationSourceCollection", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref InformationSourceCollection customDemoObject);
-
-
-				
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.UpdateCollections(masterInstance);
-					}
-				}
-
-
-
-				bool IInformationCollection.IsMasterCollection {
-					get {
-						return false;
-					}
-				}
-
-				string IInformationCollection.GetMasterLocation()
-				{
-					throw new NotSupportedException("Master collection location only supported for master collections");
-					
-				}
-
-				IInformationCollection IInformationCollection.GetMasterInstance()
-				{
-					throw new NotSupportedException("Master collection instance only supported for master collections");
-					
-				}
-
-
-				public string GetItemDirectory()
-				{
-					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationSource>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
-					return ownerDirectoryLocation;
-				}
-
-				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
-				{
-				}
-
-
-
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-				
-		
-				public static InformationSourceCollection CreateDefault()
-				{
-					var result = new InformationSourceCollection();
-					return result;
-				}
-
-				/*
-				public static InformationSourceCollection CreateDemoDefault()
-				{
-					InformationSourceCollection customDemo = null;
-					InformationSourceCollection.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new InformationSourceCollection();
-					result.CollectionContent.Add(InformationSource.CreateDemoDefault());
-					//result.CollectionContent.Add(InformationSource.CreateDemoDefault());
-					//result.CollectionContent.Add(InformationSource.CreateDemoDefault());
-					return result;
-				}
-				*/
-
-		
-				[DataMember] public List<InformationSource> CollectionContent = new List<InformationSource>();
-				private InformationSource[] _unmodified_CollectionContent;
-
-				[DataMember] public bool IsCollectionFiltered;
-				private bool _unmodified_IsCollectionFiltered;
-				
-				[DataMember] public List<string> OrderFilterIDList = new List<string>();
-				private string[] _unmodified_OrderFilterIDList;
-
-				public string SelectedIDCommaSeparated
-				{
-					get
-					{
-						string[] sourceArray;
-						if (OrderFilterIDList != null)
-							sourceArray = OrderFilterIDList.ToArray();
-						else
-							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
-						return String.Join(",", sourceArray);
-					}
-					set 
-					{
-						if (value == null)
-							return;
-						string[] valueArray = value.Split(',');
-						OrderFilterIDList = new List<string>();
-						OrderFilterIDList.AddRange(valueArray);
-						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-					}
-				}
-
-				public InformationSource[] GetIDSelectedArray()
-				{
-					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
-						return CollectionContent.ToArray();
-					return
-						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
-				}
-
-				public void RefreshOrderAndFilterListFromContent()
-                {
-                    if (OrderFilterIDList == null)
-                        return;
-                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
-                }
-
-				public void ParsePropertyValue(string propertyName, string propertyValue)
-				{
-					switch(propertyName)
-					{
-						case "SelectedIDCommaSeparated":
-							SelectedIDCommaSeparated = propertyValue;
-							break;
-						case "IsCollectionFiltered":
-							IsCollectionFiltered = bool.Parse(propertyValue);
-							break;
-						default:
-							throw new NotSupportedException("No ParsePropertyValue supported for property: " + propertyName);
-					}
-				}
-
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					for(int i = 0; i < CollectionContent.Count; i++) // >
-					{
-						if(CollectionContent[i].ID == replacingObject.ID)
-							CollectionContent[i] = (InformationSource )replacingObject;
-						else { // Cannot have circular reference, so can be in else branch
-							IInformationObject iObject = CollectionContent[i];
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-				
-				bool IInformationObject.IsInstanceTreeModified {
-					get {
-						bool collectionModified = CollectionContent.SequenceEqual(_unmodified_CollectionContent) == false;
-						if(collectionModified)
-							return true;
-						//if((OrderFilterIDList == null && _unmodified_OrderFilterIDList != null) || _unmodified_OrderFilterIDList
-						if(IsCollectionFiltered != _unmodified_IsCollectionFiltered)
-							return true;
-						// For non-master content
-						foreach(IInformationObject item in CollectionContent)
-						{
-							bool itemTreeModified = item.IsInstanceTreeModified;
-							if(itemTreeModified)
-								return true;
-						}
-							
-						return false;
-					}
-				}
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_CollectionContent = CollectionContent.ToArray();
-					_unmodified_IsCollectionFiltered = IsCollectionFiltered;
-					if(OrderFilterIDList == null)
-						_unmodified_OrderFilterIDList = null;
-					else
-						_unmodified_OrderFilterIDList = OrderFilterIDList.ToArray();
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.SetInstanceTreeValuesAsUnmodified();
-				}
-
-				private void CopyContentFrom(InformationSourceCollection sourceObject)
-				{
-					CollectionContent = sourceObject.CollectionContent;
-					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
-				}
-				
-				private object FindFromObjectTree(string objectId)
-				{
-					foreach(var item in CollectionContent)
-					{
-						object result = item.FindObjectByID(objectId);
-						if(result != null)
-							return result;
-					}
-					return null;
-				}
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					foreach(IInformationObject iObject in CollectionContent)
-						iObject.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-				}
-
-
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						bool doAdd = true;
-						if(filterOnFalse != null)
-							doAdd = filterOnFalse(iObject);
-						if(doAdd) {
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					foreach(IInformationObject item in CollectionContent)
-					{
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-				}
-
-
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class RefreshDefaultViewsOperation : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public RefreshDefaultViewsOperation()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "RefreshDefaultViewsOperation";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(RefreshDefaultViewsOperation), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<RefreshDefaultViewsOperation>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: RefreshDefaultViewsOperation");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RefreshDefaultViewsOperation), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/RefreshDefaultViewsOperation/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((RefreshDefaultViewsOperation) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(RefreshDefaultViewsOperation));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static RefreshDefaultViewsOperation DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(RefreshDefaultViewsOperation));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (RefreshDefaultViewsOperation) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "RefreshDefaultViewsOperation", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref RefreshDefaultViewsOperation customDemoObject);
-
-
-
-				public static RefreshDefaultViewsOperation CreateDefault()
-				{
-					var result = new RefreshDefaultViewsOperation();
-					return result;
-				}
-				/*
-				public static RefreshDefaultViewsOperation CreateDemoDefault()
-				{
-					RefreshDefaultViewsOperation customDemo = null;
-					RefreshDefaultViewsOperation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new RefreshDefaultViewsOperation();
-					result.ViewLocation = @"RefreshDefaultViewsOperation.ViewLocation";
-
-					result.TypeNameToRefresh = @"RefreshDefaultViewsOperation.TypeNameToRefresh";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(ViewLocation != _unmodified_ViewLocation)
-							return true;
-						if(TypeNameToRefresh != _unmodified_TypeNameToRefresh)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(RefreshDefaultViewsOperation sourceObject)
-				{
-					ViewLocation = sourceObject.ViewLocation;
-					TypeNameToRefresh = sourceObject.TypeNameToRefresh;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_ViewLocation = ViewLocation;
-					_unmodified_TypeNameToRefresh = TypeNameToRefresh;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "ViewLocation":
-							ViewLocation = value;
-							break;
-						case "TypeNameToRefresh":
-							TypeNameToRefresh = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string ViewLocation { get; set; }
-			private string _unmodified_ViewLocation;
-			[DataMember] 
-			public string TypeNameToRefresh { get; set; }
-			private string _unmodified_TypeNameToRefresh;
-			
-			}
-			[DataContract] 
-			[Serializable]
 			public partial class UpdateWebContentOperation : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -54335,13 +45872,6 @@ SystemErrorItem.LongDescription
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentOperation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -54783,13 +46313,6 @@ SystemErrorItem.LongDescription
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentHandlerItem/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -55141,13 +46664,6 @@ SystemErrorItem.LongDescription
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/UpdateWebContentHandlerCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -55332,18 +46848,13 @@ SystemErrorItem.LongDescription
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<UpdateWebContentHandlerItem>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
 
 				public void RefreshContent()
-				{
-				}
-
-
-				public void SubscribeToContentSource()
 				{
 				}
 
@@ -55544,1998 +47055,6 @@ SystemErrorItem.LongDescription
 				}
 
 
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class PublishWebContentOperation : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public PublishWebContentOperation()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "PublishWebContentOperation";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/PublishWebContentOperation/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(PublishWebContentOperation), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<PublishWebContentOperation>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: PublishWebContentOperation");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(PublishWebContentOperation), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/PublishWebContentOperation/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/PublishWebContentOperation/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((PublishWebContentOperation) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(PublishWebContentOperation));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static PublishWebContentOperation DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(PublishWebContentOperation));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (PublishWebContentOperation) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "PublishWebContentOperation", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "PublishWebContentOperation", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref PublishWebContentOperation customDemoObject);
-
-
-
-				public static PublishWebContentOperation CreateDefault()
-				{
-					var result = new PublishWebContentOperation();
-					return result;
-				}
-				/*
-				public static PublishWebContentOperation CreateDemoDefault()
-				{
-					PublishWebContentOperation customDemo = null;
-					PublishWebContentOperation.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new PublishWebContentOperation();
-					result.SourceContainerName = @"PublishWebContentOperation.SourceContainerName";
-
-					result.SourcePathRoot = @"PublishWebContentOperation.SourcePathRoot";
-
-					result.SourceOwner = @"PublishWebContentOperation.SourceOwner";
-
-					result.TargetContainerName = @"PublishWebContentOperation.TargetContainerName";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(SourceContainerName != _unmodified_SourceContainerName)
-							return true;
-						if(SourcePathRoot != _unmodified_SourcePathRoot)
-							return true;
-						if(SourceOwner != _unmodified_SourceOwner)
-							return true;
-						if(TargetContainerName != _unmodified_TargetContainerName)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(PublishWebContentOperation sourceObject)
-				{
-					SourceContainerName = sourceObject.SourceContainerName;
-					SourcePathRoot = sourceObject.SourcePathRoot;
-					SourceOwner = sourceObject.SourceOwner;
-					TargetContainerName = sourceObject.TargetContainerName;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_SourceContainerName = SourceContainerName;
-					_unmodified_SourcePathRoot = SourcePathRoot;
-					_unmodified_SourceOwner = SourceOwner;
-					_unmodified_TargetContainerName = TargetContainerName;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "SourceContainerName":
-							SourceContainerName = value;
-							break;
-						case "SourcePathRoot":
-							SourcePathRoot = value;
-							break;
-						case "SourceOwner":
-							SourceOwner = value;
-							break;
-						case "TargetContainerName":
-							TargetContainerName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string SourceContainerName { get; set; }
-			private string _unmodified_SourceContainerName;
-			[DataMember] 
-			public string SourcePathRoot { get; set; }
-			private string _unmodified_SourcePathRoot;
-			[DataMember] 
-			public string SourceOwner { get; set; }
-			private string _unmodified_SourceOwner;
-			[DataMember] 
-			public string TargetContainerName { get; set; }
-			private string _unmodified_TargetContainerName;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class SubscriberInput : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public SubscriberInput()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "SubscriberInput";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/SubscriberInput/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(SubscriberInput), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<SubscriberInput>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: SubscriberInput");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SubscriberInput), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/SubscriberInput/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((SubscriberInput) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberInput));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static SubscriberInput DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriberInput));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (SubscriberInput) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "SubscriberInput", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "SubscriberInput", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref SubscriberInput customDemoObject);
-
-
-
-				public static SubscriberInput CreateDefault()
-				{
-					var result = new SubscriberInput();
-					return result;
-				}
-				/*
-				public static SubscriberInput CreateDemoDefault()
-				{
-					SubscriberInput customDemo = null;
-					SubscriberInput.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new SubscriberInput();
-					result.InputRelativeLocation = @"SubscriberInput.InputRelativeLocation";
-
-					result.InformationObjectName = @"SubscriberInput.InformationObjectName";
-
-					result.InformationItemName = @"SubscriberInput.InformationItemName";
-
-					result.SubscriberRelativeLocation = @"SubscriberInput.SubscriberRelativeLocation";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(InputRelativeLocation != _unmodified_InputRelativeLocation)
-							return true;
-						if(InformationObjectName != _unmodified_InformationObjectName)
-							return true;
-						if(InformationItemName != _unmodified_InformationItemName)
-							return true;
-						if(SubscriberRelativeLocation != _unmodified_SubscriberRelativeLocation)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(SubscriberInput sourceObject)
-				{
-					InputRelativeLocation = sourceObject.InputRelativeLocation;
-					InformationObjectName = sourceObject.InformationObjectName;
-					InformationItemName = sourceObject.InformationItemName;
-					SubscriberRelativeLocation = sourceObject.SubscriberRelativeLocation;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_InputRelativeLocation = InputRelativeLocation;
-					_unmodified_InformationObjectName = InformationObjectName;
-					_unmodified_InformationItemName = InformationItemName;
-					_unmodified_SubscriberRelativeLocation = SubscriberRelativeLocation;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "InputRelativeLocation":
-							InputRelativeLocation = value;
-							break;
-						case "InformationObjectName":
-							InformationObjectName = value;
-							break;
-						case "InformationItemName":
-							InformationItemName = value;
-							break;
-						case "SubscriberRelativeLocation":
-							SubscriberRelativeLocation = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string InputRelativeLocation { get; set; }
-			private string _unmodified_InputRelativeLocation;
-			[DataMember] 
-			public string InformationObjectName { get; set; }
-			private string _unmodified_InformationObjectName;
-			[DataMember] 
-			public string InformationItemName { get; set; }
-			private string _unmodified_InformationItemName;
-			[DataMember] 
-			public string SubscriberRelativeLocation { get; set; }
-			private string _unmodified_SubscriberRelativeLocation;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class Monitor : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public Monitor()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "Monitor";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/Monitor/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Monitor), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Monitor>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: Monitor");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Monitor), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/Monitor/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/Monitor/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((Monitor) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Monitor));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static Monitor DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(Monitor));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (Monitor) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "Monitor", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "Monitor", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref Monitor customDemoObject);
-
-
-
-				public static Monitor CreateDefault()
-				{
-					var result = new Monitor();
-					return result;
-				}
-				/*
-				public static Monitor CreateDemoDefault()
-				{
-					Monitor customDemo = null;
-					Monitor.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new Monitor();
-					result.TargetObjectName = @"Monitor.TargetObjectName";
-
-					result.TargetItemName = @"Monitor.TargetItemName";
-
-					result.MonitoringCycleFrequencyUnit = @"Monitor.MonitoringCycleFrequencyUnit";
-
-					result.CustomMonitoringCycleOperationName = @"Monitor.CustomMonitoringCycleOperationName";
-
-					result.OperationActionName = @"Monitor.OperationActionName";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(TargetObjectName != _unmodified_TargetObjectName)
-							return true;
-						if(TargetItemName != _unmodified_TargetItemName)
-							return true;
-						if(MonitoringUtcTimeStampToStart != _unmodified_MonitoringUtcTimeStampToStart)
-							return true;
-						if(MonitoringCycleFrequencyUnit != _unmodified_MonitoringCycleFrequencyUnit)
-							return true;
-						if(MonitoringCycleEveryXthOfUnit != _unmodified_MonitoringCycleEveryXthOfUnit)
-							return true;
-						if(CustomMonitoringCycleOperationName != _unmodified_CustomMonitoringCycleOperationName)
-							return true;
-						if(OperationActionName != _unmodified_OperationActionName)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(Monitor sourceObject)
-				{
-					TargetObjectName = sourceObject.TargetObjectName;
-					TargetItemName = sourceObject.TargetItemName;
-					MonitoringUtcTimeStampToStart = sourceObject.MonitoringUtcTimeStampToStart;
-					MonitoringCycleFrequencyUnit = sourceObject.MonitoringCycleFrequencyUnit;
-					MonitoringCycleEveryXthOfUnit = sourceObject.MonitoringCycleEveryXthOfUnit;
-					CustomMonitoringCycleOperationName = sourceObject.CustomMonitoringCycleOperationName;
-					OperationActionName = sourceObject.OperationActionName;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_TargetObjectName = TargetObjectName;
-					_unmodified_TargetItemName = TargetItemName;
-					_unmodified_MonitoringUtcTimeStampToStart = MonitoringUtcTimeStampToStart;
-					_unmodified_MonitoringCycleFrequencyUnit = MonitoringCycleFrequencyUnit;
-					_unmodified_MonitoringCycleEveryXthOfUnit = MonitoringCycleEveryXthOfUnit;
-					_unmodified_CustomMonitoringCycleOperationName = CustomMonitoringCycleOperationName;
-					_unmodified_OperationActionName = OperationActionName;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "TargetObjectName":
-							TargetObjectName = value;
-							break;
-						case "TargetItemName":
-							TargetItemName = value;
-							break;
-						case "MonitoringUtcTimeStampToStart":
-							MonitoringUtcTimeStampToStart = DateTime.Parse(value);
-							break;
-						case "MonitoringCycleFrequencyUnit":
-							MonitoringCycleFrequencyUnit = value;
-							break;
-						case "MonitoringCycleEveryXthOfUnit":
-							MonitoringCycleEveryXthOfUnit = long.Parse(value);
-							break;
-						case "CustomMonitoringCycleOperationName":
-							CustomMonitoringCycleOperationName = value;
-							break;
-						case "OperationActionName":
-							OperationActionName = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public string TargetObjectName { get; set; }
-			private string _unmodified_TargetObjectName;
-			[DataMember] 
-			public string TargetItemName { get; set; }
-			private string _unmodified_TargetItemName;
-			[DataMember] 
-			public DateTime MonitoringUtcTimeStampToStart { get; set; }
-			private DateTime _unmodified_MonitoringUtcTimeStampToStart;
-			[DataMember] 
-			public string MonitoringCycleFrequencyUnit { get; set; }
-			private string _unmodified_MonitoringCycleFrequencyUnit;
-			[DataMember] 
-			public long MonitoringCycleEveryXthOfUnit { get; set; }
-			private long _unmodified_MonitoringCycleEveryXthOfUnit;
-			[DataMember] 
-			public string CustomMonitoringCycleOperationName { get; set; }
-			private string _unmodified_CustomMonitoringCycleOperationName;
-			[DataMember] 
-			public string OperationActionName { get; set; }
-			private string _unmodified_OperationActionName;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class IconTitleDescription : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public IconTitleDescription()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "IconTitleDescription";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/IconTitleDescription/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(IconTitleDescription), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<IconTitleDescription>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: IconTitleDescription");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(IconTitleDescription), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/IconTitleDescription/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((IconTitleDescription) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(IconTitleDescription));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static IconTitleDescription DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(IconTitleDescription));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (IconTitleDescription) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "IconTitleDescription", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "IconTitleDescription", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref IconTitleDescription customDemoObject);
-
-
-
-				public static IconTitleDescription CreateDefault()
-				{
-					var result = new IconTitleDescription();
-					return result;
-				}
-				/*
-				public static IconTitleDescription CreateDemoDefault()
-				{
-					IconTitleDescription customDemo = null;
-					IconTitleDescription.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new IconTitleDescription();
-					result.Title = @"IconTitleDescription.Title";
-
-					result.Description = @"IconTitleDescription.Description
-IconTitleDescription.Description
-IconTitleDescription.Description
-IconTitleDescription.Description
-IconTitleDescription.Description
-";
-
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(Icon != _unmodified_Icon)
-							return true;
-						if(Title != _unmodified_Title)
-							return true;
-						if(Description != _unmodified_Description)
-							return true;
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-				}
-
-
-				private void CopyContentFrom(IconTitleDescription sourceObject)
-				{
-					Icon = sourceObject.Icon;
-					Title = sourceObject.Title;
-					Description = sourceObject.Description;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-					_unmodified_Icon = Icon;
-					_unmodified_Title = Title;
-					_unmodified_Description = Description;
-				
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						case "Title":
-							Title = value;
-							break;
-						case "Description":
-							Description = value;
-							break;
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public byte[] Icon { get; set; }
-			private byte[] _unmodified_Icon;
-			[DataMember] 
-			public string Title { get; set; }
-			private string _unmodified_Title;
-			[DataMember] 
-			public string Description { get; set; }
-			private string _unmodified_Description;
-			
-			}
-			[DataContract] 
-			[Serializable]
-			public partial class AboutAGIApplications : IInformationObject 
-			{
-		        public static StorageSerializationType ClassStorageSerializationType { 
-					get {
-						return StorageSerializationType.XML;
-					}
-				}
-
-				public AboutAGIApplications()
-				{
-					this.ID = Guid.NewGuid().ToString();
-				    this.OwnerID = StorageSupport.ActiveOwnerID;
-				    this.SemanticDomainName = "AaltoGlobalImpact.OIP";
-				    this.Name = "AboutAGIApplications";
-					UpdateRelativeLocationFromID();
-				}
-
-				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
-				{
-					//string contentTypeName = ""; // SemanticDomainName + "." + Name
-					string contentTypeName = "AaltoGlobalImpact.OIP/AboutAGIApplications/";
-					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
-					{
-						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
-							continue;
-						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(AboutAGIApplications), null, owner);
-					    informationObject.MasterETag = informationObject.ETag;
-						informationObjects.Add(informationObject);
-					}
-					return informationObjects.ToArray();
-				}
-
-				public void UpdateRelativeLocationFromID()
-				{
-					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<AboutAGIApplications>(ID);
-				}
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster == false)
-						throw new NotSupportedException("Cannot retrieve master for non-master type: AboutAGIApplications");
-					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
-					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AboutAGIApplications), null, owner);
-					if(master == null && initiateIfMissing)
-					{
-						StorageSupport.StoreInformation(this, owner);
-						master = this;
-						initiated = true;
-					}
-					return master;
-				}
-
-
-				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
-				{
-					bool initiated;
-					IInformationObject iObject = this;
-					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
-				}
-
-				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
-                {
-                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName);
-                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "AaltoGlobalImpact.OIP/AboutAGIApplications/" + contentName);
-                }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
-				partial void DoPostStoringExecute(IContainerOwner owner);
-
-				public void PostStoringExecute(IContainerOwner owner)
-				{
-					DoPostStoringExecute(owner);
-				}
-
-				partial void DoPostDeleteExecute(IContainerOwner owner);
-
-				public void PostDeleteExecute(IContainerOwner owner)
-				{
-					DoPostDeleteExecute(owner);
-				}
-
-
-				bool IInformationObject.IsIndependentMaster { 
-					get {
-						return false;
-					}
-				}
-
-
-			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
-			    {
-                    foreach(string key in nameValueCollection.AllKeys)
-                    {
-                        if (key.StartsWith("Root"))
-                            continue;
-                        int indexOfUnderscore = key.IndexOf("_");
-						if (indexOfUnderscore < 0) // >
-                            continue;
-                        string objectID = key.Substring(0, indexOfUnderscore);
-                        object targetObject = FindObjectByID(objectID);
-                        if (targetObject == null)
-                            continue;
-                        string propertyName = key.Substring(indexOfUnderscore + 1);
-                        string propertyValue = nameValueCollection[key];
-                        dynamic dyn = targetObject;
-                        dyn.ParsePropertyValue(propertyName, propertyValue);
-                    }
-			    }
-
-			    public object FindObjectByID(string objectId)
-			    {
-                    if (objectId == ID)
-                        return this;
-			        return FindFromObjectTree(objectId);
-			    }
-
-				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
-				{
-					if (sourceMaster == null)
-						throw new ArgumentNullException("sourceMaster");
-					if (GetType() != sourceMaster.GetType())
-						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
-					IInformationObject iObject = this;
-					if(iObject.IsIndependentMaster == false)
-						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
-					if(ID != sourceMaster.ID)
-						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
-					CopyContentFrom((AboutAGIApplications) sourceMaster);
-				}
-
-
-				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
-				{
-					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
-					IInformationObject iObject = (IInformationObject) this;
-					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
-					return result;
-				}
-
-				public string SerializeToXml(bool noFormatting = false)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutAGIApplications));
-					using (var output = new StringWriter())
-					{
-						using (var writer = new XmlTextWriter(output))
-						{
-                            if(noFormatting == false)
-						        writer.Formatting = Formatting.Indented;
-							serializer.WriteObject(writer, this);
-						}
-						return output.GetStringBuilder().ToString();
-					}
-				}
-
-				public static AboutAGIApplications DeserializeFromXml(string xmlString)
-				{
-					DataContractSerializer serializer = new DataContractSerializer(typeof(AboutAGIApplications));
-					using(StringReader reader = new StringReader(xmlString))
-					{
-						using (var xmlReader = new XmlTextReader(reader))
-							return (AboutAGIApplications) serializer.ReadObject(xmlReader);
-					}
-            
-				}
-
-				[DataMember] 
-				public string ID { get; set; }
-
-			    [IgnoreDataMember]
-                public string ETag { get; set; }
-
-                [DataMember]
-                public Guid OwnerID { get; set; }
-
-                [DataMember]
-                public string RelativeLocation { get; set; }
-
-                [DataMember] 
-                public string Name { get; set; }
-
-                [DataMember] 
-                public string SemanticDomainName { get; set; }
-
-				[DataMember]
-				public string MasterETag { get; set; }
-
-				[DataMember]
-				public string GeneratedByProcessID { get; set; }
-
-				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
-				}
-
-				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
-				{
-					return Path.Combine("AaltoGlobalImpact.OIP", "AboutAGIApplications", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
-				}
-
-				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-				{
-				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
-				}
-
-                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
-                {
-                    string relativeLocation;
-                    if (String.IsNullOrEmpty(sourceName))
-                        sourceName = "default";
-                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
-                    relativeLocation = Path.Combine(contentRootLocation, "AaltoGlobalImpact.OIP", "AboutAGIApplications", sourceName).Replace("\\", "/");
-                    return relativeLocation;
-                }
-
-				static partial void CreateCustomDemo(ref AboutAGIApplications customDemoObject);
-
-
-
-				public static AboutAGIApplications CreateDefault()
-				{
-					var result = new AboutAGIApplications();
-					result.BuiltForAnybody = IconTitleDescription.CreateDefault();
-					result.ForAllPeople = IconTitleDescription.CreateDefault();
-					return result;
-				}
-				/*
-				public static AboutAGIApplications CreateDemoDefault()
-				{
-					AboutAGIApplications customDemo = null;
-					AboutAGIApplications.CreateCustomDemo(ref customDemo);
-					if(customDemo != null)
-						return customDemo;
-					var result = new AboutAGIApplications();
-					result.BuiltForAnybody = IconTitleDescription.CreateDemoDefault();
-					result.ForAllPeople = IconTitleDescription.CreateDemoDefault();
-				
-					return result;
-				}
-				*/
-
-				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
-				{
-					//Type collType = masterInstance.GetType();
-					//string typeName = collType.Name;
-					if(BuiltForAnybody != null) {
-						((IInformationObject) BuiltForAnybody).UpdateCollections(masterInstance);
-					}
-
-					if(ForAllPeople != null) {
-						((IInformationObject) ForAllPeople).UpdateCollections(masterInstance);
-					}
-
-				}
-
-                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
-                {
-                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
-                    if (targetObject == null)
-                        return;
-					if(targetObject == this)
-						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
-                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
-                }
-
-
-				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
-				{
-					if(filterOnFalse(this))
-						result.Add(this);
-					{ // Scoping block for variable name reusability
-						IInformationObject item = BuiltForAnybody;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					{ // Scoping block for variable name reusability
-						IInformationObject item = ForAllPeople;
-						if(item != null)
-						{
-							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
-						}
-					} // Scoping block end
-
-					if(searchWithinCurrentMasterOnly == false)
-					{
-					}					
-				}
-
-				private object FindFromObjectTree(string objectId)
-				{
-					{
-						var item = BuiltForAnybody;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					{
-						var item = ForAllPeople;
-						if(item != null)
-						{
-							object result = item.FindObjectByID(objectId);
-							if(result != null)
-								return result;
-						}
-					}
-					return null;
-				}
-				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
-				{
-					IInformationObject iObject = (IInformationObject) this;
-					if(iObject.IsIndependentMaster)
-					{
-						if(filterOnFalse == null || filterOnFalse(iObject)) 
-						{
-							string key = iObject.ID;
-							List<IInformationObject> existingValue;
-							bool keyFound = result.TryGetValue(key, out existingValue);
-							if(keyFound == false) {
-								existingValue = new List<IInformationObject>();
-								result.Add(key, existingValue);
-							}
-							existingValue.Add(iObject);
-						}
-					}
-					{
-						var item = (IInformationObject) BuiltForAnybody;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-					{
-						var item = (IInformationObject) ForAllPeople;
-						if(item != null)
-							item.CollectMasterObjectsFromTree(result, filterOnFalse);
-					}
-
-				}
-
-				bool IInformationObject.IsInstanceTreeModified {
-					get { 
-
-						if(BuiltForAnybody != _unmodified_BuiltForAnybody)
-							return true;
-						if(ForAllPeople != _unmodified_ForAllPeople)
-							return true;
-						{
-							IInformationObject item = (IInformationObject) BuiltForAnybody;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-						{
-							IInformationObject item = (IInformationObject) ForAllPeople;
-							if(item != null) 
-							{
-								bool isItemTreeModified = item.IsInstanceTreeModified;
-								if(isItemTreeModified)
-									return true;
-							}
-						}
-				
-						return false;
-					}
-				}
-
-				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
-				{
-					if(BuiltForAnybody != null) {
-						if(BuiltForAnybody.ID == replacingObject.ID)
-							BuiltForAnybody = (IconTitleDescription) replacingObject;
-						else {
-							IInformationObject iObject = BuiltForAnybody;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-					if(ForAllPeople != null) {
-						if(ForAllPeople.ID == replacingObject.ID)
-							ForAllPeople = (IconTitleDescription) replacingObject;
-						else {
-							IInformationObject iObject = ForAllPeople;
-							iObject.ReplaceObjectInTree(replacingObject);
-						}
-					}
-				}
-
-
-				private void CopyContentFrom(AboutAGIApplications sourceObject)
-				{
-					BuiltForAnybody = sourceObject.BuiltForAnybody;
-					ForAllPeople = sourceObject.ForAllPeople;
-				}
-				
-
-
-				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
-				{
-				
-					_unmodified_BuiltForAnybody = BuiltForAnybody;
-					if(BuiltForAnybody != null)
-						((IInformationObject) BuiltForAnybody).SetInstanceTreeValuesAsUnmodified();
-
-					_unmodified_ForAllPeople = ForAllPeople;
-					if(ForAllPeople != null)
-						((IInformationObject) ForAllPeople).SetInstanceTreeValuesAsUnmodified();
-
-				
-				}
-
-
-				public void ParsePropertyValue(string propertyName, string value)
-				{
-					switch (propertyName)
-					{
-						default:
-							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
-					}
-	        }
-			[DataMember] 
-			public IconTitleDescription BuiltForAnybody { get; set; }
-			private IconTitleDescription _unmodified_BuiltForAnybody;
-			[DataMember] 
-			public IconTitleDescription ForAllPeople { get; set; }
-			private IconTitleDescription _unmodified_ForAllPeople;
 			
 			}
  } 

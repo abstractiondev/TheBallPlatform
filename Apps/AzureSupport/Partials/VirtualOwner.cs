@@ -9,7 +9,6 @@ namespace TheBall.CORE
     {
         string GetItemDirectory();
         void RefreshContent();
-        void SubscribeToContentSource();
         bool IsMasterCollection { get; }
         string GetMasterLocation();
         IInformationCollection GetMasterInstance();

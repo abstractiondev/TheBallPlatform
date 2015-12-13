@@ -190,12 +190,13 @@ namespace TheBall
         {
             updateStatusSummary();
             createIndexingRequest();
-            var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
+            //var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
+            /*
             foreach(var grpItem in grouped)
             {
                 var targetLocations = grpItem.Select(item => item.TargetLocation).Distinct().ToArray();
                 SubscribeSupport.AddPendingRequests(grpItem.Key, targetLocations);
-            }
+            }*/
             if (isResourceMeasuring)
             {
                 // Complete resource measuring - add one more transaction because the RRU item is stored itself

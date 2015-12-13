@@ -133,13 +133,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Index/IndexingRequest/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -398,13 +391,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Index/QueryRequest/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Index/QueryRequest/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -697,13 +683,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Index/QueryResultItem/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Index/QueryResultItem/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 

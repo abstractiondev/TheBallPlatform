@@ -30,7 +30,6 @@ namespace TheBall.CORE
         string Name { get; set; }
         string GeneratedByProcessID { get; set; }
         bool IsIndependentMaster { get; }
-        void InitializeDefaultSubscribers(IContainerOwner owner);
         void SetValuesToObjects(NameValueCollection form);
         void PostStoringExecute(IContainerOwner owner);
         void PostDeleteExecute(IContainerOwner owner);

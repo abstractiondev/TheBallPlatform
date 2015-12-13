@@ -37,24 +37,10 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_PublishWithWorker(IContainerOwner owner, string targetContainerName, string targetContainerOwnerString)
         {
-            PublishWebContentOperation operation = PublishWebContentOperation.CreateDefault();
-            operation.SourceContainerName = StorageSupport.CurrActiveContainer.Name;
-            operation.TargetContainerName = targetContainerName;
-            operation.SourceOwner = owner.ContainerName + "/" + owner.LocationPrefix;
-            operation.SourcePathRoot = "wwwsite";
-            bool useWorker = false;
-            if (useWorker)
-            {
-                //QueueSupport.PutToOperationQueue(localGroupTemplates, renderLocalTemplates);
-                OperationRequest operationRequest = new OperationRequest();
-                operationRequest.PublishWebContent = operation;
-                QueueSupport.PutToOperationQueue(operationRequest);
-            }
-            else
-            {
-                WorkerSupport.ProcessPublishWebContent(operation);
-            }
-
+            string sourceContainerName = StorageSupport.CurrActiveContainer.Name;
+            string sourceOwner = owner.ContainerName + "/" + owner.LocationPrefix;
+            string sourceRoot = "wwwsite";
+            WorkerSupport.ProcessPublishWebContent(sourceContainerName, sourceOwner, sourceRoot, targetContainerName);
         }
     }
 }

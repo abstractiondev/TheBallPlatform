@@ -939,56 +939,27 @@ namespace TheBall
             return relativeLocation;
         }
 
-        public static void RefreshGroupTemplate(string groupID, string templateName, bool useBackgroundWorker)
+        public static void RefreshGroupTemplate(string groupID, string templateName)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/group/";
             string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
             string sysLocationSource = syscontentRoot + templateName;
-            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
-                                useBackgroundWorker, false);
-            if (useBackgroundWorker)
-                QueueSupport.PutToOperationQueue(accountSync);
-
+            SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
         }
 
-        public static void RefreshAccountTemplate(string acctID, string templateName, bool useBackgroundWorker)
+        public static void RefreshAccountTemplate(string acctID, string templateName)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/account/";
             string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
             string sysLocationSource = syscontentRoot + templateName;
-            var accountSync = SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget,
-                                useBackgroundWorker, false);
-            if (useBackgroundWorker)
-                QueueSupport.PutToOperationQueue(accountSync);
+            SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
         }
 
-        public static OperationRequest SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool useQueuedWorker, bool renderWhileSync)
+        public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool renderWhileSync)
         {
-            if (useQueuedWorker)
-            {
-                OperationRequest envelope = new OperationRequest
-                {
-                    UpdateWebContentOperation = new UpdateWebContentOperation
-                    {
-                        SourceContainerName =
-                            sourceContainerName,
-                        SourcePathRoot = sourcePathRoot,
-                        TargetContainerName =
-                            targetContainerName,
-                        TargetPathRoot = targetPathRoot,
-                        RenderWhileSync = renderWhileSync
-                    }
-                };
-                //QueueSupport.PutToDefaultQueue(envelope);
-                return envelope;
-            }
-            else
-            {
-                WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
-                return null;
-            }
+            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
         }
 
         public static bool CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
@@ -1006,7 +977,7 @@ namespace TheBall
             string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
             foreach (var groupID in groupIDs)
             {
-                RefreshGroupTemplate(groupID, templateName, true);
+                RefreshGroupTemplate(groupID, templateName);
             }
         }
 
@@ -1015,7 +986,7 @@ namespace TheBall
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
             foreach (var acctID in accountIDs)
             {
-                RefreshAccountTemplate(acctID, templateName, true);
+                RefreshAccountTemplate(acctID, templateName);
             }
         }
 

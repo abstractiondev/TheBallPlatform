@@ -141,23 +141,6 @@ namespace TheBallTool
             }
         }
 
-
-
-        private static void SyncWwwPublicFromDefaultGroup()
-        {
-            string publicSite = "demowww.aaltoglobalimpact.org";
-            string[] folderList = new[] {"bootstrap-default", "oip-additions", "www-public"};
-            foreach(string folder in folderList)
-            {
-                string sourceFolder = folder;
-                //if (sourceFolder == "www-public")
-                //    sourceFolder = "oip-public";
-                var operationRequest = RenderWebSupport.SyncTemplatesToSite(StorageSupport.CurrActiveContainer.Name, "grp/9798daca-afc4-4046-a99b-d0d88bb364e0/wwwsite/" + sourceFolder,
-                                                     publicSite.Replace('.', '-'), folder, true, false);
-                QueueSupport.PutToOperationQueue(operationRequest);
-            }
-        }
-
         private static void RefreshAllAccounts()
         {
             var accountIDs = TBRAccountRoot.GetAllAccountIDs();
@@ -270,118 +253,6 @@ namespace TheBallTool
         }
 
 
-        private static void ReportAllSubscriptionCounts(string groupID)
-        {
-            //var informationObjects = GetAllInformationObjects(io => SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
-            long memBefore = GC.GetTotalMemory(false);
-            string interestGroupLocation = "grp/" + groupID + "/";
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, io =>  io is AddressAndLocation && 
-                SubscribeSupport.GetSubscriptions(io.RelativeLocation) != null).ToArray();
-
-            int currMaxSubs = 0;
-            int currMaxDistinct = 0;
-            Dictionary<string, SubcriptionGraphItem> lookupDictionary = new Dictionary<string, SubcriptionGraphItem>();
-            //lookupDictionary = null;
-            DateTime before = DateTime.Now;
-            foreach(var iObject in informationObjects)
-            {
-                int subCount = GetTotalSubscriberCount(iObject, ref currMaxSubs, ref currMaxDistinct, lookupDictionary);
-            }
-            DateTime after = DateTime.Now;
-            var executionOrder = lookupDictionary.GetExecutionOrder();
-            var subscriptionsToExecute = executionOrder.SelectMany(exec => exec.GetMySubscriptionsFromTargets()).ToArray();
-            DateTime afterWards = DateTime.Now;
-            TimeSpan duration1 = after - before;
-            TimeSpan duration2 = afterWards - before;
-            var filteredListToExecute =
-                SubscribeSupport.GetSubscriptionChainItemsInOrderOfExecution(
-                    informationObjects.Select(io => io.RelativeLocation).ToArray());
-            long memAfter = GC.GetTotalMemory(false);
-        }
-
-        private static void TestWorkerSubscriberChainExecutionPerformance(string groupID)
-        {
-            string interestGroupLocation = "grp/" + groupID + "/";
-            var informationObjects =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
-                                                                         io => io is AddressAndLocation &&
-                                                                               SubscribeSupport.GetSubscriptions(
-                                                                                   io.RelativeLocation) != null).ToArray
-                    ();
-            OperationRequest operationRequest = new OperationRequest();
-            SubscriptionChainRequestContent content = SubscriptionChainRequestContent.CreateDefault();
-            SubscriptionChainRequestMessage message = SubscriptionChainRequestMessage.CreateDefault();
-            message.ContentItemID = content.ID;
-            content.SubmitTime = DateTime.UtcNow;
-            SubscriptionTarget[] targets = informationObjects.
-                Select(io =>
-                           {
-                               SubscriptionTarget target = SubscriptionTarget.CreateDefault();
-                               target.BlobLocation = io.RelativeLocation;
-                               return target;
-                           }).ToArray();
-            content.SubscriptionTargetCollection.CollectionContent.AddRange(targets);
-            content.StoreInformation();
-            operationRequest.SubscriptionChainRequest = message;
-            QueueSupport.PutToOperationQueue(operationRequest);
-        }
-
-        private static void TestSubscriptionExecution(string groupID)
-        {
-            string interestGroupLocation = "grp/" + groupID + "/";
-            var informationObjects =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null, 
-                                                                         io => io is AddressAndLocation &&
-                                                                               SubscribeSupport.GetSubscriptions(
-                                                                                   io.RelativeLocation) != null).ToArray
-                    ();
-            OperationRequest operationRequest = new OperationRequest();
-            SubscriptionChainRequestContent content = SubscriptionChainRequestContent.CreateDefault();
-            SubscriptionChainRequestMessage message = SubscriptionChainRequestMessage.CreateDefault();
-            message.ContentItemID = content.ID;
-            content.SubmitTime = DateTime.UtcNow;
-            SubscriptionTarget[] targets = informationObjects.
-                Select(io =>
-                {
-                    SubscriptionTarget target = SubscriptionTarget.CreateDefault();
-                    target.BlobLocation = io.RelativeLocation;
-                    return target;
-                }).ToArray();
-            content.SubscriptionTargetCollection.CollectionContent.AddRange(targets);
-            content.StoreInformation();
-            WorkerSupport.ExecuteSubscriptionChain(message);
-        }
-
-        private static void ExecuteSubscriptionChain(string groupID)
-        {
-            string interestGroupLocation = SubscribeSupport.ChainRequestDirectory + "grp/" + groupID + "/";
-            var submissions =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(interestGroupLocation, null,
-                                                                         io => io is SubscriptionChainRequestContent).
-                    Cast<SubscriptionChainRequestContent>().ToArray();
-            WorkerSupport.ExecuteSubscriptionChains(submissions);
-        }
-
-        private static int GetTotalSubscriberCount(IInformationObject informationObject, ref int CurrMaxSubs, ref int CurrMaxDistinct, Dictionary<string, SubcriptionGraphItem> lookupDictionary)
-        {
-            string location = informationObject.RelativeLocation;
-            //SubscribeSupport.GetSubscriptionDictionary(location, populatedDictionary);
-
-            List<Subscription> result = new List<Subscription>();
-            Stack<string> subscriberStack = new Stack<string>();
-            SubscribeSupport.GetSubcriptionList(location, result, subscriberStack, lookupDictionary);
-            int count = result.Count;
-            int distinctCount = result.Select(sub => sub.SubscriberRelativeLocation).Distinct().Count();
-            if(result.Count >= CurrMaxSubs || distinctCount >= CurrMaxDistinct)
-            {
-                if (count > CurrMaxSubs)
-                    CurrMaxSubs = count;
-                if (distinctCount > CurrMaxDistinct)
-                    CurrMaxDistinct = distinctCount;
-                Console.WriteLine(count + " / " + distinctCount + " : " + location);
-            }
-            return count;
-        }
 
         private static void UpdateAccountAndGroups(string accountEmail)
         {
@@ -426,20 +297,6 @@ namespace TheBallTool
             foreach (var ixReq in indexingRequests)
             {
                 IndexSupport.PutIndexingRequestToQueue(StorageSupport.CurrActiveContainer.Name, IndexSupport.DefaultIndexName, owner, ixReq.ID);
-            }
-        }
-
-        private static void PatchSubscriptionsToSubmitted()
-        {
-            string subscriptionChainLocation = SubscribeSupport.ChainRequestDirectory;
-            var submissions =
-                StorageSupport.CurrActiveContainer.GetInformationObjects(subscriptionChainLocation, null, 
-                                                                         io => io is SubscriptionChainRequestContent).
-                    Cast<SubscriptionChainRequestContent>().ToArray();
-            foreach(var submission in submissions)
-            {
-                submission.SubmitTime = DateTime.UtcNow;
-                submission.StoreInformation();
             }
         }
 

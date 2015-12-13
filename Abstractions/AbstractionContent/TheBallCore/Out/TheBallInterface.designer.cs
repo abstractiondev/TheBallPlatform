@@ -105,7 +105,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = GenericObjectCollection.GetMasterCollectionInstance(owner);
@@ -117,7 +116,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
             }
 
@@ -210,13 +208,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/InterfaceOperation/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/InterfaceOperation/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -650,13 +641,6 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/ConnectionCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -843,7 +827,7 @@ InterfaceOperation.ErrorMessage
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Connection>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -865,15 +849,6 @@ InterfaceOperation.ErrorMessage
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<ConnectionCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(ConnectionCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Interface/ConnectionCollection/" + "MasterCollection");
@@ -1148,13 +1123,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/Connection/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/Connection/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -1480,13 +1448,6 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/TransferPackage/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -1763,13 +1724,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/CategoryLink/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/CategoryLink/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -2133,13 +2087,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/Category/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/Category/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -2540,13 +2487,6 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/StatusSummary/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -2805,13 +2745,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/InformationChangeItem/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/InformationChangeItem/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -3077,13 +3010,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/OperationExecutionItem/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/OperationExecutionItem/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -3502,13 +3428,6 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericObjectCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -3695,7 +3614,7 @@ InterfaceOperation.ErrorMessage
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GenericCollectionableObject>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -3717,15 +3636,6 @@ InterfaceOperation.ErrorMessage
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<GenericObjectCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(GenericObjectCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Interface/GenericObjectCollection/" + "MasterCollection");
@@ -4000,13 +3910,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/GenericCollectionableObject/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericCollectionableObject/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -4370,13 +4273,6 @@ InterfaceOperation.ErrorMessage
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericObject/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -4638,13 +4534,6 @@ InterfaceOperation.ErrorMessage
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Interface/GenericValue/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Interface/GenericValue/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 

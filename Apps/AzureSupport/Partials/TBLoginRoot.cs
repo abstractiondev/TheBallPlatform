@@ -93,11 +93,10 @@ namespace AaltoGlobalImpact.OIP
                 }
 
                 // If this request is for account, we propagate the pages immediately
-                bool useBackgroundWorker = isAccountRequest == false;
                 //RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);
                 foreach (var templateName in InstanceConfiguration.DefaultAccountTemplateList)
                 {
-                    RenderWebSupport.RefreshAccountTemplate(accountID, templateName, useBackgroundWorker: useBackgroundWorker);
+                    RenderWebSupport.RefreshAccountTemplate(accountID, templateName);
                 }
                 accountRoot.Account.InitializeAndConnectMastersAndCollections();
                 if (isAccountRequest)

@@ -103,7 +103,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
                 {
                     var masterCollection = CustomerAccountCollection.GetMasterCollectionInstance(owner);
@@ -115,7 +114,6 @@ namespace INT {
                         StorageSupport.StoreInformation(masterCollection, owner);
                     }
 					IInformationCollection collection = masterCollection;
-					collection.SubscribeToContentSource();
                 }
             }
 
@@ -208,13 +206,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/GroupSubscriptionPlanCollection/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/GroupSubscriptionPlanCollection/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -402,7 +393,7 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<GroupSubscriptionPlan>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -424,15 +415,6 @@ namespace INT {
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<GroupSubscriptionPlanCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(GroupSubscriptionPlanCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Payments/GroupSubscriptionPlanCollection/" + "MasterCollection");
@@ -708,13 +690,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/GroupSubscriptionPlan/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -979,13 +954,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/SubscriptionPlanStatus/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/SubscriptionPlanStatus/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
@@ -1316,13 +1284,6 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/CustomerAccountCollection/" + contentName);
                 }
 
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
-
 				partial void DoPostStoringExecute(IContainerOwner owner);
 
 				public void PostStoringExecute(IContainerOwner owner)
@@ -1509,7 +1470,7 @@ namespace INT {
 				public string GetItemDirectory()
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<CustomerAccount>("dummy");
-					string nonOwnerDirectoryLocation = SubscribeSupport.GetParentDirectoryTarget(dummyItemLocation);
+					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
 					VirtualOwner owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
@@ -1531,15 +1492,6 @@ namespace INT {
 				{
 					return ObjectStorage.RetrieveFromOwnerContent<CustomerAccountCollection>(owner, "MasterCollection");
 				}
-
-				public void SubscribeToContentSource()
-				{
-					// DirectoryToCollection
-					string itemDirectory = GetItemDirectory();
-					SubscribeSupport.AddSubscriptionToObject(itemDirectory, RelativeLocation,
-															 SubscribeSupport.SubscribeType_DirectoryToCollection, null, typeof(CustomerAccountCollection).FullName);
-				}
-
 				public static string GetMasterCollectionLocation(IContainerOwner owner)
 				{
 					return StorageSupport.GetOwnerContentLocation(owner, "TheBall.Payments/CustomerAccountCollection/" + "MasterCollection");
@@ -1814,13 +1766,6 @@ namespace INT {
                     // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.Payments/CustomerAccount/" + contentName);
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.Payments/CustomerAccount/" + contentName);
                 }
-
-				partial void DoInitializeDefaultSubscribers(IContainerOwner owner);
-
-			    public void InitializeDefaultSubscribers(IContainerOwner owner)
-			    {
-					DoInitializeDefaultSubscribers(owner);
-			    }
 
 				partial void DoPostStoringExecute(IContainerOwner owner);
 

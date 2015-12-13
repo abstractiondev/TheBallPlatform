@@ -75,14 +75,14 @@ namespace TheBall.Platform.WorkerConsole
                     stepActiveContainerIX(ref activeContainerIX);
                     string activeContainerName = ActiveContainerNames[activeContainerIX];
                     InformationContext.Current.InitializeCloudStorageAccess(activeContainerName, true);
-                    bool handledSubscriptionChain = PollAndHandleSubscriptionChain(tasks, availableIx, availableTask, activeContainerName);
+                    bool handledSubscriptionChain = false; //PollAndHandleSubscriptionChain(tasks, availableIx, availableTask, activeContainerName);
                     if (handledSubscriptionChain)
                     {
                         // TODO: Fix return value check
                         Thread.Sleep(PollCyclePerRound);
                         continue;
                     }
-                    bool handledMessage = PollAndHandleMessage(tasks, availableIx, availableTask);
+                    bool handledMessage = false; //PollAndHandleMessage(tasks, availableIx, availableTask);
                     if (handledMessage)
                         continue;
                     Thread.Sleep(PollCyclePerRound);
@@ -126,24 +126,6 @@ namespace TheBall.Platform.WorkerConsole
             GracefullyStopped = true;
         }
 
-        private bool PollAndHandleSubscriptionChain(Task[] tasks, int availableIx, Task availableTask, string activeContainerName)
-        {
-            var result = SubscribeSupport.GetOwnerChainsInOrderOfSubmission();
-            if (result.Length == 0)
-                return false;
-            string acquiredEtag = null;
-            var firstLockedOwner =
-                result.FirstOrDefault(
-                    lockCandidate => SubscribeSupport.AcquireChainLock(lockCandidate, out acquiredEtag));
-            if (firstLockedOwner == null)
-                return false;
-            var executing = Task.Factory.StartNew(() => WorkerSupport.ProcessOwnerSubscriptionChains(firstLockedOwner, acquiredEtag, activeContainerName));
-            tasks[availableIx] = executing;
-            if (availableTask.Exception != null)
-                ErrorSupport.ReportException(availableTask.Exception);
-            return true;
-        }
-
         private bool PollAndHandleIndexingMessages(Task[] tasks, int availableIx, Task availableTask)
         {
             var indexingMessages = IndexSupport.GetIndexingRequestsFromQueue(IndexSupport.DefaultIndexName);
@@ -182,31 +164,6 @@ namespace TheBall.Platform.WorkerConsole
                 return false;
         }
 
-
-        private bool PollAndHandleMessage(Task[] tasks, int availableIx, Task availableTask)
-        {
-            CloudQueueMessage message;
-            QueueEnvelope envelope = QueueSupport.GetFromDefaultQueue(out message);
-            if (envelope != null)
-            {
-                Task executing = Task.Factory.StartNew(() => WorkerSupport.ProcessMessage(envelope));
-                tasks[availableIx] = executing;
-                QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                if (availableTask.Exception != null)
-                    ErrorSupport.ReportException(availableTask.Exception);
-                return true;
-            }
-            else
-            {
-                if (message != null)
-                {
-                    QueueSupport.CurrDefaultQueue.DeleteMessage(message);
-                    ErrorSupport.ReportMessageError(message);
-                }
-                GC.Collect();
-                return false;
-            }
-        }
 
         protected string CurrWorkerID { get; private set; }
 
