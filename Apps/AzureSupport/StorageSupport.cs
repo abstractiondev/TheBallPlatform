@@ -71,6 +71,7 @@ namespace TheBall
             //return blob.Attributes.Metadata[InformationTypeKey];
         }
 
+        [Obsolete("no", true)]
         public static void SetBlobInformationObjectType(this CloudBlob blob, string informationObjectType)
         {
             blob.Attributes.Metadata[InformationObjectTypeKey] = informationObjectType;
@@ -79,23 +80,6 @@ namespace TheBall
         public static string GetBlobInformationObjectType(this CloudBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
-        }
-
-        private static void FetchMetadataIfMissing(CloudBlob blob)
-        {
-            if(blob.Metadata.Count == 0)
-            {
-                try
-                {
-                    blob.FetchAttributes();
-                    InformationContext.AddStorageTransactionToCurrent();
-                } catch(StorageClientException stEx)
-                {
-                    if (stEx.ErrorCode == StorageErrorCode.BlobNotFound || stEx.ErrorCode == StorageErrorCode.ResourceNotFound)
-                        return;
-                    throw;
-                }
-            }
         }
 
 
@@ -114,16 +98,19 @@ namespace TheBall
             QueueSupport.InitializeAfterStorage(debugMode:debugMode);
         }
 
+        [Obsolete("no", true)]
         public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
         {
             return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-templates", BlobContainerPublicAccessType.Off);
         }
 
+        [Obsolete("no", true)]
         public static CloudBlobContainer ConfigureAnonWebBlobStorage(string connString, bool deleteBlobs)
         {
             return ConfigureBlobStorageContainer(connString, deleteBlobs, "anon-webcontainer", BlobContainerPublicAccessType.Blob);
         }
 
+        [Obsolete("no", true)]
         public static CloudBlobContainer ConfigureBlobStorageContainer(string connString, bool deleteBlobs, string containerName, BlobContainerPublicAccessType containerAccessType)
         {
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connString);
@@ -973,7 +960,7 @@ namespace TheBall
                 else
                     options.AccessCondition = AccessCondition.IfNoneMatch("*");
             }
-            blob.SetBlobInformationObjectType(informationObjectType.FullName);
+            //blob.SetBlobInformationObjectType(informationObjectType.FullName);
             blob.UploadByteArray(dataContent, options);
             InformationContext.AddStorageTransactionToCurrent();
             informationObject.ETag = blob.Properties.ETag;
