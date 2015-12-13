@@ -60,7 +60,7 @@ namespace TheBall
             return directoryLocation;
         }
 
-        public static string GetBlobInformationType(this CloudBlob blob)
+        public static string GetBlobInformationType(this CloudBlockBlob blob)
         {
             //FetchMetadataIfMissing(blob);
             if (Path.HasExtension(blob.Name) && !blob.Name.EndsWith(".pending"))
@@ -72,12 +72,12 @@ namespace TheBall
         }
 
         [Obsolete("no", true)]
-        public static void SetBlobInformationObjectType(this CloudBlob blob, string informationObjectType)
+        public static void SetBlobInformationObjectType(this CloudBlockBlob blob, string informationObjectType)
         {
             blob.Attributes.Metadata[InformationObjectTypeKey] = informationObjectType;
         }
 
-        public static string GetBlobInformationObjectType(this CloudBlob blob)
+        public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
         }
@@ -196,7 +196,7 @@ namespace TheBall
         }
 
 
-        public static void UploadBlobText(this CloudBlob blob, string textContent, bool requireNonExistentBlob = false)
+        public static void UploadBlobText(this CloudBlockBlob blob, string textContent, bool requireNonExistentBlob = false)
         {
             blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
             BlobRequestOptions options = new BlobRequestOptions();
@@ -206,7 +206,7 @@ namespace TheBall
             blob.UploadText(textContent, Encoding.UTF8, options);
         }
 
-        public static void DeleteBlob(this CloudBlob blob, string requiredETag = null)
+        public static void DeleteBlob(this CloudBlockBlob blob, string requiredETag = null)
         {
             BlobRequestOptions options = new BlobRequestOptions
             {
@@ -892,7 +892,7 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
-        public static CloudBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections, bool overwriteIfExists = false)
+        public static CloudBlockBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections, bool overwriteIfExists = false)
         {
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
             if(beforeStoreHandler != null)
@@ -930,7 +930,7 @@ namespace TheBall
                 }
                 referenceInstance.MasterETag = realMaster.ETag;
             }
-            CloudBlob storedResult = StoreInformation(informationObject, owner, overwriteIfExists);
+            CloudBlockBlob storedResult = StoreInformation(informationObject, owner, overwriteIfExists);
             if(reconnectMastersAndCollections)
             {
                 informationObject.ReconnectMastersAndCollections(true);
@@ -938,7 +938,7 @@ namespace TheBall
             return storedResult;
         }
 
-        public static CloudBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
+        public static CloudBlockBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
         {
             string location = owner != null
                                   ? GetOwnerContentLocation(owner, informationObject.RelativeLocation)
@@ -948,7 +948,7 @@ namespace TheBall
             Type informationObjectType = informationObject.GetType();
             var dataContent = SerializeInformationObjectToBuffer(informationObject);
             //memoryStream.Seek(0, SeekOrigin.Begin);
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(location);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
             string etag = informationObject.ETag;
@@ -1005,7 +1005,7 @@ namespace TheBall
             return RetrieveInformation(relativeLocation, type, eTag, owner);
         }
 
-        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, string typeName, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
+        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, string typeName, out CloudBlockBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             Type type = Assembly.GetExecutingAssembly().GetType(typeName);
             if (type == null)
@@ -1022,15 +1022,15 @@ namespace TheBall
 
         public static IInformationObject RetrieveInformation(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
-            CloudBlob blob;
+            CloudBlockBlob blob;
             return RetrieveInformationWithBlob(relativeLocation, typeToRetrieve, out blob, eTag, owner);
         }
 
-        public static async Task<Tuple<IInformationObject, CloudBlob>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
+        public static async Task<Tuple<IInformationObject, CloudBlockBlob>> RetrieveInformationWithBlobA(string relativeLocation, Type typeToRetrieve, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            var blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            var blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
@@ -1061,15 +1061,15 @@ namespace TheBall
             informationObject.SetInstanceTreeValuesAsUnmodified();
             Debug.WriteLine(String.Format("Read: {0} ID {1}", informationObject.GetType().Name,
                 informationObject.ID));
-            return new Tuple<IInformationObject, CloudBlob>(informationObject, blob);
+            return new Tuple<IInformationObject, CloudBlockBlob>(informationObject, blob);
         }
 
 
-        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlob blob, string eTag = null, IContainerOwner owner = null)
+        public static IInformationObject RetrieveInformationWithBlob(string relativeLocation, Type typeToRetrieve, out CloudBlockBlob blob, string eTag = null, IContainerOwner owner = null)
         {
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
             MemoryStream memoryStream = new MemoryStream();
             string blobEtag = null;
             try
@@ -1220,10 +1220,10 @@ namespace TheBall
         }
 
 
-        public static CloudBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
+        public static CloudBlockBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
         {
             string blobAddress = GetOwnerContentLocation(containerOwner, contentPath);
-            CloudBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
             return blob;
         }
 
@@ -1232,7 +1232,7 @@ namespace TheBall
             string relativeLocation = informationObject.RelativeLocation;
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(relativeLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
             blob.DeleteAndFireSubscriptions();
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if(additionalFormatProvider != null)
@@ -1240,7 +1240,7 @@ namespace TheBall
                 foreach(var contentExtension in additionalFormatProvider.GetAdditionalFormatExtensions())
                 {
                     string contentLocation = blob.Name + "." + contentExtension;
-                    CloudBlob contentBlob = CurrActiveContainer.GetBlobReference(contentLocation);
+                    CloudBlockBlob contentBlob = CurrActiveContainer.GetBlockBlobReference(contentLocation);
                     contentBlob.DeleteIfExists();
                 }
 
@@ -1259,12 +1259,12 @@ namespace TheBall
             return (CloudBlockBlob) container.GetBlob(blobAddress);
         }
         
-        public static CloudBlob GetBlob(this CloudBlobContainer container, string blobAddress, IContainerOwner owner = null)
+        public static CloudBlockBlob GetBlob(this CloudBlobContainer container, string blobAddress, IContainerOwner owner = null)
         {
             string relativeLocation = blobAddress;
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
-            CloudBlob blob = container.GetBlockBlobReference(relativeLocation);
+            CloudBlockBlob blob = container.GetBlockBlobReference(relativeLocation);
             return blob;
         }
 
@@ -1306,7 +1306,7 @@ namespace TheBall
             string searchRoot = CurrActiveContainer.Name + "/" + contentRootLocation;
             var blobList = CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
             int deleteCount = 0;
-            foreach(CloudBlob blob in blobList)
+            foreach(CloudBlockBlob blob in blobList)
             {
                 blob.DeleteWithoutFiringSubscriptions();
                 deleteCount++;
@@ -1354,7 +1354,7 @@ namespace TheBall
             string storageLevelOwnerRootAddress = CurrActiveContainer.Name + "/" + ownerRootAddress;
             var blobs = CurrBlobClient.ListBlobsWithPrefix(storageLevelOwnerRootAddress, options);
             int deletedCount = 0;
-            foreach(CloudBlob blob in blobs)
+            foreach(CloudBlockBlob blob in blobs)
             {
                 blob.DeleteWithoutFiringSubscriptions();
                 deletedCount++;
@@ -1369,7 +1369,7 @@ namespace TheBall
             BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata };
             var blobs = CurrBlobClient.ListBlobsWithPrefix(rootAddress, options);
             int deletedCount = 0;
-            foreach (CloudBlob blob in blobs)
+            foreach (CloudBlockBlob blob in blobs)
             {
                 blob.DeleteWithoutFiringSubscriptions();
                 deletedCount++;
@@ -1377,7 +1377,7 @@ namespace TheBall
             return deletedCount;
         }
 
-        public static bool CanContainExternalMetadata(this CloudBlob blob)
+        public static bool CanContainExternalMetadata(this CloudBlockBlob blob)
         {
             string blobInformationType = blob.GetBlobInformationType();
             if (blobInformationType == null)
@@ -1387,24 +1387,24 @@ namespace TheBall
             return true;
         }
 
-        public static bool IsStoredInActiveContainer(this CloudBlob blob)
+        public static bool IsStoredInActiveContainer(this CloudBlockBlob blob)
         {
             return blob.Container.Name == CurrActiveContainer.Name;
         }
 
         public static void DeleteWithoutFiringSubscriptions(string blobLocation)
         {
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(blobLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobLocation);
             DeleteWithoutFiringSubscriptions(blob);
         }
 
-        public static void DeleteWithoutFiringSubscriptions(this CloudBlob blob)
+        public static void DeleteWithoutFiringSubscriptions(this CloudBlockBlob blob)
         {
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }
 
-        public static void DeleteAndFireSubscriptions(this CloudBlob blob)
+        public static void DeleteAndFireSubscriptions(this CloudBlockBlob blob)
         {
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
@@ -1413,7 +1413,7 @@ namespace TheBall
         public static void DeleteBlob(string blobPath)
         {
             Console.WriteLine("Deleting: " + blobPath);
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(blobPath);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobPath);
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }
@@ -1425,9 +1425,9 @@ namespace TheBall
             return location.Substring(0, lastPositionToInclude);
         }
 
-        public static CloudBlob GetInformationObjectBlobWithProperties(IInformationObject informationObject)
+        public static CloudBlockBlob GetInformationObjectBlobWithProperties(IInformationObject informationObject)
         {
-            CloudBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlob(informationObject.RelativeLocation);
             blob.FetchAttributes();
             InformationContext.AddStorageTransactionToCurrent();
             return blob;
@@ -1523,7 +1523,7 @@ namespace TheBall
 
         public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
         {
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(lockLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
             DateTime created = DateTime.UtcNow;
             blob.Metadata.Add("LockCreated", created.ToString("s"));
             string blobContent = "LockCreated: " + created.ToString("s");
@@ -1549,7 +1549,7 @@ namespace TheBall
 
         public static bool ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)
         {
-            CloudBlob blob = CurrActiveContainer.GetBlobReference(lockLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
             BlobRequestOptions options = new BlobRequestOptions();
             options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
             if (lockEtag != null)

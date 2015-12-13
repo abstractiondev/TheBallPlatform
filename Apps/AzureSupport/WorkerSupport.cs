@@ -100,10 +100,10 @@ namespace TheBall
                                                         BlobListingDetails = BlobListingDetails.Metadata,
                                                     };
             var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(sourceSearchRoot, requestOptions).
-                OfType<CloudBlob>().OrderBy(blob => blob.Name).ToArray();
+                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
             var targetBlobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(targetSearchRoot, requestOptions).
-                OfType<CloudBlob>().OrderBy(blob => blob.Name).ToArray();
-            List<CloudBlob> targetBlobsToDelete;
+                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
+            List<CloudBlockBlob> targetBlobsToDelete;
             List<BlobCopyItem> blobCopyList;
             int sourcePathLen = sourcePathRoot.Length;
             int targetPathLen = targetPathRoot.Length;
@@ -142,7 +142,7 @@ namespace TheBall
                         //string targetBlobName = String.IsNullOrEmpty(targetPathRoot) ? sourceBlobName.
                         //string targetBlobName = 
                         //    blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
-                        targetBlob = targetContainer.GetBlobReference(targetBlobName);
+                        targetBlob = targetContainer.GetBlockBlobReference(targetBlobName);
                     }
                     else
                         targetBlob = blobCopyItem.TargetBlob;
@@ -164,16 +164,16 @@ namespace TheBall
             return targetBlobsToDelete.Count + blobCopyList.Count;
         }
 
-        private static void CompareSourceToTarget(CloudBlob[] sourceBlobs, CloudBlob[] targetBlobs, int sourcePathLen, int targetPathLen, out List<BlobCopyItem> blobCopyList, out List<CloudBlob> targetBlobsToDelete)
+        private static void CompareSourceToTarget(CloudBlockBlob[] sourceBlobs, CloudBlockBlob[] targetBlobs, int sourcePathLen, int targetPathLen, out List<BlobCopyItem> blobCopyList, out List<CloudBlockBlob> targetBlobsToDelete)
         {
             blobCopyList = new List<BlobCopyItem>();
-            targetBlobsToDelete = new List<CloudBlob>();
+            targetBlobsToDelete = new List<CloudBlockBlob>();
             int currTargetIX = 0;
             int currSourceIX = 0;
             while(currSourceIX < sourceBlobs.Length && currTargetIX < targetBlobs.Length)
             {
-                CloudBlob currSourceItem = sourceBlobs[currSourceIX];
-                CloudBlob currTargetItem = targetBlobs[currTargetIX];
+                var currSourceItem = sourceBlobs[currSourceIX];
+                var currTargetItem = targetBlobs[currTargetIX];
                 string sourceCompareName = currSourceItem.Name.Substring(sourcePathLen).ToLower();
                 string targetCompareName = currTargetItem.Name.Substring(targetPathLen).ToLower();
                 int compareResult = String.Compare(sourceCompareName, targetCompareName);

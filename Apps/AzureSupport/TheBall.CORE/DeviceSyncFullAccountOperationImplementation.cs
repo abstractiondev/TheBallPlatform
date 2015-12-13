@@ -220,7 +220,7 @@ namespace TheBall.CORE
                     var variantCount = transferItem.FullNames.Length;
                     var pick = random.Next(0, variantCount - 1);
                     var blobName = transferItem.FullNames[pick];
-                    var blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobName);
+                    var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobName);
                     outputTotal += transferItem.ContentLength;
                     blob.DownloadToStream(stream);
                 }

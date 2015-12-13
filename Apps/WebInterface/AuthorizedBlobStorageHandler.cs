@@ -535,7 +535,7 @@ namespace WebInterface
             var response = context.Response;
             var request = context.Request;
             string blobPath = GetBlobPath(request);
-            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlobReference(blobPath);  //publicClient.GetBlobReference(blobPath);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobPath);  //publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
             try
             {
