@@ -13,6 +13,7 @@ using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
 
 namespace TheBall
@@ -75,7 +76,7 @@ namespace TheBall
         private static object executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
         {
             var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD" };
-            string adminGroupID = InstanceConfiguration.AdminGroupID;
+            string adminGroupID = InstanceConfig.Current.AdminGroupID;
             if(containerOwner.LocationPrefix != adminGroupID)
                 throw new SecurityException("Only Admin Group can execute these operations");
             switch (operationName)

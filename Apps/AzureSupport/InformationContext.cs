@@ -12,6 +12,7 @@ using AaltoGlobalImpact.OIP;
 using DiagnosticsUtils;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
 using TheBall.Interface;
 
@@ -125,7 +126,7 @@ namespace TheBall
                         Owner = InformationContext.Current.Owner,
                         UpdateTime = DateTime.UtcNow,
                         ChangedIDList = changedList,
-                        RemoveExpiredEntriesSeconds = InstanceConfiguration.HARDCODED_StatusUpdateExpireSeconds,
+                        RemoveExpiredEntriesSeconds = InfraSharedConfig.HARDCODED_StatusUpdateExpireSeconds,
                     };
                     UpdateStatusSummary.Execute(parameters);
                 }

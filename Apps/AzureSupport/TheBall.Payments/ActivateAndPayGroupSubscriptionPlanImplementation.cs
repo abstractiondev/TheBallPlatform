@@ -6,6 +6,7 @@ using System.Web;
 using AzureSupport;
 using Stripe;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Payments.INT;
 
 namespace TheBall.Payments
@@ -33,7 +34,7 @@ namespace TheBall.Payments
         {
             var owner = InformationContext.CurrentOwner;
             var ownerID = owner.GetIDFromLocationPrefix();
-            if (ownerID != InstanceConfiguration.PaymentsGroupID)
+            if (ownerID != InstanceConfig.Current.PaymentsGroupID)
                 throw new SecurityException("Not supported payment owner ID: " + ownerID);
             string accountEmail = InformationContext.CurrentAccount.AccountEmail;
             if (String.IsNullOrEmpty(accountEmail))

@@ -27,6 +27,7 @@ using SQLiteSupport;
 using Stripe;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using MetaModel = System.Web.DynamicData.MetaModel;
 
 namespace WebInterface
@@ -140,14 +141,14 @@ namespace WebInterface
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            if (InstanceConfiguration.DynamicDataCRUDDomains.Length > 0 && InstanceConfiguration.UseSQLiteMasterDatabase)
+            if (InfraSharedConfig.Current.DynamicDataCRUDDomains.Length > 0 && InfraSharedConfig.Current.UseSQLiteMasterDatabase)
             {
-                RegisterRoutes(RouteTable.Routes, InstanceConfiguration.DynamicDataCRUDDomains);
+                RegisterRoutes(RouteTable.Routes, InfraSharedConfig.Current.DynamicDataCRUDDomains);
                 RegisterScripts();
             }
 
             string connStr;
-            connStr = InstanceConfiguration.AzureStorageConnectionString;
+            connStr = SecureConfig.Current.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);
             QueueSupport.RegisterQueue("index-defaultindex-index");
             QueueSupport.RegisterQueue("index-defaultindex-query");
@@ -163,10 +164,10 @@ namespace WebInterface
                     text = text.Substring(xmlBOMString.Length);
                 return text;
             };
-            if(!InstanceConfiguration.IsDeveloperMachine)
+            if(!InfraSharedConfig.Current.IsDeveloperMachine)
                 FileShareSupport.MountCoreShare();
 
-            var appInstanceKey = InstanceConfiguration.AppInsightInstrumentationKey;
+            var appInstanceKey = SecureConfig.Current.AppInsightInstrumentationKey;
             if (!String.IsNullOrEmpty(appInstanceKey))
             {
                 TelemetryConfiguration.Active.InstrumentationKey = appInstanceKey;

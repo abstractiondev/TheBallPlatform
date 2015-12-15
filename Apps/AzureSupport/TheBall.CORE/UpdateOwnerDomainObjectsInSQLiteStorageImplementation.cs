@@ -6,6 +6,7 @@ using System.Reflection;
 using AzureSupport;
 using Microsoft.WindowsAzure.StorageClient;
 using SQLiteSupport;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.CORE
 {
@@ -72,7 +73,7 @@ namespace TheBall.CORE
         public static string GetTarget_SQLiteDBLocationDirectory(IContainerOwner owner)
         {
             string currContainerName = InformationContext.Current.InitializedContainerName;
-            string dbDirectory = InstanceConfiguration.CoreShareWithFolderName + "\\" + currContainerName  + "\\" + owner.ContainerName + "\\" +
+            string dbDirectory = SecureConfig.Current.CoreShareWithFolderName + "\\" + currContainerName  + "\\" + owner.ContainerName + "\\" +
                                  owner.LocationPrefix;
             return dbDirectory;
 

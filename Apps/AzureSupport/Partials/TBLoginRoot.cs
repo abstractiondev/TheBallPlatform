@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -46,9 +47,9 @@ namespace AaltoGlobalImpact.OIP
                             AccountID = accountID,
                             EmailAddress = emailAddress
                         });
-                        if (InstanceConfiguration.PlatformDefaultGroupIDList != null)
+                        if (InstanceConfig.Current.PlatformDefaultGroupIDList != null)
                         {
-                            foreach (var groupToJoinID in InstanceConfiguration.PlatformDefaultGroupIDList)
+                            foreach (var groupToJoinID in InstanceConfig.Current.PlatformDefaultGroupIDList)
                             {
                                 try
                                 {
@@ -94,7 +95,7 @@ namespace AaltoGlobalImpact.OIP
 
                 // If this request is for account, we propagate the pages immediately
                 //RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);
-                foreach (var templateName in InstanceConfiguration.DefaultAccountTemplateList)
+                foreach (var templateName in InstanceConfig.Current.DefaultAccountTemplateList)
                 {
                     RenderWebSupport.RefreshAccountTemplate(accountID, templateName);
                 }

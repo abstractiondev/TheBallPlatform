@@ -8,6 +8,7 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
 
 namespace TheBall
@@ -31,7 +32,7 @@ namespace TheBall
         public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
         {
             if (operationName.StartsWith("TheBall.Payments"))
-                ownerPrefix = "grp/" + InstanceConfiguration.PaymentsGroupID;
+                ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
             var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
             {
                 var file = request.Files[key];

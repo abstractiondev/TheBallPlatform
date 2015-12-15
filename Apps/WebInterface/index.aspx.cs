@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AzureSupport;
 using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
@@ -13,7 +14,7 @@ namespace WebInterface
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(InstanceConfiguration.RedirectFromFolderFileName);
+            var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(InfraSharedConfig.Current.RedirectFromFolderFileName);
             string redirectTarget = blob.DownloadText();
             Response.Redirect(redirectTarget, true);
 

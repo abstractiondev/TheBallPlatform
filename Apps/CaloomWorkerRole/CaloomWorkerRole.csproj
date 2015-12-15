@@ -89,6 +89,7 @@
       <Name>SQLiteSupport</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\..\SharedProjects\InstanceSupport\InstanceSupport.projitems" Label="Shared" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetDir)*.dll" "$(SolutionDir)bin\$(ProjectName)\"</PostBuildEvent>

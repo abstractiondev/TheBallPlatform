@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace AzureSupport
 {
@@ -15,9 +16,9 @@ namespace AzureSupport
         //private const string CoreSharedFolderName = "tbcore";
         public static void MountCoreShare()
         {
-            string shareAndUserName = InstanceConfiguration.CoreFileShareAccountName;
-            string shareKeyName = InstanceConfiguration.CoreFileShareAccountKey;
-            string sharePathWithFolder = InstanceConfiguration.CoreShareWithFolderName;
+            string shareAndUserName = SecureConfig.Current.CoreFileShareAccountName;
+            string shareKeyName = SecureConfig.Current.CoreFileShareAccountKey;
+            string sharePathWithFolder = SecureConfig.Current.CoreShareWithFolderName;
             if (String.IsNullOrEmpty(shareAndUserName) || String.IsNullOrEmpty(shareKeyName))
                 throw new InvalidDataException("Missing required configuration data");
             System.Diagnostics.Process process = new System.Diagnostics.Process();

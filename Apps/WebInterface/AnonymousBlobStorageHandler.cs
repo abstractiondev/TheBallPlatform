@@ -10,6 +10,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
@@ -17,7 +18,7 @@ namespace WebInterface
     {
         private static string CloudStorageRootUrl
         {
-            get { return String.Format("http://{0}.blob.core.windows.net/", InstanceConfiguration.AzureAccountName); }
+            get { return String.Format("http://{0}.blob.core.windows.net/", SecureConfig.Current.AzureAccountName); }
 
         }
 

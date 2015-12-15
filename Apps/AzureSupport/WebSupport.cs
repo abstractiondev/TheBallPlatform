@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web;
 using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace AzureSupport
 {
@@ -21,10 +22,10 @@ namespace AzureSupport
         {
             string hostName = request.Url.DnsSafeHost;
             if (hostName == "localhost" || hostName == "localdev" || hostName.StartsWith("192.168."))
-                return InstanceConfiguration.WorkerActiveContainerName;
+                return InstanceConfig.Current.WorkerActiveContainerName;
             string containerName = hostName.Replace('.', '-').ToLower();
-            if (InstanceConfiguration.ContainerRedirects.ContainsKey(containerName))
-                return InstanceConfiguration.ContainerRedirects[containerName];
+            if (InstanceConfig.Current.ContainerRedirects.ContainsKey(containerName))
+                return InstanceConfig.Current.ContainerRedirects[containerName];
             return containerName;
         }
 

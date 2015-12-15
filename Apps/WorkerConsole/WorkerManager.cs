@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
 
 namespace TheBall.Platform.WorkerConsole
@@ -58,7 +59,7 @@ namespace TheBall.Platform.WorkerConsole
                                    //Task.Factory.StartNew(() => {}), 
                                    //Task.Factory.StartNew(() => {}), 
                                };
-            QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID + " version: " + InstanceConfiguration.VersionString, TimeSpan.FromDays(1));
+            QueueSupport.ReportStatistics("Starting worker: " + CurrWorkerID + " version: " + InfraSharedConfig.Current.VersionString, TimeSpan.FromDays(1));
             prepareCoreShareForWorker();
             int activeContainerIX = 0;
             int PollCyclePerRound = PollCyclePerContainerMilliseconds / ActiveContainerNames.Length;
@@ -173,10 +174,10 @@ namespace TheBall.Platform.WorkerConsole
             CurrWorkerID = DateTime.Now.ToString();
             ServicePointManager.DefaultConnectionLimit = 12;
             ServicePointManager.UseNagleAlgorithm = false;
-            string connStr = InstanceConfiguration.AzureStorageConnectionString;
+            string connStr = SecureConfig.Current.AzureStorageConnectionString;
             StorageSupport.InitializeWithConnectionString(connStr);
             InformationContext.InitializeFunctionality(3, allowStatic: true);
-            ActiveContainerNames = InstanceConfiguration.WorkerActiveContainerName.Split(',');
+            ActiveContainerNames = InstanceConfig.Current.WorkerActiveContainerName.Split(',');
             //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);
             CurrQueue = QueueSupport.CurrDefaultQueue;
             //prepareCoreShareForWorker();
@@ -198,7 +199,7 @@ namespace TheBall.Platform.WorkerConsole
         {
             try
             {
-                string workerDirectory = @"\\" + InstanceConfiguration.CoreShareWithFolderName + "\\WorkerRoot";
+                string workerDirectory = @"\\" + SecureConfig.Current.CoreShareWithFolderName + "\\WorkerRoot";
                 if (!Directory.Exists(workerDirectory))
                     Directory.CreateDirectory(workerDirectory);
             }

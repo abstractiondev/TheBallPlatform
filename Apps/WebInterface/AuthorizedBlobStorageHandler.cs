@@ -26,6 +26,7 @@ using Microsoft.WindowsAzure.StorageClient;
 using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using Process = TheBall.CORE.Process;
 
 namespace WebInterface
@@ -415,7 +416,7 @@ namespace WebInterface
                 if (isPaymentsOperation)
                 {
                     InformationContext.Current.Owner =
-                        VirtualOwner.FigureOwner("grp/" + InstanceConfiguration.PaymentsGroupID);
+                        VirtualOwner.FigureOwner("grp/" + InstanceConfig.Current.PaymentsGroupID);
                 }
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
                 method.Invoke(null, null);
@@ -429,7 +430,7 @@ namespace WebInterface
             {
                 HandleOwnerClientTemplatePOST(containerOwner, request);
                 bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
-                                       containerOwner.LocationPrefix == InstanceConfiguration.PaymentsGroupID;
+                                       containerOwner.LocationPrefix == InstanceConfig.Current.PaymentsGroupID;
                 if (isPaymentsGroup && false)
                 {
                     SQLiteSyncOwnerData(containerOwner);
@@ -583,7 +584,7 @@ namespace WebInterface
             if (String.IsNullOrEmpty(contentPath) || contentPath.EndsWith("/"))
             {
                 CloudBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath +
-                                                                      InstanceConfiguration.RedirectFromFolderFileName);
+                                                                      InfraSharedConfig.Current.RedirectFromFolderFileName);
                 string redirectToUrl = null;
                 try
                 {
@@ -596,9 +597,9 @@ namespace WebInterface
                 if (redirectToUrl == null)
                 {
                     if (containerOwner.IsAccountContainer())
-                        redirectToUrl = InstanceConfiguration.AccountDefaultRedirect;
+                        redirectToUrl = InstanceConfig.Current.AccountDefaultRedirect;
                     else
-                        redirectToUrl = InstanceConfiguration.GroupDefaultRedirect;
+                        redirectToUrl = InstanceConfig.Current.GroupDefaultRedirect;
                 }
                 context.Response.Redirect(redirectToUrl, true);
                 return;
@@ -694,15 +695,15 @@ namespace WebInterface
             string requestGroupID = isGroupRequest ? containerOwner.LocationPrefix : null;
             bool isAccountRequest = !isGroupRequest;
             var urlReferrer = request.UrlReferrer;
-            string[] groupTemplates = InstanceConfiguration.DefaultGroupTemplateList;
-            string[] accountTemplates = InstanceConfiguration.DefaultAccountTemplateList;
+            string[] groupTemplates = InstanceConfig.Current.DefaultGroupTemplateList;
+            string[] accountTemplates = InstanceConfig.Current.DefaultAccountTemplateList;
             var refererPath = urlReferrer != null && urlReferrer.Host == request.Url.Host ? urlReferrer.AbsolutePath : "";
             bool refererIsAccount = refererPath.StartsWith("/auth/account/");
             bool refererIsGroup = refererPath.StartsWith("/auth/grp/");
 
-            if (String.IsNullOrEmpty(InstanceConfiguration.AllowDirectServingRegexp) == false)
+            if (String.IsNullOrEmpty(InstanceConfig.Current.AllowDirectServingRegexp) == false)
             {
-                if (Regex.IsMatch(contentPath, InstanceConfiguration.AllowDirectServingRegexp, RegexOptions.Compiled))
+                if (Regex.IsMatch(contentPath, InstanceConfig.Current.AllowDirectServingRegexp, RegexOptions.Compiled))
                     return;
             }
 

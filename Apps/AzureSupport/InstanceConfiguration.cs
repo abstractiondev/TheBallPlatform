@@ -8,6 +8,7 @@ using Microsoft.WindowsAzure;
 
 namespace TheBall
 {
+    [Obsolete("Replaced with InstanceConfig and others", true)]
     public static class InstanceConfiguration
     {
         public static readonly string AppInsightInstrumentationKey;

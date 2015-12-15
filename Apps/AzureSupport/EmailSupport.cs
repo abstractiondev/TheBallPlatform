@@ -10,19 +10,12 @@ using Amazon.SimpleEmail.Model;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall
 {
     public static class EmailSupport
     {
-        private static readonly string AWSAccessKey = InstanceConfiguration.AWSAccessKey;
-        private static readonly string AWSSecretKey = InstanceConfiguration.AWSSecretKey;
-        private static readonly string FromAddress = InstanceConfiguration.EmailFromAddress;
-
-        static EmailSupport()
-        {
-        }
-
         public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
             if (Text != null || HTML != null)
@@ -69,8 +62,8 @@ namespace TheBall
                     message.Body = body;
                     message.Subject = subject;
 
-                    string awsAccessKey = AWSAccessKey;
-                    string awsSecretKey = AWSSecretKey;
+                    string awsAccessKey = SecureConfig.Current.AWSAccessKey;
+                    string awsSecretKey = SecureConfig.Current.AWSSecretKey;
                     //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
                     AmazonSimpleEmailServiceClient ses = new AmazonSimpleEmailServiceClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey), RegionEndpoint.EUWest1);
 
@@ -125,36 +118,36 @@ namespace TheBall
         public static void SendValidationEmail(TBEmailValidation emailValidation)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat = InstanceConfiguration.EmailValidationMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailValidationMessageFormat;
 #if never
 #endif
             string message = string.Format(emailMessageFormat, emailValidation.Email, urlLink);
-            SendEmail(FromAddress, emailValidation.Email, InstanceConfiguration.EmailValidationSubjectFormat, message);
+            SendEmail(InstanceConfig.Current.EmailFromAddress, emailValidation.Email, InstanceConfig.Current.EmailValidationSubjectFormat, message);
         }
 
         public static void SendGroupJoinEmail(TBEmailValidation emailValidation, TBCollaboratingGroup collaboratingGroup)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat = InstanceConfiguration.EmailGroupJoinMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailGroupJoinMessageFormat;
             string message = String.Format(emailMessageFormat, collaboratingGroup.Title, urlLink);
-            SendEmail(FromAddress, emailValidation.Email,
-                String.Format(InstanceConfiguration.EmailGroupJoinSubjectFormat, collaboratingGroup.Title),
+            SendEmail(InstanceConfig.Current.EmailFromAddress, emailValidation.Email,
+                String.Format(InstanceConfig.Current.EmailGroupJoinSubjectFormat, collaboratingGroup.Title),
                       message);
         }
 
         public static void SendMergeAccountsConfirmationEmail(TBEmailValidation mergeAccountEmailConfirmation)
         {
             string urlLink = GetUrlLink(mergeAccountEmailConfirmation.ID);
-            string emailMessageFormat = InstanceConfiguration.EmailAccountMergeValidationMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailAccountMergeValidationMessageFormat;
 #if never
 #endif
             string message = string.Format(emailMessageFormat, mergeAccountEmailConfirmation.Email, urlLink);
-            SendEmail(FromAddress, mergeAccountEmailConfirmation.Email, InstanceConfiguration.EmailAccountMergeValidationSubjectFormat, message);
+            SendEmail(InstanceConfig.Current.EmailFromAddress, mergeAccountEmailConfirmation.Email, InstanceConfig.Current.EmailAccountMergeValidationSubjectFormat, message);
         }
 
         private static string GetUrlLink(string emailValidationID)
         {
-            string urlLink = InstanceConfiguration.EmailValidationURLWithoutID + emailValidationID;
+            string urlLink = InstanceConfig.Current.EmailValidationURLWithoutID + emailValidationID;
             return urlLink;
         }
 
@@ -165,13 +158,13 @@ namespace TheBall
             string ownerID = isAccount
                                  ? emailValidation.DeviceJoinConfirmation.AccountID
                                  : emailValidation.DeviceJoinConfirmation.GroupID;
-            string emailMessageFormat = InstanceConfiguration.EmailDeviceJoinMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailDeviceJoinMessageFormat;
             string message = String.Format(emailMessageFormat, deviceMembership.DeviceDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
-            string subject = String.Format(InstanceConfiguration.EmailDeviceJoinSubjectFormat, ownerID);
+            string subject = String.Format(InstanceConfig.Current.EmailDeviceJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, subject, message);
+                SendEmail(InstanceConfig.Current.EmailFromAddress, emailAddress, subject, message);
             }
         }
 
@@ -182,13 +175,13 @@ namespace TheBall
             string ownerID = isAccount
                                  ? emailValidation.InformationInputConfirmation.AccountID
                                  : emailValidation.InformationInputConfirmation.GroupID;
-            string emailMessageFormat = InstanceConfiguration.EmailInputJoinMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailInputJoinMessageFormat;
             string message = String.Format(emailMessageFormat, informationInput.InputDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
-            string subject = String.Format(InstanceConfiguration.EmailInputJoinSubjectFormat, ownerID);
+            string subject = String.Format(InstanceConfig.Current.EmailInputJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, subject, message);
+                SendEmail(InstanceConfig.Current.EmailFromAddress, emailAddress, subject, message);
             }
         }
 
@@ -200,23 +193,23 @@ namespace TheBall
             string ownerID = isAccount
                                  ? confirmation.AccountID
                                  : confirmation.GroupID;
-            string emailMessageFormat = InstanceConfiguration.EmailOutputJoinMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailOutputJoinMessageFormat;
             string message = String.Format(emailMessageFormat, informationOutput.OutputDescription,
                                            isAccount ? "account" : "collaboration group", ownerID, urlLink);
-            string subject = String.Format(InstanceConfiguration.EmailOutputJoinSubjectFormat, ownerID);
+            string subject = String.Format(InstanceConfig.Current.EmailOutputJoinSubjectFormat, ownerID);
             foreach (string emailAddress in ownerEmailAddresses)
             {
-                SendEmail(FromAddress, emailAddress, subject, message);
+                SendEmail(InstanceConfig.Current.EmailFromAddress, emailAddress, subject, message);
             }
         }
 
         public static void SendGroupAndPlatformJoinEmail(TBEmailValidation emailValidation, TBCollaboratingGroup collaboratingGroup)
         {
             string urlLink = GetUrlLink(emailValidation.ID);
-            string emailMessageFormat = InstanceConfiguration.EmailGroupAndPlatformJoinMessageFormat;
+            string emailMessageFormat = InstanceConfig.Current.EmailGroupAndPlatformJoinMessageFormat;
             string message = String.Format(emailMessageFormat, collaboratingGroup.Title, urlLink);
-            SendEmail(FromAddress, emailValidation.Email,
-                String.Format(InstanceConfiguration.EmailGroupAndPlatformJoinSubjectFormat, collaboratingGroup.Title),
+            SendEmail(InstanceConfig.Current.EmailFromAddress, emailValidation.Email,
+                String.Format(InstanceConfig.Current.EmailGroupAndPlatformJoinSubjectFormat, collaboratingGroup.Title),
                       message);
         }
     }

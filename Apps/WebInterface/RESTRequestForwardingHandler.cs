@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using Microsoft.WindowsAzure.StorageClient.Protocol;
 using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
@@ -139,13 +140,13 @@ namespace WebInterface
                    (method == "GET" || method == "HEAD") ? String.Empty : request.ContentLength.ToString(),
                    ifMatch,
                    GetCanonicalizedHeaders(request.Headers),
-                   GetCanonicalizedResource(new Uri(newUrl), InstanceConfiguration.AzureAccountName),
+                   GetCanonicalizedResource(new Uri(newUrl), SecureConfig.Current.AzureAccountName),
                    md5
                    );
             byte[] signatureBytes = Encoding.UTF8.GetBytes(MessageSignature);
-            HMACSHA256 hmac = new HMACSHA256(Convert.FromBase64String(InstanceConfiguration.AzureStorageKey));
+            HMACSHA256 hmac = new HMACSHA256(Convert.FromBase64String(SecureConfig.Current.AzureStorageKey));
             var hash = hmac.ComputeHash(signatureBytes);
-            string authorizationValue = "SharedKey " + InstanceConfiguration.AzureAccountName + ":" +
+            string authorizationValue = "SharedKey " + SecureConfig.Current.AzureAccountName + ":" +
                                         Convert.ToBase64String(hash);
             headers["Authorization"] = authorizationValue;
         }

@@ -10,6 +10,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
@@ -268,7 +269,7 @@ namespace WebInterface
             if(String.IsNullOrEmpty(emailValidation.RedirectUrlAfterValidation) == false)
                 context.Response.Redirect(emailValidation.RedirectUrlAfterValidation, true);
             else
-                context.Response.Redirect(InstanceConfiguration.AccountDefaultRedirect, true);
+                context.Response.Redirect(InstanceConfig.Current.AccountDefaultRedirect, true);
         }
 
         private void RespondEmailValidationRecordNotExist(HttpContext context)
