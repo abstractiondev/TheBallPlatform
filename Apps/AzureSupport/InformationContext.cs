@@ -228,6 +228,19 @@ namespace TheBall
             }
         }
 
+        private RuntimeConfiguration _instanceConfiguration;
+        public static RuntimeConfiguration InstanceConfiguration
+        {
+            get
+            {
+                if (Current._instanceConfiguration == null)
+                    Current._instanceConfiguration = RuntimeConfiguration.GetConfiguration(Current.InstanceName);
+                return Current._instanceConfiguration;
+            }
+        }
+
+        public string InstanceName { get; private set; }
+
         public string InitializedContainerName { get; private set; }
         public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)
         {

@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)InfraSharedConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SecureConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InstanceConfig.cs" />
   </ItemGroup>

@@ -18,25 +18,28 @@ namespace TheBall.CORE.InstanceSupport
         public static InfraSharedConfig Current { get; } = currentConfig;
 
 
-        public readonly string VersionString = "v1.0.6d";
-        public readonly string RedirectFromFolderFileName;
-        public readonly string[] DefaultAccountTemplateList;
-        public readonly string AccountDefaultRedirect;
-        public readonly string[] DefaultGroupTemplateList;
-        public readonly string GroupDefaultRedirect;
-        public readonly string[] PlatformDefaultGroupIDList;
-        public readonly string CoreShareWithFolderName;
+        public string AppInsightInstrumentationKey;
+        public string VersionString = "v1.0.6d";
+        public string RedirectFromFolderFileName;
+        public string[] DefaultAccountTemplateList;
+        public string AccountDefaultRedirect;
+        public string[] DefaultGroupTemplateList;
+        public string GroupDefaultRedirect;
+        public string[] PlatformDefaultGroupIDList;
+        public string CoreShareWithFolderName;
 
         public Dictionary<string, Tuple<string, string>> WebhookHandlers = new Dictionary<string, Tuple<string, string>>();
-        public readonly bool IsDeveloperMachine;
-        public readonly bool UseSQLiteMasterDatabase;
-        public readonly string[] DynamicDataCRUDDomains;
+        public bool IsDeveloperMachine;
+        public bool UseSQLiteMasterDatabase;
+        public string[] DynamicDataCRUDDomains;
 
         // Infrastructure content/fields
         public static readonly int HARDCODED_StatusUpdateExpireSeconds = 300;
 
         public InfraSharedConfig(SettingRetriever settingRetriever)
         {
+            AppInsightInstrumentationKey = settingRetriever(nameof(AppInsightInstrumentationKey));
+
 
             string webhookHandlersValue = settingRetriever("WebhookHandlers");
             if (String.IsNullOrEmpty(webhookHandlersValue) == false)

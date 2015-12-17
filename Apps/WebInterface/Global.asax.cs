@@ -167,7 +167,7 @@ namespace WebInterface
             if(!InfraSharedConfig.Current.IsDeveloperMachine)
                 FileShareSupport.MountCoreShare();
 
-            var appInstanceKey = SecureConfig.Current.AppInsightInstrumentationKey;
+            var appInstanceKey = InfraSharedConfig.Current.AppInsightInstrumentationKey;
             if (!String.IsNullOrEmpty(appInstanceKey))
             {
                 TelemetryConfiguration.Active.InstrumentationKey = appInstanceKey;

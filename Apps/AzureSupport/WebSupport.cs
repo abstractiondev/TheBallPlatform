@@ -24,8 +24,8 @@ namespace AzureSupport
             if (hostName == "localhost" || hostName == "localdev" || hostName.StartsWith("192.168."))
                 return InstanceConfig.Current.WorkerActiveContainerName;
             string containerName = hostName.Replace('.', '-').ToLower();
-            if (InstanceConfig.Current.ContainerRedirects.ContainsKey(containerName))
-                return InstanceConfig.Current.ContainerRedirects[containerName];
+            if (InstanceConfig.Current.ContainerRedirectsDict.ContainsKey(containerName))
+                return InstanceConfig.Current.ContainerRedirectsDict[containerName];
             return containerName;
         }
 
