@@ -76,10 +76,6 @@
     <Compile Include="WorkerManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\WebInterface\InstanceSettings.config">
-      <Link>InstanceSettings.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
