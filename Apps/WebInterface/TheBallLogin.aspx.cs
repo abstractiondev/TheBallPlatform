@@ -26,6 +26,7 @@ using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
 using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
@@ -203,8 +204,7 @@ namespace WebInterface
                 );
             var hashSourceBin = Encoding.UTF8.GetBytes(hashSourceStr);
             //throw new NotImplementedException("Wilma login functional, pre-shared secret needs to be config/non-source code implemented");
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
-            string wilmaSharedSecret = settings.Get("WilmaSharedSecret");
+            string wilmaSharedSecret = SecureConfig.Current.WilmaSharedSecret;
             HMACSHA1 hmacsha1 = new HMACSHA1(Encoding.UTF8.GetBytes(wilmaSharedSecret)); // TODO: Dynamic config load from Ball-instance specific container
             var hashValue = hmacsha1.ComputeHash(hashSourceBin);
             string hashValueStr = Convert.ToBase64String(hashValue);
@@ -367,8 +367,7 @@ namespace WebInterface
             string authorizationEndpoint = "https://accounts.google.com/o/oauth2/auth";
             var state = string.IsNullOrEmpty(returnUrl.Query) ? string.Empty : returnUrl.Query.Substring(1);
             var req = HttpContext.Current.Request;
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
-            string client_id = settings.Get("GoogleOAuthClientID");
+            string client_id = SecureConfig.Current.GoogleOAuthClientID;
 
             return BuildUri(authorizationEndpoint, new NameValueCollection
             {
@@ -394,9 +393,8 @@ namespace WebInterface
         {
             string TokenEndpoint = "https://accounts.google.com/o/oauth2/token";
             var postData = HttpUtility.ParseQueryString(string.Empty);
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
-            string client_id = settings.Get("GoogleOAuthClientID");
-            string client_secret = settings.Get("GoogleOAuthClientSecret");
+            string client_id = SecureConfig.Current.GoogleOAuthClientID;
+            string client_secret = SecureConfig.Current.GoogleOAuthClientSecret;
             var nvc = new NameValueCollection
             {
                 {"grant_type", "authorization_code"},

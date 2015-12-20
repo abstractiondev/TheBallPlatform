@@ -61,6 +61,8 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             if (request.Path.StartsWith("/websocket/"))
                 return;
+            var hostName = request.Url.DnsSafeHost;
+            InformationContext.Current.InstanceName = hostName;
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
             // Do resource tracking only on non-local requests
             if (request.IsLocal == false)

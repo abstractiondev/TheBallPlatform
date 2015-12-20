@@ -36,12 +36,10 @@ namespace TheBall.CORE.InstanceSupport
 
         public string AdminGroupID;
         public string PaymentsGroupID;
+        public string AllowDirectServingRegexp;
 
         public string[] ContainerRedirects;
-
-
         private Dictionary<string, string> _containerRedirectsDict;
-
         public Dictionary<string, string> ContainerRedirectsDict
         {
             get
@@ -62,7 +60,36 @@ namespace TheBall.CORE.InstanceSupport
             }
         }
 
-        public string AllowDirectServingRegexp;
+        public string[] WebhookHandlers;
+        private Dictionary<string, Tuple<string, string>> _webhookHandlerDict = null;
+        public Dictionary<string, Tuple<string, string>> WebhookHandlersDict
+        {
+            get
+            {
+                if (_webhookHandlerDict == null)
+                {
+                    _webhookHandlerDict = new Dictionary<string, Tuple<string, string>>();
+                    if (WebhookHandlers != null)
+                    {
+                        string[] handlerEntries = WebhookHandlers;
+                        foreach (string handlerEntry in handlerEntries)
+                        {
+                            var handlerComponents = handlerEntry.Split(':');
+                            if (handlerComponents.Length != 3)
+                                continue;
+                            string handlerUrlName = handlerComponents[0];
+                            string handlerOperationFullName = handlerComponents[1];
+                            string handlerOwnerGroup = handlerComponents[2];
+                            _webhookHandlerDict.Add(handlerUrlName, new Tuple<string, string>(handlerOperationFullName, handlerOwnerGroup));
+                        }
+                    }
+
+                }
+                return _webhookHandlerDict;
+            }
+        }
+
+
         public static InstanceConfig Current => InformationContext.InstanceConfiguration.InstanceConfig;
     }
 }

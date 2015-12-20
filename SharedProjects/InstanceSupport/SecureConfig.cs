@@ -17,6 +17,13 @@ namespace TheBall.CORE.InstanceSupport
         public string CoreFileShareAccountKey;
         public string CoreShareWithFolderName;
 
+        public string WilmaSharedSecret;
+        public string GoogleOAuthClientID;
+        public string GoogleOAuthClientSecret;
+
+        public string StripePublicKey;
+        public string StripeSecretKey;
+
         public static SecureConfig Current => InformationContext.InstanceConfiguration.SecureConfig;
     }
 }

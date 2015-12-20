@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -8,27 +9,44 @@ namespace TheBall.CORE.InstanceSupport
 {
     public class RuntimeConfiguration
     {
+        private static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
         internal static ConcurrentDictionary<string, RuntimeConfiguration>  RuntimeConfigurationsDict = new ConcurrentDictionary<string, RuntimeConfiguration>();
 
-        public readonly InfraSharedConfig InfraConfig;
+        public static InfraSharedConfig InfraConfig;
+        internal static string ConfigRootPath;
         public readonly SecureConfig SecureConfig;
         public readonly InstanceConfig InstanceConfig;
 
-        public RuntimeConfiguration(InfraSharedConfig infraConfig, SecureConfig secureConfig, InstanceConfig instanceConfig)
+        public RuntimeConfiguration(SecureConfig secureConfig, InstanceConfig instanceConfig)
         {
-            InfraConfig = infraConfig;
             SecureConfig = secureConfig;
             InstanceConfig = instanceConfig;
         }
 
-        public static async Task InitializeOrUpdateConfig(string instanceName, string infraConfigFullPath, string secureConfigFullPath,
-            string instanceConfigFullPath)
+        public static async Task InitializeOrUpdateInfraConfig(string infraConfigFullPath)
         {
-            var infraConfig = await deserialize<InfraSharedConfig>(infraConfigFullPath);
+            await _semaphore.WaitAsync();
+            try
+            {
+                var infraFullDirectory = new DirectoryInfo(Path.GetDirectoryName(infraConfigFullPath));
+                ConfigRootPath = infraFullDirectory.Parent.FullName;
+                var infraConfig = await deserialize<InfraSharedConfig>(infraConfigFullPath);
+                InfraConfig = infraConfig;
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+        public static async Task InitializeOrUpdateInstanceConfig(string instanceName)
+        {
+            var secureConfigFullPath = Path.Combine(ConfigRootPath, instanceName, "SecureConfig.json");
             var secureConfig = await deserialize<SecureConfig>(secureConfigFullPath);
+            var instanceConfigFullPath = Path.Combine(ConfigRootPath, instanceName, "InstanceConfig.json");
             var instanceConfig = await deserialize<InstanceConfig>(instanceConfigFullPath);
 
-            var upToDateConfig = new RuntimeConfiguration(infraConfig, secureConfig, instanceConfig);
+            var upToDateConfig = new RuntimeConfiguration(secureConfig, instanceConfig);
             RuntimeConfigurationsDict.AddOrUpdate(instanceName, upToDateConfig,
                 (s, configuration) => upToDateConfig);
         }
@@ -41,6 +59,11 @@ namespace TheBall.CORE.InstanceSupport
                 T result = JsonConvert.DeserializeObject<T>(textContent);
                 return result;
             }
+        }
+
+        public static InfraSharedConfig GetInfraSharedConfig()
+        {
+            return InfraConfig;
         }
 
         public static RuntimeConfiguration GetConfiguration(string instanceName)

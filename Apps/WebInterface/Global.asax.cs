@@ -36,136 +36,21 @@ namespace WebInterface
     {
 
 
-        static Dictionary<string, MetaModel> ModelDict = new Dictionary<string, MetaModel>();
-        static Dictionary<string, object> DataContextDictionary = new Dictionary<string, object>();
-
-        public static void RegisterRoutes(RouteCollection routes, string[] dataContextDomains)
-        {
-
-            //                    IMPORTANT: DATA MODEL REGISTRATION 
-            // Uncomment this line to register a LINQ to SQL model for ASP.NET Dynamic Data.
-            // Set ScaffoldAllTables = true only if you are sure that you want all tables in the
-            // data model to support a scaffold (i.e. templates) view. To control scaffolding for
-            // individual tables, create a partial class for the table and apply the
-            // [ScaffoldTable(true)] attribute to the partial class.
-            // Note: Make sure that you change "YourDataContextType" to the name of the data context
-            // class in your application.
-
-            //return;
-
-            foreach (string dataContextDomain in dataContextDomains)
-            {
-                string dataContextTypeName = "SQLite." + dataContextDomain + ".TheBallDataContext";
-                var dataContextType = SQLiteSupport.ReflectionSupport.GetSQLiteDataContextType(dataContextTypeName);
-                var currentDataContext =
-                    (IStorageSyncableDataContext)
-                        dataContextType.InvokeMember("CreateOrAttachToExistingDB", BindingFlags.InvokeMethod, null, null,
-                            new object[] { ":memory:" });
-                Func<DbConnection> getConnectionFunc = () =>
-                {
-                    var inMemoryConnection = currentDataContext.Connection;
-                    if (InformationContext.Current.IsOwnerDefined)
-                    {
-                        var owner = InformationContext.CurrentOwner;
-                        var dbDirectory = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationDirectory(owner);
-                        var urlPathParts = HttpContext.Current.Request.Path.Split('/');
-                        string semanticDomainName = urlPathParts[5];
-                        var dbFileName =
-                            UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationFileName(
-                                semanticDomainName, dbDirectory);
-                        return new SQLiteConnection(String.Format("Data Source={0}", dbFileName));
-                    }
-                    return inMemoryConnection;
-                };
-                dataContextType.GetProperty("GetCurrentConnectionFunc").SetValue(null, getConnectionFunc , null);
-                var currentModel = new MetaModel();
-
-                DataContextDictionary.Add(dataContextTypeName, currentDataContext);
-                ModelDict.Add(dataContextTypeName, currentModel);
-
-                currentModel.RegisterContext(dataContextType, new ContextConfiguration() { ScaffoldAllTables = true });
-
-                //DefaultModel.RegisterContext(myDataModelProvider);
-                // The following statement supports separate-page mode, where the List, Detail, Insert, and 
-                // Update tasks are performed by using separate pages. To enable this mode, uncomment the following 
-                // route definition, and comment out the route definitions in the combined-page mode section that follows.
-                routes.Add(new DynamicDataRoute(String.Format("auth/grp/{{groupID}}/DDCRUD/{0}/{{table}}/{{action}}.aspx", dataContextDomain))
-                {
-                    Constraints = new RouteValueDictionary(new
-                    {
-                        action = "List|Details|Edit|Insert",
-                        httpMethod = new HttpMethodConstraint("GET")
-                        //groupID = "xyz"
-                    }),
-                    Model = currentModel,
-                    RouteHandler = new AuthorizedRouteHandler()
-                });
-
-            }
-
-            // The following statements support combined-page mode, where the List, Detail, Insert, and
-            // Update tasks are performed by using the same page. To enable this mode, uncomment the
-            // following routes and comment out the route definition in the separate-page mode section above.
-            /*
-            routes.Add(new DynamicDataRoute("auth/{groupID}/DDR/{table}/ListDetails.aspx")
-            {
-                Action = PageAction.List,
-                ViewName = "ListDetails",
-                Model = DefaultModel
-            });
-
-            routes.Add(new DynamicDataRoute("auth/{groupID}/DDR/{table}/ListDetails.aspx")
-            {
-                Action = PageAction.Details,
-                ViewName = "ListDetails",
-                Model = DefaultModel
-            });
-             * */
-        }
-
-
-        private static void RegisterScripts()
-        {
-            ScriptManager.ScriptResourceMapping.AddDefinition("jquery", new ScriptResourceDefinition
-            {
-                //Path = "~/Scripts/jquery-1.7.1.min.js",
-                //DebugPath = "~/Scripts/jquery-1.7.1.js",
-                Path = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js",
-                DebugPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.js",
-                CdnPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js",
-                CdnDebugPath = "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.js",
-                CdnSupportsSecureConnection = true
-            });
-        }
-
-
         protected void Application_Start(object sender, EventArgs e)
         {
-            if (InfraSharedConfig.Current.DynamicDataCRUDDomains.Length > 0 && InfraSharedConfig.Current.UseSQLiteMasterDatabase)
-            {
-                RegisterRoutes(RouteTable.Routes, InfraSharedConfig.Current.DynamicDataCRUDDomains);
-                RegisterScripts();
-            }
-
             string connStr;
-            connStr = SecureConfig.Current.AzureStorageConnectionString;
-            StorageSupport.InitializeWithConnectionString(connStr);
-            QueueSupport.RegisterQueue("index-defaultindex-index");
-            QueueSupport.RegisterQueue("index-defaultindex-query");
-            NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("SecureKeysConfig");
-            string stripeApiKey = settings.Get("StripeSecretKey");
-            StripeConfiguration.SetApiKey(stripeApiKey);
-            var xmlBOMString = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
-            SQLiteSupport.ContentStorage.GetContentAsStringFunc = blobName =>
+
+            var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
+                ? @"X:\"
+                : Environment.GetEnvironmentVariable("TBCoreFolder");
+            string infraConfigFullPath =  Path.Combine(infraDriveRoot, @"Configs\InfraShared\InfraConfig.json");
+            RuntimeConfiguration.InitializeOrUpdateInfraConfig(infraConfigFullPath).Wait();
+
+            var instances = InfraSharedConfig.Current.InstanceNames;
+            foreach (var instance in instances)
             {
-                var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, blobName);
-                var text = blob.DownloadText();
-                if (text.StartsWith(xmlBOMString))
-                    text = text.Substring(xmlBOMString.Length);
-                return text;
-            };
-            if(!InfraSharedConfig.Current.IsDeveloperMachine)
-                FileShareSupport.MountCoreShare();
+                RuntimeConfiguration.InitializeOrUpdateInstanceConfig(instance).Wait();
+            }
 
             var appInstanceKey = InfraSharedConfig.Current.AppInsightInstrumentationKey;
             if (!String.IsNullOrEmpty(appInstanceKey))

@@ -1,3 +1,0 @@
-Copy over deployment specific files during build.
-
-*.config files in here during development are NOT version controlled...

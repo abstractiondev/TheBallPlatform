@@ -37,9 +37,9 @@ namespace WebInterface
         {
             var webhookComponents = context.Request.Path.Split(new char[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
             string webhookName = webhookComponents.Length > 1 ?  webhookComponents[1] : String.Empty;
-            if (InfraSharedConfig.Current.WebhookHandlers.ContainsKey(webhookName))
+            if (InstanceConfig.Current.WebhookHandlersDict.ContainsKey(webhookName))
             {
-                var handlerInfo = InfraSharedConfig.Current.WebhookHandlers[webhookName];
+                var handlerInfo = InstanceConfig.Current.WebhookHandlersDict[webhookName];
                 string operationFullName = handlerInfo.Item1;
                 string handlerOwningGroup = handlerInfo.Item2;
                 await new OperationWebhookHandler().ProcessRequest(context, operationFullName, handlerOwningGroup);

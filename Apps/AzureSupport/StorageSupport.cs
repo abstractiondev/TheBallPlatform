@@ -16,6 +16,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
 
 namespace TheBall
@@ -33,7 +34,17 @@ namespace TheBall
         public static string InformationType_GenericContentValue = "GenericContent";
 
         //public static CloudTableClient CurrTableClient { get; private set; }
-        public static CloudStorageAccount CurrStorageAccount { get; private set; }
+        public static CloudStorageAccount CurrStorageAccount
+        {
+            get
+            {
+                var storageAccount = SecureConfig.Current.AzureAccountName;
+                var storageKey = SecureConfig.Current.AzureStorageKey;
+                CloudStorageAccount account = new CloudStorageAccount(new StorageCredentialsAccountAndKey(storageAccount, storageKey), true);
+                return account;
+            }
+        }
+
         public static CloudBlobContainer CurrActiveContainer
         {
             get { return InformationContext.Current.CurrActiveContainer; }
@@ -82,20 +93,14 @@ namespace TheBall
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
         }
 
+        public static void InitializeFixedStorageSettings(string connStr)
+        {
+            throw new NotImplementedException("Not yet implemented as fixed... need instance name");
+        }
 
-        public static void InitializeWithConnectionString(string connStr, bool debugMode = false)
+        public static void InitializeStorageSettings()
         {
             ServicePointManager.UseNagleAlgorithm = false;
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connStr);
-            CurrStorageAccount = storageAccount;
-            //CloudTableClient tableClient = storageAccount.CreateCloudTableClient();
-            //CurrTableClient = tableClient;
-
-            //var activeAnonPublicContainer = blobClient.GetContainerReference("pub");
-            //CurrAnonPublicContainer = activeAnonPublicContainer;
-            //var activeTemplateContainer = blobClient.GetContainerReference("private-templates");
-            //CurrTemplateContainer = activeTemplateContainer;
-            QueueSupport.InitializeAfterStorage(debugMode:debugMode);
         }
 
         [Obsolete("no", true)]

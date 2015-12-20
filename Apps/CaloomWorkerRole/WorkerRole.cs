@@ -208,8 +208,7 @@ namespace CaloomWorkerRole
             CurrWorkerID = DateTime.Now.ToString();
             ServicePointManager.DefaultConnectionLimit = 12;
             ServicePointManager.UseNagleAlgorithm = false;
-            string connStr = SecureConfig.Current.AzureStorageConnectionString;
-            StorageSupport.InitializeWithConnectionString(connStr);
+            StorageSupport.InitializeStorageSettings();
             InformationContext.InitializeFunctionality(3, allowStatic:true);
             ActiveContainerNames = InstanceConfig.Current.WorkerActiveContainerName.Split(',');
             //InformationContext.Current.InitializeCloudStorageAccess(InstanceConfiguration.WorkerActiveContainerName);

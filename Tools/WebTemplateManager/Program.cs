@@ -48,7 +48,7 @@ namespace WebTemplateManager
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
 
                 bool debugMode = false;
-                StorageSupport.InitializeWithConnectionString(connStr, debugMode);
+                StorageSupport.InitializeFixedStorageSettings(connStr);
                 InformationContext.InitializeFunctionality(3, true);
                 InformationContext.Current.InitializeCloudStorageAccess(currContainerName);
 

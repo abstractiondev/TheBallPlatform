@@ -239,7 +239,7 @@ namespace TheBall
             }
         }
 
-        public string InstanceName { get; private set; }
+        public string InstanceName { get; set; }
 
         public string InitializedContainerName { get; private set; }
         public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)

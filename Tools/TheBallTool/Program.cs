@@ -27,7 +27,7 @@ namespace TheBallTool
                 bool debugMode = false;
 
 
-                StorageSupport.InitializeWithConnectionString(connStr, debugMode);
+                StorageSupport.InitializeFixedStorageSettings(connStr);
                 InformationContext.InitializeFunctionality(3, true);
                 InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                 QueueSupport.RegisterQueue("index-defaultindex-index");
