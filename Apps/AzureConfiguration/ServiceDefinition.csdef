@@ -42,6 +42,7 @@
         </Environment>
       </Task>
       <Task commandLine="IISInitTasks.cmd" executionContext="elevated" taskType="simple">
+        <!--
         <Environment>
           <Variable name="IISCertAccountName">
             <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountName']/@value" />
@@ -49,6 +50,7 @@
           <Variable name="IISCertAccountPassword">
             <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountPassword']/@value" />
           </Variable>
+          -->
         </Environment>
       </Task>
       <Task commandLine="AIBootstrap.cmd" executionContext="elevated" taskType="simple">
