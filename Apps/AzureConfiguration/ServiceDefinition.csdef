@@ -50,9 +50,9 @@
           <Variable name="IISCertAccountPassword">
             <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountPassword']/@value" />
           </Variable>
-          -->
         </Environment>
-      </Task>
+          -->
+        </Task>
       <Task commandLine="AIBootstrap.cmd" executionContext="elevated" taskType="simple">
         <Environment>
           <Variable name="EMULATED">
