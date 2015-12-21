@@ -5,12 +5,6 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="" />
       <Setting name="CoreFileShareAccountKey" value="" />
-      <Setting name="StorageConnectionString" value="" />
-      <Setting name="UseSQLiteMasterDatabase" value="" />
-      <Setting name="DataConnectionString" value="" />
-      <Setting name="AmazonSESAccessInfo" value="" />
-      <Setting name="WorkerRoleEntryPointContainerName" value="" />
-      <Setting name="WorkerActiveContainerName" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
@@ -25,18 +19,8 @@
   <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
-      <Setting name="IISCertAccountName" value="" />
-      <Setting name="IISCertAccountPassword" value="" />
       <Setting name="CoreFileShareAccountName" value="" />
       <Setting name="CoreFileShareAccountKey" value="" />
-      <Setting name="UseSQLiteMasterDatabase" value="" />
-      <Setting name="StorageConnectionString" value="" />
-      <Setting name="DataConnectionString" value="" />
-      <Setting name="AmazonSESAccessInfo" value="" />
-      <Setting name="SyncEnabled" value="true" />
-      <Setting name="SitesContainerName" value="sites" />
-      <Setting name="DirectoriesToExclude" value="App_Data/TEMP;TEMP" />
-      <Setting name="SyncIntervalInSeconds" value="60" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
@@ -46,10 +30,6 @@
     <Certificates>
       <Certificate name="HTTPS" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
       <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
-      <Certificate name="Cert1" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
-      <Certificate name="Cert2" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
-      <Certificate name="Cert3" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
-      <Certificate name="Cert4" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
 </ServiceConfiguration>

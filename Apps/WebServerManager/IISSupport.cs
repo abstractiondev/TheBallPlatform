@@ -39,7 +39,8 @@ namespace TheBall.Infra.WebServerManager
             var newSite = sites.Add(hostAndSiteName, "https", bindingInformation, websiteFolder);
             newSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
             var binding = newSite.Bindings[0];
-            binding.SslFlags = SslFlags.CentralCertStore | SslFlags.Sni;
+            //binding.SslFlags = SslFlags.CentralCertStore | SslFlags.Sni;
+            binding.SslFlags = SslFlags.Sni;
             iisManager.CommitChanges();
             return sites[hostAndSiteName];
         }

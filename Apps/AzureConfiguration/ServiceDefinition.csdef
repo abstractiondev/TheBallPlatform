@@ -20,12 +20,6 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
-      <Setting name="UseSQLiteMasterDatabase" />
-      <Setting name="DataConnectionString" />
-      <Setting name="WorkerRoleEntryPointContainerName" />
-      <Setting name="StorageConnectionString" />
-      <Setting name="AmazonSESAccessInfo" />
-      <Setting name="WorkerActiveContainerName" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
@@ -70,9 +64,6 @@
       <Site name="Web">
         <Bindings>
           <Binding name="HttpIn" endpointName="HttpIn" hostHeader="localhost" />
-          <!--
-          <Binding name="HttpsIn" endpointName="HttpsIn" />
-          -->
         </Bindings>
       </Site>
     </Sites>
@@ -92,29 +83,12 @@
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
     <ConfigurationSettings>
-      <Setting name="IISCertAccountName" />
-      <Setting name="IISCertAccountPassword" />
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
-      <Setting name="UseSQLiteMasterDatabase" />
-      <Setting name="DataConnectionString" />
-      <Setting name="StorageConnectionString" />
-      <Setting name="SyncEnabled" />
-      <Setting name="SitesContainerName" />
-      <Setting name="DirectoriesToExclude" />
-      <Setting name="SyncIntervalInSeconds" />
-      <Setting name="AmazonSESAccessInfo" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
-      <!--
-      <Certificate name="members.onlinetaekwondo.net" storeLocation="LocalMachine" storeName="My" />
-      -->
-      <Certificate name="Cert1" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="Cert2" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="Cert3" storeLocation="LocalMachine" storeName="My" />
-      <Certificate name="Cert4" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>
