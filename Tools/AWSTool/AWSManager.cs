@@ -28,12 +28,22 @@ namespace AWSTool
         private void validateSESDomain(string domainName, string zoneId)
         {
             AmazonSimpleEmailServiceClient client = new AmazonSimpleEmailServiceClient(Credentials, RegionEndpoint.EUWest1);
-            var domainVerifyResponse = client.VerifyDomainIdentity(new VerifyDomainIdentityRequest()
+            var verificationStatus = client.GetIdentityVerificationAttributes(new GetIdentityVerificationAttributesRequest()
             {
-                Domain = domainName
+                Identities = new List<string>(new string[] {domainName})
             });
-            var txtToVerify = domainVerifyResponse.VerificationToken;
-            verifyTXTRecord(domainName, zoneId, "_amazonses", txtToVerify);
+            var verificationAttributes = verificationStatus.VerificationAttributes;
+            bool verified =
+                verificationAttributes.Values.Any(verValue => verValue.VerificationStatus == VerificationStatus.Success);
+            if (!verified)
+            {
+                var domainVerifyResponse = client.VerifyDomainIdentity(new VerifyDomainIdentityRequest()
+                {
+                    Domain = domainName
+                });
+                var txtToVerify = domainVerifyResponse.VerificationToken;
+                verifyTXTRecord(domainName, zoneId, "_amazonses", txtToVerify);
+            }
 
             var dkimStatus = client.GetIdentityDkimAttributes(new GetIdentityDkimAttributesRequest() { Identities = new List<string>(new string[] { domainName }) });
             var dkimAttributes = dkimStatus.DkimAttributes[domainName];

@@ -101,6 +101,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataShardingTests.cs" />
     <Compile Include="FileSystemSyncTests.cs" />
     <Compile Include="SQLiteStorageSyncTests_OIP.cs" />
     <Compile Include="SQLiteStorageSyncTests.cs" />
