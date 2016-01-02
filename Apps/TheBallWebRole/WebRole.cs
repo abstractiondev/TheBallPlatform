@@ -143,12 +143,11 @@ namespace TheBallWebRole
 
         private void processAppSitePolling(string appSiteName, string zipFileName, bool needsProcessing)
         {
-            string appSiteRootFolder = Path.Combine(LiveSitesRootFolder, appSiteName);
-            var appLiveFolder = Path.Combine(appSiteRootFolder, appSiteName);
-            bool needsInitialDeployment = !Directory.Exists(appLiveFolder);
+            string appSiteFolder = Path.Combine(LiveSitesRootFolder, appSiteName);
+            bool needsInitialDeployment = !Directory.Exists(appSiteFolder);
             if (needsInitialDeployment)
                 DeployAppFromZip(TempSitesRootFolder, appSiteName, zipFileName, LiveSitesRootFolder);
-            EnsureIISSite(appSiteName, appSiteRootFolder);
+            EnsureIISSite(appSiteName, appSiteFolder);
             bool needsUpdateDeployment = needsProcessing && !needsInitialDeployment;
             if (needsUpdateDeployment)
                 DeployAppFromZip(TempSitesRootFolder, appSiteName, zipFileName, LiveSitesRootFolder);
@@ -160,9 +159,9 @@ namespace TheBallWebRole
             IISSupport.EnsureHttpHostHeaders(siteName, hostHeaders);
         }
 
-        private void EnsureIISSite(string appSiteName, string appSiteRootFolder)
+        private void EnsureIISSite(string appSiteName, string appSiteFolder)
         {
-            IISSupport.CreateIISApplicationSiteIfMissing(appSiteName, appSiteRootFolder);
+            IISSupport.CreateIISApplicationSiteIfMissing(appSiteName, appSiteFolder);
         }
 
         private void DeployAppFromZip(string tempSitesRootFolder, string appSiteName, string zipFileName, string liveRootFolder)
