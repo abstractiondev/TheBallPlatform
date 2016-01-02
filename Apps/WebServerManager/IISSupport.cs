@@ -57,6 +57,19 @@ namespace TheBall.Infra.WebServerManager
                 iisManager.CommitChanges();
         }
 
+        public static void UpdateInstanceBindings(string bindingData, params string[] siteNames)
+        {
+            var bindingComponents = bindingData.Split(';');
+            foreach (var siteName in siteNames)
+            {
+                string sitePrefix = siteName + ":";
+                var siteBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(sitePrefix))?.Replace(sitePrefix, "").Split(',');
+                if (siteBindings != null)
+                    SetInstanceCertBindings(siteName, siteBindings);
+            }
+        }
+
+
         [Obsolete("Separate site & its bindings", true)]
         public static Site CreateOrRetrieveCCSWebSite(string websiteFolder, string hostAndSiteName)
         {
@@ -99,32 +112,43 @@ namespace TheBall.Infra.WebServerManager
             var secondLastIX = instanceNameSplit.Length - 2;
             var lastIX = instanceNameSplit.Length - 1;
             string domainName = instanceNameSplit[secondLastIX] + "." + instanceNameSplit[lastIX];
-            string certCommonName = $"*.{domainName}";
-            byte[] certificateHash = getCertHash(certCommonName);
+            string certDomainName = $"*.{domainName}";
+            byte[] certificateHash = getCertHash(certDomainName);
             if (certificateHash == null)
                 return false;
             var bindings = site.Bindings;
             var existingBinding = bindings.FirstOrDefault(binding => binding.Host == instanceHostName);
+            bool isChanged = false;
             if (existingBinding == null)
             {
                 string bindingInformation = $"*:443:{instanceHostName}";
                 existingBinding = bindings.Add(bindingInformation, "https");
+                existingBinding.SslFlags = SslFlags.Sni;
+                isChanged = true;
             }
             if (certificateHash.SequenceEqual(existingBinding.CertificateHash) == false)
             {
                 existingBinding.CertificateHash = certificateHash;
                 existingBinding.CertificateStoreName = StoreName.My.ToString();
-                return true;
+                isChanged = true;
             }
-            return false;
+            return isChanged;
         }
 
-        private static byte[] getCertHash(string certCommonName)
+        private static byte[] getCertHash(string certDomainName)
         {
             var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            var matchingCerts = store.Certificates.Find(X509FindType.FindBySubjectName, certCommonName, true);
-            var foundCert = matchingCerts.Count > 0 ? matchingCerts[0] : null;
-            return foundCert?.GetCertHash();
+            store.Open(OpenFlags.ReadOnly);
+            try
+            {
+                var matchingCerts = store.Certificates.Find(X509FindType.FindBySubjectName, certDomainName, true);
+                var foundCert = matchingCerts.Count > 0 ? matchingCerts[0] : null;
+                return foundCert?.GetCertHash();
+            }
+            finally
+            {
+                store.Close();
+            }
         }
 
         public static void EnsureHttpHostHeaders(string siteName, string[] hostHeaders)

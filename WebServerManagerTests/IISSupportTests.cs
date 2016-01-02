@@ -38,12 +38,19 @@ namespace TheBall.Infra.WebServerManager.Tests
         }
 
         [TestMethod]
-        public void CreateSiteWithoutBindingsTest()
+        public void CreateSiteWithInitialBindingsTest()
         {
             IISSupport.CreateIISApplicationSiteIfMissing(TBUnitTestTempSite, @"T:\TBTest");
             ServerManager iisManager = new ServerManager();
             var newSite = iisManager.Sites[TBUnitTestTempSite];
             Assert.IsNotNull(newSite);
+        }
+
+        [TestMethod]
+        public void UpdateInstanceBindingsTest()
+        {
+            var bindingData = TBUnitTestSite + ":test1.theball.me,test2.theball.me";
+            IISSupport.UpdateInstanceBindings(bindingData, TBUnitTestSite);
         }
 
         [TestMethod()]

@@ -130,7 +130,7 @@ namespace TheBallWebRole
                             if(fileName == "websites.txt")
                                 UpdateIISSiteFromTxt("websites", txtData);
                             else if (fileName == "BindingData.txt")
-                                UpdateInstanceBindings(txtData);
+                                IISSupport.UpdateInstanceBindings(txtData);
                         }
                     }
                 }
@@ -140,22 +140,6 @@ namespace TheBallWebRole
             }
         }
 
-        private void UpdateInstanceBindings(string bindingData)
-        {
-            const string DevPrefix = "Dev:";
-            const string TestPrefix = "Test:";
-            const string ProdPrefix = "Prod:";
-            var bindingComponents = bindingData.Split(';');
-            var devBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(DevPrefix))?.Replace(DevPrefix, "").Split(',');
-            var testBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(TestPrefix))?.Replace(TestPrefix, "").Split(',');
-            var prodBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(ProdPrefix))?.Replace(ProdPrefix, "").Split(',');
-            if (devBindings != null)
-                IISSupport.SetInstanceCertBindings("Dev", devBindings);
-            if(testBindings != null)
-                IISSupport.SetInstanceCertBindings("Test", testBindings);
-            if(prodBindings != null)
-                IISSupport.SetInstanceCertBindings("Prod", prodBindings);
-        }
 
         private void processAppSitePolling(string appSiteName, string zipFileName, bool needsProcessing)
         {
