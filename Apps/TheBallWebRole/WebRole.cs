@@ -20,13 +20,13 @@ namespace TheBallWebRole
 {
     public class WebRole : RoleEntryPoint
     {
-        private const string SiteContainerName = "tb-sites";
+        private const string SiteContainerName = "tb-instancesites";
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
         private const string PathTo7Zip = @"E:\TheBallInfra\7z\7z.exe";
 
         private CloudStorageAccount StorageAccount;
         private CloudBlobClient BlobClient;
-        private CloudBlobContainer SiteContainer;
+        private CloudBlobContainer InstanceSiteContainer;
         private volatile bool IsRunning = false;
         private volatile bool TaskIsDone = true;
 
@@ -38,7 +38,7 @@ namespace TheBallWebRole
 
             StorageAccount = CloudStorageAccount.Parse(connStr);
             BlobClient = StorageAccount.CreateCloudBlobClient();
-            SiteContainer = BlobClient.GetContainerReference(SiteContainerName);
+            InstanceSiteContainer = BlobClient.GetContainerReference(SiteContainerName);
 
             PollAndSyncWebsitesFromStorage();
 
@@ -89,12 +89,14 @@ namespace TheBallWebRole
 
         private void PollAndSyncWebsitesFromStorage()
         {
-            var blobs = SiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
+            var appZipNames = new[] {"Dev.zip", "Test.zip", "Prod.zip"};
+            var configTxtNames = new[] {"websites.txt", "BindingData.txt"};
+            var blobs = InstanceSiteContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
             foreach (CloudBlockBlob blob in blobsInOrder)
             {
-                string fileName = blob.Name;
-                string hostAndSiteName = Path.GetFileNameWithoutExtension(fileName);
+                string blobFileName = blob.Name;
+                string fileName = Path.GetFileName(blobFileName);
                 string tempFile = Path.Combine(TempSitesRootFolder, blob.Name);
                 FileInfo currentFile = new FileInfo(tempFile);
                 var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
@@ -107,16 +109,23 @@ namespace TheBallWebRole
                         currentFile.Refresh();
                         currentFile.LastWriteTimeUtc = blobLastModified;
                     }
-                    bool isZip = fileName.ToLower().EndsWith(".zip");
-                    bool isTxt = fileName.ToLower().EndsWith(".txt");
-                    if(isZip)
-                        UpdateIISSiteFromZip(TempSitesRootFolder, hostAndSiteName, LiveSitesRootFolder, needsProcessing);
-                    else if (isTxt)
+                    //bool isZip = fileName.ToLower().EndsWith(".zip");
+                    bool isAppZip = appZipNames.Contains(fileName);
+                    bool isConfigTxt = configTxtNames.Contains(fileName);
+                    if (isAppZip)
+                    {
+                        string appSiteName = Path.GetFileNameWithoutExtension(fileName);
+                        processAppSitePolling(appSiteName, fileName, needsProcessing);
+                    }
+                    else if (isConfigTxt)
                     {
                         if (needsProcessing)
                         {
                             var txtData = blob.DownloadText();
-                            UpdateIISSiteFromTxt(hostAndSiteName, txtData);
+                            if(fileName == "websites.txt")
+                                UpdateIISSiteFromTxt("websites", txtData);
+                            else if (fileName == "BindingData.txt")
+                                UpdateInstanceBindings(txtData);
                         }
                     }
                 }
@@ -126,12 +135,65 @@ namespace TheBallWebRole
             }
         }
 
+        private void UpdateInstanceBindings(string bindingData)
+        {
+            const string DevPrefix = "Dev:";
+            const string TestPrefix = "Test:";
+            const string ProdPrefix = "Prod:";
+            var bindingComponents = bindingData.Split(';');
+            var devBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(DevPrefix))?.Replace(DevPrefix, "").Split(',');
+            var testBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(TestPrefix))?.Replace(TestPrefix, "").Split(',');
+            var prodBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(ProdPrefix))?.Replace(ProdPrefix, "").Split(',');
+            if (devBindings != null)
+                IISSupport.SetInstanceCertBindings("Dev", devBindings);
+            if(testBindings != null)
+                IISSupport.SetInstanceCertBindings("Test", testBindings);
+            if(prodBindings != null)
+                IISSupport.SetInstanceCertBindings("Prod", prodBindings);
+        }
+
+        private void processAppSitePolling(string appSiteName, string zipFileName, bool needsProcessing)
+        {
+            string appSiteRootFolder = Path.Combine(LiveSitesRootFolder, appSiteName);
+            var appLiveFolder = Path.Combine(appSiteRootFolder, appSiteName);
+            bool needsInitialDeployment = !Directory.Exists(appLiveFolder);
+            if (needsInitialDeployment)
+                DeployAppFromZip(TempSitesRootFolder, appSiteName, zipFileName, LiveSitesRootFolder);
+            EnsureIISSite(appSiteName, appSiteRootFolder);
+            bool needsUpdateDeployment = needsProcessing && !needsInitialDeployment;
+            if (needsUpdateDeployment)
+                DeployAppFromZip(TempSitesRootFolder, appSiteName, zipFileName, LiveSitesRootFolder);
+        }
+
         private void UpdateIISSiteFromTxt(string siteName, string txtData)
         {
             var hostHeaders = txtData.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
-            IISSupport.SetHostHeaders(siteName, hostHeaders);
+            IISSupport.EnsureHttpHostHeaders(siteName, hostHeaders);
         }
 
+        private void EnsureIISSite(string appSiteName, string appSiteRootFolder)
+        {
+            IISSupport.CreateIISApplicationSiteIfMissing(appSiteName, appSiteRootFolder);
+        }
+
+        private void DeployAppFromZip(string tempSitesRootFolder, string appSiteName, string zipFileName, string liveRootFolder)
+        {
+            string appTempDirName = Path.Combine(tempSitesRootFolder, appSiteName);
+            var tempDirectory = new DirectoryInfo(appTempDirName);
+            if (tempDirectory.Exists)
+                tempDirectory.Delete(true);
+            tempDirectory.Create();
+            var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x ..\{0}", zipFileName));
+            unzipProcInfo.WorkingDirectory = appTempDirName;
+            var unzipProc = Process.Start(unzipProcInfo);
+            unzipProc.WaitForExit();
+
+            string appLiveFolder = Path.Combine(liveRootFolder, appSiteName);
+
+            IISSupport.DeployAppSiteContent(appTempDirName, appLiveFolder);
+        }
+
+        [Obsolete("Separate IIS site creation from its deployment", true)]
         private void UpdateIISSiteFromZip(string tempSitesRootFolder, string hostAndSiteName, string liveSitesRootFolder, bool needsUnzipping)
         {
             if (needsUnzipping)

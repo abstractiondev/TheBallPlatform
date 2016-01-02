@@ -14,6 +14,7 @@ namespace TheBall.Infra.WebServerManager.Tests
     public class IISSupportTests
     {
         private const string TBUnitTestSite = "TBUnitTestSite";
+        private const string TBUnitTestTempSite = "TBUnitTestTempSite";
 
         [ClassInitialize()]
         public static void ClassInit(TestContext context)
@@ -36,10 +37,19 @@ namespace TheBall.Infra.WebServerManager.Tests
             //Assert.Fail();
         }
 
+        [TestMethod]
+        public void CreateSiteWithoutBindingsTest()
+        {
+            IISSupport.CreateIISApplicationSiteIfMissing(TBUnitTestTempSite, @"T:\TBTest");
+            ServerManager iisManager = new ServerManager();
+            var newSite = iisManager.Sites[TBUnitTestTempSite];
+            Assert.IsNotNull(newSite);
+        }
+
         [TestMethod()]
         public void SetHostHeadersTest()
         {
-            IISSupport.SetHostHeaders(TBUnitTestSite, new string[] { "host1", "host2"});
+            IISSupport.EnsureHttpHostHeaders(TBUnitTestSite, new string[] { "host1", "host2"});
         }
 
         [TestMethod()]

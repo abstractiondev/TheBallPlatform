@@ -12,6 +12,52 @@ namespace TheBall.Infra.WebServerManager
 {
     public static class IISSupport
     {
+        public static void CreateIISApplicationSiteIfMissing(string appSiteName, string appSiteFolder)
+        {
+            if (appSiteFolder == null)
+                throw new ArgumentNullException(nameof(appSiteFolder));
+            ServerManager iisManager = new ServerManager();
+            var sites = iisManager.Sites;
+            var existingSite = sites[appSiteName];
+            if (existingSite != null)
+            {
+                return;
+            }
+            var appPools = iisManager.ApplicationPools;
+            string appPoolName = appSiteName;
+            var appPool = appPools[appPoolName];
+            if (appPool == null)
+            {
+                appPool = appPools.Add(appPoolName);
+                appPool.ManagedPipelineMode = ManagedPipelineMode.Integrated;
+                appPool.ManagedRuntimeVersion = "v4.0";
+                appPool.ProcessModel.IdentityType = ProcessModelIdentityType.NetworkService;
+                appPool.AutoStart = true;
+                appPool.StartMode = StartMode.AlwaysRunning;
+                //iisManager.CommitChanges();
+            }
+            sites = iisManager.Sites;
+            string bindingInformation = $"*:80:{appSiteName}";
+            var newSite = sites.Add(appSiteName, "http", bindingInformation, appSiteFolder);
+            newSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
+            iisManager.CommitChanges();
+        }
+
+        public static void SetInstanceCertBindings(string appSiteName, string[] instanceHostNames)
+        {
+            var iisManager = new ServerManager();
+            var site = iisManager.Sites[appSiteName];
+            bool anyChanges = false;
+            foreach (var instanceHostName in instanceHostNames)
+            {
+                bool requiredChange = ensureInstanceCertBinding(site, instanceHostName);
+                anyChanges = anyChanges || requiredChange;
+            }
+            if(anyChanges)
+                iisManager.CommitChanges();
+        }
+
+        [Obsolete("Separate site & its bindings", true)]
         public static Site CreateOrRetrieveCCSWebSite(string websiteFolder, string hostAndSiteName)
         {
             if (websiteFolder == null)
@@ -45,7 +91,43 @@ namespace TheBall.Infra.WebServerManager
             return sites[hostAndSiteName];
         }
 
-        public static void SetHostHeaders(string siteName, string[] hostHeaders)
+        private static bool ensureInstanceCertBinding(Site site, string instanceHostName)
+        {
+            var instanceNameSplit = instanceHostName.Split('.');
+            if (instanceNameSplit.Length < 3)
+                return false;
+            var secondLastIX = instanceNameSplit.Length - 2;
+            var lastIX = instanceNameSplit.Length - 1;
+            string domainName = instanceNameSplit[secondLastIX] + "." + instanceNameSplit[lastIX];
+            string certCommonName = $"*.{domainName}";
+            byte[] certificateHash = getCertHash(certCommonName);
+            if (certificateHash == null)
+                return false;
+            var bindings = site.Bindings;
+            var existingBinding = bindings.FirstOrDefault(binding => binding.Host == instanceHostName);
+            if (existingBinding == null)
+            {
+                string bindingInformation = $"*:443:{instanceHostName}";
+                existingBinding = bindings.Add(bindingInformation, "https");
+            }
+            if (certificateHash.SequenceEqual(existingBinding.CertificateHash) == false)
+            {
+                existingBinding.CertificateHash = certificateHash;
+                existingBinding.CertificateStoreName = StoreName.My.ToString();
+                return true;
+            }
+            return false;
+        }
+
+        private static byte[] getCertHash(string certCommonName)
+        {
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            var matchingCerts = store.Certificates.Find(X509FindType.FindBySubjectName, certCommonName, true);
+            var foundCert = matchingCerts.Count > 0 ? matchingCerts[0] : null;
+            return foundCert?.GetCertHash();
+        }
+
+        public static void EnsureHttpHostHeaders(string siteName, string[] hostHeaders)
         {
             UpdateExistingSite(siteName, site =>
             {
@@ -73,6 +155,16 @@ namespace TheBall.Infra.WebServerManager
             iisManager.CommitChanges();
         }
 
+        public static void DeployAppSiteContent(string tempSitePath, string appLiveFolder)
+        {
+            using (var depManager = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
+            {
+                depManager.SyncTo(DeploymentWellKnownProvider.DirPath, appLiveFolder, new DeploymentBaseOptions(),
+                    new DeploymentSyncOptions());
+            }
+        }
+
+        [Obsolete("Separate site creation from its deployment", true)]
         public static void UpdateSiteWithDeploy(bool needsContentUpdating, string tempSitePath, string fullLivePath, string hostAndSiteName)
         {
             var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
