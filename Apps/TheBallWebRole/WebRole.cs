@@ -13,6 +13,7 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Infra.WebServerManager;
 
@@ -34,9 +35,11 @@ namespace TheBallWebRole
         {
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-            var connStr = CloudConfigurationManager.GetSetting("StorageConnectionString");
 
-            StorageAccount = CloudStorageAccount.Parse(connStr);
+            var storageAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
+            var storageAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+            StorageAccount = new CloudStorageAccount(new StorageCredentials(storageAccountName, storageAccountKey), true);
+
             BlobClient = StorageAccount.CreateCloudBlobClient();
             InstanceSiteContainer = BlobClient.GetContainerReference(SiteContainerName);
 
@@ -116,6 +119,8 @@ namespace TheBallWebRole
                     {
                         string appSiteName = Path.GetFileNameWithoutExtension(fileName);
                         processAppSitePolling(appSiteName, fileName, needsProcessing);
+                        if(appSiteName == "Prod")
+                            processAppSitePolling("websites", fileName, needsProcessing);
                     }
                     else if (isConfigTxt)
                     {
