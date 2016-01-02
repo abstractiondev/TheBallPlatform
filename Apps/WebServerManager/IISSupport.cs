@@ -128,7 +128,7 @@ namespace TheBall.Infra.WebServerManager
                 existingBinding.SslFlags = SslFlags.Sni;
                 isChanged = true;
             }
-            if (certificateHash.SequenceEqual(existingBinding.CertificateHash) == false)
+            if (existingBinding.CertificateHash == null || certificateHash.SequenceEqual(existingBinding.CertificateHash) == false)
             {
                 existingBinding.CertificateHash = certificateHash;
                 existingBinding.CertificateStoreName = StoreName.My.ToString();
