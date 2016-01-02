@@ -143,8 +143,10 @@ namespace TheBallWebRole
                         }
                     }
                 }
-                catch
+                catch(Exception exception)
                 {
+                    var errorFileName = Path.Combine(TempSitesRootFolder, "LastError.txt");
+                    File.WriteAllText(errorFileName, exception.ToString());
                 }
             }
         }
