@@ -43,6 +43,15 @@ namespace TheBallWebRole
             BlobClient = StorageAccount.CreateCloudBlobClient();
             InstanceSiteContainer = BlobClient.GetContainerReference(SiteContainerName);
 
+            string hostsFileContents = 
+@"127.0.0.1 dev
+127.0.0.1   test
+127.0.0.1   prod
+127.0.0.1   websites
+";
+            var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
+            File.WriteAllText(hostsFilePath, hostsFileContents);
+
             PollAndSyncWebsitesFromStorage();
 
             IsRunning = true;
