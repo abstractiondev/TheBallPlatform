@@ -130,7 +130,7 @@ namespace TheBallWebRole
                             if(fileName == "websites.txt")
                                 UpdateIISSiteFromTxt("websites", txtData);
                             else if (fileName == "BindingData.txt")
-                                IISSupport.UpdateInstanceBindings(txtData);
+                                IISSupport.UpdateInstanceBindings(txtData, "Dev", "Test", "Prod");
                         }
                     }
                 }
