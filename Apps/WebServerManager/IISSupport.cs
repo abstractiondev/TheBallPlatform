@@ -38,7 +38,7 @@ namespace TheBall.Infra.WebServerManager
                 //iisManager.CommitChanges();
             }
             sites = iisManager.Sites;
-            string bindingInformation = $"*:80:{appSiteName}";
+            string bindingInformation = $"127.0.0.1:80:{appSiteName}";
             var newSite = sites.Add(appSiteName, "http", bindingInformation, appSiteFolder);
             newSite.ApplicationDefaults.ApplicationPoolName = appPoolName;
             iisManager.CommitChanges();
