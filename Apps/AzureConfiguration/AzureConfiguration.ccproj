@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>2.7</ProductVersion>
+    <ProductVersion>2.8</ProductVersion>
     <ProjectGuid>{889e9fc0-7fae-492b-96f9-d4472670613e}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -47,26 +47,28 @@
       <RoleName>TheBallWebRole</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
-    <ProjectReference Include="..\workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj">
-      <Name>WorkerRoleAccelerator.Core</Name>
-      <Project>{4a04fe1b-840a-4ef4-810a-834300f9675f}</Project>
+    <ProjectReference Include="..\TheBallWorkerRole\TheBallWorkerRole.csproj">
+      <Name>TheBallWorkerRole</Name>
+      <Project>{80766022-d1ed-46fa-b566-a61f494fa3f3}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
-      <RoleName>WorkerRoleAccelerator.Core</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>False</UpdateDiagnosticsConnectionStringOnPublish>
+      <RoleName>TheBallWorkerRole</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Profiles" />
     <Folder Include="TheBallWebRoleContent\" />
+    <Folder Include="TheBallWorkerRoleContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="TheBallWebRoleContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="TheBallWorkerRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
-    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.7\</CloudExtensionsDir>
+    <CloudExtensionsDir Condition=" '$(CloudExtensionsDir)' == '' ">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Windows Azure Tools\2.8\</CloudExtensionsDir>
   </PropertyGroup>
   <Import Project="$(CloudExtensionsDir)Microsoft.WindowsAzure.targets" />
   <PropertyGroup>

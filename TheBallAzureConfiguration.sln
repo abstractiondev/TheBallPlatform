@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerRoleAccelerator.Core", "Apps\workerroleaccelerator\src\WorkerRoleAccelerator.Core\WorkerRoleAccelerator.Core.csproj", "{4A04FE1B-840A-4EF4-810A-834300F9675F}"
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "WorkerRoleAccelerator.Cloud", "Apps\workerroleaccelerator\src\WorkerRoleAccelerator.Cloud\WorkerRoleAccelerator.Cloud.ccproj", "{0B118BDD-5879-475B-B4A0-E7642C86229F}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureConfiguration", "Apps\AzureConfiguration\AzureConfiguration.ccproj", "{889E9FC0-7FAE-492B-96F9-D4472670613E}"
+Project("{144C61F1-A867-3419-B8C6-78D127253265}") = "AzureConfiguration", "Apps\AzureConfiguration\AzureConfiguration.ccproj", "{889E9FC0-7FAE-492B-96F9-D4472670613E}"
 EndProject
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "DevEmuConfiguration", "Apps\DevEmuConfiguration\DevEmuConfiguration.ccproj", "{EF08E7D6-0394-408E-A5F6-7EEA83117A75}"
 EndProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerManagerTests", "WebServerManagerTests\WebServerManagerTests.csproj", "{576930B0-D8B7-407D-981D-792A86A26E42}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerRole", "Apps\TheBallWorkerRole\TheBallWorkerRole.csproj", "{80766022-D1ED-46FA-B566-A61F494FA3F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80766022-D1ED-46FA-B566-A61F494FA3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80766022-D1ED-46FA-B566-A61F494FA3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80766022-D1ED-46FA-B566-A61F494FA3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80766022-D1ED-46FA-B566-A61F494FA3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
