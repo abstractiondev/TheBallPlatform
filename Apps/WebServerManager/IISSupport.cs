@@ -60,8 +60,9 @@ namespace TheBall.Infra.WebServerManager
 
         public static void UpdateInstanceBindings(string bindingData, params string[] siteNames)
         {
+            bindingData = new StringReader(new StringBuilder(bindingData).ToString()).ReadLine();
             var bindingComponents = bindingData.Split(';');
-            foreach (var siteName in siteNames)
+            foreach (var siteName in siteNames.Select(item => item.Trim()))
             {
                 string sitePrefix = siteName + ":";
                 var siteBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(sitePrefix))?.Replace(sitePrefix, "").Split(',');
