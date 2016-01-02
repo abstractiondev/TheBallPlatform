@@ -53,7 +53,8 @@ namespace TheBallMobileApp
                             {
                                 new {displayName = "home.theball.me", value = "home.theball.me"},
                                 new {displayName = "test.theball.me", value = "test.theball.me"},
-                                new {displayName = "members.onlinetaekwondo.net", value = "members.onlinetaekwondo.net"},
+                                //new {displayName = "members.onlinetaekwondo.net", value = "members.onlinetaekwondo.net"},
+                                new {displayName = "dev.agens.fi", value = "dev.agens.fi"},
                                 new {displayName = "beta.diosphere.org", value = "beta.diosphere.org"},
                             }
                         }, stream);
@@ -214,10 +215,10 @@ namespace TheBallMobileApp
                 LoadUIHandler("javascript:application.OperationService.SuccessPendingOperation(" + currentOperationID +  ", 'huppista')", null);
             });*/
             currProgress = 0;
-            proceedAndFinish();
+            //proceedAndFinish();
 
             currentOperationID = "12345";
-            return currentOperationID;
+            //return currentOperationID;
             try
             {
                 var jobj = (JObject) JsonConvert.DeserializeObject(data);
@@ -317,7 +318,7 @@ namespace TheBallMobileApp
         private static string getStartupUrl()
         {
             //string urlPath = "/auth/account/cpanel/html/account.html";
-            string urlPath = "/auth/acc/ecf14035-9cf5-4153-98c1-bfed7644b972/cpanel/html/account.html";
+            string urlPath = "/auth/acc/dd2e8685-912d-4a20-b78e-5f9d09ff76cb/cpanel/html/index.html";
             return "file://" + urlPath;
         }
 
