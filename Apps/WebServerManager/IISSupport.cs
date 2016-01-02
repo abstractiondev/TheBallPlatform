@@ -65,8 +65,9 @@ namespace TheBall.Infra.WebServerManager
             {
                 string sitePrefix = siteName + ":";
                 var siteBindings = bindingComponents.FirstOrDefault(item => item.StartsWith(sitePrefix))?.Replace(sitePrefix, "").Split(',');
-                if (siteBindings != null)
-                    SetInstanceCertBindings(siteName, siteBindings);
+                if(siteBindings == null)
+                    throw new InvalidDataException("Bindings not found for site: " + siteName);
+                SetInstanceCertBindings(siteName, siteBindings);
             }
         }
 
@@ -109,14 +110,14 @@ namespace TheBall.Infra.WebServerManager
         {
             var instanceNameSplit = instanceHostName.Split('.');
             if (instanceNameSplit.Length < 3)
-                return false;
+                throw new InvalidDataException("Invalid instance host name for binding: " + instanceHostName);
             var secondLastIX = instanceNameSplit.Length - 2;
             var lastIX = instanceNameSplit.Length - 1;
             string domainName = instanceNameSplit[secondLastIX] + "." + instanceNameSplit[lastIX];
             string certDomainName = $"*.{domainName}";
             byte[] certificateHash = getCertHash(certDomainName);
             if (certificateHash == null)
-                return false;
+                throw new InvalidDataException("Certificate not found for domain name: " + certDomainName);
             var bindings = site.Bindings;
             var existingBinding = bindings.FirstOrDefault(binding => binding.Host == instanceHostName);
             bool isChanged = false;
