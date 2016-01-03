@@ -94,20 +94,28 @@ namespace TheBallWorkerRole
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
-            Trace.TraceInformation("Working");
-            var cancelAwaitable = cancellationToken.AsAwaitable();
-            WorkerManager currentManager = null;
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                // TODO Polling update and launching
-                currentManager = await PollAndUpdateStartWorkerIfNeeded(currentManager);
-                // Poll or exit on cancel
-                await Task.WhenAny(cancelAwaitable, Task.Delay(30000));
-            }
+                Trace.TraceInformation("Working");
+                var cancelAwaitable = cancellationToken.AsAwaitable();
+                WorkerManager currentManager = null;
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    // TODO Polling update and launching
+                    currentManager = await PollAndUpdateStartWorkerIfNeeded(currentManager);
+                    // Poll or exit on cancel
+                    await Task.WhenAny(cancelAwaitable, Task.Delay(30000));
+                }
 
-            // Clean up worker role console
-            if(currentManager != null)
-                await currentManager.ShutdownWorkerConsole();
+                // Clean up worker role console
+                if (currentManager != null)
+                    await currentManager.ShutdownWorkerConsole();
+            }
+            catch(Exception exception)
+            {
+                File.WriteAllText(Path.Combine(WorkerFolder, "RunError.txt"), exception.ToString());
+                throw;
+            }
         }
 
         private async Task<WorkerManager> PollAndUpdateStartWorkerIfNeeded(WorkerManager currentManager)
