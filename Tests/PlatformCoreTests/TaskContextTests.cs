@@ -12,7 +12,7 @@ namespace PlatformCoreTests
     /// <summary>
     /// Summary description for TaskContextTests
     /// </summary>
-    [TestClass]
+    //[TestClass]
     public class TaskContextTests
     {
         public TaskContextTests()

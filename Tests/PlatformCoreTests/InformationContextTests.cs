@@ -13,6 +13,27 @@ namespace TheBall.Tests
     [TestClass()]
     public class InformationContextTests
     {
+        [TestMethod]
+        public void CurrentCollidingLogicalCallContexts()
+        {
+            var firstContext = InformationContext.InitializeToLogicalContext();
+            var task = Task.Run(async () =>
+            {
+                var taskCtx = InformationContext.InitializeToLogicalContext();
+                return taskCtx;
+            });
+            InvalidOperationException expectedException = null;
+            try
+            {
+                Task.WhenAll(task).Wait();
+            }
+            catch (AggregateException aggregateException)
+            {
+                expectedException = aggregateException.InnerExceptions[0] as InvalidOperationException;
+            }
+            Assert.IsNotNull(expectedException);
+        }
+
         [TestMethod()]
         public void CurrentFromLogicalCallContextTest()
         {
