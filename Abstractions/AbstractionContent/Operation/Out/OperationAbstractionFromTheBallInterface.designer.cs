@@ -204,7 +204,7 @@ using System.Threading.Tasks;
 				}
 				}
 		
-		public class LockAndExecuteInterfaceOperationsByOwner 
+		public class LockInterfaceOperationsByOwner 
 		{
 				public class AcquireFirstObtainableLockReturnValue 
 		{
@@ -213,28 +213,62 @@ using System.Threading.Tasks;
 				public string[] OperationIDs ;
 				public string LockBlobFullPath ;
 				}
-				public static void Execute()
+				public static LockInterfaceOperationsByOwnerReturnValue Execute()
 		{
 						
-					TheBall.CORE.IContainerOwner QueueOwner = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
-				string QueueLocation = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
-				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
-				string LockFileNameFormat = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
-				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput = LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLock(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
-				LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(AcquireFirstObtainableLockOutput);		
+					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
+				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
+				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
+				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput = LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLock(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
+				LockInterfaceOperationsByOwnerReturnValue returnValue = LockInterfaceOperationsByOwnerImplementation.Get_ReturnValue(AcquireFirstObtainableLockOutput);
+		return returnValue;
 				}
-				public static async Task ExecuteAsync()
+				public static async Task<LockInterfaceOperationsByOwnerReturnValue> ExecuteAsync()
 		{
 						
-					TheBall.CORE.IContainerOwner QueueOwner = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
-				string QueueLocation = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
-				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
-				string LockFileNameFormat = LockAndExecuteInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
-				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
-				 await LockAndExecuteInterfaceOperationsByOwnerImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(AcquireFirstObtainableLockOutput);		
+					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
+				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
+				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
+				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
+				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
+				LockInterfaceOperationsByOwnerReturnValue returnValue = LockInterfaceOperationsByOwnerImplementation.Get_ReturnValue(AcquireFirstObtainableLockOutput);
+		return returnValue;
 				}
 				}
-				public class UpdateStatusSummaryParameters 
+				public class LockInterfaceOperationsByOwnerReturnValue 
+		{
+				public string LockedOwnerPrefix ;
+				public string LockedOwnerID ;
+				public string[] OperationIDs ;
+				public string LockBlobFullPath ;
+				}
+				public class ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters 
+		{
+				public string LockedOwnerPrefix ;
+				public string LockedOwnerID ;
+				public string[] OperationIDs ;
+				public string LockBlobFullPath ;
+				}
+		
+		public class ExecuteInterfaceOperationsByOwnerAndReleaseLock 
+		{
+				private static void PrepareParameters(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
+		{
+					}
+				public static void Execute(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
+		{
+						PrepareParameters(parameters);
+					ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
+				}
+				public static async Task ExecuteAsync(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
+		{
+						PrepareParameters(parameters);
+					 await ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
+				}
+				}
+
+		    public class UpdateStatusSummaryParameters 
 		{
 				public TheBall.CORE.IContainerOwner Owner ;
 				public DateTime UpdateTime ;

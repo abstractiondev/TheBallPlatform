@@ -340,6 +340,7 @@
     <Compile Include="TheBall.Interface\DeleteInterfaceOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteConnectionProcessImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteInterfaceOperationImplementation.cs" />
+    <Compile Include="TheBall.Interface\ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.cs" />
     <Compile Include="TheBall.Interface\FetchURLAsGroupContentImplementation.cs" />
     <Compile Include="TheBall.Interface\FinalizeConnectionAfterGroupAuthorizationImplementation.cs" />
     <Compile Include="TheBall.Interface\GenericObject.cs" />
@@ -348,7 +349,7 @@
     <Compile Include="TheBall.Interface\InitiateIntegrationConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\ExecuteRemoteCalledConnectionOperationImplementation.cs" />
     <Compile Include="TheBall.Interface\InterfaceOperationImplementation.cs" />
-    <Compile Include="TheBall.Interface\LockAndExecuteInterfaceOperationsByOwnerImplementation.cs" />
+    <Compile Include="TheBall.Interface\LockInterfaceOperationsByOwnerImplementation.cs" />
     <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\PutInterfaceOperationToQueueImplementation.cs" />

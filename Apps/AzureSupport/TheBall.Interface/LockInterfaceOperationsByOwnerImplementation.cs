@@ -9,7 +9,7 @@ using TheBall.CORE;
 
 namespace TheBall.Interface
 {
-    public class LockAndExecuteInterfaceOperationsByOwnerImplementation
+    public class LockInterfaceOperationsByOwnerImplementation
     {
         public static IContainerOwner GetTarget_QueueOwner()
         {
@@ -44,7 +44,7 @@ namespace TheBall.Interface
             return OperationSupport.LockFileNameFormat;
         }
 
-        public static LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
+        public static LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
             ExecuteMethod_AcquireFirstObtainableLock(IEnumerable<IGrouping<string, string>> ownerGroupedItems,
                 IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
         {
@@ -71,7 +71,7 @@ namespace TheBall.Interface
                         out ownerID, out operationID);
                     return new Tuple<string, string, string>(ownerPrefix, ownerID, operationID);
                 }).ToArray();
-                var result = new LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
+                var result = new LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
                 {
                     LockedOwnerPrefix = ownerOperationIDs.First().Item1,
                     LockedOwnerID = ownerOperationIDs.First().Item2,
@@ -86,36 +86,7 @@ namespace TheBall.Interface
             return null;
         }
 
-        public static void ExecuteMethod_ExecuteOperationsAndReleaseLock(
-            LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
-                acquireFirstObtainableLockOutput)
-        {
-            var executionOwner = new VirtualOwner(acquireFirstObtainableLockOutput.LockedOwnerPrefix,
-                acquireFirstObtainableLockOutput.LockedOwnerID);
-            InformationContext.Current.Owner = executionOwner;
-            foreach (var operationID in acquireFirstObtainableLockOutput.OperationIDs)
-            {
-                try
-                {
-                    InformationContext.InitializeToLogicalContext();
-                    InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
-                    // TODO: execute operation as operation owner
-                }
-                catch (Exception exception)
-                {
-                    // mark operation as error and continue
-                }
-                finally
-                {
-                    InformationContext.RemoveFromLogicalContext();
-                }
-            }
-
-            var lockFullName = acquireFirstObtainableLockOutput.LockBlobFullPath;
-            StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
-        }
-
-        public static async Task<LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue> ExecuteMethod_AcquireFirstObtainableLockAsync(IEnumerable<IGrouping<string, string>> ownerGroupedItems, IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
+        public static async Task<LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue> ExecuteMethod_AcquireFirstObtainableLockAsync(IEnumerable<IGrouping<string, string>> ownerGroupedItems, IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
         {
             var fullLockPathFormat =
                 Path.Combine(queueOwner.GetOwnerPrefix(), queueLocation, lockFileNameFormat).Replace(@"\", "/");
@@ -140,7 +111,7 @@ namespace TheBall.Interface
                         out ownerID, out operationID);
                     return new Tuple<string, string, string>(ownerPrefix, ownerID, operationID);
                 }).ToArray();
-                var result = new LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
+                var result = new LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
                 {
                     LockedOwnerPrefix = ownerOperationIDs.First().Item1,
                     LockedOwnerID = ownerOperationIDs.First().Item2,
@@ -155,31 +126,15 @@ namespace TheBall.Interface
             return null;
         }
 
-        public static async Task ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(LockAndExecuteInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue acquireFirstObtainableLockOutput)
+        public static LockInterfaceOperationsByOwnerReturnValue Get_ReturnValue(LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue acquireFirstObtainableLockOutput)
         {
-            var executionOwner = new VirtualOwner(acquireFirstObtainableLockOutput.LockedOwnerPrefix,
-                acquireFirstObtainableLockOutput.LockedOwnerID);
-            InformationContext.Current.Owner = executionOwner;
-            foreach (var operationID in acquireFirstObtainableLockOutput.OperationIDs)
+            return new LockInterfaceOperationsByOwnerReturnValue
             {
-                try
-                {
-                    InformationContext.InitializeToLogicalContext();
-                    InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
-                    // TODO: execute operation as operation owner
-                }
-                catch (Exception exception)
-                {
-                    // mark operation as error and continue
-                }
-                finally
-                {
-                    InformationContext.RemoveFromLogicalContext();
-                }
-            }
-
-            var lockFullName = acquireFirstObtainableLockOutput.LockBlobFullPath;
-            StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
+                LockedOwnerPrefix = acquireFirstObtainableLockOutput.LockedOwnerPrefix,
+                LockedOwnerID = acquireFirstObtainableLockOutput.LockedOwnerID,
+                OperationIDs = acquireFirstObtainableLockOutput.OperationIDs,
+                LockBlobFullPath = acquireFirstObtainableLockOutput.LockBlobFullPath
+            };
         }
     }
 }

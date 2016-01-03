@@ -583,6 +583,79 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ExecuteInterfaceOperationsByOwnerAndReleaseLock (LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerPrefix</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner prefix acc or grp (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner ID (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OperationIDs</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation IDs of obtained lock or null if failed to get lock</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockBlobFullPath</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Lock blobs full path</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute operations one by one, delete queue items after each execution, delete lock item after all executed.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExecuteRemoteCalledConnectionOperation (InputStream, OutputStream)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -888,7 +961,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="LockAndExecuteInterfaceOperationsByOwner" level="1">
+          <Header text="LockInterfaceOperationsByOwner" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -986,11 +1059,61 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( AcquireFirstObtainableLockOutput )" level="2">
+            <Header text="Return Value : LockInterfaceOperationsByOwnerReturnValue ( AcquireFirstObtainableLockOutput )" level="2">
               <Paragraph>
-                <Text>
-                  <TextContent>Execute operations one by one, delete queue items after each execution, delete lock item after all executed.</TextContent>
-                </Text>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerPrefix</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner prefix acc or grp (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockedOwnerID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Locked owner ID (if lock acquired)</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OperationIDs</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation IDs of obtained lock or null if failed to get lock</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LockBlobFullPath</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Lock blobs full path</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>

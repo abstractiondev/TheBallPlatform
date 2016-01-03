@@ -256,7 +256,7 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="LockAndExecuteInterfaceOperationsByOwner">
+    <Operation name="LockInterfaceOperationsByOwner">
       <OperationSpec>
         <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
       </OperationSpec>
@@ -279,8 +279,33 @@
             <ReturnValue name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
             <ReturnValue name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
           </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="LockedOwnerPrefix" dataType="string" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented" />
+        <ReturnValue name="LockedOwnerID" dataType="string" designDesc="Locked owner ID (if lock acquired)" state="implemented" />
+        <ReturnValue name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
+        <ReturnValue name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
+        <Target name="AcquireFirstObtainableLockOutput" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="ExecuteInterfaceOperationsByOwnerAndReleaseLock">
+      <OperationSpec>
+        <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="LockedOwnerPrefix" dataType="string" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented" />
+        <Parameter name="LockedOwnerID" dataType="string" designDesc="Locked owner ID (if lock acquired)" state="implemented" />
+        <Parameter name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
+        <Parameter name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
           <MethodExecute name="ExecuteOperationsAndReleaseLock" asyncSupportMode="Both" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." state="implemented">
-            <Target name="AcquireFirstObtainableLockOutput" />
+            <Parameter name="LockedOwnerPrefix" />
+            <Parameter name="LockedOwnerID" />
+            <Parameter name="OperationIDs" />
+            <Parameter name="LockBlobFullPath" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>
