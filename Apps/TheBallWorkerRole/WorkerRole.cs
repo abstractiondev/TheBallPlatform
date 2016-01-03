@@ -144,7 +144,7 @@ namespace TheBallWorkerRole
         {
             foreach (var fileName in filesDownloaded)
             {
-                var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x {0}", fileName));
+                var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x -y {0}", fileName));
                 unzipProcInfo.WorkingDirectory = WorkerFolder;
                 var unzipProc = Process.Start(unzipProcInfo);
                 unzipProc.WaitForExit();
