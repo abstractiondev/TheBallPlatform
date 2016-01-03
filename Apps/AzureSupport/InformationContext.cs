@@ -21,35 +21,14 @@ namespace TheBall
     public class InformationContext
     {
         private const string KEYNAME = "INFOCTX";
-        private static ConcurrentDictionary<int, InformationContext> _syncStorage = null;
         public string CurrentGroupRole;
-
-        public static void InitializeFunctionality(int concurrentWorkers, bool allowStatic = false)
-        {
-            if(_syncStorage != null)
-                throw new InvalidOperationException("InformationContext already initialized!");
-            _syncStorage = new ConcurrentDictionary<int, InformationContext>(concurrentWorkers, concurrentWorkers);
-            AllowStatic = allowStatic;
-        }
-
-        public static void DeInitialize()
-        {
-            if(_syncStorage == null)
-                throw new InvalidOperationException("InformationContext is expected to be initialized when calling DeInitialize");
-            _syncStorage = null;
-        }
 
         public readonly long SerialNumber;
         private static long CurrentSerial = 0;
         public InformationContext()
         {
-            SubscriptionChainTargetsToUpdate = new List<OwnerSubscriptionItem>();
             SerialNumber = Interlocked.Increment(ref CurrentSerial);
         }
-
-        public static int ActiveContextCount => _syncStorage.Count;
-
-        protected List<OwnerSubscriptionItem> SubscriptionChainTargetsToUpdate { get; private set; }
 
         public static bool AllowStatic { get; private set; }
 
@@ -150,48 +129,23 @@ namespace TheBall
                     return;
                 }
             }
-            var currTaskID = Task.CurrentId;
-            if (currTaskID.HasValue || AllowStatic)
-            {
-                int currKey = currTaskID.GetValueOrDefault(0);
-                InformationContext informationContext;
-                bool result = _syncStorage.TryRemove(currKey, out informationContext);
-                if (result)
-                    return;
-            }
+
+            if(CallContext.LogicalGetData(KEYNAME) != null)
+                CallContext.LogicalSetData(KEYNAME, null);
+
             throw new InvalidOperationException("InformationContext ClearCurrent failed - no active context set");
         }
-
-        private static InformationContext CreateWithID(int id)
-        {
-            InformationContext result = InformationContext.Create();
-            result.ID = id;
-            return result;
-        }
-
-        public int ID { get; private set; }
 
         private static InformationContext Create()
         {
             return new InformationContext();
         }
 
-        public void AddSubscriptionUpdateTarget(OwnerSubscriptionItem targetLocation)
-        {
-            SubscriptionChainTargetsToUpdate.Add(targetLocation);
-        }
-
         public void PerformFinalizingActions()
         {
             updateStatusSummary();
             createIndexingRequest();
-            //var grouped = SubscriptionChainTargetsToUpdate.GroupBy(item => item.Owner);
-            /*
-            foreach(var grpItem in grouped)
-            {
-                var targetLocations = grpItem.Select(item => item.TargetLocation).Distinct().ToArray();
-                SubscribeSupport.AddPendingRequests(grpItem.Key, targetLocations);
-            }*/
+
             if (isResourceMeasuring)
             {
                 // Complete resource measuring - add one more transaction because the RRU item is stored itself

@@ -28,7 +28,7 @@ namespace TheBallTool
 
 
                 StorageSupport.InitializeFixedStorageSettings(connStr);
-                InformationContext.InitializeFunctionality(3, true);
+                InformationContext.InitializeToLogicalContext();
                 InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                 QueueSupport.RegisterQueue("index-defaultindex-index");
                 QueueSupport.RegisterQueue("index-defaultindex-query");

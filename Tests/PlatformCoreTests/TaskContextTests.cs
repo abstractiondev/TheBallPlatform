@@ -78,7 +78,7 @@ namespace PlatformCoreTests
         [ExpectedException(typeof(AggregateException))]
         public void ImplicitTaskTest()
         {
-            InformationContext.InitializeFunctionality(2);
+            //InformationContext.InitializeFunctionality(2);
             var task = CallerStubWithCtx1(10, null);
             task.Wait();
             var result = task.Result;
