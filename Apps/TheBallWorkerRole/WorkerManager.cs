@@ -21,7 +21,6 @@ namespace TheBallWorkerRole
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            PipeServer.DisposeLocalCopyOfClientHandle();
             var startInfo = new ProcessStartInfo(WorkerConsolePath, clientPipeHandler)
             {
                 UseShellExecute = false
@@ -32,6 +31,7 @@ namespace TheBallWorkerRole
 
         internal async Task ShutdownWorkerConsole()
         {
+            PipeServer.DisposeLocalCopyOfClientHandle();
             try
             {
                 using (StreamWriter writer = new StreamWriter(PipeServer))
