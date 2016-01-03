@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
-using Lucene.Net.Index;
-using Lucene.Net.QueryParsers;
-using Lucene.Net.Search;
-using Lucene.Net.Store;
-using Version = Lucene.Net.Util.Version;
+using FlexLucene.Analysis;
+using FlexLucene.Analysis.Core;
+using FlexLucene.Analysis.Standard;
+using FlexLucene.Document;
+using FlexLucene.Index;
+using FlexLucene.Queryparser.Classic;
+using FlexLucene.Search;
+using FlexLucene.Store;
+using FlexLucene.Util;
+using java.nio.file;
+using Version = System.Version;
 
 namespace LuceneSupport
 {
@@ -25,16 +28,15 @@ namespace LuceneSupport
 
         private static void doWithWriter(string indexRoot, Action<IndexWriter> actionWithWriter, Analyzer analyzer, bool recreateIndex = false)
         {
-            var indexDirectory = FSDirectory.Open(indexRoot);
+            FSDirectory indexDirectory = FSDirectory.Open(Paths.get(indexRoot));
             if(analyzer == null)
-                analyzer = new StandardAnalyzer(Version.LUCENE_30);
+                analyzer = new StandardAnalyzer();
             //var writer = new IndexWriter(indexDirectory, analyzer, recreateIndex, IndexWriter.MaxFieldLength.UNLIMITED);
-            var writer = new IndexWriter(indexDirectory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED);
+            var writer = new IndexWriter(indexDirectory, new IndexWriterConfig(analyzer));
             actionWithWriter(writer);
-            writer.Optimize();
             //writer.Commit();
-            writer.Flush(true, true, true);
-            writer.Dispose();
+            //writer.Commit();
+            writer.Flush();
         }
 
         public static void AddAndRemoveDocuments(string indexRoot, Document[] docsToAdd, string[] docsToRemove, Analyzer analyzer = null)
@@ -45,7 +47,7 @@ namespace LuceneSupport
                     writer.DeleteDocuments(terms);
                     foreach (var doc in docsToAdd)
                     {
-                        string id = doc.GetField("ID").StringValue;
+                        string id = doc.GetField("ID").StringValue();
                         writer.UpdateDocument(new Term("ID", id), doc);
                     }
                 }, analyzer);            
@@ -56,7 +58,7 @@ namespace LuceneSupport
             doWithWriter(indexRoot, writer => {
                     foreach (var doc in docs)
                     {
-                        string id = doc.GetField("ID").StringValue;
+                        string id = doc.GetField("ID").StringValue();
                         writer.UpdateDocument(new Term("ID", id), doc);
                     }
                 }, analyzer, recreateIndex);
@@ -64,9 +66,10 @@ namespace LuceneSupport
 
         public static ResultDoc[] PerformQuery(string indexPath, string queryText, string defaultFieldName, Analyzer analyzer, int resultAmount = 100)
         {
-            Directory searchDirectory = FSDirectory.Open(indexPath);
-            IndexSearcher searcher = new IndexSearcher(searchDirectory);
-            QueryParser parser = new QueryParser(Version.LUCENE_30, defaultFieldName, analyzer);
+            Directory searchDirectory = FSDirectory.Open(Paths.get(indexPath));
+            DirectoryReader directoryReader = DirectoryReader.Open(searchDirectory);
+            IndexSearcher searcher = new IndexSearcher(directoryReader);
+            QueryParser parser = new QueryParser(defaultFieldName, analyzer);
             Query query = parser.Parse(queryText);
             TopDocs topDocs = searcher.Search(query, resultAmount);
             return topDocs.ScoreDocs.Select(sDoc =>
@@ -87,9 +90,10 @@ namespace LuceneSupport
             doWithWriter(indexRoot, writer => {}, null, true);
         }
 
-        public static IFieldable GetField(string name, string value, bool analyzed = false)
+        public static Field GetField(string name, string value, bool analyzed = false)
         {
-            return new Field(name, value, Field.Store.YES, analyzed ? Field.Index.ANALYZED : Field.Index.NOT_ANALYZED);
+            var field = new Field(name, value, FieldStore.YES, analyzed ? FieldIndex.ANALYZED : FieldIndex.NOT_ANALYZED);
+            return field;
         }
     }
 }

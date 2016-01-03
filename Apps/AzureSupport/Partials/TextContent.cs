@@ -5,7 +5,7 @@ using TheBall.Index;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class TextContent : IAdditionalFormatProvider, IBeforeStoreHandler, IIndexedDocument
+    partial class TextContent : IAdditionalFormatProvider, IBeforeStoreHandler //, IIndexedDocument
     {
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
@@ -24,6 +24,7 @@ namespace AaltoGlobalImpact.OIP
                 Published = Published.ToUniversalTime();
         }
 
+        /*
         Document IIndexedDocument.GetLuceneDocument(string indexName)
         {
             Document document = new Document();
@@ -32,6 +33,6 @@ namespace AaltoGlobalImpact.OIP
             document.Add(FieldIndexSupport.GetField("Excerpt", Excerpt ?? "", analyzed: true));
             document.Add(FieldIndexSupport.GetField("Body", Body ?? "", analyzed: true));
             return document;
-        }
+        }*/
     }
 }

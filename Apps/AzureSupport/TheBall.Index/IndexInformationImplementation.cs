@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Lucene.Net.Documents;
@@ -21,6 +22,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_PerformIndexing(IContainerOwner owner, IndexingRequest indexingRequest, string luceneIndexFolder)
         {
+            throw new NotImplementedException();
+            /*
             string indexName = indexingRequest.IndexName;
             List<Document> documents = new List<Document>();
             List<string> removeDocumentIDs = new List<string>();
@@ -52,6 +55,7 @@ namespace TheBall.Index
                 }
             }
             FieldIndexSupport.AddAndRemoveDocuments(luceneIndexFolder, documents.ToArray(), removeDocumentIDs.ToArray());
+            */
         }
 
         public static void ExecuteMethod_DeleteIndexingRequest(IndexingRequest indexingRequest)

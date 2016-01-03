@@ -7,7 +7,7 @@ using TheBall.Index;
 
 namespace AaltoGlobalImpact.OIP
 {
-    partial class Comment : IAdditionalFormatProvider, IBeforeStoreHandler, IIndexedDocument
+    partial class Comment : IAdditionalFormatProvider, IBeforeStoreHandler //, IIndexedDocument
     {
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
@@ -44,6 +44,7 @@ namespace AaltoGlobalImpact.OIP
             LastAuthorName = currentAccountName;
         }
 
+        /*
         Document IIndexedDocument.GetLuceneDocument(string indexName)
         {
             Document document = new Document();
@@ -56,7 +57,7 @@ namespace AaltoGlobalImpact.OIP
             document.Add(FieldIndexSupport.GetField("LastAuthorName", LastAuthorName ?? ""));
             document.Add(FieldIndexSupport.GetField("CommentText", CommentText ?? "", analyzed: true));
             return document;
-        }
+        }*/
 
     }
 }

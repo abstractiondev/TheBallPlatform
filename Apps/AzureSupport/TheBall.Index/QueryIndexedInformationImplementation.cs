@@ -26,6 +26,8 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_PerformQueryRequest(QueryRequest queryRequest, string luceneIndexFolder)
         {
+            throw new NotImplementedException();
+            /*
             var queryString = queryRequest.QueryString;
             var defaultFieldName = queryRequest.DefaultFieldName;
             Stopwatch stopwatch = new Stopwatch();
@@ -50,7 +52,7 @@ namespace TheBall.Index
             stopwatch.Stop();
             queryRequest.LastCompletionDurationMs = (long) Math.Ceiling(stopwatch.Elapsed.TotalMilliseconds);
             queryRequest.LastCompletionTime = DateTime.UtcNow;
-            queryRequest.IsQueryCompleted = true;
+            queryRequest.IsQueryCompleted = true;*/
         }
 
         public static void ExecuteMethod_SaveQueryRequest(QueryRequest queryRequest)
