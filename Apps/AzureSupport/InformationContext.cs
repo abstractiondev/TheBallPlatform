@@ -39,9 +39,12 @@ namespace TheBall
             _syncStorage = null;
         }
 
+        public readonly long SerialNumber;
+        private static long CurrentSerial = 0;
         public InformationContext()
         {
             SubscriptionChainTargetsToUpdate = new List<OwnerSubscriptionItem>();
+            SerialNumber = Interlocked.Increment(ref CurrentSerial);
         }
 
         public static int ActiveContextCount => _syncStorage.Count;
@@ -65,19 +68,20 @@ namespace TheBall
             get { return Current.Account; }
         }
 
-        public static void InitializeToLogicalContext()
+        public static InformationContext InitializeToLogicalContext()
         {
             var logicalContext = CallContext.LogicalGetData(KEYNAME);
             if(logicalContext != null)
                 throw new InvalidOperationException("LogicalContext already initialized");
             var ctx = InformationContext.Create();
             CallContext.LogicalSetData(KEYNAME, ctx);
+            return ctx;
         }
 
         public static void RemoveFromLogicalContext()
         {
             var current = CallContext.LogicalGetData(KEYNAME);
-            if (Current == null)
+            if (current == null)
                 throw new InvalidOperationException("LogicalContext is expected to be initialized");
             CallContext.LogicalSetData(KEYNAME, null);
         }
@@ -86,10 +90,6 @@ namespace TheBall
         {
             get
             {
-                var logicalContext = CallContext.LogicalGetData(KEYNAME);
-                if (logicalContext != null)
-                    return (InformationContext) logicalContext;
-
                 var httpContext = HttpContext.Current;
                 if(httpContext != null)
                 {
@@ -99,18 +99,12 @@ namespace TheBall
                     httpContext.Items.Add(KEYNAME, informationContext);
                     return informationContext;
                 }
-                var currTaskID = Task.CurrentId;
-                //int? currTaskID = TaskScheduler.Current.Id;
-                if (currTaskID.HasValue || AllowStatic)
-                {
-                    if(_syncStorage == null)
-                        throw new InvalidOperationException("InformationContext not initialized for Task required storage");
-                    // Return 0 in case of null, for AllowStatic
-                    int currKey = currTaskID.GetValueOrDefault(0);
-                    InformationContext informationContext = _syncStorage.GetOrAdd(currKey, CreateWithID);
-                    return informationContext;
-                }
-                throw new NotSupportedException("InformationContext requires either HttpContext.Current, Task.CurrentId or to be available or AllowStatic to be defined");
+
+                var logicalContext = CallContext.LogicalGetData(KEYNAME);
+                if (logicalContext != null)
+                    return (InformationContext) logicalContext;
+
+                throw new InvalidOperationException("InitializeToLogicalContext required when HttpContext is not available");
             }
         }
 
