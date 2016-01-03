@@ -1,4 +1,4 @@
-﻿REM   *** Allow websites to define system.webServer/access. ***
+﻿REM   *** Mount X: as infra utility drive for role ***
 net use x: \\%CoreFileShareAccountName%.file.core.windows.net\tbcore /u:%CoreFileShareAccountName% %CoreFileShareAccountKey%  >> "%~dp0\NetOutput.txt" 2>&1
 dir x: >> "%~dp0\NetOutput.txt"
 robocopy /MIR x:\Infra e:\TheBallInfra

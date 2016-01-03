@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +18,31 @@ namespace TheBallWorkerConsole
 
         static async void MainAsync(string[] args)
         {
-            const int ConcurrentTasks = 3;
-            Task[] activeTasks = new Task[ConcurrentTasks];
-            int nextFreeIX = 0;
+            var clientHandle = args.Length > 0 ? args[0] : null;
+            if(clientHandle == null)
+                throw new ArgumentNullException(nameof(args), "Client handle cannot be null (first argument)");
 
-            while (true)
+            using (var pipeStream = new AnonymousPipeClientStream(PipeDirection.In, clientHandle))
+            using(var reader = new StreamReader(pipeStream))
             {
-                await Task.WhenAny(activeTasks);
+                const int ConcurrentTasks = 3;
+                Task[] activeTasks = new Task[ConcurrentTasks];
+                int nextFreeIX = 0;
+
+                var awaitableQuitReader = reader.ReadToEndAsync();
+
+                while (true)
+                {
+                    Console.WriteLine("Waiting to process: " + DateTime.Now.ToString());
+                    await Task.WhenAny(Task.Delay(2000), awaitableQuitReader);
+                    if (awaitableQuitReader.IsCompleted)
+                    {
+                        Console.WriteLine("Quitting...");
+                        await Task.Delay(10000);
+                        break;
+                    }
+                    //await Task.WhenAny(activeTasks);
+                }
             }
         }
     }
