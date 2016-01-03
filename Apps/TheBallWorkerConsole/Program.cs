@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
@@ -36,12 +37,19 @@ namespace TheBall.CORE.TheBallWorkerConsole
 
         static async void MainAsync(string[] args)
         {
-            var clientHandle = args.Length > 0 ? args[0] : null;
-            if(clientHandle == null)
-                throw new ArgumentNullException(nameof(args), "Client handle cannot be null (first argument)");
+            var configFullPath = args.Length > 0 ? args[0] : null;
+            if (configFullPath == null)
+                throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
 
-            using (var pipeStream = new AnonymousPipeClientStream(PipeDirection.In, clientHandle))
-            using(var reader = new StreamReader(pipeStream))
+            var clientHandle = args.Length > 1 ? args[1] : null;
+
+            var workerConfig = await WorkerConsoleConfig.GetConfig(configFullPath);
+
+            var pipeStream = clientHandle != null
+                ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
+                : null;
+            var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
+            try
             {
                 const int ConcurrentTasks = 3;
                 Task[] activeTasks = new Task[ConcurrentTasks];
@@ -51,19 +59,33 @@ namespace TheBall.CORE.TheBallWorkerConsole
                 var startupMessage = "Starting up process (UTC): " + DateTime.UtcNow.ToString();
                 File.WriteAllText(startupLogPath, startupMessage);
 
-                var pipeMessageAwaitable = reader.ReadToEndAsync();
+                var pipeMessageAwaitable = reader != null ? reader.ReadToEndAsync() : null;
+
+                List<Task> awaitList = new List<Task>();
+                if(pipeMessageAwaitable != null)
+                    awaitList.Add(pipeMessageAwaitable);
 
                 while (true)
                 {
-                    await Task.WhenAny(Task.Delay(2000), pipeMessageAwaitable);
-                    if (pipeMessageAwaitable.IsCompleted)
+
+                    await Task.WhenAny(awaitList);
+                    if (pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted)
                     {
                         var pipeMessage = pipeMessageAwaitable.Result;
                         var shutdownLogPath = Path.Combine(AssemblyDirectory, "ConsoleShutdownLog.txt");
-                        File.WriteAllText(shutdownLogPath, "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
+                        File.WriteAllText(shutdownLogPath,
+                            "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
                         break;
                     }
                     //await Task.WhenAny(activeTasks);
+                }
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Dispose();
+                    pipeStream.Dispose();
                 }
             }
         }

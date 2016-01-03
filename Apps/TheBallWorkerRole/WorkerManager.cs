@@ -21,7 +21,8 @@ namespace TheBallWorkerRole
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            var startInfo = new ProcessStartInfo(WorkerConsolePath, clientPipeHandler)
+            string args = $@"X:\Configs\WorkerConsole.json {clientPipeHandler}";
+            var startInfo = new ProcessStartInfo(WorkerConsolePath, args)
             {
                 UseShellExecute = false
             };
