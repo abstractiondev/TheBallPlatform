@@ -16,7 +16,14 @@ namespace TheBallWorkerConsole
 
         static async void MainAsync(string[] args)
         {
+            const int ConcurrentTasks = 3;
+            Task[] activeTasks = new Task[ConcurrentTasks];
+            int nextFreeIX = 0;
 
+            while (true)
+            {
+                await Task.WhenAny(activeTasks);
+            }
         }
     }
 }

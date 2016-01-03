@@ -8,9 +8,20 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
+using Nito.AsyncEx;
 
 namespace TheBallWorkerRole
 {
+    internal static class TaskExt
+    {
+        public static Task AsAwaitable(this CancellationToken token)
+        {
+            var ev = new AsyncManualResetEvent();
+            token.Register(() => ev.Set());
+            return ev.WaitAsync();
+        }
+    }
+
     public class WorkerRole : RoleEntryPoint
     {
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -59,12 +70,23 @@ namespace TheBallWorkerRole
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
-            // TODO: Replace the following with your own logic.
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                Trace.TraceInformation("Working");
-                await Task.Delay(1000);
-            }
+            // Start worker role console
+            await StartWorkerConsole();
+            Trace.TraceInformation("Working");
+            await cancellationToken.AsAwaitable();
+
+            // Clean up worker role console
+            await ShutdownWorkerConsole();
         }
+
+        private async Task StartWorkerConsole()
+        {
+            throw new NotImplementedException();
+        }
+        private async Task ShutdownWorkerConsole()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
