@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using AzureSupport;
 
-namespace TheBall.CORE.TheBallWorkerConsole
+namespace TheBall.Infra.TheBallWorkerConsole
 {
     public class WorkerConsoleConfig
     {
