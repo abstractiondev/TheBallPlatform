@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AaltoGlobalImpact.OIP;
-using Lucene.Net.Documents;
 using TheBall.CORE;
 using TheBall.Index;
 
@@ -56,6 +55,7 @@ namespace TheBall.Interface
                 currentCollectionWrapper.DeleteInformationObject(owner);
         }
 
+        /*
         public Document GetLuceneDocument(string indexName)
         {
             return null;
@@ -63,7 +63,7 @@ namespace TheBall.Interface
             Document doc = new Document();
             var fieldsWithIndexingInfo = getValuesWithIndexingInfo("").ToArray();
             return doc;
-        }
+        }*/
 
         private IEnumerable<GenericValueLocator> getValuesWithIndexingInfo(string predeccorFieldNamePrefix)
         {

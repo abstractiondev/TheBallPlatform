@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Web;
-using Lucene.Net.Documents;
 using LuceneSupport;
 using TheBall;
 using TheBall.Index;

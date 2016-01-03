@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Lucene.Net.Documents;
 using LuceneSupport;
 using TheBall.CORE;
 

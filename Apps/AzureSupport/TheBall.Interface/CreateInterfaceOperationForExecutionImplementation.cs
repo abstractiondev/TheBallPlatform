@@ -1,5 +1,4 @@
 using System;
-using Lucene.Net.Support;
 
 namespace TheBall.Interface
 {

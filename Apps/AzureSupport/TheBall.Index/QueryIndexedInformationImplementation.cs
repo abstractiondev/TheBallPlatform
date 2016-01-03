@@ -4,10 +4,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using DiagnosticsUtils;
-using Lucene.Net.Analysis.Standard;
 using LuceneSupport;
 using TheBall.CORE;
-using Version = Lucene.Net.Util.Version;
 
 namespace TheBall.Index
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Lucene.Net.Documents;
 using LuceneSupport;
 using TheBall.Index;
 
