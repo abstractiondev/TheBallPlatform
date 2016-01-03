@@ -15,10 +15,11 @@ namespace TheBallWorkerRole
         }
 
         private Process ClientProcess;
-        AnonymousPipeServerStream PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+        private AnonymousPipeServerStream PipeServer = null;
 
         internal async Task StartWorkerConsole()
         {
+            PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
             PipeServer.DisposeLocalCopyOfClientHandle();
             var startInfo = new ProcessStartInfo(WorkerConsolePath, clientPipeHandler)
@@ -31,17 +32,27 @@ namespace TheBallWorkerRole
 
         internal async Task ShutdownWorkerConsole()
         {
-            using (StreamWriter writer = new StreamWriter(PipeServer))
+            try
             {
-                writer.AutoFlush = true;
-                await writer.WriteAsync("QUIT");
-            }
-            ClientProcess.WaitForExit();
-            ClientProcess.Close();
-            ClientProcess = null;
+                using (StreamWriter writer = new StreamWriter(PipeServer))
+                {
+                    writer.AutoFlush = true;
+                    await writer.WriteAsync("QUIT");
+                    PipeServer.WaitForPipeDrain();
+                }
+                ClientProcess.WaitForExit();
+                ClientProcess.Close();
+                ClientProcess = null;
 
-            PipeServer.Dispose();
-            PipeServer = null;
+                PipeServer.Dispose();
+                PipeServer = null;
+
+            }
+            catch (Exception)
+            {
+                
+            }
+
         }
     }
 }
