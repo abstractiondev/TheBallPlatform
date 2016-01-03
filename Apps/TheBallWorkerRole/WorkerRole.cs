@@ -97,14 +97,13 @@ namespace TheBallWorkerRole
             try
             {
                 Trace.TraceInformation("Working");
-                var cancelAwaitable = cancellationToken.AsAwaitable();
                 WorkerManager currentManager = null;
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     // TODO Polling update and launching
                     currentManager = await PollAndUpdateStartWorkerIfNeeded(currentManager);
                     // Poll or exit on cancel
-                    await Task.WhenAny(cancelAwaitable, Task.Delay(30000));
+                    await Task.Delay(30000, cancellationToken);
                 }
 
                 // Clean up worker role console

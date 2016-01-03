@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure;
 using Nito.AsyncEx;
@@ -55,9 +56,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
             try
             {
-                const int ConcurrentTasks = 3;
-                Task[] activeTasks = new Task[ConcurrentTasks];
-                int nextFreeIX = 0;
+                var instances = workerConfig.InstancePollItems;
 
                 var instanceNames = workerConfig.InstancePollItems.Select(item => item.InstanceHostName).ToArray();
 
@@ -65,25 +64,41 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 var startupMessage = "Starting up process (UTC): " + DateTime.UtcNow.ToString() + " for instances: " + String.Join(", ", instanceNames);
                 File.WriteAllText(startupLogPath, startupMessage);
 
-                var pipeMessageAwaitable = reader != null ? reader.ReadToEndAsync() : null;
+                var pipeMessageAwaitable = reader?.ReadToEndAsync();
 
-                List<Task> awaitList = new List<Task>();
-                if(pipeMessageAwaitable != null)
-                    awaitList.Add(pipeMessageAwaitable);
+                bool keepWorkerRunning = true;
+                var currentTasks = instances.Select(getInstancePollingTask).ToArray();
 
-                while (true)
+                while (keepWorkerRunning)
                 {
+                    List<Task> awaitList = new List<Task>();
+                    if (pipeMessageAwaitable != null)
+                        awaitList.Add(pipeMessageAwaitable);
+                    awaitList.AddRange(currentTasks.Select(item => item.Item2));
 
                     await Task.WhenAny(awaitList);
-                    if (pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted)
+
+                    bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
+                    if (!isCanceling)
                     {
+                        var completedPollingTasks = awaitList.Where(item => item != pipeMessageAwaitable && item.IsCompleted).ToArray();
+                        currentTasks = replaceCompletedTasks(currentTasks, completedPollingTasks);
+                    }
+                    else
+                    {
+                        foreach (var taskItem in currentTasks)
+                            taskItem.Item3.Cancel();
+
+                        await Task.WhenAll(awaitList);
+                        var completedPollingTasks = awaitList.Where(item => item != pipeMessageAwaitable && !item.IsCanceled).ToArray();
+
+                        // Cancel & allow processing of all lock-obtained and thus completed
                         var pipeMessage = pipeMessageAwaitable.Result;
                         var shutdownLogPath = Path.Combine(AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.WriteAllText(shutdownLogPath,
                             "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
-                        break;
+                        keepWorkerRunning = false;
                     }
-                    //await Task.WhenAny(activeTasks);
                 }
             }
             finally
@@ -94,6 +109,35 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     pipeStream.Dispose();
                 }
             }
+        }
+
+        private static Tuple<InstancePollItem, Task, CancellationTokenSource>[] replaceCompletedTasks(
+            Tuple<InstancePollItem, Task, CancellationTokenSource>[] currentTasks, Task[] completedPollingTasks)
+        {
+            var toReplace = currentTasks.Where(item => completedPollingTasks.Contains(item.Item2)).ToArray();
+            var toKeep = currentTasks.Where(item => toReplace.Contains(item) == false).ToArray();
+            var replacements = toReplace.Select(item =>
+            {
+                var instancePollItem = item.Item1;
+                return getInstancePollingTask(instancePollItem);
+            }).ToArray();
+            return toKeep.Concat(replacements).ToArray();
+        }
+
+        private static Tuple<InstancePollItem, Task, CancellationTokenSource> getInstancePollingTask(InstancePollItem instancePollItem)
+        {
+            var pollingTask = getPollingTask(instancePollItem);
+            return new Tuple<InstancePollItem, Task, CancellationTokenSource>(instancePollItem, pollingTask.Item1, pollingTask.Item2);
+        }
+
+        private static Tuple<Task, CancellationTokenSource> getPollingTask(InstancePollItem instancePollItem)
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+            Task result = Task.Run(async () =>
+            {
+
+            }, cancellationTokenSource.Token);
+            return new Tuple<Task, CancellationTokenSource>(result, cancellationTokenSource);
         }
 
         private static void ensureXDrive()
