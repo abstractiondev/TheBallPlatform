@@ -50,17 +50,20 @@ namespace TheBallWorkerConsole
                 Task[] activeTasks = new Task[ConcurrentTasks];
                 int nextFreeIX = 0;
 
+                string startupLogPath = Path.Combine(AssemblyDirectory, "ConsoleStartupLog.txt");
+                var startupMessage = "Starting up process (UTC): " + DateTime.UtcNow.ToString();
+                File.WriteAllText(startupLogPath, startupMessage);
 
+                var pipeMessageAwaitable = reader.ReadToEndAsync();
 
                 while (true)
                 {
-                    Console.WriteLine("Waiting to process: " + DateTime.Now.ToString());
-                    await Task.Delay(2000);
-                    var pipeMessage = await reader.ReadToEndAsync();
-                    if (!String.IsNullOrEmpty(pipeMessage))
+                    await Task.WhenAny(Task.Delay(2000), pipeMessageAwaitable);
+                    if (pipeMessageAwaitable.IsCompleted)
                     {
-                        Console.WriteLine("Quitting for message: " + pipeMessage);
-                        await Task.Delay(10000);
+                        var pipeMessage = pipeMessageAwaitable.Result;
+                        var shutdownLogPath = Path.Combine(AssemblyDirectory, "ConsoleShutdownLog.txt");
+                        File.WriteAllText(shutdownLogPath, "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
                         break;
                     }
                     //await Task.WhenAny(activeTasks);
