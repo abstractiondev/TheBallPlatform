@@ -108,7 +108,7 @@ namespace WebInterface
                 blob.DownloadToStream(response.OutputStream);
             } catch(StorageException scEx)
             {
-                if (scEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound || 
+                if (scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound || 
                     scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.BadRequest)
                 {
                     response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");

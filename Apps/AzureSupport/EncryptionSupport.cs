@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.WindowsAzure.Storage;
@@ -116,7 +117,7 @@ namespace TheBall
                 CurrProvider.Key = keyBlob.DownloadByteArray();
             } catch(StorageException storageException)
             {
-                if(storageException.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if(storageException.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                 {
                     CurrProvider.KeySize = 128;
                     CurrProvider.GenerateKey();
@@ -133,7 +134,7 @@ namespace TheBall
                 CurrProvider.IV = ivBlob.DownloadByteArray();
             } catch(StorageException storageException)
             {
-                if (storageException.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if (storageException.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                 {
                     CurrProvider.GenerateIV();
                     ivBlob.UploadByteArray(CurrProvider.IV);

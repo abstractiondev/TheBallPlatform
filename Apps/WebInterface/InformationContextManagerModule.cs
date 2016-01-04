@@ -38,7 +38,7 @@ namespace WebInterface
         private void ContextOnPreRequestHandlerExecute(object sender, EventArgs eventArgs)
         {
             var request = HttpContext.Current.Request;
-            if (request.Path.StartsWith("/websocket/"))
+            if (request.Path.StartsWith("/websocket/") || request.Url.Host == "localhost")
                 return;
             // Don't log local requests
             if (request.IsLocal == false)
@@ -59,7 +59,7 @@ namespace WebInterface
         private void ContextOnBeginRequest(object sender, EventArgs eventArgs)
         {
             var request = HttpContext.Current.Request;
-            if (request.Path.StartsWith("/websocket/"))
+            if (request.Path.StartsWith("/websocket/") || request.Url.Host == "localhost")
                 return;
             var hostName = request.Url.DnsSafeHost;
             InformationContext.Current.InstanceName = hostName;

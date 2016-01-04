@@ -169,7 +169,7 @@ namespace TheBall
             }
             catch (StorageException stEx)
             {
-                if (returnNullIfMissing && stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if (returnNullIfMissing && stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                     return null;
                 throw;
             }
@@ -184,7 +184,7 @@ namespace TheBall
             }
             catch (StorageException stEx)
             {
-                if (returnNullIfMissing && stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if (returnNullIfMissing && stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                     return null;
                 throw;
             }
@@ -1064,7 +1064,7 @@ namespace TheBall
             }
             catch (StorageException stEx)
             {
-                if (stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if (stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                     return null;
                 throw;
             }
@@ -1099,7 +1099,7 @@ namespace TheBall
             }
             catch (StorageException stEx)
             {
-                if (stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
+                if (stEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
                     return null;
                 throw;
             }
