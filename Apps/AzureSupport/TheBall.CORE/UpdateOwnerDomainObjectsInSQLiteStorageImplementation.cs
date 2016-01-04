@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using AzureSupport;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using SQLiteSupport;
 using TheBall.CORE.InstanceSupport;
 
@@ -56,7 +56,7 @@ namespace TheBall.CORE
                             {
                                 CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
                                 FileLength = blob.Properties.Length,
-                                LastWriteTime = blob.Properties.LastModifiedUtc.ToString("s"),
+                                LastWriteTime = blob.Properties.LastModified.GetValueOrDefault().ToString("s"),
                                 MD5 = blob.Properties.ContentMD5,
                                 ETag = blob.Properties.ETag,
                                 SemanticDomain = semanticDomain,

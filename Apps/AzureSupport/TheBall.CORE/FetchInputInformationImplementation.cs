@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using SecuritySupport;
 
 namespace TheBall.CORE

@@ -7,7 +7,9 @@ using System.Web.Security;
 using AaltoGlobalImpact.OIP;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using TheBall;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
@@ -45,7 +47,7 @@ namespace WebInterface
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
-            CloudBlobClient publicClient = new CloudBlobClient(CloudStorageRootUrl);
+            CloudBlobClient publicClient = new CloudBlobClient(new Uri(CloudStorageRootUrl));
             string blobPath = GetBlobPath(request);
             if (blobPath.Contains("/MediaContent/"))
             {
@@ -58,7 +60,7 @@ namespace WebInterface
             if (blobPath.EndsWith("/"))
             {
                 string redirectBlobPath = blobPath + "RedirectFromFolder.red";
-                CloudBlob redirectBlob = publicClient.GetBlockBlobReference(redirectBlobPath);
+                CloudBlockBlob redirectBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath));
                 string redirectToUrl = null;
                 try
                 {
@@ -75,7 +77,7 @@ namespace WebInterface
                 }
             }
 
-            CloudBlockBlob blob = publicClient.GetBlockBlobReference(blobPath);
+            CloudBlockBlob blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath));
             response.Clear();
             try
             {
@@ -86,7 +88,7 @@ namespace WebInterface
                 //response.Cache.SetETag(blob.Properties.ETag);
                 response.AddHeader("ETag", blob.Properties.ETag);
                 response.Cache.SetMaxAge(TimeSpan.FromMinutes(0));
-                response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+                response.Cache.SetLastModified(blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
                 response.Cache.SetCacheability(HttpCacheability.Private);
                 string ifModifiedSince = request.Headers["If-Modified-Since"];
                 if (ifModifiedSince != null)
@@ -95,7 +97,7 @@ namespace WebInterface
                     if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
                     {
                         ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
-                        if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                        if (blob.Properties.LastModified <= ifModifiedSinceValue)
                         {
                             response.StatusCode = 304;
                             return;
@@ -104,18 +106,19 @@ namespace WebInterface
                 }
                 response.ContentType = StorageSupport.GetMimeType(blob.Name);
                 blob.DownloadToStream(response.OutputStream);
-            } catch(StorageClientException scEx)
+            } catch(StorageException scEx)
             {
-                if (scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
+                if (scEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound || 
+                    scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.BadRequest)
                 {
                     response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
-                    response.StatusCode = (int)scEx.StatusCode;
+                    response.StatusCode = scEx.RequestInformation.HttpStatusCode;
                 }
                 else
                 {
-                    response.Write("Errorcode: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() + Environment.NewLine);
                     response.Write(scEx.ToString());
-                    response.StatusCode = (int) scEx.StatusCode;
+                    response.StatusCode = (int) scEx.RequestInformation.HttpStatusCode;
                 }
             } finally
             {
@@ -131,9 +134,9 @@ namespace WebInterface
             try
             {
                 // "/2013-03-20_08-27-28";
-                CloudBlobClient publicClient = new CloudBlobClient(CloudStorageRootUrl);
+                CloudBlobClient publicClient = new CloudBlobClient(new Uri(CloudStorageRootUrl));
                 string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
-                var currBlob = publicClient.GetBlockBlobReference(currServingPath);
+                var currBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(currServingPath));
                 string currServingData = currBlob.DownloadText();
                 string[] currServeArr = currServingData.Split(':');
                 string currActiveFolder = currServeArr[0];
@@ -173,7 +176,7 @@ namespace WebInterface
                 if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
                 {
                     ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
-                    if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                    if (blob.Properties.LastModified <= ifModifiedSinceValue)
                     {
                         response.ClearContent();
                         response.StatusCode = 304;
@@ -186,7 +189,7 @@ namespace WebInterface
             response.ContentType = StorageSupport.GetMimeType(fileName);
             //response.Cache.SetETag(blob.Properties.ETag);
             response.Headers.Add("ETag", blob.Properties.ETag);
-            response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+            response.Cache.SetLastModified(blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
             blob.DownloadToStream(response.OutputStream);
         }
 

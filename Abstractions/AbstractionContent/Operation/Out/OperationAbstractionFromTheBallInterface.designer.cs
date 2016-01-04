@@ -267,8 +267,7 @@ using System.Threading.Tasks;
 					 await ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
 				}
 				}
-
-		    public class UpdateStatusSummaryParameters 
+				public class UpdateStatusSummaryParameters 
 		{
 				public TheBall.CORE.IContainerOwner Owner ;
 				public DateTime UpdateTime ;

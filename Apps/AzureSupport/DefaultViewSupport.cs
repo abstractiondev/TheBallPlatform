@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Web;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
 {
@@ -20,8 +20,7 @@ namespace TheBall.CORE
             //    ListBlobsWithPrefix("sys/AAA/TheBall.CORE/RequestResourceUsage")
             string prefix = "sys/AAA/TheBall.CORE/RequestResourceUsage/";
 
-            BlobRequestOptions options = new BlobRequestOptions {UseFlatBlobListing = true};
-            var blobList = StorageSupport.CurrActiveContainer.ListBlobxWithPrefixSegmented(prefix, processBatchSize, null, options);
+            var blobList = StorageSupport.CurrActiveContainer.ListBlobxWithPrefixSegmented(prefix, processBatchSize);
             List<CloudBlockBlob> result = new List<CloudBlockBlob>();
             foreach (var blobListItem in blobList.Results)
             {

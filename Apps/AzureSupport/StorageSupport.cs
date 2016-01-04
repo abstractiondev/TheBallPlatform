@@ -14,7 +14,12 @@ using System.Threading.Tasks;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
@@ -40,9 +45,23 @@ namespace TheBall
             {
                 var storageAccount = SecureConfig.Current.AzureAccountName;
                 var storageKey = SecureConfig.Current.AzureStorageKey;
-                CloudStorageAccount account = new CloudStorageAccount(new StorageCredentialsAccountAndKey(storageAccount, storageKey), true);
+                CloudStorageAccount account = new CloudStorageAccount(new StorageCredentials(storageAccount, storageKey), true);
                 return account;
             }
+        }
+
+        public static byte[] DownloadByteArray(this CloudBlockBlob blob)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                blob.DownloadToStream(memStream);
+                return memStream.ToArray();
+            }
+        }
+
+        public static void UploadByteArray(this CloudBlockBlob blob, byte[] data)
+        {
+            blob.UploadFromByteArray(data, 0, data.Length);
         }
 
         public static CloudBlobContainer CurrActiveContainer
@@ -85,7 +104,7 @@ namespace TheBall
         [Obsolete("no", true)]
         public static void SetBlobInformationObjectType(this CloudBlockBlob blob, string informationObjectType)
         {
-            blob.Attributes.Metadata[InformationObjectTypeKey] = informationObjectType;
+            blob.Metadata[InformationObjectTypeKey] = informationObjectType;
         }
 
         public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
@@ -121,12 +140,10 @@ namespace TheBall
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             var anonWebContainer = blobClient.GetContainerReference(containerName);
-            anonWebContainer.CreateIfNotExist();
+            anonWebContainer.CreateIfNotExists();
             if (deleteBlobs)
             {
-                BlobRequestOptions blobRequestOptions = new BlobRequestOptions();
-                blobRequestOptions.UseFlatBlobListing = true;
-                foreach (var blob in anonWebContainer.ListBlobs(blobRequestOptions))
+                foreach (var blob in anonWebContainer.ListBlobs(null, true))
                 {
                     CloudBlockBlob blockBlob = blob as CloudBlockBlob;
                     if (blockBlob != null)
@@ -150,9 +167,9 @@ namespace TheBall
                 var blob = container.GetBlockBlobReference(blobPath);
                 return blob.DownloadText();
             }
-            catch (StorageClientException stEx)
+            catch (StorageException stEx)
             {
-                if (returnNullIfMissing && stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                if (returnNullIfMissing && stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                     return null;
                 throw;
             }
@@ -165,9 +182,9 @@ namespace TheBall
                 var blob = container.GetBlockBlobReference(blobPath);
                 return blob.DownloadByteArray();
             }
-            catch (StorageClientException stEx)
+            catch (StorageException stEx)
             {
-                if (returnNullIfMissing && stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                if (returnNullIfMissing && stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                     return null;
                 throw;
             }
@@ -192,41 +209,38 @@ namespace TheBall
 
         public static async Task UploadBlobTextAsync(this CloudBlockBlob blob, string textContent, bool requireNonExistentBlob = false)
         {
-            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
+            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
             BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-            if (requireNonExistentBlob)
-                options.AccessCondition = AccessCondition.IfNoneMatch("*");
-            blob.UploadText(textContent, Encoding.UTF8, options);
+            options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
+            var accessCondition = requireNonExistentBlob ? AccessCondition.GenerateIfNoneMatchCondition("*") : null;
+            await blob.UploadTextAsync(textContent, Encoding.UTF8, accessCondition, options, null);
         }
 
 
         public static void UploadBlobText(this CloudBlockBlob blob, string textContent, bool requireNonExistentBlob = false)
         {
-            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
+            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blob.Name));
             BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-            if(requireNonExistentBlob)
-                options.AccessCondition = AccessCondition.IfNoneMatch("*");
-            blob.UploadText(textContent, Encoding.UTF8, options);
+            options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
+            var accessCondition = requireNonExistentBlob ? AccessCondition.GenerateIfNoneMatchCondition("*") : null;
+            blob.UploadText(textContent, Encoding.UTF8, accessCondition, options);
         }
 
         public static void DeleteBlob(this CloudBlockBlob blob, string requiredETag = null)
         {
             BlobRequestOptions options = new BlobRequestOptions
             {
-                RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3))
+                RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10)
             };
-            if(requiredETag != null)
-                options.AccessCondition = AccessCondition.IfMatch(requiredETag);
-            blob.DeleteIfExists(options);
+            var accessCondition = requiredETag != null ? AccessCondition.GenerateIfMatchCondition(requiredETag) : null;
+            blob.DeleteIfExists(DeleteSnapshotsOption.None, accessCondition, options);
         }
 
         public static void UploadBlobBinary(this CloudBlobContainer container,
     string blobPath, byte[] binaryContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
-            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             blob.UploadByteArray(binaryContent);
             InformationContext.AddStorageTransactionToCurrent();
         }
@@ -235,7 +249,7 @@ namespace TheBall
     string blobPath, Stream streamContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
-            blob.Attributes.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             blob.UploadFromStream(streamContent);
             InformationContext.AddStorageTransactionToCurrent();
         }
@@ -955,18 +969,20 @@ namespace TheBall
             //memoryStream.Seek(0, SeekOrigin.Begin);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
             BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
+            options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
             string etag = informationObject.ETag;
             bool isNewBlob = etag == null;
+            AccessCondition accessCondition = null;
             if (!overwriteIfExists)
             {
+                
                 if (etag != null)
-                    options.AccessCondition = AccessCondition.IfMatch(etag);
+                    accessCondition = AccessCondition.GenerateIfMatchCondition(etag);
                 else
-                    options.AccessCondition = AccessCondition.IfNoneMatch("*");
+                    accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
             }
             //blob.SetBlobInformationObjectType(informationObjectType.FullName);
-            blob.UploadByteArray(dataContent, options);
+            blob.UploadFromByteArray(dataContent, 0, dataContent.Length, accessCondition, options);
             InformationContext.AddStorageTransactionToCurrent();
             informationObject.ETag = blob.Properties.ETag;
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
@@ -1041,18 +1057,14 @@ namespace TheBall
             try
             {
                 BlobRequestOptions options = new BlobRequestOptions();
-                options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-                if (eTag != null)
-                    options.AccessCondition = AccessCondition.IfMatch(eTag);
-                //await
-                //    Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, memoryStream, options);
-                blob.DownloadToStream(memoryStream, options);
+                options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
+                blob.DownloadToStream(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, options);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }
-            catch (StorageClientException stEx)
+            catch (StorageException stEx)
             {
-                if (stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                if (stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                     return null;
                 throw;
             }
@@ -1080,16 +1092,14 @@ namespace TheBall
             try
             {
                 BlobRequestOptions options = new BlobRequestOptions();
-                options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-                if (eTag != null)
-                    options.AccessCondition = AccessCondition.IfMatch(eTag);
-                blob.DownloadToStream(memoryStream, options);
+                options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10); //   RetryPolicy.Retry(10, TimeSpan.FromSeconds(3));
+                blob.DownloadToStream(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }
-            catch (StorageClientException stEx)
+            catch (StorageException stEx)
             {
-                if (stEx.ErrorCode == StorageErrorCode.BlobNotFound)
+                if (stEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                     return null;
                 throw;
             }
@@ -1306,10 +1316,8 @@ namespace TheBall
         public static int DeleteContentsFromOwner(string referenceLocation)
         {
             string contentRootLocation = GetContentRootLocation(referenceLocation);
-            BlobRequestOptions options = new BlobRequestOptions
-                                             {UseFlatBlobListing = true};
             string searchRoot = CurrActiveContainer.Name + "/" + contentRootLocation;
-            var blobList = CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
+            var blobList = CurrBlobClient.ListBlobs(searchRoot, true);
             int deleteCount = 0;
             foreach(CloudBlockBlob blob in blobList)
             {
@@ -1319,29 +1327,23 @@ namespace TheBall
             return deleteCount;
         }
 
-        public static ResultSegment<IListBlobItem> ListBlobxWithPrefixSegmented(this CloudBlobContainer container,
-                                                                              string prefix, int maxresults, ResultContinuation continuationToken, BlobRequestOptions options = null)
+        public static BlobResultSegment ListBlobxWithPrefixSegmented(this CloudBlobContainer container,
+                                                                              string prefix, int maxresults)
         {
             string searchRoot = container.Name + "/" + prefix;
-            if (options != null)
-                return CurrBlobClient.ListBlobsWithPrefixSegmented(searchRoot, maxresults, continuationToken, options);
-            return CurrBlobClient.ListBlobsWithPrefixSegmented(searchRoot, maxresults, continuationToken);
+            return CurrBlobClient.ListBlobsSegmented(searchRoot, true, BlobListingDetails.Metadata, maxresults, null, null, null);
         }
 
-        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this IContainerOwner owner, string prefix, BlobRequestOptions options = null)
+        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this IContainerOwner owner, string prefix, bool useFlatBlobListing = true)
         {
-            if(options == null)
-                options = new BlobRequestOptions { UseFlatBlobListing = true};
             string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
-            return CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
+            return CurrBlobClient.ListBlobs(searchRoot, useFlatBlobListing);
         }
 
-        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix, BlobRequestOptions options = null)
+        public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this CloudBlobContainer container, string prefix)
         {
             string searchRoot = container.Name + "/" + prefix;
-            if (options != null)
-                return CurrBlobClient.ListBlobsWithPrefix(searchRoot, options);
-            return CurrBlobClient.ListBlobsWithPrefix(searchRoot);
+            return CurrBlobClient.ListBlobs(searchRoot, true);
         }
 
         public static string GetOwnerRootAddress(IContainerOwner owner)
@@ -1355,9 +1357,8 @@ namespace TheBall
             if(owner == null)
                 throw new ArgumentNullException("owner");
             string ownerRootAddress = GetOwnerRootAddress(owner);
-            BlobRequestOptions options = new BlobRequestOptions {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             string storageLevelOwnerRootAddress = CurrActiveContainer.Name + "/" + ownerRootAddress;
-            var blobs = CurrBlobClient.ListBlobsWithPrefix(storageLevelOwnerRootAddress, options);
+            var blobs = CurrBlobClient.ListBlobs(storageLevelOwnerRootAddress, true, BlobListingDetails.Metadata);
             int deletedCount = 0;
             foreach(CloudBlockBlob blob in blobs)
             {
@@ -1371,8 +1372,7 @@ namespace TheBall
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
             string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
-            BlobRequestOptions options = new BlobRequestOptions { UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata };
-            var blobs = CurrBlobClient.ListBlobsWithPrefix(rootAddress, options);
+            var blobs = CurrBlobClient.ListBlobs(rootAddress, true, BlobListingDetails.Metadata);
             int deletedCount = 0;
             foreach (CloudBlockBlob blob in blobs)
             {
@@ -1455,9 +1455,8 @@ namespace TheBall
         public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)
         {
             string storageListingPrefix = container.Name + "/" + directoryLocation;
-            BlobRequestOptions options = new BlobRequestOptions() { UseFlatBlobListing = true, BlobListingDetails = withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None };
             InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
+            return CurrBlobClient.ListBlobs(storageListingPrefix, true, withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None);
         }
 
         public static IEnumerable<CloudBlockBlob> GetFilteredBlobListing(this CloudBlobContainer container, string directoryLocation, Predicate<CloudBlockBlob> filterIfFalse)
@@ -1521,9 +1520,8 @@ namespace TheBall
         {
             string contentListingPrefix = GetOwnerContentLocation(owner, contentType);
             string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
-            BlobRequestOptions options = new BlobRequestOptions() {UseFlatBlobListing = true, BlobListingDetails = BlobListingDetails.Metadata};
             InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobsWithPrefix(storageListingPrefix, options);
+            return CurrBlobClient.ListBlobs(storageListingPrefix, true, BlobListingDetails.Metadata);
         }
 
         public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
@@ -1532,13 +1530,15 @@ namespace TheBall
             DateTime created = DateTime.UtcNow;
             blob.Metadata.Add("LockCreated", created.ToString("s"));
             string blobContent = "LockCreated: " + created.ToString("s");
-            BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-            options.AccessCondition = AccessCondition.IfNoneMatch("*");
+            BlobRequestOptions options = new BlobRequestOptions
+            {
+                RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10)
+            };
+            var accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
             try
             {
                 Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
-                blob.UploadText(blobContent, Encoding.UTF8, options);
+                blob.UploadText(blobContent, Encoding.UTF8, accessCondition, options);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
             }
@@ -1555,14 +1555,15 @@ namespace TheBall
         public static bool ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
-            BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromSeconds(3));
-            if (lockEtag != null)
-                options.AccessCondition = AccessCondition.IfMatch(lockEtag);
+            BlobRequestOptions options = new BlobRequestOptions
+            {
+                RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10)
+            };
+            var accessCondition = lockEtag != null ? AccessCondition.GenerateIfMatchCondition(lockEtag) : null;
             try
             {
                 Debug.WriteLine("Trying to release lock: " + lockLocation);
-                blob.Delete(options);
+                blob.Delete(DeleteSnapshotsOption.None, accessCondition, options);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
             }
@@ -1586,8 +1587,7 @@ namespace TheBall
             if (owner == null)
                 throw new ArgumentNullException("owner");
             var blobListing =
-                ListBlobsWithPrefix(owner, rootLocation,
-                                                        new BlobRequestOptions {UseFlatBlobListing = false}).ToArray();
+                ListBlobsWithPrefix(owner, rootLocation, false).ToArray();
             string[] directories = blobListing.Where(item => item is CloudBlobDirectory)
                                               .Select(
                                                   item => item.Uri.LocalPath.Substring(item.Parent.Uri.LocalPath.Length))
@@ -1625,9 +1625,9 @@ namespace TheBall
             {
                 blob.UploadBlobText(lockFileContent, requireUnclaimedLock);
             }
-            catch (StorageClientException exception)
+            catch (StorageException exception)
             {
-                if (exception.ErrorCode == StorageErrorCode.BlobAlreadyExists)
+                if (exception.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceAlreadyExists)
                     return null;
             }
             InformationContext.AddStorageTransactionToCurrent();

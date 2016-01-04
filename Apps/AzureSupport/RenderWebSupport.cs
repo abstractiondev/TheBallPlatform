@@ -6,7 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 
 namespace TheBall

@@ -3,7 +3,8 @@ using System.IO;
 using System.IO.Compression;
 using AaltoGlobalImpact.OIP;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
 {

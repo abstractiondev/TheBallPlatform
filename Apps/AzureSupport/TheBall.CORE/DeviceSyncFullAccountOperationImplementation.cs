@@ -8,7 +8,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Support.VirtualStorage;
 
 namespace TheBall.CORE

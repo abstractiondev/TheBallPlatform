@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.INT;
 
@@ -117,7 +118,7 @@ namespace TheBall
         {
             CloudBlockBlob targetBlob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currTargetBlobLocation);
             CloudBlockBlob sourceblob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currSourceBlobLocation);
-            targetBlob.CopyFromBlob(sourceblob);
+            targetBlob.StartCopy(sourceblob);
         }
 
         public const string RelativeRootFolderValue = "";

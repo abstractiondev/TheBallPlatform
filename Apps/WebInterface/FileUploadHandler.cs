@@ -33,7 +33,7 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 using Image = System.Drawing.Image;

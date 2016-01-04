@@ -1,5 +1,5 @@
 using System;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Infrastructure;
 
 namespace TheBall.Index
@@ -36,6 +36,8 @@ namespace TheBall.Index
 
         public static AttemptToBecomeInfrastructureIndexerReturnValue ExecuteMethod_MountIndexDrive(string indexDriveName)
         {
+            throw new NotImplementedException();
+#if never
             CloudDrive drive = null;
             Exception exception = null;
             try
@@ -66,6 +68,7 @@ namespace TheBall.Index
                     Success = exception == null,
                     CloudDrive = drive
                 };
+#endif
         }
 
     }

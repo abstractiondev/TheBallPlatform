@@ -4,7 +4,7 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallInfrastructure)" title="Operations (OperationAbstractionFromTheBallInfrastructure)">
         <Content>
-          <Header text="CreateCloudDrive (DriveName, SizeInMegabytes)" level="1">
+          <Header text="CreateCloudDrive" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -12,207 +12,13 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>DriveName</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Name of the drive - is used as blob name by adding .vhd</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>SizeInMegabytes</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>int</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Size of drive in megabytes</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: DriveBlobName ( DriveName )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Blob name derived from drive name with adding .vhd extension.</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: CreateDrive ( DriveBlobName, SizeInMegabytes )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Create cloud drive</TextContent>
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Output value field" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>CreateDriveResult</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>CreateCloudDriveReturnValue</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Created drive execution result</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Return Value : CreateCloudDriveReturnValue ( CreateDriveOutput )" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Return Value" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>CloudDrive</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Created drive</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>Exception</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>System.Exception</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Error causing exception</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
           </Header>
-          <Header text="MountCloudDrive (DriveReference)" level="1">
+          <Header text="MountCloudDrive" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Mount cloud drive</TextContent>
                 </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Parameters" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Parameter" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>DriveReference</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Microsoft.WindowsAzure.StorageClient.CloudDrive</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Platform drive reference</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: MountDrive ( DriveReference )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Mount the cloud drive. Perform write/read operations to confirm succesful mount.</TextContent>
-                </Text>
-              </Paragraph>
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Output value field" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>MountResult</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>MountCloudDriveReturnValue</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Mounted operation main result</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
-            </Header>
-            <Header text="Return Value : MountCloudDriveReturnValue ( MountDriveOutput )" level="2">
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Return Value" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>MountedDriveLetter</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>string</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Mounted drive letter</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>Exception</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>System.Exception</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Error causing exception</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
               </Paragraph>
             </Header>
           </Header>

@@ -2,10 +2,11 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Web;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 using System.Linq;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace AaltoGlobalImpact.OIP
 {

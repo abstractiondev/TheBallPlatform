@@ -11,7 +11,7 @@ using System.Web;
 using AaltoGlobalImpact.OIP;
 using JsonFx.Json;
 using JsonFx.Serialization;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.Index;
 
 namespace AzureSupport

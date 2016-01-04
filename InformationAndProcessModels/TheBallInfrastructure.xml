@@ -10,12 +10,15 @@
         <OperationSpec>
           <Description>Create cloud drive</Description>
         </OperationSpec>
+        <!--
         <Parameters>
           <Parameter name="DriveName" dataType="string" designDesc="Name of the drive - is used as blob name by adding .vhd" state="implemented"/>
           <Parameter name="SizeInMegabytes" dataType="int" designDesc="Size of drive in megabytes" state="implemented"/>
         </Parameters>
+        -->
         <Execution>
           <SequentialExecution>
+            <!--
             <TargetDefinition name="DriveBlobName" dataType="string" designDesc="Blob name derived from drive name with adding .vhd extension." state="implemented">
               <Parameter name="DriveName"/>
             </TargetDefinition>
@@ -24,34 +27,43 @@
               <Target name="DriveBlobName"/>
               <ReturnValue dataType="CreateCloudDriveReturnValue" name="CreateDriveResult" designDesc="Created drive execution result" state="implemented"/>
             </MethodExecute>
+            -->
           </SequentialExecution>
         </Execution>
+        <!--
         <OperationReturnValues>
           <ReturnValue name="CloudDrive" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Created drive" state="implemented"/>
           <ReturnValue name="Exception" dataType="System.Exception" designDesc="Error causing exception" state="implemented"/>
           <Target name="CreateDriveOutput"/>
         </OperationReturnValues>
+        -->
       </Operation>
       <Operation name="MountCloudDrive">
         <OperationSpec>
           <Description>Mount cloud drive</Description>
         </OperationSpec>
+        <!--
         <Parameters>
           <Parameter name="DriveReference" dataType="Microsoft.WindowsAzure.StorageClient.CloudDrive" designDesc="Platform drive reference" state="implemented"/>
         </Parameters>
+        -->
         <Execution>
           <SequentialExecution>
+            <!--
             <MethodExecute name="MountDrive" designDesc="Mount the cloud drive. Perform write/read operations to confirm succesful mount." state="implemented">
               <Parameter name="DriveReference"/>
               <ReturnValue name="MountResult" dataType="MountCloudDriveReturnValue" designDesc="Mounted operation main result" state="implemented"/>
             </MethodExecute> 
+            -->
           </SequentialExecution>
         </Execution>
+        <!--
         <OperationReturnValues>
           <ReturnValue dataType="string" name="MountedDriveLetter" designDesc="Mounted drive letter" state="implemented"/>
           <ReturnValue name="Exception" dataType="System.Exception" designDesc="Error causing exception" state="implemented"/>
           <Target name="MountDriveOutput"/>
         </OperationReturnValues>
+        -->
       </Operation>
     </Operations>
     <Subscriptions />

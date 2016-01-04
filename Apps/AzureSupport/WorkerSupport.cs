@@ -8,7 +8,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using AzureSupport.TheBall.CORE;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.Index;
 
@@ -18,8 +19,8 @@ namespace TheBall
     {
         class BlobCopyItem
         {
-            public CloudBlob SourceBlob;
-            public CloudBlob TargetBlob;
+            public CloudBlockBlob SourceBlob;
+            public CloudBlockBlob TargetBlob;
         }
 
         public enum SyncOperationType
@@ -94,14 +95,9 @@ namespace TheBall
             string sourceSearchRoot = sourceContainerName + "/" + sourcePathRoot;
             string targetSearchRoot = targetContainerName + "/" + targetPathRoot;
             CloudBlobContainer targetContainer = StorageSupport.CurrBlobClient.GetContainerReference(targetContainerName);
-            BlobRequestOptions requestOptions = new BlobRequestOptions
-                                                    {
-                                                        UseFlatBlobListing = true,
-                                                        BlobListingDetails = BlobListingDetails.Metadata,
-                                                    };
-            var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(sourceSearchRoot, requestOptions).
+            var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobs(sourceSearchRoot, true, BlobListingDetails.Metadata).
                 OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
-            var targetBlobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(targetSearchRoot, requestOptions).
+            var targetBlobList = StorageSupport.CurrBlobClient.ListBlobs(targetSearchRoot, true, BlobListingDetails.Metadata).
                 OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
             List<CloudBlockBlob> targetBlobsToDelete;
             List<BlobCopyItem> blobCopyList;
@@ -130,7 +126,7 @@ namespace TheBall
             {
                 try
                 {
-                    CloudBlob targetBlob;
+                    CloudBlockBlob targetBlob;
                     if (blobCopyItem.TargetBlob == null)
                     {
                         string sourceBlobNameWithoutSourcePrefix = blobCopyItem.SourceBlob.Name.Substring(sourcePathRoot.Length);
@@ -153,7 +149,7 @@ namespace TheBall
                         handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
                     }
                     if (handled == false)
-                        targetBlob.CopyFromBlob(blobCopyItem.SourceBlob);
+                        targetBlob.StartCopy(blobCopyItem.SourceBlob);
                 }
                 catch (WebException wex)
                 {

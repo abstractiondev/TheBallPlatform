@@ -7,7 +7,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using Microsoft.WindowsAzure.StorageClient.Protocol;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using TheBall;
 using TheBall.CORE.InstanceSupport;
 

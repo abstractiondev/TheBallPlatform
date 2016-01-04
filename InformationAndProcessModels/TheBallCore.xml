@@ -1483,7 +1483,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" name="BatchToProcess" state="implemented" designDesc="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock">
+            <TargetDefinition dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" name="BatchToProcess" state="implemented" designDesc="Retrieve block blob list to process - and acquire lock if possible. Null if doesn't match requirement or fail to acquire lock">
               <Parameter name="ProcessBatchSize"/>
               <Parameter name="ProcessIfLess"/>
             </TargetDefinition>
@@ -1542,13 +1542,13 @@
               <Parameter name="MonitoringItemTimeSpanInMinutes"/>
               <Parameter name="MonitoringIntervalInMinutes"/>
             </MethodExecute>
-            <TargetDefinition name="CurrentMonitoringItems" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Current monitoring item entries" state="implemented">
+            <TargetDefinition name="CurrentMonitoringItems" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Current monitoring item entries" state="implemented">
               <Parameter name="Owner"/>
             </TargetDefinition>
             <TargetDefinition name="EndingTimeOfCurrentItems" dataType="DateTime" designDesc="Starting time of new monitoring item(s)" state="implemented">
               <Target name="CurrentMonitoringItems"/>
             </TargetDefinition>
-            <TargetDefinition name="NewResourceUsageBlobs" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Resource usage collections after last monitoring item" state="implemented">
+            <TargetDefinition name="NewResourceUsageBlobs" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Resource usage collections after last monitoring item" state="implemented">
               <Parameter name="Owner"/>
               <Target name="EndingTimeOfCurrentItems"/>
             </TargetDefinition>
@@ -1733,10 +1733,10 @@
             <MethodExecute name="StoreObject" designDesc="Store content package object" state="implemented">
               <Target name="ContentPackageObject"/>
             </MethodExecute>
-            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob" name="ArchiveBlob" designDesc="Initiate archive blob for zip block updates. Same ID, same location, .zip extension" state="implemented">
+            <TargetDefinition dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob" name="ArchiveBlob" designDesc="Initiate archive blob for zip block updates. Same ID, same location, .zip extension" state="implemented">
               <Target name="ContentPackageObject"/>
             </TargetDefinition>
-            <TargetDefinition dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" name="ArchiveSourceBlobs" designDesc="Source blobs for archiving" state="implemented">
+            <TargetDefinition dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" name="ArchiveSourceBlobs" designDesc="Source blobs for archiving" state="implemented">
               <Parameter name="Owner"/>
               <Parameter name="PackageRootFolder"/>
               <Parameter name="IncludedFolders"/>
@@ -2034,7 +2034,7 @@
             <TargetDefinition name="OwnerRootPath" dataType="string" designDesc="Absolute cloud storage root path to owner root" state="implemented">
               <Parameter name="Owner"/>
             </TargetDefinition>
-            <TargetDefinition name="BlobsToSync" dataType="Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[]" designDesc="Blob listings to sync" state="implemented">
+            <TargetDefinition name="BlobsToSync" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Blob listings to sync" state="implemented">
               <Parameter name="Owner"/>
               <Parameter name="SemanticDomain"/>
             </TargetDefinition>

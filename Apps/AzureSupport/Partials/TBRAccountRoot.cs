@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 
@@ -13,7 +14,7 @@ namespace AaltoGlobalImpact.OIP
             string blobPath = "AaltoGlobalImpact.OIP/TBRAccountRoot/";
             string searchPath = StorageSupport.CurrActiveContainer.Name + "/" + blobPath;
             int substringLen = blobPath.Length;
-            var blobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(searchPath).OfType<CloudBlob>();
+            var blobList = StorageSupport.CurrBlobClient.ListBlobs(searchPath, true).OfType<CloudBlob>();
             return blobList.Select(blob => blob.Name.Substring(substringLen)).ToArray();
         }
         public static TBRAccountRoot CreateAndStoreNewAccount()

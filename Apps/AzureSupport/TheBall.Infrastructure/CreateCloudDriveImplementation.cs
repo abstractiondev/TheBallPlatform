@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.Infrastructure
 {
@@ -13,7 +13,7 @@ namespace TheBall.Infrastructure
             driveName = driveName + ".vhd";
             return driveName;
         }
-
+#if never
         public static CreateCloudDriveReturnValue ExecuteMethod_CreateDrive(int sizeInMegabytes, string driveBlobName)
         {
             CloudDrive drive = null;
@@ -37,5 +37,6 @@ namespace TheBall.Infrastructure
         {
             return executionResult;
         }
+#endif
     }
 }

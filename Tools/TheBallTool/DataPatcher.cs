@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 using TheBall.Index;
@@ -327,7 +327,7 @@ namespace TheBallTool
             patchModifiedBeforeLimit = patchModifiedBeforeLimit.ToUniversalTime();
             foreach (CloudBlockBlob tcBlob in textContentBlobs)
             {
-                if (tcBlob.Properties.LastModifiedUtc >= patchModifiedBeforeLimit)
+                if (tcBlob.Properties.LastModified >= patchModifiedBeforeLimit)
                     continue;
                 var textContent = ObjectStorage.RetrieveObject<TextContent>(tcBlob.Name, owner);
                 if (String.IsNullOrEmpty(textContent.RawHtmlContent))

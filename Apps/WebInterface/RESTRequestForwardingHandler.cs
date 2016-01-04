@@ -13,8 +13,8 @@ using System.Web.Security;
 using AaltoGlobalImpact.OIP;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
-using Microsoft.WindowsAzure.StorageClient.Protocol;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob.Protocol;
 using TheBall;
 using TheBall.CORE.InstanceSupport;
 
@@ -246,6 +246,7 @@ namespace WebInterface
         #endregion
     }
 
+    /*
     public class MyAzureStrategy : CanonicalizationStrategy
     {
         public override string CanonicalizeHttpRequest(HttpWebRequest request, string accountName)
@@ -257,5 +258,5 @@ namespace WebInterface
         {
             return GetCanonicalizedResourceVersion2(new Uri(url), azureAccountName);
         }
-    }
+    }*/
 }

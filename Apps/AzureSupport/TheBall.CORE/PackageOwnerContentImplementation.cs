@@ -3,7 +3,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Ionic.Zip;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
 {
@@ -53,7 +54,7 @@ namespace TheBall.CORE
             string blobName = contentPackageObject.RelativeLocation + ".zip";
             IContainerOwner owner = VirtualOwner.FigureOwner(contentPackageObject);
             var blob = (CloudBlockBlob) StorageSupport.CurrActiveContainer.GetBlob(blobName, owner);
-            blob.Attributes.Properties.ContentType = StorageSupport.GetMimeType(".zip");
+            blob.Properties.ContentType = StorageSupport.GetMimeType(".zip");
             return blob;
         }
 

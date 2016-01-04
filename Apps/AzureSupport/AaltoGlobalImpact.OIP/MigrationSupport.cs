@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
 
@@ -88,7 +88,7 @@ namespace AaltoGlobalImpact.OIP
                                                                                           string.Format("{0}AaltoGlobalImpact.OIP/MediaContent/{1}", targetContentRoot, fileNamePart));
                     var targetBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, targetBlobPath);
                     var sourceBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, sourceLocation);
-                    targetBlob.CopyFromBlob(sourceBlob);
+                    targetBlob.StartCopy(sourceBlob);
                     targetLocation = StorageSupport.RemoveOwnerPrefixIfExists(targetBlob.Name);
                     contentMD5 = targetBlob.Properties.ContentMD5;
                     eTag = targetBlob.Properties.ETag;

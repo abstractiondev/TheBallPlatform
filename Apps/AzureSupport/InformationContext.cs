@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using DiagnosticsUtils;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
@@ -208,11 +210,11 @@ namespace TheBall
                         + containerName + ")");
             }
             CloudBlobClient blobClient = StorageSupport.CurrStorageAccount.CreateCloudBlobClient();
-            blobClient.RetryPolicy = RetryPolicies.Retry(10, TimeSpan.FromMilliseconds(300));
+            blobClient.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(300), 10);
             CurrBlobClient = blobClient;
 
             var activeContainer = blobClient.GetContainerReference(containerName.ToLower());
-            activeContainer.CreateIfNotExist();
+            activeContainer.CreateIfNotExists(BlobContainerPublicAccessType.Off);
             CurrActiveContainer = activeContainer;
             InitializedContainerName = containerName;
         }

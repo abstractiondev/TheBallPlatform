@@ -7,7 +7,8 @@ using System.Runtime.Serialization;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall
 {
@@ -31,17 +32,17 @@ namespace TheBall
             string dbgModePrefix = debugMode ? "dbg" : "";
             CloudQueue queue = CurrQueueClient.GetQueueReference(dbgModePrefix + DefaultQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExist();
+            queue.CreateIfNotExists();
             CurrDefaultQueue = queue;
 
             queue = CurrQueueClient.GetQueueReference(ErrorQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExist();
+            queue.CreateIfNotExists();
             CurrErrorQueue = queue;
 
             queue = CurrQueueClient.GetQueueReference(dbgModePrefix + StatisticQueueName);
             // Create the queue if it doesn't already exist
-            queue.CreateIfNotExist();
+            queue.CreateIfNotExists();
             CurrStatisticsQueue = queue;
         }
 
@@ -59,7 +60,7 @@ namespace TheBall
             if(addResult == false)
                 throw new InvalidOperationException("Cannot add already existing queue: " + queueName);
             if (createIfNotExist)
-                queue.CreateIfNotExist();
+                queue.CreateIfNotExists();
             return queue;
         }
 

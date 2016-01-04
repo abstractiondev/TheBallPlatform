@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
@@ -28,9 +29,7 @@ namespace AaltoGlobalImpact.OIP
             var openIDUrlsWithoutHttps =
                 accountRoot.Account.Logins.CollectionContent.Select(login => login.OpenIDUrl.Substring(HttpsPrefixLength)).OrderBy(str => str).
                     ToArray();
-            var blobList = StorageSupport.CurrActiveContainer.ListBlobsWithPrefix(SearchPrefix,
-                                                                                  new BlobRequestOptions()
-                                                                                      {UseFlatBlobListing = true});
+            var blobList = StorageSupport.CurrActiveContainer.ListBlobsWithPrefix(SearchPrefix);
             List<CloudBlockBlob> foundBlobs = new List<CloudBlockBlob>(); 
             foreach(CloudBlockBlob blob in blobList)
             {

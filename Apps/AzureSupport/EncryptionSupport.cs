@@ -2,7 +2,10 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 
 namespace TheBall
 {
@@ -107,13 +110,13 @@ namespace TheBall
 
         private static void RetrieveOrCreateEncDataToDefaultBlob()
         {
-            CloudBlob keyBlob = StorageSupport.CurrActiveContainer.GetBlob(KeyBlobName);
+            CloudBlockBlob keyBlob = StorageSupport.CurrActiveContainer.GetBlob(KeyBlobName);
             try
             {
                 CurrProvider.Key = keyBlob.DownloadByteArray();
             } catch(StorageException storageException)
             {
-                if(storageException.ErrorCode == StorageErrorCode.BlobNotFound)
+                if(storageException.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                 {
                     CurrProvider.KeySize = 128;
                     CurrProvider.GenerateKey();
@@ -124,13 +127,13 @@ namespace TheBall
                     throw;
                 }
             }
-            CloudBlob ivBlob = StorageSupport.CurrActiveContainer.GetBlob(IVBlobName);
+            CloudBlockBlob ivBlob = StorageSupport.CurrActiveContainer.GetBlob(IVBlobName);
             try
             {
                 CurrProvider.IV = ivBlob.DownloadByteArray();
             } catch(StorageException storageException)
             {
-                if (storageException.ErrorCode == StorageErrorCode.BlobNotFound)
+                if (storageException.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound)
                 {
                     CurrProvider.GenerateIV();
                     ivBlob.UploadByteArray(CurrProvider.IV);

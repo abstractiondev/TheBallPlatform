@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Microsoft.WindowsAzure.StorageClient
 {
@@ -14,6 +14,7 @@ namespace Microsoft.WindowsAzure.StorageClient
 
 namespace TheBall.Infrastructure
 {
+#if never
     public class MountCloudDriveImplementation
     {
         public static MountCloudDriveReturnValue ExecuteMethod_MountDrive(CloudDrive driveReference)
@@ -48,4 +49,5 @@ namespace TheBall.Infrastructure
             return executionResult;
         }
     }
+#endif
 }

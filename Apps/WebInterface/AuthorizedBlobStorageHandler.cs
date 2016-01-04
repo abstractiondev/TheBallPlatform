@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Security;
@@ -22,7 +23,9 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.WindowsAzure;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
@@ -542,18 +545,19 @@ namespace WebInterface
             {
                 await HandleBlobRequestWithCacheSupport(context, blob, response);
             }
-            catch (StorageClientException scEx)
+            catch (StorageException scEx)
             {
-                if (scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
+                if (scEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound ||
+                    scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
                 {
                     response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
-                    response.StatusCode = (int)scEx.StatusCode;
+                    response.StatusCode = scEx.RequestInformation.HttpStatusCode;
                 }
                 else
                 {
-                    response.Write("Errorcode: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() + Environment.NewLine);
                     response.Write(scEx.ToString());
-                    response.StatusCode = (int)scEx.StatusCode;
+                    response.StatusCode = (int)scEx.RequestInformation.HttpStatusCode;
                 }
             }
             finally
@@ -566,6 +570,7 @@ namespace WebInterface
 
         private async Task HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            var request = context.Request;
             if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
             if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev") && 
@@ -583,7 +588,7 @@ namespace WebInterface
             }
             if (String.IsNullOrEmpty(contentPath) || contentPath.EndsWith("/"))
             {
-                CloudBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath +
+                CloudBlockBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath +
                                                                       InfraSharedConfig.Current.RedirectFromFolderFileName);
                 string redirectToUrl = null;
                 try
@@ -619,17 +624,20 @@ namespace WebInterface
             try
             {
                 await HandleBlobRequestWithCacheSupport(context, blob, response);
-            } catch(StorageClientException scEx)
+            }
+            catch (StorageException scEx)
             {
-                if(scEx.ErrorCode == StorageErrorCode.BlobNotFound || scEx.ErrorCode == StorageErrorCode.ResourceNotFound || scEx.ErrorCode == StorageErrorCode.BadRequest)
+                if (scEx.RequestInformation.ExtendedErrorInformation.ErrorCode == StorageErrorCodeStrings.ResourceNotFound ||
+                    scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
                 {
-                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + context.Request.Path + ")");
-                    response.StatusCode = (int)scEx.StatusCode;
-                } else
+                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
+                    response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                }
+                else
                 {
-                    response.Write("Error code: " + scEx.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() + Environment.NewLine);
                     response.Write(scEx.ToString());
-                    response.StatusCode = (int)scEx.StatusCode;
+                    response.StatusCode = (int)scEx.RequestInformation.HttpStatusCode;
                 }
             }
             catch (Exception ex)
@@ -670,7 +678,7 @@ namespace WebInterface
                 if (DateTime.TryParse(ifModifiedSince, out ifModifiedSinceValue))
                 {
                     ifModifiedSinceValue = ifModifiedSinceValue.ToUniversalTime();
-                    if (blob.Properties.LastModifiedUtc <= ifModifiedSinceValue)
+                    if (blob.Properties.LastModified <= ifModifiedSinceValue)
                     {
                         response.ClearContent();
                         response.StatusCode = 304;
@@ -683,7 +691,7 @@ namespace WebInterface
             response.ContentType = StorageSupport.GetMimeType(fileName);
             //response.Cache.SetETag(blob.Properties.ETag);
             response.Headers.Add("ETag", blob.Properties.ETag);
-            response.Cache.SetLastModified(blob.Properties.LastModifiedUtc);
+            response.Cache.SetLastModified(blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
             //blob.DownloadToStream(response.OutputStream);
             await Task.Factory.FromAsync(blob.BeginDownloadToStream, blob.EndDownloadToStream, response.OutputStream,
                     null);

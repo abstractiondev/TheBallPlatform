@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.WindowsAzure.StorageClient;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
@@ -13,7 +14,7 @@ namespace AaltoGlobalImpact.OIP
             string blobPath = "AaltoGlobalImpact.OIP/TBRGroupRoot/";
             string searchPath = StorageSupport.CurrActiveContainer.Name + "/" + blobPath;
             int substringLen = blobPath.Length;
-            var blobList = StorageSupport.CurrBlobClient.ListBlobsWithPrefix(searchPath).OfType<CloudBlob>();
+            var blobList = StorageSupport.CurrBlobClient.ListBlobs(searchPath, true).OfType<CloudBlob>();
             return blobList.Select(blob => blob.Name.Substring(substringLen)).ToArray();
         }
 

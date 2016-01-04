@@ -806,7 +806,7 @@ using System.Threading.Tasks;
 				public static ProcessBatchOfResourceUsagesToOwnerCollectionsReturnValue Execute(ProcessBatchOfResourceUsagesToOwnerCollectionsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] BatchToProcess = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.GetTarget_BatchToProcess(parameters.ProcessBatchSize, parameters.ProcessIfLess);	
+					Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BatchToProcess = ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.GetTarget_BatchToProcess(parameters.ProcessBatchSize, parameters.ProcessIfLess);	
 				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ProcessBatch(BatchToProcess);		
 				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_DeleteProcessedItems(BatchToProcess);		
 				ProcessBatchOfResourceUsagesToOwnerCollectionsImplementation.ExecuteMethod_ReleaseLock(BatchToProcess);		
@@ -853,9 +853,9 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					UpdateUsageMonitoringItemsImplementation.ExecuteMethod_ValidateEqualSplitOfIntervalsInTimeSpan(parameters.MonitoringItemTimeSpanInMinutes, parameters.MonitoringIntervalInMinutes);		
-				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] CurrentMonitoringItems = UpdateUsageMonitoringItemsImplementation.GetTarget_CurrentMonitoringItems(parameters.Owner);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] CurrentMonitoringItems = UpdateUsageMonitoringItemsImplementation.GetTarget_CurrentMonitoringItems(parameters.Owner);	
 				DateTime EndingTimeOfCurrentItems = UpdateUsageMonitoringItemsImplementation.GetTarget_EndingTimeOfCurrentItems(CurrentMonitoringItems);	
-				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] NewResourceUsageBlobs = UpdateUsageMonitoringItemsImplementation.GetTarget_NewResourceUsageBlobs(parameters.Owner, EndingTimeOfCurrentItems);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] NewResourceUsageBlobs = UpdateUsageMonitoringItemsImplementation.GetTarget_NewResourceUsageBlobs(parameters.Owner, EndingTimeOfCurrentItems);	
 				DateTime StartingTimeOfNewItems = UpdateUsageMonitoringItemsImplementation.GetTarget_StartingTimeOfNewItems(parameters.MonitoringItemTimeSpanInMinutes, EndingTimeOfCurrentItems, NewResourceUsageBlobs);	
 				DateTime EndingTimeOfNewItems = UpdateUsageMonitoringItemsImplementation.GetTarget_EndingTimeOfNewItems(parameters.MonitoringItemTimeSpanInMinutes, StartingTimeOfNewItems, NewResourceUsageBlobs);	
 				RequestResourceUsageCollection[] ResourcesToIncludeInMonitoring = UpdateUsageMonitoringItemsImplementation.GetTarget_ResourcesToIncludeInMonitoring(NewResourceUsageBlobs, EndingTimeOfNewItems);	
@@ -977,8 +977,8 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					ContentPackage ContentPackageObject = PackageOwnerContentImplementation.GetTarget_ContentPackageObject(parameters.Owner, parameters.PackageType, parameters.PackageName, parameters.Description, parameters.PackageRootFolder);	
 				PackageOwnerContentImplementation.ExecuteMethod_StoreObject(ContentPackageObject);		
-				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob ArchiveBlob = PackageOwnerContentImplementation.GetTarget_ArchiveBlob(ContentPackageObject);	
-				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] ArchiveSourceBlobs = PackageOwnerContentImplementation.GetTarget_ArchiveSourceBlobs(parameters.Owner, parameters.PackageRootFolder, parameters.IncludedFolders);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob ArchiveBlob = PackageOwnerContentImplementation.GetTarget_ArchiveBlob(ContentPackageObject);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] ArchiveSourceBlobs = PackageOwnerContentImplementation.GetTarget_ArchiveSourceBlobs(parameters.Owner, parameters.PackageRootFolder, parameters.IncludedFolders);	
 				string[] CreateZipPackageContentOutput = PackageOwnerContentImplementation.ExecuteMethod_CreateZipPackageContent(parameters.IncludedFolders, ContentPackageObject, ArchiveSourceBlobs, ArchiveBlob);		
 				PackageOwnerContentImplementation.ExecuteMethod_CommitArchiveBlob(ArchiveBlob, CreateZipPackageContentOutput);		
 				PackageOwnerContentReturnValue returnValue = PackageOwnerContentImplementation.Get_ReturnValue(ContentPackageObject);
@@ -1177,7 +1177,7 @@ using System.Threading.Tasks;
 				string DatabaseAttachOrCreateMethodName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DatabaseAttachOrCreateMethodName();	
 				string SQLiteDBLocationFileName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationFileName(parameters.SemanticDomain, SQLiteDBLocationDirectory);	
 				string OwnerRootPath = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_OwnerRootPath(parameters.Owner);	
-				Microsoft.WindowsAzure.StorageClient.CloudBlockBlob[] BlobsToSync = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_BlobsToSync(parameters.Owner, parameters.SemanticDomain);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BlobsToSync = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_BlobsToSync(parameters.Owner, parameters.SemanticDomain);	
 				UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_PerformSyncing(DataContextType, DatabaseAttachOrCreateMethodName, SQLiteDBLocationFileName, OwnerRootPath, BlobsToSync);		
 				}
 				}
