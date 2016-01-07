@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Security;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using AaltoGlobalImpact.OIP;
@@ -14,41 +15,29 @@ using TheBall.CORE.InstanceSupport;
 
 namespace WebInterface
 {
-    public class EmailValidationHandler : IHttpHandler
+    public class EmailValidationHandler : HttpTaskAsyncHandler
     {
         private const string AuthEmailValidation = "/emailvalidation/";
         private int AuthEmailValidationLen;
 
 
-        /// <summary>
-        /// You will need to configure this handler in the web.config file of your 
-        /// web and register it with IIS before being able to use it. For more information
-        /// see the following link: http://go.microsoft.com/?linkid=8101007
-        /// </summary>
-        #region IHttpHandler Members
-
-        public bool IsReusable
-        {
-            // Return false in case your Managed Handler cannot be reused for another request.
-            // Usually this would be false in case you have some state information preserved per request.
-            get { return true; }
-        }
+        public override bool IsReusable => true;
 
         public EmailValidationHandler()
         {
             AuthEmailValidationLen = AuthEmailValidation.Length;
         }
 
-        public void ProcessRequest(HttpContext context)
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
             HttpRequest request = context.Request;
             if (request.Path.StartsWith(AuthEmailValidation))
             {
-                HandleEmailValidation(context);
-            }        
+                await HandleEmailValidation(context);
+            }
         }
 
-        private void HandleEmailValidation(HttpContext context)
+        private async Task HandleEmailValidation(HttpContext context)
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
@@ -76,7 +65,7 @@ namespace WebInterface
                 {
                     if (emailValidation.GroupJoinConfirmation.InvitationMode == "PLATFORM")
                     {
-                        deleteEmailValidation = HandleGroupAndPlatformJoinConfirmation(context, account, emailValidation);
+                        deleteEmailValidation = await HandleGroupAndPlatformJoinConfirmation(context, account, emailValidation);
                     } else 
                         HandleGroupJoinConfirmation(context, account, emailValidation);
                 }
@@ -208,7 +197,7 @@ namespace WebInterface
             context.Response.Redirect("/auth/grp/" + groupID + "/");
         }
 
-        private bool HandleGroupAndPlatformJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
+        private async Task<bool> HandleGroupAndPlatformJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
             string groupID = emailValidation.GroupJoinConfirmation.GroupID;
@@ -217,10 +206,12 @@ namespace WebInterface
                 GroupID = groupID,
                 MemberEmailAddress = emailValidation.Email
             });
-            InformationContext.Current.Owner = account;
-            SetGroupAsDefaultForAccount.Execute(new SetGroupAsDefaultForAccountParameters
+            await InformationContext.ExecuteAsOwnerAsync(account, async () =>
             {
-                GroupID = groupID
+                SetGroupAsDefaultForAccount.Execute(new SetGroupAsDefaultForAccountParameters
+                {
+                    GroupID = groupID
+                });
             });
             context.Response.Redirect("/auth/account/");
             return true;
@@ -284,6 +275,5 @@ namespace WebInterface
             //context.Response.Write("Error to be replaced: email validation expired at: " + emailValidation.ValidUntil.ToString());
         }
 
-        #endregion
     }
 }

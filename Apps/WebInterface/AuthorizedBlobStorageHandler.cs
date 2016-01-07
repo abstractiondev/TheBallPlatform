@@ -140,7 +140,6 @@ namespace WebInterface
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
                 throw new SecurityException("Device membership not valid and active");
-            InformationContext.Current.Owner = contentOwner;
             InformationContext.Current.ExecutingForDevice = deviceMembership;
             string contentPath = request.GetOwnerContentPath();
             HttpContext.Current.Response.BufferOutput = true;
@@ -309,7 +308,6 @@ namespace WebInterface
 
         private async Task HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
         {
-            InformationContext.Current.Owner = containerOwner;
             if (context.Request.RequestType == "POST")
             {
                 // Do first post, and then get to the same URL
@@ -415,12 +413,6 @@ namespace WebInterface
                 string operationName = request.Params["operation"];
                 
                 Type operationType = TypeSupport.GetTypeByName(operationName);
-                bool isPaymentsOperation = operationType.Namespace == "TheBall.Payments";
-                if (isPaymentsOperation)
-                {
-                    InformationContext.Current.Owner =
-                        VirtualOwner.FigureOwner("grp/" + InstanceConfig.Current.PaymentsGroupID);
-                }
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
                 method.Invoke(null, null);
                 context.Response.End();

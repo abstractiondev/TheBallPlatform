@@ -23,10 +23,6 @@ namespace WebInterface
 {
     public class WebSocketHandler : IHttpHandler
     {
-        private const string AuthEmailValidation = "/emailvalidation/";
-        private int AuthEmailValidationLen;
-
-
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
         /// web and register it with IIS before being able to use it. For more information
@@ -107,83 +103,89 @@ namespace WebInterface
             var request = HttpContext.Current.Request;
             string accountEmail = request.Params["accountemail"];
             string groupID = request.Params["groupID"];
+            IContainerOwner executionOwner = null;
             if (String.IsNullOrEmpty(accountEmail) == false)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
                 var emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
                 if(emailRoot == null)
                     throw new SecurityException("No such email defined: " + accountEmail);
-                informationContext.Owner = emailRoot.Account;
+                executionOwner = emailRoot.Account;
             } else if (String.IsNullOrEmpty(groupID) == false)
             {
                 TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
                 if(groupRoot == null)
                     throw new SecurityException("No such groupID defined: " + groupID);
-                informationContext.Owner = groupRoot.Group;
+                executionOwner = groupRoot.Group;
             }
 
-            while (socket.State == WebSocketState.Open)
+            await InformationContext.ExecuteAsOwnerAsync(executionOwner, async () =>
             {
-                WebSocketReceiveResult receiveResult =
-                    await socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
-                if (receiveResult.MessageType == WebSocketMessageType.Close)
+                while (socket.State == WebSocketState.Open)
                 {
-                    await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-                    OnClose(wsContext, socket);
-                }
-                else if (receiveResult.MessageType == WebSocketMessageType.Binary)
-                {
-                    //await
-                    //    socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame",
-                    //                      CancellationToken.None);
-
-                    int count = receiveResult.Count;
-
-                    while (receiveResult.EndOfMessage == false)
+                    WebSocketReceiveResult receiveResult =
+                        await socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
+                    if (receiveResult.MessageType == WebSocketMessageType.Close)
                     {
-                        if (count >= maxMessageSize)
-                        {
-                            string closeMessage = string.Format("Maximum message size: {0} bytes.", maxMessageSize);
-                            await
-                                socket.CloseAsync(WebSocketCloseStatus.MessageTooBig, closeMessage,
-                                                  CancellationToken.None);
-                            return;
-                        }
-                        receiveResult =
-                            await
-                            socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count),
-                                                CancellationToken.None);
-                        count += receiveResult.Count;
+                        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                        OnClose(wsContext, socket);
                     }
-                    //var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    byte[] binaryMessage = new byte[count];
-                    Array.Copy(receiveBuffer, binaryMessage, count);
-                    await onReceiveMessage(informationContext, wsContext, socket, binaryMessage, null);
-                }
-                else
-                {
-                    int count = receiveResult.Count;
-
-                    while (receiveResult.EndOfMessage == false)
+                    else if (receiveResult.MessageType == WebSocketMessageType.Binary)
                     {
-                        if (count >= maxMessageSize)
+                        //await
+                        //    socket.CloseAsync(WebSocketCloseStatus.InvalidMessageType, "Cannot accept binary frame",
+                        //                      CancellationToken.None);
+
+                        int count = receiveResult.Count;
+
+                        while (receiveResult.EndOfMessage == false)
                         {
-                            string closeMessage = string.Format("Maximum message size: {0} bytes.", maxMessageSize);
-                            await
-                                socket.CloseAsync(WebSocketCloseStatus.MessageTooBig, closeMessage,
-                                                  CancellationToken.None);
-                            return;
+                            if (count >= maxMessageSize)
+                            {
+                                string closeMessage = string.Format("Maximum message size: {0} bytes.", maxMessageSize);
+                                await
+                                    socket.CloseAsync(WebSocketCloseStatus.MessageTooBig, closeMessage,
+                                                      CancellationToken.None);
+                                return;
+                            }
+                            receiveResult =
+                                await
+                                socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count),
+                                                    CancellationToken.None);
+                            count += receiveResult.Count;
                         }
-                        receiveResult =
-                            await
-                            socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count),
-                                                CancellationToken.None);
-                        count += receiveResult.Count;
+                        //var receivedString = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+                        byte[] binaryMessage = new byte[count];
+                        Array.Copy(receiveBuffer, binaryMessage, count);
+                        await onReceiveMessage(informationContext, wsContext, socket, binaryMessage, null);
                     }
-                    var textMessage = Encoding.UTF8.GetString(receiveBuffer, 0, count);
-                    await onReceiveMessage(informationContext, wsContext, socket, null, textMessage);
+                    else
+                    {
+                        int count = receiveResult.Count;
+
+                        while (receiveResult.EndOfMessage == false)
+                        {
+                            if (count >= maxMessageSize)
+                            {
+                                string closeMessage = string.Format("Maximum message size: {0} bytes.", maxMessageSize);
+                                await
+                                    socket.CloseAsync(WebSocketCloseStatus.MessageTooBig, closeMessage,
+                                                      CancellationToken.None);
+                                return;
+                            }
+                            receiveResult =
+                                await
+                                socket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer, count, maxMessageSize - count),
+                                                    CancellationToken.None);
+                            count += receiveResult.Count;
+                        }
+                        var textMessage = Encoding.UTF8.GetString(receiveBuffer, 0, count);
+                        await onReceiveMessage(informationContext, wsContext, socket, null, textMessage);
+                    }
                 }
-            }
+
+            });
+
         }
 
         private static void HandleCloseMessage(WebSocketContext wsCtx, WebSocket socket)

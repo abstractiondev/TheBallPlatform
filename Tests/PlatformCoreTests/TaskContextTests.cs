@@ -90,7 +90,7 @@ namespace PlatformCoreTests
         {
             try
             {
-                InformationContext.InitializeToLogicalContext();
+                InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
                 var currentCtx = InformationContext.Current;
                 int result = 0;
                 var task = Task.Factory.StartNew(() =>
@@ -121,7 +121,7 @@ namespace PlatformCoreTests
                 {
                     var task = Task.Run(async () =>
                     {
-                        InformationContext.InitializeToLogicalContext();
+                        InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
                         var ctx = InformationContext.Current;
                         lock(uniqueDict)
                             uniqueDict.Add(ctx, true);

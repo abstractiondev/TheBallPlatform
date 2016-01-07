@@ -10,25 +10,28 @@ namespace TheBall.Interface
         {
             var executionOwner = new VirtualOwner(lockedOwnerPrefix,
                 lockedOwnerID);
-            InformationContext.Current.Owner = executionOwner;
-            foreach (var operationID in operationIDs)
+            try
             {
-                try
+                InformationContext.InitializeToLogicalContext(executionOwner);
+                InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
+                foreach (var operationID in operationIDs)
                 {
-                    InformationContext.InitializeToLogicalContext();
-                    InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
-                    // TODO: execute operation as operation owner
-                }
-                catch (Exception exception)
-                {
-                    // mark operation as error and continue
-                }
-                finally
-                {
-                    InformationContext.RemoveFromLogicalContext();
-                }
-            }
+                    try
+                    {
 
+                    }
+                    catch (Exception exception)
+                    {
+                        // mark operation as error and continue
+                    }
+
+                }
+                // TODO: execute operation as operation owner
+            }
+            finally
+            {
+                InformationContext.RemoveFromLogicalContext();
+            }
             var lockFullName = lockBlobFullPath;
             StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
         }
@@ -37,25 +40,28 @@ namespace TheBall.Interface
         {
             var executionOwner = new VirtualOwner(lockedOwnerPrefix,
                 lockedOwnerID);
-            InformationContext.Current.Owner = executionOwner;
-            foreach (var operationID in operationIDs)
+            try
             {
-                try
+                InformationContext.InitializeToLogicalContext(executionOwner);
+                InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
+                foreach (var operationID in operationIDs)
                 {
-                    InformationContext.InitializeToLogicalContext();
-                    InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
-                    // TODO: execute operation as operation owner
-                }
-                catch (Exception exception)
-                {
-                    // mark operation as error and continue
-                }
-                finally
-                {
-                    InformationContext.RemoveFromLogicalContext();
-                }
-            }
+                    try
+                    {
 
+                    }
+                    catch (Exception exception)
+                    {
+                        // mark operation as error and continue
+                    }
+
+                }
+                // TODO: execute operation as operation owner
+            }
+            finally
+            {
+                InformationContext.RemoveFromLogicalContext();
+            }
             var lockFullName = lockBlobFullPath;
             StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
         }

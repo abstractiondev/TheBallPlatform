@@ -49,7 +49,7 @@ namespace WebTemplateManager
 
                 bool debugMode = false;
                 StorageSupport.InitializeFixedStorageSettings(connStr);
-                InformationContext.InitializeToLogicalContext();
+                InformationContext.InitializeToLogicalContext(TBSystem.CurrSystem);
                 InformationContext.Current.InitializeCloudStorageAccess(currContainerName);
 
                 IContainerOwner owner;

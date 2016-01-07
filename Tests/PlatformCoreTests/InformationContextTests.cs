@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TheBall.CORE;
 
 namespace TheBall.Tests
 {
@@ -16,10 +17,10 @@ namespace TheBall.Tests
         [TestMethod]
         public void CurrentCollidingLogicalCallContexts()
         {
-            var firstContext = InformationContext.InitializeToLogicalContext();
+            var firstContext = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
             var task = Task.Run(async () =>
             {
-                var taskCtx = InformationContext.InitializeToLogicalContext();
+                var taskCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
                 return taskCtx;
             });
             InvalidOperationException expectedException = null;
@@ -46,7 +47,7 @@ namespace TheBall.Tests
                 var task = Task.Run(async () =>
                 {
 
-                    var firstCtx = InformationContext.InitializeToLogicalContext();
+                    var firstCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
                     var secondCtx = await retrieveCurrentContext(rnd);
                     var thirdCtx = await Task.Run(async () =>
                     {

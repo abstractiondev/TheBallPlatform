@@ -20,7 +20,7 @@ namespace WebInterface
             var accessRole = accessRoleTask.Result;
             if(!TBCollaboratorRole.HasModeratorRights(accessRole.Role))
                 throw new SecurityException("Moderator rights required to perform dynamic data fetch");
-            InformationContext.Current.Owner = accessRole;
+            //InformationContext.Current.Owner = accessRole;
             InformationContext.Current.CurrentGroupRole = accessRole.Role;
             return base.CreateHandler(route, table, action);
         }

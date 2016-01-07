@@ -58,18 +58,21 @@ namespace WebInterface
         {
             var request = context.Request;
             string owningGroupPrefix = string.Format("grp/{0}", handlerOwningGroup);
-            InformationContext.Current.Owner = VirtualOwner.FigureOwner(owningGroupPrefix);
-            var operationData = request.GetHttpOperationDataFromRequest(null, owningGroupPrefix,
-                operationFullName, request.Path);
-            var operationResult =
-                CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
-                {
-                    DataType = OperationSupport.HttpOperationDataType,
-                    OperationData = operationData.ToBytes()
-                });
-            ExecuteInterfaceOperation.Execute(new ExecuteInterfaceOperationParameters
+            var owner = VirtualOwner.FigureOwner(owningGroupPrefix);
+            await InformationContext.ExecuteAsOwnerAsync(owner, async () =>
             {
-                OperationID = operationResult.OperationID
+                var operationData = request.GetHttpOperationDataFromRequest(null, owningGroupPrefix,
+                    operationFullName, request.Path);
+                var operationResult =
+                    CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
+                    {
+                        DataType = OperationSupport.HttpOperationDataType,
+                        OperationData = operationData.ToBytes()
+                    });
+                ExecuteInterfaceOperation.Execute(new ExecuteInterfaceOperationParameters
+                {
+                    OperationID = operationResult.OperationID
+                });
             });
             context.Response.StatusCode = 200;
         }

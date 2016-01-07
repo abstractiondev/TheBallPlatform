@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,13 +27,14 @@ namespace TheBall
         public string CurrentGroupRole;
 
         public readonly long SerialNumber;
-        private static long CurrentSerial = 0;
-        public InformationContext()
-        {
-            SerialNumber = Interlocked.Increment(ref CurrentSerial);
-        }
+        private static long NextSerialNumber = 0;
 
-        public static bool AllowStatic { get; private set; }
+        public InformationContext(IContainerOwner owner)
+        {
+            SerialNumber = Interlocked.Increment(ref NextSerialNumber);
+            OwnerStack = new Stack<IContainerOwner>();
+            OwnerStack.Push(owner);
+        }
 
         public static DeviceMembership CurrentExecutingForDevice
         {
@@ -49,12 +51,14 @@ namespace TheBall
             get { return Current.Account; }
         }
 
-        public static InformationContext InitializeToLogicalContext()
+        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner)
         {
+            if (HttpContext.Current != null)
+                throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
             var logicalContext = CallContext.LogicalGetData(KEYNAME);
             if(logicalContext != null)
                 throw new InvalidOperationException("LogicalContext already initialized");
-            var ctx = InformationContext.Create();
+            var ctx = new InformationContext(contextRootOwner);
             CallContext.LogicalSetData(KEYNAME, ctx);
             return ctx;
         }
@@ -67,25 +71,46 @@ namespace TheBall
             CallContext.LogicalSetData(KEYNAME, null);
         }
 
+        public static InformationContext InitializeToHttpContext(IContainerOwner contextRootOwner)
+        {
+            var httpContext = HttpContext.Current;
+            if(httpContext == null)
+                throw new NotSupportedException("InitializeToHttpContext requires HttpContext to be available");
+            if(httpContext.Items.Contains(KEYNAME))
+                throw new InvalidOperationException("HttpContext already initialized");
+            InformationContext ctx = new InformationContext(contextRootOwner);
+            httpContext.Items.Add(KEYNAME, ctx);
+            return ctx;
+        }
+
+        public static void RemoveFromHttpContext()
+        {
+            var httpContext = HttpContext.Current;
+            bool containsCurrent = httpContext.Items.Contains(KEYNAME);
+            if (!containsCurrent)
+                throw new InvalidOperationException("LogicalContext is expected to be initialized");
+            httpContext.Items.Remove(KEYNAME);
+        }
+
+
         public static InformationContext Current
         {
             get
             {
                 var httpContext = HttpContext.Current;
-                if(httpContext != null)
+                if (httpContext != null)
                 {
                     if (httpContext.Items.Contains(KEYNAME))
                         return (InformationContext) httpContext.Items[KEYNAME];
-                    InformationContext informationContext = InformationContext.Create();
-                    httpContext.Items.Add(KEYNAME, informationContext);
-                    return informationContext;
+                    throw new InvalidOperationException("InitializeToHttpContext is required before use");
                 }
-
-                var logicalContext = CallContext.LogicalGetData(KEYNAME);
-                if (logicalContext != null)
-                    return (InformationContext) logicalContext;
-
-                throw new InvalidOperationException("InitializeToLogicalContext required when HttpContext is not available");
+                else
+                {
+                    var logicalContext = CallContext.LogicalGetData(KEYNAME);
+                    if (logicalContext != null)
+                        return (InformationContext)logicalContext;
+                    throw new InvalidOperationException("InitializeToLogicalContext is required before use");
+                }
             }
         }
 
@@ -138,11 +163,6 @@ namespace TheBall
             throw new InvalidOperationException("InformationContext ClearCurrent failed - no active context set");
         }
 
-        private static InformationContext Create()
-        {
-            return new InformationContext();
-        }
-
         public void PerformFinalizingActions()
         {
             updateStatusSummary();
@@ -159,7 +179,7 @@ namespace TheBall
                 // Resources usage items need to be under system, because they are handled as a batch
                 // The refined logging/storage is then saved under owner's context
                 var measurementOwner = TBSystem.CurrSystem;
-                var resourceUser = _owner ?? measurementOwner;
+                var resourceUser = Owner;
                 RequestResourceUsage.OwnerInfo.OwnerType = resourceUser.ContainerName;
                 RequestResourceUsage.OwnerInfo.OwnerIdentifier = resourceUser.LocationPrefix;
                 var now = RequestResourceUsage.ProcessorUsage.TimeRange.EndTime;
@@ -172,7 +192,7 @@ namespace TheBall
 
         private void createIndexingRequest()
         {
-            if (_owner != null && IndexedIDInfos.Count > 0)
+            if (Owner != TBSystem.CurrSystem && IndexedIDInfos.Count > 0)
             {
                 FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = IndexedIDInfos.ToArray() });
             }
@@ -210,7 +230,7 @@ namespace TheBall
                         + containerName + ")");
             }
             CloudBlobClient blobClient = StorageSupport.CurrStorageAccount.CreateCloudBlobClient();
-            blobClient.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(300), 10);
+            blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(300), 10);
             CurrBlobClient = blobClient;
 
             var activeContainer = blobClient.GetContainerReference(containerName.ToLower());
@@ -273,18 +293,8 @@ namespace TheBall
             get { return _account; }
         }
 
-        private IContainerOwner _owner;
-        public bool IsOwnerDefined { get { return _owner != null; } }
-        public IContainerOwner Owner
-        {
-            set { _owner = value; }
-            get
-            {
-                if(_owner == null)
-                    throw new InvalidDataException("Owner not set, but still requested in active information context");
-                return _owner;
-            }
-        }
+        private readonly Stack<IContainerOwner> OwnerStack;
+        public IContainerOwner Owner => OwnerStack.Peek();
 
         private DeviceMembership _executingForDevice;
         public DeviceMembership ExecutingForDevice
@@ -388,10 +398,10 @@ namespace TheBall
         public void ObjectStoredNotification(IInformationObject informationObject, ObjectChangeType changeType)
         {
             IIndexedDocument iDoc = informationObject as IIndexedDocument;
-            if (iDoc != null && _owner != null)
+            if (iDoc != null)
             {
                 VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
-                if (owner.IsEqualOwner(_owner))
+                if (owner.IsEqualOwner(Owner))
                 {
                     IndexedIDInfos.Add(informationObject.RelativeLocation);
                 }
@@ -425,6 +435,27 @@ namespace TheBall
             foreach (string id in ChangedIDInfos)
                 idList.Add(id);
             return idList.ToArray();
+        }
+
+        private async Task executeAsOwnerAsync(IContainerOwner owner, Func<Task> action)
+        {
+            OwnerStack.Push(owner);
+            try
+            {
+                await action();
+            }
+            finally
+            {
+                var verifyOwner = OwnerStack.Pop();
+                if (verifyOwner != owner)
+                    throw new SecurityException("InformationContext.OwnerStack is corrupt!");
+            }
+
+        }
+
+        public static async Task ExecuteAsOwnerAsync(IContainerOwner owner, Func<Task> action)
+        {
+            await Current.executeAsOwnerAsync(owner, action);
         }
     }
 }

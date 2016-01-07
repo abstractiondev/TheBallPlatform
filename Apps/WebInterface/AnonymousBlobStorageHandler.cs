@@ -141,7 +141,6 @@ namespace WebInterface
                 string[] currServeArr = currServingData.Split(':');
                 string currActiveFolder = currServeArr[0];
                 var currOwner = VirtualOwner.FigureOwner(currServeArr[1]);
-                InformationContext.Current.Owner = currOwner;
                 currServingFolder = "/" + currActiveFolder;
             }
             catch
