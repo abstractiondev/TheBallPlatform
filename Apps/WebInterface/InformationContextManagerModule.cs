@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using TheBall;
 using TheBall.CORE;
@@ -62,7 +63,8 @@ namespace WebInterface
             if (request.Path.StartsWith("/websocket/") || request.Url.Host == "localhost")
                 return;
             var hostName = request.Url.DnsSafeHost;
-            InformationContext.Current.InstanceName = hostName;
+            var ctx = InformationContext.InitializeToHttpContextPreAuthentication(SystemOwner.CurrentSystem);
+            ctx.InstanceName = hostName;
             WebSupport.InitializeContextStorage(HttpContext.Current.Request);
             // Do resource tracking only on non-local requests
             if (request.IsLocal == false)
@@ -101,7 +103,7 @@ namespace WebInterface
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
             }
-            InformationContext.ProcessAndClearCurrent();
+            InformationContext.ProcessAndClearCurrentIfAvailable();
         }
 
         #endregion

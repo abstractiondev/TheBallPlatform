@@ -181,6 +181,7 @@
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="PersonalWeb.Diosphere\SaveRoomDataImplementation.cs" />
     <Compile Include="SyncSupport.cs" />
+    <Compile Include="SystemOwner.cs" />
     <Compile Include="TheBall.CORE\ConfirmAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\CreateProcessImplementation.cs" />
     <Compile Include="TheBall.CORE\DeleteProcessImplementation.cs" />

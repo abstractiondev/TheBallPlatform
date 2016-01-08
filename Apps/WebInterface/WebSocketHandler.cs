@@ -61,7 +61,7 @@ namespace WebInterface
                 }        
             } finally
             {
-                InformationContext.ProcessAndClearCurrent();
+                InformationContext.ProcessAndClearCurrentIfAvailable();
             }*/
         }
 

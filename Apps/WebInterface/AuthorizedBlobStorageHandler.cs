@@ -284,6 +284,7 @@ namespace WebInterface
         {
             var request = context.Request;
             var loginGroupRoot = await request.RequireAndRetrieveGroupAccessRole();
+            InformationContext.AuthenticateContextOwner(loginGroupRoot);
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
             var contentPath = request.GetOwnerContentPath();
             await HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
@@ -301,6 +302,7 @@ namespace WebInterface
                 return;
             }
             TBAccount account = loginRoot.Account;
+            InformationContext.AuthenticateContextOwner(account);
             var request = context.Request;
             var contentPath = request.GetOwnerContentPath();
             await HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);

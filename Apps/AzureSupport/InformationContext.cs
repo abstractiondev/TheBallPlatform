@@ -71,14 +71,34 @@ namespace TheBall
             CallContext.LogicalSetData(KEYNAME, null);
         }
 
-        public static InformationContext InitializeToHttpContext(IContainerOwner contextRootOwner)
+
+        private bool isPreInitializedAsSystem = false;
+        public static InformationContext InitializeToHttpContextPreAuthentication(SystemOwner currSystem)
+        {
+            var ctx = InitializeToHttpContext(currSystem);
+            ctx.isPreInitializedAsSystem = true;
+            return ctx;
+        }
+
+        public static void AuthenticateContextOwner(IContainerOwner contextOwner)
+        {
+            var ctx = Current;
+            if(ctx.isPreInitializedAsSystem == false)
+                throw new SecurityException("AuthenticateContext only allowed against PreAuthentication initialized context");
+            ctx.OwnerStack.Pop();
+            ctx.OwnerStack.Push(contextOwner);
+            ctx.isPreInitializedAsSystem = false;
+        }
+
+
+        public static InformationContext InitializeToHttpContext(IContainerOwner contextOwner)
         {
             var httpContext = HttpContext.Current;
             if(httpContext == null)
                 throw new NotSupportedException("InitializeToHttpContext requires HttpContext to be available");
             if(httpContext.Items.Contains(KEYNAME))
                 throw new InvalidOperationException("HttpContext already initialized");
-            InformationContext ctx = new InformationContext(contextRootOwner);
+            InformationContext ctx = new InformationContext(contextOwner);
             httpContext.Items.Add(KEYNAME, ctx);
             return ctx;
         }
@@ -93,25 +113,29 @@ namespace TheBall
         }
 
 
-        public static InformationContext Current
+        public static bool IsAwailable => getCurrent(true) != null;
+
+        public static InformationContext Current => getCurrent(false);
+
+        private static InformationContext getCurrent(bool allowNotInitialized)
         {
-            get
+            var httpContext = HttpContext.Current;
+            if (httpContext != null)
             {
-                var httpContext = HttpContext.Current;
-                if (httpContext != null)
-                {
-                    if (httpContext.Items.Contains(KEYNAME))
-                        return (InformationContext) httpContext.Items[KEYNAME];
+                if (httpContext.Items.Contains(KEYNAME))
+                    return (InformationContext) httpContext.Items[KEYNAME];
+                if(!allowNotInitialized)
                     throw new InvalidOperationException("InitializeToHttpContext is required before use");
-                }
-                else
-                {
-                    var logicalContext = CallContext.LogicalGetData(KEYNAME);
-                    if (logicalContext != null)
-                        return (InformationContext)logicalContext;
-                    throw new InvalidOperationException("InitializeToLogicalContext is required before use");
-                }
             }
+            else
+            {
+                var logicalContext = CallContext.LogicalGetData(KEYNAME);
+                if (logicalContext != null)
+                    return (InformationContext) logicalContext;
+                if(!allowNotInitialized)
+                    throw new InvalidOperationException("InitializeToLogicalContext is required before use");
+            }
+            return null;
         }
 
         public static void updateStatusSummary()
@@ -139,10 +163,13 @@ namespace TheBall
         }
 
 
-        public static void ProcessAndClearCurrent()
+        public static void ProcessAndClearCurrentIfAvailable()
         {
-            Current.PerformFinalizingActions();
-            ClearCurrent();
+            if (IsAwailable)
+            {
+                Current.PerformFinalizingActions();
+                ClearCurrent();
+            }
         }
 
         public static void ClearCurrent()
@@ -178,7 +205,7 @@ namespace TheBall
                 //    owner = TBSystem.CurrSystem;
                 // Resources usage items need to be under system, because they are handled as a batch
                 // The refined logging/storage is then saved under owner's context
-                var measurementOwner = TBSystem.CurrSystem;
+                var measurementOwner = SystemOwner.CurrentSystem;
                 var resourceUser = Owner;
                 RequestResourceUsage.OwnerInfo.OwnerType = resourceUser.ContainerName;
                 RequestResourceUsage.OwnerInfo.OwnerIdentifier = resourceUser.LocationPrefix;
@@ -192,7 +219,7 @@ namespace TheBall
 
         private void createIndexingRequest()
         {
-            if (Owner != TBSystem.CurrSystem && IndexedIDInfos.Count > 0)
+            if (Owner != SystemOwner.CurrentSystem && IndexedIDInfos.Count > 0)
             {
                 FilterAndSubmitIndexingRequests.Execute(new FilterAndSubmitIndexingRequestsParameters { CandidateObjectLocations = IndexedIDInfos.ToArray() });
             }
@@ -457,5 +484,6 @@ namespace TheBall
         {
             await Current.executeAsOwnerAsync(owner, action);
         }
+
     }
 }

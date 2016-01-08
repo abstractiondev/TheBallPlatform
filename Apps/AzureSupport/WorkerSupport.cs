@@ -287,7 +287,7 @@ namespace TheBall
                 finally
                 {
                     if (containerName != null)
-                        InformationContext.ProcessAndClearCurrent();
+                        InformationContext.ProcessAndClearCurrentIfAvailable();
 
                 }
             }
@@ -320,7 +320,7 @@ namespace TheBall
                 finally
                 {
                     if (containerName != null)
-                        InformationContext.ProcessAndClearCurrent();
+                        InformationContext.ProcessAndClearCurrentIfAvailable();
 
                 }
             }

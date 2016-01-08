@@ -49,7 +49,7 @@ namespace WebTemplateManager
 
                 bool debugMode = false;
                 StorageSupport.InitializeFixedStorageSettings(connStr);
-                InformationContext.InitializeToLogicalContext(TBSystem.CurrSystem);
+                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem);
                 InformationContext.Current.InitializeCloudStorageAccess(currContainerName);
 
                 IContainerOwner owner;
@@ -65,7 +65,7 @@ namespace WebTemplateManager
                 else // sys
                 {
                     isSystem = true;
-                    owner = TBSystem.CurrSystem;
+                    owner = SystemOwner.CurrentSystem;
                     sysTemplateOwner = grpacctIDorTemplateName.Substring(3);
                     if (sysTemplateOwner != "account" && sysTemplateOwner != "group")
                         throw new NotSupportedException("Other templates than account or group are not supported");

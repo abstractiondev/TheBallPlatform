@@ -208,7 +208,7 @@ namespace TheBallTool
             }
             finally
             {
-                InformationContext.ProcessAndClearCurrent();
+                InformationContext.ProcessAndClearCurrentIfAvailable();
                 InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
             }
         }
@@ -226,7 +226,7 @@ namespace TheBallTool
                         StorageSupport.DeleteInformationObject(loc);
                     } finally
                     {
-                        InformationContext.ProcessAndClearCurrent();
+                        InformationContext.ProcessAndClearCurrentIfAvailable();
                         InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                     }
                 }
@@ -248,7 +248,7 @@ namespace TheBallTool
                 image.ImageData.UpdateAdditionalMediaFormats();
                 Console.WriteLine("Processed Image: " + ++currImageIndex + " out of " + images.Length);
             }
-            InformationContext.ProcessAndClearCurrent();
+            InformationContext.ProcessAndClearCurrentIfAvailable();
             InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
@@ -267,7 +267,7 @@ namespace TheBallTool
                     AccountID = accountRoot.Account.ID,
                     GroupRoot = groupRoot
                 });
-                InformationContext.ProcessAndClearCurrent();
+                InformationContext.ProcessAndClearCurrentIfAvailable();
                 InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
             }
         }
@@ -279,7 +279,7 @@ namespace TheBallTool
                                                                         GroupID = groupID,
                                                                         EmailAddress = memberEmail
                                                                     });
-            InformationContext.ProcessAndClearCurrent();
+            InformationContext.ProcessAndClearCurrentIfAvailable();
             InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 

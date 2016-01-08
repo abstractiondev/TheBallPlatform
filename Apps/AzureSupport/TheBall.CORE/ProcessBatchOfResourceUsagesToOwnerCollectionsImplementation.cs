@@ -63,7 +63,7 @@ namespace TheBall.CORE
             {
                 IContainerOwner owner;
                 if (ownerKey.StartsWith(SystemSupport.SystemOwnerRoot))
-                    owner = TBSystem.CurrSystem;
+                    owner = SystemOwner.CurrentSystem;
                 else
                     owner = VirtualOwner.FigureOwner(ownerKey);
                 var ownerContent = ownerGroupedUsages[ownerKey];
