@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TheBall.CORE;
+using TheBall.Interface;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {
@@ -54,7 +55,6 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     if (pipeMessageAwaitable != null)
                         awaitList.Add(pipeMessageAwaitable);
                     awaitList.AddRange(currentTasks.Select(item => item.Item2));
-
                     await Task.WhenAny(awaitList);
 
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
@@ -114,9 +114,25 @@ namespace TheBall.Infra.TheBallWorkerConsole
         private static Tuple<Task, CancellationTokenSource> getPollingTask(InstancePollItem instancePollItem)
         {
             var cancellationTokenSource = new CancellationTokenSource();
+            var cancellationToken = cancellationTokenSource.Token;
             Task result = Task.Run(async () =>
             {
                 InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instancePollItem.InstanceHostName);
+                bool keepRunning = !cancellationToken.IsCancellationRequested;
+                while (keepRunning)
+                {
+                    Console.WriteLine("Polling..." + DateTime.Now.ToLongTimeString());
+                    var obtainedLock = await LockInterfaceOperationsByOwner.ExecuteAsync();
+                    if (obtainedLock != null)
+                    {
+                        Console.WriteLine("Found: " + obtainedLock.OperationIDs.Length + " operations...");
+                        return obtainedLock;
+                    }
+                    else
+                        await Task.Delay(1000);
+                    keepRunning = !cancellationToken.IsCancellationRequested;
+                }
+                return null;
             }, cancellationTokenSource.Token);
             return new Tuple<Task, CancellationTokenSource>(result, cancellationTokenSource);
         }

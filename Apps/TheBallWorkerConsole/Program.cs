@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure;
 using Nito.AsyncEx;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {
@@ -46,6 +47,10 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var workerConfigFullPath = args.Length > 0 ? args[0] : null;
             if (workerConfigFullPath == null)
                 throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
+            
+            var configDirPath = new FileInfo(workerConfigFullPath).Directory.FullName;
+            var infraConfigFullPath = Path.Combine(configDirPath, "InfraShared", "InfraConfig.json");
+            await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
 
             var clientHandle = args.Length > 1 ? args[1] : null;
 

@@ -24,7 +24,14 @@ namespace TheBall.CORE.InstanceSupport
             InstanceConfig = instanceConfig;
         }
 
-        public static async Task InitializeOrUpdateInfraConfig(string infraConfigFullPath)
+        public static async Task InitializeRuntimeConfigs(string infraConfigFullPath)
+        {
+            await UpdateInfraConfig(infraConfigFullPath);
+            foreach (var instanceName in InfraConfig.InstanceNames)
+                await UpdateInstanceConfig(instanceName);
+        }
+
+        public static async Task UpdateInfraConfig(string infraConfigFullPath)
         {
             await _semaphore.WaitAsync();
             try
@@ -40,7 +47,7 @@ namespace TheBall.CORE.InstanceSupport
             }
         }
 
-        public static async Task InitializeOrUpdateInstanceConfig(string instanceName)
+        public static async Task UpdateInstanceConfig(string instanceName)
         {
             var secureConfigFullPath = Path.Combine(ConfigRootPath, instanceName, "SecureConfig.json");
             var secureConfig = await deserialize<SecureConfig>(secureConfigFullPath);

@@ -128,6 +128,8 @@ namespace TheBall.Interface
 
         public static LockInterfaceOperationsByOwnerReturnValue Get_ReturnValue(LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue acquireFirstObtainableLockOutput)
         {
+            if (acquireFirstObtainableLockOutput == null)
+                return null;
             return new LockInterfaceOperationsByOwnerReturnValue
             {
                 LockedOwnerPrefix = acquireFirstObtainableLockOutput.LockedOwnerPrefix,

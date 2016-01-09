@@ -44,12 +44,12 @@ namespace WebInterface
                 ? @"X:\"
                 : Environment.GetEnvironmentVariable("TBCoreFolder");
             string infraConfigFullPath =  Path.Combine(infraDriveRoot, @"Configs\InfraShared\InfraConfig.json");
-            RuntimeConfiguration.InitializeOrUpdateInfraConfig(infraConfigFullPath).Wait();
+            RuntimeConfiguration.UpdateInfraConfig(infraConfigFullPath).Wait();
 
             var instances = InfraSharedConfig.Current.InstanceNames;
             foreach (var instance in instances)
             {
-                RuntimeConfiguration.InitializeOrUpdateInstanceConfig(instance).Wait();
+                RuntimeConfiguration.UpdateInstanceConfig(instance).Wait();
             }
 
             var appInstanceKey = InfraSharedConfig.Current.AppInsightInstrumentationKey;

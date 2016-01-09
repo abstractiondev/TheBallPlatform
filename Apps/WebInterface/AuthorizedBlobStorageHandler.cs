@@ -375,9 +375,9 @@ namespace WebInterface
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
                 String.Empty);
-            //string operationID = OperationSupport.QueueHttpOperation(operationData);
-            OperationSupport.ExecuteHttpOperation(operationData);
-            string operationID = "0";
+            string operationID = await OperationSupport.QueueHttpOperationAsync(operationData);
+            //OperationSupport.ExecuteHttpOperation(operationData);
+            //string operationID = "0";
             var response = context.Response;
             response.Write(String.Format("{{ \"OperationID\": {0} }}", operationID));
             //EndResponseWithStatusCode(context, 202);
@@ -413,7 +413,10 @@ namespace WebInterface
 //                HandlerOwnerAjaxDataPOST(containerOwner, request);
                 //SetCategoryHierarchyAndOrderInNodeSummary.Execute();
                 string operationName = request.Params["operation"];
-                
+
+                await HandleOwnerOperationRequest(containerOwner, context, operationName);
+                return false;
+
                 Type operationType = TypeSupport.GetTypeByName(operationName);
                 var method = operationType.GetMethod("Execute", BindingFlags.Public | BindingFlags.Static);
                 method.Invoke(null, null);

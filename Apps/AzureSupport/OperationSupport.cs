@@ -122,15 +122,20 @@ namespace TheBall
             return paramObj;
         }
 
-        public static string QueueHttpOperation(HttpOperationData reqData)
+        public static async Task<string> QueueHttpOperationAsync(HttpOperationData reqData)
         {
-            var interfaceOperation =
+            var operationResult =
                 CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
                 {
                     DataType = "HTTPREQUEST",
                     OperationData = reqData.ToBytes()
                 });
-            return interfaceOperation.OperationID;
+            string operationID = operationResult.OperationID;
+            await PutInterfaceOperationToQueue.ExecuteAsync(new PutInterfaceOperationToQueueParameters
+            {
+                OperationID = operationID
+            });
+            return operationID;
         }
 
 
