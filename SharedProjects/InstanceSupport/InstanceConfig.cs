@@ -26,7 +26,6 @@ namespace TheBall.CORE.InstanceSupport
         public string EmailAccountMergeValidationSubjectFormat;
         public string EmailAccountMergeValidationMessageFormat;
         public string EmailValidationURLWithoutID;
-        public string WorkerActiveContainerName;
 
         public string[] DefaultAccountTemplateList;
         public string AccountDefaultRedirect;

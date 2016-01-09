@@ -29,9 +29,9 @@ namespace WebTemplateManager
                 Console.ReadLine(); // Enter to exit
                 //return;*/
 
-                if (arguments.Length != 5 || arguments[1].Length != 4)
+                if (arguments.Length != 6 || arguments[1].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <instanceName> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
+                    Console.WriteLine("Usage: WebTemplateManager.exe <instanceName> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <storageAccountName> <storageAccountKey>");
                     return;
                 }
                 //Debugger.Launch();
@@ -42,15 +42,22 @@ namespace WebTemplateManager
                 string templateName = arguments[2];
                 if(String.IsNullOrWhiteSpace(templateName))
                     throw new ArgumentException("Template name must be given");
-                string connStr = arguments[4];
+                string storageAccountName = arguments[4];
+                string storageAccountKey = arguments[5];
                 string grpacctIDorTemplateName = arguments[3];
                 if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri" && pubPriPrefixWithDash != "-sys")
                     throw new ArgumentException("-pub or -pri misspelled or missing");
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
 
                 bool debugMode = false;
-                throw new NotImplementedException();
-                RuntimeConfiguration.InitializeForCustomTool(null, null, null, instanceName);
+                RuntimeConfiguration.InitializeForCustomTool(new InfraSharedConfig(), 
+                    new SecureConfig
+                    {
+                        AzureAccountName = storageAccountName,
+                        AzureStorageKey = storageAccountKey
+                    }, 
+                    new InstanceConfig(), 
+                    instanceName);
                 InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
 
                 IContainerOwner owner;

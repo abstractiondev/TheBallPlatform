@@ -10,7 +10,7 @@ namespace TheBall.CORE.InstanceSupport
     {
         public string AWSAccessKey;
         public string AWSSecretKey;
-        public string AzureStorageConnectionString;
+        //public string AzureStorageConnectionString;
         public string AzureStorageKey;
         public string AzureAccountName;
         public string CoreFileShareAccountName;
