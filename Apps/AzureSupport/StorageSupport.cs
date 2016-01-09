@@ -38,6 +38,19 @@ namespace TheBall
         public static string InformationType_RenderedWebPage = "RenderedWebPage";
         public static string InformationType_GenericContentValue = "GenericContent";
 
+        static StorageSupport()
+        {
+            ServicePointManager.UseNagleAlgorithm = false;
+        }
+
+        private static string getContainerName(string instanceName)
+        {
+            string containerName = instanceName.Replace('.', '-').ToLower();
+            if (InstanceConfig.Current.ContainerRedirectsDict.ContainsKey(containerName))
+                return InstanceConfig.Current.ContainerRedirectsDict[containerName];
+            return containerName;
+        }
+
         //public static CloudTableClient CurrTableClient { get; private set; }
         public static CloudStorageAccount CurrStorageAccount
         {
@@ -66,13 +79,21 @@ namespace TheBall
 
         public static CloudBlobContainer CurrActiveContainer
         {
-            get { return InformationContext.Current.CurrActiveContainer; }
+            get
+            {
+                var blobClient = CurrBlobClient;
+                var containerName = getContainerName(InformationContext.Current.InstanceName);
+                return blobClient.GetContainerReference(containerName);
+            }
         }
-        //public static CloudBlobContainer CurrAnonPublicContainer { get; private set; }
-        //public static CloudBlobContainer CurrTemplateContainer { get; private set; }
+
         public static CloudBlobClient CurrBlobClient
         {
-            get { return InformationContext.Current.CurrBlobClient; }
+            get
+            {
+                var blobClient = CurrStorageAccount.CreateCloudBlobClient();
+                return blobClient;
+            }
         }
         public const int AccOrGrpPlusIDPathLength = 41;
         private const string ContentFolderName = "Content";
@@ -110,16 +131,6 @@ namespace TheBall
         public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
-        }
-
-        public static void InitializeFixedStorageSettings(string connStr)
-        {
-            throw new NotImplementedException("Not yet implemented as fixed... need instance name");
-        }
-
-        public static void InitializeStorageSettings()
-        {
-            ServicePointManager.UseNagleAlgorithm = false;
         }
 
         [Obsolete("no", true)]
@@ -1209,8 +1220,6 @@ namespace TheBall
             {
                 if(blobAddress.StartsWith(ownerPrefix))
                     return blobAddress;
-                // TODO: NOTE! this allows cross-referencing blobs between owner boundaries in subscriptions
-                return blobAddress;
                 throw new SecurityException("Invalid reference to blob: " + blobAddress + " by owner prefix: " + owner.LocationPrefix);
             }
             return ownerPrefix + blobAddress;

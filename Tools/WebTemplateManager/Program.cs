@@ -9,6 +9,7 @@ using AaltoGlobalImpact.OIP;
 using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebTemplateManager
 {
@@ -30,13 +31,13 @@ namespace WebTemplateManager
 
                 if (arguments.Length != 5 || arguments[1].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <containername> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
+                    Console.WriteLine("Usage: WebTemplateManager.exe <instanceName> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <connection string>");
                     return;
                 }
                 //Debugger.Launch();
 
-                string currContainerName = arguments[0];
-                ValidateContainerName(currContainerName);
+                string instanceName = arguments[0];
+                ValidateContainerName(instanceName);
                 string pubPriPrefixWithDash = arguments[1];
                 string templateName = arguments[2];
                 if(String.IsNullOrWhiteSpace(templateName))
@@ -48,9 +49,9 @@ namespace WebTemplateManager
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
 
                 bool debugMode = false;
-                StorageSupport.InitializeFixedStorageSettings(connStr);
-                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem);
-                InformationContext.Current.InitializeCloudStorageAccess(currContainerName);
+                throw new NotImplementedException();
+                RuntimeConfiguration.InitializeForCustomTool(null, null, null, instanceName);
+                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
 
                 IContainerOwner owner;
                 bool isAccount = false;

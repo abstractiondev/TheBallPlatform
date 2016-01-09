@@ -40,7 +40,7 @@ namespace WebInterface
         public void ProcessRequest(HttpContext context)
         {
             bool isSocket = false;
-            WebSupport.InitializeContextStorage(context.Request);
+            InformationContext.InitializeToHttpContext(SystemOwner.CurrentSystem);
             if (context.IsWebSocketRequest)
             {
                 isSocket = true;

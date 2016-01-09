@@ -583,7 +583,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="ExecuteInterfaceOperationsByOwnerAndReleaseLock (LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)" level="1">
+          <Header text="ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -600,6 +600,17 @@
                     <Column name="Description" />
                   </Columns>
                   <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>InstanceName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Instance name to run the operations against</TextContent>
+                      </ColumnData>
+                    </Row>
                     <Row>
                       <ColumnData>
                         <TextContent>LockedOwnerPrefix</TextContent>
@@ -648,7 +659,7 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )" level="2">
+            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Execute operations one by one, delete queue items after each execution, delete lock item after all executed.</TextContent>

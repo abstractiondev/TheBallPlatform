@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -12,12 +13,12 @@ namespace TheBall.CORE.InstanceSupport
         private static SemaphoreSlim _semaphore = new SemaphoreSlim(1);
         internal static ConcurrentDictionary<string, RuntimeConfiguration>  RuntimeConfigurationsDict = new ConcurrentDictionary<string, RuntimeConfiguration>();
 
-        public static InfraSharedConfig InfraConfig;
+        public static InfraSharedConfig InfraConfig { get; private set; }
         internal static string ConfigRootPath;
         public readonly SecureConfig SecureConfig;
         public readonly InstanceConfig InstanceConfig;
 
-        public RuntimeConfiguration(SecureConfig secureConfig, InstanceConfig instanceConfig)
+        private RuntimeConfiguration(SecureConfig secureConfig, InstanceConfig instanceConfig)
         {
             SecureConfig = secureConfig;
             InstanceConfig = instanceConfig;
@@ -71,6 +72,15 @@ namespace TheBall.CORE.InstanceSupport
             RuntimeConfiguration result;
             RuntimeConfigurationsDict.TryGetValue(instanceName, out result);
             return result;
+        }
+
+        public static void InitializeForCustomTool(InfraSharedConfig infraSharedConfig, SecureConfig secureConfig, InstanceConfig instanceConfig, string instanceName)
+        {
+            if (InfraConfig != null)
+                throw new InvalidOperationException("InfraConfig already initialized");
+            InfraConfig = infraSharedConfig;
+            RuntimeConfiguration config = new RuntimeConfiguration(secureConfig, instanceConfig);
+            RuntimeConfigurationsDict.AddOrUpdate(instanceName, config, (s, configuration) => config);
         }
     }
 }

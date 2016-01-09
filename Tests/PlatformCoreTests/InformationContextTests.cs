@@ -17,10 +17,10 @@ namespace TheBall.Tests
         [TestMethod]
         public void CurrentCollidingLogicalCallContexts()
         {
-            var firstContext = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
+            var firstContext = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstinstance");
             var task = Task.Run(async () =>
             {
-                var taskCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
+                var taskCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstInstance");
                 return taskCtx;
             });
             InvalidOperationException expectedException = null;
@@ -47,7 +47,7 @@ namespace TheBall.Tests
                 var task = Task.Run(async () =>
                 {
 
-                    var firstCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"));
+                    var firstCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstInstance");
                     var secondCtx = await retrieveCurrentContext(rnd);
                     var thirdCtx = await Task.Run(async () =>
                     {

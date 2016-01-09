@@ -274,7 +274,6 @@ namespace TheBall
                     Directory.CreateDirectory(containerIndexRoot);
                 try
                 {
-                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
                     InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerIndexing);
                     IndexInformation.Execute(new IndexInformationParameters
                         {
@@ -307,7 +306,6 @@ namespace TheBall
                     Directory.CreateDirectory(containerIndexRoot);
                 try
                 {
-                    InformationContext.Current.InitializeCloudStorageAccess(containerName: containerName);
                     InformationContext.StartResourceMeasuringOnCurrent(InformationContext.ResourceUsageType.WorkerQuery);
                     QueryIndexedInformation.Execute(new QueryIndexedInformationParameters
                         {

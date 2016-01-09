@@ -11,6 +11,7 @@ using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBallTool
 {
@@ -27,9 +28,10 @@ namespace TheBallTool
                 bool debugMode = false;
 
 
-                StorageSupport.InitializeFixedStorageSettings(connStr);
-                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem);
-                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+                throw new NotSupportedException("TheBallTool no longer supported with proper storage instance/owner separation");
+                RuntimeConfiguration.InitializeForCustomTool(null, null, null, null);
+                //InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem);
+                //InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
                 QueueSupport.RegisterQueue("index-defaultindex-index");
                 QueueSupport.RegisterQueue("index-defaultindex-query");
 

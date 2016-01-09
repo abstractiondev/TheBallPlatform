@@ -116,8 +116,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var cancellationTokenSource = new CancellationTokenSource();
             Task result = Task.Run(async () =>
             {
-                InformationContext.InitializeToLogicalContext(new VirtualOwner("TODO", "SYSTEMOWNER"));
-                InformationContext.Current.InstanceName = instancePollItem.InstanceHostName;
+                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instancePollItem.InstanceHostName);
             }, cancellationTokenSource.Token);
             return new Tuple<Task, CancellationTokenSource>(result, cancellationTokenSource);
         }

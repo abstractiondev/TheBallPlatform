@@ -245,6 +245,7 @@ using System.Threading.Tasks;
 				}
 				public class ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters 
 		{
+				public string InstanceName ;
 				public string LockedOwnerPrefix ;
 				public string LockedOwnerID ;
 				public string[] OperationIDs ;
@@ -259,12 +260,12 @@ using System.Threading.Tasks;
 				public static void Execute(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
+					ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(parameters.InstanceName, parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
 				}
 				public static async Task ExecuteAsync(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
 		{
 						PrepareParameters(parameters);
-					 await ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
+					 await ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(parameters.InstanceName, parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
 				}
 				}
 				public class UpdateStatusSummaryParameters 

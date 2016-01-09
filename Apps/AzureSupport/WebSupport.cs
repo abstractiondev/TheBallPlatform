@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System;
+using System.Security.Principal;
 using System.Text;
 using System.Web;
 using TheBall;
@@ -17,24 +18,6 @@ namespace AzureSupport
         {
             return GetLoginUrl(context.User);
         }
-
-        static string GetContainerName(HttpRequest request)
-        {
-            string hostName = request.Url.DnsSafeHost;
-            if (hostName == "localhost" || hostName == "localdev" || hostName.StartsWith("192.168."))
-                return InstanceConfig.Current.WorkerActiveContainerName;
-            string containerName = hostName.Replace('.', '-').ToLower();
-            if (InstanceConfig.Current.ContainerRedirectsDict.ContainsKey(containerName))
-                return InstanceConfig.Current.ContainerRedirectsDict[containerName];
-            return containerName;
-        }
-
-        public static void InitializeContextStorage(HttpRequest request)
-        {
-            string containerName = GetContainerName(request);
-            InformationContext.Current.InitializeCloudStorageAccess(containerName);
-        }
-
 
         /// <summary>
         /// Encodes a string to be represented as a string literal. The format

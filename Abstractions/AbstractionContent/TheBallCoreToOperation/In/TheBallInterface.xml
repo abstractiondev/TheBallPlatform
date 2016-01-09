@@ -478,6 +478,7 @@
           <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
         </OperationSpec>
         <Parameters>
+          <Parameter dataType="string" name="InstanceName" designDesc="Instance name to run the operations against" state="implemented"/>
           <Parameter dataType="string" name="LockedOwnerPrefix" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented"/>
           <Parameter dataType="string" name="LockedOwnerID" designDesc="Locked owner ID (if lock acquired)" state="implemented"/>
           <Parameter dataType="string[]" name="OperationIDs" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented"/>
@@ -486,6 +487,7 @@
         <Execution>
           <SequentialExecution>
             <MethodExecute name="ExecuteOperationsAndReleaseLock" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." asyncSupportMode="Both" state="implemented">
+              <Parameter name="InstanceName"/>
               <Parameter name="LockedOwnerPrefix"/>
               <Parameter name="LockedOwnerID"/>
               <Parameter name="OperationIDs"/>

@@ -72,8 +72,8 @@ namespace TheBall.CORE
 
         public static string GetTarget_SQLiteDBLocationDirectory(IContainerOwner owner)
         {
-            string currContainerName = InformationContext.Current.InitializedContainerName;
-            string dbDirectory = SecureConfig.Current.CoreShareWithFolderName + "\\" + currContainerName  + "\\" + owner.ContainerName + "\\" +
+            string instanceName = InformationContext.Current.InstanceName;
+            string dbDirectory = SecureConfig.Current.CoreShareWithFolderName + "\\" + instanceName  + "\\" + owner.ContainerName + "\\" +
                                  owner.LocationPrefix;
             return dbDirectory;
 

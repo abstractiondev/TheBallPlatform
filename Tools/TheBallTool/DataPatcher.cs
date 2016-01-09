@@ -184,55 +184,6 @@ namespace TheBallTool
             groupRoot.Group.ReconnectMastersAndCollectionsForOwner();
         }
 
-        private static void InitCategoryParentIDFromParentCategory()
-        {
-            var categories =
-                GetAllInformationObjects(name => name.Contains("AaltoGlobalImpact.OIP/Category/"), io => io is Category)
-                    .Cast<Category>()
-                    .ToArray();
-            int totalCats = categories.Length;
-            int currCat = 0;
-            try
-            {
-                foreach (var cat in categories)
-                {
-                    currCat++;
-                    Debug.WriteLine("Current " + currCat + " of total " + totalCats);
-                    if (cat.ParentCategory != null)
-                        cat.ParentCategoryID = cat.ParentCategory.ID;
-                    else
-                        cat.ParentCategoryID = null;
-                    VirtualOwner owner = VirtualOwner.FigureOwner(cat);
-                    cat.StoreInformation(owner);
-                }
-            }
-            finally
-            {
-                InformationContext.ProcessAndClearCurrentIfAvailable();
-                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-            }
-        }
-
-        private static void ClearEmptyLocations()
-        {
-            var locations =
-                GetAllInformationObjects(null, io => io is AddressAndLocation).Cast<AddressAndLocation>().ToArray();
-            foreach(var loc in locations)
-            {
-                if(String.IsNullOrEmpty(loc.Location.LocationName))
-                {
-                    try
-                    {
-                        StorageSupport.DeleteInformationObject(loc);
-                    } finally
-                    {
-                        InformationContext.ProcessAndClearCurrentIfAvailable();
-                        InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
-                    }
-                }
-            }
-        }
-
         private static void UpdateAllImageFormatsCustomGroup()
         {
             //var images =
@@ -249,7 +200,7 @@ namespace TheBallTool
                 Console.WriteLine("Processed Image: " + ++currImageIndex + " out of " + images.Length);
             }
             InformationContext.ProcessAndClearCurrentIfAvailable();
-            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+            //InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
 
@@ -267,8 +218,8 @@ namespace TheBallTool
                     AccountID = accountRoot.Account.ID,
                     GroupRoot = groupRoot
                 });
-                InformationContext.ProcessAndClearCurrentIfAvailable();
-                InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+                //InformationContext.ProcessAndClearCurrentIfAvailable();
+                //InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
             }
         }
 
@@ -279,8 +230,8 @@ namespace TheBallTool
                                                                         GroupID = groupID,
                                                                         EmailAddress = memberEmail
                                                                     });
-            InformationContext.ProcessAndClearCurrentIfAvailable();
-            InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
+            //InformationContext.ProcessAndClearCurrentIfAvailable();
+            //InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 
         /*

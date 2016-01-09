@@ -1,19 +1,19 @@
 using System;
 using System.Threading.Tasks;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.Interface
 {
     public class ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation
     {
-        public static void ExecuteMethod_ExecuteOperationsAndReleaseLock(string lockedOwnerPrefix, string lockedOwnerID, string[] operationIDs, string lockBlobFullPath)
+        public static void ExecuteMethod_ExecuteOperationsAndReleaseLock(string instanceName, string lockedOwnerPrefix, string lockedOwnerID, string[] operationIDs, string lockBlobFullPath)
         {
             var executionOwner = new VirtualOwner(lockedOwnerPrefix,
                 lockedOwnerID);
             try
             {
-                InformationContext.InitializeToLogicalContext(executionOwner);
-                InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
+                InformationContext.InitializeToLogicalContext(executionOwner, instanceName);
                 foreach (var operationID in operationIDs)
                 {
                     try
@@ -36,14 +36,13 @@ namespace TheBall.Interface
             StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
         }
 
-        public static async Task ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(string lockedOwnerPrefix, string lockedOwnerID, string[] operationIDs, string lockBlobFullPath)
+        public static async Task ExecuteMethod_ExecuteOperationsAndReleaseLockAsync(string instanceName, string lockedOwnerPrefix, string lockedOwnerID, string[] operationIDs, string lockBlobFullPath)
         {
             var executionOwner = new VirtualOwner(lockedOwnerPrefix,
                 lockedOwnerID);
             try
             {
-                InformationContext.InitializeToLogicalContext(executionOwner);
-                InformationContext.Current.InitializeCloudStorageAccess(StorageSupport.CurrActiveContainer.Name);
+                InformationContext.InitializeToLogicalContext(executionOwner, instanceName);
                 foreach (var operationID in operationIDs)
                 {
                     try

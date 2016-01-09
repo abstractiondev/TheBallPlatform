@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -27,13 +28,15 @@ namespace TheBall
         public string CurrentGroupRole;
 
         public readonly long SerialNumber;
+        public readonly string InstanceName;
         private static long NextSerialNumber = 0;
 
-        public InformationContext(IContainerOwner owner)
+        public InformationContext(IContainerOwner owner, string instanceName)
         {
             SerialNumber = Interlocked.Increment(ref NextSerialNumber);
             OwnerStack = new Stack<IContainerOwner>();
             OwnerStack.Push(owner);
+            InstanceName = instanceName;
         }
 
         public static DeviceMembership CurrentExecutingForDevice
@@ -51,14 +54,14 @@ namespace TheBall
             get { return Current.Account; }
         }
 
-        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner)
+        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName)
         {
             if (HttpContext.Current != null)
                 throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
             var logicalContext = CallContext.LogicalGetData(KEYNAME);
             if(logicalContext != null)
                 throw new InvalidOperationException("LogicalContext already initialized");
-            var ctx = new InformationContext(contextRootOwner);
+            var ctx = new InformationContext(contextRootOwner, instanceName);
             CallContext.LogicalSetData(KEYNAME, ctx);
             return ctx;
         }
@@ -98,7 +101,8 @@ namespace TheBall
                 throw new NotSupportedException("InitializeToHttpContext requires HttpContext to be available");
             if(httpContext.Items.Contains(KEYNAME))
                 throw new InvalidOperationException("HttpContext already initialized");
-            InformationContext ctx = new InformationContext(contextOwner);
+            var hostName = httpContext.Request.Url.DnsSafeHost;
+            InformationContext ctx = new InformationContext(contextOwner, hostName);
             httpContext.Items.Add(KEYNAME, ctx);
             return ctx;
         }
@@ -233,83 +237,6 @@ namespace TheBall
                 if (Current._instanceConfiguration == null)
                     Current._instanceConfiguration = RuntimeConfiguration.GetConfiguration(Current.InstanceName);
                 return Current._instanceConfiguration;
-            }
-        }
-
-        public string InstanceName { get; set; }
-
-        public string InitializedContainerName { get; private set; }
-        public void InitializeCloudStorageAccess(string containerName, bool reinitialize = false)
-        {
-            if(containerName == null)
-                throw new ArgumentNullException("containerName");
-            if(containerName == "")
-                throw new ArgumentException("Invalid container name", "containerName");
-            if (reinitialize)
-                UninitializeCloudStorageAccess();
-            if(InitializedContainerName != null)
-            {
-                if (containerName == InitializedContainerName)
-                    return;
-                if(containerName != InitializedContainerName)
-                    throw new NotSupportedException("InitializeCloudStorageAccess already initialized with container name: " 
-                        + InitializedContainerName + " (tried to initialize with: "
-                        + containerName + ")");
-            }
-            CloudBlobClient blobClient = StorageSupport.CurrStorageAccount.CreateCloudBlobClient();
-            blobClient.DefaultRequestOptions.RetryPolicy = new ExponentialRetry(TimeSpan.FromMilliseconds(300), 10);
-            CurrBlobClient = blobClient;
-
-            var activeContainer = blobClient.GetContainerReference(containerName.ToLower());
-            activeContainer.CreateIfNotExists(BlobContainerPublicAccessType.Off);
-            CurrActiveContainer = activeContainer;
-            InitializedContainerName = containerName;
-        }
-
-        public void UninitializeCloudStorageAccess()
-        {
-            CurrBlobClient = null;
-            CurrActiveContainer = null;
-            InitializedContainerName = null;
-        }
-
-        public void ReinitializeCloudStorageAccess(string containerName)
-        {
-            UninitializeCloudStorageAccess();
-        }
-
-        private CloudBlobContainer _currActiveContainer;
-        public CloudBlobContainer CurrActiveContainer { 
-            get
-            {
-                if(_currActiveContainer == null)
-                    throw new NotSupportedException("CurrActiveContainer needs to be initialized with InitializeCloudStorageAccess method");
-                return _currActiveContainer;
-            }
-            private set
-            {
-                if(_currActiveContainer != null && value != null)
-                    throw new NotSupportedException("CurrActiveContainer can only be set once");
-                _currActiveContainer = value;
-            }
-        }
-
-        private CloudBlobClient _currBlobClient;
-        public bool IsExecutingSubscriptions;
-
-        public CloudBlobClient CurrBlobClient { 
-            get
-            {
-                if(_currBlobClient == null)
-                    throw new NotSupportedException(
-                        "CurrBlobClient needs to be initialized with InitializeCloudStorageAccess method");
-                return _currBlobClient;
-            }
-            private set
-            {
-                if(_currBlobClient != null && value != null)
-                    throw new NotSupportedException("CurrBlobClient can only be set once");
-                _currBlobClient = value;
             }
         }
 

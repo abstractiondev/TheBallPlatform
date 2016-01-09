@@ -685,7 +685,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.
 		</div>
-		</p><h1>ExecuteInterfaceOperationsByOwnerAndReleaseLock (LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)</h1>
+		</p><h1>ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner
@@ -693,6 +693,23 @@ div.WordSection1
 		</p><h2>Parameters</h2>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		InstanceName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Instance name to run the operations against
+		</div>
+				</td>
+				</tr>
 				<tr>
 				<td>
 				<div class="MsoNormal" >
@@ -762,7 +779,7 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: ExecuteOperationsAndReleaseLock ( LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )</h2>
+		</p><h2>Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )</h2>
 		<p>		<div class="MsoNormal" >
 		Execute operations one by one, delete queue items after each execution, delete lock item after all executed.
 		</div>
