@@ -242,7 +242,7 @@ namespace TheBall
             timestampPart = split[0];
             ownerPrefix = split[1];
             ownerID = split[2];
-            operationID = split[3];
+            operationID = split[3] + "_" + split[4];
         }
     }
 }

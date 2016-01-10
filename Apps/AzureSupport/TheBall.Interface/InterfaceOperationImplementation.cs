@@ -6,7 +6,7 @@ namespace TheBall.Interface
     {
         public static string GetID()
         {
-            string id = DateTime.UtcNow.ToString("yyyyMMdd_hhmmss") + "_" + Guid.NewGuid().ToString();
+            string id = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + "_" + Guid.NewGuid().ToString();
             return id;
         }
     }
