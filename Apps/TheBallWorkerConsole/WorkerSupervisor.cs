@@ -33,6 +33,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         internal async Task RunWorkerLoop(AnonymousPipeClientStream pipeStream, String workerConfigFullPath)
         {
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
+            const int MaxParallelExecutingTasks = 3;
             try
             {
                 var instances = WorkerConfig.InstancePollItems;
@@ -48,6 +49,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
                 bool keepWorkerRunning = true;
                 var currentTasks = instances.Select(getInstancePollingTask).ToArray();
+                List<Task> executingOperations = new List<Task>();
 
                 while (keepWorkerRunning)
                 {
@@ -55,6 +57,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     if (pipeMessageAwaitable != null)
                         awaitList.Add(pipeMessageAwaitable);
                     awaitList.AddRange(currentTasks.Select(item => item.Item2));
+                    awaitList.AddRange(executingOperations);
                     await Task.WhenAny(awaitList);
 
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
@@ -73,6 +76,12 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         var completedPollingTasks =
                             awaitList.Where(item => item != pipeMessageAwaitable && !item.IsCanceled).ToArray();
 
+                        // ReleaseLocked
+                        await releaseLocks(
+                            completedPollingTasks.Cast<Task<LockInterfaceOperationsByOwnerReturnValue>>()
+                                .Select(item => item.Result)
+                                .ToArray());
+
                         // Cancel & allow processing of all lock-obtained and thus completed
                         var pipeMessage = pipeMessageAwaitable.Result;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
@@ -90,6 +99,16 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     pipeStream.Dispose();
                 }
             }
+        }
+
+        private async Task releaseLocks(LockInterfaceOperationsByOwnerReturnValue[] lockOperationResults)
+        {
+            var releaseTasks =
+                lockOperationResults
+                    .Select(lockItem => lockItem.LockBlobFullPath)
+                    .Select(blobPath => StorageSupport.GetOwnerBlobReference(SystemOwner.CurrentSystem, blobPath))
+                    .Select(blob => blob.DeleteIfExistsAsync()).ToArray();
+            await Task.WhenAll(releaseTasks);
         }
 
         private static Tuple<InstancePollItem, Task, CancellationTokenSource>[] replaceCompletedTasks(
