@@ -27,13 +27,19 @@ namespace TheBall.Interface
             var blobList = queueOwner.ListBlobsWithPrefix(queueLocation).Cast<CloudBlockBlob>();
             var grouped = blobList.GroupBy(blob =>
             {
-                var fileNamePart = Path.GetFileName(blob.Name);
-                string timeStampPart;
+                var fileName = Path.GetFileName(blob.Name);
                 string ownerPrefix;
                 string ownerID;
-                string operationID;
-                OperationSupport.GetQueueItemComponents(fileNamePart, out timeStampPart, out ownerPrefix, out ownerID,
-                    out operationID);
+                bool isLockEntry = fileName.EndsWith(".lock");
+                if (isLockEntry)
+                    OperationSupport.GetLockItemComponents(fileName, out ownerPrefix, out ownerID);
+                else
+                {
+                    string timeStampPart;
+                    string operationID;
+                    OperationSupport.GetQueueItemComponents(fileName, out timeStampPart, out ownerPrefix, out ownerID,
+                        out operationID);
+                }
                 return ownerPrefix + "_" + ownerID;
             }, blob => blob.Name);
             return grouped;
@@ -53,6 +59,9 @@ namespace TheBall.Interface
             string currLockFile = null;
             foreach (var grp in ownerGroupedItems)
             {
+                var allGroupItems = grp.ToArray();
+                if (allGroupItems.Any(item => item.EndsWith(".lock")))
+                    continue;
                 var ownerprefix_id = grp.Key;
                 currLockFile = String.Format(fullLockPathFormat, ownerprefix_id);
                 string lockEtag;
@@ -93,6 +102,9 @@ namespace TheBall.Interface
             string currLockFile = null;
             foreach (var grp in ownerGroupedItems)
             {
+                var allGroupItems = grp.ToArray();
+                if (allGroupItems.Any(item => item.EndsWith(".lock")))
+                    continue;
                 var ownerprefix_id = grp.Key;
                 currLockFile = String.Format(fullLockPathFormat, ownerprefix_id);
                 string lockEtag;

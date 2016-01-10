@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -210,8 +211,8 @@ namespace TheBall
             // { "", typeof(object)},
         };
 
-        public const string QueueFileNameFormat = "{0:yyyy-MM-dd_HH-mm-ss}_{1}_{2}_{3}";
-        public const string LockFileNameFormat = "_{0}.lock";
+        public const string QueueFileNameFormat = "{0:yyyy-MM-dd-HH-mm-ss}_{1}_{2}_{3}";
+        public const string LockFileNameFormat = "0000_{0}.lock";
 
         public static Type GetLegacyMappedType(string operationLegacyName)
         {
@@ -224,10 +225,20 @@ namespace TheBall
         public const string HttpOperationDataType = "HTTPREQUEST";
         public const string OperationQueueLocationName = "OPQueue";
 
-        public static void GetQueueItemComponents(string fileNamePart, out string timestampPart, out string ownerPrefix,
+        public static void GetLockItemComponents(string fileName, out string ownerPrefix, out string ownerID)
+        {
+            Contract.Assert(fileName.EndsWith(".lock"));
+            var nameData = fileName.Replace(".lock", "");
+            var split = nameData.Split('_');
+            ownerPrefix = split[1];
+            ownerID = split[2];
+        }
+
+        public static void GetQueueItemComponents(string fileName, out string timestampPart, out string ownerPrefix,
             out string ownerID, out string operationID)
         {
-            var split = fileNamePart.Split('_');
+            Contract.Assert(!fileName.EndsWith(".lock"));
+            var split = fileName.Split('_');
             timestampPart = split[0];
             ownerPrefix = split[1];
             ownerID = split[2];
