@@ -64,14 +64,21 @@ namespace TheBall
             string operationName = reqData.OperationName;
             string parametersTypeName = operationName + "Parameters";
             var operationType = Type.GetType(operationName);
-            var parametersType = Type.GetType(parametersTypeName);
-            if (operationType == null || parametersType == null)
+            if (operationType == null)
                 throw new InvalidDataException("Operation fully qualified type or parameter type not found in executing assembly: " + operationName);
 
-            var paramObj = PrepareParameters(reqData, parametersType);
-
+            var parametersType = Type.GetType(parametersTypeName);
             var executeMethod = operationType.GetMethod("Execute");
-            executeMethod.Invoke(null, new object[] { paramObj});
+            if (parametersType != null)
+            {
+                var paramObj = PrepareParameters(reqData, parametersType);
+                executeMethod.Invoke(null, new object[] { paramObj });
+            }
+            else
+            {
+                executeMethod.Invoke(null, null);
+            }
+
 
             //operationType.InvokeMember("Execute", BindingFlags.Public | BindingFlags.Static, null, null,
             //    new object[] { paramObj });
@@ -243,6 +250,17 @@ namespace TheBall
             ownerPrefix = split[1];
             ownerID = split[2];
             operationID = split[3] + "_" + split[4];
+        }
+
+        public static async Task ExecuteOperationAsync(string operationID)
+        {
+            var interfaceOperation = await
+                ObjectStorage.RetrieveFromOwnerContentA<InterfaceOperation>(InformationContext.CurrentOwner, operationID);
+            var dataLocation = interfaceOperation.RelativeLocation + ".data";
+            var operationDataByteArray = await StorageSupport.DownloadBlobByteArrayAsync(dataLocation);
+            var operationData =
+                HttpRequestSerializer.DeserializeProtobuf<HttpOperationData>(new MemoryStream(operationDataByteArray));
+            ExecuteHttpOperation(operationData);
         }
     }
 }

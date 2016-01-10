@@ -30,7 +30,7 @@ namespace TheBall.Interface
         public static string GetTarget_QueueItemFullPath(string operationID, string queueItemFileNameFormat, IContainerOwner queueOwner, string queueLocation, IContainerOwner operationOwner)
         {
             DateTime timestamp = DateTime.UtcNow;
-            var queueItemFileName = String.Format(queueItemFileNameFormat, timestamp, queueOwner.ContainerName, queueOwner.LocationPrefix, operationID);
+            var queueItemFileName = String.Format(queueItemFileNameFormat, timestamp, operationOwner.ContainerName, operationOwner.LocationPrefix, operationID);
             var fullPath = Path.Combine(queueOwner.GetOwnerPrefix(), queueLocation, queueItemFileName)
                 .Replace(@"\", "/");
             return fullPath;

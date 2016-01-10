@@ -47,7 +47,7 @@ namespace TheBall.Interface
                 {
                     try
                     {
-
+                        await OperationSupport.ExecuteOperationAsync(operationID);
                     }
                     catch (Exception exception)
                     {
@@ -55,14 +55,16 @@ namespace TheBall.Interface
                     }
 
                 }
-                // TODO: execute operation as operation owner
+                await InformationContext.ExecuteAsOwnerAsync(SystemOwner.CurrentSystem, async () =>
+                {
+                    var lockFullName = lockBlobFullPath;
+                    await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockFullName);
+                });
             }
             finally
             {
-                InformationContext.RemoveFromLogicalContext();
+                InformationContext.ProcessAndClearCurrentIfAvailable();
             }
-            var lockFullName = lockBlobFullPath;
-            StorageSupport.ReleaseLogicalLockByDeletingBlob(lockFullName, null);
         }
     }
 }

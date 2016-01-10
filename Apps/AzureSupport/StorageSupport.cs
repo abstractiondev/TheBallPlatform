@@ -186,6 +186,25 @@ namespace TheBall
             }
         }
 
+        public static async Task<byte[]> DownloadBlobByteArrayAsync(string blobPath, bool returnNullIfMissing = false)
+        {
+            try
+            {
+                var blob = GetOwnerBlobReference(InformationContext.CurrentOwner, blobPath);
+                using (var memStream = new MemoryStream())
+                {
+                    await blob.DownloadToStreamAsync(memStream);
+                    return memStream.ToArray();
+                }
+            }
+            catch (StorageException stEx)
+            {
+                if (returnNullIfMissing && stEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.NotFound)
+                    return null;
+                throw;
+            }
+        }
+
         public static byte[] DownloadBlobBinary(this CloudBlobContainer container, string blobPath, bool returnNullIfMissing = false)
         {
             try
@@ -1559,6 +1578,25 @@ namespace TheBall
             }
             lockEtag = blob.Properties.ETag;
             return true;
+        }
+
+        public static async Task<bool> ReleaseLogicalLockByDeletingBlobAsync(string lockBlobFullPath)
+        {
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockBlobFullPath);
+            try
+            {
+                Debug.WriteLine("Trying to release lock: " + lockBlobFullPath);
+                await blob.DeleteIfExistsAsync();
+                InformationContext.AddStorageTransactionToCurrent();
+                Debug.WriteLine("Success!");
+            }
+            catch
+            {
+                Debug.WriteLine("FAILED!");
+                return false;
+            }
+            return true;
+
         }
 
         public static bool ReleaseLogicalLockByDeletingBlob(string lockLocation, string lockEtag)

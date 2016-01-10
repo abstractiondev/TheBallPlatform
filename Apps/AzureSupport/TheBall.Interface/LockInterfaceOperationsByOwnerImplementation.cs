@@ -71,12 +71,12 @@ namespace TheBall.Interface
                 var ownerOperationBlobNames = grp.ToArray();
                 var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>
                 {
-                    var fileNamePart = Path.GetFileName(ownerOperationBlobNames.First());
+                    var fileName = Path.GetFileName(ownerOperationBlobNames.First());
                     string timestampPart;
                     string ownerPrefix;
                     string ownerID;
                     string operationID;
-                    OperationSupport.GetQueueItemComponents(fileNamePart, out timestampPart, out ownerPrefix,
+                    OperationSupport.GetQueueItemComponents(fileName, out timestampPart, out ownerPrefix,
                         out ownerID, out operationID);
                     return new Tuple<string, string, string>(ownerPrefix, ownerID, operationID);
                 }).ToArray();
@@ -111,15 +111,15 @@ namespace TheBall.Interface
                 bool acquireLock = StorageSupport.AcquireLogicalLockByCreatingBlob(currLockFile, out lockEtag);
                 if (!acquireLock)
                     continue;
-                var ownerOperationBlobNames = grp.ToArray();
+                var ownerOperationBlobNames = allGroupItems;
                 var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>
                 {
-                    var fileNamePart = Path.GetFileName(ownerOperationBlobNames.First());
+                    var fileName = Path.GetFileName(ownerOperationBlobNames.First());
                     string timestampPart;
                     string ownerPrefix;
                     string ownerID;
                     string operationID;
-                    OperationSupport.GetQueueItemComponents(fileNamePart, out timestampPart, out ownerPrefix,
+                    OperationSupport.GetQueueItemComponents(fileName, out timestampPart, out ownerPrefix,
                         out ownerID, out operationID);
                     return new Tuple<string, string, string>(ownerPrefix, ownerID, operationID);
                 }).ToArray();

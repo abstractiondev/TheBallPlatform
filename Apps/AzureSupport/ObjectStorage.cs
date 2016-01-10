@@ -56,7 +56,7 @@ namespace TheBall
 
         public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null)
         {
-            var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T));
+            var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T), null, owner);
             return result;
         }
 

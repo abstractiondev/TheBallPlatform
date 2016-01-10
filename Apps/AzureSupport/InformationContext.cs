@@ -117,7 +117,7 @@ namespace TheBall
         }
 
 
-        public static bool IsAwailable => getCurrent(true) != null;
+        public static bool IsAvailable => getCurrent(true) != null;
 
         public static InformationContext Current => getCurrent(false);
 
@@ -169,7 +169,7 @@ namespace TheBall
 
         public static void ProcessAndClearCurrentIfAvailable()
         {
-            if (IsAwailable)
+            if (IsAvailable)
             {
                 Current.PerformFinalizingActions();
                 ClearCurrent();
@@ -188,8 +188,11 @@ namespace TheBall
                 }
             }
 
-            if(CallContext.LogicalGetData(KEYNAME) != null)
+            if (CallContext.LogicalGetData(KEYNAME) != null)
+            {
                 CallContext.LogicalSetData(KEYNAME, null);
+                return;
+            }
 
             throw new InvalidOperationException("InformationContext ClearCurrent failed - no active context set");
         }

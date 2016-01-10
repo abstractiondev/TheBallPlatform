@@ -48,18 +48,13 @@ namespace TheBall.Infra.TheBallWorkerConsole
             if (workerConfigFullPath == null)
                 throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
             
-            var configDirPath = new FileInfo(workerConfigFullPath).Directory.FullName;
-            var infraConfigFullPath = Path.Combine(configDirPath, "InfraShared", "InfraConfig.json");
-            await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
-
             var clientHandle = args.Length > 1 ? args[1] : null;
-
 
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
             var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath);
-            await supervisor.RunWorkerLoop(pipeStream, workerConfigFullPath);
+            await supervisor.RunWorkerLoop();
         }
 
         private static void ensureXDrive()
