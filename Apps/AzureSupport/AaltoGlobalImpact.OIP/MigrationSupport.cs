@@ -86,8 +86,8 @@ namespace AaltoGlobalImpact.OIP
                     string fileNamePart = Path.GetFileName(sourceLocation);
                     string targetBlobPath = StorageSupport.GetOwnerContentLocation(owner,
                                                                                           string.Format("{0}AaltoGlobalImpact.OIP/MediaContent/{1}", targetContentRoot, fileNamePart));
-                    var targetBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, targetBlobPath);
-                    var sourceBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, sourceLocation);
+                    var targetBlob = StorageSupport.GetOwnerBlobReference(targetBlobPath);
+                    var sourceBlob = StorageSupport.GetOwnerBlobReference(sourceLocation);
                     targetBlob.StartCopy(sourceBlob);
                     targetLocation = StorageSupport.RemoveOwnerPrefixIfExists(targetBlob.Name);
                     contentMD5 = targetBlob.Properties.ContentMD5;

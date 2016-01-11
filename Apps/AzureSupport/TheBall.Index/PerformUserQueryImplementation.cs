@@ -9,9 +9,8 @@ namespace TheBall.Index
     {
         public static UserQuery GetTarget_QueryObject()
         {
-            var request = HttpContext.Current.Request;
-            var stream = request.GetBufferlessInputStream();
-            var result = JSONSupport.GetObjectFromStream<UserQuery>(stream);
+            var reqData = LogicalOperationContext.Current.HttpParameters.RequestContent;
+            var result = JSONSupport.GetObjectFromData<UserQuery>(reqData);
             return result;
         }
 

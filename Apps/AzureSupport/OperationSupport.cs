@@ -69,14 +69,22 @@ namespace TheBall
 
             var parametersType = Type.GetType(parametersTypeName);
             var executeMethod = operationType.GetMethod("Execute");
-            if (parametersType != null)
+            LogicalOperationContext.SetCurrentContext(reqData);
+            try
             {
-                var paramObj = PrepareParameters(reqData, parametersType);
-                executeMethod.Invoke(null, new object[] { paramObj });
+                if (parametersType != null)
+                {
+                    var paramObj = PrepareParameters(reqData, parametersType);
+                    executeMethod.Invoke(null, new object[] {paramObj});
+                }
+                else
+                {
+                    executeMethod.Invoke(null, null);
+                }
             }
-            else
+            finally
             {
-                executeMethod.Invoke(null, null);
+                LogicalOperationContext.ReleaseCurrentContext();
             }
 
 

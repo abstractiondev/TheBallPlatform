@@ -187,6 +187,9 @@
     <StatusItem name="LockInterfaceOperationsByOwner_OperationIDs" displayName="VariableType: OperationIDs" description="Operation IDs of obtained lock or null if failed to get lock">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="LockInterfaceOperationsByOwner_OperationQueueItems" displayName="VariableType: OperationQueueItems" description="Operation queue items included in lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="LockInterfaceOperationsByOwner_LockBlobFullPath" displayName="VariableType: LockBlobFullPath" description="Lock blobs full path">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -200,6 +203,9 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ExecuteInterfaceOperationsByOwnerAndReleaseLock_OperationIDs" displayName="VariableType: OperationIDs" description="Operation IDs of obtained lock or null if failed to get lock">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteInterfaceOperationsByOwnerAndReleaseLock_OperationQueueItems" displayName="VariableType: OperationQueueItems" description="Operation queue items included in this execution">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ExecuteInterfaceOperationsByOwnerAndReleaseLock_LockBlobFullPath" displayName="VariableType: LockBlobFullPath" description="Lock blobs full path">
@@ -469,6 +475,7 @@
       <ItemRef itemName="LockInterfaceOperationsByOwner_LockedOwnerPrefix" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_LockedOwnerID" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_OperationIDs" />
+      <ItemRef itemName="LockInterfaceOperationsByOwner_OperationQueueItems" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_LockBlobFullPath" />
     </Group>
     <Group name="ExecuteInterfaceOperationsByOwnerAndReleaseLock">
@@ -476,6 +483,7 @@
       <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_LockedOwnerPrefix" />
       <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_LockedOwnerID" />
       <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_OperationIDs" />
+      <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_OperationQueueItems" />
       <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_LockBlobFullPath" />
       <ItemRef itemName="ExecuteInterfaceOperationsByOwnerAndReleaseLock_ExecuteOperationsAndReleaseLock" />
     </Group>

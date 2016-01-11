@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using AaltoGlobalImpact.OIP.INT;
@@ -12,9 +13,8 @@ namespace AaltoGlobalImpact.OIP
     {
         public static ParentToChildren[] GetTarget_Hierarchy()
         {
-            var request = HttpContext.Current.Request;
-            var stream = request.GetBufferlessInputStream();
-            var result = JSONSupport.GetObjectFromStream<ParentToChildren[]>(stream);
+            var reqData = LogicalOperationContext.Current.HttpParameters.RequestContent;
+            var result = JSONSupport.GetObjectFromData<ParentToChildren[]>(reqData);
             return result;
         }
 

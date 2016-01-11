@@ -277,6 +277,7 @@
             <ReturnValue name="LockedOwnerPrefix" dataType="string" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented" />
             <ReturnValue name="LockedOwnerID" dataType="string" designDesc="Locked owner ID (if lock acquired)" state="implemented" />
             <ReturnValue name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
+            <ReturnValue name="OperationQueueItems" dataType="string[]" designDesc="Operation queue items included in lock" state="implemented" />
             <ReturnValue name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
           </MethodExecute>
         </SequentialExecution>
@@ -285,6 +286,7 @@
         <ReturnValue name="LockedOwnerPrefix" dataType="string" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented" />
         <ReturnValue name="LockedOwnerID" dataType="string" designDesc="Locked owner ID (if lock acquired)" state="implemented" />
         <ReturnValue name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
+        <ReturnValue name="OperationQueueItems" dataType="string[]" designDesc="Operation queue items included in lock" state="implemented" />
         <ReturnValue name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
         <Target name="AcquireFirstObtainableLockOutput" />
       </OperationReturnValues>
@@ -298,6 +300,7 @@
         <Parameter name="LockedOwnerPrefix" dataType="string" designDesc="Locked owner prefix acc or grp (if lock acquired)" state="implemented" />
         <Parameter name="LockedOwnerID" dataType="string" designDesc="Locked owner ID (if lock acquired)" state="implemented" />
         <Parameter name="OperationIDs" dataType="string[]" designDesc="Operation IDs of obtained lock or null if failed to get lock" state="implemented" />
+        <Parameter name="OperationQueueItems" dataType="string[]" designDesc="Operation queue items included in this execution" state="implemented" />
         <Parameter name="LockBlobFullPath" dataType="string" designDesc="Lock blobs full path" state="implemented" />
       </Parameters>
       <Execution>
@@ -307,6 +310,7 @@
             <Parameter name="LockedOwnerPrefix" />
             <Parameter name="LockedOwnerID" />
             <Parameter name="OperationIDs" />
+            <Parameter name="OperationQueueItems" />
             <Parameter name="LockBlobFullPath" />
           </MethodExecute>
         </SequentialExecution>

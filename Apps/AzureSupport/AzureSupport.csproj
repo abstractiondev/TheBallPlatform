@@ -164,6 +164,7 @@
     <Compile Include="HttpRequestSerializer.cs" />
     <Compile Include="IAccountInfo.cs" />
     <Compile Include="InformationObjectSupport.cs" />
+    <Compile Include="LogicalOperationContext.cs" />
     <Compile Include="MediaFileData.cs" />
     <Compile Include="ObjectStorage.cs" />
     <Compile Include="OperationSupport.cs" />

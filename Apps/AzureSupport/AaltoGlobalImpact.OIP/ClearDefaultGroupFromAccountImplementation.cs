@@ -27,7 +27,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_RemoveAccountRedirectFile(string redirectFromFolderBlobName)
         {
-            var redirectBlob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, redirectFromFolderBlobName);
+            var redirectBlob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
             redirectBlob.DeleteBlob();
         }
     }

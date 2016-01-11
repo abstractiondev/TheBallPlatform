@@ -31,6 +31,8 @@ namespace TheBall
         public readonly string InstanceName;
         private static long NextSerialNumber = 0;
 
+        public LogicalOperationContext LogicalOperationContext { get; internal set; }
+
         public InformationContext(IContainerOwner owner, string instanceName)
         {
             SerialNumber = Interlocked.Increment(ref NextSerialNumber);
@@ -314,16 +316,14 @@ namespace TheBall
 
         public static void AddStorageTransactionToCurrent()
         {
-            if (Current == null || Current.RequestResourceUsage == null ||
-                Current.RequestResourceUsage.StorageTransactionUsage == null)
+            if (Current?.RequestResourceUsage?.StorageTransactionUsage == null)
                 return;
             Current.RequestResourceUsage.StorageTransactionUsage.AmountOfTransactions++;
         }
 
         public static void AddNetworkOutputByteAmountToCurrent(long bytes)
         {
-            if (Current == null || Current.RequestResourceUsage == null ||
-                Current.RequestResourceUsage.NetworkUsage == null)
+            if (Current?.RequestResourceUsage?.NetworkUsage == null)
                 return;
             Current.RequestResourceUsage.NetworkUsage.AmountOfBytes += bytes;
         }

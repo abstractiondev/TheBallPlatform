@@ -12,9 +12,8 @@ namespace AaltoGlobalImpact.OIP
     {
         public static CategoryChildRanking GetTarget_RankingData()
         {
-            var request = HttpContext.Current.Request;
-            var stream = request.GetBufferlessInputStream();
-            var result = JSONSupport.GetObjectFromStream<CategoryChildRanking>(stream);
+            var reqData = LogicalOperationContext.Current.HttpParameters.RequestContent;
+            var result = JSONSupport.GetObjectFromData<CategoryChildRanking>(reqData);
             return result;
         }
 

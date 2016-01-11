@@ -28,7 +28,7 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_SetAccountRedirectFileToGroup(string groupId, string redirectFromFolderBlobName)
         {
-            var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, redirectFromFolderBlobName);
+            var blob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
             blob.UploadBlobText(String.Format("/auth/grp/{0}/", groupId));
         }
     }

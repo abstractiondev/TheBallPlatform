@@ -583,7 +583,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)" level="1">
+          <Header text="ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, OperationQueueItems, LockBlobFullPath)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -646,6 +646,17 @@
                     </Row>
                     <Row>
                       <ColumnData>
+                        <TextContent>OperationQueueItems</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation queue items included in this execution</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
                         <TextContent>LockBlobFullPath</TextContent>
                       </ColumnData>
                       <ColumnData>
@@ -659,7 +670,7 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )" level="2">
+            <Header text="Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, OperationQueueItems, LockBlobFullPath )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Execute operations one by one, delete queue items after each execution, delete lock item after all executed.</TextContent>
@@ -1057,6 +1068,17 @@
                     </Row>
                     <Row>
                       <ColumnData>
+                        <TextContent>OperationQueueItems</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation queue items included in lock</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
                         <TextContent>LockBlobFullPath</TextContent>
                       </ColumnData>
                       <ColumnData>
@@ -1110,6 +1132,17 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Operation IDs of obtained lock or null if failed to get lock</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OperationQueueItems</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Operation queue items included in lock</TextContent>
                       </ColumnData>
                     </Row>
                     <Row>

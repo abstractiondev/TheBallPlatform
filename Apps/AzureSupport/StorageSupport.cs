@@ -146,7 +146,7 @@ namespace TheBall
         {
             try
             {
-                var blob = GetOwnerBlobReference(InformationContext.CurrentOwner, blobPath);
+                var blob = GetOwnerBlobReference(blobPath);
                 using (var memStream = new MemoryStream())
                 {
                     await blob.DownloadToStreamAsync(memStream);
@@ -1240,7 +1240,7 @@ namespace TheBall
         public static string GetOwnerContentLocation(IContainerOwner owner, string blobAddress)
         {
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
-            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("dev/"))
+            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("dev/") || blobAddress.StartsWith("sys/"))
             {
                 if(blobAddress.StartsWith(ownerPrefix))
                     return blobAddress;
@@ -1268,9 +1268,17 @@ namespace TheBall
         }
 
 
+        [Obsolete("Use current owner (without parameter)", false)]
         public static CloudBlockBlob GetOwnerBlobReference(IContainerOwner containerOwner, string contentPath)
         {
             string blobAddress = GetOwnerContentLocation(containerOwner, contentPath);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
+            return blob;
+        }
+
+        public static CloudBlockBlob GetOwnerBlobReference(string blobPath)
+        {
+            string blobAddress = GetOwnerContentLocation(InformationContext.CurrentOwner, blobPath);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobAddress);
             return blob;
         }
@@ -1482,10 +1490,19 @@ namespace TheBall
         public static async Task DeleteBlobAsync(string blobPath)
         {
             Console.WriteLine("Deleting: " + blobPath);
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobPath);
+            CloudBlockBlob blob = GetOwnerBlobReference(blobPath);
             await blob.DeleteIfExistsAsync();
             InformationContext.AddStorageTransactionToCurrent();
         }
+
+        public static async Task DeleteBlobsAsync(string[] blobPaths)
+        {
+            var deletionTasks = blobPaths
+                .Select(blobPath => GetOwnerBlobReference(blobPath))
+                .Select(blob => blob.DeleteIfExistsAsync()).ToArray();
+            await Task.WhenAll(deletionTasks);
+        }
+
 
 
         public static string GetLocationParentDirectory(string location)

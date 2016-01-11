@@ -685,7 +685,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.
 		</div>
-		</p><h1>ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath)</h1>
+		</p><h1>ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, OperationQueueItems, LockBlobFullPath)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner
@@ -764,6 +764,23 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
+		OperationQueueItems
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation queue items included in this execution
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
 		LockBlobFullPath
 		</div>
 				</td>
@@ -779,7 +796,7 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, LockBlobFullPath )</h2>
+		</p><h2>Method Call: ExecuteOperationsAndReleaseLock ( InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, OperationQueueItems, LockBlobFullPath )</h2>
 		<p>		<div class="MsoNormal" >
 		Execute operations one by one, delete queue items after each execution, delete lock item after all executed.
 		</div>
@@ -1123,6 +1140,23 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
+		OperationQueueItems
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation queue items included in lock
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
 		LockBlobFullPath
 		</div>
 				</td>
@@ -1189,6 +1223,23 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Operation IDs of obtained lock or null if failed to get lock
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OperationQueueItems
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Operation queue items included in lock
 		</div>
 				</td>
 				</tr>

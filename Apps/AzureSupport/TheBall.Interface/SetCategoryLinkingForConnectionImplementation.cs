@@ -15,9 +15,8 @@ namespace TheBall.Interface
 
         public static CategoryLinkParameters GetTarget_CategoryLinkingParameters()
         {
-            var request = HttpContext.Current.Request;
-            var stream = request.GetBufferlessInputStream();
-            var result = JSONSupport.GetObjectFromStream<CategoryLinkParameters>(stream);
+            var reqData = LogicalOperationContext.Current.HttpParameters.RequestContent;
+            var result = JSONSupport.GetObjectFromData<CategoryLinkParameters>(reqData);
             return result;
         }
 

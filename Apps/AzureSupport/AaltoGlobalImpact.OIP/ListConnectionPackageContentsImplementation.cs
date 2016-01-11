@@ -60,7 +60,7 @@ namespace AaltoGlobalImpact.OIP
                 }
                 else
                 {
-                    var blob = StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, contentLocation);
+                    var blob = StorageSupport.GetOwnerBlobReference(contentLocation);
                     blob.FetchAttributes();
                     SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
                         {

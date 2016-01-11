@@ -199,6 +199,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var lockedOwnerPrefix = lockItem.LockedOwnerPrefix;
             var lockedOwnerID = lockItem.LockedOwnerID;
             var lockBlobFullPath = lockItem.LockBlobFullPath;
+            var operationQueueItems = lockItem.OperationQueueItems;
             var operationIDs = lockItem.OperationIDs;
             //var operationOwner = new VirtualOwner(lockedOwnerPrefix, lockedOwnerID);
             Task result = Task.Run(async () =>
@@ -213,6 +214,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                             LockBlobFullPath = lockBlobFullPath,
                             LockedOwnerPrefix = lockedOwnerPrefix,
                             LockedOwnerID = lockedOwnerID,
+                            OperationQueueItems = operationQueueItems,
                             OperationIDs = operationIDs
                         });
                     //InformationContext.ProcessAndClearCurrentIfAvailable();

@@ -82,6 +82,7 @@ namespace TheBall.Interface
                     LockedOwnerPrefix = ownerOperationIDs.First().Item1,
                     LockedOwnerID = ownerOperationIDs.First().Item2,
                     OperationIDs = ownerOperationIDs.Select(item => item.Item3).ToArray(),
+                    OperationQueueItems = allGroupItems,
                     LockBlobFullPath = currLockFile
                 };
                 var blobContents = String.Join(Environment.NewLine, result.OperationIDs);
@@ -101,6 +102,7 @@ namespace TheBall.Interface
                 LockedOwnerPrefix = acquireFirstObtainableLockOutput.LockedOwnerPrefix,
                 LockedOwnerID = acquireFirstObtainableLockOutput.LockedOwnerID,
                 OperationIDs = acquireFirstObtainableLockOutput.OperationIDs,
+                OperationQueueItems = acquireFirstObtainableLockOutput.OperationQueueItems,
                 LockBlobFullPath = acquireFirstObtainableLockOutput.LockBlobFullPath
             };
         }
