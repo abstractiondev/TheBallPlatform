@@ -266,12 +266,20 @@ namespace TheBall
             blob.DeleteIfExists(DeleteSnapshotsOption.None, accessCondition, options);
         }
 
-        public static void UploadBlobBinary(this CloudBlobContainer container,
-    string blobPath, byte[] binaryContent)
+        public static void UploadBlobBinary(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             blob.UploadByteArray(binaryContent);
+            InformationContext.AddStorageTransactionToCurrent();
+        }
+
+
+        public static async Task UploadBlobBinaryAsync(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
+        {
+            var blob = container.GetBlockBlobReference(blobPath);
+            blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
+            await blob.UploadFromByteArrayAsync(binaryContent, 0, binaryContent.Length);
             InformationContext.AddStorageTransactionToCurrent();
         }
 
@@ -987,6 +995,51 @@ namespace TheBall
             return storedResult;
         }
 
+        public static async Task<CloudBlockBlob> StoreInformationAsync(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
+        {
+            string location = owner != null
+                                  ? GetOwnerContentLocation(owner, informationObject.RelativeLocation)
+                                  : informationObject.RelativeLocation;
+            // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
+            informationObject.RelativeLocation = location;
+            var dataContent = SerializeInformationObjectToBuffer(informationObject);
+            //memoryStream.Seek(0, SeekOrigin.Begin);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
+            string etag = informationObject.ETag;
+            bool isNewBlob = etag == null;
+            AccessCondition accessCondition = null;
+            if (!overwriteIfExists)
+            {
+
+                if (etag != null)
+                    accessCondition = AccessCondition.GenerateIfMatchCondition(etag);
+                else
+                    accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
+            }
+            //blob.SetBlobInformationObjectType(informationObjectType.FullName);
+            await blob.UploadFromByteArrayAsync(dataContent, 0, dataContent.Length, accessCondition, null, null);
+            InformationContext.AddStorageTransactionToCurrent();
+            informationObject.ETag = blob.Properties.ETag;
+            IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
+            if (additionalFormatProvider != null)
+            {
+                var additionalContentToStore = additionalFormatProvider.GetAdditionalContentToStore(informationObject.ETag);
+                foreach (var additionalContent in additionalContentToStore)
+                {
+                    string contentLocation = blob.Name + "." + additionalContent.Extension;
+                    await CurrActiveContainer.UploadBlobBinaryAsync(contentLocation, additionalContent.Content);
+                    InformationContext.AddStorageTransactionToCurrent();
+                }
+            }
+            informationObject.PostStoringExecute(owner);
+            Debug.WriteLine(String.Format("Wrote: {0} ID {1}", informationObject.GetType().Name,
+                informationObject.ID));
+            InformationContext.Current.ObjectStoredNotification(informationObject,
+                isNewBlob ? InformationContext.ObjectChangeType.N_New : InformationContext.ObjectChangeType.M_Modified);
+            return blob;
+        }
+
+
         public static CloudBlockBlob StoreInformation(this IInformationObject informationObject, IContainerOwner owner = null, bool overwriteIfExists = false)
         {
             string location = owner != null
@@ -1270,13 +1323,40 @@ namespace TheBall
             return blob;
         }
 
+        public static async Task DeleteInformationObjectAsync(this IInformationObject informationObject, IContainerOwner owner = null)
+        {
+            string relativeLocation = informationObject.RelativeLocation;
+            if (owner != null)
+                relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
+            await blob.DeleteIfExistsAsync();
+            IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
+            if (additionalFormatProvider != null)
+            {
+                foreach (var contentExtension in additionalFormatProvider.GetAdditionalFormatExtensions())
+                {
+                    string contentLocation = blob.Name + "." + contentExtension;
+                    CloudBlockBlob contentBlob = CurrActiveContainer.GetBlockBlobReference(contentLocation);
+                    await contentBlob.DeleteIfExistsAsync();
+                }
+
+            }
+            IIndexedDocument iDoc = informationObject as IIndexedDocument;
+            //TODO: Generic default view deletion
+            //DefaultViewSupport.DeleteDefaultView(informationObject);
+            informationObject.PostDeleteExecute(owner);
+            InformationContext.Current.ObjectStoredNotification(informationObject, InformationContext.ObjectChangeType.D_Deleted);
+
+        }
+
+
         public static void DeleteInformationObject(this IInformationObject informationObject, IContainerOwner owner = null)
         {
             string relativeLocation = informationObject.RelativeLocation;
             if (owner != null)
                 relativeLocation = GetOwnerContentLocation(owner, relativeLocation);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(relativeLocation);
-            blob.DeleteAndFireSubscriptions();
+            blob.Delete();
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;
             if(additionalFormatProvider != null)
             {
@@ -1349,7 +1429,7 @@ namespace TheBall
             int deleteCount = 0;
             foreach(CloudBlockBlob blob in blobList)
             {
-                blob.DeleteWithoutFiringSubscriptions();
+                blob.DeleteBlob();
                 deleteCount++;
             }
             return deleteCount;
@@ -1390,7 +1470,7 @@ namespace TheBall
             int deletedCount = 0;
             foreach(CloudBlockBlob blob in blobs)
             {
-                blob.DeleteWithoutFiringSubscriptions();
+                blob.DeleteBlob();
                 deletedCount++;
             }
             return deletedCount;
@@ -1404,7 +1484,7 @@ namespace TheBall
             int deletedCount = 0;
             foreach (CloudBlockBlob blob in blobs)
             {
-                blob.DeleteWithoutFiringSubscriptions();
+                blob.DeleteBlob();
                 deletedCount++;
             }
             return deletedCount;
@@ -1425,18 +1505,13 @@ namespace TheBall
             return blob.Container.Name == CurrActiveContainer.Name;
         }
 
-        public static void DeleteWithoutFiringSubscriptions(string blobLocation)
-        {
-            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobLocation);
-            DeleteWithoutFiringSubscriptions(blob);
-        }
-
-        public static void DeleteWithoutFiringSubscriptions(this CloudBlockBlob blob)
+        public static void DeleteBlob(this CloudBlockBlob blob)
         {
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }
 
+        [Obsolete("No more subscriptions", true)]
         public static void DeleteAndFireSubscriptions(this CloudBlockBlob blob)
         {
             blob.DeleteIfExists();
@@ -1450,6 +1525,15 @@ namespace TheBall
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
         }
+
+        public static async Task DeleteBlobAsync(string blobPath)
+        {
+            Console.WriteLine("Deleting: " + blobPath);
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobPath);
+            await blob.DeleteIfExistsAsync();
+            InformationContext.AddStorageTransactionToCurrent();
+        }
+
 
         public static string GetLocationParentDirectory(string location)
         {

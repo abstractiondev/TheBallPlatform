@@ -59,7 +59,7 @@ namespace TheBall
 
 
 
-        public static void ExecuteHttpOperation(HttpOperationData reqData)
+        public static async Task ExecuteHttpOperationAsync(HttpOperationData reqData)
         {
             string operationName = reqData.OperationName;
             string parametersTypeName = operationName + "Parameters";
@@ -133,7 +133,7 @@ namespace TheBall
         public static async Task<string> QueueHttpOperationAsync(HttpOperationData reqData)
         {
             var operationResult =
-                CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
+                await CreateInterfaceOperationForExecution.ExecuteAsync(new CreateInterfaceOperationForExecutionParameters
                 {
                     DataType = "HTTPREQUEST",
                     OperationData = reqData.ToBytes()
@@ -252,6 +252,7 @@ namespace TheBall
             operationID = split[3] + "_" + split[4];
         }
 
+        [Obsolete("Operation exists for this already", true)]
         public static async Task ExecuteOperationAsync(string operationID)
         {
             var interfaceOperation = await
@@ -260,7 +261,7 @@ namespace TheBall
             var operationDataByteArray = await StorageSupport.DownloadBlobByteArrayAsync(dataLocation);
             var operationData =
                 HttpRequestSerializer.DeserializeProtobuf<HttpOperationData>(new MemoryStream(operationDataByteArray));
-            ExecuteHttpOperation(operationData);
+            await ExecuteHttpOperationAsync(operationData);
         }
     }
 }

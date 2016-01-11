@@ -63,13 +63,13 @@ namespace WebInterface
             {
                 var operationData = request.GetHttpOperationDataFromRequest(null, owningGroupPrefix,
                     operationFullName, request.Path);
-                var operationResult =
-                    CreateInterfaceOperationForExecution.Execute(new CreateInterfaceOperationForExecutionParameters
+                var operationResult = await 
+                    CreateInterfaceOperationForExecution.ExecuteAsync(new CreateInterfaceOperationForExecutionParameters
                     {
                         DataType = OperationSupport.HttpOperationDataType,
                         OperationData = operationData.ToBytes()
                     });
-                ExecuteInterfaceOperation.Execute(new ExecuteInterfaceOperationParameters
+                await ExecuteInterfaceOperation.ExecuteAsync(new ExecuteInterfaceOperationParameters
                 {
                     OperationID = operationResult.OperationID
                 });

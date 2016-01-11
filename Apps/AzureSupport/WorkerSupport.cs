@@ -115,7 +115,7 @@ namespace TheBall
                         handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
                     }
                     if (handled == false)
-                        blobToDelete.DeleteWithoutFiringSubscriptions();
+                        blobToDelete.DeleteBlob();
                 }
                 catch (WebException wex)
                 {

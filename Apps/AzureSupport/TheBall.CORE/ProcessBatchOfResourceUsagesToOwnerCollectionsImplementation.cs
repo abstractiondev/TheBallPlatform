@@ -109,7 +109,7 @@ namespace TheBall.CORE
             //{
             //    i++;
             //    Debug.WriteLine("Deleting blob " + i + ": " + blob.Name);
-            //    blob.DeleteWithoutFiringSubscriptions();
+            //    blob.DeleteBlob();
             //}
             int i = 0;
             ParallelOptions options = new ParallelOptions {MaxDegreeOfParallelism = 50};

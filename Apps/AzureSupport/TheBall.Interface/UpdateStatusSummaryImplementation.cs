@@ -87,9 +87,9 @@ namespace TheBall.Interface
             {
                 string relativeLocationFromOwner = ObjectStorage.GetRelativeLocationFromID<InformationChangeItem>(changeItemID);
                 var blob = StorageSupport.GetOwnerBlobReference(owner, relativeLocationFromOwner);
-                blob.DeleteWithoutFiringSubscriptions();
+                blob.DeleteBlob();
                 var jsonBlob = StorageSupport.GetOwnerBlobReference(owner, relativeLocationFromOwner + ".json");
-                jsonBlob.DeleteWithoutFiringSubscriptions();
+                jsonBlob.DeleteBlob();
             }
         }
     }

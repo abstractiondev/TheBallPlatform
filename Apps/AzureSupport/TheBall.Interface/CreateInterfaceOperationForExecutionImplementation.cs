@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace TheBall.Interface
 {
@@ -15,14 +16,6 @@ namespace TheBall.Interface
             return operation;
         }
 
-        public static void ExecuteMethod_StoreOperationWithData(byte[] operationData, InterfaceOperation operation, string operationDataLocation)
-        {
-            if(operation.OperationDataType != OperationSupport.HttpOperationDataType)
-                throw new NotSupportedException("OperationDataType not supported: " + operation.OperationDataType);
-            operation.StoreInformation();
-            StorageSupport.CurrActiveContainer.UploadBlobBinary(operationDataLocation, operationData);
-        }
-
         public static CreateInterfaceOperationForExecutionReturnValue Get_ReturnValue(InterfaceOperation operation)
         {
             return new CreateInterfaceOperationForExecutionReturnValue {OperationID = operation.ID};
@@ -31,6 +24,14 @@ namespace TheBall.Interface
         public static string GetTarget_OperationDataLocation(InterfaceOperation operation)
         {
             return operation.RelativeLocation + ".data";
+        }
+
+        public static async Task ExecuteMethod_StoreOperationWithDataAsync(byte[] operationData, InterfaceOperation operation, string operationDataLocation)
+        {
+            if (operation.OperationDataType != OperationSupport.HttpOperationDataType)
+                throw new NotSupportedException("OperationDataType not supported: " + operation.OperationDataType);
+            await operation.StoreInformationAsync();
+            await StorageSupport.CurrActiveContainer.UploadBlobBinaryAsync(operationDataLocation, operationData);
         }
     }
 }

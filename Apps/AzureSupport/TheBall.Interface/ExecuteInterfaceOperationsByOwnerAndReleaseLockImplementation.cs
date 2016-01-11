@@ -47,7 +47,11 @@ namespace TheBall.Interface
                 {
                     try
                     {
-                        await OperationSupport.ExecuteOperationAsync(operationID);
+                        await
+                            ExecuteInterfaceOperation.ExecuteAsync(new ExecuteInterfaceOperationParameters
+                            {
+                                OperationID = operationID
+                            });
                     }
                     catch (Exception exception)
                     {

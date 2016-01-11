@@ -1,19 +1,25 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using AzureSupport;
 
 namespace TheBall.Interface
 {
     public class ExecuteInterfaceOperationImplementation
     {
-        public static InterfaceOperation GetTarget_Operation(string operationID)
+        public static string GetTarget_OperationDataLocation(InterfaceOperation operation)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<InterfaceOperation>(InformationContext.CurrentOwner, operationID);
+            return operation.RelativeLocation + ".data";
         }
 
-        public static void ExecuteMethod_ExecuteOperation(InterfaceOperation operation, string operationDataLocation)
+        public static async Task<InterfaceOperation> GetTarget_OperationAsync(string operationID)
         {
-            byte[] operationData = StorageSupport.CurrActiveContainer.DownloadBlobBinary(operationDataLocation);
+            return await ObjectStorage.RetrieveFromOwnerContentA<InterfaceOperation>(InformationContext.CurrentOwner, operationID);
+        }
+
+        public static async Task ExecuteMethod_ExecuteOperationAsync(InterfaceOperation operation, string operationDataLocation)
+        {
+            byte[] operationData = await StorageSupport.DownloadBlobByteArrayAsync(operationDataLocation);
             HttpOperationData reqData = null;
             using (var memStream = new MemoryStream(operationData))
             {
@@ -23,26 +29,18 @@ namespace TheBall.Interface
             {
                 operation.OperationName = reqData.OperationName;
                 operation.Started = DateTime.UtcNow;
-                operation.StoreInformation();
-                OperationSupport.ExecuteHttpOperation(reqData);
-
-                //throw new NotImplementedException("TODO progress event introduction above and store object status; including support for StatusUpdates");
-                // Finished cleanup
-                operation.DeleteInformationObject();
-                StorageSupport.DeleteWithoutFiringSubscriptions(operationDataLocation);
+                await operation.StoreInformationAsync();
+                await OperationSupport.ExecuteHttpOperationAsync(reqData);
+                await operation.DeleteInformationObjectAsync();
+                await StorageSupport.DeleteBlobAsync(operationDataLocation);
             }
             catch (Exception ex)
             {
                 operation.ErrorCode = ex.HResult.ToString();
                 operation.ErrorMessage = ex.Message;
                 operation.Finished = DateTime.UtcNow;
-                operation.StoreInformation();
+                await operation.StoreInformationAsync();
             }
-        }
-
-        public static string GetTarget_OperationDataLocation(InterfaceOperation operation)
-        {
-            return operation.RelativeLocation + ".data";
         }
     }
 }

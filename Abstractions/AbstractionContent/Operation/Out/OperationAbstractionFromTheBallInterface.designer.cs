@@ -120,12 +120,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateInterfaceOperationForExecutionParameters parameters)
 		{
 					}
-				public static CreateInterfaceOperationForExecutionReturnValue Execute(CreateInterfaceOperationForExecutionParameters parameters)
+				public static async Task<CreateInterfaceOperationForExecutionReturnValue> ExecuteAsync(CreateInterfaceOperationForExecutionParameters parameters)
 		{
 						PrepareParameters(parameters);
 					InterfaceOperation Operation = CreateInterfaceOperationForExecutionImplementation.GetTarget_Operation(parameters.DataType);	
 				string OperationDataLocation = CreateInterfaceOperationForExecutionImplementation.GetTarget_OperationDataLocation(Operation);	
-				CreateInterfaceOperationForExecutionImplementation.ExecuteMethod_StoreOperationWithData(parameters.OperationData, Operation, OperationDataLocation);		
+				 await CreateInterfaceOperationForExecutionImplementation.ExecuteMethod_StoreOperationWithDataAsync(parameters.OperationData, Operation, OperationDataLocation);		
 				CreateInterfaceOperationForExecutionReturnValue returnValue = CreateInterfaceOperationForExecutionImplementation.Get_ReturnValue(Operation);
 		return returnValue;
 				}
@@ -144,12 +144,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExecuteInterfaceOperationParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteInterfaceOperationParameters parameters)
+				public static async Task ExecuteAsync(ExecuteInterfaceOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					InterfaceOperation Operation = ExecuteInterfaceOperationImplementation.GetTarget_Operation(parameters.OperationID);	
+					InterfaceOperation Operation =  await ExecuteInterfaceOperationImplementation.GetTarget_OperationAsync(parameters.OperationID);	
 				string OperationDataLocation = ExecuteInterfaceOperationImplementation.GetTarget_OperationDataLocation(Operation);	
-				ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperation(Operation, OperationDataLocation);		
+				 await ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperationAsync(Operation, OperationDataLocation);		
 				}
 				}
 				public class DeleteInterfaceOperationParameters 
@@ -162,12 +162,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteInterfaceOperationParameters parameters)
 		{
 					}
-				public static void Execute(DeleteInterfaceOperationParameters parameters)
+				public static async Task ExecuteAsync(DeleteInterfaceOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string OperationBlobLocation = DeleteInterfaceOperationImplementation.GetTarget_OperationBlobLocation(parameters.OperationID);	
 				string OperationDataBlobLocation = DeleteInterfaceOperationImplementation.GetTarget_OperationDataBlobLocation(OperationBlobLocation);	
-				DeleteInterfaceOperationImplementation.ExecuteMethod_DeleteOperationWithData(OperationBlobLocation, OperationDataBlobLocation);		
+				 await DeleteInterfaceOperationImplementation.ExecuteMethod_DeleteOperationWithDataAsync(OperationBlobLocation, OperationDataBlobLocation);		
 				}
 				}
 				public class PutInterfaceOperationToQueueParameters 
@@ -180,17 +180,6 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PutInterfaceOperationToQueueParameters parameters)
 		{
 					}
-				public static void Execute(PutInterfaceOperationToQueueParameters parameters)
-		{
-						PrepareParameters(parameters);
-					TheBall.CORE.IContainerOwner QueueOwner = PutInterfaceOperationToQueueImplementation.GetTarget_QueueOwner();	
-				string QueueLocation = PutInterfaceOperationToQueueImplementation.GetTarget_QueueLocation();	
-				TheBall.CORE.IContainerOwner OperationOwner = PutInterfaceOperationToQueueImplementation.GetTarget_OperationOwner();	
-				TheBall.CORE.IAccountInfo InvokerAccount = PutInterfaceOperationToQueueImplementation.GetTarget_InvokerAccount();	
-				string QueueItemFileNameFormat = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFileNameFormat();	
-				string QueueItemFullPath = PutInterfaceOperationToQueueImplementation.GetTarget_QueueItemFullPath(parameters.OperationID, QueueItemFileNameFormat, QueueOwner, QueueLocation, OperationOwner);	
-				PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntry(parameters.OperationID, QueueItemFullPath, InvokerAccount);		
-				}
 				public static async Task ExecuteAsync(PutInterfaceOperationToQueueParameters parameters)
 		{
 						PrepareParameters(parameters);
@@ -212,17 +201,6 @@ using System.Threading.Tasks;
 				public string LockedOwnerID ;
 				public string[] OperationIDs ;
 				public string LockBlobFullPath ;
-				}
-				public static LockInterfaceOperationsByOwnerReturnValue Execute()
-		{
-						
-					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
-				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
-				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
-				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
-				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput = LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLock(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
-				LockInterfaceOperationsByOwnerReturnValue returnValue = LockInterfaceOperationsByOwnerImplementation.Get_ReturnValue(AcquireFirstObtainableLockOutput);
-		return returnValue;
 				}
 				public static async Task<LockInterfaceOperationsByOwnerReturnValue> ExecuteAsync()
 		{
@@ -257,11 +235,6 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
-		{
-						PrepareParameters(parameters);
-					ExecuteInterfaceOperationsByOwnerAndReleaseLockImplementation.ExecuteMethod_ExecuteOperationsAndReleaseLock(parameters.InstanceName, parameters.LockedOwnerPrefix, parameters.LockedOwnerID, parameters.OperationIDs, parameters.LockBlobFullPath);		
-				}
 				public static async Task ExecuteAsync(ExecuteInterfaceOperationsByOwnerAndReleaseLockParameters parameters)
 		{
 						PrepareParameters(parameters);

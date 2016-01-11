@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace TheBall.Interface
 {
@@ -15,10 +16,10 @@ namespace TheBall.Interface
             return operationBlobLocation + ".data";
         }
 
-        public static void ExecuteMethod_DeleteOperationWithData(string operationBlobLocation, string operationDataBlobLocation)
+        public static async Task ExecuteMethod_DeleteOperationWithDataAsync(string operationBlobLocation, string operationDataBlobLocation)
         {
-            StorageSupport.DeleteWithoutFiringSubscriptions(operationBlobLocation);
-            StorageSupport.DeleteWithoutFiringSubscriptions(operationDataBlobLocation);
+            await StorageSupport.DeleteBlobAsync(operationBlobLocation);
+            await StorageSupport.DeleteBlobAsync(operationDataBlobLocation);
         }
     }
 }

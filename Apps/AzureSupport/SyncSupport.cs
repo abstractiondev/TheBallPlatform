@@ -111,7 +111,7 @@ namespace TheBall
         public static void DeleteObsoleteTarget(string currTargetBlobLocation)
         {
             CloudBlockBlob blob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currTargetBlobLocation);
-            blob.DeleteWithoutFiringSubscriptions();
+            blob.DeleteBlob();
         }
 
         public static void CopySourceToTarget(string currSourceBlobLocation, string currTargetBlobLocation)

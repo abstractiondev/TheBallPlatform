@@ -118,7 +118,7 @@ namespace AaltoGlobalImpact.OIP
         public void ClearCurrentContent(IContainerOwner containerOwner)
         {
             CloudBlockBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
-            blob.DeleteWithoutFiringSubscriptions();
+            blob.DeleteBlob();
             RemoveAdditionalMediaFormats();
         }
 

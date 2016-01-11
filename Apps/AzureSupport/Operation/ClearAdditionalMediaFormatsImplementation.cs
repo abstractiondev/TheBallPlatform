@@ -19,7 +19,7 @@ namespace AaltoGlobalImpact.OIP
             var masterRelatedBlobs = StorageSupport.CurrActiveContainer.ListBlobsWithPrefix(masterLocationWithoutExtension + "_");
             foreach(var cloudBlob in masterRelatedBlobs.Cast<CloudBlockBlob>().Where(blob => blob.Name.EndsWith(".jpg") || blob.Name.EndsWith(".png") || blob.Name.EndsWith(".gif")))
             {
-                cloudBlob.DeleteWithoutFiringSubscriptions();
+                cloudBlob.DeleteBlob();
             }
         }
     }

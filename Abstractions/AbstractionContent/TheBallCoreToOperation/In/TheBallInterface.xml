@@ -353,7 +353,7 @@
             <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
               <Target name="Operation"/>
             </TargetDefinition>
-            <MethodExecute name="StoreOperationWithData" designDesc="Store operation object with its data" state="implemented">
+            <MethodExecute name="StoreOperationWithData" designDesc="Store operation object with its data" asyncSupportMode="AsyncOnly" state="implemented">
               <Parameter name="OperationData"/>
               <Target name="Operation"/>
               <Target name="OperationDataLocation"/>
@@ -374,14 +374,14 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Interface object to be executed" state="implemented">
+            <TargetDefinition name="Operation" dataType="InterfaceOperation" designDesc="Interface object to be executed" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="OperationID"/>
             </TargetDefinition>
             <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
               <Target name="Operation"/>
             </TargetDefinition>
             <MethodExecute name="ExecuteOperation" designDesc="Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info." 
-                           state="implemented">
+                           state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Operation"/>
               <Target name="OperationDataLocation"/>
             </MethodExecute>
@@ -403,7 +403,7 @@
             <TargetDefinition name="OperationDataBlobLocation" dataType="string" designDesc="Operation data blob location to be removed" state="implemented">
               <Target name="OperationBlobLocation"/>
             </TargetDefinition>
-            <MethodExecute name="DeleteOperationWithData" designDesc="Delete interface operation with its associated data"
+            <MethodExecute name="DeleteOperationWithData" designDesc="Delete interface operation with its associated data" asyncSupportMode="AsyncOnly"
                            state="implemented">
               <Target name="OperationBlobLocation"/>
               <Target name="OperationDataBlobLocation"/>
@@ -432,7 +432,7 @@
               <Target name="QueueLocation"/>
               <Target name="OperationOwner"/>
             </TargetDefinition>
-            <MethodExecute name="CreateQueueEntry" designDesc="Create queue entry to item with content of invoker account within" state="implemented" asyncSupportMode="Both">
+            <MethodExecute name="CreateQueueEntry" designDesc="Create queue entry to item with content of invoker account within" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="OperationID"/>
               <Target name="QueueItemFullPath"/>
               <Target name="InvokerAccount"/>
@@ -453,7 +453,7 @@
               <Target name="QueueLocation"/>
             </TargetDefinition>
             <TargetDefinition name="LockFileNameFormat" dataType="string" designDesc="Lock file name as: _ownerprefix_ownerid.lock" state="implemented" />
-            <MethodExecute name="AcquireFirstObtainableLock" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented" asyncSupportMode="Both">
+            <MethodExecute name="AcquireFirstObtainableLock" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="OwnerGroupedItems"/>
               <Target name="QueueOwner"/>
               <Target name="QueueLocation"/>
@@ -486,7 +486,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <MethodExecute name="ExecuteOperationsAndReleaseLock" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." asyncSupportMode="Both" state="implemented">
+            <MethodExecute name="ExecuteOperationsAndReleaseLock" designDesc="Execute operations one by one, delete queue items after each execution, delete lock item after all executed." asyncSupportMode="AsyncOnly" state="implemented">
               <Parameter name="InstanceName"/>
               <Parameter name="LockedOwnerPrefix"/>
               <Parameter name="LockedOwnerID"/>
