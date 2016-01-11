@@ -13,13 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
-using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Index;
@@ -122,53 +120,11 @@ namespace TheBall
             //return blob.Attributes.Metadata[InformationTypeKey];
         }
 
-        [Obsolete("no", true)]
-        public static void SetBlobInformationObjectType(this CloudBlockBlob blob, string informationObjectType)
-        {
-            blob.Metadata[InformationObjectTypeKey] = informationObjectType;
-        }
-
         public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
         }
 
-        [Obsolete("no", true)]
-        public static CloudBlobContainer ConfigurePrivateTemplateBlobStorage(string connStr, bool deleteBlobs)
-        {
-            return ConfigureBlobStorageContainer(connStr, deleteBlobs, "private-templates", BlobContainerPublicAccessType.Off);
-        }
-
-        [Obsolete("no", true)]
-        public static CloudBlobContainer ConfigureAnonWebBlobStorage(string connString, bool deleteBlobs)
-        {
-            return ConfigureBlobStorageContainer(connString, deleteBlobs, "anon-webcontainer", BlobContainerPublicAccessType.Blob);
-        }
-
-        [Obsolete("no", true)]
-        public static CloudBlobContainer ConfigureBlobStorageContainer(string connString, bool deleteBlobs, string containerName, BlobContainerPublicAccessType containerAccessType)
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(connString);
-            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            var anonWebContainer = blobClient.GetContainerReference(containerName);
-            anonWebContainer.CreateIfNotExists();
-            if (deleteBlobs)
-            {
-                foreach (var blob in anonWebContainer.ListBlobs(null, true))
-                {
-                    CloudBlockBlob blockBlob = blob as CloudBlockBlob;
-                    if (blockBlob != null)
-                        blockBlob.Delete();
-                    CloudPageBlob pageBlob = blob as CloudPageBlob;
-                    if (pageBlob != null)
-                        pageBlob.Delete();
-                }
-            }
-            BlobContainerPermissions permissions = new BlobContainerPermissions();
-            permissions.PublicAccess = containerAccessType;
-            anonWebContainer.SetPermissions(permissions);
-            return anonWebContainer;
-        }
 
         public static string DownloadBlobText(this CloudBlobContainer container,
             string blobPath, bool returnNullIfMissing = false)
@@ -1139,9 +1095,7 @@ namespace TheBall
             string blobEtag = null;
             try
             {
-                BlobRequestOptions options = new BlobRequestOptions();
-                options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
-                blob.DownloadToStream(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, options);
+                await blob.DownloadToStreamAsync(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null, null, null);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
             }
@@ -1174,8 +1128,6 @@ namespace TheBall
             string blobEtag = null;
             try
             {
-                BlobRequestOptions options = new BlobRequestOptions();
-                options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10); //   RetryPolicy.Retry(10, TimeSpan.FromSeconds(3));
                 blob.DownloadToStream(memoryStream, eTag != null ? AccessCondition.GenerateIfMatchCondition(eTag) : null);
                 InformationContext.AddStorageTransactionToCurrent();
                 blobEtag = blob.Properties.ETag;
@@ -1442,6 +1394,14 @@ namespace TheBall
             return CurrBlobClient.ListBlobsSegmented(searchRoot, true, BlobListingDetails.Metadata, maxresults, null, null, null);
         }
 
+        public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, bool useFlatBlobListing = true)
+        {
+            string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
+            return await CurrBlobClient.ListBlobsSegmentedAsync(searchRoot, useFlatBlobListing, BlobListingDetails.None, null, null, null, null);
+        }
+
+
+
         public static IEnumerable<IListBlobItem> ListBlobsWithPrefix(this IContainerOwner owner, string prefix, bool useFlatBlobListing = true)
         {
             string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
@@ -1506,13 +1466,6 @@ namespace TheBall
         }
 
         public static void DeleteBlob(this CloudBlockBlob blob)
-        {
-            blob.DeleteIfExists();
-            InformationContext.AddStorageTransactionToCurrent();
-        }
-
-        [Obsolete("No more subscriptions", true)]
-        public static void DeleteAndFireSubscriptions(this CloudBlockBlob blob)
         {
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
@@ -1636,21 +1589,39 @@ namespace TheBall
             return CurrBlobClient.ListBlobs(storageListingPrefix, true, BlobListingDetails.Metadata);
         }
 
+        public static async Task<bool> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)
+        {
+            CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
+            DateTime created = DateTime.UtcNow;
+            blob.Metadata.Add("LockCreated", created.ToString("s"));
+            string blobContent = "LockCreated: " + created.ToString("s");
+            var accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
+            try
+            {
+                Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
+                await blob.UploadTextAsync(blobContent, Encoding.UTF8, accessCondition, null, null);
+                InformationContext.AddStorageTransactionToCurrent();
+                Debug.WriteLine("Success!");
+            }
+            catch
+            {
+                Debug.WriteLine("FAILED!");
+                return false;
+            }
+            return true;
+        }
+
         public static bool AcquireLogicalLockByCreatingBlob(string lockLocation, out string lockEtag)
         {
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(lockLocation);
             DateTime created = DateTime.UtcNow;
             blob.Metadata.Add("LockCreated", created.ToString("s"));
             string blobContent = "LockCreated: " + created.ToString("s");
-            BlobRequestOptions options = new BlobRequestOptions
-            {
-                RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10)
-            };
             var accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
             try
             {
                 Debug.WriteLine("Trying to aqruire lock: " + lockLocation);
-                blob.UploadText(blobContent, Encoding.UTF8, accessCondition, options);
+                blob.UploadText(blobContent, Encoding.UTF8, accessCondition);
                 InformationContext.AddStorageTransactionToCurrent();
                 Debug.WriteLine("Success!");
             }

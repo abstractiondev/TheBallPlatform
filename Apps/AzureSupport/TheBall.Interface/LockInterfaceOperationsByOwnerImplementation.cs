@@ -21,10 +21,10 @@ namespace TheBall.Interface
             return OperationSupport.OperationQueueLocationName;
         }
 
-        public static IEnumerable<IGrouping<string, string>> GetTarget_OwnerGroupedItems(IContainerOwner queueOwner,
-            string queueLocation)
+        public static async Task<IEnumerable<IGrouping<string, string>>> GetTarget_OwnerGroupedItemsAsync(IContainerOwner queueOwner, string queueLocation)
         {
-            var blobList = queueOwner.ListBlobsWithPrefix(queueLocation).Cast<CloudBlockBlob>();
+            var blobSegment = await queueOwner.ListBlobsWithPrefixAsync(queueLocation);
+            var blobList = blobSegment.Results.Cast<CloudBlockBlob>();
             var grouped = blobList.GroupBy(blob =>
             {
                 var fileName = Path.GetFileName(blob.Name);
@@ -50,51 +50,6 @@ namespace TheBall.Interface
             return OperationSupport.LockFileNameFormat;
         }
 
-        public static LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
-            ExecuteMethod_AcquireFirstObtainableLock(IEnumerable<IGrouping<string, string>> ownerGroupedItems,
-                IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
-        {
-            var fullLockPathFormat =
-                Path.Combine(queueOwner.GetOwnerPrefix(), queueLocation, lockFileNameFormat).Replace(@"\", "/");
-            string currLockFile = null;
-            foreach (var grp in ownerGroupedItems)
-            {
-                var allGroupItems = grp.ToArray();
-                if (allGroupItems.Any(item => item.EndsWith(".lock")))
-                    continue;
-                var ownerprefix_id = grp.Key;
-                currLockFile = String.Format(fullLockPathFormat, ownerprefix_id);
-                string lockEtag;
-                bool acquireLock = StorageSupport.AcquireLogicalLockByCreatingBlob(currLockFile, out lockEtag);
-                if (!acquireLock)
-                    continue;
-                var ownerOperationBlobNames = grp.ToArray();
-                var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>
-                {
-                    var fileName = Path.GetFileName(ownerOperationBlobNames.First());
-                    string timestampPart;
-                    string ownerPrefix;
-                    string ownerID;
-                    string operationID;
-                    OperationSupport.GetQueueItemComponents(fileName, out timestampPart, out ownerPrefix,
-                        out ownerID, out operationID);
-                    return new Tuple<string, string, string>(ownerPrefix, ownerID, operationID);
-                }).ToArray();
-                var result = new LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue
-                {
-                    LockedOwnerPrefix = ownerOperationIDs.First().Item1,
-                    LockedOwnerID = ownerOperationIDs.First().Item2,
-                    OperationIDs = ownerOperationIDs.Select(item => item.Item3).ToArray(),
-                    LockBlobFullPath = currLockFile
-                };
-                var blobContents = String.Join(Environment.NewLine, result.OperationIDs);
-                var lockBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(currLockFile);
-                lockBlob.UploadBlobText(blobContents, false);
-                return result;
-            }
-            return null;
-        }
-
         public static async Task<LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue> ExecuteMethod_AcquireFirstObtainableLockAsync(IEnumerable<IGrouping<string, string>> ownerGroupedItems, IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
         {
             var fullLockPathFormat =
@@ -107,8 +62,7 @@ namespace TheBall.Interface
                     continue;
                 var ownerprefix_id = grp.Key;
                 currLockFile = String.Format(fullLockPathFormat, ownerprefix_id);
-                string lockEtag;
-                bool acquireLock = StorageSupport.AcquireLogicalLockByCreatingBlob(currLockFile, out lockEtag);
+                bool acquireLock = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
                 if (!acquireLock)
                     continue;
                 var ownerOperationBlobNames = allGroupItems;
@@ -132,7 +86,7 @@ namespace TheBall.Interface
                 };
                 var blobContents = String.Join(Environment.NewLine, result.OperationIDs);
                 var lockBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(currLockFile);
-                lockBlob.UploadBlobText(blobContents, false);
+                await lockBlob.UploadBlobTextAsync(blobContents, false);
                 return result;
             }
             return null;

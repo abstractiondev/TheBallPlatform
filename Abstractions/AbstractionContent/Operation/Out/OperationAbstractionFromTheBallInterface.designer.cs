@@ -207,7 +207,7 @@ using System.Threading.Tasks;
 						
 					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
 				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
-				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems = LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItems(QueueOwner, QueueLocation);	
+				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems =  await LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItemsAsync(QueueOwner, QueueLocation);	
 				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
 				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
 				LockInterfaceOperationsByOwnerReturnValue returnValue = LockInterfaceOperationsByOwnerImplementation.Get_ReturnValue(AcquireFirstObtainableLockOutput);

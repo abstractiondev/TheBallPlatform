@@ -264,7 +264,7 @@
         <SequentialExecution>
           <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
           <TargetDefinition name="QueueLocation" dataType="string" designDesc="Queue root folder location" state="implemented" />
-          <TargetDefinition name="OwnerGroupedItems" dataType="IEnumerable&lt;System.Linq.IGrouping&lt;string, string&gt;&gt;" designDesc="Grouped data by owner; preserving alphabetical order for oldest-first" state="implemented">
+          <TargetDefinition name="OwnerGroupedItems" asyncSupportMode="AsyncOnly" dataType="IEnumerable&lt;System.Linq.IGrouping&lt;string, string&gt;&gt;" designDesc="Grouped data by owner; preserving alphabetical order for oldest-first" state="implemented">
             <Target name="QueueOwner" />
             <Target name="QueueLocation" />
           </TargetDefinition>
