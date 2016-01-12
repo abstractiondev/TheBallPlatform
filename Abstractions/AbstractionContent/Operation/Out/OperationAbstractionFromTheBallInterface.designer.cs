@@ -134,7 +134,18 @@ using System.Threading.Tasks;
 		{
 				public string OperationID ;
 				}
-				public class ExecuteInterfaceOperationParameters 
+		
+		public class ExecuteLegacyHttpPostRequest 
+		{
+				public static void Execute()
+		{
+						
+					AzureSupport.HttpOperationData RequestData = ExecuteLegacyHttpPostRequestImplementation.GetTarget_RequestData();	
+				ExecuteLegacyHttpPostRequestImplementation.ExecuteMethod_ExecutePostRequest(RequestData);		
+				}
+				}
+
+		    public class ExecuteInterfaceOperationParameters 
 		{
 				public string OperationID ;
 				}

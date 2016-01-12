@@ -48,7 +48,7 @@ namespace TheBall.CORE
             // Initialize nodesummarycontainer
             NodeSummaryContainer nodeSummaryContainer = NodeSummaryContainer.CreateDefault();
             nodeSummaryContainer.SetLocationAsOwnerContent(groupAsOwner, "default");
-            nodeSummaryContainer.StoreInformationMasterFirst(groupAsOwner, true);
+            nodeSummaryContainer.StoreInformation(groupAsOwner, true);
         }
     }
 }

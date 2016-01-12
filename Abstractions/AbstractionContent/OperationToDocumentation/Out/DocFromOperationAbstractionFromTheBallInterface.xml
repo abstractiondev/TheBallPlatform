@@ -678,6 +678,29 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ExecuteLegacyHttpPostRequest" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute legacy operation from HTTP Request data as from direct request (forms etc supported)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: RequestData" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Request data retrieved from operation context</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ExecutePostRequest ( RequestData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Execute legacy request as-if it was submitted</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExecuteRemoteCalledConnectionOperation (InputStream, OutputStream)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

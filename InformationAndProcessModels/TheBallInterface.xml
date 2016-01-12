@@ -365,6 +365,19 @@
           <Target name="Operation"/>
         </OperationReturnValues>
       </Operation>
+      <Operation name="ExecuteLegacyHttpPostRequest">
+        <OperationSpec>
+          <Description>Execute legacy operation from HTTP Request data as from direct request (forms etc supported)</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="AzureSupport.HttpOperationData" name="RequestData" designDesc="Request data retrieved from operation context" state="implemented" />
+            <MethodExecute name="ExecutePostRequest" designDesc="Execute legacy request as-if it was submitted" state="implemented">
+              <Target name="RequestData"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ExecuteInterfaceOperation">
         <OperationSpec>
           <Description>Execute given operation</Description>

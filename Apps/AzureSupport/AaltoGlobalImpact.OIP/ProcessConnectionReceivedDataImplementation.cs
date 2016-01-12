@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheBall;
@@ -46,7 +47,8 @@ namespace AaltoGlobalImpact.OIP
 
         public static void ExecuteMethod_CallMigrationSupport(Process process, string sourceContentRoot, string targetContentRoot, Dictionary<string, string> categoryMap)
         {
-            MigrationSupport.MigrateAaltoGlobalImpactContent(process, sourceContentRoot, targetContentRoot, categoryMap);
+            throw new NotImplementedException();
+            //MigrationSupport.MigrateAaltoGlobalImpactContent(process, sourceContentRoot, targetContentRoot, categoryMap);
         }
     }
 }

@@ -115,6 +115,12 @@
     <StatusItem name="CreateInterfaceOperationForExecution_OperationID" displayName="VariableType: OperationID" description="Operation ID of newly created operation">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ExecuteLegacyHttpPostRequest_RequestData" displayName="TargetDefinitionType: RequestData" description="Request data retrieved from operation context">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ExecuteLegacyHttpPostRequest_ExecutePostRequest" displayName="MethodExecuteType: ExecutePostRequest" description="Execute legacy request as-if it was submitted">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ExecuteInterfaceOperation_OperationID" displayName="VariableType: OperationID" description="Operation ID to execute">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -443,6 +449,10 @@
       <ItemRef itemName="CreateInterfaceOperationForExecution_OperationDataLocation" />
       <ItemRef itemName="CreateInterfaceOperationForExecution_StoreOperationWithData" />
       <ItemRef itemName="CreateInterfaceOperationForExecution_OperationID" />
+    </Group>
+    <Group name="ExecuteLegacyHttpPostRequest">
+      <ItemRef itemName="ExecuteLegacyHttpPostRequest_RequestData" />
+      <ItemRef itemName="ExecuteLegacyHttpPostRequest_ExecutePostRequest" />
     </Group>
     <Group name="ExecuteInterfaceOperation">
       <ItemRef itemName="ExecuteInterfaceOperation_OperationID" />

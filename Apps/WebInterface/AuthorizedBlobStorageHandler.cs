@@ -380,8 +380,8 @@ namespace WebInterface
             //string operationID = "0";
             var response = context.Response;
             response.Write(String.Format("{{ \"OperationID\": {0} }}", operationID));
-            //EndResponseWithStatusCode(context, 202);
-            EndResponseWithStatusCode(context, 200);
+            EndResponseWithStatusCode(context, 202);
+            //EndResponseWithStatusCode(context, 200);
         }
 
         private static void EndResponseWithStatusCode(HttpContext context, int statusCode)
@@ -428,13 +428,16 @@ namespace WebInterface
                 form.Get("ExecuteOperation") != null || form.Get("ExecuteAdminOperation") != null;
             if(isClientTemplateRequest)
             {
+                string operationName = "TheBall.Interface.ExecuteLegacyHttpPostRequest";
+                await HandleOwnerOperationRequest(containerOwner, context, operationName);
+                /*
                 HandleOwnerClientTemplatePOST(containerOwner, request);
                 bool isPaymentsGroup = containerOwner.ContainerName == "grp" &&
                                        containerOwner.LocationPrefix == InstanceConfig.Current.PaymentsGroupID;
                 if (isPaymentsGroup && false)
                 {
                     SQLiteSyncOwnerData(containerOwner);
-                }
+                }*/
 
                 return false;
             }
@@ -490,6 +493,7 @@ namespace WebInterface
                 throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
         }
 
+        [Obsolete("To be replaced with worker implementation", true)]
         private void HandleOwnerClientTemplatePOST(IContainerOwner containerOwner, HttpRequest request)
         {
             var form = request.Form;

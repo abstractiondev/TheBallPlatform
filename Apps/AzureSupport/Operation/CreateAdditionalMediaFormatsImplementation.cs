@@ -17,6 +17,7 @@ namespace AaltoGlobalImpact.OIP
             try
             {
                 CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(masterRelativeLocation);
+                blob.FetchAttributes();
                 Bitmap bitmap;
                 using(Stream bitmapStream = new MemoryStream((int) blob.Properties.Length))
                 {

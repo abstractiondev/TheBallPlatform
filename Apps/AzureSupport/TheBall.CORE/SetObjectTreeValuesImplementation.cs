@@ -196,7 +196,7 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreCompleteObject(IInformationObject rootObject)
         {
-            rootObject.StoreInformationMasterFirst(InformationContext.CurrentOwner, false);
+            rootObject.StoreInformation(InformationContext.CurrentOwner, true);
         }
 
         private static void initializeChainObjects(IInformationObject createdObject, string objectProp)

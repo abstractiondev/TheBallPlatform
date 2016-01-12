@@ -905,6 +905,7 @@ namespace TheBall
             informationObject.RelativeLocation = ownerLocation;
         }
 
+        [Obsolete("Not relevant", true)]
         public static CloudBlockBlob StoreInformationMasterFirst(this IInformationObject informationObject, IContainerOwner owner, bool reconnectMastersAndCollections, bool overwriteIfExists = false)
         {
             IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;

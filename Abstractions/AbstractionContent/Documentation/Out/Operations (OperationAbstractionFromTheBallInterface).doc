@@ -800,6 +800,19 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Execute operations one by one, delete queue items after each execution, delete lock item after all executed.
 		</div>
+		</p><h1>ExecuteLegacyHttpPostRequest</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Execute legacy operation from HTTP Request data as from direct request (forms etc supported)
+		</div>
+		</p><h2>Target Definition: RequestData</h2>
+		<p>		<div class="MsoNormal" >
+		Request data retrieved from operation context
+		</div>
+		</p><h2>Method Call: ExecutePostRequest ( RequestData )</h2>
+		<p>		<div class="MsoNormal" >
+		Execute legacy request as-if it was submitted
+		</div>
 		</p><h1>ExecuteRemoteCalledConnectionOperation (InputStream, OutputStream)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

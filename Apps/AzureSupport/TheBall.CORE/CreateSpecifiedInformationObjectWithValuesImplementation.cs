@@ -30,7 +30,7 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreInitialObject(IInformationObject createdObject)
         {
-            createdObject.StoreInformationMasterFirst(InformationContext.CurrentOwner, true);
+            createdObject.StoreInformation(InformationContext.CurrentOwner);
         }
 
         public static SetObjectTreeValuesParameters SetObjectValues_GetParameters(NameValueCollection httpFormData, HttpFileCollection httpFileData, IInformationObject createdObject)

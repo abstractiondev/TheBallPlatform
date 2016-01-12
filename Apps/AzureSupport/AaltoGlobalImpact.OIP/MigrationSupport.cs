@@ -8,6 +8,7 @@ using TheBall.CORE;
 
 namespace AaltoGlobalImpact.OIP
 {
+    [Obsolete("Not relevant", true)]
     public static class MigrationSupport
     {
         public static void MigrateAaltoGlobalImpactContent(Process process, string sourceContentRoot, string targetContentRoot, Dictionary<string, string> categoryMap)
@@ -100,6 +101,7 @@ namespace AaltoGlobalImpact.OIP
             }
         }
 
+        [Obsolete("Not relevant", true)]
         private static CloudBlob processImageContent(Image image, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
         {
             var owner = InformationContext.CurrentOwner;
@@ -119,6 +121,7 @@ namespace AaltoGlobalImpact.OIP
             return storedBlob;
         }
 
+        [Obsolete("Not relevant", true)]
         private static CloudBlob processBinaryContent(BinaryFile binary, string targetContentRootLocation, Dictionary<string, string> categoryMap, CategoryCollection targetCategoryCollection, string processID)
         {
             var owner = InformationContext.CurrentOwner;
