@@ -219,11 +219,22 @@ namespace TheBall
         {
             if (FinalizingActions == null)
                 return;
-            var currentChangedTypes = ChangedTypes.ToList();
-            ChangedTypes.Clear();
+            var currentChangedTypes = ChangedTypes.ToArray();
 
             foreach (var finalizingAction in FinalizingActions)
             {
+                bool isActive =
+                    currentChangedTypes.Any(
+                        changedType => finalizingAction.DependingFromTypes.Any(depType => changedType == depType));
+                if (isActive)
+                {
+                    ChangedTypes.Clear();
+                    await finalizingAction.FinalizingAction(finalizingAction.ForType);
+                    if (ChangedTypes.Count > 0)
+                    {
+                        currentChangedTypes = currentChangedTypes.Union(ChangedTypes).ToArray();
+                    }
+                }
             }
         }
 
