@@ -176,7 +176,7 @@ namespace TheBall
             return null;
         }
 
-        public void updateStatusSummary()
+        public async Task updateStatusSummaryAsync()
         {
             try
             {
@@ -190,7 +190,7 @@ namespace TheBall
                         ChangedIDList = changedList,
                         RemoveExpiredEntriesSeconds = InfraSharedConfig.HARDCODED_StatusUpdateExpireSeconds,
                     };
-                    UpdateStatusSummary.Execute(parameters);
+                    await UpdateStatusSummary.ExecuteAsync(parameters);
                 }
             }
             catch (Exception ex) // DO NOT FAIL HERE
@@ -250,7 +250,7 @@ namespace TheBall
 
         public async Task PerformFinalizingActionsAsync()
         {
-            updateStatusSummary();
+            await updateStatusSummaryAsync();
             createIndexingRequest();
 
             if (isResourceMeasuring)

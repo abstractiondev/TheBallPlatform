@@ -543,7 +543,7 @@
               <Target name="ChangeItem"/>
             </MethodExecute>
             -->
-            <MethodExecute name="EnsureUpdateOnStatusSummary" designDesc="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely." state="implemented">
+            <MethodExecute name="EnsureUpdateOnStatusSummary" designDesc="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely." asyncSupportMode="AsyncOnly" state="implemented">
               <Parameter name="Owner"/>
               <Parameter name="UpdateTime"/>
               <Parameter name="ChangedIDList"/>

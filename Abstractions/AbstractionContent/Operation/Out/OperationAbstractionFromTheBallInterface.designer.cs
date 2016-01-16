@@ -144,8 +144,7 @@ using System.Threading.Tasks;
 				ExecuteLegacyHttpPostRequestImplementation.ExecuteMethod_ExecutePostRequest(RequestData);		
 				}
 				}
-
-		    public class ExecuteInterfaceOperationParameters 
+				public class ExecuteInterfaceOperationParameters 
 		{
 				public string OperationID ;
 				}
@@ -268,10 +267,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(UpdateStatusSummaryParameters parameters)
 		{
 					}
-				public static void Execute(UpdateStatusSummaryParameters parameters)
+				public static async Task ExecuteAsync(UpdateStatusSummaryParameters parameters)
 		{
 						PrepareParameters(parameters);
-					UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummary(parameters.Owner, parameters.UpdateTime, parameters.ChangedIDList, parameters.RemoveExpiredEntriesSeconds);		
+					 await UpdateStatusSummaryImplementation.ExecuteMethod_EnsureUpdateOnStatusSummaryAsync(parameters.Owner, parameters.UpdateTime, parameters.ChangedIDList, parameters.RemoveExpiredEntriesSeconds);		
 				}
 				}
 				public class DeleteConnectionWithStructuresParameters 

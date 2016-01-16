@@ -347,7 +347,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="EnsureUpdateOnStatusSummary" designDesc="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely." state="implemented">
+          <MethodExecute name="EnsureUpdateOnStatusSummary" asyncSupportMode="AsyncOnly" designDesc="Guarantee update on StatusSummary, retry if fails. Time-stamp blockify the IDs, placing ID aways highest in the graph. Remove expired blocks entirely." state="implemented">
             <Parameter name="Owner" />
             <Parameter name="UpdateTime" />
             <Parameter name="ChangedIDList" />
