@@ -23,19 +23,6 @@ using TheBall.Interface;
 
 namespace TheBall
 {
-    public class FinalizingDependencyAction
-    {
-        public readonly Type ForType;
-        public readonly Type[] DependingFromTypes;
-        public readonly Func<Type, Task> FinalizingAction;
-
-        public FinalizingDependencyAction(Type forType, Type[] dependingFromTypes, Func<Type, Task> finalizingAction)
-        {
-            ForType = forType;
-            DependingFromTypes = dependingFromTypes;
-            FinalizingAction = finalizingAction;
-        }
-    }
     public class InformationContext
     {
         private const string KEYNAME = "INFOCTX";
@@ -70,9 +57,7 @@ namespace TheBall
             get { return Current.Account; }
         }
 
-        private FinalizingDependencyAction[] FinalizingActions = null;
-
-        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] finalizingActions = null)
+        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null)
         {
             if (HttpContext.Current != null)
                 throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
@@ -80,16 +65,12 @@ namespace TheBall
             if(logicalContext != null)
                 throw new InvalidOperationException("LogicalContext already initialized");
             var ctx = new InformationContext(contextRootOwner, instanceName);
+            ctx.OperationFinalizingActions = operationFinalizingActions;
             CallContext.LogicalSetData(KEYNAME, ctx);
-            if (finalizingActions != null)
-            {
-                var lookup = finalizingActions.ToDictionary(item => item.ForType);
-                ctx.FinalizingActions = finalizingActions?.TSort(item => item.DependingFromTypes
-                    ?.Where(depType => lookup.ContainsKey(depType))
-                    .Select(depType => lookup[depType]), true).ToArray();
-            }
             return ctx;
         }
+
+        public FinalizingDependencyAction[] OperationFinalizingActions { get; private set; }
 
         public static void RemoveFromLogicalContext()
         {
@@ -211,31 +192,7 @@ namespace TheBall
 
         public async Task ProcessFinalizingActionsAsync()
         {
-            await ExecuteRegisteredFinalizingActions();
             await PerformFinalizingActionsAsync();
-        }
-
-        private async Task ExecuteRegisteredFinalizingActions()
-        {
-            if (FinalizingActions == null)
-                return;
-            var currentChangedTypes = ChangedTypes.ToArray();
-
-            foreach (var finalizingAction in FinalizingActions)
-            {
-                bool isActive =
-                    currentChangedTypes.Any(
-                        changedType => finalizingAction.DependingFromTypes.Any(depType => changedType == depType));
-                if (isActive)
-                {
-                    ChangedTypes.Clear();
-                    await finalizingAction.FinalizingAction(finalizingAction.ForType);
-                    if (ChangedTypes.Count > 0)
-                    {
-                        currentChangedTypes = currentChangedTypes.Union(ChangedTypes).ToArray();
-                    }
-                }
-            }
         }
 
         public static void ClearCurrent()
@@ -409,7 +366,9 @@ namespace TheBall
         }
 
         // Currently being used for listing changed IDs
-        private HashSet<Type> ChangedTypes = new HashSet<Type>();
+        private readonly HashSet<Type> ChangedTypesForOperationFinalizers = new HashSet<Type>();
+        internal HashSet<Type> OperationTrackedCurrentChangedTypesForOperationFinalizers => ChangedTypesForOperationFinalizers;
+
         private HashSet<string> ChangedIDInfos = new HashSet<string>();
         private HashSet<string> IndexedIDInfos = new HashSet<string>();
         private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface", "TheBall.Index" };
@@ -446,7 +405,7 @@ namespace TheBall
             string changedIDInfo = changeTypeValue + ":" + informationObject.ID;
             ChangedIDInfos.Add(changedIDInfo);
             var objectType = informationObject.GetType();
-            ChangedTypes.Add(objectType);
+            ChangedTypesForOperationFinalizers.Add(objectType);
         }
 
         public string[] GetChangedObjectIDs()

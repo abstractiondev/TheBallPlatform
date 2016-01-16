@@ -1479,7 +1479,6 @@ namespace TheBall
 
         public static void DeleteBlob(string blobPath)
         {
-            Console.WriteLine("Deleting: " + blobPath);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(blobPath);
             blob.DeleteIfExists();
             InformationContext.AddStorageTransactionToCurrent();
@@ -1487,7 +1486,6 @@ namespace TheBall
 
         public static async Task DeleteBlobAsync(string blobPath)
         {
-            Console.WriteLine("Deleting: " + blobPath);
             CloudBlockBlob blob = GetOwnerBlobReference(blobPath);
             await blob.DeleteIfExistsAsync();
             InformationContext.AddStorageTransactionToCurrent();

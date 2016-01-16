@@ -91,10 +91,11 @@ namespace TheBall
 
                     SendEmailResponse response = ses.SendEmail(request);
 
+                    /*
                     Console.WriteLine("Email sent.");
                     Console.WriteLine(String.Format("Message ID: {0}",
                                                     response.MessageId));
-
+                                                    */
                     return true;
                 }
                 catch (Exception ex)

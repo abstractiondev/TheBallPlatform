@@ -81,6 +81,7 @@ namespace TheBall
                 {
                     executeMethod.Invoke(null, null);
                 }
+                await InformationContext.Current.LogicalOperationContext.ExecuteRegisteredFinalizingActions();
             }
             finally
             {
@@ -258,18 +259,6 @@ namespace TheBall
             ownerPrefix = split[1];
             ownerID = split[2];
             operationID = split[3] + "_" + split[4];
-        }
-
-        [Obsolete("Operation exists for this already", true)]
-        public static async Task ExecuteOperationAsync(string operationID)
-        {
-            var interfaceOperation = await
-                ObjectStorage.RetrieveFromOwnerContentA<InterfaceOperation>(InformationContext.CurrentOwner, operationID);
-            var dataLocation = interfaceOperation.RelativeLocation + ".data";
-            var operationDataByteArray = await StorageSupport.DownloadBlobByteArrayAsync(dataLocation);
-            var operationData =
-                HttpRequestSerializer.DeserializeProtobuf<HttpOperationData>(new MemoryStream(operationDataByteArray));
-            await ExecuteHttpOperationAsync(operationData);
         }
     }
 }
