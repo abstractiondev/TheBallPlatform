@@ -55,6 +55,7 @@ namespace TheBall.Interface
             if (ownerDependencyActions != null)
                 return ownerDependencyActions;
             FinalizingDependencyAction[] masterCollectioActions = getMasterCollectionRefreshActions();
+            FinalizingDependencyAction[] customDependencyActions = getCustomDependencyActions();
             /*
             var result = new[]
             {
@@ -70,8 +71,42 @@ namespace TheBall.Interface
                     await masterCollection.StoreInformationAsync();
                 }),
             };*/
-            ownerDependencyActions = masterCollectioActions;
+            ownerDependencyActions = masterCollectioActions.Concat(customDependencyActions).ToArray();
             return ownerDependencyActions;
+        }
+
+        private static FinalizingDependencyAction[] getCustomDependencyActions()
+        {
+            return new[]
+            {
+                new FinalizingDependencyAction(typeof(AaltoGlobalImpact.OIP.NodeSummaryContainer),
+                new[]
+                {
+                    typeof(AaltoGlobalImpact.OIP.RenderedNodeCollection),
+                    typeof(AaltoGlobalImpact.OIP.TextContentCollection),
+                    typeof(AaltoGlobalImpact.OIP.LinkToContentCollection),
+                    typeof(AaltoGlobalImpact.OIP.EmbeddedContentCollection),
+                    typeof(AaltoGlobalImpact.OIP.ImageCollection),
+                    typeof(AaltoGlobalImpact.OIP.BinaryFileCollection),
+                    typeof(AaltoGlobalImpact.OIP.CategoryCollection)
+                }, async types =>
+                {
+                    IInformationObject nodeSummaryContainer =
+                        await
+                            ObjectStorage.RetrieveFromOwnerContentA<AaltoGlobalImpact.OIP.NodeSummaryContainer>(InformationContext.CurrentOwner, "default");
+                    foreach (var type in types)
+                    {
+                        var getInstanceMethod = type.GetMethod("GetMasterCollectionInstance");
+                        if (getInstanceMethod == null)
+                            continue;
+                        IInformationCollection masterObject =
+                            (IInformationCollection)
+                                getInstanceMethod.Invoke(null, new object[] {InformationContext.CurrentOwner});
+                        nodeSummaryContainer.UpdateCollections(masterObject);
+                    }
+                    await nodeSummaryContainer.StoreInformationAsync();
+                }), 
+            };
         }
 
         private static FinalizingDependencyAction[] getMasterCollectionRefreshActions()
@@ -86,7 +121,7 @@ namespace TheBall.Interface
             var matchingTypePairs = collectionObjects.Select(collType =>
             {
                 var noCollectionTypeName = collType.Name.Replace("Collection", "");
-                var noCollectionType = noCollectionObjects.FirstOrDefault(item => item.Name == noCollectionTypeName);
+                var noCollectionType = noCollectionObjects.FirstOrDefault(item => item.Namespace == collType.Namespace &&  item.Name == noCollectionTypeName);
                 return new
                 {
                     SingleType = noCollectionType,
@@ -96,10 +131,10 @@ namespace TheBall.Interface
             var actions = matchingTypePairs.Select(pair =>
             {
                 var collType = pair.CollectionType;
-                return new FinalizingDependencyAction(pair.CollectionType, new []{ pair.SingleType }, async type =>
+                return new FinalizingDependencyAction(pair.CollectionType, new []{ pair.SingleType }, async types =>
                 {
-                    var refreshMethod = collType.GetMethod("GetMasterCollectionInstance");
-                    IInformationCollection masterObject = (IInformationCollection) refreshMethod.Invoke(null, new object[] { InformationContext.CurrentOwner});
+                    var getInstanceMethod = collType.GetMethod("GetMasterCollectionInstance");
+                    IInformationCollection masterObject = (IInformationCollection) getInstanceMethod.Invoke(null, new object[] { InformationContext.CurrentOwner});
                     masterObject.RefreshContent();
                     await StorageSupport.StoreInformationAsync((IInformationObject) masterObject);
                     //var masterCollection = TextContentCollection.GetMasterCollectionInstance(CurrentOwner); 

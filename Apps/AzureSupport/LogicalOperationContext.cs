@@ -10,9 +10,9 @@ namespace TheBall
     {
         public readonly Type ForType;
         public readonly Type[] DependingFromTypes;
-        public readonly Func<Type, Task> FinalizingAction;
+        public readonly Func<Type[], Task> FinalizingAction;
 
-        public FinalizingDependencyAction(Type forType, Type[] dependingFromTypes, Func<Type, Task> finalizingAction)
+        public FinalizingDependencyAction(Type forType, Type[] dependingFromTypes, Func<Type[], Task> finalizingAction)
         {
             ForType = forType;
             DependingFromTypes = dependingFromTypes;
@@ -67,13 +67,13 @@ namespace TheBall
 
                 foreach (var finalizingAction in FinalizingActions)
                 {
-                    bool isActive =
-                        currentChangedTypes.Any(
-                            changedType => finalizingAction.DependingFromTypes.Any(depType => changedType == depType));
-                    if (isActive)
+                    var activatedOnTypes =
+                        currentChangedTypes.Where(
+                            changedType => finalizingAction.DependingFromTypes.Any(depType => changedType == depType)).ToArray();
+                    if (activatedOnTypes.Length > 0)
                     {
                         activeChangedTypeSet.Clear();
-                        await finalizingAction.FinalizingAction(finalizingAction.ForType);
+                        await finalizingAction.FinalizingAction(activatedOnTypes);
                         if (activeChangedTypeSet.Count > 0)
                         {
                             currentChangedTypes = currentChangedTypes.Union(activeChangedTypeSet).ToArray();
