@@ -132,6 +132,15 @@ namespace TheBall
             return ctx;
         }
 
+        public static InformationContext InitializeExistingToLogicalContext(InformationContext previousContext)
+        {
+            var logicalContext = CallContext.LogicalGetData(KEYNAME);
+            if (logicalContext != null)
+                throw new InvalidOperationException("LogicalContext already initialized");
+            CallContext.LogicalSetData(KEYNAME, previousContext);
+            return previousContext;
+        }
+
         public static void RemoveFromHttpContext()
         {
             var httpContext = HttpContext.Current;
@@ -203,7 +212,7 @@ namespace TheBall
         public async Task ProcessFinalizingActionsAsync()
         {
             await ExecuteRegisteredFinalizingActions();
-            PerformFinalizingActions();
+            await PerformFinalizingActionsAsync();
         }
 
         private async Task ExecuteRegisteredFinalizingActions()
@@ -239,7 +248,7 @@ namespace TheBall
             throw new InvalidOperationException("InformationContext ClearCurrent failed - no active context set");
         }
 
-        public void PerformFinalizingActions()
+        public async Task PerformFinalizingActionsAsync()
         {
             updateStatusSummary();
             createIndexingRequest();
@@ -262,7 +271,7 @@ namespace TheBall
                 string uniquePostFix = Guid.NewGuid().ToString("N");
                 string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + uniquePostFix;
                 RequestResourceUsage.SetLocationAsOwnerContent(measurementOwner, itemName);
-                //RequestResourceUsage.StoreInformation();
+                await RequestResourceUsage.StoreInformationAsync();
             }
         }
 

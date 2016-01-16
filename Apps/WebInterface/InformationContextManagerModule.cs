@@ -102,11 +102,11 @@ namespace WebInterface
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
             }
-            return;
-            var currentCtx = InformationContext.Current;
+            var currentHttpCtx = InformationContext.Current;
             HostingEnvironment.QueueBackgroundWorkItem(async cancellationItem =>
             {
-                await currentCtx.ProcessFinalizingActionsAsync();
+                var backgroundCtx = InformationContext.InitializeExistingToLogicalContext(currentHttpCtx);
+                await backgroundCtx.ProcessFinalizingActionsAsync();
             });
         }
 
