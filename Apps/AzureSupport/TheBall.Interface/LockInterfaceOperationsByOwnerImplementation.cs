@@ -68,7 +68,7 @@ namespace TheBall.Interface
                 var ownerOperationBlobNames = allGroupItems;
                 var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>
                 {
-                    var fileName = Path.GetFileName(ownerOperationBlobNames.First());
+                    var fileName = Path.GetFileName(blobName);
                     string timestampPart;
                     string ownerPrefix;
                     string ownerID;
