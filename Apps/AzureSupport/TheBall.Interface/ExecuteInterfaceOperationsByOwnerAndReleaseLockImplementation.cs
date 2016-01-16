@@ -39,7 +39,7 @@ namespace TheBall.Interface
             }
             finally
             {
-                InformationContext.ProcessAndClearCurrentIfAvailable();
+                await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
             }
         }
     }

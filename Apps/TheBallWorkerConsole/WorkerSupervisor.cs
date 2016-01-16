@@ -184,7 +184,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 }
                 finally
                 {
-                    InformationContext.ProcessAndClearCurrentIfAvailable();
+                    await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
                 }
             }, cancellationTokenSource.Token);
             return new Tuple<Task, CancellationTokenSource>(result, cancellationTokenSource);

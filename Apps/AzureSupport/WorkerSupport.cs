@@ -260,7 +260,7 @@ namespace TheBall
         }
 
 
-        public static void ProcessIndexing(QueueSupport.MessageObject<string>[] indexingMessages, string indexStorageRootFolder)
+        public static async Task ProcessIndexingAsync(QueueSupport.MessageObject<string>[] indexingMessages, string indexStorageRootFolder)
         {
             foreach (var indexingMessage in indexingMessages)
             {
@@ -286,13 +286,14 @@ namespace TheBall
                 finally
                 {
                     if (containerName != null)
-                        InformationContext.ProcessAndClearCurrentIfAvailable();
-
+                    {
+                        await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
+                    }
                 }
             }
         }
 
-        public static void ProcessQueries(QueueSupport.MessageObject<string>[] queryMessages, string indexStorageRootFolder)
+        public static async Task ProcessQueriesAsync(QueueSupport.MessageObject<string>[] queryMessages, string indexStorageRootFolder)
         {
             foreach (var queryMessage in queryMessages)
             {
@@ -318,7 +319,7 @@ namespace TheBall
                 finally
                 {
                     if (containerName != null)
-                        InformationContext.ProcessAndClearCurrentIfAvailable();
+                        await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
 
                 }
             }

@@ -199,7 +199,7 @@ namespace TheBallTool
                 image.ImageData.UpdateAdditionalMediaFormats();
                 Console.WriteLine("Processed Image: " + ++currImageIndex + " out of " + images.Length);
             }
-            InformationContext.ProcessAndClearCurrentIfAvailable();
+            InformationContext.ProcessAndClearCurrentIfAvailableAsync().Wait();
             //InformationContext.Current.InitializeCloudStorageAccess(Properties.Settings.Default.CurrentActiveContainerName);
         }
 

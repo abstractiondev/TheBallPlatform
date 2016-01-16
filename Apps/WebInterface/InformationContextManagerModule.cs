@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using TheBall;
@@ -101,7 +102,12 @@ namespace WebInterface
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
             }
-            InformationContext.ProcessAndClearCurrentIfAvailable();
+            return;
+            var currentCtx = InformationContext.Current;
+            HostingEnvironment.QueueBackgroundWorkItem(async cancellationItem =>
+            {
+                await currentCtx.ProcessFinalizingActionsAsync();
+            });
         }
 
         #endregion

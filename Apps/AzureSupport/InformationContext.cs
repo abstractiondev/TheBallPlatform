@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
+using AzureSupport.TheBall.CORE;
 using DiagnosticsUtils;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
@@ -22,6 +23,19 @@ using TheBall.Interface;
 
 namespace TheBall
 {
+    public class FinalizingDependencyAction
+    {
+        public readonly Type ForType;
+        public readonly Type[] DependingFromTypes;
+        public readonly Func<Type, Task> FinalizingAction;
+
+        public FinalizingDependencyAction(Type forType, Type[] dependingFromTypes, Func<Type, Task> finalizingAction)
+        {
+            ForType = forType;
+            DependingFromTypes = dependingFromTypes;
+            FinalizingAction = finalizingAction;
+        }
+    }
     public class InformationContext
     {
         private const string KEYNAME = "INFOCTX";
@@ -33,7 +47,7 @@ namespace TheBall
 
         public LogicalOperationContext LogicalOperationContext { get; internal set; }
 
-        public InformationContext(IContainerOwner owner, string instanceName)
+        private InformationContext(IContainerOwner owner, string instanceName)
         {
             SerialNumber = Interlocked.Increment(ref NextSerialNumber);
             OwnerStack = new Stack<IContainerOwner>();
@@ -56,7 +70,9 @@ namespace TheBall
             get { return Current.Account; }
         }
 
-        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName)
+        private FinalizingDependencyAction[] FinalizingActions = null;
+
+        public static InformationContext InitializeToLogicalContext(IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] finalizingActions = null)
         {
             if (HttpContext.Current != null)
                 throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
@@ -65,6 +81,13 @@ namespace TheBall
                 throw new InvalidOperationException("LogicalContext already initialized");
             var ctx = new InformationContext(contextRootOwner, instanceName);
             CallContext.LogicalSetData(KEYNAME, ctx);
+            if (finalizingActions != null)
+            {
+                var lookup = finalizingActions.ToDictionary(item => item.ForType);
+                ctx.FinalizingActions = finalizingActions?.TSort(item => item.DependingFromTypes
+                    ?.Where(depType => lookup.ContainsKey(depType))
+                    .Select(depType => lookup[depType]), true).ToArray();
+            }
             return ctx;
         }
 
@@ -144,16 +167,16 @@ namespace TheBall
             return null;
         }
 
-        public static void updateStatusSummary()
+        public void updateStatusSummary()
         {
             try
             {
-                var changedList = InformationContext.Current.GetChangedObjectIDs();
+                var changedList = GetChangedObjectIDs();
                 if (changedList.Length > 0)
                 {
                     UpdateStatusSummaryParameters parameters = new UpdateStatusSummaryParameters
                     {
-                        Owner = InformationContext.Current.Owner,
+                        Owner = Owner,
                         UpdateTime = DateTime.UtcNow,
                         ChangedIDList = changedList,
                         RemoveExpiredEntriesSeconds = InfraSharedConfig.HARDCODED_StatusUpdateExpireSeconds,
@@ -168,24 +191,30 @@ namespace TheBall
             
         }
 
-
-        public static void ProcessAndClearCurrentIfAvailable()
+        public static async Task ProcessAndClearCurrentIfAvailableAsync()
         {
             if (IsAvailable)
             {
-                Current.ExecuteRegisteredChangeHooks();
-                Current.PerformFinalizingActions();
+                await Current.ProcessFinalizingActionsAsync();
                 ClearCurrent();
             }
         }
 
-        private void ExecuteRegisteredChangeHooks()
+        public async Task ProcessFinalizingActionsAsync()
         {
-            if (CurrentOwner != SystemOwner.CurrentSystem)
+            await ExecuteRegisteredFinalizingActions();
+            PerformFinalizingActions();
+        }
+
+        private async Task ExecuteRegisteredFinalizingActions()
+        {
+            if (FinalizingActions == null)
+                return;
+            var currentChangedTypes = ChangedTypes.ToList();
+            ChangedTypes.Clear();
+
+            foreach (var finalizingAction in FinalizingActions)
             {
-                //var masterCollection = TextContentCollection.GetMasterCollectionInstance(CurrentOwner);
-                //masterCollection.RefreshContent();
-                //masterCollection.StoreInformation();
             }
         }
 
@@ -430,4 +459,5 @@ namespace TheBall
         }
 
     }
+
 }
