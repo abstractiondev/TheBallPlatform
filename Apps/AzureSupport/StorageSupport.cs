@@ -38,7 +38,6 @@ namespace TheBall
 
         static StorageSupport()
         {
-            ServicePointManager.UseNagleAlgorithm = false;
         }
 
         private static string getContainerName(string instanceName)
@@ -959,6 +958,8 @@ namespace TheBall
                                   : informationObject.RelativeLocation;
             // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
             informationObject.RelativeLocation = location;
+            var beforeStoreHandler = informationObject as IBeforeStoreHandler;
+            beforeStoreHandler?.PerformBeforeStoreUpdate();
             var dataContent = SerializeInformationObjectToBuffer(informationObject);
             //memoryStream.Seek(0, SeekOrigin.Begin);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
@@ -967,11 +968,7 @@ namespace TheBall
             AccessCondition accessCondition = null;
             if (!overwriteIfExists)
             {
-
-                if (etag != null)
-                    accessCondition = AccessCondition.GenerateIfMatchCondition(etag);
-                else
-                    accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
+                accessCondition = etag != null ? AccessCondition.GenerateIfMatchCondition(etag) : AccessCondition.GenerateIfNoneMatchCondition("*");
             }
             //blob.SetBlobInformationObjectType(informationObjectType.FullName);
             await blob.UploadFromByteArrayAsync(dataContent, 0, dataContent.Length, accessCondition, null, null);
@@ -1004,12 +1001,12 @@ namespace TheBall
                                   : informationObject.RelativeLocation;
             // Updating the relative location just in case - as there shouldn't be a mismatch - critical for master objects
             informationObject.RelativeLocation = location;
-            Type informationObjectType = informationObject.GetType();
+            var beforeStoreHandler = informationObject as IBeforeStoreHandler;
+            beforeStoreHandler?.PerformBeforeStoreUpdate();
+
             var dataContent = SerializeInformationObjectToBuffer(informationObject);
             //memoryStream.Seek(0, SeekOrigin.Begin);
             CloudBlockBlob blob = CurrActiveContainer.GetBlockBlobReference(location);
-            BlobRequestOptions options = new BlobRequestOptions();
-            options.RetryPolicy = new ExponentialRetry(TimeSpan.FromSeconds(3), 10);
             string etag = informationObject.ETag;
             bool isNewBlob = etag == null;
             AccessCondition accessCondition = null;
@@ -1022,7 +1019,7 @@ namespace TheBall
                     accessCondition = AccessCondition.GenerateIfNoneMatchCondition("*");
             }
             //blob.SetBlobInformationObjectType(informationObjectType.FullName);
-            blob.UploadFromByteArray(dataContent, 0, dataContent.Length, accessCondition, options);
+            blob.UploadFromByteArray(dataContent, 0, dataContent.Length, accessCondition);
             InformationContext.AddStorageTransactionToCurrent();
             informationObject.ETag = blob.Properties.ETag;
             IAdditionalFormatProvider additionalFormatProvider = informationObject as IAdditionalFormatProvider;

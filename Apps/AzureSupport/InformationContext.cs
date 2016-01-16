@@ -173,8 +173,19 @@ namespace TheBall
         {
             if (IsAvailable)
             {
+                Current.ExecuteRegisteredChangeHooks();
                 Current.PerformFinalizingActions();
                 ClearCurrent();
+            }
+        }
+
+        private void ExecuteRegisteredChangeHooks()
+        {
+            if (CurrentOwner != SystemOwner.CurrentSystem)
+            {
+                //var masterCollection = TextContentCollection.GetMasterCollectionInstance(CurrentOwner);
+                //masterCollection.RefreshContent();
+                //masterCollection.StoreInformation();
             }
         }
 
@@ -222,7 +233,7 @@ namespace TheBall
                 string uniquePostFix = Guid.NewGuid().ToString("N");
                 string itemName = now.ToString("yyyyMMddHHmmssfff") + "_" + uniquePostFix;
                 RequestResourceUsage.SetLocationAsOwnerContent(measurementOwner, itemName);
-                RequestResourceUsage.StoreInformation();
+                //RequestResourceUsage.StoreInformation();
             }
         }
 
@@ -349,6 +360,7 @@ namespace TheBall
         }
 
         // Currently being used for listing changed IDs
+        private HashSet<Type> ChangedTypes = new HashSet<Type>();
         private HashSet<string> ChangedIDInfos = new HashSet<string>();
         private HashSet<string> IndexedIDInfos = new HashSet<string>();
         private string[] trackedDomainNames = new[] { "AaltoGlobalImpact.OIP", "TheBall.Interface", "TheBall.Index" };
@@ -384,6 +396,8 @@ namespace TheBall
             }
             string changedIDInfo = changeTypeValue + ":" + informationObject.ID;
             ChangedIDInfos.Add(changedIDInfo);
+            var objectType = informationObject.GetType();
+            ChangedTypes.Add(objectType);
         }
 
         public string[] GetChangedObjectIDs()

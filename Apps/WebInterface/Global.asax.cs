@@ -7,6 +7,7 @@ using System.Data.Linq.Mapping;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
@@ -39,6 +40,11 @@ namespace WebInterface
         protected void Application_Start(object sender, EventArgs e)
         {
             string connStr;
+
+            ServicePointManager.DefaultConnectionLimit = 500;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
+
 
             var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
                 ? @"X:\"

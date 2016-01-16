@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,10 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         static async void MainAsync(string[] args)
         {
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.DefaultConnectionLimit = 500;
+            ServicePointManager.Expect100Continue = false;
+
             ensureXDrive();
             var workerConfigFullPath = args.Length > 0 ? args[0] : null;
             if (workerConfigFullPath == null)
