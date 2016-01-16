@@ -379,7 +379,8 @@ namespace WebInterface
             //OperationSupport.ExecuteHttpOperation(operationData);
             //string operationID = "0";
             var response = context.Response;
-            response.Write(String.Format("{{ \"OperationID\": {0} }}", operationID));
+            response.ContentType = "application/json";
+            response.Write(String.Format("{{ \"OperationID\": \"{0}\" }}", operationID));
             EndResponseWithStatusCode(context, 202);
             //EndResponseWithStatusCode(context, 200);
         }
@@ -574,7 +575,7 @@ namespace WebInterface
             var request = context.Request;
             if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
-            if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev") && 
+            if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev" || context.Request.Url.Host == "home.theball.me") && 
                 (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
