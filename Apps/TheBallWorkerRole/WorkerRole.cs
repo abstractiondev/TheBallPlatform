@@ -142,13 +142,11 @@ namespace TheBallWorkerRole
             {
                 var currentManager = WorkerTypeManagersDict[managerType];
                 var workerTypeDownloaded = workerFilesDownloaded.FirstOrDefault(item => item.Item1 == managerType);
-                if (workerTypeDownloaded == null)
-                    continue;
-                var workerType = workerTypeDownloaded.Item1;
-                var zipFileName = workerTypeDownloaded.Item2;
                 bool needsUpdating = workerTypeDownloaded != null;
                 if (needsUpdating)
                 {
+                    var workerType = workerTypeDownloaded.Item1;
+                    var zipFileName = workerTypeDownloaded.Item2;
                     if (currentManager != null)
                         await currentManager.ShutdownWorkerConsole();
                     currentManager = null;
@@ -156,13 +154,16 @@ namespace TheBallWorkerRole
                 }
                 if (currentManager == null)
                 {
-                    var workerFolder = Path.Combine(WorkerRootFolder, workerType);
+                    var workerFolder = Path.Combine(WorkerRootFolder, managerType);
                     var directory = new DirectoryInfo(workerFolder);
                     var files = directory.GetFiles("*Console.exe");
-                    var consoleExePath = files.First().FullName;
-                    currentManager = new WorkerManager(consoleExePath);
+                    var consoleExePath = files.FirstOrDefault()?.FullName;
+                    if (consoleExePath != null)
+                    {
+                        currentManager = new WorkerManager(consoleExePath);
+                        await currentManager.StartWorkerConsole();
+                    }
                     WorkerTypeManagersDict[managerType] = currentManager;
-                    await currentManager.StartWorkerConsole();
                 }
             }
         }
@@ -184,7 +185,7 @@ namespace TheBallWorkerRole
 
         private async Task<Tuple<string, string>[]> PollAndDownloadWorkerPackageFromStorage()
         {
-            var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync(null, true, BlobListingDetails.Metadata, null, null, null, null);
+            var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
             var blobs = blobSegment.Results;
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
             List<Tuple<string, string>> workerFilesDownloaded = new List<Tuple<string, string>>();
