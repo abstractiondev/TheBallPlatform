@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
@@ -38,6 +39,8 @@ namespace TheBallWorkerRole
         private CloudBlobClient BlobClient;
         private CloudBlobContainer InstanceWorkerContainer;
 
+        private string[] ValidWorkerInstanceTypes = { "Dev", "Test", "Stage", "Prod" };
+        private Dictionary<string, WorkerManager> WorkerTypeManagersDict = new Dictionary<string, WorkerManager>(); 
 
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -59,8 +62,20 @@ namespace TheBallWorkerRole
 
         public override bool OnStart()
         {
+            const string appInsightsKeyPath = @"E:\TheBallInfra\AppInsightsKey.txt";
+            if (File.Exists(appInsightsKeyPath))
+            {
+                var appInsightsKey = File.ReadAllText(appInsightsKeyPath);
+                TelemetryConfiguration.Active.InstrumentationKey = appInsightsKey;
+            }
+
+
             // Set the maximum number of concurrent connections
-            ServicePointManager.DefaultConnectionLimit = 12;
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 100;
+
+
 
             var storageAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
             var storageAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
@@ -97,72 +112,88 @@ namespace TheBallWorkerRole
             try
             {
                 Trace.TraceInformation("Working");
-                WorkerManager currentManager = null;
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     // TODO Polling update and launching
-                    currentManager = await PollAndUpdateStartWorkerIfNeeded(currentManager);
+                    await PollAndUpdateStartWorkerIfNeeded();
                     // Poll or exit on cancel
                     await Task.Delay(30000, cancellationToken);
                 }
 
-                // Clean up worker role console
-                if (currentManager != null)
-                    await currentManager.ShutdownWorkerConsole();
+                var allWorkers = WorkerTypeManagersDict.Values.Where(value => value != null);
+                var shutdownTasks = allWorkers.Select(worker => worker.ShutdownWorkerConsole()).ToArray();
+                await Task.WhenAll(shutdownTasks);
             }
             catch(Exception exception)
             {
-                File.WriteAllText(Path.Combine(WorkerFolder, "RunError.txt"), exception.ToString());
+                File.WriteAllText(Path.Combine(WorkerRootFolder, "RunError.txt"), exception.ToString());
                 throw;
             }
         }
 
-        private async Task<WorkerManager> PollAndUpdateStartWorkerIfNeeded(WorkerManager currentManager)
+        private async Task PollAndUpdateStartWorkerIfNeeded()
         {
-            var filesDownloaded = await PollAndDownloadWorkerPackageFromStorage();
-            bool needsUpdating = filesDownloaded.Length > 0;
-            if (needsUpdating)
+            var workerFilesDownloaded = await PollAndDownloadWorkerPackageFromStorage();
+            var managerTypes = WorkerTypeManagersDict.Keys;
+            foreach (var managerType in managerTypes)
             {
-                if (currentManager != null) 
-                    await currentManager.ShutdownWorkerConsole();
-                currentManager = null;
-                unzipFiles(filesDownloaded);
-            }
-            if (currentManager == null)
-            {
-                var directory = new DirectoryInfo(WorkerFolder);
-                var files = directory.GetFiles("*Console.exe");
-                var consoleExePath = files.First().FullName;
-                currentManager = new WorkerManager(consoleExePath);
-                await currentManager.StartWorkerConsole();
-            }
-            return currentManager;
-        }
-
-        private void unzipFiles(string[] filesDownloaded)
-        {
-            foreach (var fileName in filesDownloaded)
-            {
-                var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x -y {0}", fileName));
-                unzipProcInfo.WorkingDirectory = WorkerFolder;
-                var unzipProc = Process.Start(unzipProcInfo);
-                unzipProc.WaitForExit();
+                var currentManager = WorkerTypeManagersDict[managerType];
+                var workerTypeDownloaded = workerFilesDownloaded.FirstOrDefault(item => item.Item1 == managerType);
+                var workerType = workerTypeDownloaded.Item1;
+                var zipFileName = workerTypeDownloaded.Item2;
+                bool needsUpdating = workerTypeDownloaded != null;
+                if (needsUpdating)
+                {
+                    if (currentManager != null)
+                        await currentManager.ShutdownWorkerConsole();
+                    currentManager = null;
+                    unzipFiles(workerType, zipFileName);
+                }
+                if (currentManager == null)
+                {
+                    var workerFolder = Path.Combine(WorkerRootFolder, workerType);
+                    var directory = new DirectoryInfo(workerFolder);
+                    var files = directory.GetFiles("*Console.exe");
+                    var consoleExePath = files.First().FullName;
+                    currentManager = new WorkerManager(consoleExePath);
+                    await currentManager.StartWorkerConsole();
+                }
             }
         }
 
+        private void unzipFiles(string workerType, string zipFileName)
+        {
+            var workerTypedDir = Path.Combine(WorkerRootFolder, workerType);
+            if (Directory.Exists(workerTypedDir))
+            {
+                Directory.Delete(workerTypedDir, true);
+            }
+            Directory.CreateDirectory(workerTypedDir);
+            var unzipProcInfo = new ProcessStartInfo(PathTo7Zip, String.Format(@"x -y {0}", zipFileName));
+            unzipProcInfo.WorkingDirectory = workerTypedDir;
+            var unzipProc = Process.Start(unzipProcInfo);
+            unzipProc.WaitForExit();
+        }
 
-        private async Task<string[]> PollAndDownloadWorkerPackageFromStorage()
+
+        private async Task<Tuple<string, string>[]> PollAndDownloadWorkerPackageFromStorage()
         {
             var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync(null, true, BlobListingDetails.Metadata, null, null, null, null);
             var blobs = blobSegment.Results;
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
-            List<string> filesDownloaded = new List<string>();
+            List<Tuple<string, string>> workerFilesDownloaded = new List<Tuple<string, string>>();
+            var validFileNames = ValidWorkerInstanceTypes.Select(typeName => typeName + ".zip").ToArray();
             foreach (CloudBlockBlob blob in blobsInOrder)
             {
                 string blobFileName = blob.Name;
                 string fileName = Path.GetFileName(blobFileName);
-                string workerFolderFile = Path.Combine(WorkerFolder, blob.Name);
+                if (!validFileNames.Contains(fileName))
+                    continue;
+                var workerType = fileName.Replace(".zip", "");
+                string workerFolderFile = Path.Combine(WorkerRootFolder, workerType, fileName);
                 FileInfo currentFile = new FileInfo(workerFolderFile);
+                if(!currentFile.Directory.Exists)
+                    currentFile.Directory.Create();
                 var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
                 bool needsProcessing = !currentFile.Exists || currentFile.LastWriteTimeUtc != blobLastModified;
                 try
@@ -172,21 +203,21 @@ namespace TheBallWorkerRole
                         await blob.DownloadToFileAsync(workerFolderFile, FileMode.Create);
                         currentFile.Refresh();
                         currentFile.LastWriteTimeUtc = blobLastModified;
-                        filesDownloaded.Add(fileName);
+                        workerFilesDownloaded.Add(new Tuple<string, string>(workerType, fileName));
                     }
                 }
                 catch (Exception exception)
                 {
-                    var errorFileName = Path.Combine(WorkerFolder, "LastError.txt");
+                    var errorFileName = Path.Combine(WorkerRootFolder, "LastError.txt");
                     File.WriteAllText(errorFileName, exception.ToString());
                 }
             }
-            return filesDownloaded.ToArray();
+            return workerFilesDownloaded.ToArray();
         }
 
 
 
-        private static string WorkerFolder
+        private static string WorkerRootFolder
         {
             get
             {
