@@ -137,7 +137,7 @@ namespace TheBallWorkerRole
         private async Task PollAndUpdateStartWorkerIfNeeded()
         {
             var workerFilesDownloaded = await PollAndDownloadWorkerPackageFromStorage();
-            var managerTypes = WorkerTypeManagersDict.Keys;
+            var managerTypes = WorkerTypeManagersDict.Keys.ToArray();
             foreach (var managerType in managerTypes)
             {
                 var currentManager = WorkerTypeManagersDict[managerType];
@@ -185,8 +185,9 @@ namespace TheBallWorkerRole
 
         private async Task<Tuple<string, string>[]> PollAndDownloadWorkerPackageFromStorage()
         {
-            var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
-            var blobs = blobSegment.Results;
+            //var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
+            //var blobs = blobSegment.Results;
+            var blobs = InstanceWorkerContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
             List<Tuple<string, string>> workerFilesDownloaded = new List<Tuple<string, string>>();
             var validFileNames = ValidWorkerInstanceTypes.Select(typeName => typeName + ".zip").ToArray();
