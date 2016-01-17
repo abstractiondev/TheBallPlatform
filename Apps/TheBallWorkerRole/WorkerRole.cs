@@ -40,8 +40,7 @@ namespace TheBallWorkerRole
         private CloudBlobContainer InstanceWorkerContainer;
 
         private string[] ValidWorkerInstanceTypes = { "Dev", "Test", "Stage", "Prod" };
-        private Dictionary<string, WorkerManager> WorkerTypeManagersDict = new Dictionary<string, WorkerManager>(); 
-
+        private Dictionary<string, WorkerManager> WorkerTypeManagersDict = new Dictionary<string, WorkerManager>();
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
@@ -62,6 +61,10 @@ namespace TheBallWorkerRole
 
         public override bool OnStart()
         {
+            WorkerTypeManagersDict = new Dictionary<string, WorkerManager>();
+            foreach(var workerType in ValidWorkerInstanceTypes)
+                WorkerTypeManagersDict.Add(workerType, null);
+
             const string appInsightsKeyPath = @"E:\TheBallInfra\AppInsightsKey.txt";
             if (File.Exists(appInsightsKeyPath))
             {
