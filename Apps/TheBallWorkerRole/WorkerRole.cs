@@ -142,6 +142,8 @@ namespace TheBallWorkerRole
             {
                 var currentManager = WorkerTypeManagersDict[managerType];
                 var workerTypeDownloaded = workerFilesDownloaded.FirstOrDefault(item => item.Item1 == managerType);
+                if (workerTypeDownloaded == null)
+                    continue;
                 var workerType = workerTypeDownloaded.Item1;
                 var zipFileName = workerTypeDownloaded.Item2;
                 bool needsUpdating = workerTypeDownloaded != null;
@@ -159,6 +161,7 @@ namespace TheBallWorkerRole
                     var files = directory.GetFiles("*Console.exe");
                     var consoleExePath = files.First().FullName;
                     currentManager = new WorkerManager(consoleExePath);
+                    WorkerTypeManagersDict[managerType] = currentManager;
                     await currentManager.StartWorkerConsole();
                 }
             }
