@@ -45,3 +45,4 @@ Apps/WebInterface/Properties/PublishProfiles/*.pubxml
 Apps/TheBallWebFarm/.vs/config/applicationhost.config
 **/.idea/workspace.xml
 **/.vs/**
+build/**
