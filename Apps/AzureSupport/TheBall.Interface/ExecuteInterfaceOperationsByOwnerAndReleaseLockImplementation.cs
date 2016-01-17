@@ -91,6 +91,8 @@ namespace TheBall.Interface
                     typeof(AaltoGlobalImpact.OIP.CategoryCollection)
                 }, async types =>
                 {
+                    if (InformationContext.CurrentOwner.IsAccountContainer())
+                        return;
                     IInformationObject nodeSummaryContainer =
                         await
                             ObjectStorage.RetrieveFromOwnerContentA<AaltoGlobalImpact.OIP.NodeSummaryContainer>(InformationContext.CurrentOwner, "default");

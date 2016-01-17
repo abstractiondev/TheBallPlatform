@@ -153,7 +153,8 @@ namespace TheBallWorkerRole
 
         private async Task<string[]> PollAndDownloadWorkerPackageFromStorage()
         {
-            var blobs = InstanceWorkerContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
+            var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync(null, true, BlobListingDetails.Metadata, null, null, null, null);
+            var blobs = blobSegment.Results;
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
             List<string> filesDownloaded = new List<string>();
             foreach (CloudBlockBlob blob in blobsInOrder)

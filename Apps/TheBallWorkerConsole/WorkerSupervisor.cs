@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic.Devices;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
@@ -45,7 +46,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
-            const int MaxParallelExecutingTasks = 3;
+            int MaxParallelExecutingTasks = getAutoConfiguredWorkerCount();
             try
             {
                 var instances = WorkerConfig.InstancePollItems;
@@ -112,6 +113,20 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     pipeStream.Dispose();
                 }
             }
+        }
+
+        private int getAutoConfiguredWorkerCount()
+        {
+            ComputerInfo computerInfo = new ComputerInfo();
+            var totalMemory = computerInfo.TotalPhysicalMemory;
+            ulong gigaByte = 1024*1024 * 1024;
+            if (totalMemory < gigaByte) // Extra Small in Azure
+                return 3;
+            if (totalMemory < 2*gigaByte) // Small
+                return 10;
+            if (totalMemory < 4*gigaByte) // A2 or D1
+                return 20;
+            return 20; // Something bigger
         }
 
         private static LockInterfaceOperationsByOwnerReturnValue getLockItemFromTask(Task task)

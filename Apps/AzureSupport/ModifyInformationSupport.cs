@@ -57,7 +57,7 @@ namespace TheBall
                     throw new SecurityException("Mismatch in ownership of data submission");
                 IInformationObject rootObject = StorageSupport.RetrieveInformation(relativeLocation, oldETag,
                                                                                    containerOwner);
-                if (oldETag != rootObject.ETag)
+                if (oldETag != rootObject?.ETag)
                 {
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
@@ -459,20 +459,21 @@ namespace TheBall
                     }
 
                 case "CreateGroupWithTemplates":
+                {
+                    var isAccount = containerOwner.IsAccountContainer();
+                    if (!isAccount == null)
+                        throw new NotSupportedException("Creating a group is only supported by account");
+                    var accountID = containerOwner.LocationPrefix;
+                    CreateGroupWithTemplatesParameters parameters = new CreateGroupWithTemplatesParameters
                     {
-                        var owningAccount = containerOwner as TBAccount;
-                        if(owningAccount == null)
-                            throw new NotSupportedException("Creating a group is only supported by account");
-                        CreateGroupWithTemplatesParameters parameters = new CreateGroupWithTemplatesParameters
-                            {
-                                AccountID = owningAccount.ID,
-                                GroupName = form["GroupName"],
-                                RedirectUrlAfterCreation = form["RedirectUrlAfterCreation"],
-                                TemplateNameList = form["TemplateNameList"]
-                            };
-                        CreateGroupWithTemplates.Execute(parameters);
-                        break;
-                    }
+                        AccountID = accountID,
+                        GroupName = form["GroupName"],
+                        RedirectUrlAfterCreation = form["RedirectUrlAfterCreation"],
+                        TemplateNameList = form["TemplateNameList"]
+                    };
+                    CreateGroupWithTemplates.Execute(parameters);
+                    break;
+                }
                 case "InitiateAccountMergeFromEmail":
                     {
                         var owningAccount = containerOwner as TBAccount;

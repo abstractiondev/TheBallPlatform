@@ -34,10 +34,12 @@ namespace TheBall.Interface
                 await operation.DeleteInformationObjectAsync();
                 await StorageSupport.DeleteBlobAsync(operationDataLocation);
             }
-            catch (Exception ex)
+            catch (Exception exceptionToReport)
             {
-                operation.ErrorCode = ex.HResult.ToString();
-                operation.ErrorMessage = ex.Message;
+                if (exceptionToReport.InnerException != null)
+                    exceptionToReport = exceptionToReport.InnerException;
+                operation.ErrorCode = exceptionToReport.HResult.ToString();
+                operation.ErrorMessage = exceptionToReport.Message;
                 operation.Finished = DateTime.UtcNow;
                 await operation.StoreInformationAsync();
             }
