@@ -109,6 +109,8 @@ namespace TheBall.Infra.WebServerManager
 
         private static bool ensureInstanceCertBinding(Site site, string instanceHostName)
         {
+            if(site == null)
+                throw new ArgumentNullException(nameof(site));
             var instanceNameSplit = instanceHostName.Split('.');
             if (instanceNameSplit.Length < 3)
                 throw new InvalidDataException("Invalid instance host name for binding: " + instanceHostName);
@@ -120,6 +122,8 @@ namespace TheBall.Infra.WebServerManager
             if (certificateHash == null)
                 throw new InvalidDataException("Certificate not found for domain name: " + certDomainName);
             var bindings = site.Bindings;
+            if(bindings == null)
+                throw new InvalidDataException($"Bindings are null for site: {site.Name}");
             var existingBinding = bindings.FirstOrDefault(binding => binding.Host == instanceHostName);
             bool isChanged = false;
             if (existingBinding == null)
