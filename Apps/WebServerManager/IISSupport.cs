@@ -116,7 +116,7 @@ namespace TheBall.Infra.WebServerManager
             var lastIX = instanceNameSplit.Length - 1;
             string domainName = instanceNameSplit[secondLastIX] + "." + instanceNameSplit[lastIX];
             string certDomainName = $"*.{domainName}";
-            byte[] certificateHash = getCertHash(certDomainName);
+            byte[] certificateHash = GetCertHash(certDomainName);
             if (certificateHash == null)
                 throw new InvalidDataException("Certificate not found for domain name: " + certDomainName);
             var bindings = site.Bindings;
@@ -138,14 +138,23 @@ namespace TheBall.Infra.WebServerManager
             return isChanged;
         }
 
-        private static byte[] getCertHash(string certDomainName)
+        public static byte[] GetCertHash(string certDomainName)
         {
             var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
             store.Open(OpenFlags.ReadOnly);
             try
             {
-                var matchingCerts = store.Certificates.Find(X509FindType.FindBySubjectName, certDomainName, true);
-                var foundCert = matchingCerts.Count > 0 ? matchingCerts[0] : null;
+                X509Certificate2 foundCert = null;
+                foreach (var cert in store.Certificates)
+                {
+                    if (cert?.SubjectName?.Name?.Contains(certDomainName) == true)
+                    {
+                        foundCert = cert;
+                        break;
+                    }
+                }
+                //var matchingCerts = store.Certificates.Find(X509FindType.FindBySubjectName, certDomainName, true);
+                //var foundCert = matchingCerts.Count > 0 ? matchingCerts[0] : null;
                 return foundCert?.GetCertHash();
             }
             finally

@@ -66,6 +66,14 @@ namespace TheBall.Infra.WebServerManager.Tests
         }
 
         [TestMethod()]
+        public void FindDomainCertTest()
+        {
+            var hash = IISSupport.GetCertHash("*.izenzei.com");
+            Assert.IsNotNull(hash);
+        }
+
+
+        [TestMethod()]
         public void UpdateSiteWithDeployTest()
         {
             //Assert.Fail();
