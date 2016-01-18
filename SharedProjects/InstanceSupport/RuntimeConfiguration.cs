@@ -33,6 +33,8 @@ namespace TheBall.CORE.InstanceSupport
 
         public static async Task UpdateInfraConfig(string infraConfigFullPath)
         {
+            if(!File.Exists(infraConfigFullPath))
+                throw new ArgumentException("InfraConfig does not exist: " + infraConfigFullPath, nameof(infraConfigFullPath));
             await _semaphore.WaitAsync();
             try
             {
