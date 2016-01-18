@@ -146,11 +146,11 @@ namespace TheBallWorkerRole
                 if (needsUpdating)
                 {
                     var workerType = workerTypeDownloaded.Item1;
-                    var zipFileName = workerTypeDownloaded.Item2;
+                    var zipFileRelativeToWorkerType = @"..\" + workerTypeDownloaded.Item2;
                     if (currentManager != null)
                         await currentManager.ShutdownWorkerConsole();
                     currentManager = null;
-                    unzipFiles(workerType, zipFileName);
+                    unzipFiles(workerType, zipFileRelativeToWorkerType);
                 }
                 if (currentManager == null)
                 {
@@ -200,7 +200,7 @@ namespace TheBallWorkerRole
                 if (!validFileNames.Contains(fileName))
                     continue;
                 var workerType = fileName.Replace(".zip", "");
-                string workerFolderFile = Path.Combine(WorkerRootFolder, workerType, fileName);
+                string workerFolderFile = Path.Combine(WorkerRootFolder, fileName);
                 FileInfo currentFile = new FileInfo(workerFolderFile);
                 if(!currentFile.Directory.Exists)
                     currentFile.Directory.Create();
