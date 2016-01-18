@@ -38,9 +38,10 @@ namespace WebInterface
     public class Global : System.Web.HttpApplication
     {
 
-        private static void ensureXDrive()
+        private static string ensureXDrive()
         {
-            bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("X"));
+            //bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("X"));
+            bool hasDriveX = false;
             if (!hasDriveX)
             {
                 var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
@@ -49,13 +50,18 @@ namespace WebInterface
                 if (isCloud)
                 {
                     var netPath = Path.Combine(Environment.SystemDirectory, "net.exe");
-                    var args = $@"use X: \\{infraAccountName}.file.core.windows.net\tbcore /u:{infraAccountName} {infraAccountKey}";
+                    //var args = $@"use X: \\{infraAccountName}.file.core.windows.net\tbcore /u:{infraAccountName} {infraAccountKey}";
+                    string sharedLocation = $@"\\{infraAccountName}.file.core.windows.net\tbcore";
+                    var args = $@"use {sharedLocation} /u:{infraAccountName} {infraAccountKey}";
                     var startInfo = new ProcessStartInfo(netPath) { UseShellExecute = false, Arguments = args };
                     var netProc = new Process { StartInfo = startInfo };
                     netProc.Start();
                     netProc.WaitForExit();
+                    return sharedLocation;
                 }
             }
+            return null;
+
         }
 
         protected void Application_Start(object sender, EventArgs e)
@@ -66,11 +72,15 @@ namespace WebInterface
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
 
-            ensureXDrive();
+            string initedPath = ensureXDrive();
 
-            var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
-                ? @"X:\"
-                : Environment.GetEnvironmentVariable("TBCoreFolder");
+            var infraDriveRoot = initedPath ?? Environment.GetEnvironmentVariable("TBCoreFolder");
+
+             /*
+             var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
+                 ? @"X:\"
+                 : Environment.GetEnvironmentVariable("TBCoreFolder");
+            */
             string infraConfigFullPath =  Path.Combine(infraDriveRoot, @"Configs\InfraShared\InfraConfig.json");
             RuntimeConfiguration.UpdateInfraConfig(infraConfigFullPath).Wait();
 
