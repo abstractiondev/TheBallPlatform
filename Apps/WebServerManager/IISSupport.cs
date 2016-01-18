@@ -48,6 +48,8 @@ namespace TheBall.Infra.WebServerManager
         {
             var iisManager = new ServerManager();
             var site = iisManager.Sites[appSiteName];
+            if (site == null)
+                return;
             bool anyChanges = false;
             foreach (var instanceHostName in instanceHostNames)
             {
