@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data.Common;
 using System.Data.Linq.Mapping;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -22,20 +23,40 @@ using AzureSupport;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Azure;
 using Microsoft.WindowsAzure;
 using SQLite.TheBall.Payments;
 using SQLiteSupport;
 using Stripe;
 using TheBall;
-using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using MetaModel = System.Web.DynamicData.MetaModel;
+using Process = System.Diagnostics.Process;
 
 namespace WebInterface
 {
     public class Global : System.Web.HttpApplication
     {
 
+        private static void ensureXDrive()
+        {
+            bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("X"));
+            if (!hasDriveX)
+            {
+                var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
+                var infraAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+                bool isCloud = infraAccountName != null && infraAccountKey != null;
+                if (isCloud)
+                {
+                    var netPath = Path.Combine(Environment.SystemDirectory, "net.exe");
+                    var args = $@"use X: \\{infraAccountName}.file.core.windows.net\tbcore /u:{infraAccountName} {infraAccountKey}";
+                    var startInfo = new ProcessStartInfo(netPath) { UseShellExecute = false, Arguments = args };
+                    var netProc = new Process { StartInfo = startInfo };
+                    netProc.Start();
+                    netProc.WaitForExit();
+                }
+            }
+        }
 
         protected void Application_Start(object sender, EventArgs e)
         {
@@ -45,6 +66,7 @@ namespace WebInterface
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
 
+            ensureXDrive();
 
             var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
                 ? @"X:\"
