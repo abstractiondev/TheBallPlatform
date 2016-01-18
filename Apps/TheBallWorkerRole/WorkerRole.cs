@@ -156,6 +156,8 @@ namespace TheBallWorkerRole
                 {
                     var workerFolder = Path.Combine(WorkerRootFolder, managerType);
                     var directory = new DirectoryInfo(workerFolder);
+                    if(!directory.Exists)
+                        directory.Create();
                     var files = directory.GetFiles("*Console.exe");
                     var consoleExePath = files.FirstOrDefault()?.FullName;
                     if (consoleExePath != null)
