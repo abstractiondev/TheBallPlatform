@@ -32,10 +32,14 @@ namespace TheBall.CORE.InstanceSupport
         public string[] DefaultGroupTemplateList;
         public string GroupDefaultRedirect;
         public string[] PlatformDefaultGroupIDList;
+        public string[] RestrictedEmailAddresses;
+        public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
+
 
         public string AdminGroupID;
         public string PaymentsGroupID;
         public string AllowDirectServingRegexp;
+        public bool EnableFilesystemOverride;
 
         public string[] ContainerRedirects;
         private Dictionary<string, string> _containerRedirectsDict;

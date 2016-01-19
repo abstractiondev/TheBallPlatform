@@ -575,7 +575,8 @@ namespace WebInterface
             var request = context.Request;
             if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
-            if ((context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev" || context.Request.Url.Host == "home.theball.me") && 
+            bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
+            if (filesystemOverrideEnabled && (context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev" || context.Request.Url.Host == "home.theball.me") && 
                 (contentPath.Contains("groupmanagement/") || 
                 contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||

@@ -99,11 +99,24 @@ namespace WebInterface
             if(jwtToken.ValidTo < limitTimestamp)
                 throw new SecurityException("Token expired");
             string emailAddress = emailVerified ? myEmail : null;
+            validateEmailAndExitForRestricted(emailAddress);
             AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
             string state = Request.Params["state"];
             string redirectUrl = state.Contains("RedirectUrl=") ? state.Replace("RedirectUrl=", "") : FormsAuthentication.DefaultUrl;
             Response.Redirect(redirectUrl, true);
             return redirectUrl;
+        }
+
+        private void validateEmailAndExitForRestricted(string emailAddress)
+        {
+            if (InstanceConfig.Current.HasEmailAddressRestriction)
+            {
+                bool isValid = String.IsNullOrEmpty(emailAddress) == false && 
+                    InstanceConfig.Current.RestrictedEmailAddresses.Any(
+                        okEmail => okEmail.ToLower().Trim() == emailAddress.ToLower().Trim());
+                if (!isValid)
+                    Response.Redirect("/", true);
+            }
         }
 
         private void performLoginForProvider(string idprovider, bool requestEmail)
@@ -142,6 +155,7 @@ namespace WebInterface
                     if (fetchResponse != null && isTrustableProvider)
                     {
                         emailAddress = fetchResponse.GetAttributeValue(WellKnownAttributes.Contact.Email);
+                        validateEmailAndExitForRestricted(emailAddress);
                     }
                     var profileFields = claimsResponse;
                     // Store off the "friendly" username to display -- NOT for username lookup                                
