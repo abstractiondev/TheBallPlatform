@@ -102,6 +102,8 @@ namespace WebInterface
                 reqDetails.HTTPStatusCode = response.StatusCode;
                 reqDetails.ReturnedContentLength = contentLength;
             }
+            if (request.IsLocal)
+                return;
             var currentHttpCtx = InformationContext.Current;
             HostingEnvironment.QueueBackgroundWorkItem(async cancellationItem =>
             {

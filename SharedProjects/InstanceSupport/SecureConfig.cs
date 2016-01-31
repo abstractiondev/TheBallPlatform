@@ -21,6 +21,10 @@ namespace TheBall.CORE.InstanceSupport
         public string GoogleOAuthClientID;
         public string GoogleOAuthClientSecret;
 
+        public string FacebookOAuthClientID;
+        public string FacebookOAuthClientSecret;
+
+
         public string StripePublicKey;
         public string StripeSecretKey;
 

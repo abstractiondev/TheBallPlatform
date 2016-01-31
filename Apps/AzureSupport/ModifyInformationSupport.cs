@@ -475,20 +475,21 @@ namespace TheBall
                     break;
                 }
                 case "InitiateAccountMergeFromEmail":
+                {
+                    var isAccount = containerOwner.IsAccountContainer();
+                    if (!isAccount)
+                        throw new NotSupportedException(
+                            "Email address based account merge is only supported for accounts");
+                    var accountID = containerOwner.LocationPrefix;
+                    InitiateAccountMergeFromEmailParameters parameters = new InitiateAccountMergeFromEmailParameters
                     {
-                        var owningAccount = containerOwner as TBAccount;
-                        if(owningAccount == null)
-                            throw new NotSupportedException("Email address based account merge is only supported for accounts");
-                        InitiateAccountMergeFromEmailParameters parameters = new InitiateAccountMergeFromEmailParameters
-                            {
-                                CurrentAccountID = owningAccount.ID,
-                                RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
-                                EmailAddress = form["EmailAddress"],
-                            };
-                        InitiateAccountMergeFromEmail.Execute(parameters);
-                        break;
-                    }
-
+                        CurrentAccountID = accountID,
+                        RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
+                        EmailAddress = form["EmailAddress"],
+                    };
+                    InitiateAccountMergeFromEmail.Execute(parameters);
+                    break;
+                }
                 case "UnregisterEmailAddress":
                     {
                         var owningAccount = containerOwner as TBAccount;

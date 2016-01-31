@@ -108,7 +108,7 @@ namespace TheBall
                 {
                     String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
                                                         Environment.NewLine, From, To, Subject, Text ?? HTML);
-                    QueueSupport.CurrStatisticsQueue.AddMessage(new CloudQueueMessage(queueMessage));
+                    QueueSupport.CurrStatisticsQueue?.AddMessage(new CloudQueueMessage(queueMessage));
                 }
             }
 

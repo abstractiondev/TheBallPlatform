@@ -41,9 +41,7 @@ namespace WebInterface
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
-            var loginRootTask = TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, false, domainName);
-            loginRootTask.Wait();
-            TBRLoginRoot loginRoot = loginRootTask.Result;
+            var loginRoot = await TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, false, domainName);
             string requestPath = context.Request.Path;
             string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
             TBAccount account = loginRoot.Account;

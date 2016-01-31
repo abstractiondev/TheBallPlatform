@@ -18,6 +18,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using AzureSupport;
 using DotNetOpenAuth.AspNet.Clients;
+using DotNetOpenAuth.FacebookOAuth2;
 using DotNetOpenAuth.Messaging;
 using DotNetOpenAuth.OAuth;
 using DotNetOpenAuth.OpenId;
@@ -61,7 +62,12 @@ namespace WebInterface
                 string oauthCode = Request.Params["code"];
                 if (String.IsNullOrEmpty(oauthCode) == false)
                 {
-                    FinalizeOAuthLogin(oauthCode);
+                    string state = Request.Params["state"];
+                    var stateParts = state.Split(new[] {"&"}, StringSplitOptions.None);
+                    var providerPart = stateParts[0].Replace("TBAProvider=", "");
+                    var redirectPart = stateParts[1];
+                    string authRedirectUrl = redirectPart.Contains("RedirectUrl=") ? redirectPart.Replace("RedirectUrl=", "") : FormsAuthentication.DefaultUrl;
+                    FinalizeOAuthLogin(oauthCode, providerPart, authRedirectUrl);
                     return;
                 }
                 if(String.IsNullOrEmpty(idProviderUrl) == false)
@@ -69,9 +75,19 @@ namespace WebInterface
                     if (idProviderUrl == "https://www.google.com/accounts/o8/id")
                     {
                         var req = Request;
-                        string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + (String.IsNullOrEmpty(redirectUrl) ? "" : "?RedirectUrl=" + redirectUrl);
-                        var loginUrl = GetServiceLoginUrl(new Uri(currentReturnUrl));
+                        string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + (String.IsNullOrEmpty(redirectUrl) ? "?TBAProvider=Google" : "?TBAProvider=Google&RedirectUrl=" + redirectUrl);
+                        var loginUrl = GetGoogleServiceLoginUrl(new Uri(currentReturnUrl));
                         Response.Redirect(loginUrl.AbsoluteUri);
+                    }
+                    else if (idProviderUrl == "https://www.facebook.com/dialog/oauth")
+                    {
+                        var req = Request;
+                        string currentReturnUrl = req.Url.GetLeftPart(UriPartial.Path) + (String.IsNullOrEmpty(redirectUrl) ? "?TBAProvider=Facebook" : "?TBAProvider=Facebook&RedirectUrl=" + redirectUrl);
+                        FacebookOAuth2Client client = new FacebookOAuth2Client(appId:SecureConfig.Current.FacebookOAuthClientID, appSecret:SecureConfig.Current.FacebookOAuthClientSecret,
+                            requestedScopes:"email");
+                        client.RequestAuthentication(new HttpContextWrapper(HttpContext.Current), new Uri(currentReturnUrl));
+                        //var loginUrl = GetFacebookServiceLoginUrl(new Uri(currentReturnUrl));
+                        //Response.Redirect(loginUrl.AbsoluteUri);
                     }
                     else
                     {
@@ -86,23 +102,35 @@ namespace WebInterface
             }
         }
 
-        private string FinalizeOAuthLogin(string oauthCode)
+        private string FinalizeOAuthLogin(string oauthCode, string provider, string redirectUrl)
         {
-            var authTokens = GetAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
-            var jwtToken = new JwtSecurityToken(authTokens.Item2);
-            string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
-            string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
-            bool emailVerified =
-                Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
-            string userName = myUserID;
+            Tuple<string, string> authTokens;
+            string userName;
+            string emailAddress;
             DateTime limitTimestamp = DateTime.UtcNow;
-            if(jwtToken.ValidTo < limitTimestamp)
-                throw new SecurityException("Token expired");
-            string emailAddress = emailVerified ? myEmail : null;
+            if (provider == "Google")
+            {
+                authTokens = GetGoogleAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
+                var jwtToken = new JwtSecurityToken(authTokens.Item2);
+                if (jwtToken.ValidTo < limitTimestamp)
+                    throw new SecurityException("Token expired");
+                string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
+                string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
+                bool emailVerified =
+                    Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
+                userName = myUserID;
+                emailAddress = emailVerified ? myEmail : null;
+            }
+            else if (provider == "Facebook")
+            {
+                authTokens = GetFacebookAuthTokens(new Uri(Request.Url.GetLeftPart(UriPartial.Path)), oauthCode);
+                userName = $"https://www.facebook.com/{authTokens.Item1}";
+                emailAddress = authTokens.Item2;
+            }
+            else
+                throw new NotSupportedException("Provider not supported: " + provider);
             validateEmailAndExitForRestricted(emailAddress);
             AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress);
-            string state = Request.Params["state"];
-            string redirectUrl = state.Contains("RedirectUrl=") ? state.Replace("RedirectUrl=", "") : FormsAuthentication.DefaultUrl;
             Response.Redirect(redirectUrl, true);
             return redirectUrl;
         }
@@ -376,7 +404,7 @@ namespace WebInterface
             CreateOpenIDRequestAndRedirect("https://me.yahoo.com", requestEmail);
         }
 
-        protected static Uri GetServiceLoginUrl(Uri returnUrl)
+        protected static Uri GetGoogleServiceLoginUrl(Uri returnUrl)
         {
             string authorizationEndpoint = "https://accounts.google.com/o/oauth2/auth";
             var state = string.IsNullOrEmpty(returnUrl.Query) ? string.Empty : returnUrl.Query.Substring(1);
@@ -403,7 +431,18 @@ namespace WebInterface
             return builder.Uri;
         }
 
-        protected static Tuple<string, string> GetAuthTokens(Uri returnUrl, string authorizationCode)
+        protected static Tuple<string, string> GetFacebookAuthTokens(Uri returnUrl, string authorizationCode)
+        {
+            var client = new FacebookOAuth2Client(appId: SecureConfig.Current.FacebookOAuthClientID,
+                appSecret: SecureConfig.Current.FacebookOAuthClientSecret, requestedScopes:"email");
+            var authResult = client.VerifyAuthentication(new HttpContextWrapper(HttpContext.Current), returnUrl);
+            bool isVerified = authResult.ExtraData["verified"] == "True";
+            var result = new Tuple<string, string>(authResult.ExtraData["id"], isVerified ? authResult.ExtraData["email"] : null);
+            return result;
+        }
+
+
+        protected static Tuple<string, string> GetGoogleAuthTokens(Uri returnUrl, string authorizationCode)
         {
             string TokenEndpoint = "https://accounts.google.com/o/oauth2/token";
             var postData = HttpUtility.ParseQueryString(string.Empty);
