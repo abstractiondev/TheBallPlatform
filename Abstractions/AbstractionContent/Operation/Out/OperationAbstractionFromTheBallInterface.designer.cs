@@ -147,6 +147,7 @@ using System.Threading.Tasks;
 				public class ExecuteInterfaceOperationParameters 
 		{
 				public string OperationID ;
+				public bool UseSQLiteDB ;
 				}
 		
 		public class ExecuteInterfaceOperation 
@@ -159,7 +160,9 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					InterfaceOperation Operation =  await ExecuteInterfaceOperationImplementation.GetTarget_OperationAsync(parameters.OperationID);	
 				string OperationDataLocation = ExecuteInterfaceOperationImplementation.GetTarget_OperationDataLocation(Operation);	
+				 await ExecuteInterfaceOperationImplementation.ExecuteMethod_PreExecuteSyncSQLiteFromStorageAsync(parameters.UseSQLiteDB, Operation);		
 				 await ExecuteInterfaceOperationImplementation.ExecuteMethod_ExecuteOperationAsync(Operation, OperationDataLocation);		
+				 await ExecuteInterfaceOperationImplementation.ExecuteMethod_PostExecuteSyncStorageFromSQLiteAsync(parameters.UseSQLiteDB, Operation);		
 				}
 				}
 				public class DeleteInterfaceOperationParameters 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SQLiteSupport;
@@ -30,9 +31,24 @@ namespace TheBall.CORE
                 return;
             if(databaseAttachOrCreateMethodName == null)
                 throw new ArgumentNullException("databaseAttachOrCreateMethodName");
-            if (sqLiteDbLocationFileName == null) throw new ArgumentNullException("sqLiteDbLocationFileName");
-            if (ownerRootPath == null) throw new ArgumentNullException("ownerRootPath");
-            if (blobsToSync == null) throw new ArgumentNullException("blobsToSync");
+            if (sqLiteDbLocationFileName == null)
+                throw new ArgumentNullException("sqLiteDbLocationFileName");
+            if (ownerRootPath == null)
+                throw new ArgumentNullException("ownerRootPath");
+            if (blobsToSync == null)
+                throw new ArgumentNullException("blobsToSync");
+            ContentStorage.GetContentAsStringFunc =
+                blobPath =>
+                {
+                    var xmlResponse =
+                        Encoding.UTF8.GetString(StorageSupport.GetOwnerBlobReference(blobPath).DownloadByteArray());
+                    int index = xmlResponse.IndexOf('<');
+                    if (index > 0)
+                    {
+                        xmlResponse = xmlResponse.Substring(index, xmlResponse.Length - index);
+                    }
+                    return xmlResponse;
+                };
             //dataContextType.InvokeMember()
             using (
                 IStorageSyncableDataContext dbContext = (IStorageSyncableDataContext)dataContextType.InvokeMember(databaseAttachOrCreateMethodName, BindingFlags.InvokeMethod, null, null, new object[] { sqLiteDbLocationFileName })
@@ -73,8 +89,8 @@ namespace TheBall.CORE
         public static string GetTarget_SQLiteDBLocationDirectory(IContainerOwner owner)
         {
             string instanceName = InformationContext.Current.InstanceName;
-            string dbDirectory = SecureConfig.Current.CoreShareWithFolderName + "\\" + instanceName  + "\\" + owner.ContainerName + "\\" +
-                                 owner.LocationPrefix;
+            string dbDirectory = Path.Combine(SecureConfig.Current.CoreShareWithFolderName, instanceName,
+                owner.ContainerName, owner.LocationPrefix);
             return dbDirectory;
 
         }

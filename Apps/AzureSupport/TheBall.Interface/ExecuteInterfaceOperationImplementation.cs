@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using AzureSupport;
+using TheBall.CORE;
 
 namespace TheBall.Interface
 {
@@ -43,6 +44,24 @@ namespace TheBall.Interface
                 operation.Finished = DateTime.UtcNow;
                 await operation.StoreInformationAsync();
             }
+        }
+
+        public static async Task ExecuteMethod_PreExecuteSyncSQLiteFromStorageAsync(bool useSqLiteDb, InterfaceOperation operation)
+        {
+            if (!useSqLiteDb)
+                return;
+            string semanticDomain = "AaltoGlobalImpact.OIP"; // operation.SemanticDomainName;
+            UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+            {
+                Owner = InformationContext.CurrentOwner,
+                SemanticDomain = semanticDomain
+            });
+        }
+
+        public static async Task ExecuteMethod_PostExecuteSyncStorageFromSQLiteAsync(bool useSqLiteDb, InterfaceOperation operation)
+        {
+            if (!useSqLiteDb)
+                return;
         }
     }
 }

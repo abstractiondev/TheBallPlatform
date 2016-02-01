@@ -202,6 +202,7 @@
       </OperationSpec>
       <Parameters>
         <Parameter name="OperationID" dataType="string" designDesc="Operation ID to execute" state="implemented" />
+        <Parameter name="UseSQLiteDB" dataType="bool" designDesc="Use SQLite database; calling syncs before and after" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -211,9 +212,17 @@
           <TargetDefinition name="OperationDataLocation" dataType="string" designDesc="Operation data object location to store" state="implemented">
             <Target name="Operation" />
           </TargetDefinition>
+          <MethodExecute name="PreExecuteSyncSQLiteFromStorage" asyncSupportMode="AsyncOnly" designDesc="Sync storage to SQLite data if SQLite is used" state="implemented">
+            <Parameter name="UseSQLiteDB" />
+            <Target name="Operation" />
+          </MethodExecute>
           <MethodExecute name="ExecuteOperation" asyncSupportMode="AsyncOnly" designDesc="Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info." state="implemented">
             <Target name="Operation" />
             <Target name="OperationDataLocation" />
+          </MethodExecute>
+          <MethodExecute name="PostExecuteSyncStorageFromSQLite" asyncSupportMode="AsyncOnly" designDesc="Sync SQLite data to storage if SQLite is used" state="implemented">
+            <Parameter name="UseSQLiteDB" />
+            <Target name="Operation" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

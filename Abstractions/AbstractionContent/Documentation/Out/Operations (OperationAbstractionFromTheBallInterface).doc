@@ -647,7 +647,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Execute the defined process
 		</div>
-		</p><h1>ExecuteInterfaceOperation (OperationID)</h1>
+		</p><h1>ExecuteInterfaceOperation (OperationID, UseSQLiteDB)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Execute given operation
@@ -672,6 +672,23 @@ div.WordSection1
 		</div>
 				</td>
 				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		UseSQLiteDB
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Use SQLite database; calling syncs before and after
+		</div>
+				</td>
+				</tr>
 		</table>
 		</p><h2>Target Definition: Operation ( OperationID )</h2>
 		<p>		<div class="MsoNormal" >
@@ -681,9 +698,17 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Operation data object location to store
 		</div>
+		</p><h2>Method Call: PreExecuteSyncSQLiteFromStorage ( Operation, UseSQLiteDB )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync storage to SQLite data if SQLite is used
+		</div>
 		</p><h2>Method Call: ExecuteOperation ( Operation, OperationDataLocation )</h2>
 		<p>		<div class="MsoNormal" >
 		Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.
+		</div>
+		</p><h2>Method Call: PostExecuteSyncStorageFromSQLite ( Operation, UseSQLiteDB )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync SQLite data to storage if SQLite is used
 		</div>
 		</p><h1>ExecuteInterfaceOperationsByOwnerAndReleaseLock (InstanceName, LockedOwnerPrefix, LockedOwnerID, OperationIDs, OperationQueueItems, LockBlobFullPath)</h1>
 		<h2>Specifications</h2>

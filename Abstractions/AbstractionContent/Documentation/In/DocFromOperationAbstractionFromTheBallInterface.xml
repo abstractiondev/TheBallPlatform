@@ -529,7 +529,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="ExecuteInterfaceOperation (OperationID)" level="1">
+          <Header text="ExecuteInterfaceOperation (OperationID, UseSQLiteDB)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -557,6 +557,17 @@
                         <TextContent>Operation ID to execute</TextContent>
                       </ColumnData>
                     </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>UseSQLiteDB</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Use SQLite database; calling syncs before and after</TextContent>
+                      </ColumnData>
+                    </Row>
                   </Rows>
                 </Table>
               </Paragraph>
@@ -575,10 +586,24 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: PreExecuteSyncSQLiteFromStorage ( Operation, UseSQLiteDB )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync storage to SQLite data if SQLite is used</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Method Call: ExecuteOperation ( Operation, OperationDataLocation )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Execute interface operation. Delete operation + data if succesful; update statistics otherwise with error info.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PostExecuteSyncStorageFromSQLite ( Operation, UseSQLiteDB )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync SQLite data to storage if SQLite is used</TextContent>
                 </Text>
               </Paragraph>
             </Header>
