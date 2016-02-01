@@ -437,15 +437,18 @@ namespace WebInterface
                 appSecret: SecureConfig.Current.FacebookOAuthClientSecret, requestedScopes:"email");
             var authResult = client.VerifyAuthentication(new HttpContextWrapper(HttpContext.Current), returnUrl);
             var data = authResult.ExtraData;
-            bool isVerified = data.ContainsKey("verified") ? authResult.ExtraData["verified"] == "True" : false;
-            if(!isVerified)
-                throw new SecurityException("Authentication data not verified");
-            var emailAddress = data.ContainsKey("email") ? data["email"] : null;
+            var access_token = data["accesstoken"];
+
+            var fb = new Facebook.FacebookClient(access_token);
+            dynamic facebookInfo = fb.Get("/me?fields=id,email,name");
+
+            string emailAddress = facebookInfo.email;
             if(emailAddress == null)
                 throw new SecurityException("Email is required for login");
-            if(!data.ContainsKey("id"))
+            string id = facebookInfo.id;
+            if(id == null)
                 throw new SecurityException("ID is required for login");
-            var result = new Tuple<string, string>(data["id"], emailAddress);
+            var result = new Tuple<string, string>(id, emailAddress);
             return result;
         }
 
