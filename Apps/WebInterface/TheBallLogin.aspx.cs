@@ -436,8 +436,16 @@ namespace WebInterface
             var client = new FacebookOAuth2Client(appId: SecureConfig.Current.FacebookOAuthClientID,
                 appSecret: SecureConfig.Current.FacebookOAuthClientSecret, requestedScopes:"email");
             var authResult = client.VerifyAuthentication(new HttpContextWrapper(HttpContext.Current), returnUrl);
-            bool isVerified = authResult.ExtraData["verified"] == "True";
-            var result = new Tuple<string, string>(authResult.ExtraData["id"], isVerified ? authResult.ExtraData["email"] : null);
+            var data = authResult.ExtraData;
+            bool isVerified = data.ContainsKey("verified") ? authResult.ExtraData["verified"] == "True" : false;
+            if(!isVerified)
+                throw new SecurityException("Authentication data not verified");
+            var emailAddress = data.ContainsKey("email") ? data["email"] : null;
+            if(emailAddress == null)
+                throw new SecurityException("Email is required for login");
+            if(!data.ContainsKey("id"))
+                throw new SecurityException("ID is required for login");
+            var result = new Tuple<string, string>(data["id"], emailAddress);
             return result;
         }
 
