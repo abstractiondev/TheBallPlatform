@@ -437,9 +437,9 @@ namespace WebInterface
                 appSecret: SecureConfig.Current.FacebookOAuthClientSecret, requestedScopes:"email");
             var authResult = client.VerifyAuthentication(new HttpContextWrapper(HttpContext.Current), returnUrl);
             var data = authResult.ExtraData;
-            //bool isVerified = data.ContainsKey("verified") ? authResult.ExtraData["verified"] == "True" : false;
-            //if(!isVerified)
-            //    throw new SecurityException("Authentication data not verified");
+            bool isVerified = data.ContainsKey("verified") ? authResult.ExtraData["verified"] == "True" : false;
+            if(!isVerified)
+                throw new SecurityException("Authentication data not verified");
             var emailAddress = data.ContainsKey("email") ? data["email"] : null;
             if(emailAddress == null)
                 throw new SecurityException("Email is required for login");
