@@ -1400,10 +1400,11 @@ namespace TheBall
             return CurrBlobClient.ListBlobsSegmented(searchRoot, true, BlobListingDetails.Metadata, maxresults, null, null, null);
         }
 
-        public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, bool useFlatBlobListing = true)
+        public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
+            bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false)
         {
             string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
-            return await CurrBlobClient.ListBlobsSegmentedAsync(searchRoot, useFlatBlobListing, BlobListingDetails.None, null, null, null, null);
+            return await CurrBlobClient.ListBlobsSegmentedAsync(searchRoot, useFlatBlobListing, withMetadata ? BlobListingDetails.Metadata : BlobListingDetails.None, null, continuationToken, null, null);
         }
 
 

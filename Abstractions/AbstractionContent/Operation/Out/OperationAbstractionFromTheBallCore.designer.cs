@@ -1202,5 +1202,18 @@ using System.Threading.Tasks;
 				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BlobsToSync = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_BlobsToSync(parameters.Owner, parameters.SemanticDomain);	
 				UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_PerformSyncing(DataContextType, DatabaseAttachOrCreateMethodName, SQLiteDBLocationFileName, OwnerRootPath, BlobsToSync);		
 				}
+				public static async Task ExecuteAsync(UpdateOwnerDomainObjectsInSQLiteStorageParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string SQLiteDBLocationDirectory = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationDirectory(parameters.Owner);	
+				UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_CreateDBLocationDirectoryIfMissing(SQLiteDBLocationDirectory);		
+				string DataContextFullTypeName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DataContextFullTypeName(parameters.SemanticDomain);	
+				System.Type DataContextType = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DataContextType(DataContextFullTypeName);	
+				string DatabaseAttachOrCreateMethodName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_DatabaseAttachOrCreateMethodName();	
+				string SQLiteDBLocationFileName = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_SQLiteDBLocationFileName(parameters.SemanticDomain, SQLiteDBLocationDirectory);	
+				string OwnerRootPath = UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_OwnerRootPath(parameters.Owner);	
+				Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[] BlobsToSync =  await UpdateOwnerDomainObjectsInSQLiteStorageImplementation.GetTarget_BlobsToSyncAsync(parameters.Owner, parameters.SemanticDomain);	
+				 await UpdateOwnerDomainObjectsInSQLiteStorageImplementation.ExecuteMethod_PerformSyncingAsync(DataContextType, DatabaseAttachOrCreateMethodName, SQLiteDBLocationFileName, OwnerRootPath, BlobsToSync);		
+				}
 				}
 		 } 

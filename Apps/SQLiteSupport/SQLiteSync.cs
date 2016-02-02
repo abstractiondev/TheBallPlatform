@@ -26,6 +26,20 @@ namespace SQLiteSupport
     public static class SQLiteSync
     {
 
+        public static async Task<bool> ApplyStorageChangesToSQLiteDBAsync(string storageRootPath, IStorageSyncableDataContext dataContext,
+    Func<string, InformationObjectMetaData[]> metadataRetrieverFunc = null)
+        {
+            var existingMetadatas = dataContext.InformationObjectMetaDataTable.ToArray();
+            InformationObjectMetaData[] currentMetadatas;
+            currentMetadatas = metadataRetrieverFunc != null ? metadataRetrieverFunc(storageRootPath) : FileSystemSync.GetMetaDatas(storageRootPath);
+            bool anyChanges = await MetaDataSync.ApplyChangeActionsToExistingDataAsync(currentMetadatas, existingMetadatas,
+                async insertItem => await dataContext.PerformInsertAsync(storageRootPath, insertItem),
+                async updateItem => await dataContext.PerformUpdateAsync(storageRootPath, updateItem),
+                async deleteItem => await dataContext.PerformDeleteAsync(storageRootPath, deleteItem));
+            await dataContext.SubmitChangesAsync();
+            return anyChanges;
+        }
+
 
         public static bool ApplyStorageChangesToSQLiteDB(string storageRootPath, IStorageSyncableDataContext dataContext,
             Func<string, InformationObjectMetaData[]> metadataRetrieverFunc = null)

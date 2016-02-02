@@ -54,7 +54,7 @@ namespace TheBall.Interface
             var ownerDomains = ownerDomainResult.OwnerSemanticDomains;
             foreach (var ownerDomain in ownerDomains)
             {
-                UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+                await UpdateOwnerDomainObjectsInSQLiteStorage.ExecuteAsync(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
                 {
                     Owner = InformationContext.CurrentOwner,
                     SemanticDomain = ownerDomain

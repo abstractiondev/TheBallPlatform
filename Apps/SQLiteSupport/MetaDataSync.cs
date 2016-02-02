@@ -4,6 +4,7 @@ using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using SQLite.TheBall.Payments;
 
 namespace SQLiteSupport
@@ -94,5 +95,34 @@ namespace SQLiteSupport
             }
             return anyChanges;
         }
+
+        public static async Task<bool> ApplyChangeActionsToExistingDataAsync(InformationObjectMetaData[] currentDatas, InformationObjectMetaData[] existingDatas,
+    Func<InformationObjectMetaData, Task> insertAction, Func<InformationObjectMetaData, Task> updateAction, Func<InformationObjectMetaData, Task> deleteAction)
+        {
+            var pendingInserts = UpdatePendingChangeActionsToExistingData(currentDatas, existingDatas);
+            var allChanges =
+                existingDatas.Where(item => item.CurrentChangeAction != ChangeAction.None)
+                    .Concat(pendingInserts)
+                    .ToArray();
+            bool anyChanges = allChanges.Length > 0;
+            foreach (var change in allChanges)
+            {
+                switch (change.CurrentChangeAction)
+                {
+                    case ChangeAction.Insert:
+                        await insertAction(change);
+                        break;
+                    case ChangeAction.Update:
+                        await updateAction(change);
+                        break;
+                    case ChangeAction.Delete:
+                        await deleteAction(change);
+                        break;
+                }
+                change.CurrentChangeAction = ChangeAction.None;
+            }
+            return anyChanges;
+        }
+
     }
 }

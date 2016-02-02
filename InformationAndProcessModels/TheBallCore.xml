@@ -2053,11 +2053,11 @@
             <TargetDefinition name="OwnerRootPath" dataType="string" designDesc="Absolute cloud storage root path to owner root" state="implemented">
               <Parameter name="Owner"/>
             </TargetDefinition>
-            <TargetDefinition name="BlobsToSync" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Blob listings to sync" state="implemented">
+            <TargetDefinition name="BlobsToSync" dataType="Microsoft.WindowsAzure.Storage.Blob.CloudBlockBlob[]" designDesc="Blob listings to sync" state="implemented" asyncSupportMode="Both">
               <Parameter name="Owner"/>
               <Parameter name="SemanticDomain"/>
             </TargetDefinition>
-            <MethodExecute name="PerformSyncing" designDesc="Perform actual syncing" state="implemented">
+            <MethodExecute name="PerformSyncing" designDesc="Perform actual syncing" state="implemented" asyncSupportMode="Both">
               <Target name="DataContextType"/>
               <Target name="DatabaseAttachOrCreateMethodName"/>
               <Target name="SQLiteDBLocationFileName"/>

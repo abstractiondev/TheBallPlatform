@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using AzureSupport;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SQLiteSupport;
@@ -22,6 +24,81 @@ namespace TheBall.CORE
         {
             var blobListing = owner.GetOwnerBlobListing(semanticDomain, true);
             return blobListing.Cast<CloudBlockBlob>().ToArray();
+        }
+
+        public static async Task<CloudBlockBlob[]> GetTarget_BlobsToSyncAsync(IContainerOwner owner, string semanticDomain)
+        {
+            List<CloudBlockBlob> results = new List<CloudBlockBlob>();
+            BlobContinuationToken continuationToken = null;
+            do
+            {
+                var blobSegment = await owner.ListBlobsWithPrefixAsync(semanticDomain, true, continuationToken, true);
+                var blobsLQ = blobSegment.Results.Cast<CloudBlockBlob>();
+                results.AddRange(blobsLQ);
+                continuationToken = blobSegment.ContinuationToken;
+            } while (continuationToken != null);
+            return results.ToArray();
+        }
+
+        public static async Task ExecuteMethod_PerformSyncingAsync(Type dataContextType, string databaseAttachOrCreateMethodName, string sqLiteDbLocationFileName, string ownerRootPath, CloudBlockBlob[] blobsToSync)
+        {
+            if (dataContextType == null)
+                return;
+            if (databaseAttachOrCreateMethodName == null)
+                throw new ArgumentNullException("databaseAttachOrCreateMethodName");
+            if (sqLiteDbLocationFileName == null)
+                throw new ArgumentNullException("sqLiteDbLocationFileName");
+            if (ownerRootPath == null)
+                throw new ArgumentNullException("ownerRootPath");
+            if (blobsToSync == null)
+                throw new ArgumentNullException("blobsToSync");
+            ContentStorage.GetContentAsStringAsyncFunc = async
+                blobPath =>
+                {
+                    var blob = StorageSupport.GetOwnerBlobReference(blobPath);
+                    var xmlResponse = await blob.DownloadTextAsync(Encoding.UTF8, null, null, null, CancellationToken.None);
+                    int index = xmlResponse.IndexOf('<');
+                    if (index > 0)
+                    {
+                        xmlResponse = xmlResponse.Substring(index, xmlResponse.Length - index);
+                    }
+                    return xmlResponse;
+                };
+            using (
+                IStorageSyncableDataContext dbContext = (IStorageSyncableDataContext)dataContextType.InvokeMember(databaseAttachOrCreateMethodName, BindingFlags.InvokeMethod, null, null, new object[] { sqLiteDbLocationFileName })
+                //SQLite.TheBall.Payments.TheBallDataContext.CreateOrAttachToExistingDB(sqLiteDbLocationFileName)
+                )
+            {
+
+                bool anyChangesApplied = await SQLiteSync.ApplyStorageChangesToSQLiteDBAsync(ownerRootPath, dbContext,
+                    rootPath =>
+                    {
+                        List<InformationObjectMetaData> metaDatas = new List<InformationObjectMetaData>();
+                        foreach (CloudBlockBlob blob in blobsToSync)
+                        {
+                            if (Path.GetExtension(blob.Name) != String.Empty)
+                                continue;
+                            var nameComponents = blob.Name.Split('/');
+                            string objectID = nameComponents[nameComponents.Length - 1];
+                            string objectType = nameComponents[nameComponents.Length - 2];
+                            string semanticDomain = nameComponents[nameComponents.Length - 3];
+                            var metaData = new InformationObjectMetaData
+                            {
+                                CurrentStoragePath = blob.Name.Substring(ownerRootPath.Length),
+                                FileLength = blob.Properties.Length,
+                                LastWriteTime = blob.Properties.LastModified.GetValueOrDefault().ToString("s"),
+                                MD5 = blob.Properties.ContentMD5,
+                                ETag = blob.Properties.ETag,
+                                SemanticDomain = semanticDomain,
+                                ObjectType = objectType,
+                                ObjectID = objectID
+                            };
+                            metaDatas.Add(metaData);
+                        }
+                        return metaDatas.ToArray();
+                    });
+            }
+
         }
 
         public static void ExecuteMethod_PerformSyncing(Type dataContextType, string databaseAttachOrCreateMethodName, string sqLiteDbLocationFileName, string ownerRootPath, CloudBlockBlob[] blobsToSync)
