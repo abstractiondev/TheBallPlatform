@@ -2210,6 +2210,57 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fetch input to storage
 		</div>
+		</p><h1>GetOwnerSemanticDomains (SkipSystemDomains)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Retrieve list of semantic domains based on owner storage folders. Identify domains containing . and two parts in their name
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SkipSystemDomains
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Skips system domains
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: OwnerDomains ( SkipSystemDomains )</h2>
+		<p>		<div class="MsoNormal" >
+		Owner domains optionally filtered from system domains
+		</div>
+		</p><h2>Return Value : GetOwnerSemanticDomainsReturnValue ( OwnerDomains )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwnerSemanticDomains
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner domains
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID, RedirectUrlAfterValidation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

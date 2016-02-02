@@ -2004,6 +2004,25 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="GetOwnerSemanticDomains">
+        <OperationSpec>
+          <Description>Retrieve list of semantic domains based on owner storage folders. Identify domains containing . and two parts in their name</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="SkipSystemDomains" dataType="bool" designDesc="Skips system domains" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string[]" name="OwnerDomains" designDesc="Owner domains optionally filtered from system domains" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="SkipSystemDomains"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="OwnerSemanticDomains" dataType="string[]" designDesc="Owner domains" state="implemented" />
+          <Target name="OwnerDomains"/>
+        </OperationReturnValues>
+      </Operation>
       <Operation name="UpdateOwnerDomainObjectsInSQLiteStorage">
         <OperationSpec>
           <Description>Update owner domain objects in owner's SQLite storage, located within "tbcore" Azure file share</Description>

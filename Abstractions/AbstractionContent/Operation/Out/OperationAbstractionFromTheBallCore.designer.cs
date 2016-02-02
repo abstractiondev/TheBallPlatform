@@ -1156,6 +1156,29 @@ using System.Threading.Tasks;
 				ConfirmAccountMergeFromEmailImplementation.ExecuteMethod_PerformAccountMerge(MergeAccountConfirmation);		
 				}
 				}
+				public class GetOwnerSemanticDomainsParameters 
+		{
+				public bool SkipSystemDomains ;
+				}
+		
+		public class GetOwnerSemanticDomains 
+		{
+				private static void PrepareParameters(GetOwnerSemanticDomainsParameters parameters)
+		{
+					}
+				public static async Task<GetOwnerSemanticDomainsReturnValue> ExecuteAsync(GetOwnerSemanticDomainsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] OwnerDomains =  await GetOwnerSemanticDomainsImplementation.GetTarget_OwnerDomainsAsync(parameters.SkipSystemDomains);	
+				GetOwnerSemanticDomainsReturnValue returnValue = GetOwnerSemanticDomainsImplementation.Get_ReturnValue(OwnerDomains);
+		return returnValue;
+				}
+				}
+
+		    public class GetOwnerSemanticDomainsReturnValue 
+		{
+				public string[] OwnerSemanticDomains ;
+				}
 				public class UpdateOwnerDomainObjectsInSQLiteStorageParameters 
 		{
 				public IContainerOwner Owner ;

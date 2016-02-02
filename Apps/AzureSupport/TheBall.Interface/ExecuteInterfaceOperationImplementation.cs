@@ -50,12 +50,16 @@ namespace TheBall.Interface
         {
             if (!useSqLiteDb)
                 return;
-            string semanticDomain = "AaltoGlobalImpact.OIP"; // operation.SemanticDomainName;
-            UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+            var ownerDomainResult = await GetOwnerSemanticDomains.ExecuteAsync(new GetOwnerSemanticDomainsParameters { SkipSystemDomains = true});
+            var ownerDomains = ownerDomainResult.OwnerSemanticDomains;
+            foreach (var ownerDomain in ownerDomains)
             {
-                Owner = InformationContext.CurrentOwner,
-                SemanticDomain = semanticDomain
-            });
+                UpdateOwnerDomainObjectsInSQLiteStorage.Execute(new UpdateOwnerDomainObjectsInSQLiteStorageParameters
+                {
+                    Owner = InformationContext.CurrentOwner,
+                    SemanticDomain = ownerDomain
+                });
+            }
         }
 
         public static async Task ExecuteMethod_PostExecuteSyncStorageFromSQLiteAsync(bool useSqLiteDb, InterfaceOperation operation)

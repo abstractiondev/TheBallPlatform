@@ -2149,6 +2149,70 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="GetOwnerSemanticDomains (SkipSystemDomains)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Retrieve list of semantic domains based on owner storage folders. Identify domains containing . and two parts in their name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>SkipSystemDomains</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Skips system domains</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: OwnerDomains ( SkipSystemDomains )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Owner domains optionally filtered from system domains</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : GetOwnerSemanticDomainsReturnValue ( OwnerDomains )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>OwnerSemanticDomains</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Owner domains</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="InitiateAccountMergeFromEmail (EmailAddress, CurrentAccountID, RedirectUrlAfterValidation)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
