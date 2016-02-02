@@ -21,6 +21,7 @@ using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribu
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace SQLite.AaltoGlobalImpact.OIP { 
@@ -80,6 +81,11 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     itemToProcess.PrepareForStoring(false);
                 base.SubmitChanges(failureMode);
             }
+
+		    public async Task SubmitChangesAsync()
+		    {
+		        await Task.Run(() => SubmitChanges());
+		    }
 
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
@@ -208,6 +214,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 				}
 			}
 
+
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
                 if(updateData.SemanticDomain != "AaltoGlobalImpact.OIP")
@@ -215,9 +222,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBSystem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBSystemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InstanceName = serializedObject.InstanceName;
@@ -227,9 +234,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "WebPublishInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = WebPublishInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.PublishType = serializedObject.PublishType;
@@ -247,9 +254,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "PublicationPackage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PublicationPackageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.PackageName = serializedObject.PackageName;
@@ -259,9 +266,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBRLoginRoot")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginRootTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.DomainName = serializedObject.DomainName;
@@ -274,9 +281,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBRAccountRoot")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBRAccountRoot.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRAccountRootTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Account != null)
@@ -288,9 +295,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBRGroupRoot")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBRGroupRoot.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRGroupRootTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Group != null)
@@ -302,9 +309,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBRLoginGroupRoot")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBRLoginGroupRootTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Role = serializedObject.Role;
@@ -314,9 +321,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBREmailRoot")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBREmailRoot.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBREmailRootTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Account != null)
@@ -328,9 +335,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBAccount")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBAccount.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Emails != null)
@@ -350,9 +357,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBAccountCollaborationGroup")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBAccountCollaborationGroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -363,9 +370,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBLoginInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
@@ -374,9 +381,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBEmail")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -386,9 +393,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBCollaboratorRole")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratorRoleTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Email != null)
@@ -402,9 +409,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBCollaboratingGroup")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBCollaboratingGroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
@@ -417,9 +424,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBEmailValidation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBEmailValidationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Email = serializedObject.Email;
@@ -451,9 +458,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBMergeAccountConfirmation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBMergeAccountConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
@@ -463,9 +470,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBGroupJoinConfirmation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBGroupJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -475,9 +482,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBDeviceJoinConfirmation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBDeviceJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -488,9 +495,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBInformationInputConfirmation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationInputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -501,9 +508,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBInformationOutputConfirmation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBInformationOutputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
@@ -514,9 +521,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "LoginProvider")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LoginProviderTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ProviderName = serializedObject.ProviderName;
@@ -529,9 +536,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TBPRegisterEmail")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -540,9 +547,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountSummary")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountSummary.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSummaryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.GroupSummary != null)
@@ -554,9 +561,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.AccountModule != null)
@@ -572,9 +579,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountModule")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountModule.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountModuleTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Profile != null)
@@ -598,9 +605,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "LocationContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.LocationContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Locations != null)
@@ -612,9 +619,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddressAndLocation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddressAndLocation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddressAndLocationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ReferenceToInformation != null)
@@ -634,9 +641,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "StreetAddress")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StreetAddressTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Street = serializedObject.Street;
@@ -648,9 +655,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountProfile")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountProfileTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ProfileImage != null)
@@ -671,9 +678,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountSecurity")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountSecurity.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountSecurityTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.LoginInfoCollection != null)
@@ -689,9 +696,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AccountRoles")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountRolesTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ModeratorInGroups != null)
@@ -708,9 +715,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "PersonalInfoVisibility")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
@@ -719,9 +726,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "ReferenceToInformation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ReferenceToInformationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
@@ -731,9 +738,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "NodeSummaryContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.NodeSummaryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Nodes != null)
@@ -769,9 +776,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "RenderedNode")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OriginalContentID = serializedObject.OriginalContentID;
@@ -810,9 +817,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "ShortTextObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
@@ -821,9 +828,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "LongTextObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
@@ -832,9 +839,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "MapMarker")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapMarkerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.IconUrl = serializedObject.IconUrl;
@@ -852,9 +859,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Moderator")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ModeratorTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ModeratorName = serializedObject.ModeratorName;
@@ -864,9 +871,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Collaborator")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CollaboratorTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountID = serializedObject.AccountID;
@@ -879,9 +886,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "GroupSummaryContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.SummaryBody = serializedObject.SummaryBody;
@@ -902,9 +909,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "GroupContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.GroupContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.GroupIndex != null)
@@ -932,9 +939,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "GroupIndex")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupIndexTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Icon != null)
@@ -949,9 +956,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddAddressAndLocationInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
@@ -960,9 +967,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddImageInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageTitle = serializedObject.ImageTitle;
@@ -971,9 +978,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddImageGroupInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
@@ -982,9 +989,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddEmailAddressInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
@@ -993,9 +1000,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "CreateGroupInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
@@ -1004,9 +1011,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddActivityInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ActivityName = serializedObject.ActivityName;
@@ -1015,9 +1022,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddBlogPostInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
@@ -1026,9 +1033,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AddCategoryInfo")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
@@ -1037,9 +1044,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Group")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ReferenceToInformation != null)
@@ -1075,9 +1082,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Introduction")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IntroductionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
@@ -1087,9 +1094,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "ContentCategoryRank")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ContentCategoryRankTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ContentID = serializedObject.ContentID;
@@ -1102,9 +1109,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "LinkToContent")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LinkToContentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.URL = serializedObject.URL;
@@ -1129,9 +1136,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "EmbeddedContent")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = EmbeddedContentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.IFrameTagContents = serializedObject.IFrameTagContents;
@@ -1152,9 +1159,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "DynamicContentGroup")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentGroupTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.HostName = serializedObject.HostName;
@@ -1167,9 +1174,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "DynamicContent")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DynamicContentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.HostName = serializedObject.HostName;
@@ -1192,9 +1199,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "AttachedToObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AttachedToObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceObjectID = serializedObject.SourceObjectID;
@@ -1208,9 +1215,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Comment")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CommentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
@@ -1230,9 +1237,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Selection")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SelectionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
@@ -1247,9 +1254,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "TextContent")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TextContentTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ImageData != null)
@@ -1278,9 +1285,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Map")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
@@ -1289,9 +1296,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "MapResult")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.MapResult.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapResultTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Location != null)
@@ -1303,9 +1310,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "MapResultsCollection")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.MapResultsCollection.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = MapResultsCollectionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ResultByDate != null)
@@ -1325,9 +1332,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Video")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = VideoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.VideoData != null)
@@ -1341,9 +1348,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Image")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ImageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ReferenceToInformation != null)
@@ -1370,9 +1377,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "BinaryFile")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = BinaryFileTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OriginalFileName = serializedObject.OriginalFileName;
@@ -1391,9 +1398,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Longitude")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
@@ -1402,9 +1409,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Latitude")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
@@ -1413,9 +1420,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Location")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = LocationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
@@ -1432,9 +1439,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Date")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = DateTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Day = serializedObject.Day;
@@ -1446,9 +1453,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "CategoryContainer")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.CategoryContainer.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryContainerTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.Categories != null)
@@ -1460,9 +1467,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "Category")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ReferenceToInformation != null)
@@ -1485,9 +1492,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "UpdateWebContentOperation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = UpdateWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
@@ -1504,9 +1511,1317 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		        if (updateData.ObjectType == "UpdateWebContentHandlerItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = UpdateWebContentHandlerItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
+		            existingObject.OptionName = serializedObject.OptionName;
+		            return;
+		        } 
+		    }
+
+
+			public async Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "AaltoGlobalImpact.OIP")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "TBSystem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBSystemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.InstanceName = serializedObject.InstanceName;
+		            existingObject.AdminGroupID = serializedObject.AdminGroupID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "WebPublishInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = WebPublishInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.PublishType = serializedObject.PublishType;
+		            existingObject.PublishContainer = serializedObject.PublishContainer;
+					if(serializedObject.ActivePublication != null)
+						existingObject.ActivePublicationID = serializedObject.ActivePublication.ID;
+					else
+						existingObject.ActivePublicationID = null;
+					if(serializedObject.Publications != null)
+						existingObject.PublicationsID = serializedObject.Publications.ID;
+					else
+						existingObject.PublicationsID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "PublicationPackage")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = PublicationPackageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.PackageName = serializedObject.PackageName;
+		            existingObject.PublicationTime = serializedObject.PublicationTime;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBRLoginRoot")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBRLoginRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.DomainName = serializedObject.DomainName;
+					if(serializedObject.Account != null)
+						existingObject.AccountID = serializedObject.Account.ID;
+					else
+						existingObject.AccountID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBRAccountRoot")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBRAccountRoot.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBRAccountRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Account != null)
+						existingObject.AccountID = serializedObject.Account.ID;
+					else
+						existingObject.AccountID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBRGroupRoot")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBRGroupRoot.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBRGroupRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Group != null)
+						existingObject.GroupID = serializedObject.Group.ID;
+					else
+						existingObject.GroupID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBRLoginGroupRoot")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBRLoginGroupRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Role = serializedObject.Role;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBREmailRoot")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBREmailRoot.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBREmailRootTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Account != null)
+						existingObject.AccountID = serializedObject.Account.ID;
+					else
+						existingObject.AccountID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBAccount")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBAccount.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBAccountTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Emails != null)
+						existingObject.EmailsID = serializedObject.Emails.ID;
+					else
+						existingObject.EmailsID = null;
+					if(serializedObject.Logins != null)
+						existingObject.LoginsID = serializedObject.Logins.ID;
+					else
+						existingObject.LoginsID = null;
+					if(serializedObject.GroupRoleCollection != null)
+						existingObject.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
+					else
+						existingObject.GroupRoleCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBAccountCollaborationGroup")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBAccountCollaborationGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            existingObject.GroupRole = serializedObject.GroupRole;
+		            existingObject.RoleStatus = serializedObject.RoleStatus;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBLoginInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBEmail")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBEmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            existingObject.ValidatedAt = serializedObject.ValidatedAt;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBCollaboratorRole")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBCollaboratorRoleTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Email != null)
+						existingObject.EmailID = serializedObject.Email.ID;
+					else
+						existingObject.EmailID = null;
+		            existingObject.Role = serializedObject.Role;
+		            existingObject.RoleStatus = serializedObject.RoleStatus;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBCollaboratingGroup")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBCollaboratingGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Title = serializedObject.Title;
+					if(serializedObject.Roles != null)
+						existingObject.RolesID = serializedObject.Roles.ID;
+					else
+						existingObject.RolesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBEmailValidation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBEmailValidationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Email = serializedObject.Email;
+		            existingObject.AccountID = serializedObject.AccountID;
+		            existingObject.ValidUntil = serializedObject.ValidUntil;
+					if(serializedObject.GroupJoinConfirmation != null)
+						existingObject.GroupJoinConfirmationID = serializedObject.GroupJoinConfirmation.ID;
+					else
+						existingObject.GroupJoinConfirmationID = null;
+					if(serializedObject.DeviceJoinConfirmation != null)
+						existingObject.DeviceJoinConfirmationID = serializedObject.DeviceJoinConfirmation.ID;
+					else
+						existingObject.DeviceJoinConfirmationID = null;
+					if(serializedObject.InformationInputConfirmation != null)
+						existingObject.InformationInputConfirmationID = serializedObject.InformationInputConfirmation.ID;
+					else
+						existingObject.InformationInputConfirmationID = null;
+					if(serializedObject.InformationOutputConfirmation != null)
+						existingObject.InformationOutputConfirmationID = serializedObject.InformationOutputConfirmation.ID;
+					else
+						existingObject.InformationOutputConfirmationID = null;
+					if(serializedObject.MergeAccountsConfirmation != null)
+						existingObject.MergeAccountsConfirmationID = serializedObject.MergeAccountsConfirmation.ID;
+					else
+						existingObject.MergeAccountsConfirmationID = null;
+		            existingObject.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBMergeAccountConfirmation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBMergeAccountConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
+		            existingObject.AccountToMergeToID = serializedObject.AccountToMergeToID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBGroupJoinConfirmation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBGroupJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            existingObject.InvitationMode = serializedObject.InvitationMode;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBDeviceJoinConfirmation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBDeviceJoinConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            existingObject.AccountID = serializedObject.AccountID;
+		            existingObject.DeviceMembershipID = serializedObject.DeviceMembershipID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBInformationInputConfirmation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBInformationInputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            existingObject.AccountID = serializedObject.AccountID;
+		            existingObject.InformationInputID = serializedObject.InformationInputID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBInformationOutputConfirmation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBInformationOutputConfirmationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupID = serializedObject.GroupID;
+		            existingObject.AccountID = serializedObject.AccountID;
+		            existingObject.InformationOutputID = serializedObject.InformationOutputID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "LoginProvider")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LoginProviderTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ProviderName = serializedObject.ProviderName;
+		            existingObject.ProviderIconClass = serializedObject.ProviderIconClass;
+		            existingObject.ProviderType = serializedObject.ProviderType;
+		            existingObject.ProviderUrl = serializedObject.ProviderUrl;
+		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TBPRegisterEmail")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountSummary")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountSummary.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountSummaryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.GroupSummary != null)
+						existingObject.GroupSummaryID = serializedObject.GroupSummary.ID;
+					else
+						existingObject.GroupSummaryID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.AccountModule != null)
+						existingObject.AccountModuleID = serializedObject.AccountModule.ID;
+					else
+						existingObject.AccountModuleID = null;
+					if(serializedObject.AccountSummary != null)
+						existingObject.AccountSummaryID = serializedObject.AccountSummary.ID;
+					else
+						existingObject.AccountSummaryID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountModule")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountModule.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountModuleTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Profile != null)
+						existingObject.ProfileID = serializedObject.Profile.ID;
+					else
+						existingObject.ProfileID = null;
+					if(serializedObject.Security != null)
+						existingObject.SecurityID = serializedObject.Security.ID;
+					else
+						existingObject.SecurityID = null;
+					if(serializedObject.Roles != null)
+						existingObject.RolesID = serializedObject.Roles.ID;
+					else
+						existingObject.RolesID = null;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "LocationContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.LocationContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LocationContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddressAndLocation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddressAndLocation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddressAndLocationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ReferenceToInformation != null)
+						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						existingObject.ReferenceToInformationID = null;
+					if(serializedObject.Address != null)
+						existingObject.AddressID = serializedObject.Address.ID;
+					else
+						existingObject.AddressID = null;
+					if(serializedObject.Location != null)
+						existingObject.LocationID = serializedObject.Location.ID;
+					else
+						existingObject.LocationID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "StreetAddress")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = StreetAddressTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Street = serializedObject.Street;
+		            existingObject.ZipCode = serializedObject.ZipCode;
+		            existingObject.Town = serializedObject.Town;
+		            existingObject.Country = serializedObject.Country;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountProfile")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountProfileTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ProfileImage != null)
+						existingObject.ProfileImageID = serializedObject.ProfileImage.ID;
+					else
+						existingObject.ProfileImageID = null;
+		            existingObject.FirstName = serializedObject.FirstName;
+		            existingObject.LastName = serializedObject.LastName;
+					if(serializedObject.Address != null)
+						existingObject.AddressID = serializedObject.Address.ID;
+					else
+						existingObject.AddressID = null;
+		            existingObject.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
+		            existingObject.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
+		            existingObject.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountSecurity")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountSecurity.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountSecurityTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.LoginInfoCollection != null)
+						existingObject.LoginInfoCollectionID = serializedObject.LoginInfoCollection.ID;
+					else
+						existingObject.LoginInfoCollectionID = null;
+					if(serializedObject.EmailCollection != null)
+						existingObject.EmailCollectionID = serializedObject.EmailCollection.ID;
+					else
+						existingObject.EmailCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AccountRoles")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AccountRolesTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ModeratorInGroups != null)
+						existingObject.ModeratorInGroupsID = serializedObject.ModeratorInGroups.ID;
+					else
+						existingObject.ModeratorInGroupsID = null;
+					if(serializedObject.MemberInGroups != null)
+						existingObject.MemberInGroupsID = serializedObject.MemberInGroups.ID;
+					else
+						existingObject.MemberInGroupsID = null;
+		            existingObject.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "PersonalInfoVisibility")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ReferenceToInformation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ReferenceToInformationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.URL = serializedObject.URL;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "NodeSummaryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.NodeSummaryContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = NodeSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Nodes != null)
+						existingObject.NodesID = serializedObject.Nodes.ID;
+					else
+						existingObject.NodesID = null;
+					if(serializedObject.NodeSourceTextContent != null)
+						existingObject.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
+					else
+						existingObject.NodeSourceTextContentID = null;
+					if(serializedObject.NodeSourceLinkToContent != null)
+						existingObject.NodeSourceLinkToContentID = serializedObject.NodeSourceLinkToContent.ID;
+					else
+						existingObject.NodeSourceLinkToContentID = null;
+					if(serializedObject.NodeSourceEmbeddedContent != null)
+						existingObject.NodeSourceEmbeddedContentID = serializedObject.NodeSourceEmbeddedContent.ID;
+					else
+						existingObject.NodeSourceEmbeddedContentID = null;
+					if(serializedObject.NodeSourceImages != null)
+						existingObject.NodeSourceImagesID = serializedObject.NodeSourceImages.ID;
+					else
+						existingObject.NodeSourceImagesID = null;
+					if(serializedObject.NodeSourceBinaryFiles != null)
+						existingObject.NodeSourceBinaryFilesID = serializedObject.NodeSourceBinaryFiles.ID;
+					else
+						existingObject.NodeSourceBinaryFilesID = null;
+					if(serializedObject.NodeSourceCategories != null)
+						existingObject.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
+					else
+						existingObject.NodeSourceCategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "RenderedNode")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = RenderedNodeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OriginalContentID = serializedObject.OriginalContentID;
+		            existingObject.TechnicalSource = serializedObject.TechnicalSource;
+		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            existingObject.ImageExt = serializedObject.ImageExt;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.ActualContentUrl = serializedObject.ActualContentUrl;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.TimestampText = serializedObject.TimestampText;
+		            existingObject.MainSortableText = serializedObject.MainSortableText;
+		            existingObject.IsCategoryFilteringNode = serializedObject.IsCategoryFilteringNode;
+					if(serializedObject.CategoryFilters != null)
+						existingObject.CategoryFiltersID = serializedObject.CategoryFilters.ID;
+					else
+						existingObject.CategoryFiltersID = null;
+					if(serializedObject.CategoryNames != null)
+						existingObject.CategoryNamesID = serializedObject.CategoryNames.ID;
+					else
+						existingObject.CategoryNamesID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            existingObject.CategoryIDList = serializedObject.CategoryIDList;
+					if(serializedObject.Authors != null)
+						existingObject.AuthorsID = serializedObject.Authors.ID;
+					else
+						existingObject.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ShortTextObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Content = serializedObject.Content;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "LongTextObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Content = serializedObject.Content;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "MapMarker")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = MapMarkerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.IconUrl = serializedObject.IconUrl;
+		            existingObject.MarkerSource = serializedObject.MarkerSource;
+		            existingObject.CategoryName = serializedObject.CategoryName;
+		            existingObject.LocationText = serializedObject.LocationText;
+		            existingObject.PopupTitle = serializedObject.PopupTitle;
+		            existingObject.PopupContent = serializedObject.PopupContent;
+					if(serializedObject.Location != null)
+						existingObject.LocationID = serializedObject.Location.ID;
+					else
+						existingObject.LocationID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Moderator")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ModeratorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ModeratorName = serializedObject.ModeratorName;
+		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Collaborator")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CollaboratorTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.AccountID = serializedObject.AccountID;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            existingObject.CollaboratorName = serializedObject.CollaboratorName;
+		            existingObject.Role = serializedObject.Role;
+		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GroupSummaryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GroupSummaryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.SummaryBody = serializedObject.SummaryBody;
+					if(serializedObject.Introduction != null)
+						existingObject.IntroductionID = serializedObject.Introduction.ID;
+					else
+						existingObject.IntroductionID = null;
+					if(serializedObject.GroupSummaryIndex != null)
+						existingObject.GroupSummaryIndexID = serializedObject.GroupSummaryIndex.ID;
+					else
+						existingObject.GroupSummaryIndexID = null;
+					if(serializedObject.GroupCollection != null)
+						existingObject.GroupCollectionID = serializedObject.GroupCollection.ID;
+					else
+						existingObject.GroupCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GroupContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.GroupContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GroupContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.GroupIndex != null)
+						existingObject.GroupIndexID = serializedObject.GroupIndex.ID;
+					else
+						existingObject.GroupIndexID = null;
+					if(serializedObject.GroupProfile != null)
+						existingObject.GroupProfileID = serializedObject.GroupProfile.ID;
+					else
+						existingObject.GroupProfileID = null;
+					if(serializedObject.Collaborators != null)
+						existingObject.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						existingObject.CollaboratorsID = null;
+					if(serializedObject.PendingCollaborators != null)
+						existingObject.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
+					else
+						existingObject.PendingCollaboratorsID = null;
+					if(serializedObject.LocationCollection != null)
+						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						existingObject.LocationCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GroupIndex")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GroupIndexTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Icon != null)
+						existingObject.IconID = serializedObject.Icon.ID;
+					else
+						existingObject.IconID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Introduction = serializedObject.Introduction;
+		            existingObject.Summary = serializedObject.Summary;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddAddressAndLocationInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.LocationName = serializedObject.LocationName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddImageInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ImageTitle = serializedObject.ImageTitle;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddImageGroupInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddEmailAddressInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CreateGroupInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.GroupName = serializedObject.GroupName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddActivityInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ActivityName = serializedObject.ActivityName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddBlogPostInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Title = serializedObject.Title;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AddCategoryInfo")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.CategoryName = serializedObject.CategoryName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Group")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ReferenceToInformation != null)
+						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						existingObject.ReferenceToInformationID = null;
+					if(serializedObject.ProfileImage != null)
+						existingObject.ProfileImageID = serializedObject.ProfileImage.ID;
+					else
+						existingObject.ProfileImageID = null;
+					if(serializedObject.IconImage != null)
+						existingObject.IconImageID = serializedObject.IconImage.ID;
+					else
+						existingObject.IconImageID = null;
+		            existingObject.GroupName = serializedObject.GroupName;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
+		            existingObject.WwwSiteToPublishTo = serializedObject.WwwSiteToPublishTo;
+					if(serializedObject.CustomUICollection != null)
+						existingObject.CustomUICollectionID = serializedObject.CustomUICollection.ID;
+					else
+						existingObject.CustomUICollectionID = null;
+					if(serializedObject.Moderators != null)
+						existingObject.ModeratorsID = serializedObject.Moderators.ID;
+					else
+						existingObject.ModeratorsID = null;
+					if(serializedObject.CategoryCollection != null)
+						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						existingObject.CategoryCollectionID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Introduction")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = IntroductionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Body = serializedObject.Body;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "ContentCategoryRank")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ContentCategoryRankTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ContentID = serializedObject.ContentID;
+		            existingObject.ContentSemanticType = serializedObject.ContentSemanticType;
+		            existingObject.CategoryID = serializedObject.CategoryID;
+		            existingObject.RankName = serializedObject.RankName;
+		            existingObject.RankValue = serializedObject.RankValue;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "LinkToContent")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LinkToContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.URL = serializedObject.URL;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.Published = serializedObject.Published;
+		            existingObject.Author = serializedObject.Author;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "EmbeddedContent")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = EmbeddedContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.IFrameTagContents = serializedObject.IFrameTagContents;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Published = serializedObject.Published;
+		            existingObject.Author = serializedObject.Author;
+		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "DynamicContentGroup")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = DynamicContentGroupTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.HostName = serializedObject.HostName;
+		            existingObject.GroupHeader = serializedObject.GroupHeader;
+		            existingObject.SortValue = serializedObject.SortValue;
+		            existingObject.PageLocation = serializedObject.PageLocation;
+		            existingObject.ContentItemNames = serializedObject.ContentItemNames;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "DynamicContent")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = DynamicContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.HostName = serializedObject.HostName;
+		            existingObject.ContentName = serializedObject.ContentName;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.ElementQuery = serializedObject.ElementQuery;
+		            existingObject.Content = serializedObject.Content;
+		            existingObject.RawContent = serializedObject.RawContent;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
+		            existingObject.IsEnabled = serializedObject.IsEnabled;
+		            existingObject.ApplyActively = serializedObject.ApplyActively;
+		            existingObject.EditType = serializedObject.EditType;
+		            existingObject.PageLocation = serializedObject.PageLocation;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "AttachedToObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = AttachedToObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.SourceObjectID = serializedObject.SourceObjectID;
+		            existingObject.SourceObjectName = serializedObject.SourceObjectName;
+		            existingObject.SourceObjectDomain = serializedObject.SourceObjectDomain;
+		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
+		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
+		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Comment")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CommentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
+		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
+		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
+		            existingObject.CommentText = serializedObject.CommentText;
+		            existingObject.Created = serializedObject.Created;
+		            existingObject.OriginalAuthorName = serializedObject.OriginalAuthorName;
+		            existingObject.OriginalAuthorEmail = serializedObject.OriginalAuthorEmail;
+		            existingObject.OriginalAuthorAccountID = serializedObject.OriginalAuthorAccountID;
+		            existingObject.LastModified = serializedObject.LastModified;
+		            existingObject.LastAuthorName = serializedObject.LastAuthorName;
+		            existingObject.LastAuthorEmail = serializedObject.LastAuthorEmail;
+		            existingObject.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Selection")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = SelectionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
+		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
+		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
+		            existingObject.SelectionCategory = serializedObject.SelectionCategory;
+		            existingObject.TextValue = serializedObject.TextValue;
+		            existingObject.BooleanValue = serializedObject.BooleanValue;
+		            existingObject.DoubleValue = serializedObject.DoubleValue;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TextContent")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TextContentTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.SubTitle = serializedObject.SubTitle;
+		            existingObject.Published = serializedObject.Published;
+		            existingObject.Author = serializedObject.Author;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+		            existingObject.Body = serializedObject.Body;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            existingObject.SortOrderNumber = serializedObject.SortOrderNumber;
+		            existingObject.IFrameSources = serializedObject.IFrameSources;
+		            existingObject.RawHtmlContent = serializedObject.RawHtmlContent;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Map")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Title = serializedObject.Title;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "MapResult")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.MapResult.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = MapResultTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Location != null)
+						existingObject.LocationID = serializedObject.Location.ID;
+					else
+						existingObject.LocationID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "MapResultsCollection")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.MapResultsCollection.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = MapResultsCollectionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ResultByDate != null)
+						existingObject.ResultByDateID = serializedObject.ResultByDate.ID;
+					else
+						existingObject.ResultByDateID = null;
+					if(serializedObject.ResultByAuthor != null)
+						existingObject.ResultByAuthorID = serializedObject.ResultByAuthor.ID;
+					else
+						existingObject.ResultByAuthorID = null;
+					if(serializedObject.ResultByProximity != null)
+						existingObject.ResultByProximityID = serializedObject.ResultByProximity.ID;
+					else
+						existingObject.ResultByProximityID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Video")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = VideoTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.VideoData != null)
+						existingObject.VideoDataID = serializedObject.VideoData.ID;
+					else
+						existingObject.VideoDataID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Caption = serializedObject.Caption;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Image")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ImageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ReferenceToInformation != null)
+						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						existingObject.ReferenceToInformationID = null;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Caption = serializedObject.Caption;
+		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						existingObject.LocationsID = serializedObject.Locations.ID;
+					else
+						existingObject.LocationsID = null;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "BinaryFile")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = BinaryFileTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OriginalFileName = serializedObject.OriginalFileName;
+					if(serializedObject.Data != null)
+						existingObject.DataID = serializedObject.Data.ID;
+					else
+						existingObject.DataID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Description = serializedObject.Description;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Longitude")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.TextValue = serializedObject.TextValue;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Latitude")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.TextValue = serializedObject.TextValue;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Location")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LocationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.LocationName = serializedObject.LocationName;
+					if(serializedObject.Longitude != null)
+						existingObject.LongitudeID = serializedObject.Longitude.ID;
+					else
+						existingObject.LongitudeID = null;
+					if(serializedObject.Latitude != null)
+						existingObject.LatitudeID = serializedObject.Latitude.ID;
+					else
+						existingObject.LatitudeID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Date")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = DateTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.Day = serializedObject.Day;
+		            existingObject.Week = serializedObject.Week;
+		            existingObject.Month = serializedObject.Month;
+		            existingObject.Year = serializedObject.Year;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CategoryContainer")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.CategoryContainer.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CategoryContainerTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.Categories != null)
+						existingObject.CategoriesID = serializedObject.Categories.ID;
+					else
+						existingObject.CategoriesID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Category")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ReferenceToInformation != null)
+						existingObject.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						existingObject.ReferenceToInformationID = null;
+		            existingObject.CategoryName = serializedObject.CategoryName;
+					if(serializedObject.ImageData != null)
+						existingObject.ImageDataID = serializedObject.ImageData.ID;
+					else
+						existingObject.ImageDataID = null;
+		            existingObject.Title = serializedObject.Title;
+		            existingObject.Excerpt = serializedObject.Excerpt;
+					if(serializedObject.ParentCategory != null)
+						existingObject.ParentCategoryID = serializedObject.ParentCategory.ID;
+					else
+						existingObject.ParentCategoryID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "UpdateWebContentOperation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = UpdateWebContentOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.SourceContainerName = serializedObject.SourceContainerName;
+		            existingObject.SourcePathRoot = serializedObject.SourcePathRoot;
+		            existingObject.TargetContainerName = serializedObject.TargetContainerName;
+		            existingObject.TargetPathRoot = serializedObject.TargetPathRoot;
+		            existingObject.RenderWhileSync = serializedObject.RenderWhileSync;
+					if(serializedObject.Handlers != null)
+						existingObject.HandlersID = serializedObject.Handlers.ID;
+					else
+						existingObject.HandlersID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "UpdateWebContentHandlerItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
 		            var existingObject = UpdateWebContentHandlerItemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
@@ -1525,7 +2840,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBSystem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
@@ -1537,7 +2852,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new WebPublishInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PublishType = serializedObject.PublishType;
 		            objectToAdd.PublishContainer = serializedObject.PublishContainer;
@@ -1557,7 +2872,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PublicationPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
@@ -1569,7 +2884,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRLoginRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.DomainName = serializedObject.DomainName;
 					if(serializedObject.Account != null)
@@ -1584,7 +2899,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRAccountRoot.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRAccountRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Account != null)
 						objectToAdd.AccountID = serializedObject.Account.ID;
@@ -1598,7 +2913,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRGroupRoot.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Group != null)
 						objectToAdd.GroupID = serializedObject.Group.ID;
@@ -1612,7 +2927,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
@@ -1624,7 +2939,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBREmailRoot.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBREmailRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Account != null)
 						objectToAdd.AccountID = serializedObject.Account.ID;
@@ -1638,7 +2953,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBAccount.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Emails != null)
 						objectToAdd.EmailsID = serializedObject.Emails.ID;
@@ -1660,7 +2975,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBAccountCollaborationGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
@@ -1673,7 +2988,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
 					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
@@ -1684,7 +2999,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
@@ -1696,7 +3011,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBCollaboratorRole {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Email != null)
 						objectToAdd.EmailID = serializedObject.Email.ID;
@@ -1712,7 +3027,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					if(serializedObject.Roles != null)
@@ -1727,7 +3042,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBEmailValidation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Email = serializedObject.Email;
 		            objectToAdd.AccountID = serializedObject.AccountID;
@@ -1761,7 +3076,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
@@ -1773,7 +3088,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
@@ -1785,7 +3100,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBDeviceJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
@@ -1798,7 +3113,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBInformationInputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
@@ -1811,7 +3126,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBInformationOutputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.AccountID = serializedObject.AccountID;
@@ -1824,7 +3139,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LoginProvider {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ProviderName = serializedObject.ProviderName;
 		            objectToAdd.ProviderIconClass = serializedObject.ProviderIconClass;
@@ -1839,7 +3154,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
@@ -1850,7 +3165,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountSummary.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.GroupSummary != null)
 						objectToAdd.GroupSummaryID = serializedObject.GroupSummary.ID;
@@ -1864,7 +3179,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.AccountModule != null)
 						objectToAdd.AccountModuleID = serializedObject.AccountModule.ID;
@@ -1882,7 +3197,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountModule.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountModule {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Profile != null)
 						objectToAdd.ProfileID = serializedObject.Profile.ID;
@@ -1908,7 +3223,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LocationContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LocationContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Locations != null)
 						objectToAdd.LocationsID = serializedObject.Locations.ID;
@@ -1922,7 +3237,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddressAndLocation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddressAndLocation {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ReferenceToInformation != null)
 						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
@@ -1944,7 +3259,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StreetAddress {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Street = serializedObject.Street;
 		            objectToAdd.ZipCode = serializedObject.ZipCode;
@@ -1958,7 +3273,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountProfile {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ProfileImage != null)
 						objectToAdd.ProfileImageID = serializedObject.ProfileImage.ID;
@@ -1981,7 +3296,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountSecurity.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountSecurity {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.LoginInfoCollection != null)
 						objectToAdd.LoginInfoCollectionID = serializedObject.LoginInfoCollection.ID;
@@ -1999,7 +3314,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AccountRoles {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ModeratorInGroups != null)
 						objectToAdd.ModeratorInGroupsID = serializedObject.ModeratorInGroups.ID;
@@ -2018,7 +3333,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
 					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
@@ -2029,7 +3344,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
@@ -2041,7 +3356,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.NodeSummaryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Nodes != null)
 						objectToAdd.NodesID = serializedObject.Nodes.ID;
@@ -2079,7 +3394,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new RenderedNode {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OriginalContentID = serializedObject.OriginalContentID;
 		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
@@ -2120,7 +3435,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
@@ -2131,7 +3446,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					LongTextObjectTable.InsertOnSubmit(objectToAdd);
@@ -2142,7 +3457,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapMarker {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IconUrl = serializedObject.IconUrl;
 		            objectToAdd.MarkerSource = serializedObject.MarkerSource;
@@ -2162,7 +3477,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Moderator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
@@ -2174,7 +3489,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Collaborator {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
@@ -2189,7 +3504,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
 					if(serializedObject.Introduction != null)
@@ -2212,7 +3527,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.GroupIndex != null)
 						objectToAdd.GroupIndexID = serializedObject.GroupIndex.ID;
@@ -2242,7 +3557,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Icon != null)
 						objectToAdd.IconID = serializedObject.Icon.ID;
@@ -2259,7 +3574,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
@@ -2270,7 +3585,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
 					AddImageInfoTable.InsertOnSubmit(objectToAdd);
@@ -2281,7 +3596,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
 					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
@@ -2292,7 +3607,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
@@ -2303,7 +3618,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
@@ -2314,7 +3629,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
 					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
@@ -2325,7 +3640,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
@@ -2336,7 +3651,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
@@ -2347,7 +3662,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Group {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ReferenceToInformation != null)
 						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
@@ -2385,7 +3700,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Introduction {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
@@ -2397,7 +3712,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new ContentCategoryRank {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ContentID = serializedObject.ContentID;
 		            objectToAdd.ContentSemanticType = serializedObject.ContentSemanticType;
@@ -2412,7 +3727,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new LinkToContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.URL = serializedObject.URL;
 		            objectToAdd.Title = serializedObject.Title;
@@ -2439,7 +3754,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new EmbeddedContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IFrameTagContents = serializedObject.IFrameTagContents;
 		            objectToAdd.Title = serializedObject.Title;
@@ -2462,7 +3777,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DynamicContentGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HostName = serializedObject.HostName;
 		            objectToAdd.GroupHeader = serializedObject.GroupHeader;
@@ -2477,7 +3792,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new DynamicContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.HostName = serializedObject.HostName;
 		            objectToAdd.ContentName = serializedObject.ContentName;
@@ -2502,7 +3817,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new AttachedToObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceObjectID = serializedObject.SourceObjectID;
 		            objectToAdd.SourceObjectName = serializedObject.SourceObjectName;
@@ -2518,7 +3833,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Comment {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
@@ -2540,7 +3855,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Selection {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
@@ -2557,7 +3872,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TextContent {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ImageData != null)
 						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
@@ -2588,7 +3903,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					MapTable.InsertOnSubmit(objectToAdd);
@@ -2599,7 +3914,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.MapResult.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapResult {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Location != null)
 						objectToAdd.LocationID = serializedObject.Location.ID;
@@ -2613,7 +3928,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.MapResultsCollection.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new MapResultsCollection {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ResultByDate != null)
 						objectToAdd.ResultByDateID = serializedObject.ResultByDate.ID;
@@ -2635,7 +3950,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Video {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.VideoData != null)
 						objectToAdd.VideoDataID = serializedObject.VideoData.ID;
@@ -2651,7 +3966,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Image {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ReferenceToInformation != null)
 						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
@@ -2680,7 +3995,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new BinaryFile {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OriginalFileName = serializedObject.OriginalFileName;
 					if(serializedObject.Data != null)
@@ -2701,7 +4016,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LongitudeTable.InsertOnSubmit(objectToAdd);
@@ -2712,7 +4027,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LatitudeTable.InsertOnSubmit(objectToAdd);
@@ -2723,7 +4038,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Location {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					if(serializedObject.Longitude != null)
@@ -2742,7 +4057,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Date {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Day = serializedObject.Day;
 		            objectToAdd.Week = serializedObject.Week;
@@ -2756,7 +4071,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.CategoryContainer.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CategoryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Categories != null)
 						objectToAdd.CategoriesID = serializedObject.Categories.ID;
@@ -2770,7 +4085,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ReferenceToInformation != null)
 						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
@@ -2795,7 +4110,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UpdateWebContentOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
 		            objectToAdd.SourcePathRoot = serializedObject.SourcePathRoot;
@@ -2814,7 +4129,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
@@ -2822,6 +4137,1316 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     return;
                 }
             }
+
+
+		    public async Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "AaltoGlobalImpact.OIP")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "TBSystem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBSystem.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBSystem {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.InstanceName = serializedObject.InstanceName;
+		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
+					TBSystemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "WebPublishInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.WebPublishInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new WebPublishInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.PublishType = serializedObject.PublishType;
+		            objectToAdd.PublishContainer = serializedObject.PublishContainer;
+					if(serializedObject.ActivePublication != null)
+						objectToAdd.ActivePublicationID = serializedObject.ActivePublication.ID;
+					else
+						objectToAdd.ActivePublicationID = null;
+					if(serializedObject.Publications != null)
+						objectToAdd.PublicationsID = serializedObject.Publications.ID;
+					else
+						objectToAdd.PublicationsID = null;
+					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "PublicationPackage")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.PublicationPackage.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new PublicationPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.PackageName = serializedObject.PackageName;
+		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
+					PublicationPackageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBRLoginRoot")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBRLoginRoot.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBRLoginRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.DomainName = serializedObject.DomainName;
+					if(serializedObject.Account != null)
+						objectToAdd.AccountID = serializedObject.Account.ID;
+					else
+						objectToAdd.AccountID = null;
+					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBRAccountRoot")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBRAccountRoot.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBRAccountRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Account != null)
+						objectToAdd.AccountID = serializedObject.Account.ID;
+					else
+						objectToAdd.AccountID = null;
+					TBRAccountRootTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBRGroupRoot")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBRGroupRoot.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBRGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Group != null)
+						objectToAdd.GroupID = serializedObject.Group.ID;
+					else
+						objectToAdd.GroupID = null;
+					TBRGroupRootTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBRLoginGroupRoot")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBRLoginGroupRoot.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBRLoginGroupRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Role = serializedObject.Role;
+		            objectToAdd.GroupID = serializedObject.GroupID;
+					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBREmailRoot")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBREmailRoot.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBREmailRoot {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Account != null)
+						objectToAdd.AccountID = serializedObject.Account.ID;
+					else
+						objectToAdd.AccountID = null;
+					TBREmailRootTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBAccount")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBAccount.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Emails != null)
+						objectToAdd.EmailsID = serializedObject.Emails.ID;
+					else
+						objectToAdd.EmailsID = null;
+					if(serializedObject.Logins != null)
+						objectToAdd.LoginsID = serializedObject.Logins.ID;
+					else
+						objectToAdd.LoginsID = null;
+					if(serializedObject.GroupRoleCollection != null)
+						objectToAdd.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
+					else
+						objectToAdd.GroupRoleCollectionID = null;
+					TBAccountTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBAccountCollaborationGroup")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBAccountCollaborationGroup.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBAccountCollaborationGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupID = serializedObject.GroupID;
+		            objectToAdd.GroupRole = serializedObject.GroupRole;
+		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
+					TBAccountCollaborationGroupTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBLoginInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBLoginInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
+					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBEmail")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBEmail.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
+					TBEmailTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBCollaboratorRole")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBCollaboratorRole.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBCollaboratorRole {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Email != null)
+						objectToAdd.EmailID = serializedObject.Email.ID;
+					else
+						objectToAdd.EmailID = null;
+		            objectToAdd.Role = serializedObject.Role;
+		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
+					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBCollaboratingGroup")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBCollaboratingGroup.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBCollaboratingGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Title = serializedObject.Title;
+					if(serializedObject.Roles != null)
+						objectToAdd.RolesID = serializedObject.Roles.ID;
+					else
+						objectToAdd.RolesID = null;
+					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBEmailValidation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBEmailValidation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBEmailValidation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Email = serializedObject.Email;
+		            objectToAdd.AccountID = serializedObject.AccountID;
+		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
+					if(serializedObject.GroupJoinConfirmation != null)
+						objectToAdd.GroupJoinConfirmationID = serializedObject.GroupJoinConfirmation.ID;
+					else
+						objectToAdd.GroupJoinConfirmationID = null;
+					if(serializedObject.DeviceJoinConfirmation != null)
+						objectToAdd.DeviceJoinConfirmationID = serializedObject.DeviceJoinConfirmation.ID;
+					else
+						objectToAdd.DeviceJoinConfirmationID = null;
+					if(serializedObject.InformationInputConfirmation != null)
+						objectToAdd.InformationInputConfirmationID = serializedObject.InformationInputConfirmation.ID;
+					else
+						objectToAdd.InformationInputConfirmationID = null;
+					if(serializedObject.InformationOutputConfirmation != null)
+						objectToAdd.InformationOutputConfirmationID = serializedObject.InformationOutputConfirmation.ID;
+					else
+						objectToAdd.InformationOutputConfirmationID = null;
+					if(serializedObject.MergeAccountsConfirmation != null)
+						objectToAdd.MergeAccountsConfirmationID = serializedObject.MergeAccountsConfirmation.ID;
+					else
+						objectToAdd.MergeAccountsConfirmationID = null;
+		            objectToAdd.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
+					TBEmailValidationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBMergeAccountConfirmation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBMergeAccountConfirmation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBMergeAccountConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
+		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
+					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBGroupJoinConfirmation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBGroupJoinConfirmation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBGroupJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupID = serializedObject.GroupID;
+		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
+					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBDeviceJoinConfirmation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBDeviceJoinConfirmation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBDeviceJoinConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupID = serializedObject.GroupID;
+		            objectToAdd.AccountID = serializedObject.AccountID;
+		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
+					TBDeviceJoinConfirmationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBInformationInputConfirmation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBInformationInputConfirmation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBInformationInputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupID = serializedObject.GroupID;
+		            objectToAdd.AccountID = serializedObject.AccountID;
+		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
+					TBInformationInputConfirmationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBInformationOutputConfirmation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBInformationOutputConfirmation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBInformationOutputConfirmation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupID = serializedObject.GroupID;
+		            objectToAdd.AccountID = serializedObject.AccountID;
+		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
+					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "LoginProvider")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.LoginProvider.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new LoginProvider {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ProviderName = serializedObject.ProviderName;
+		            objectToAdd.ProviderIconClass = serializedObject.ProviderIconClass;
+		            objectToAdd.ProviderType = serializedObject.ProviderType;
+		            objectToAdd.ProviderUrl = serializedObject.ProviderUrl;
+		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
+					LoginProviderTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TBPRegisterEmail")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TBPRegisterEmail.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountSummary")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountSummary.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.GroupSummary != null)
+						objectToAdd.GroupSummaryID = serializedObject.GroupSummary.ID;
+					else
+						objectToAdd.GroupSummaryID = null;
+					AccountSummaryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.AccountModule != null)
+						objectToAdd.AccountModuleID = serializedObject.AccountModule.ID;
+					else
+						objectToAdd.AccountModuleID = null;
+					if(serializedObject.AccountSummary != null)
+						objectToAdd.AccountSummaryID = serializedObject.AccountSummary.ID;
+					else
+						objectToAdd.AccountSummaryID = null;
+					AccountContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountModule")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountModule.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountModule {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Profile != null)
+						objectToAdd.ProfileID = serializedObject.Profile.ID;
+					else
+						objectToAdd.ProfileID = null;
+					if(serializedObject.Security != null)
+						objectToAdd.SecurityID = serializedObject.Security.ID;
+					else
+						objectToAdd.SecurityID = null;
+					if(serializedObject.Roles != null)
+						objectToAdd.RolesID = serializedObject.Roles.ID;
+					else
+						objectToAdd.RolesID = null;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
+					AccountModuleTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "LocationContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.LocationContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new LocationContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					LocationContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddressAndLocation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddressAndLocation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddressAndLocation {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ReferenceToInformation != null)
+						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						objectToAdd.ReferenceToInformationID = null;
+					if(serializedObject.Address != null)
+						objectToAdd.AddressID = serializedObject.Address.ID;
+					else
+						objectToAdd.AddressID = null;
+					if(serializedObject.Location != null)
+						objectToAdd.LocationID = serializedObject.Location.ID;
+					else
+						objectToAdd.LocationID = null;
+					AddressAndLocationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "StreetAddress")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.StreetAddress.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new StreetAddress {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Street = serializedObject.Street;
+		            objectToAdd.ZipCode = serializedObject.ZipCode;
+		            objectToAdd.Town = serializedObject.Town;
+		            objectToAdd.Country = serializedObject.Country;
+					StreetAddressTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountProfile")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountProfile.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountProfile {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ProfileImage != null)
+						objectToAdd.ProfileImageID = serializedObject.ProfileImage.ID;
+					else
+						objectToAdd.ProfileImageID = null;
+		            objectToAdd.FirstName = serializedObject.FirstName;
+		            objectToAdd.LastName = serializedObject.LastName;
+					if(serializedObject.Address != null)
+						objectToAdd.AddressID = serializedObject.Address.ID;
+					else
+						objectToAdd.AddressID = null;
+		            objectToAdd.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
+		            objectToAdd.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
+		            objectToAdd.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
+					AccountProfileTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountSecurity")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountSecurity.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountSecurity {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.LoginInfoCollection != null)
+						objectToAdd.LoginInfoCollectionID = serializedObject.LoginInfoCollection.ID;
+					else
+						objectToAdd.LoginInfoCollectionID = null;
+					if(serializedObject.EmailCollection != null)
+						objectToAdd.EmailCollectionID = serializedObject.EmailCollection.ID;
+					else
+						objectToAdd.EmailCollectionID = null;
+					AccountSecurityTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AccountRoles")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AccountRoles.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AccountRoles {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ModeratorInGroups != null)
+						objectToAdd.ModeratorInGroupsID = serializedObject.ModeratorInGroups.ID;
+					else
+						objectToAdd.ModeratorInGroupsID = null;
+					if(serializedObject.MemberInGroups != null)
+						objectToAdd.MemberInGroupsID = serializedObject.MemberInGroups.ID;
+					else
+						objectToAdd.MemberInGroupsID = null;
+		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
+					AccountRolesTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "PersonalInfoVisibility")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.PersonalInfoVisibility.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
+					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ReferenceToInformation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.ReferenceToInformation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new ReferenceToInformation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.URL = serializedObject.URL;
+					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "NodeSummaryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.NodeSummaryContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new NodeSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Nodes != null)
+						objectToAdd.NodesID = serializedObject.Nodes.ID;
+					else
+						objectToAdd.NodesID = null;
+					if(serializedObject.NodeSourceTextContent != null)
+						objectToAdd.NodeSourceTextContentID = serializedObject.NodeSourceTextContent.ID;
+					else
+						objectToAdd.NodeSourceTextContentID = null;
+					if(serializedObject.NodeSourceLinkToContent != null)
+						objectToAdd.NodeSourceLinkToContentID = serializedObject.NodeSourceLinkToContent.ID;
+					else
+						objectToAdd.NodeSourceLinkToContentID = null;
+					if(serializedObject.NodeSourceEmbeddedContent != null)
+						objectToAdd.NodeSourceEmbeddedContentID = serializedObject.NodeSourceEmbeddedContent.ID;
+					else
+						objectToAdd.NodeSourceEmbeddedContentID = null;
+					if(serializedObject.NodeSourceImages != null)
+						objectToAdd.NodeSourceImagesID = serializedObject.NodeSourceImages.ID;
+					else
+						objectToAdd.NodeSourceImagesID = null;
+					if(serializedObject.NodeSourceBinaryFiles != null)
+						objectToAdd.NodeSourceBinaryFilesID = serializedObject.NodeSourceBinaryFiles.ID;
+					else
+						objectToAdd.NodeSourceBinaryFilesID = null;
+					if(serializedObject.NodeSourceCategories != null)
+						objectToAdd.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
+					else
+						objectToAdd.NodeSourceCategoriesID = null;
+					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "RenderedNode")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.RenderedNode.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new RenderedNode {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OriginalContentID = serializedObject.OriginalContentID;
+		            objectToAdd.TechnicalSource = serializedObject.TechnicalSource;
+		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
+		            objectToAdd.ImageExt = serializedObject.ImageExt;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.ActualContentUrl = serializedObject.ActualContentUrl;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.TimestampText = serializedObject.TimestampText;
+		            objectToAdd.MainSortableText = serializedObject.MainSortableText;
+		            objectToAdd.IsCategoryFilteringNode = serializedObject.IsCategoryFilteringNode;
+					if(serializedObject.CategoryFilters != null)
+						objectToAdd.CategoryFiltersID = serializedObject.CategoryFilters.ID;
+					else
+						objectToAdd.CategoryFiltersID = null;
+					if(serializedObject.CategoryNames != null)
+						objectToAdd.CategoryNamesID = serializedObject.CategoryNames.ID;
+					else
+						objectToAdd.CategoryNamesID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+		            objectToAdd.CategoryIDList = serializedObject.CategoryIDList;
+					if(serializedObject.Authors != null)
+						objectToAdd.AuthorsID = serializedObject.Authors.ID;
+					else
+						objectToAdd.AuthorsID = null;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					RenderedNodeTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ShortTextObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.ShortTextObject.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Content = serializedObject.Content;
+					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "LongTextObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.LongTextObject.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Content = serializedObject.Content;
+					LongTextObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "MapMarker")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.MapMarker.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new MapMarker {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.IconUrl = serializedObject.IconUrl;
+		            objectToAdd.MarkerSource = serializedObject.MarkerSource;
+		            objectToAdd.CategoryName = serializedObject.CategoryName;
+		            objectToAdd.LocationText = serializedObject.LocationText;
+		            objectToAdd.PopupTitle = serializedObject.PopupTitle;
+		            objectToAdd.PopupContent = serializedObject.PopupContent;
+					if(serializedObject.Location != null)
+						objectToAdd.LocationID = serializedObject.Location.ID;
+					else
+						objectToAdd.LocationID = null;
+					MapMarkerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Moderator")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Moderator.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Moderator {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
+		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
+					ModeratorTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Collaborator")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Collaborator.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Collaborator {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.AccountID = serializedObject.AccountID;
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+		            objectToAdd.CollaboratorName = serializedObject.CollaboratorName;
+		            objectToAdd.Role = serializedObject.Role;
+		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
+					CollaboratorTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GroupSummaryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.GroupSummaryContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GroupSummaryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.SummaryBody = serializedObject.SummaryBody;
+					if(serializedObject.Introduction != null)
+						objectToAdd.IntroductionID = serializedObject.Introduction.ID;
+					else
+						objectToAdd.IntroductionID = null;
+					if(serializedObject.GroupSummaryIndex != null)
+						objectToAdd.GroupSummaryIndexID = serializedObject.GroupSummaryIndex.ID;
+					else
+						objectToAdd.GroupSummaryIndexID = null;
+					if(serializedObject.GroupCollection != null)
+						objectToAdd.GroupCollectionID = serializedObject.GroupCollection.ID;
+					else
+						objectToAdd.GroupCollectionID = null;
+					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GroupContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.GroupContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GroupContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.GroupIndex != null)
+						objectToAdd.GroupIndexID = serializedObject.GroupIndex.ID;
+					else
+						objectToAdd.GroupIndexID = null;
+					if(serializedObject.GroupProfile != null)
+						objectToAdd.GroupProfileID = serializedObject.GroupProfile.ID;
+					else
+						objectToAdd.GroupProfileID = null;
+					if(serializedObject.Collaborators != null)
+						objectToAdd.CollaboratorsID = serializedObject.Collaborators.ID;
+					else
+						objectToAdd.CollaboratorsID = null;
+					if(serializedObject.PendingCollaborators != null)
+						objectToAdd.PendingCollaboratorsID = serializedObject.PendingCollaborators.ID;
+					else
+						objectToAdd.PendingCollaboratorsID = null;
+					if(serializedObject.LocationCollection != null)
+						objectToAdd.LocationCollectionID = serializedObject.LocationCollection.ID;
+					else
+						objectToAdd.LocationCollectionID = null;
+					GroupContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GroupIndex")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.GroupIndex.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GroupIndex {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Icon != null)
+						objectToAdd.IconID = serializedObject.Icon.ID;
+					else
+						objectToAdd.IconID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Introduction = serializedObject.Introduction;
+		            objectToAdd.Summary = serializedObject.Summary;
+					GroupIndexTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddAddressAndLocationInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddAddressAndLocationInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.LocationName = serializedObject.LocationName;
+					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddImageInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddImageInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
+					AddImageInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddImageGroupInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddImageGroupInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
+					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddEmailAddressInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddEmailAddressInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CreateGroupInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.CreateGroupInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.GroupName = serializedObject.GroupName;
+					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddActivityInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddActivityInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ActivityName = serializedObject.ActivityName;
+					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddBlogPostInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddBlogPostInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Title = serializedObject.Title;
+					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AddCategoryInfo")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AddCategoryInfo.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.CategoryName = serializedObject.CategoryName;
+					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Group")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Group.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Group {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ReferenceToInformation != null)
+						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						objectToAdd.ReferenceToInformationID = null;
+					if(serializedObject.ProfileImage != null)
+						objectToAdd.ProfileImageID = serializedObject.ProfileImage.ID;
+					else
+						objectToAdd.ProfileImageID = null;
+					if(serializedObject.IconImage != null)
+						objectToAdd.IconImageID = serializedObject.IconImage.ID;
+					else
+						objectToAdd.IconImageID = null;
+		            objectToAdd.GroupName = serializedObject.GroupName;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.OrganizationsAndGroupsLinkedToUs = serializedObject.OrganizationsAndGroupsLinkedToUs;
+		            objectToAdd.WwwSiteToPublishTo = serializedObject.WwwSiteToPublishTo;
+					if(serializedObject.CustomUICollection != null)
+						objectToAdd.CustomUICollectionID = serializedObject.CustomUICollection.ID;
+					else
+						objectToAdd.CustomUICollectionID = null;
+					if(serializedObject.Moderators != null)
+						objectToAdd.ModeratorsID = serializedObject.Moderators.ID;
+					else
+						objectToAdd.ModeratorsID = null;
+					if(serializedObject.CategoryCollection != null)
+						objectToAdd.CategoryCollectionID = serializedObject.CategoryCollection.ID;
+					else
+						objectToAdd.CategoryCollectionID = null;
+					GroupTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Introduction")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Introduction.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Introduction {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Body = serializedObject.Body;
+					IntroductionTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "ContentCategoryRank")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.ContentCategoryRank.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new ContentCategoryRank {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ContentID = serializedObject.ContentID;
+		            objectToAdd.ContentSemanticType = serializedObject.ContentSemanticType;
+		            objectToAdd.CategoryID = serializedObject.CategoryID;
+		            objectToAdd.RankName = serializedObject.RankName;
+		            objectToAdd.RankValue = serializedObject.RankValue;
+					ContentCategoryRankTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "LinkToContent")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.LinkToContent.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new LinkToContent {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.URL = serializedObject.URL;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.Published = serializedObject.Published;
+		            objectToAdd.Author = serializedObject.Author;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					LinkToContentTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "EmbeddedContent")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.EmbeddedContent.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new EmbeddedContent {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.IFrameTagContents = serializedObject.IFrameTagContents;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Published = serializedObject.Published;
+		            objectToAdd.Author = serializedObject.Author;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "DynamicContentGroup")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.DynamicContentGroup.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new DynamicContentGroup {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.HostName = serializedObject.HostName;
+		            objectToAdd.GroupHeader = serializedObject.GroupHeader;
+		            objectToAdd.SortValue = serializedObject.SortValue;
+		            objectToAdd.PageLocation = serializedObject.PageLocation;
+		            objectToAdd.ContentItemNames = serializedObject.ContentItemNames;
+					DynamicContentGroupTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "DynamicContent")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.DynamicContent.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new DynamicContent {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.HostName = serializedObject.HostName;
+		            objectToAdd.ContentName = serializedObject.ContentName;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.ElementQuery = serializedObject.ElementQuery;
+		            objectToAdd.Content = serializedObject.Content;
+		            objectToAdd.RawContent = serializedObject.RawContent;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
+		            objectToAdd.IsEnabled = serializedObject.IsEnabled;
+		            objectToAdd.ApplyActively = serializedObject.ApplyActively;
+		            objectToAdd.EditType = serializedObject.EditType;
+		            objectToAdd.PageLocation = serializedObject.PageLocation;
+					DynamicContentTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "AttachedToObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.AttachedToObject.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new AttachedToObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.SourceObjectID = serializedObject.SourceObjectID;
+		            objectToAdd.SourceObjectName = serializedObject.SourceObjectName;
+		            objectToAdd.SourceObjectDomain = serializedObject.SourceObjectDomain;
+		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
+		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
+		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
+					AttachedToObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Comment")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Comment.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Comment {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
+		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
+		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
+		            objectToAdd.CommentText = serializedObject.CommentText;
+		            objectToAdd.Created = serializedObject.Created;
+		            objectToAdd.OriginalAuthorName = serializedObject.OriginalAuthorName;
+		            objectToAdd.OriginalAuthorEmail = serializedObject.OriginalAuthorEmail;
+		            objectToAdd.OriginalAuthorAccountID = serializedObject.OriginalAuthorAccountID;
+		            objectToAdd.LastModified = serializedObject.LastModified;
+		            objectToAdd.LastAuthorName = serializedObject.LastAuthorName;
+		            objectToAdd.LastAuthorEmail = serializedObject.LastAuthorEmail;
+		            objectToAdd.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
+					CommentTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Selection")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Selection.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Selection {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.TargetObjectID = serializedObject.TargetObjectID;
+		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
+		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
+		            objectToAdd.SelectionCategory = serializedObject.SelectionCategory;
+		            objectToAdd.TextValue = serializedObject.TextValue;
+		            objectToAdd.BooleanValue = serializedObject.BooleanValue;
+		            objectToAdd.DoubleValue = serializedObject.DoubleValue;
+					SelectionTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TextContent")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.TextContent.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TextContent {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.SubTitle = serializedObject.SubTitle;
+		            objectToAdd.Published = serializedObject.Published;
+		            objectToAdd.Author = serializedObject.Author;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+		            objectToAdd.Body = serializedObject.Body;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+		            objectToAdd.SortOrderNumber = serializedObject.SortOrderNumber;
+		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
+		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
+					TextContentTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Map")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Map.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Title = serializedObject.Title;
+					MapTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "MapResult")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.MapResult.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new MapResult {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Location != null)
+						objectToAdd.LocationID = serializedObject.Location.ID;
+					else
+						objectToAdd.LocationID = null;
+					MapResultTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "MapResultsCollection")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.MapResultsCollection.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new MapResultsCollection {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ResultByDate != null)
+						objectToAdd.ResultByDateID = serializedObject.ResultByDate.ID;
+					else
+						objectToAdd.ResultByDateID = null;
+					if(serializedObject.ResultByAuthor != null)
+						objectToAdd.ResultByAuthorID = serializedObject.ResultByAuthor.ID;
+					else
+						objectToAdd.ResultByAuthorID = null;
+					if(serializedObject.ResultByProximity != null)
+						objectToAdd.ResultByProximityID = serializedObject.ResultByProximity.ID;
+					else
+						objectToAdd.ResultByProximityID = null;
+					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Video")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Video.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Video {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.VideoData != null)
+						objectToAdd.VideoDataID = serializedObject.VideoData.ID;
+					else
+						objectToAdd.VideoDataID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Caption = serializedObject.Caption;
+					VideoTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Image")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Image.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Image {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ReferenceToInformation != null)
+						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						objectToAdd.ReferenceToInformationID = null;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Caption = serializedObject.Caption;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Locations != null)
+						objectToAdd.LocationsID = serializedObject.Locations.ID;
+					else
+						objectToAdd.LocationsID = null;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					ImageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "BinaryFile")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.BinaryFile.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new BinaryFile {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OriginalFileName = serializedObject.OriginalFileName;
+					if(serializedObject.Data != null)
+						objectToAdd.DataID = serializedObject.Data.ID;
+					else
+						objectToAdd.DataID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					BinaryFileTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Longitude")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Longitude.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.TextValue = serializedObject.TextValue;
+					LongitudeTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Latitude")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Latitude.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.TextValue = serializedObject.TextValue;
+					LatitudeTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Location")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Location.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Location {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.LocationName = serializedObject.LocationName;
+					if(serializedObject.Longitude != null)
+						objectToAdd.LongitudeID = serializedObject.Longitude.ID;
+					else
+						objectToAdd.LongitudeID = null;
+					if(serializedObject.Latitude != null)
+						objectToAdd.LatitudeID = serializedObject.Latitude.ID;
+					else
+						objectToAdd.LatitudeID = null;
+					LocationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Date")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Date.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Date {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.Day = serializedObject.Day;
+		            objectToAdd.Week = serializedObject.Week;
+		            objectToAdd.Month = serializedObject.Month;
+		            objectToAdd.Year = serializedObject.Year;
+					DateTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CategoryContainer")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.CategoryContainer.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new CategoryContainer {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Categories != null)
+						objectToAdd.CategoriesID = serializedObject.Categories.ID;
+					else
+						objectToAdd.CategoriesID = null;
+					CategoryContainerTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Category")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.Category.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ReferenceToInformation != null)
+						objectToAdd.ReferenceToInformationID = serializedObject.ReferenceToInformation.ID;
+					else
+						objectToAdd.ReferenceToInformationID = null;
+		            objectToAdd.CategoryName = serializedObject.CategoryName;
+					if(serializedObject.ImageData != null)
+						objectToAdd.ImageDataID = serializedObject.ImageData.ID;
+					else
+						objectToAdd.ImageDataID = null;
+		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.Excerpt = serializedObject.Excerpt;
+					if(serializedObject.ParentCategory != null)
+						objectToAdd.ParentCategoryID = serializedObject.ParentCategory.ID;
+					else
+						objectToAdd.ParentCategoryID = null;
+					CategoryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "UpdateWebContentOperation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.UpdateWebContentOperation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new UpdateWebContentOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.SourceContainerName = serializedObject.SourceContainerName;
+		            objectToAdd.SourcePathRoot = serializedObject.SourcePathRoot;
+		            objectToAdd.TargetContainerName = serializedObject.TargetContainerName;
+		            objectToAdd.TargetPathRoot = serializedObject.TargetPathRoot;
+		            objectToAdd.RenderWhileSync = serializedObject.RenderWhileSync;
+					if(serializedObject.Handlers != null)
+						objectToAdd.HandlersID = serializedObject.Handlers.ID;
+					else
+						objectToAdd.HandlersID = null;
+					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "UpdateWebContentHandlerItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.AaltoGlobalImpact.OIP.UpdateWebContentHandlerItem.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new UpdateWebContentHandlerItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
+		            objectToAdd.OptionName = serializedObject.OptionName;
+					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
@@ -3578,6 +6203,765 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            return;
 		        }
 		    }
+
+
+
+		    public async Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "AaltoGlobalImpact.OIP")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "TBSystem")
+		        {
+		            var objectToDelete = new TBSystem {ID = deleteData.ID};
+                    TBSystemTable.Attach(objectToDelete);
+                    TBSystemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "WebPublishInfo")
+		        {
+		            var objectToDelete = new WebPublishInfo {ID = deleteData.ID};
+                    WebPublishInfoTable.Attach(objectToDelete);
+                    WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "PublicationPackage")
+		        {
+		            var objectToDelete = new PublicationPackage {ID = deleteData.ID};
+                    PublicationPackageTable.Attach(objectToDelete);
+                    PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBRLoginRoot")
+		        {
+		            var objectToDelete = new TBRLoginRoot {ID = deleteData.ID};
+                    TBRLoginRootTable.Attach(objectToDelete);
+                    TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBRAccountRoot")
+		        {
+		            var objectToDelete = new TBRAccountRoot {ID = deleteData.ID};
+                    TBRAccountRootTable.Attach(objectToDelete);
+                    TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBRGroupRoot")
+		        {
+		            var objectToDelete = new TBRGroupRoot {ID = deleteData.ID};
+                    TBRGroupRootTable.Attach(objectToDelete);
+                    TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBRLoginGroupRoot")
+		        {
+		            var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ID};
+                    TBRLoginGroupRootTable.Attach(objectToDelete);
+                    TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBREmailRoot")
+		        {
+		            var objectToDelete = new TBREmailRoot {ID = deleteData.ID};
+                    TBREmailRootTable.Attach(objectToDelete);
+                    TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBAccount")
+		        {
+		            var objectToDelete = new TBAccount {ID = deleteData.ID};
+                    TBAccountTable.Attach(objectToDelete);
+                    TBAccountTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBAccountCollaborationGroup")
+		        {
+		            var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ID};
+                    TBAccountCollaborationGroupTable.Attach(objectToDelete);
+                    TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBLoginInfo")
+		        {
+		            var objectToDelete = new TBLoginInfo {ID = deleteData.ID};
+                    TBLoginInfoTable.Attach(objectToDelete);
+                    TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBEmail")
+		        {
+		            var objectToDelete = new TBEmail {ID = deleteData.ID};
+                    TBEmailTable.Attach(objectToDelete);
+                    TBEmailTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBCollaboratorRole")
+		        {
+		            var objectToDelete = new TBCollaboratorRole {ID = deleteData.ID};
+                    TBCollaboratorRoleTable.Attach(objectToDelete);
+                    TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBCollaboratingGroup")
+		        {
+		            var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ID};
+                    TBCollaboratingGroupTable.Attach(objectToDelete);
+                    TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBEmailValidation")
+		        {
+		            var objectToDelete = new TBEmailValidation {ID = deleteData.ID};
+                    TBEmailValidationTable.Attach(objectToDelete);
+                    TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBMergeAccountConfirmation")
+		        {
+		            var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ID};
+                    TBMergeAccountConfirmationTable.Attach(objectToDelete);
+                    TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBGroupJoinConfirmation")
+		        {
+		            var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ID};
+                    TBGroupJoinConfirmationTable.Attach(objectToDelete);
+                    TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBDeviceJoinConfirmation")
+		        {
+		            var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ID};
+                    TBDeviceJoinConfirmationTable.Attach(objectToDelete);
+                    TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBInformationInputConfirmation")
+		        {
+		            var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ID};
+                    TBInformationInputConfirmationTable.Attach(objectToDelete);
+                    TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBInformationOutputConfirmation")
+		        {
+		            var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ID};
+                    TBInformationOutputConfirmationTable.Attach(objectToDelete);
+                    TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LoginProvider")
+		        {
+		            var objectToDelete = new LoginProvider {ID = deleteData.ID};
+                    LoginProviderTable.Attach(objectToDelete);
+                    LoginProviderTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBPRegisterEmail")
+		        {
+		            var objectToDelete = new TBPRegisterEmail {ID = deleteData.ID};
+                    TBPRegisterEmailTable.Attach(objectToDelete);
+                    TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountSummary")
+		        {
+		            var objectToDelete = new AccountSummary {ID = deleteData.ID};
+                    AccountSummaryTable.Attach(objectToDelete);
+                    AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountContainer")
+		        {
+		            var objectToDelete = new AccountContainer {ID = deleteData.ID};
+                    AccountContainerTable.Attach(objectToDelete);
+                    AccountContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountModule")
+		        {
+		            var objectToDelete = new AccountModule {ID = deleteData.ID};
+                    AccountModuleTable.Attach(objectToDelete);
+                    AccountModuleTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LocationContainer")
+		        {
+		            var objectToDelete = new LocationContainer {ID = deleteData.ID};
+                    LocationContainerTable.Attach(objectToDelete);
+                    LocationContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddressAndLocation")
+		        {
+		            var objectToDelete = new AddressAndLocation {ID = deleteData.ID};
+                    AddressAndLocationTable.Attach(objectToDelete);
+                    AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "StreetAddress")
+		        {
+		            var objectToDelete = new StreetAddress {ID = deleteData.ID};
+                    StreetAddressTable.Attach(objectToDelete);
+                    StreetAddressTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountProfile")
+		        {
+		            var objectToDelete = new AccountProfile {ID = deleteData.ID};
+                    AccountProfileTable.Attach(objectToDelete);
+                    AccountProfileTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountSecurity")
+		        {
+		            var objectToDelete = new AccountSecurity {ID = deleteData.ID};
+                    AccountSecurityTable.Attach(objectToDelete);
+                    AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AccountRoles")
+		        {
+		            var objectToDelete = new AccountRoles {ID = deleteData.ID};
+                    AccountRolesTable.Attach(objectToDelete);
+                    AccountRolesTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "PersonalInfoVisibility")
+		        {
+		            var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ID};
+                    PersonalInfoVisibilityTable.Attach(objectToDelete);
+                    PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ReferenceToInformation")
+		        {
+		            var objectToDelete = new ReferenceToInformation {ID = deleteData.ID};
+                    ReferenceToInformationTable.Attach(objectToDelete);
+                    ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "NodeSummaryContainer")
+		        {
+		            var objectToDelete = new NodeSummaryContainer {ID = deleteData.ID};
+                    NodeSummaryContainerTable.Attach(objectToDelete);
+                    NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RenderedNode")
+		        {
+		            var objectToDelete = new RenderedNode {ID = deleteData.ID};
+                    RenderedNodeTable.Attach(objectToDelete);
+                    RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ShortTextObject")
+		        {
+		            var objectToDelete = new ShortTextObject {ID = deleteData.ID};
+                    ShortTextObjectTable.Attach(objectToDelete);
+                    ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LongTextObject")
+		        {
+		            var objectToDelete = new LongTextObject {ID = deleteData.ID};
+                    LongTextObjectTable.Attach(objectToDelete);
+                    LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapMarker")
+		        {
+		            var objectToDelete = new MapMarker {ID = deleteData.ID};
+                    MapMarkerTable.Attach(objectToDelete);
+                    MapMarkerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Moderator")
+		        {
+		            var objectToDelete = new Moderator {ID = deleteData.ID};
+                    ModeratorTable.Attach(objectToDelete);
+                    ModeratorTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Collaborator")
+		        {
+		            var objectToDelete = new Collaborator {ID = deleteData.ID};
+                    CollaboratorTable.Attach(objectToDelete);
+                    CollaboratorTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupSummaryContainer")
+		        {
+		            var objectToDelete = new GroupSummaryContainer {ID = deleteData.ID};
+                    GroupSummaryContainerTable.Attach(objectToDelete);
+                    GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupContainer")
+		        {
+		            var objectToDelete = new GroupContainer {ID = deleteData.ID};
+                    GroupContainerTable.Attach(objectToDelete);
+                    GroupContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupIndex")
+		        {
+		            var objectToDelete = new GroupIndex {ID = deleteData.ID};
+                    GroupIndexTable.Attach(objectToDelete);
+                    GroupIndexTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddAddressAndLocationInfo")
+		        {
+		            var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ID};
+                    AddAddressAndLocationInfoTable.Attach(objectToDelete);
+                    AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddImageInfo")
+		        {
+		            var objectToDelete = new AddImageInfo {ID = deleteData.ID};
+                    AddImageInfoTable.Attach(objectToDelete);
+                    AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddImageGroupInfo")
+		        {
+		            var objectToDelete = new AddImageGroupInfo {ID = deleteData.ID};
+                    AddImageGroupInfoTable.Attach(objectToDelete);
+                    AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddEmailAddressInfo")
+		        {
+		            var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ID};
+                    AddEmailAddressInfoTable.Attach(objectToDelete);
+                    AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CreateGroupInfo")
+		        {
+		            var objectToDelete = new CreateGroupInfo {ID = deleteData.ID};
+                    CreateGroupInfoTable.Attach(objectToDelete);
+                    CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddActivityInfo")
+		        {
+		            var objectToDelete = new AddActivityInfo {ID = deleteData.ID};
+                    AddActivityInfoTable.Attach(objectToDelete);
+                    AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddBlogPostInfo")
+		        {
+		            var objectToDelete = new AddBlogPostInfo {ID = deleteData.ID};
+                    AddBlogPostInfoTable.Attach(objectToDelete);
+                    AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddCategoryInfo")
+		        {
+		            var objectToDelete = new AddCategoryInfo {ID = deleteData.ID};
+                    AddCategoryInfoTable.Attach(objectToDelete);
+                    AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Group")
+		        {
+		            var objectToDelete = new Group {ID = deleteData.ID};
+                    GroupTable.Attach(objectToDelete);
+                    GroupTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Introduction")
+		        {
+		            var objectToDelete = new Introduction {ID = deleteData.ID};
+                    IntroductionTable.Attach(objectToDelete);
+                    IntroductionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ContentCategoryRank")
+		        {
+		            var objectToDelete = new ContentCategoryRank {ID = deleteData.ID};
+                    ContentCategoryRankTable.Attach(objectToDelete);
+                    ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LinkToContent")
+		        {
+		            var objectToDelete = new LinkToContent {ID = deleteData.ID};
+                    LinkToContentTable.Attach(objectToDelete);
+                    LinkToContentTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "EmbeddedContent")
+		        {
+		            var objectToDelete = new EmbeddedContent {ID = deleteData.ID};
+                    EmbeddedContentTable.Attach(objectToDelete);
+                    EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContentGroup")
+		        {
+		            var objectToDelete = new DynamicContentGroup {ID = deleteData.ID};
+                    DynamicContentGroupTable.Attach(objectToDelete);
+                    DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContent")
+		        {
+		            var objectToDelete = new DynamicContent {ID = deleteData.ID};
+                    DynamicContentTable.Attach(objectToDelete);
+                    DynamicContentTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AttachedToObject")
+		        {
+		            var objectToDelete = new AttachedToObject {ID = deleteData.ID};
+                    AttachedToObjectTable.Attach(objectToDelete);
+                    AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Comment")
+		        {
+		            var objectToDelete = new Comment {ID = deleteData.ID};
+                    CommentTable.Attach(objectToDelete);
+                    CommentTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Selection")
+		        {
+		            var objectToDelete = new Selection {ID = deleteData.ID};
+                    SelectionTable.Attach(objectToDelete);
+                    SelectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TextContent")
+		        {
+		            var objectToDelete = new TextContent {ID = deleteData.ID};
+                    TextContentTable.Attach(objectToDelete);
+                    TextContentTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Map")
+		        {
+		            var objectToDelete = new Map {ID = deleteData.ID};
+                    MapTable.Attach(objectToDelete);
+                    MapTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapResult")
+		        {
+		            var objectToDelete = new MapResult {ID = deleteData.ID};
+                    MapResultTable.Attach(objectToDelete);
+                    MapResultTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapResultsCollection")
+		        {
+		            var objectToDelete = new MapResultsCollection {ID = deleteData.ID};
+                    MapResultsCollectionTable.Attach(objectToDelete);
+                    MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Video")
+		        {
+		            var objectToDelete = new Video {ID = deleteData.ID};
+                    VideoTable.Attach(objectToDelete);
+                    VideoTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Image")
+		        {
+		            var objectToDelete = new Image {ID = deleteData.ID};
+                    ImageTable.Attach(objectToDelete);
+                    ImageTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "BinaryFile")
+		        {
+		            var objectToDelete = new BinaryFile {ID = deleteData.ID};
+                    BinaryFileTable.Attach(objectToDelete);
+                    BinaryFileTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Longitude")
+		        {
+		            var objectToDelete = new Longitude {ID = deleteData.ID};
+                    LongitudeTable.Attach(objectToDelete);
+                    LongitudeTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Latitude")
+		        {
+		            var objectToDelete = new Latitude {ID = deleteData.ID};
+                    LatitudeTable.Attach(objectToDelete);
+                    LatitudeTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Location")
+		        {
+		            var objectToDelete = new Location {ID = deleteData.ID};
+                    LocationTable.Attach(objectToDelete);
+                    LocationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Date")
+		        {
+		            var objectToDelete = new Date {ID = deleteData.ID};
+                    DateTable.Attach(objectToDelete);
+                    DateTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryContainer")
+		        {
+		            var objectToDelete = new CategoryContainer {ID = deleteData.ID};
+                    CategoryContainerTable.Attach(objectToDelete);
+                    CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Category")
+		        {
+		            var objectToDelete = new Category {ID = deleteData.ID};
+                    CategoryTable.Attach(objectToDelete);
+                    CategoryTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "UpdateWebContentOperation")
+		        {
+		            var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ID};
+                    UpdateWebContentOperationTable.Attach(objectToDelete);
+                    UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "UpdateWebContentHandlerItem")
+		        {
+		            var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ID};
+                    UpdateWebContentHandlerItemTable.Attach(objectToDelete);
+                    UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "PublicationPackageCollection")
+		        {
+		            var objectToDelete = new PublicationPackageCollection {ID = deleteData.ID};
+                    PublicationPackageCollectionTable.Attach(objectToDelete);
+                    PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBAccountCollaborationGroupCollection")
+		        {
+		            var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ID};
+                    TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
+                    TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBLoginInfoCollection")
+		        {
+		            var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ID};
+                    TBLoginInfoCollectionTable.Attach(objectToDelete);
+                    TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBEmailCollection")
+		        {
+		            var objectToDelete = new TBEmailCollection {ID = deleteData.ID};
+                    TBEmailCollectionTable.Attach(objectToDelete);
+                    TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TBCollaboratorRoleCollection")
+		        {
+		            var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ID};
+                    TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
+                    TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LoginProviderCollection")
+		        {
+		            var objectToDelete = new LoginProviderCollection {ID = deleteData.ID};
+                    LoginProviderCollectionTable.Attach(objectToDelete);
+                    LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AddressAndLocationCollection")
+		        {
+		            var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ID};
+                    AddressAndLocationCollectionTable.Attach(objectToDelete);
+                    AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ReferenceCollection")
+		        {
+		            var objectToDelete = new ReferenceCollection {ID = deleteData.ID};
+                    ReferenceCollectionTable.Attach(objectToDelete);
+                    ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "RenderedNodeCollection")
+		        {
+		            var objectToDelete = new RenderedNodeCollection {ID = deleteData.ID};
+                    RenderedNodeCollectionTable.Attach(objectToDelete);
+                    RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ShortTextCollection")
+		        {
+		            var objectToDelete = new ShortTextCollection {ID = deleteData.ID};
+                    ShortTextCollectionTable.Attach(objectToDelete);
+                    ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LongTextCollection")
+		        {
+		            var objectToDelete = new LongTextCollection {ID = deleteData.ID};
+                    LongTextCollectionTable.Attach(objectToDelete);
+                    LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapMarkerCollection")
+		        {
+		            var objectToDelete = new MapMarkerCollection {ID = deleteData.ID};
+                    MapMarkerCollectionTable.Attach(objectToDelete);
+                    MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ModeratorCollection")
+		        {
+		            var objectToDelete = new ModeratorCollection {ID = deleteData.ID};
+                    ModeratorCollectionTable.Attach(objectToDelete);
+                    ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CollaboratorCollection")
+		        {
+		            var objectToDelete = new CollaboratorCollection {ID = deleteData.ID};
+                    CollaboratorCollectionTable.Attach(objectToDelete);
+                    CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupCollection")
+		        {
+		            var objectToDelete = new GroupCollection {ID = deleteData.ID};
+                    GroupCollectionTable.Attach(objectToDelete);
+                    GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ContentCategoryRankCollection")
+		        {
+		            var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ID};
+                    ContentCategoryRankCollectionTable.Attach(objectToDelete);
+                    ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LinkToContentCollection")
+		        {
+		            var objectToDelete = new LinkToContentCollection {ID = deleteData.ID};
+                    LinkToContentCollectionTable.Attach(objectToDelete);
+                    LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "EmbeddedContentCollection")
+		        {
+		            var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ID};
+                    EmbeddedContentCollectionTable.Attach(objectToDelete);
+                    EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContentGroupCollection")
+		        {
+		            var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ID};
+                    DynamicContentGroupCollectionTable.Attach(objectToDelete);
+                    DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "DynamicContentCollection")
+		        {
+		            var objectToDelete = new DynamicContentCollection {ID = deleteData.ID};
+                    DynamicContentCollectionTable.Attach(objectToDelete);
+                    DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "AttachedToObjectCollection")
+		        {
+		            var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ID};
+                    AttachedToObjectCollectionTable.Attach(objectToDelete);
+                    AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CommentCollection")
+		        {
+		            var objectToDelete = new CommentCollection {ID = deleteData.ID};
+                    CommentCollectionTable.Attach(objectToDelete);
+                    CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SelectionCollection")
+		        {
+		            var objectToDelete = new SelectionCollection {ID = deleteData.ID};
+                    SelectionCollectionTable.Attach(objectToDelete);
+                    SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TextContentCollection")
+		        {
+		            var objectToDelete = new TextContentCollection {ID = deleteData.ID};
+                    TextContentCollectionTable.Attach(objectToDelete);
+                    TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapCollection")
+		        {
+		            var objectToDelete = new MapCollection {ID = deleteData.ID};
+                    MapCollectionTable.Attach(objectToDelete);
+                    MapCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "MapResultCollection")
+		        {
+		            var objectToDelete = new MapResultCollection {ID = deleteData.ID};
+                    MapResultCollectionTable.Attach(objectToDelete);
+                    MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ImageCollection")
+		        {
+		            var objectToDelete = new ImageCollection {ID = deleteData.ID};
+                    ImageCollectionTable.Attach(objectToDelete);
+                    ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "BinaryFileCollection")
+		        {
+		            var objectToDelete = new BinaryFileCollection {ID = deleteData.ID};
+                    BinaryFileCollectionTable.Attach(objectToDelete);
+                    BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "LocationCollection")
+		        {
+		            var objectToDelete = new LocationCollection {ID = deleteData.ID};
+                    LocationCollectionTable.Attach(objectToDelete);
+                    LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryCollection")
+		        {
+		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
+                    CategoryCollectionTable.Attach(objectToDelete);
+                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "UpdateWebContentHandlerCollection")
+		        {
+		            var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ID};
+                    UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
+                    UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		    }
+
 
 
 			public Table<TBSystem> TBSystemTable {

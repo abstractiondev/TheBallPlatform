@@ -21,6 +21,7 @@ using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribu
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace SQLite.TheBall.Index { 
@@ -81,6 +82,11 @@ namespace SQLite.TheBall.Index {
                 base.SubmitChanges(failureMode);
             }
 
+		    public async Task SubmitChangesAsync()
+		    {
+		        await Task.Run(() => SubmitChanges());
+		    }
+
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
@@ -104,6 +110,7 @@ namespace SQLite.TheBall.Index {
 				}
 			}
 
+
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
                 if(updateData.SemanticDomain != "TheBall.Index")
@@ -111,9 +118,9 @@ namespace SQLite.TheBall.Index {
 		        if (updateData.ObjectType == "IndexingRequest")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.IndexName = serializedObject.IndexName;
@@ -126,9 +133,9 @@ namespace SQLite.TheBall.Index {
 		        if (updateData.ObjectType == "QueryRequest")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.QueryString = serializedObject.QueryString;
@@ -147,9 +154,66 @@ namespace SQLite.TheBall.Index {
 		        if (updateData.ObjectType == "QueryResultItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
+		            existingObject.ObjectName = serializedObject.ObjectName;
+		            existingObject.ObjectID = serializedObject.ObjectID;
+		            existingObject.Rank = serializedObject.Rank;
+		            return;
+		        } 
+		    }
+
+
+			public async Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Index")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "IndexingRequest")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = IndexingRequestTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.IndexName = serializedObject.IndexName;
+                    existingObject.ObjectLocations.Clear();
+					if(serializedObject.ObjectLocations != null)
+	                    serializedObject.ObjectLocations.ForEach(item => existingObject.ObjectLocations.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "QueryRequest")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = QueryRequestTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.QueryString = serializedObject.QueryString;
+		            existingObject.DefaultFieldName = serializedObject.DefaultFieldName;
+		            existingObject.IndexName = serializedObject.IndexName;
+		            existingObject.IsQueryCompleted = serializedObject.IsQueryCompleted;
+		            existingObject.LastRequestTime = serializedObject.LastRequestTime;
+		            existingObject.LastCompletionTime = serializedObject.LastCompletionTime;
+		            existingObject.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+                    existingObject.QueryResultObjects.Clear();
+					if(serializedObject.QueryResultObjects != null)
+	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "QueryResultItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
 		            var existingObject = QueryResultItemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ObjectDomainName = serializedObject.ObjectDomainName;
@@ -170,7 +234,7 @@ namespace SQLite.TheBall.Index {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new IndexingRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.IndexName = serializedObject.IndexName;
 					if(serializedObject.ObjectLocations != null)
@@ -183,7 +247,7 @@ namespace SQLite.TheBall.Index {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.QueryString = serializedObject.QueryString;
 		            objectToAdd.DefaultFieldName = serializedObject.DefaultFieldName;
@@ -202,7 +266,7 @@ namespace SQLite.TheBall.Index {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new QueryResultItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;
 		            objectToAdd.ObjectName = serializedObject.ObjectName;
@@ -212,6 +276,61 @@ namespace SQLite.TheBall.Index {
                     return;
                 }
             }
+
+
+		    public async Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Index")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "IndexingRequest")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Index.IndexingRequest.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new IndexingRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.IndexName = serializedObject.IndexName;
+					if(serializedObject.ObjectLocations != null)
+						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
+					IndexingRequestTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "QueryRequest")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Index.QueryRequest.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new QueryRequest {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.QueryString = serializedObject.QueryString;
+		            objectToAdd.DefaultFieldName = serializedObject.DefaultFieldName;
+		            objectToAdd.IndexName = serializedObject.IndexName;
+		            objectToAdd.IsQueryCompleted = serializedObject.IsQueryCompleted;
+		            objectToAdd.LastRequestTime = serializedObject.LastRequestTime;
+		            objectToAdd.LastCompletionTime = serializedObject.LastCompletionTime;
+		            objectToAdd.LastCompletionDurationMs = serializedObject.LastCompletionDurationMs;
+					if(serializedObject.QueryResultObjects != null)
+						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
+					QueryRequestTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "QueryResultItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Index.QueryResultItem.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new QueryResultItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ObjectDomainName = serializedObject.ObjectDomainName;
+		            objectToAdd.ObjectName = serializedObject.ObjectName;
+		            objectToAdd.ObjectID = serializedObject.ObjectID;
+		            objectToAdd.Rank = serializedObject.Rank;
+					QueryResultItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
@@ -240,6 +359,37 @@ namespace SQLite.TheBall.Index {
 		            return;
 		        }
 		    }
+
+
+
+		    public async Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Index")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "IndexingRequest")
+		        {
+		            var objectToDelete = new IndexingRequest {ID = deleteData.ID};
+                    IndexingRequestTable.Attach(objectToDelete);
+                    IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "QueryRequest")
+		        {
+		            var objectToDelete = new QueryRequest {ID = deleteData.ID};
+                    QueryRequestTable.Attach(objectToDelete);
+                    QueryRequestTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "QueryResultItem")
+		        {
+		            var objectToDelete = new QueryResultItem {ID = deleteData.ID};
+                    QueryResultItemTable.Attach(objectToDelete);
+                    QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		    }
+
 
 
 			public Table<IndexingRequest> IndexingRequestTable {

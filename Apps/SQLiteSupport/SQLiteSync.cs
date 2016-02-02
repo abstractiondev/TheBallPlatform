@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.Linq;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using SQLite.TheBall.Payments;
 
 namespace SQLiteSupport
@@ -14,12 +15,18 @@ namespace SQLiteSupport
         void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData);
         void PerformInsert(string storageRootPath, InformationObjectMetaData insertData);
         void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData);
+        Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData);
+        Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData);
+        Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData);
         DbConnection Connection { get; }
         void SubmitChanges();
+        Task SubmitChangesAsync();
     }
 
     public static class SQLiteSync
     {
+
+
         public static bool ApplyStorageChangesToSQLiteDB(string storageRootPath, IStorageSyncableDataContext dataContext,
             Func<string, InformationObjectMetaData[]> metadataRetrieverFunc = null)
         {

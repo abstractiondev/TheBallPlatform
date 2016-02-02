@@ -1174,8 +1174,7 @@ using System.Threading.Tasks;
 		return returnValue;
 				}
 				}
-
-		    public class GetOwnerSemanticDomainsReturnValue 
+				public class GetOwnerSemanticDomainsReturnValue 
 		{
 				public string[] OwnerSemanticDomains ;
 				}

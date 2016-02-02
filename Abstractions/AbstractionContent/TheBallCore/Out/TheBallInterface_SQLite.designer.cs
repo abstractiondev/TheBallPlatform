@@ -21,6 +21,7 @@ using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribu
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace SQLite.TheBall.Interface { 
@@ -81,6 +82,11 @@ namespace SQLite.TheBall.Interface {
                 base.SubmitChanges(failureMode);
             }
 
+		    public async Task SubmitChangesAsync()
+		    {
+		        await Task.Run(() => SubmitChanges());
+		    }
+
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
@@ -114,6 +120,7 @@ namespace SQLite.TheBall.Interface {
 				}
 			}
 
+
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
@@ -121,9 +128,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "InterfaceOperation")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InterfaceOperationTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OperationName = serializedObject.OperationName;
@@ -140,9 +147,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "Connection")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.Connection.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = ConnectionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OutputInformationID = serializedObject.OutputInformationID;
@@ -181,9 +188,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "TransferPackage")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = TransferPackageTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ConnectionID = serializedObject.ConnectionID;
@@ -199,9 +206,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "CategoryLink")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryLinkTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
@@ -212,9 +219,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "Category")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.Category.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.NativeCategoryID = serializedObject.NativeCategoryID;
@@ -227,9 +234,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "StatusSummary")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
                     existingObject.PendingOperations.Clear();
@@ -253,9 +260,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "InformationChangeItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = InformationChangeItemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StartTimeUTC = serializedObject.StartTimeUTC;
@@ -269,9 +276,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "OperationExecutionItem")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = OperationExecutionItemTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OperationName = serializedObject.OperationName;
@@ -287,9 +294,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "GenericCollectionableObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 					if(serializedObject.ValueObject != null)
@@ -301,9 +308,9 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "GenericObject")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
                     existingObject.Values.Clear();
@@ -317,9 +324,252 @@ namespace SQLite.TheBall.Interface {
 		        if (updateData.ObjectType == "GenericValue")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = GenericValueTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ValueName = serializedObject.ValueName;
+		            existingObject.String = serializedObject.String;
+                    existingObject.StringArray.Clear();
+					if(serializedObject.StringArray != null)
+	                    serializedObject.StringArray.ForEach(item => existingObject.StringArray.Add(item));
+					
+		            existingObject.Number = serializedObject.Number;
+                    existingObject.NumberArray.Clear();
+					if(serializedObject.NumberArray != null)
+	                    serializedObject.NumberArray.ForEach(item => existingObject.NumberArray.Add(item));
+					
+		            existingObject.Boolean = serializedObject.Boolean;
+                    existingObject.BooleanArray.Clear();
+					if(serializedObject.BooleanArray != null)
+	                    serializedObject.BooleanArray.ForEach(item => existingObject.BooleanArray.Add(item));
+					
+		            existingObject.DateTime = serializedObject.DateTime;
+                    existingObject.DateTimeArray.Clear();
+					if(serializedObject.DateTimeArray != null)
+	                    serializedObject.DateTimeArray.ForEach(item => existingObject.DateTimeArray.Add(item));
+					
+					if(serializedObject.Object != null)
+						existingObject.ObjectID = serializedObject.Object.ID;
+					else
+						existingObject.ObjectID = null;
+                    existingObject.ObjectArray.Clear();
+					if(serializedObject.ObjectArray != null)
+	                    serializedObject.ObjectArray.ForEach(item => existingObject.ObjectArray.Add(item));
+					
+		            existingObject.IndexingInfo = serializedObject.IndexingInfo;
+		            return;
+		        } 
+		    }
+
+
+			public async Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Interface")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "InterfaceOperation")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = InterfaceOperationTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OperationName = serializedObject.OperationName;
+		            existingObject.Status = serializedObject.Status;
+		            existingObject.OperationDataType = serializedObject.OperationDataType;
+		            existingObject.Created = serializedObject.Created;
+		            existingObject.Started = serializedObject.Started;
+		            existingObject.Progress = serializedObject.Progress;
+		            existingObject.Finished = serializedObject.Finished;
+		            existingObject.ErrorCode = serializedObject.ErrorCode;
+		            existingObject.ErrorMessage = serializedObject.ErrorMessage;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Connection")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.Connection.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = ConnectionTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OutputInformationID = serializedObject.OutputInformationID;
+		            existingObject.Description = serializedObject.Description;
+		            existingObject.DeviceID = serializedObject.DeviceID;
+		            existingObject.IsActiveParty = serializedObject.IsActiveParty;
+		            existingObject.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+                    existingObject.ThisSideCategories.Clear();
+					if(serializedObject.ThisSideCategories != null)
+	                    serializedObject.ThisSideCategories.ForEach(item => existingObject.ThisSideCategories.Add(item));
+					
+                    existingObject.OtherSideCategories.Clear();
+					if(serializedObject.OtherSideCategories != null)
+	                    serializedObject.OtherSideCategories.ForEach(item => existingObject.OtherSideCategories.Add(item));
+					
+                    existingObject.CategoryLinks.Clear();
+					if(serializedObject.CategoryLinks != null)
+	                    serializedObject.CategoryLinks.ForEach(item => existingObject.CategoryLinks.Add(item));
+					
+                    existingObject.IncomingPackages.Clear();
+					if(serializedObject.IncomingPackages != null)
+	                    serializedObject.IncomingPackages.ForEach(item => existingObject.IncomingPackages.Add(item));
+					
+                    existingObject.OutgoingPackages.Clear();
+					if(serializedObject.OutgoingPackages != null)
+	                    serializedObject.OutgoingPackages.ForEach(item => existingObject.OutgoingPackages.Add(item));
+					
+		            existingObject.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
+		            existingObject.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
+		            existingObject.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
+		            existingObject.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
+		            existingObject.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
+		            existingObject.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "TransferPackage")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = TransferPackageTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.ConnectionID = serializedObject.ConnectionID;
+		            existingObject.PackageDirection = serializedObject.PackageDirection;
+		            existingObject.PackageType = serializedObject.PackageType;
+		            existingObject.IsProcessed = serializedObject.IsProcessed;
+                    existingObject.PackageContentBlobs.Clear();
+					if(serializedObject.PackageContentBlobs != null)
+	                    serializedObject.PackageContentBlobs.ForEach(item => existingObject.PackageContentBlobs.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CategoryLink")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CategoryLinkTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
+		            existingObject.TargetCategoryID = serializedObject.TargetCategoryID;
+		            existingObject.LinkingType = serializedObject.LinkingType;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "Category")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.Category.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.NativeCategoryID = serializedObject.NativeCategoryID;
+		            existingObject.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
+		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
+		            existingObject.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
+		            existingObject.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "StatusSummary")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = StatusSummaryTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    existingObject.PendingOperations.Clear();
+					if(serializedObject.PendingOperations != null)
+	                    serializedObject.PendingOperations.ForEach(item => existingObject.PendingOperations.Add(item));
+					
+                    existingObject.ExecutingOperations.Clear();
+					if(serializedObject.ExecutingOperations != null)
+	                    serializedObject.ExecutingOperations.ForEach(item => existingObject.ExecutingOperations.Add(item));
+					
+                    existingObject.RecentCompletedOperations.Clear();
+					if(serializedObject.RecentCompletedOperations != null)
+	                    serializedObject.RecentCompletedOperations.ForEach(item => existingObject.RecentCompletedOperations.Add(item));
+					
+                    existingObject.ChangeItemTrackingList.Clear();
+					if(serializedObject.ChangeItemTrackingList != null)
+	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "InformationChangeItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = InformationChangeItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.StartTimeUTC = serializedObject.StartTimeUTC;
+		            existingObject.EndTimeUTC = serializedObject.EndTimeUTC;
+                    existingObject.ChangedObjectIDList.Clear();
+					if(serializedObject.ChangedObjectIDList != null)
+	                    serializedObject.ChangedObjectIDList.ForEach(item => existingObject.ChangedObjectIDList.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "OperationExecutionItem")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = OperationExecutionItemTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.OperationName = serializedObject.OperationName;
+		            existingObject.OperationDomain = serializedObject.OperationDomain;
+		            existingObject.OperationID = serializedObject.OperationID;
+		            existingObject.CallerProvidedInfo = serializedObject.CallerProvidedInfo;
+		            existingObject.CreationTime = serializedObject.CreationTime;
+		            existingObject.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
+		            existingObject.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
+		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericCollectionableObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GenericCollectionableObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+					if(serializedObject.ValueObject != null)
+						existingObject.ValueObjectID = serializedObject.ValueObject.ID;
+					else
+						existingObject.ValueObjectID = null;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericObject")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GenericObjectTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    existingObject.Values.Clear();
+					if(serializedObject.Values != null)
+	                    serializedObject.Values.ForEach(item => existingObject.Values.Add(item));
+					
+		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
+		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "GenericValue")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
 		            var existingObject = GenericValueTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ValueName = serializedObject.ValueName;
@@ -366,7 +616,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InterfaceOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OperationName = serializedObject.OperationName;
 		            objectToAdd.Status = serializedObject.Status;
@@ -385,7 +635,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.Connection.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Connection {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OutputInformationID = serializedObject.OutputInformationID;
 		            objectToAdd.Description = serializedObject.Description;
@@ -416,7 +666,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new TransferPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ConnectionID = serializedObject.ConnectionID;
 		            objectToAdd.PackageDirection = serializedObject.PackageDirection;
@@ -432,7 +682,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CategoryLink {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
@@ -445,7 +695,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.Category.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NativeCategoryID = serializedObject.NativeCategoryID;
 		            objectToAdd.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
@@ -460,7 +710,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new StatusSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.PendingOperations != null)
 						serializedObject.PendingOperations.ForEach(item => objectToAdd.PendingOperations.Add(item));
@@ -478,7 +728,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StartTimeUTC = serializedObject.StartTimeUTC;
 		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
@@ -492,7 +742,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OperationName = serializedObject.OperationName;
 		            objectToAdd.OperationDomain = serializedObject.OperationDomain;
@@ -510,7 +760,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.ValueObject != null)
 						objectToAdd.ValueObjectID = serializedObject.ValueObject.ID;
@@ -524,7 +774,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 					if(serializedObject.Values != null)
 						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
@@ -538,7 +788,7 @@ namespace SQLite.TheBall.Interface {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GenericValue {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ValueName = serializedObject.ValueName;
 		            objectToAdd.String = serializedObject.String;
@@ -564,6 +814,217 @@ namespace SQLite.TheBall.Interface {
                     return;
                 }
             }
+
+
+		    public async Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Interface")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "InterfaceOperation")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.InterfaceOperation.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new InterfaceOperation {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OperationName = serializedObject.OperationName;
+		            objectToAdd.Status = serializedObject.Status;
+		            objectToAdd.OperationDataType = serializedObject.OperationDataType;
+		            objectToAdd.Created = serializedObject.Created;
+		            objectToAdd.Started = serializedObject.Started;
+		            objectToAdd.Progress = serializedObject.Progress;
+		            objectToAdd.Finished = serializedObject.Finished;
+		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
+		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
+					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Connection")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.Connection.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Connection {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OutputInformationID = serializedObject.OutputInformationID;
+		            objectToAdd.Description = serializedObject.Description;
+		            objectToAdd.DeviceID = serializedObject.DeviceID;
+		            objectToAdd.IsActiveParty = serializedObject.IsActiveParty;
+		            objectToAdd.OtherSideConnectionID = serializedObject.OtherSideConnectionID;
+					if(serializedObject.ThisSideCategories != null)
+						serializedObject.ThisSideCategories.ForEach(item => objectToAdd.ThisSideCategories.Add(item));
+					if(serializedObject.OtherSideCategories != null)
+						serializedObject.OtherSideCategories.ForEach(item => objectToAdd.OtherSideCategories.Add(item));
+					if(serializedObject.CategoryLinks != null)
+						serializedObject.CategoryLinks.ForEach(item => objectToAdd.CategoryLinks.Add(item));
+					if(serializedObject.IncomingPackages != null)
+						serializedObject.IncomingPackages.ForEach(item => objectToAdd.IncomingPackages.Add(item));
+					if(serializedObject.OutgoingPackages != null)
+						serializedObject.OutgoingPackages.ForEach(item => objectToAdd.OutgoingPackages.Add(item));
+		            objectToAdd.OperationNameToListPackageContents = serializedObject.OperationNameToListPackageContents;
+		            objectToAdd.OperationNameToProcessReceived = serializedObject.OperationNameToProcessReceived;
+		            objectToAdd.OperationNameToUpdateThisSideCategories = serializedObject.OperationNameToUpdateThisSideCategories;
+		            objectToAdd.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
+		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
+		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
+					ConnectionTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "TransferPackage")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.TransferPackage.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new TransferPackage {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ConnectionID = serializedObject.ConnectionID;
+		            objectToAdd.PackageDirection = serializedObject.PackageDirection;
+		            objectToAdd.PackageType = serializedObject.PackageType;
+		            objectToAdd.IsProcessed = serializedObject.IsProcessed;
+					if(serializedObject.PackageContentBlobs != null)
+						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
+					TransferPackageTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CategoryLink")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.CategoryLink.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new CategoryLink {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.SourceCategoryID = serializedObject.SourceCategoryID;
+		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
+		            objectToAdd.LinkingType = serializedObject.LinkingType;
+					CategoryLinkTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "Category")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.Category.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.NativeCategoryID = serializedObject.NativeCategoryID;
+		            objectToAdd.NativeCategoryDomainName = serializedObject.NativeCategoryDomainName;
+		            objectToAdd.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
+		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
+		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
+					CategoryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "StatusSummary")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.StatusSummary.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new StatusSummary {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.PendingOperations != null)
+						serializedObject.PendingOperations.ForEach(item => objectToAdd.PendingOperations.Add(item));
+					if(serializedObject.ExecutingOperations != null)
+						serializedObject.ExecutingOperations.ForEach(item => objectToAdd.ExecutingOperations.Add(item));
+					if(serializedObject.RecentCompletedOperations != null)
+						serializedObject.RecentCompletedOperations.ForEach(item => objectToAdd.RecentCompletedOperations.Add(item));
+					if(serializedObject.ChangeItemTrackingList != null)
+						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
+					StatusSummaryTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "InformationChangeItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.InformationChangeItem.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new InformationChangeItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.StartTimeUTC = serializedObject.StartTimeUTC;
+		            objectToAdd.EndTimeUTC = serializedObject.EndTimeUTC;
+					if(serializedObject.ChangedObjectIDList != null)
+						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
+					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "OperationExecutionItem")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.OperationExecutionItem.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new OperationExecutionItem {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.OperationName = serializedObject.OperationName;
+		            objectToAdd.OperationDomain = serializedObject.OperationDomain;
+		            objectToAdd.OperationID = serializedObject.OperationID;
+		            objectToAdd.CallerProvidedInfo = serializedObject.CallerProvidedInfo;
+		            objectToAdd.CreationTime = serializedObject.CreationTime;
+		            objectToAdd.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
+		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
+		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
+					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericCollectionableObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.GenericCollectionableObject.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GenericCollectionableObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.ValueObject != null)
+						objectToAdd.ValueObjectID = serializedObject.ValueObject.ID;
+					else
+						objectToAdd.ValueObjectID = null;
+					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericObject")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.GenericObject.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GenericObject {ID = insertData.ObjectID, ETag = insertData.ETag};
+					if(serializedObject.Values != null)
+						serializedObject.Values.ForEach(item => objectToAdd.Values.Add(item));
+		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
+		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
+					GenericObjectTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "GenericValue")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Interface.GenericValue.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GenericValue {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.ValueName = serializedObject.ValueName;
+		            objectToAdd.String = serializedObject.String;
+					if(serializedObject.StringArray != null)
+						serializedObject.StringArray.ForEach(item => objectToAdd.StringArray.Add(item));
+		            objectToAdd.Number = serializedObject.Number;
+					if(serializedObject.NumberArray != null)
+						serializedObject.NumberArray.ForEach(item => objectToAdd.NumberArray.Add(item));
+		            objectToAdd.Boolean = serializedObject.Boolean;
+					if(serializedObject.BooleanArray != null)
+						serializedObject.BooleanArray.ForEach(item => objectToAdd.BooleanArray.Add(item));
+		            objectToAdd.DateTime = serializedObject.DateTime;
+					if(serializedObject.DateTimeArray != null)
+						serializedObject.DateTimeArray.ForEach(item => objectToAdd.DateTimeArray.Add(item));
+					if(serializedObject.Object != null)
+						objectToAdd.ObjectID = serializedObject.Object.ID;
+					else
+						objectToAdd.ObjectID = null;
+					if(serializedObject.ObjectArray != null)
+						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
+		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
+					GenericValueTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
@@ -662,6 +1123,107 @@ namespace SQLite.TheBall.Interface {
 		            return;
 		        }
 		    }
+
+
+
+		    public async Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Interface")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "InterfaceOperation")
+		        {
+		            var objectToDelete = new InterfaceOperation {ID = deleteData.ID};
+                    InterfaceOperationTable.Attach(objectToDelete);
+                    InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Connection")
+		        {
+		            var objectToDelete = new Connection {ID = deleteData.ID};
+                    ConnectionTable.Attach(objectToDelete);
+                    ConnectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "TransferPackage")
+		        {
+		            var objectToDelete = new TransferPackage {ID = deleteData.ID};
+                    TransferPackageTable.Attach(objectToDelete);
+                    TransferPackageTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CategoryLink")
+		        {
+		            var objectToDelete = new CategoryLink {ID = deleteData.ID};
+                    CategoryLinkTable.Attach(objectToDelete);
+                    CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "Category")
+		        {
+		            var objectToDelete = new Category {ID = deleteData.ID};
+                    CategoryTable.Attach(objectToDelete);
+                    CategoryTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "StatusSummary")
+		        {
+		            var objectToDelete = new StatusSummary {ID = deleteData.ID};
+                    StatusSummaryTable.Attach(objectToDelete);
+                    StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "InformationChangeItem")
+		        {
+		            var objectToDelete = new InformationChangeItem {ID = deleteData.ID};
+                    InformationChangeItemTable.Attach(objectToDelete);
+                    InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "OperationExecutionItem")
+		        {
+		            var objectToDelete = new OperationExecutionItem {ID = deleteData.ID};
+                    OperationExecutionItemTable.Attach(objectToDelete);
+                    OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericCollectionableObject")
+		        {
+		            var objectToDelete = new GenericCollectionableObject {ID = deleteData.ID};
+                    GenericCollectionableObjectTable.Attach(objectToDelete);
+                    GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericObject")
+		        {
+		            var objectToDelete = new GenericObject {ID = deleteData.ID};
+                    GenericObjectTable.Attach(objectToDelete);
+                    GenericObjectTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericValue")
+		        {
+		            var objectToDelete = new GenericValue {ID = deleteData.ID};
+                    GenericValueTable.Attach(objectToDelete);
+                    GenericValueTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "ConnectionCollection")
+		        {
+		            var objectToDelete = new ConnectionCollection {ID = deleteData.ID};
+                    ConnectionCollectionTable.Attach(objectToDelete);
+                    ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GenericObjectCollection")
+		        {
+		            var objectToDelete = new GenericObjectCollection {ID = deleteData.ID};
+                    GenericObjectCollectionTable.Attach(objectToDelete);
+                    GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		    }
+
 
 
 			public Table<InterfaceOperation> InterfaceOperationTable {

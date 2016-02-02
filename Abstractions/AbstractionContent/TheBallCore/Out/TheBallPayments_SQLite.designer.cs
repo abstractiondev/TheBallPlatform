@@ -21,6 +21,7 @@ using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribu
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace SQLite.TheBall.Payments { 
@@ -81,6 +82,11 @@ namespace SQLite.TheBall.Payments {
                 base.SubmitChanges(failureMode);
             }
 
+		    public async Task SubmitChangesAsync()
+		    {
+		        await Task.Run(() => SubmitChanges());
+		    }
+
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
@@ -108,6 +114,7 @@ namespace SQLite.TheBall.Payments {
 				}
 			}
 
+
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
 		    {
                 if(updateData.SemanticDomain != "TheBall.Payments")
@@ -115,9 +122,9 @@ namespace SQLite.TheBall.Payments {
 		        if (updateData.ObjectType == "GroupSubscriptionPlan")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = GroupSubscriptionPlanTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.PlanName = serializedObject.PlanName;
@@ -131,9 +138,9 @@ namespace SQLite.TheBall.Payments {
 		        if (updateData.ObjectType == "SubscriptionPlanStatus")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = SubscriptionPlanStatusTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
                     if (serializedObject.SubscriptionPlan != null)
@@ -153,9 +160,84 @@ namespace SQLite.TheBall.Payments {
 		        if (updateData.ObjectType == "CustomerAccount")
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
-		            var serializedObject =
+		            var serializedObject = 
 		                global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
-		                    ContentStorage.GetContentAsString(currentFullStoragePath));
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+		            existingObject.Description = serializedObject.Description;
+                    if (serializedObject.ActivePlans != null)
+                    {
+						existingObject.ActivePlans.Clear();
+                        serializedObject.ActivePlans.ForEach(
+                            item =>
+                            {
+                                var relationObject = new CustomerAccountActivePlans
+                                {
+                                    CustomerAccountID = existingObject.ID,
+                                    SubscriptionPlanStatusID = item
+                                };
+                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                existingObject.ActivePlans.Add(relationObject);
+
+                            });
+                    }
+
+		            return;
+		        } 
+		    }
+
+
+			public async Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+		        if (updateData.ObjectType == "GroupSubscriptionPlan")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = GroupSubscriptionPlanTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.PlanName = serializedObject.PlanName;
+		            existingObject.Description = serializedObject.Description;
+                    existingObject.GroupIDs.Clear();
+					if(serializedObject.GroupIDs != null)
+	                    serializedObject.GroupIDs.ForEach(item => existingObject.GroupIDs.Add(item));
+					
+		            return;
+		        } 
+		        if (updateData.ObjectType == "SubscriptionPlanStatus")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = SubscriptionPlanStatusTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+                    if (serializedObject.SubscriptionPlan != null)
+                    {
+                            var relationObject = new SubscriptionPlanStatusSubscriptionPlan
+                            {
+                                SubscriptionPlanStatusID = existingObject.ID,
+                                GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
+                            };
+                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+							existingObject.SubscriptionPlan = relationObject;
+                    }
+
+		            existingObject.ValidUntil = serializedObject.ValidUntil;
+		            return;
+		        } 
+		        if (updateData.ObjectType == "CustomerAccount")
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
@@ -192,7 +274,7 @@ namespace SQLite.TheBall.Payments {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.PlanName = serializedObject.PlanName;
 		            objectToAdd.Description = serializedObject.Description;
@@ -206,7 +288,7 @@ namespace SQLite.TheBall.Payments {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new SubscriptionPlanStatus {ID = insertData.ObjectID, ETag = insertData.ETag};
                     if (serializedObject.SubscriptionPlan != null)
                     {
@@ -228,7 +310,7 @@ namespace SQLite.TheBall.Payments {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
                         global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
-                            ContentStorage.GetContentAsString(currentFullStoragePath));
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
@@ -253,6 +335,80 @@ namespace SQLite.TheBall.Payments {
                     return;
                 }
             }
+
+
+		    public async Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+                if (insertData.ObjectType == "GroupSubscriptionPlan")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Payments.GroupSubscriptionPlan.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new GroupSubscriptionPlan {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.PlanName = serializedObject.PlanName;
+		            objectToAdd.Description = serializedObject.Description;
+					if(serializedObject.GroupIDs != null)
+						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
+					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "SubscriptionPlanStatus")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Payments.SubscriptionPlanStatus.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new SubscriptionPlanStatus {ID = insertData.ObjectID, ETag = insertData.ETag};
+                    if (serializedObject.SubscriptionPlan != null)
+                    {
+                            var relationObject = new SubscriptionPlanStatusSubscriptionPlan
+                            {
+                                SubscriptionPlanStatusID = objectToAdd.ID,
+                                GroupSubscriptionPlanID = serializedObject.SubscriptionPlan
+                            };
+                            SubscriptionPlanStatusSubscriptionPlanTable.InsertOnSubmit(relationObject);
+                            objectToAdd.SubscriptionPlan = relationObject;
+                    }
+
+		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
+					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+                if (insertData.ObjectType == "CustomerAccount")
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.Payments.CustomerAccount.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+		            objectToAdd.Description = serializedObject.Description;
+                    if (serializedObject.ActivePlans != null)
+                    {
+                        serializedObject.ActivePlans.ForEach(
+                            item =>
+                            {
+                                var relationObject = new CustomerAccountActivePlans
+                                {
+                                    CustomerAccountID = objectToAdd.ID,
+                                    SubscriptionPlanStatusID = item
+                                };
+                                CustomerAccountActivePlansTable.InsertOnSubmit(relationObject);
+                                objectToAdd.ActivePlans.Add(relationObject);
+
+                            });
+                    }
+
+					CustomerAccountTable.InsertOnSubmit(objectToAdd);
+                    return;
+                }
+            }
+
 
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
@@ -295,6 +451,51 @@ namespace SQLite.TheBall.Payments {
 		            return;
 		        }
 		    }
+
+
+
+		    public async Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Payments")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
+		        {
+		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
+                    GroupSubscriptionPlanTable.Attach(objectToDelete);
+                    GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "SubscriptionPlanStatus")
+		        {
+		            var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ID};
+                    SubscriptionPlanStatusTable.Attach(objectToDelete);
+                    SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CustomerAccount")
+		        {
+		            var objectToDelete = new CustomerAccount {ID = deleteData.ID};
+                    CustomerAccountTable.Attach(objectToDelete);
+                    CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "GroupSubscriptionPlanCollection")
+		        {
+		            var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ID};
+                    GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
+                    GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		        if (deleteData.ObjectType == "CustomerAccountCollection")
+		        {
+		            var objectToDelete = new CustomerAccountCollection {ID = deleteData.ID};
+                    CustomerAccountCollectionTable.Attach(objectToDelete);
+                    CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+		            return;
+		        }
+		    }
+
 
 
 			public Table<GroupSubscriptionPlan> GroupSubscriptionPlanTable {

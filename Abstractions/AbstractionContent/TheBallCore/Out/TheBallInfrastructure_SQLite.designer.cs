@@ -21,6 +21,7 @@ using ScaffoldColumn=System.ComponentModel.DataAnnotations.ScaffoldColumnAttribu
 using ScaffoldTable=System.ComponentModel.DataAnnotations.ScaffoldTableAttribute;
 using Editable=System.ComponentModel.DataAnnotations.EditableAttribute;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 
 namespace SQLite.TheBall.Infrastructure { 
@@ -81,6 +82,11 @@ namespace SQLite.TheBall.Infrastructure {
                 base.SubmitChanges(failureMode);
             }
 
+		    public async Task SubmitChangesAsync()
+		    {
+		        await Task.Run(() => SubmitChanges());
+		    }
+
 			public void CreateDomainDatabaseTablesIfNotExists()
 			{
 				List<string> tableCreationCommands = new List<string>();
@@ -101,7 +107,15 @@ namespace SQLite.TheBall.Infrastructure {
 				}
 			}
 
+
 			public void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData)
+		    {
+                if(updateData.SemanticDomain != "TheBall.Infrastructure")
+                    throw new InvalidDataException("Mismatch on domain data");
+		    }
+
+
+			public async Task PerformUpdateAsync(string storageRootPath, InformationObjectMetaData updateData)
 		    {
                 if(updateData.SemanticDomain != "TheBall.Infrastructure")
                     throw new InvalidDataException("Mismatch on domain data");
@@ -114,12 +128,31 @@ namespace SQLite.TheBall.Infrastructure {
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
             }
 
+
+		    public async Task PerformInsertAsync(string storageRootPath, InformationObjectMetaData insertData)
+		    {
+                if (insertData.SemanticDomain != "TheBall.Infrastructure")
+                    throw new InvalidDataException("Mismatch on domain data");
+                InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+            }
+
+
 		    public void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData)
 		    {
                 if (deleteData.SemanticDomain != "TheBall.Infrastructure")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
 		    }
+
+
+
+		    public async Task PerformDeleteAsync(string storageRootPath, InformationObjectMetaData deleteData)
+		    {
+                if (deleteData.SemanticDomain != "TheBall.Infrastructure")
+                    throw new InvalidDataException("Mismatch on domain data");
+				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
+		    }
+
 
 
         }
