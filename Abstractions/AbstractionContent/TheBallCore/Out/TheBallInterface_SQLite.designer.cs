@@ -1054,104 +1054,117 @@ namespace SQLite.TheBall.Interface {
 					{
 						//var objectToDelete = new InterfaceOperation {ID = deleteData.ObjectID};
 						//InterfaceOperationTable.Attach(objectToDelete);
-						var objectToDelete = InterfaceOperationTable.Single(item => item.ID == deleteData.ObjectID);
-						InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = InterfaceOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Connection":
 					{
 						//var objectToDelete = new Connection {ID = deleteData.ObjectID};
 						//ConnectionTable.Attach(objectToDelete);
-						var objectToDelete = ConnectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ConnectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ConnectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ConnectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TransferPackage":
 					{
 						//var objectToDelete = new TransferPackage {ID = deleteData.ObjectID};
 						//TransferPackageTable.Attach(objectToDelete);
-						var objectToDelete = TransferPackageTable.Single(item => item.ID == deleteData.ObjectID);
-						TransferPackageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TransferPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TransferPackageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryLink":
 					{
 						//var objectToDelete = new CategoryLink {ID = deleteData.ObjectID};
 						//CategoryLinkTable.Attach(objectToDelete);
-						var objectToDelete = CategoryLinkTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryLinkTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryLinkTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Category":
 					{
 						//var objectToDelete = new Category {ID = deleteData.ObjectID};
 						//CategoryTable.Attach(objectToDelete);
-						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "StatusSummary":
 					{
 						//var objectToDelete = new StatusSummary {ID = deleteData.ObjectID};
 						//StatusSummaryTable.Attach(objectToDelete);
-						var objectToDelete = StatusSummaryTable.Single(item => item.ID == deleteData.ObjectID);
-						StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = StatusSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							StatusSummaryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "InformationChangeItem":
 					{
 						//var objectToDelete = new InformationChangeItem {ID = deleteData.ObjectID};
 						//InformationChangeItemTable.Attach(objectToDelete);
-						var objectToDelete = InformationChangeItemTable.Single(item => item.ID == deleteData.ObjectID);
-						InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = InformationChangeItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "OperationExecutionItem":
 					{
 						//var objectToDelete = new OperationExecutionItem {ID = deleteData.ObjectID};
 						//OperationExecutionItemTable.Attach(objectToDelete);
-						var objectToDelete = OperationExecutionItemTable.Single(item => item.ID == deleteData.ObjectID);
-						OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = OperationExecutionItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericCollectionableObject":
 					{
 						//var objectToDelete = new GenericCollectionableObject {ID = deleteData.ObjectID};
 						//GenericCollectionableObjectTable.Attach(objectToDelete);
-						var objectToDelete = GenericCollectionableObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericCollectionableObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericObject":
 					{
 						//var objectToDelete = new GenericObject {ID = deleteData.ObjectID};
 						//GenericObjectTable.Attach(objectToDelete);
-						var objectToDelete = GenericObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericValue":
 					{
 						//var objectToDelete = new GenericValue {ID = deleteData.ObjectID};
 						//GenericValueTable.Attach(objectToDelete);
-						var objectToDelete = GenericValueTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericValueTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericValueTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericValueTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ConnectionCollection":
 					{
 						//var objectToDelete = new ConnectionCollection {ID = deleteData.ObjectID};
 						//ConnectionCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ConnectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ConnectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericObjectCollection":
 					{
 						//var objectToDelete = new GenericObjectCollection {ID = deleteData.ObjectID};
 						//GenericObjectCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GenericObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
@@ -1171,104 +1184,117 @@ namespace SQLite.TheBall.Interface {
 					{
 						//var objectToDelete = new InterfaceOperation {ID = deleteData.ObjectID};
 						//InterfaceOperationTable.Attach(objectToDelete);
-						var objectToDelete = InterfaceOperationTable.Single(item => item.ID == deleteData.ObjectID);
-						InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = InterfaceOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Connection":
 					{
 						//var objectToDelete = new Connection {ID = deleteData.ObjectID};
 						//ConnectionTable.Attach(objectToDelete);
-						var objectToDelete = ConnectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ConnectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ConnectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ConnectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TransferPackage":
 					{
 						//var objectToDelete = new TransferPackage {ID = deleteData.ObjectID};
 						//TransferPackageTable.Attach(objectToDelete);
-						var objectToDelete = TransferPackageTable.Single(item => item.ID == deleteData.ObjectID);
-						TransferPackageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TransferPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TransferPackageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryLink":
 					{
 						//var objectToDelete = new CategoryLink {ID = deleteData.ObjectID};
 						//CategoryLinkTable.Attach(objectToDelete);
-						var objectToDelete = CategoryLinkTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryLinkTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryLinkTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Category":
 					{
 						//var objectToDelete = new Category {ID = deleteData.ObjectID};
 						//CategoryTable.Attach(objectToDelete);
-						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "StatusSummary":
 					{
 						//var objectToDelete = new StatusSummary {ID = deleteData.ObjectID};
 						//StatusSummaryTable.Attach(objectToDelete);
-						var objectToDelete = StatusSummaryTable.Single(item => item.ID == deleteData.ObjectID);
-						StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = StatusSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							StatusSummaryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "InformationChangeItem":
 					{
 						//var objectToDelete = new InformationChangeItem {ID = deleteData.ObjectID};
 						//InformationChangeItemTable.Attach(objectToDelete);
-						var objectToDelete = InformationChangeItemTable.Single(item => item.ID == deleteData.ObjectID);
-						InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = InformationChangeItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "OperationExecutionItem":
 					{
 						//var objectToDelete = new OperationExecutionItem {ID = deleteData.ObjectID};
 						//OperationExecutionItemTable.Attach(objectToDelete);
-						var objectToDelete = OperationExecutionItemTable.Single(item => item.ID == deleteData.ObjectID);
-						OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = OperationExecutionItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericCollectionableObject":
 					{
 						//var objectToDelete = new GenericCollectionableObject {ID = deleteData.ObjectID};
 						//GenericCollectionableObjectTable.Attach(objectToDelete);
-						var objectToDelete = GenericCollectionableObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericCollectionableObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericObject":
 					{
 						//var objectToDelete = new GenericObject {ID = deleteData.ObjectID};
 						//GenericObjectTable.Attach(objectToDelete);
-						var objectToDelete = GenericObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericValue":
 					{
 						//var objectToDelete = new GenericValue {ID = deleteData.ObjectID};
 						//GenericValueTable.Attach(objectToDelete);
-						var objectToDelete = GenericValueTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericValueTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericValueTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericValueTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ConnectionCollection":
 					{
 						//var objectToDelete = new ConnectionCollection {ID = deleteData.ObjectID};
 						//ConnectionCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ConnectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ConnectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GenericObjectCollection":
 					{
 						//var objectToDelete = new GenericObjectCollection {ID = deleteData.ObjectID};
 						//GenericObjectCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GenericObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GenericObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}

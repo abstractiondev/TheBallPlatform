@@ -5476,856 +5476,963 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					{
 						//var objectToDelete = new TBSystem {ID = deleteData.ObjectID};
 						//TBSystemTable.Attach(objectToDelete);
-						var objectToDelete = TBSystemTable.Single(item => item.ID == deleteData.ObjectID);
-						TBSystemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBSystemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBSystemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "WebPublishInfo":
 					{
 						//var objectToDelete = new WebPublishInfo {ID = deleteData.ObjectID};
 						//WebPublishInfoTable.Attach(objectToDelete);
-						var objectToDelete = WebPublishInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = WebPublishInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PublicationPackage":
 					{
 						//var objectToDelete = new PublicationPackage {ID = deleteData.ObjectID};
 						//PublicationPackageTable.Attach(objectToDelete);
-						var objectToDelete = PublicationPackageTable.Single(item => item.ID == deleteData.ObjectID);
-						PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PublicationPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PublicationPackageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRLoginRoot":
 					{
 						//var objectToDelete = new TBRLoginRoot {ID = deleteData.ObjectID};
 						//TBRLoginRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRLoginRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRLoginRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRAccountRoot":
 					{
 						//var objectToDelete = new TBRAccountRoot {ID = deleteData.ObjectID};
 						//TBRAccountRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRAccountRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRAccountRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRGroupRoot":
 					{
 						//var objectToDelete = new TBRGroupRoot {ID = deleteData.ObjectID};
 						//TBRGroupRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRLoginGroupRoot":
 					{
 						//var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ObjectID};
 						//TBRLoginGroupRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRLoginGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRLoginGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBREmailRoot":
 					{
 						//var objectToDelete = new TBREmailRoot {ID = deleteData.ObjectID};
 						//TBREmailRootTable.Attach(objectToDelete);
-						var objectToDelete = TBREmailRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBREmailRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBREmailRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccount":
 					{
 						//var objectToDelete = new TBAccount {ID = deleteData.ObjectID};
 						//TBAccountTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroup":
 					{
 						//var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ObjectID};
 						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountCollaborationGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBLoginInfo":
 					{
 						//var objectToDelete = new TBLoginInfo {ID = deleteData.ObjectID};
 						//TBLoginInfoTable.Attach(objectToDelete);
-						var objectToDelete = TBLoginInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBLoginInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmail":
 					{
 						//var objectToDelete = new TBEmail {ID = deleteData.ObjectID};
 						//TBEmailTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRole":
 					{
 						//var objectToDelete = new TBCollaboratorRole {ID = deleteData.ObjectID};
 						//TBCollaboratorRoleTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratorRoleTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratingGroup":
 					{
 						//var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ObjectID};
 						//TBCollaboratingGroupTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratingGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratingGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmailValidation":
 					{
 						//var objectToDelete = new TBEmailValidation {ID = deleteData.ObjectID};
 						//TBEmailValidationTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailValidationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailValidationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBMergeAccountConfirmation":
 					{
 						//var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ObjectID};
 						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBMergeAccountConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBMergeAccountConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBGroupJoinConfirmation":
 					{
 						//var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ObjectID};
 						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBGroupJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBGroupJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBDeviceJoinConfirmation":
 					{
 						//var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ObjectID};
 						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBDeviceJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBDeviceJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBInformationInputConfirmation":
 					{
 						//var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ObjectID};
 						//TBInformationInputConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBInformationInputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBInformationInputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBInformationOutputConfirmation":
 					{
 						//var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ObjectID};
 						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBInformationOutputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBInformationOutputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LoginProvider":
 					{
 						//var objectToDelete = new LoginProvider {ID = deleteData.ObjectID};
 						//LoginProviderTable.Attach(objectToDelete);
-						var objectToDelete = LoginProviderTable.Single(item => item.ID == deleteData.ObjectID);
-						LoginProviderTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LoginProviderTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginProviderTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBPRegisterEmail":
 					{
 						//var objectToDelete = new TBPRegisterEmail {ID = deleteData.ObjectID};
 						//TBPRegisterEmailTable.Attach(objectToDelete);
-						var objectToDelete = TBPRegisterEmailTable.Single(item => item.ID == deleteData.ObjectID);
-						TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBPRegisterEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountSummary":
 					{
 						//var objectToDelete = new AccountSummary {ID = deleteData.ObjectID};
 						//AccountSummaryTable.Attach(objectToDelete);
-						var objectToDelete = AccountSummaryTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountSummaryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountContainer":
 					{
 						//var objectToDelete = new AccountContainer {ID = deleteData.ObjectID};
 						//AccountContainerTable.Attach(objectToDelete);
-						var objectToDelete = AccountContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountModule":
 					{
 						//var objectToDelete = new AccountModule {ID = deleteData.ObjectID};
 						//AccountModuleTable.Attach(objectToDelete);
-						var objectToDelete = AccountModuleTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountModuleTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountModuleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountModuleTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LocationContainer":
 					{
 						//var objectToDelete = new LocationContainer {ID = deleteData.ObjectID};
 						//LocationContainerTable.Attach(objectToDelete);
-						var objectToDelete = LocationContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddressAndLocation":
 					{
 						//var objectToDelete = new AddressAndLocation {ID = deleteData.ObjectID};
 						//AddressAndLocationTable.Attach(objectToDelete);
-						var objectToDelete = AddressAndLocationTable.Single(item => item.ID == deleteData.ObjectID);
-						AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddressAndLocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "StreetAddress":
 					{
 						//var objectToDelete = new StreetAddress {ID = deleteData.ObjectID};
 						//StreetAddressTable.Attach(objectToDelete);
-						var objectToDelete = StreetAddressTable.Single(item => item.ID == deleteData.ObjectID);
-						StreetAddressTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = StreetAddressTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							StreetAddressTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountProfile":
 					{
 						//var objectToDelete = new AccountProfile {ID = deleteData.ObjectID};
 						//AccountProfileTable.Attach(objectToDelete);
-						var objectToDelete = AccountProfileTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountProfileTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountProfileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountProfileTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountSecurity":
 					{
 						//var objectToDelete = new AccountSecurity {ID = deleteData.ObjectID};
 						//AccountSecurityTable.Attach(objectToDelete);
-						var objectToDelete = AccountSecurityTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountSecurityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountSecurityTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountRoles":
 					{
 						//var objectToDelete = new AccountRoles {ID = deleteData.ObjectID};
 						//AccountRolesTable.Attach(objectToDelete);
-						var objectToDelete = AccountRolesTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountRolesTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountRolesTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountRolesTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PersonalInfoVisibility":
 					{
 						//var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ObjectID};
 						//PersonalInfoVisibilityTable.Attach(objectToDelete);
-						var objectToDelete = PersonalInfoVisibilityTable.Single(item => item.ID == deleteData.ObjectID);
-						PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PersonalInfoVisibilityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ReferenceToInformation":
 					{
 						//var objectToDelete = new ReferenceToInformation {ID = deleteData.ObjectID};
 						//ReferenceToInformationTable.Attach(objectToDelete);
-						var objectToDelete = ReferenceToInformationTable.Single(item => item.ID == deleteData.ObjectID);
-						ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ReferenceToInformationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "NodeSummaryContainer":
 					{
 						//var objectToDelete = new NodeSummaryContainer {ID = deleteData.ObjectID};
 						//NodeSummaryContainerTable.Attach(objectToDelete);
-						var objectToDelete = NodeSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = NodeSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "RenderedNode":
 					{
 						//var objectToDelete = new RenderedNode {ID = deleteData.ObjectID};
 						//RenderedNodeTable.Attach(objectToDelete);
-						var objectToDelete = RenderedNodeTable.Single(item => item.ID == deleteData.ObjectID);
-						RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = RenderedNodeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							RenderedNodeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ShortTextObject":
 					{
 						//var objectToDelete = new ShortTextObject {ID = deleteData.ObjectID};
 						//ShortTextObjectTable.Attach(objectToDelete);
-						var objectToDelete = ShortTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ShortTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LongTextObject":
 					{
 						//var objectToDelete = new LongTextObject {ID = deleteData.ObjectID};
 						//LongTextObjectTable.Attach(objectToDelete);
-						var objectToDelete = LongTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongTextObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapMarker":
 					{
 						//var objectToDelete = new MapMarker {ID = deleteData.ObjectID};
 						//MapMarkerTable.Attach(objectToDelete);
-						var objectToDelete = MapMarkerTable.Single(item => item.ID == deleteData.ObjectID);
-						MapMarkerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapMarkerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapMarkerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Moderator":
 					{
 						//var objectToDelete = new Moderator {ID = deleteData.ObjectID};
 						//ModeratorTable.Attach(objectToDelete);
-						var objectToDelete = ModeratorTable.Single(item => item.ID == deleteData.ObjectID);
-						ModeratorTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ModeratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ModeratorTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Collaborator":
 					{
 						//var objectToDelete = new Collaborator {ID = deleteData.ObjectID};
 						//CollaboratorTable.Attach(objectToDelete);
-						var objectToDelete = CollaboratorTable.Single(item => item.ID == deleteData.ObjectID);
-						CollaboratorTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CollaboratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CollaboratorTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupSummaryContainer":
 					{
 						//var objectToDelete = new GroupSummaryContainer {ID = deleteData.ObjectID};
 						//GroupSummaryContainerTable.Attach(objectToDelete);
-						var objectToDelete = GroupSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupContainer":
 					{
 						//var objectToDelete = new GroupContainer {ID = deleteData.ObjectID};
 						//GroupContainerTable.Attach(objectToDelete);
-						var objectToDelete = GroupContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupIndex":
 					{
 						//var objectToDelete = new GroupIndex {ID = deleteData.ObjectID};
 						//GroupIndexTable.Attach(objectToDelete);
-						var objectToDelete = GroupIndexTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupIndexTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupIndexTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupIndexTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddAddressAndLocationInfo":
 					{
 						//var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ObjectID};
 						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddAddressAndLocationInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddAddressAndLocationInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddImageInfo":
 					{
 						//var objectToDelete = new AddImageInfo {ID = deleteData.ObjectID};
 						//AddImageInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddImageInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddImageInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddImageInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddImageGroupInfo":
 					{
 						//var objectToDelete = new AddImageGroupInfo {ID = deleteData.ObjectID};
 						//AddImageGroupInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddImageGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddImageGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddEmailAddressInfo":
 					{
 						//var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ObjectID};
 						//AddEmailAddressInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddEmailAddressInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddEmailAddressInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CreateGroupInfo":
 					{
 						//var objectToDelete = new CreateGroupInfo {ID = deleteData.ObjectID};
 						//CreateGroupInfoTable.Attach(objectToDelete);
-						var objectToDelete = CreateGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CreateGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddActivityInfo":
 					{
 						//var objectToDelete = new AddActivityInfo {ID = deleteData.ObjectID};
 						//AddActivityInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddActivityInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddActivityInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddBlogPostInfo":
 					{
 						//var objectToDelete = new AddBlogPostInfo {ID = deleteData.ObjectID};
 						//AddBlogPostInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddBlogPostInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddBlogPostInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddCategoryInfo":
 					{
 						//var objectToDelete = new AddCategoryInfo {ID = deleteData.ObjectID};
 						//AddCategoryInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddCategoryInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddCategoryInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Group":
 					{
 						//var objectToDelete = new Group {ID = deleteData.ObjectID};
 						//GroupTable.Attach(objectToDelete);
-						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Introduction":
 					{
 						//var objectToDelete = new Introduction {ID = deleteData.ObjectID};
 						//IntroductionTable.Attach(objectToDelete);
-						var objectToDelete = IntroductionTable.Single(item => item.ID == deleteData.ObjectID);
-						IntroductionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = IntroductionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							IntroductionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRank":
 					{
 						//var objectToDelete = new ContentCategoryRank {ID = deleteData.ObjectID};
 						//ContentCategoryRankTable.Attach(objectToDelete);
-						var objectToDelete = ContentCategoryRankTable.Single(item => item.ID == deleteData.ObjectID);
-						ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ContentCategoryRankTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LinkToContent":
 					{
 						//var objectToDelete = new LinkToContent {ID = deleteData.ObjectID};
 						//LinkToContentTable.Attach(objectToDelete);
-						var objectToDelete = LinkToContentTable.Single(item => item.ID == deleteData.ObjectID);
-						LinkToContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LinkToContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LinkToContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "EmbeddedContent":
 					{
 						//var objectToDelete = new EmbeddedContent {ID = deleteData.ObjectID};
 						//EmbeddedContentTable.Attach(objectToDelete);
-						var objectToDelete = EmbeddedContentTable.Single(item => item.ID == deleteData.ObjectID);
-						EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = EmbeddedContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroup":
 					{
 						//var objectToDelete = new DynamicContentGroup {ID = deleteData.ObjectID};
 						//DynamicContentGroupTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContent":
 					{
 						//var objectToDelete = new DynamicContent {ID = deleteData.ObjectID};
 						//DynamicContentTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AttachedToObject":
 					{
 						//var objectToDelete = new AttachedToObject {ID = deleteData.ObjectID};
 						//AttachedToObjectTable.Attach(objectToDelete);
-						var objectToDelete = AttachedToObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AttachedToObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Comment":
 					{
 						//var objectToDelete = new Comment {ID = deleteData.ObjectID};
 						//CommentTable.Attach(objectToDelete);
-						var objectToDelete = CommentTable.Single(item => item.ID == deleteData.ObjectID);
-						CommentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CommentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CommentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Selection":
 					{
 						//var objectToDelete = new Selection {ID = deleteData.ObjectID};
 						//SelectionTable.Attach(objectToDelete);
-						var objectToDelete = SelectionTable.Single(item => item.ID == deleteData.ObjectID);
-						SelectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SelectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SelectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TextContent":
 					{
 						//var objectToDelete = new TextContent {ID = deleteData.ObjectID};
 						//TextContentTable.Attach(objectToDelete);
-						var objectToDelete = TextContentTable.Single(item => item.ID == deleteData.ObjectID);
-						TextContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TextContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TextContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Map":
 					{
 						//var objectToDelete = new Map {ID = deleteData.ObjectID};
 						//MapTable.Attach(objectToDelete);
-						var objectToDelete = MapTable.Single(item => item.ID == deleteData.ObjectID);
-						MapTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResult":
 					{
 						//var objectToDelete = new MapResult {ID = deleteData.ObjectID};
 						//MapResultTable.Attach(objectToDelete);
-						var objectToDelete = MapResultTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResultsCollection":
 					{
 						//var objectToDelete = new MapResultsCollection {ID = deleteData.ObjectID};
 						//MapResultsCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapResultsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Video":
 					{
 						//var objectToDelete = new Video {ID = deleteData.ObjectID};
 						//VideoTable.Attach(objectToDelete);
-						var objectToDelete = VideoTable.Single(item => item.ID == deleteData.ObjectID);
-						VideoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = VideoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							VideoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Image":
 					{
 						//var objectToDelete = new Image {ID = deleteData.ObjectID};
 						//ImageTable.Attach(objectToDelete);
-						var objectToDelete = ImageTable.Single(item => item.ID == deleteData.ObjectID);
-						ImageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ImageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ImageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "BinaryFile":
 					{
 						//var objectToDelete = new BinaryFile {ID = deleteData.ObjectID};
 						//BinaryFileTable.Attach(objectToDelete);
-						var objectToDelete = BinaryFileTable.Single(item => item.ID == deleteData.ObjectID);
-						BinaryFileTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = BinaryFileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							BinaryFileTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Longitude":
 					{
 						//var objectToDelete = new Longitude {ID = deleteData.ObjectID};
 						//LongitudeTable.Attach(objectToDelete);
-						var objectToDelete = LongitudeTable.Single(item => item.ID == deleteData.ObjectID);
-						LongitudeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongitudeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Latitude":
 					{
 						//var objectToDelete = new Latitude {ID = deleteData.ObjectID};
 						//LatitudeTable.Attach(objectToDelete);
-						var objectToDelete = LatitudeTable.Single(item => item.ID == deleteData.ObjectID);
-						LatitudeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LatitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LatitudeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Location":
 					{
 						//var objectToDelete = new Location {ID = deleteData.ObjectID};
 						//LocationTable.Attach(objectToDelete);
-						var objectToDelete = LocationTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Date":
 					{
 						//var objectToDelete = new Date {ID = deleteData.ObjectID};
 						//DateTable.Attach(objectToDelete);
-						var objectToDelete = DateTable.Single(item => item.ID == deleteData.ObjectID);
-						DateTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DateTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DateTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryContainer":
 					{
 						//var objectToDelete = new CategoryContainer {ID = deleteData.ObjectID};
 						//CategoryContainerTable.Attach(objectToDelete);
-						var objectToDelete = CategoryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Category":
 					{
 						//var objectToDelete = new Category {ID = deleteData.ObjectID};
 						//CategoryTable.Attach(objectToDelete);
-						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentOperation":
 					{
 						//var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ObjectID};
 						//UpdateWebContentOperationTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentOperationTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerItem":
 					{
 						//var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ObjectID};
 						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentHandlerItemTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PublicationPackageCollection":
 					{
 						//var objectToDelete = new PublicationPackageCollection {ID = deleteData.ObjectID};
 						//PublicationPackageCollectionTable.Attach(objectToDelete);
-						var objectToDelete = PublicationPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PublicationPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroupCollection":
 					{
 						//var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ObjectID};
 						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountCollaborationGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBLoginInfoCollection":
 					{
 						//var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ObjectID};
 						//TBLoginInfoCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBLoginInfoCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBLoginInfoCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmailCollection":
 					{
 						//var objectToDelete = new TBEmailCollection {ID = deleteData.ObjectID};
 						//TBEmailCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRoleCollection":
 					{
 						//var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ObjectID};
 						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratorRoleCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LoginProviderCollection":
 					{
 						//var objectToDelete = new LoginProviderCollection {ID = deleteData.ObjectID};
 						//LoginProviderCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LoginProviderCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LoginProviderCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddressAndLocationCollection":
 					{
 						//var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ObjectID};
 						//AddressAndLocationCollectionTable.Attach(objectToDelete);
-						var objectToDelete = AddressAndLocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddressAndLocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ReferenceCollection":
 					{
 						//var objectToDelete = new ReferenceCollection {ID = deleteData.ObjectID};
 						//ReferenceCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ReferenceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ReferenceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "RenderedNodeCollection":
 					{
 						//var objectToDelete = new RenderedNodeCollection {ID = deleteData.ObjectID};
 						//RenderedNodeCollectionTable.Attach(objectToDelete);
-						var objectToDelete = RenderedNodeCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = RenderedNodeCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ShortTextCollection":
 					{
 						//var objectToDelete = new ShortTextCollection {ID = deleteData.ObjectID};
 						//ShortTextCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ShortTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ShortTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LongTextCollection":
 					{
 						//var objectToDelete = new LongTextCollection {ID = deleteData.ObjectID};
 						//LongTextCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LongTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapMarkerCollection":
 					{
 						//var objectToDelete = new MapMarkerCollection {ID = deleteData.ObjectID};
 						//MapMarkerCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapMarkerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapMarkerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ModeratorCollection":
 					{
 						//var objectToDelete = new ModeratorCollection {ID = deleteData.ObjectID};
 						//ModeratorCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ModeratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ModeratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CollaboratorCollection":
 					{
 						//var objectToDelete = new CollaboratorCollection {ID = deleteData.ObjectID};
 						//CollaboratorCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CollaboratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CollaboratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupCollection":
 					{
 						//var objectToDelete = new GroupCollection {ID = deleteData.ObjectID};
 						//GroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRankCollection":
 					{
 						//var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ObjectID};
 						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ContentCategoryRankCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ContentCategoryRankCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LinkToContentCollection":
 					{
 						//var objectToDelete = new LinkToContentCollection {ID = deleteData.ObjectID};
 						//LinkToContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LinkToContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LinkToContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "EmbeddedContentCollection":
 					{
 						//var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ObjectID};
 						//EmbeddedContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = EmbeddedContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = EmbeddedContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroupCollection":
 					{
 						//var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ObjectID};
 						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentCollection":
 					{
 						//var objectToDelete = new DynamicContentCollection {ID = deleteData.ObjectID};
 						//DynamicContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AttachedToObjectCollection":
 					{
 						//var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ObjectID};
 						//AttachedToObjectCollectionTable.Attach(objectToDelete);
-						var objectToDelete = AttachedToObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AttachedToObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CommentCollection":
 					{
 						//var objectToDelete = new CommentCollection {ID = deleteData.ObjectID};
 						//CommentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CommentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CommentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CommentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "SelectionCollection":
 					{
 						//var objectToDelete = new SelectionCollection {ID = deleteData.ObjectID};
 						//SelectionCollectionTable.Attach(objectToDelete);
-						var objectToDelete = SelectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SelectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TextContentCollection":
 					{
 						//var objectToDelete = new TextContentCollection {ID = deleteData.ObjectID};
 						//TextContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TextContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TextContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapCollection":
 					{
 						//var objectToDelete = new MapCollection {ID = deleteData.ObjectID};
 						//MapCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResultCollection":
 					{
 						//var objectToDelete = new MapResultCollection {ID = deleteData.ObjectID};
 						//MapResultCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapResultCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ImageCollection":
 					{
 						//var objectToDelete = new ImageCollection {ID = deleteData.ObjectID};
 						//ImageCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ImageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ImageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ImageCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "BinaryFileCollection":
 					{
 						//var objectToDelete = new BinaryFileCollection {ID = deleteData.ObjectID};
 						//BinaryFileCollectionTable.Attach(objectToDelete);
-						var objectToDelete = BinaryFileCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = BinaryFileCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LocationCollection":
 					{
 						//var objectToDelete = new LocationCollection {ID = deleteData.ObjectID};
 						//LocationCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
 					{
 						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
 						//CategoryCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerCollection":
 					{
 						//var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ObjectID};
 						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentHandlerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
@@ -6345,856 +6452,963 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					{
 						//var objectToDelete = new TBSystem {ID = deleteData.ObjectID};
 						//TBSystemTable.Attach(objectToDelete);
-						var objectToDelete = TBSystemTable.Single(item => item.ID == deleteData.ObjectID);
-						TBSystemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBSystemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBSystemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "WebPublishInfo":
 					{
 						//var objectToDelete = new WebPublishInfo {ID = deleteData.ObjectID};
 						//WebPublishInfoTable.Attach(objectToDelete);
-						var objectToDelete = WebPublishInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = WebPublishInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PublicationPackage":
 					{
 						//var objectToDelete = new PublicationPackage {ID = deleteData.ObjectID};
 						//PublicationPackageTable.Attach(objectToDelete);
-						var objectToDelete = PublicationPackageTable.Single(item => item.ID == deleteData.ObjectID);
-						PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PublicationPackageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PublicationPackageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRLoginRoot":
 					{
 						//var objectToDelete = new TBRLoginRoot {ID = deleteData.ObjectID};
 						//TBRLoginRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRLoginRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRLoginRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRAccountRoot":
 					{
 						//var objectToDelete = new TBRAccountRoot {ID = deleteData.ObjectID};
 						//TBRAccountRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRAccountRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRAccountRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRGroupRoot":
 					{
 						//var objectToDelete = new TBRGroupRoot {ID = deleteData.ObjectID};
 						//TBRGroupRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBRLoginGroupRoot":
 					{
 						//var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ObjectID};
 						//TBRLoginGroupRootTable.Attach(objectToDelete);
-						var objectToDelete = TBRLoginGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBRLoginGroupRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBREmailRoot":
 					{
 						//var objectToDelete = new TBREmailRoot {ID = deleteData.ObjectID};
 						//TBREmailRootTable.Attach(objectToDelete);
-						var objectToDelete = TBREmailRootTable.Single(item => item.ID == deleteData.ObjectID);
-						TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBREmailRootTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBREmailRootTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccount":
 					{
 						//var objectToDelete = new TBAccount {ID = deleteData.ObjectID};
 						//TBAccountTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroup":
 					{
 						//var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ObjectID};
 						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountCollaborationGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBLoginInfo":
 					{
 						//var objectToDelete = new TBLoginInfo {ID = deleteData.ObjectID};
 						//TBLoginInfoTable.Attach(objectToDelete);
-						var objectToDelete = TBLoginInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBLoginInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmail":
 					{
 						//var objectToDelete = new TBEmail {ID = deleteData.ObjectID};
 						//TBEmailTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRole":
 					{
 						//var objectToDelete = new TBCollaboratorRole {ID = deleteData.ObjectID};
 						//TBCollaboratorRoleTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratorRoleTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratingGroup":
 					{
 						//var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ObjectID};
 						//TBCollaboratingGroupTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratingGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratingGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmailValidation":
 					{
 						//var objectToDelete = new TBEmailValidation {ID = deleteData.ObjectID};
 						//TBEmailValidationTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailValidationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailValidationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBMergeAccountConfirmation":
 					{
 						//var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ObjectID};
 						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBMergeAccountConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBMergeAccountConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBGroupJoinConfirmation":
 					{
 						//var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ObjectID};
 						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBGroupJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBGroupJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBDeviceJoinConfirmation":
 					{
 						//var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ObjectID};
 						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBDeviceJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBDeviceJoinConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBInformationInputConfirmation":
 					{
 						//var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ObjectID};
 						//TBInformationInputConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBInformationInputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBInformationInputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBInformationOutputConfirmation":
 					{
 						//var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ObjectID};
 						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
-						var objectToDelete = TBInformationOutputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
-						TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBInformationOutputConfirmationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LoginProvider":
 					{
 						//var objectToDelete = new LoginProvider {ID = deleteData.ObjectID};
 						//LoginProviderTable.Attach(objectToDelete);
-						var objectToDelete = LoginProviderTable.Single(item => item.ID == deleteData.ObjectID);
-						LoginProviderTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LoginProviderTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginProviderTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBPRegisterEmail":
 					{
 						//var objectToDelete = new TBPRegisterEmail {ID = deleteData.ObjectID};
 						//TBPRegisterEmailTable.Attach(objectToDelete);
-						var objectToDelete = TBPRegisterEmailTable.Single(item => item.ID == deleteData.ObjectID);
-						TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBPRegisterEmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountSummary":
 					{
 						//var objectToDelete = new AccountSummary {ID = deleteData.ObjectID};
 						//AccountSummaryTable.Attach(objectToDelete);
-						var objectToDelete = AccountSummaryTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountSummaryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountSummaryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountContainer":
 					{
 						//var objectToDelete = new AccountContainer {ID = deleteData.ObjectID};
 						//AccountContainerTable.Attach(objectToDelete);
-						var objectToDelete = AccountContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountModule":
 					{
 						//var objectToDelete = new AccountModule {ID = deleteData.ObjectID};
 						//AccountModuleTable.Attach(objectToDelete);
-						var objectToDelete = AccountModuleTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountModuleTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountModuleTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountModuleTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LocationContainer":
 					{
 						//var objectToDelete = new LocationContainer {ID = deleteData.ObjectID};
 						//LocationContainerTable.Attach(objectToDelete);
-						var objectToDelete = LocationContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddressAndLocation":
 					{
 						//var objectToDelete = new AddressAndLocation {ID = deleteData.ObjectID};
 						//AddressAndLocationTable.Attach(objectToDelete);
-						var objectToDelete = AddressAndLocationTable.Single(item => item.ID == deleteData.ObjectID);
-						AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddressAndLocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "StreetAddress":
 					{
 						//var objectToDelete = new StreetAddress {ID = deleteData.ObjectID};
 						//StreetAddressTable.Attach(objectToDelete);
-						var objectToDelete = StreetAddressTable.Single(item => item.ID == deleteData.ObjectID);
-						StreetAddressTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = StreetAddressTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							StreetAddressTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountProfile":
 					{
 						//var objectToDelete = new AccountProfile {ID = deleteData.ObjectID};
 						//AccountProfileTable.Attach(objectToDelete);
-						var objectToDelete = AccountProfileTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountProfileTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountProfileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountProfileTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountSecurity":
 					{
 						//var objectToDelete = new AccountSecurity {ID = deleteData.ObjectID};
 						//AccountSecurityTable.Attach(objectToDelete);
-						var objectToDelete = AccountSecurityTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountSecurityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountSecurityTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AccountRoles":
 					{
 						//var objectToDelete = new AccountRoles {ID = deleteData.ObjectID};
 						//AccountRolesTable.Attach(objectToDelete);
-						var objectToDelete = AccountRolesTable.Single(item => item.ID == deleteData.ObjectID);
-						AccountRolesTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AccountRolesTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AccountRolesTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PersonalInfoVisibility":
 					{
 						//var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ObjectID};
 						//PersonalInfoVisibilityTable.Attach(objectToDelete);
-						var objectToDelete = PersonalInfoVisibilityTable.Single(item => item.ID == deleteData.ObjectID);
-						PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PersonalInfoVisibilityTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ReferenceToInformation":
 					{
 						//var objectToDelete = new ReferenceToInformation {ID = deleteData.ObjectID};
 						//ReferenceToInformationTable.Attach(objectToDelete);
-						var objectToDelete = ReferenceToInformationTable.Single(item => item.ID == deleteData.ObjectID);
-						ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ReferenceToInformationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "NodeSummaryContainer":
 					{
 						//var objectToDelete = new NodeSummaryContainer {ID = deleteData.ObjectID};
 						//NodeSummaryContainerTable.Attach(objectToDelete);
-						var objectToDelete = NodeSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = NodeSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "RenderedNode":
 					{
 						//var objectToDelete = new RenderedNode {ID = deleteData.ObjectID};
 						//RenderedNodeTable.Attach(objectToDelete);
-						var objectToDelete = RenderedNodeTable.Single(item => item.ID == deleteData.ObjectID);
-						RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = RenderedNodeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							RenderedNodeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ShortTextObject":
 					{
 						//var objectToDelete = new ShortTextObject {ID = deleteData.ObjectID};
 						//ShortTextObjectTable.Attach(objectToDelete);
-						var objectToDelete = ShortTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ShortTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LongTextObject":
 					{
 						//var objectToDelete = new LongTextObject {ID = deleteData.ObjectID};
 						//LongTextObjectTable.Attach(objectToDelete);
-						var objectToDelete = LongTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongTextObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongTextObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapMarker":
 					{
 						//var objectToDelete = new MapMarker {ID = deleteData.ObjectID};
 						//MapMarkerTable.Attach(objectToDelete);
-						var objectToDelete = MapMarkerTable.Single(item => item.ID == deleteData.ObjectID);
-						MapMarkerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapMarkerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapMarkerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Moderator":
 					{
 						//var objectToDelete = new Moderator {ID = deleteData.ObjectID};
 						//ModeratorTable.Attach(objectToDelete);
-						var objectToDelete = ModeratorTable.Single(item => item.ID == deleteData.ObjectID);
-						ModeratorTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ModeratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ModeratorTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Collaborator":
 					{
 						//var objectToDelete = new Collaborator {ID = deleteData.ObjectID};
 						//CollaboratorTable.Attach(objectToDelete);
-						var objectToDelete = CollaboratorTable.Single(item => item.ID == deleteData.ObjectID);
-						CollaboratorTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CollaboratorTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CollaboratorTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupSummaryContainer":
 					{
 						//var objectToDelete = new GroupSummaryContainer {ID = deleteData.ObjectID};
 						//GroupSummaryContainerTable.Attach(objectToDelete);
-						var objectToDelete = GroupSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSummaryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupContainer":
 					{
 						//var objectToDelete = new GroupContainer {ID = deleteData.ObjectID};
 						//GroupContainerTable.Attach(objectToDelete);
-						var objectToDelete = GroupContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupIndex":
 					{
 						//var objectToDelete = new GroupIndex {ID = deleteData.ObjectID};
 						//GroupIndexTable.Attach(objectToDelete);
-						var objectToDelete = GroupIndexTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupIndexTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupIndexTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupIndexTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddAddressAndLocationInfo":
 					{
 						//var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ObjectID};
 						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddAddressAndLocationInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddAddressAndLocationInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddImageInfo":
 					{
 						//var objectToDelete = new AddImageInfo {ID = deleteData.ObjectID};
 						//AddImageInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddImageInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddImageInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddImageInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddImageGroupInfo":
 					{
 						//var objectToDelete = new AddImageGroupInfo {ID = deleteData.ObjectID};
 						//AddImageGroupInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddImageGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddImageGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddEmailAddressInfo":
 					{
 						//var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ObjectID};
 						//AddEmailAddressInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddEmailAddressInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddEmailAddressInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CreateGroupInfo":
 					{
 						//var objectToDelete = new CreateGroupInfo {ID = deleteData.ObjectID};
 						//CreateGroupInfoTable.Attach(objectToDelete);
-						var objectToDelete = CreateGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CreateGroupInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddActivityInfo":
 					{
 						//var objectToDelete = new AddActivityInfo {ID = deleteData.ObjectID};
 						//AddActivityInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddActivityInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddActivityInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddBlogPostInfo":
 					{
 						//var objectToDelete = new AddBlogPostInfo {ID = deleteData.ObjectID};
 						//AddBlogPostInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddBlogPostInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddBlogPostInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddCategoryInfo":
 					{
 						//var objectToDelete = new AddCategoryInfo {ID = deleteData.ObjectID};
 						//AddCategoryInfoTable.Attach(objectToDelete);
-						var objectToDelete = AddCategoryInfoTable.Single(item => item.ID == deleteData.ObjectID);
-						AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddCategoryInfoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Group":
 					{
 						//var objectToDelete = new Group {ID = deleteData.ObjectID};
 						//GroupTable.Attach(objectToDelete);
-						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Introduction":
 					{
 						//var objectToDelete = new Introduction {ID = deleteData.ObjectID};
 						//IntroductionTable.Attach(objectToDelete);
-						var objectToDelete = IntroductionTable.Single(item => item.ID == deleteData.ObjectID);
-						IntroductionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = IntroductionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							IntroductionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRank":
 					{
 						//var objectToDelete = new ContentCategoryRank {ID = deleteData.ObjectID};
 						//ContentCategoryRankTable.Attach(objectToDelete);
-						var objectToDelete = ContentCategoryRankTable.Single(item => item.ID == deleteData.ObjectID);
-						ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ContentCategoryRankTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LinkToContent":
 					{
 						//var objectToDelete = new LinkToContent {ID = deleteData.ObjectID};
 						//LinkToContentTable.Attach(objectToDelete);
-						var objectToDelete = LinkToContentTable.Single(item => item.ID == deleteData.ObjectID);
-						LinkToContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LinkToContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LinkToContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "EmbeddedContent":
 					{
 						//var objectToDelete = new EmbeddedContent {ID = deleteData.ObjectID};
 						//EmbeddedContentTable.Attach(objectToDelete);
-						var objectToDelete = EmbeddedContentTable.Single(item => item.ID == deleteData.ObjectID);
-						EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = EmbeddedContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroup":
 					{
 						//var objectToDelete = new DynamicContentGroup {ID = deleteData.ObjectID};
 						//DynamicContentGroupTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentGroupTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentGroupTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContent":
 					{
 						//var objectToDelete = new DynamicContent {ID = deleteData.ObjectID};
 						//DynamicContentTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AttachedToObject":
 					{
 						//var objectToDelete = new AttachedToObject {ID = deleteData.ObjectID};
 						//AttachedToObjectTable.Attach(objectToDelete);
-						var objectToDelete = AttachedToObjectTable.Single(item => item.ID == deleteData.ObjectID);
-						AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AttachedToObjectTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Comment":
 					{
 						//var objectToDelete = new Comment {ID = deleteData.ObjectID};
 						//CommentTable.Attach(objectToDelete);
-						var objectToDelete = CommentTable.Single(item => item.ID == deleteData.ObjectID);
-						CommentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CommentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CommentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Selection":
 					{
 						//var objectToDelete = new Selection {ID = deleteData.ObjectID};
 						//SelectionTable.Attach(objectToDelete);
-						var objectToDelete = SelectionTable.Single(item => item.ID == deleteData.ObjectID);
-						SelectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SelectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SelectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TextContent":
 					{
 						//var objectToDelete = new TextContent {ID = deleteData.ObjectID};
 						//TextContentTable.Attach(objectToDelete);
-						var objectToDelete = TextContentTable.Single(item => item.ID == deleteData.ObjectID);
-						TextContentTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TextContentTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TextContentTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Map":
 					{
 						//var objectToDelete = new Map {ID = deleteData.ObjectID};
 						//MapTable.Attach(objectToDelete);
-						var objectToDelete = MapTable.Single(item => item.ID == deleteData.ObjectID);
-						MapTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResult":
 					{
 						//var objectToDelete = new MapResult {ID = deleteData.ObjectID};
 						//MapResultTable.Attach(objectToDelete);
-						var objectToDelete = MapResultTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResultsCollection":
 					{
 						//var objectToDelete = new MapResultsCollection {ID = deleteData.ObjectID};
 						//MapResultsCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapResultsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultsCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Video":
 					{
 						//var objectToDelete = new Video {ID = deleteData.ObjectID};
 						//VideoTable.Attach(objectToDelete);
-						var objectToDelete = VideoTable.Single(item => item.ID == deleteData.ObjectID);
-						VideoTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = VideoTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							VideoTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Image":
 					{
 						//var objectToDelete = new Image {ID = deleteData.ObjectID};
 						//ImageTable.Attach(objectToDelete);
-						var objectToDelete = ImageTable.Single(item => item.ID == deleteData.ObjectID);
-						ImageTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ImageTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ImageTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "BinaryFile":
 					{
 						//var objectToDelete = new BinaryFile {ID = deleteData.ObjectID};
 						//BinaryFileTable.Attach(objectToDelete);
-						var objectToDelete = BinaryFileTable.Single(item => item.ID == deleteData.ObjectID);
-						BinaryFileTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = BinaryFileTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							BinaryFileTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Longitude":
 					{
 						//var objectToDelete = new Longitude {ID = deleteData.ObjectID};
 						//LongitudeTable.Attach(objectToDelete);
-						var objectToDelete = LongitudeTable.Single(item => item.ID == deleteData.ObjectID);
-						LongitudeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongitudeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Latitude":
 					{
 						//var objectToDelete = new Latitude {ID = deleteData.ObjectID};
 						//LatitudeTable.Attach(objectToDelete);
-						var objectToDelete = LatitudeTable.Single(item => item.ID == deleteData.ObjectID);
-						LatitudeTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LatitudeTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LatitudeTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Location":
 					{
 						//var objectToDelete = new Location {ID = deleteData.ObjectID};
 						//LocationTable.Attach(objectToDelete);
-						var objectToDelete = LocationTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Date":
 					{
 						//var objectToDelete = new Date {ID = deleteData.ObjectID};
 						//DateTable.Attach(objectToDelete);
-						var objectToDelete = DateTable.Single(item => item.ID == deleteData.ObjectID);
-						DateTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DateTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DateTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryContainer":
 					{
 						//var objectToDelete = new CategoryContainer {ID = deleteData.ObjectID};
 						//CategoryContainerTable.Attach(objectToDelete);
-						var objectToDelete = CategoryContainerTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryContainerTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryContainerTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "Category":
 					{
 						//var objectToDelete = new Category {ID = deleteData.ObjectID};
 						//CategoryTable.Attach(objectToDelete);
-						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentOperation":
 					{
 						//var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ObjectID};
 						//UpdateWebContentOperationTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentOperationTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentOperationTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerItem":
 					{
 						//var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ObjectID};
 						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentHandlerItemTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "PublicationPackageCollection":
 					{
 						//var objectToDelete = new PublicationPackageCollection {ID = deleteData.ObjectID};
 						//PublicationPackageCollectionTable.Attach(objectToDelete);
-						var objectToDelete = PublicationPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = PublicationPackageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBAccountCollaborationGroupCollection":
 					{
 						//var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ObjectID};
 						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBAccountCollaborationGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBLoginInfoCollection":
 					{
 						//var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ObjectID};
 						//TBLoginInfoCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBLoginInfoCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBLoginInfoCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBEmailCollection":
 					{
 						//var objectToDelete = new TBEmailCollection {ID = deleteData.ObjectID};
 						//TBEmailCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBEmailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBEmailCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TBCollaboratorRoleCollection":
 					{
 						//var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ObjectID};
 						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TBCollaboratorRoleCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LoginProviderCollection":
 					{
 						//var objectToDelete = new LoginProviderCollection {ID = deleteData.ObjectID};
 						//LoginProviderCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LoginProviderCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LoginProviderCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AddressAndLocationCollection":
 					{
 						//var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ObjectID};
 						//AddressAndLocationCollectionTable.Attach(objectToDelete);
-						var objectToDelete = AddressAndLocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AddressAndLocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ReferenceCollection":
 					{
 						//var objectToDelete = new ReferenceCollection {ID = deleteData.ObjectID};
 						//ReferenceCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ReferenceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ReferenceCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "RenderedNodeCollection":
 					{
 						//var objectToDelete = new RenderedNodeCollection {ID = deleteData.ObjectID};
 						//RenderedNodeCollectionTable.Attach(objectToDelete);
-						var objectToDelete = RenderedNodeCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = RenderedNodeCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ShortTextCollection":
 					{
 						//var objectToDelete = new ShortTextCollection {ID = deleteData.ObjectID};
 						//ShortTextCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ShortTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ShortTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LongTextCollection":
 					{
 						//var objectToDelete = new LongTextCollection {ID = deleteData.ObjectID};
 						//LongTextCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LongTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LongTextCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapMarkerCollection":
 					{
 						//var objectToDelete = new MapMarkerCollection {ID = deleteData.ObjectID};
 						//MapMarkerCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapMarkerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapMarkerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ModeratorCollection":
 					{
 						//var objectToDelete = new ModeratorCollection {ID = deleteData.ObjectID};
 						//ModeratorCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ModeratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ModeratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CollaboratorCollection":
 					{
 						//var objectToDelete = new CollaboratorCollection {ID = deleteData.ObjectID};
 						//CollaboratorCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CollaboratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CollaboratorCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupCollection":
 					{
 						//var objectToDelete = new GroupCollection {ID = deleteData.ObjectID};
 						//GroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ContentCategoryRankCollection":
 					{
 						//var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ObjectID};
 						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ContentCategoryRankCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ContentCategoryRankCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LinkToContentCollection":
 					{
 						//var objectToDelete = new LinkToContentCollection {ID = deleteData.ObjectID};
 						//LinkToContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LinkToContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LinkToContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "EmbeddedContentCollection":
 					{
 						//var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ObjectID};
 						//EmbeddedContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = EmbeddedContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = EmbeddedContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentGroupCollection":
 					{
 						//var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ObjectID};
 						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentGroupCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "DynamicContentCollection":
 					{
 						//var objectToDelete = new DynamicContentCollection {ID = deleteData.ObjectID};
 						//DynamicContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = DynamicContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = DynamicContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "AttachedToObjectCollection":
 					{
 						//var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ObjectID};
 						//AttachedToObjectCollectionTable.Attach(objectToDelete);
-						var objectToDelete = AttachedToObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = AttachedToObjectCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CommentCollection":
 					{
 						//var objectToDelete = new CommentCollection {ID = deleteData.ObjectID};
 						//CommentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CommentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CommentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CommentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "SelectionCollection":
 					{
 						//var objectToDelete = new SelectionCollection {ID = deleteData.ObjectID};
 						//SelectionCollectionTable.Attach(objectToDelete);
-						var objectToDelete = SelectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SelectionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "TextContentCollection":
 					{
 						//var objectToDelete = new TextContentCollection {ID = deleteData.ObjectID};
 						//TextContentCollectionTable.Attach(objectToDelete);
-						var objectToDelete = TextContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = TextContentCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapCollection":
 					{
 						//var objectToDelete = new MapCollection {ID = deleteData.ObjectID};
 						//MapCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "MapResultCollection":
 					{
 						//var objectToDelete = new MapResultCollection {ID = deleteData.ObjectID};
 						//MapResultCollectionTable.Attach(objectToDelete);
-						var objectToDelete = MapResultCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = MapResultCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "ImageCollection":
 					{
 						//var objectToDelete = new ImageCollection {ID = deleteData.ObjectID};
 						//ImageCollectionTable.Attach(objectToDelete);
-						var objectToDelete = ImageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = ImageCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							ImageCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "BinaryFileCollection":
 					{
 						//var objectToDelete = new BinaryFileCollection {ID = deleteData.ObjectID};
 						//BinaryFileCollectionTable.Attach(objectToDelete);
-						var objectToDelete = BinaryFileCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = BinaryFileCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "LocationCollection":
 					{
 						//var objectToDelete = new LocationCollection {ID = deleteData.ObjectID};
 						//LocationCollectionTable.Attach(objectToDelete);
-						var objectToDelete = LocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = LocationCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LocationCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CategoryCollection":
 					{
 						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
 						//CategoryCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "UpdateWebContentHandlerCollection":
 					{
 						//var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ObjectID};
 						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
-						var objectToDelete = UpdateWebContentHandlerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}

@@ -438,40 +438,45 @@ namespace SQLite.TheBall.Payments {
 					{
 						//var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ObjectID};
 						//GroupSubscriptionPlanTable.Attach(objectToDelete);
-						var objectToDelete = GroupSubscriptionPlanTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "SubscriptionPlanStatus":
 					{
 						//var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ObjectID};
 						//SubscriptionPlanStatusTable.Attach(objectToDelete);
-						var objectToDelete = SubscriptionPlanStatusTable.Single(item => item.ID == deleteData.ObjectID);
-						SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SubscriptionPlanStatusTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CustomerAccount":
 					{
 						//var objectToDelete = new CustomerAccount {ID = deleteData.ObjectID};
 						//CustomerAccountTable.Attach(objectToDelete);
-						var objectToDelete = CustomerAccountTable.Single(item => item.ID == deleteData.ObjectID);
-						CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CustomerAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CustomerAccountTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupSubscriptionPlanCollection":
 					{
 						//var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ObjectID};
 						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GroupSubscriptionPlanCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CustomerAccountCollection":
 					{
 						//var objectToDelete = new CustomerAccountCollection {ID = deleteData.ObjectID};
 						//CustomerAccountCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CustomerAccountCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CustomerAccountCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
@@ -491,40 +496,45 @@ namespace SQLite.TheBall.Payments {
 					{
 						//var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ObjectID};
 						//GroupSubscriptionPlanTable.Attach(objectToDelete);
-						var objectToDelete = GroupSubscriptionPlanTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "SubscriptionPlanStatus":
 					{
 						//var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ObjectID};
 						//SubscriptionPlanStatusTable.Attach(objectToDelete);
-						var objectToDelete = SubscriptionPlanStatusTable.Single(item => item.ID == deleteData.ObjectID);
-						SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = SubscriptionPlanStatusTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CustomerAccount":
 					{
 						//var objectToDelete = new CustomerAccount {ID = deleteData.ObjectID};
 						//CustomerAccountTable.Attach(objectToDelete);
-						var objectToDelete = CustomerAccountTable.Single(item => item.ID == deleteData.ObjectID);
-						CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CustomerAccountTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CustomerAccountTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "GroupSubscriptionPlanCollection":
 					{
 						//var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ObjectID};
 						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
-						var objectToDelete = GroupSubscriptionPlanCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "CustomerAccountCollection":
 					{
 						//var objectToDelete = new CustomerAccountCollection {ID = deleteData.ObjectID};
 						//CustomerAccountCollectionTable.Attach(objectToDelete);
-						var objectToDelete = CustomerAccountCollectionTable.Single(item => item.ID == deleteData.ObjectID);
-						CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = CustomerAccountCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}

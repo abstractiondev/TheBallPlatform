@@ -360,24 +360,27 @@ namespace SQLite.TheBall.Index {
 					{
 						//var objectToDelete = new IndexingRequest {ID = deleteData.ObjectID};
 						//IndexingRequestTable.Attach(objectToDelete);
-						var objectToDelete = IndexingRequestTable.Single(item => item.ID == deleteData.ObjectID);
-						IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = IndexingRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							IndexingRequestTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "QueryRequest":
 					{
 						//var objectToDelete = new QueryRequest {ID = deleteData.ObjectID};
 						//QueryRequestTable.Attach(objectToDelete);
-						var objectToDelete = QueryRequestTable.Single(item => item.ID == deleteData.ObjectID);
-						QueryRequestTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = QueryRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							QueryRequestTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "QueryResultItem":
 					{
 						//var objectToDelete = new QueryResultItem {ID = deleteData.ObjectID};
 						//QueryResultItemTable.Attach(objectToDelete);
-						var objectToDelete = QueryResultItemTable.Single(item => item.ID == deleteData.ObjectID);
-						QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = QueryResultItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							QueryResultItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
@@ -397,24 +400,27 @@ namespace SQLite.TheBall.Index {
 					{
 						//var objectToDelete = new IndexingRequest {ID = deleteData.ObjectID};
 						//IndexingRequestTable.Attach(objectToDelete);
-						var objectToDelete = IndexingRequestTable.Single(item => item.ID == deleteData.ObjectID);
-						IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = IndexingRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							IndexingRequestTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "QueryRequest":
 					{
 						//var objectToDelete = new QueryRequest {ID = deleteData.ObjectID};
 						//QueryRequestTable.Attach(objectToDelete);
-						var objectToDelete = QueryRequestTable.Single(item => item.ID == deleteData.ObjectID);
-						QueryRequestTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = QueryRequestTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							QueryRequestTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 					case "QueryResultItem":
 					{
 						//var objectToDelete = new QueryResultItem {ID = deleteData.ObjectID};
 						//QueryResultItemTable.Attach(objectToDelete);
-						var objectToDelete = QueryResultItemTable.Single(item => item.ID == deleteData.ObjectID);
-						QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+						var objectToDelete = QueryResultItemTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							QueryResultItemTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
