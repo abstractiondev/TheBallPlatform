@@ -166,7 +166,10 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if(updateData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "Account")
+
+				switch(updateData.ObjectType)
+				{
+		        case "Account":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -199,9 +202,9 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Group")
+		        case "Group":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -226,9 +229,9 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupMembership")
+		        case "GroupMembership":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -259,9 +262,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 		            existingObject.Role = serializedObject.Role;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ContentPackage")
+		        case "ContentPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -274,9 +277,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.PackageRootFolder = serializedObject.PackageRootFolder;
 		            existingObject.CreationTime = serializedObject.CreationTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationInput")
+		        case "InformationInput":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -289,9 +292,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.LocalContentName = serializedObject.LocalContentName;
 		            existingObject.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationOutput")
+		        case "InformationOutput":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -305,9 +308,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.LocalContentURL = serializedObject.LocalContentURL;
 		            existingObject.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AuthenticatedAsActiveDevice")
+		        case "AuthenticatedAsActiveDevice":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -322,9 +325,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 		            existingObject.NegotiationURL = serializedObject.NegotiationURL;
 		            existingObject.ConnectionURL = serializedObject.ConnectionURL;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DeviceMembership")
+		        case "DeviceMembership":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -336,9 +339,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.SharedSecret = serializedObject.SharedSecret;
 		            existingObject.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceFiscalExportSummary")
+		        case "InvoiceFiscalExportSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -352,9 +355,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
 					else
 						existingObject.ExportedInvoicesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceSummaryContainer")
+		        case "InvoiceSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -378,9 +381,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
 					else
 						existingObject.PaidInvoicesLast12MonthsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Invoice")
+		        case "Invoice":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -404,9 +407,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
 					else
 						existingObject.InvoiceUsersID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceDetails")
+		        case "InvoiceDetails":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -420,9 +423,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.InterestFeesTotal = serializedObject.InterestFeesTotal;
 		            existingObject.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            existingObject.TotalFeesTotal = serializedObject.TotalFeesTotal;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceUser")
+		        case "InvoiceUser":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -443,9 +446,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
 					else
 						existingObject.InvoiceEventDetailGroupCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceRowGroup")
+		        case "InvoiceRowGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -461,9 +464,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
 					else
 						existingObject.InvoiceRowCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceEventDetailGroup")
+		        case "InvoiceEventDetailGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -476,9 +479,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
 					else
 						existingObject.InvoiceEventDetailCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceEventDetail")
+		        case "InvoiceEventDetail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -496,9 +499,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            existingObject.Taxes = serializedObject.Taxes;
 		            existingObject.PriceWithTaxes = serializedObject.PriceWithTaxes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceRow")
+		        case "InvoiceRow":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -513,9 +516,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            existingObject.Taxes = serializedObject.Taxes;
 		            existingObject.PriceWithTaxes = serializedObject.PriceWithTaxes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -524,9 +527,9 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessContainer")
+		        case "ProcessContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -538,9 +541,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessIDs != null)
 	                    serializedObject.ProcessIDs.ForEach(item => existingObject.ProcessIDs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Process")
+		        case "Process":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -561,9 +564,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessItems != null)
 	                    serializedObject.ProcessItems.ForEach(item => existingObject.ProcessItems.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessItem")
+		        case "ProcessItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -579,9 +582,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.Inputs != null)
 	                    serializedObject.Inputs.ForEach(item => existingObject.Inputs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "SemanticInformationItem")
+		        case "SemanticInformationItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -591,9 +594,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ItemFullType = serializedObject.ItemFullType;
 		            existingObject.ItemValue = serializedObject.ItemValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationOwnerInfo")
+		        case "InformationOwnerInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -603,9 +606,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OwnerType = serializedObject.OwnerType;
 		            existingObject.OwnerIdentifier = serializedObject.OwnerIdentifier;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UsageSummary")
+		        case "UsageSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -618,9 +621,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
 					else
 						existingObject.SummaryMonitoringItemID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UsageMonitorItem")
+		        case "UsageMonitorItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -653,9 +656,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.NetworkUsagesID = serializedObject.NetworkUsages.ID;
 					else
 						existingObject.NetworkUsagesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "RequestResourceUsage")
+		        case "RequestResourceUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -683,9 +686,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.RequestDetailsID = serializedObject.RequestDetails.ID;
 					else
 						existingObject.RequestDetailsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessorUsage")
+		        case "ProcessorUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -701,9 +704,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.AmountOfTicks = serializedObject.AmountOfTicks;
 		            existingObject.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            existingObject.Milliseconds = serializedObject.Milliseconds;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StorageTransactionUsage")
+		        case "StorageTransactionUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -717,9 +720,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTransactions = serializedObject.AmountOfTransactions;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StorageUsage")
+		        case "StorageUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -731,9 +734,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.UsageUnit = serializedObject.UsageUnit;
 		            existingObject.AmountOfUnits = serializedObject.AmountOfUnits;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "NetworkUsage")
+		        case "NetworkUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -747,9 +750,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfBytes = serializedObject.AmountOfBytes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TimeRange")
+		        case "TimeRange":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -759,9 +762,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StartTime = serializedObject.StartTime;
 		            existingObject.EndTime = serializedObject.EndTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "HTTPActivityDetails")
+		        case "HTTPActivityDetails":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -776,8 +779,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.RequestLine = serializedObject.RequestLine;
 		            existingObject.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            existingObject.ReturnedContentLength = serializedObject.ReturnedContentLength;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 
@@ -785,7 +789,10 @@ namespace SQLite.TheBall.CORE {
 		    {
                 if(updateData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "Account")
+
+				switch(updateData.ObjectType)
+				{
+		        case "Account":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -818,9 +825,9 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Group")
+		        case "Group":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -845,9 +852,9 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupMembership")
+		        case "GroupMembership":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -878,9 +885,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 		            existingObject.Role = serializedObject.Role;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ContentPackage")
+		        case "ContentPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -893,9 +900,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.Description = serializedObject.Description;
 		            existingObject.PackageRootFolder = serializedObject.PackageRootFolder;
 		            existingObject.CreationTime = serializedObject.CreationTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationInput")
+		        case "InformationInput":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -908,9 +915,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.LocalContentName = serializedObject.LocalContentName;
 		            existingObject.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationOutput")
+		        case "InformationOutput":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -924,9 +931,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.LocalContentURL = serializedObject.LocalContentURL;
 		            existingObject.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AuthenticatedAsActiveDevice")
+		        case "AuthenticatedAsActiveDevice":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -941,9 +948,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 		            existingObject.NegotiationURL = serializedObject.NegotiationURL;
 		            existingObject.ConnectionURL = serializedObject.ConnectionURL;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DeviceMembership")
+		        case "DeviceMembership":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -955,9 +962,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.SharedSecret = serializedObject.SharedSecret;
 		            existingObject.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            existingObject.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceFiscalExportSummary")
+		        case "InvoiceFiscalExportSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -971,9 +978,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.ExportedInvoicesID = serializedObject.ExportedInvoices.ID;
 					else
 						existingObject.ExportedInvoicesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceSummaryContainer")
+		        case "InvoiceSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -997,9 +1004,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.PaidInvoicesLast12MonthsID = serializedObject.PaidInvoicesLast12Months.ID;
 					else
 						existingObject.PaidInvoicesLast12MonthsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Invoice")
+		        case "Invoice":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1023,9 +1030,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceUsersID = serializedObject.InvoiceUsers.ID;
 					else
 						existingObject.InvoiceUsersID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceDetails")
+		        case "InvoiceDetails":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1039,9 +1046,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.InterestFeesTotal = serializedObject.InterestFeesTotal;
 		            existingObject.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            existingObject.TotalFeesTotal = serializedObject.TotalFeesTotal;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceUser")
+		        case "InvoiceUser":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1062,9 +1069,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceEventDetailGroupCollectionID = serializedObject.InvoiceEventDetailGroupCollection.ID;
 					else
 						existingObject.InvoiceEventDetailGroupCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceRowGroup")
+		        case "InvoiceRowGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1080,9 +1087,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceRowCollectionID = serializedObject.InvoiceRowCollection.ID;
 					else
 						existingObject.InvoiceRowCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceEventDetailGroup")
+		        case "InvoiceEventDetailGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1095,9 +1102,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.InvoiceEventDetailCollectionID = serializedObject.InvoiceEventDetailCollection.ID;
 					else
 						existingObject.InvoiceEventDetailCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceEventDetail")
+		        case "InvoiceEventDetail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1115,9 +1122,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            existingObject.Taxes = serializedObject.Taxes;
 		            existingObject.PriceWithTaxes = serializedObject.PriceWithTaxes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InvoiceRow")
+		        case "InvoiceRow":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1132,9 +1139,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.PriceWithoutTaxes = serializedObject.PriceWithoutTaxes;
 		            existingObject.Taxes = serializedObject.Taxes;
 		            existingObject.PriceWithTaxes = serializedObject.PriceWithTaxes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1143,9 +1150,9 @@ namespace SQLite.TheBall.CORE {
 		            var existingObject = CategoryTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessContainer")
+		        case "ProcessContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1157,9 +1164,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessIDs != null)
 	                    serializedObject.ProcessIDs.ForEach(item => existingObject.ProcessIDs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Process")
+		        case "Process":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1180,9 +1187,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessItems != null)
 	                    serializedObject.ProcessItems.ForEach(item => existingObject.ProcessItems.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessItem")
+		        case "ProcessItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1198,9 +1205,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.Inputs != null)
 	                    serializedObject.Inputs.ForEach(item => existingObject.Inputs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "SemanticInformationItem")
+		        case "SemanticInformationItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1210,9 +1217,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ItemFullType = serializedObject.ItemFullType;
 		            existingObject.ItemValue = serializedObject.ItemValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationOwnerInfo")
+		        case "InformationOwnerInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1222,9 +1229,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OwnerType = serializedObject.OwnerType;
 		            existingObject.OwnerIdentifier = serializedObject.OwnerIdentifier;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UsageSummary")
+		        case "UsageSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1237,9 +1244,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.SummaryMonitoringItemID = serializedObject.SummaryMonitoringItem.ID;
 					else
 						existingObject.SummaryMonitoringItemID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UsageMonitorItem")
+		        case "UsageMonitorItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1272,9 +1279,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.NetworkUsagesID = serializedObject.NetworkUsages.ID;
 					else
 						existingObject.NetworkUsagesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "RequestResourceUsage")
+		        case "RequestResourceUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1302,9 +1309,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.RequestDetailsID = serializedObject.RequestDetails.ID;
 					else
 						existingObject.RequestDetailsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ProcessorUsage")
+		        case "ProcessorUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1320,9 +1327,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.AmountOfTicks = serializedObject.AmountOfTicks;
 		            existingObject.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            existingObject.Milliseconds = serializedObject.Milliseconds;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StorageTransactionUsage")
+		        case "StorageTransactionUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1336,9 +1343,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfTransactions = serializedObject.AmountOfTransactions;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StorageUsage")
+		        case "StorageUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1350,9 +1357,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.UsageUnit = serializedObject.UsageUnit;
 		            existingObject.AmountOfUnits = serializedObject.AmountOfUnits;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "NetworkUsage")
+		        case "NetworkUsage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1366,9 +1373,9 @@ namespace SQLite.TheBall.CORE {
 						existingObject.TimeRangeID = null;
 		            existingObject.UsageType = serializedObject.UsageType;
 		            existingObject.AmountOfBytes = serializedObject.AmountOfBytes;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TimeRange")
+		        case "TimeRange":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1378,9 +1385,9 @@ namespace SQLite.TheBall.CORE {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StartTime = serializedObject.StartTime;
 		            existingObject.EndTime = serializedObject.EndTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "HTTPActivityDetails")
+		        case "HTTPActivityDetails":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1395,8 +1402,9 @@ namespace SQLite.TheBall.CORE {
 		            existingObject.RequestLine = serializedObject.RequestLine;
 		            existingObject.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            existingObject.ReturnedContentLength = serializedObject.ReturnedContentLength;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -1404,7 +1412,10 @@ namespace SQLite.TheBall.CORE {
                 if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "Account")
+
+				switch(insertData.ObjectType)
+				{
+                case "Account":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1432,9 +1443,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 					AccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Group")
+                case "Group":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1458,9 +1469,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 					GroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupMembership")
+                case "GroupMembership":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1491,9 +1502,9 @@ namespace SQLite.TheBall.CORE {
 
 		            objectToAdd.Role = serializedObject.Role;
 					GroupMembershipTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ContentPackage")
+                case "ContentPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1506,9 +1517,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PackageRootFolder = serializedObject.PackageRootFolder;
 		            objectToAdd.CreationTime = serializedObject.CreationTime;
 					ContentPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationInput")
+                case "InformationInput":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1521,9 +1532,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					InformationInputTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationOutput")
+                case "InformationOutput":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1537,9 +1548,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					InformationOutputTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AuthenticatedAsActiveDevice")
+                case "AuthenticatedAsActiveDevice":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1554,9 +1565,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.NegotiationURL = serializedObject.NegotiationURL;
 		            objectToAdd.ConnectionURL = serializedObject.ConnectionURL;
 					AuthenticatedAsActiveDeviceTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DeviceMembership")
+                case "DeviceMembership":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1568,9 +1579,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					DeviceMembershipTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceFiscalExportSummary")
+                case "InvoiceFiscalExportSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1584,9 +1595,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.ExportedInvoicesID = null;
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceSummaryContainer")
+                case "InvoiceSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1610,9 +1621,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.PaidInvoicesLast12MonthsID = null;
 					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Invoice")
+                case "Invoice":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1636,9 +1647,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceUsersID = null;
 					InvoiceTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceDetails")
+                case "InvoiceDetails":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1652,9 +1663,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            objectToAdd.TotalFeesTotal = serializedObject.TotalFeesTotal;
 					InvoiceDetailsTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceUser")
+                case "InvoiceUser":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1675,9 +1686,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceEventDetailGroupCollectionID = null;
 					InvoiceUserTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceRowGroup")
+                case "InvoiceRowGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1693,9 +1704,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceRowCollectionID = null;
 					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceEventDetailGroup")
+                case "InvoiceEventDetailGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1708,9 +1719,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceEventDetailCollectionID = null;
 					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceEventDetail")
+                case "InvoiceEventDetail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1728,9 +1739,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
 					InvoiceEventDetailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceRow")
+                case "InvoiceRow":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1745,9 +1756,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
 					InvoiceRowTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1756,9 +1767,9 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessContainer")
+                case "ProcessContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1768,9 +1779,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessIDs != null)
 						serializedObject.ProcessIDs.ForEach(item => objectToAdd.ProcessIDs.Add(item));
 					ProcessContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Process")
+                case "Process":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1787,9 +1798,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessItems != null)
 						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
 					ProcessTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessItem")
+                case "ProcessItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1801,9 +1812,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.Inputs != null)
 						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
 					ProcessItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "SemanticInformationItem")
+                case "SemanticInformationItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1813,9 +1824,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
 		            objectToAdd.ItemValue = serializedObject.ItemValue;
 					SemanticInformationItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationOwnerInfo")
+                case "InformationOwnerInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1825,9 +1836,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
 		            objectToAdd.OwnerIdentifier = serializedObject.OwnerIdentifier;
 					InformationOwnerInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UsageSummary")
+                case "UsageSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1840,9 +1851,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.SummaryMonitoringItemID = null;
 					UsageSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UsageMonitorItem")
+                case "UsageMonitorItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1875,9 +1886,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.NetworkUsagesID = null;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "RequestResourceUsage")
+                case "RequestResourceUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1905,9 +1916,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.RequestDetailsID = null;
 					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessorUsage")
+                case "ProcessorUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1923,9 +1934,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            objectToAdd.Milliseconds = serializedObject.Milliseconds;
 					ProcessorUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StorageTransactionUsage")
+                case "StorageTransactionUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1939,9 +1950,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
 					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StorageUsage")
+                case "StorageUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1953,9 +1964,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageUnit = serializedObject.UsageUnit;
 		            objectToAdd.AmountOfUnits = serializedObject.AmountOfUnits;
 					StorageUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "NetworkUsage")
+                case "NetworkUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1969,9 +1980,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
 					NetworkUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TimeRange")
+                case "TimeRange":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1981,9 +1992,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.StartTime = serializedObject.StartTime;
 		            objectToAdd.EndTime = serializedObject.EndTime;
 					TimeRangeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "HTTPActivityDetails")
+                case "HTTPActivityDetails":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1998,8 +2009,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            objectToAdd.ReturnedContentLength = serializedObject.ReturnedContentLength;
 					HTTPActivityDetailsTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -2008,7 +2020,10 @@ namespace SQLite.TheBall.CORE {
                 if (insertData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "Account")
+
+				switch(insertData.ObjectType)
+				{
+                case "Account":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2036,9 +2051,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 					AccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Group")
+                case "Group":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2062,9 +2077,9 @@ namespace SQLite.TheBall.CORE {
                     }
 
 					GroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupMembership")
+                case "GroupMembership":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2095,9 +2110,9 @@ namespace SQLite.TheBall.CORE {
 
 		            objectToAdd.Role = serializedObject.Role;
 					GroupMembershipTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ContentPackage")
+                case "ContentPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2110,9 +2125,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PackageRootFolder = serializedObject.PackageRootFolder;
 		            objectToAdd.CreationTime = serializedObject.CreationTime;
 					ContentPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationInput")
+                case "InformationInput":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2125,9 +2140,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					InformationInputTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationOutput")
+                case "InformationOutput":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2141,9 +2156,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.AuthenticatedDeviceID = serializedObject.AuthenticatedDeviceID;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					InformationOutputTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AuthenticatedAsActiveDevice")
+                case "AuthenticatedAsActiveDevice":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2158,9 +2173,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.NegotiationURL = serializedObject.NegotiationURL;
 		            objectToAdd.ConnectionURL = serializedObject.ConnectionURL;
 					AuthenticatedAsActiveDeviceTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DeviceMembership")
+                case "DeviceMembership":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2172,9 +2187,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.ActiveSymmetricAESKey = serializedObject.ActiveSymmetricAESKey;
 		            objectToAdd.IsValidatedAndActive = serializedObject.IsValidatedAndActive;
 					DeviceMembershipTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceFiscalExportSummary")
+                case "InvoiceFiscalExportSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2188,9 +2203,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.ExportedInvoicesID = null;
 					InvoiceFiscalExportSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceSummaryContainer")
+                case "InvoiceSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2214,9 +2229,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.PaidInvoicesLast12MonthsID = null;
 					InvoiceSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Invoice")
+                case "Invoice":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2240,9 +2255,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceUsersID = null;
 					InvoiceTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceDetails")
+                case "InvoiceDetails":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2256,9 +2271,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.PenaltyFeesTotal = serializedObject.PenaltyFeesTotal;
 		            objectToAdd.TotalFeesTotal = serializedObject.TotalFeesTotal;
 					InvoiceDetailsTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceUser")
+                case "InvoiceUser":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2279,9 +2294,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceEventDetailGroupCollectionID = null;
 					InvoiceUserTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceRowGroup")
+                case "InvoiceRowGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2297,9 +2312,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceRowCollectionID = null;
 					InvoiceRowGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceEventDetailGroup")
+                case "InvoiceEventDetailGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2312,9 +2327,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.InvoiceEventDetailCollectionID = null;
 					InvoiceEventDetailGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceEventDetail")
+                case "InvoiceEventDetail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2332,9 +2347,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
 					InvoiceEventDetailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InvoiceRow")
+                case "InvoiceRow":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2349,9 +2364,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.Taxes = serializedObject.Taxes;
 		            objectToAdd.PriceWithTaxes = serializedObject.PriceWithTaxes;
 					InvoiceRowTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2360,9 +2375,9 @@ namespace SQLite.TheBall.CORE {
                     var objectToAdd = new Category {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessContainer")
+                case "ProcessContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2372,9 +2387,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessIDs != null)
 						serializedObject.ProcessIDs.ForEach(item => objectToAdd.ProcessIDs.Add(item));
 					ProcessContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Process")
+                case "Process":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2391,9 +2406,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.ProcessItems != null)
 						serializedObject.ProcessItems.ForEach(item => objectToAdd.ProcessItems.Add(item));
 					ProcessTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessItem")
+                case "ProcessItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2405,9 +2420,9 @@ namespace SQLite.TheBall.CORE {
 					if(serializedObject.Inputs != null)
 						serializedObject.Inputs.ForEach(item => objectToAdd.Inputs.Add(item));
 					ProcessItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "SemanticInformationItem")
+                case "SemanticInformationItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2417,9 +2432,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.ItemFullType = serializedObject.ItemFullType;
 		            objectToAdd.ItemValue = serializedObject.ItemValue;
 					SemanticInformationItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationOwnerInfo")
+                case "InformationOwnerInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2429,9 +2444,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.OwnerType = serializedObject.OwnerType;
 		            objectToAdd.OwnerIdentifier = serializedObject.OwnerIdentifier;
 					InformationOwnerInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UsageSummary")
+                case "UsageSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2444,9 +2459,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.SummaryMonitoringItemID = null;
 					UsageSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UsageMonitorItem")
+                case "UsageMonitorItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2479,9 +2494,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.NetworkUsagesID = null;
 					UsageMonitorItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "RequestResourceUsage")
+                case "RequestResourceUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2509,9 +2524,9 @@ namespace SQLite.TheBall.CORE {
 					else
 						objectToAdd.RequestDetailsID = null;
 					RequestResourceUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ProcessorUsage")
+                case "ProcessorUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2527,9 +2542,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.FrequencyTicksPerSecond = serializedObject.FrequencyTicksPerSecond;
 		            objectToAdd.Milliseconds = serializedObject.Milliseconds;
 					ProcessorUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StorageTransactionUsage")
+                case "StorageTransactionUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2543,9 +2558,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfTransactions = serializedObject.AmountOfTransactions;
 					StorageTransactionUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StorageUsage")
+                case "StorageUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2557,9 +2572,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageUnit = serializedObject.UsageUnit;
 		            objectToAdd.AmountOfUnits = serializedObject.AmountOfUnits;
 					StorageUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "NetworkUsage")
+                case "NetworkUsage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2573,9 +2588,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.UsageType = serializedObject.UsageType;
 		            objectToAdd.AmountOfBytes = serializedObject.AmountOfBytes;
 					NetworkUsageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TimeRange")
+                case "TimeRange":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2585,9 +2600,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.StartTime = serializedObject.StartTime;
 		            objectToAdd.EndTime = serializedObject.EndTime;
 					TimeRangeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "HTTPActivityDetails")
+                case "HTTPActivityDetails":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2602,8 +2617,9 @@ namespace SQLite.TheBall.CORE {
 		            objectToAdd.HTTPStatusCode = serializedObject.HTTPStatusCode;
 		            objectToAdd.ReturnedContentLength = serializedObject.ReturnedContentLength;
 					HTTPActivityDetailsTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -2612,357 +2628,411 @@ namespace SQLite.TheBall.CORE {
                 if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "Account")
-		        {
-		            var objectToDelete = new Account {ID = deleteData.ID};
-                    AccountTable.Attach(objectToDelete);
-                    AccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Group")
-		        {
-		            var objectToDelete = new Group {ID = deleteData.ID};
-                    GroupTable.Attach(objectToDelete);
-                    GroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupMembership")
-		        {
-		            var objectToDelete = new GroupMembership {ID = deleteData.ID};
-                    GroupMembershipTable.Attach(objectToDelete);
-                    GroupMembershipTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentPackage")
-		        {
-		            var objectToDelete = new ContentPackage {ID = deleteData.ID};
-                    ContentPackageTable.Attach(objectToDelete);
-                    ContentPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationInput")
-		        {
-		            var objectToDelete = new InformationInput {ID = deleteData.ID};
-                    InformationInputTable.Attach(objectToDelete);
-                    InformationInputTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOutput")
-		        {
-		            var objectToDelete = new InformationOutput {ID = deleteData.ID};
-                    InformationOutputTable.Attach(objectToDelete);
-                    InformationOutputTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AuthenticatedAsActiveDevice")
-		        {
-		            var objectToDelete = new AuthenticatedAsActiveDevice {ID = deleteData.ID};
-                    AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
-                    AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DeviceMembership")
-		        {
-		            var objectToDelete = new DeviceMembership {ID = deleteData.ID};
-                    DeviceMembershipTable.Attach(objectToDelete);
-                    DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceFiscalExportSummary")
-		        {
-		            var objectToDelete = new InvoiceFiscalExportSummary {ID = deleteData.ID};
-                    InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
-                    InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceSummaryContainer")
-		        {
-		            var objectToDelete = new InvoiceSummaryContainer {ID = deleteData.ID};
-                    InvoiceSummaryContainerTable.Attach(objectToDelete);
-                    InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Invoice")
-		        {
-		            var objectToDelete = new Invoice {ID = deleteData.ID};
-                    InvoiceTable.Attach(objectToDelete);
-                    InvoiceTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceDetails")
-		        {
-		            var objectToDelete = new InvoiceDetails {ID = deleteData.ID};
-                    InvoiceDetailsTable.Attach(objectToDelete);
-                    InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceUser")
-		        {
-		            var objectToDelete = new InvoiceUser {ID = deleteData.ID};
-                    InvoiceUserTable.Attach(objectToDelete);
-                    InvoiceUserTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowGroup")
-		        {
-		            var objectToDelete = new InvoiceRowGroup {ID = deleteData.ID};
-                    InvoiceRowGroupTable.Attach(objectToDelete);
-                    InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailGroup")
-		        {
-		            var objectToDelete = new InvoiceEventDetailGroup {ID = deleteData.ID};
-                    InvoiceEventDetailGroupTable.Attach(objectToDelete);
-                    InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetail")
-		        {
-		            var objectToDelete = new InvoiceEventDetail {ID = deleteData.ID};
-                    InvoiceEventDetailTable.Attach(objectToDelete);
-                    InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRow")
-		        {
-		            var objectToDelete = new InvoiceRow {ID = deleteData.ID};
-                    InvoiceRowTable.Attach(objectToDelete);
-                    InvoiceRowTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessContainer")
-		        {
-		            var objectToDelete = new ProcessContainer {ID = deleteData.ID};
-                    ProcessContainerTable.Attach(objectToDelete);
-                    ProcessContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Process")
-		        {
-		            var objectToDelete = new Process {ID = deleteData.ID};
-                    ProcessTable.Attach(objectToDelete);
-                    ProcessTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessItem")
-		        {
-		            var objectToDelete = new ProcessItem {ID = deleteData.ID};
-                    ProcessItemTable.Attach(objectToDelete);
-                    ProcessItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SemanticInformationItem")
-		        {
-		            var objectToDelete = new SemanticInformationItem {ID = deleteData.ID};
-                    SemanticInformationItemTable.Attach(objectToDelete);
-                    SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOwnerInfo")
-		        {
-		            var objectToDelete = new InformationOwnerInfo {ID = deleteData.ID};
-                    InformationOwnerInfoTable.Attach(objectToDelete);
-                    InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UsageSummary")
-		        {
-		            var objectToDelete = new UsageSummary {ID = deleteData.ID};
-                    UsageSummaryTable.Attach(objectToDelete);
-                    UsageSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UsageMonitorItem")
-		        {
-		            var objectToDelete = new UsageMonitorItem {ID = deleteData.ID};
-                    UsageMonitorItemTable.Attach(objectToDelete);
-                    UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RequestResourceUsage")
-		        {
-		            var objectToDelete = new RequestResourceUsage {ID = deleteData.ID};
-                    RequestResourceUsageTable.Attach(objectToDelete);
-                    RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessorUsage")
-		        {
-		            var objectToDelete = new ProcessorUsage {ID = deleteData.ID};
-                    ProcessorUsageTable.Attach(objectToDelete);
-                    ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageTransactionUsage")
-		        {
-		            var objectToDelete = new StorageTransactionUsage {ID = deleteData.ID};
-                    StorageTransactionUsageTable.Attach(objectToDelete);
-                    StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageUsage")
-		        {
-		            var objectToDelete = new StorageUsage {ID = deleteData.ID};
-                    StorageUsageTable.Attach(objectToDelete);
-                    StorageUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NetworkUsage")
-		        {
-		            var objectToDelete = new NetworkUsage {ID = deleteData.ID};
-                    NetworkUsageTable.Attach(objectToDelete);
-                    NetworkUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TimeRange")
-		        {
-		            var objectToDelete = new TimeRange {ID = deleteData.ID};
-                    TimeRangeTable.Attach(objectToDelete);
-                    TimeRangeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "HTTPActivityDetails")
-		        {
-		            var objectToDelete = new HTTPActivityDetails {ID = deleteData.ID};
-                    HTTPActivityDetailsTable.Attach(objectToDelete);
-                    HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentPackageCollection")
-		        {
-		            var objectToDelete = new ContentPackageCollection {ID = deleteData.ID};
-                    ContentPackageCollectionTable.Attach(objectToDelete);
-                    ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationInputCollection")
-		        {
-		            var objectToDelete = new InformationInputCollection {ID = deleteData.ID};
-                    InformationInputCollectionTable.Attach(objectToDelete);
-                    InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOutputCollection")
-		        {
-		            var objectToDelete = new InformationOutputCollection {ID = deleteData.ID};
-                    InformationOutputCollectionTable.Attach(objectToDelete);
-                    InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AuthenticatedAsActiveDeviceCollection")
-		        {
-		            var objectToDelete = new AuthenticatedAsActiveDeviceCollection {ID = deleteData.ID};
-                    AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
-                    AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DeviceMembershipCollection")
-		        {
-		            var objectToDelete = new DeviceMembershipCollection {ID = deleteData.ID};
-                    DeviceMembershipCollectionTable.Attach(objectToDelete);
-                    DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceCollection")
-		        {
-		            var objectToDelete = new InvoiceCollection {ID = deleteData.ID};
-                    InvoiceCollectionTable.Attach(objectToDelete);
-                    InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceUserCollection")
-		        {
-		            var objectToDelete = new InvoiceUserCollection {ID = deleteData.ID};
-                    InvoiceUserCollectionTable.Attach(objectToDelete);
-                    InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowGroupCollection")
-		        {
-		            var objectToDelete = new InvoiceRowGroupCollection {ID = deleteData.ID};
-                    InvoiceRowGroupCollectionTable.Attach(objectToDelete);
-                    InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailGroupCollection")
-		        {
-		            var objectToDelete = new InvoiceEventDetailGroupCollection {ID = deleteData.ID};
-                    InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
-                    InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailCollection")
-		        {
-		            var objectToDelete = new InvoiceEventDetailCollection {ID = deleteData.ID};
-                    InvoiceEventDetailCollectionTable.Attach(objectToDelete);
-                    InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowCollection")
-		        {
-		            var objectToDelete = new InvoiceRowCollection {ID = deleteData.ID};
-                    InvoiceRowCollectionTable.Attach(objectToDelete);
-                    InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryCollection")
-		        {
-		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
-                    CategoryCollectionTable.Attach(objectToDelete);
-                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RequestResourceUsageCollection")
-		        {
-		            var objectToDelete = new RequestResourceUsageCollection {ID = deleteData.ID};
-                    RequestResourceUsageCollectionTable.Attach(objectToDelete);
-                    RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessorUsageCollection")
-		        {
-		            var objectToDelete = new ProcessorUsageCollection {ID = deleteData.ID};
-                    ProcessorUsageCollectionTable.Attach(objectToDelete);
-                    ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageTransactionUsageCollection")
-		        {
-		            var objectToDelete = new StorageTransactionUsageCollection {ID = deleteData.ID};
-                    StorageTransactionUsageCollectionTable.Attach(objectToDelete);
-                    StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageUsageCollection")
-		        {
-		            var objectToDelete = new StorageUsageCollection {ID = deleteData.ID};
-                    StorageUsageCollectionTable.Attach(objectToDelete);
-                    StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NetworkUsageCollection")
-		        {
-		            var objectToDelete = new NetworkUsageCollection {ID = deleteData.ID};
-                    NetworkUsageCollectionTable.Attach(objectToDelete);
-                    NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "HTTPActivityDetailsCollection")
-		        {
-		            var objectToDelete = new HTTPActivityDetailsCollection {ID = deleteData.ID};
-                    HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
-                    HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "Account":
+					{
+						//var objectToDelete = new Account {ID = deleteData.ObjectID};
+						//AccountTable.Attach(objectToDelete);
+						var objectToDelete = AccountTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Group":
+					{
+						//var objectToDelete = new Group {ID = deleteData.ObjectID};
+						//GroupTable.Attach(objectToDelete);
+						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupMembership":
+					{
+						//var objectToDelete = new GroupMembership {ID = deleteData.ObjectID};
+						//GroupMembershipTable.Attach(objectToDelete);
+						var objectToDelete = GroupMembershipTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupMembershipTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentPackage":
+					{
+						//var objectToDelete = new ContentPackage {ID = deleteData.ObjectID};
+						//ContentPackageTable.Attach(objectToDelete);
+						var objectToDelete = ContentPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationInput":
+					{
+						//var objectToDelete = new InformationInput {ID = deleteData.ObjectID};
+						//InformationInputTable.Attach(objectToDelete);
+						var objectToDelete = InformationInputTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationInputTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOutput":
+					{
+						//var objectToDelete = new InformationOutput {ID = deleteData.ObjectID};
+						//InformationOutputTable.Attach(objectToDelete);
+						var objectToDelete = InformationOutputTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOutputTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AuthenticatedAsActiveDevice":
+					{
+						//var objectToDelete = new AuthenticatedAsActiveDevice {ID = deleteData.ObjectID};
+						//AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
+						var objectToDelete = AuthenticatedAsActiveDeviceTable.Single(item => item.ID == deleteData.ObjectID);
+						AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DeviceMembership":
+					{
+						//var objectToDelete = new DeviceMembership {ID = deleteData.ObjectID};
+						//DeviceMembershipTable.Attach(objectToDelete);
+						var objectToDelete = DeviceMembershipTable.Single(item => item.ID == deleteData.ObjectID);
+						DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceFiscalExportSummary":
+					{
+						//var objectToDelete = new InvoiceFiscalExportSummary {ID = deleteData.ObjectID};
+						//InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceFiscalExportSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceSummaryContainer":
+					{
+						//var objectToDelete = new InvoiceSummaryContainer {ID = deleteData.ObjectID};
+						//InvoiceSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Invoice":
+					{
+						//var objectToDelete = new Invoice {ID = deleteData.ObjectID};
+						//InvoiceTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceDetails":
+					{
+						//var objectToDelete = new InvoiceDetails {ID = deleteData.ObjectID};
+						//InvoiceDetailsTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceDetailsTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceUser":
+					{
+						//var objectToDelete = new InvoiceUser {ID = deleteData.ObjectID};
+						//InvoiceUserTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceUserTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceUserTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowGroup":
+					{
+						//var objectToDelete = new InvoiceRowGroup {ID = deleteData.ObjectID};
+						//InvoiceRowGroupTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailGroup":
+					{
+						//var objectToDelete = new InvoiceEventDetailGroup {ID = deleteData.ObjectID};
+						//InvoiceEventDetailGroupTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetail":
+					{
+						//var objectToDelete = new InvoiceEventDetail {ID = deleteData.ObjectID};
+						//InvoiceEventDetailTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRow":
+					{
+						//var objectToDelete = new InvoiceRow {ID = deleteData.ObjectID};
+						//InvoiceRowTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessContainer":
+					{
+						//var objectToDelete = new ProcessContainer {ID = deleteData.ObjectID};
+						//ProcessContainerTable.Attach(objectToDelete);
+						var objectToDelete = ProcessContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Process":
+					{
+						//var objectToDelete = new Process {ID = deleteData.ObjectID};
+						//ProcessTable.Attach(objectToDelete);
+						var objectToDelete = ProcessTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessItem":
+					{
+						//var objectToDelete = new ProcessItem {ID = deleteData.ObjectID};
+						//ProcessItemTable.Attach(objectToDelete);
+						var objectToDelete = ProcessItemTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SemanticInformationItem":
+					{
+						//var objectToDelete = new SemanticInformationItem {ID = deleteData.ObjectID};
+						//SemanticInformationItemTable.Attach(objectToDelete);
+						var objectToDelete = SemanticInformationItemTable.Single(item => item.ID == deleteData.ObjectID);
+						SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOwnerInfo":
+					{
+						//var objectToDelete = new InformationOwnerInfo {ID = deleteData.ObjectID};
+						//InformationOwnerInfoTable.Attach(objectToDelete);
+						var objectToDelete = InformationOwnerInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UsageSummary":
+					{
+						//var objectToDelete = new UsageSummary {ID = deleteData.ObjectID};
+						//UsageSummaryTable.Attach(objectToDelete);
+						var objectToDelete = UsageSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						UsageSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UsageMonitorItem":
+					{
+						//var objectToDelete = new UsageMonitorItem {ID = deleteData.ObjectID};
+						//UsageMonitorItemTable.Attach(objectToDelete);
+						var objectToDelete = UsageMonitorItemTable.Single(item => item.ID == deleteData.ObjectID);
+						UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RequestResourceUsage":
+					{
+						//var objectToDelete = new RequestResourceUsage {ID = deleteData.ObjectID};
+						//RequestResourceUsageTable.Attach(objectToDelete);
+						var objectToDelete = RequestResourceUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessorUsage":
+					{
+						//var objectToDelete = new ProcessorUsage {ID = deleteData.ObjectID};
+						//ProcessorUsageTable.Attach(objectToDelete);
+						var objectToDelete = ProcessorUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageTransactionUsage":
+					{
+						//var objectToDelete = new StorageTransactionUsage {ID = deleteData.ObjectID};
+						//StorageTransactionUsageTable.Attach(objectToDelete);
+						var objectToDelete = StorageTransactionUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageUsage":
+					{
+						//var objectToDelete = new StorageUsage {ID = deleteData.ObjectID};
+						//StorageUsageTable.Attach(objectToDelete);
+						var objectToDelete = StorageUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NetworkUsage":
+					{
+						//var objectToDelete = new NetworkUsage {ID = deleteData.ObjectID};
+						//NetworkUsageTable.Attach(objectToDelete);
+						var objectToDelete = NetworkUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						NetworkUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TimeRange":
+					{
+						//var objectToDelete = new TimeRange {ID = deleteData.ObjectID};
+						//TimeRangeTable.Attach(objectToDelete);
+						var objectToDelete = TimeRangeTable.Single(item => item.ID == deleteData.ObjectID);
+						TimeRangeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "HTTPActivityDetails":
+					{
+						//var objectToDelete = new HTTPActivityDetails {ID = deleteData.ObjectID};
+						//HTTPActivityDetailsTable.Attach(objectToDelete);
+						var objectToDelete = HTTPActivityDetailsTable.Single(item => item.ID == deleteData.ObjectID);
+						HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentPackageCollection":
+					{
+						//var objectToDelete = new ContentPackageCollection {ID = deleteData.ObjectID};
+						//ContentPackageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ContentPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationInputCollection":
+					{
+						//var objectToDelete = new InformationInputCollection {ID = deleteData.ObjectID};
+						//InformationInputCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InformationInputCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOutputCollection":
+					{
+						//var objectToDelete = new InformationOutputCollection {ID = deleteData.ObjectID};
+						//InformationOutputCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InformationOutputCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AuthenticatedAsActiveDeviceCollection":
+					{
+						//var objectToDelete = new AuthenticatedAsActiveDeviceCollection {ID = deleteData.ObjectID};
+						//AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AuthenticatedAsActiveDeviceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DeviceMembershipCollection":
+					{
+						//var objectToDelete = new DeviceMembershipCollection {ID = deleteData.ObjectID};
+						//DeviceMembershipCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DeviceMembershipCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceCollection":
+					{
+						//var objectToDelete = new InvoiceCollection {ID = deleteData.ObjectID};
+						//InvoiceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceUserCollection":
+					{
+						//var objectToDelete = new InvoiceUserCollection {ID = deleteData.ObjectID};
+						//InvoiceUserCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceUserCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowGroupCollection":
+					{
+						//var objectToDelete = new InvoiceRowGroupCollection {ID = deleteData.ObjectID};
+						//InvoiceRowGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailGroupCollection":
+					{
+						//var objectToDelete = new InvoiceEventDetailGroupCollection {ID = deleteData.ObjectID};
+						//InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailCollection":
+					{
+						//var objectToDelete = new InvoiceEventDetailCollection {ID = deleteData.ObjectID};
+						//InvoiceEventDetailCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowCollection":
+					{
+						//var objectToDelete = new InvoiceRowCollection {ID = deleteData.ObjectID};
+						//InvoiceRowCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryCollection":
+					{
+						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
+						//CategoryCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RequestResourceUsageCollection":
+					{
+						//var objectToDelete = new RequestResourceUsageCollection {ID = deleteData.ObjectID};
+						//RequestResourceUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = RequestResourceUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessorUsageCollection":
+					{
+						//var objectToDelete = new ProcessorUsageCollection {ID = deleteData.ObjectID};
+						//ProcessorUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ProcessorUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageTransactionUsageCollection":
+					{
+						//var objectToDelete = new StorageTransactionUsageCollection {ID = deleteData.ObjectID};
+						//StorageTransactionUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = StorageTransactionUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageUsageCollection":
+					{
+						//var objectToDelete = new StorageUsageCollection {ID = deleteData.ObjectID};
+						//StorageUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = StorageUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NetworkUsageCollection":
+					{
+						//var objectToDelete = new NetworkUsageCollection {ID = deleteData.ObjectID};
+						//NetworkUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = NetworkUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "HTTPActivityDetailsCollection":
+					{
+						//var objectToDelete = new HTTPActivityDetailsCollection {ID = deleteData.ObjectID};
+						//HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
+						var objectToDelete = HTTPActivityDetailsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
@@ -2971,357 +3041,411 @@ namespace SQLite.TheBall.CORE {
                 if (deleteData.SemanticDomain != "TheBall.CORE")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "Account")
-		        {
-		            var objectToDelete = new Account {ID = deleteData.ID};
-                    AccountTable.Attach(objectToDelete);
-                    AccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Group")
-		        {
-		            var objectToDelete = new Group {ID = deleteData.ID};
-                    GroupTable.Attach(objectToDelete);
-                    GroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupMembership")
-		        {
-		            var objectToDelete = new GroupMembership {ID = deleteData.ID};
-                    GroupMembershipTable.Attach(objectToDelete);
-                    GroupMembershipTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentPackage")
-		        {
-		            var objectToDelete = new ContentPackage {ID = deleteData.ID};
-                    ContentPackageTable.Attach(objectToDelete);
-                    ContentPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationInput")
-		        {
-		            var objectToDelete = new InformationInput {ID = deleteData.ID};
-                    InformationInputTable.Attach(objectToDelete);
-                    InformationInputTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOutput")
-		        {
-		            var objectToDelete = new InformationOutput {ID = deleteData.ID};
-                    InformationOutputTable.Attach(objectToDelete);
-                    InformationOutputTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AuthenticatedAsActiveDevice")
-		        {
-		            var objectToDelete = new AuthenticatedAsActiveDevice {ID = deleteData.ID};
-                    AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
-                    AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DeviceMembership")
-		        {
-		            var objectToDelete = new DeviceMembership {ID = deleteData.ID};
-                    DeviceMembershipTable.Attach(objectToDelete);
-                    DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceFiscalExportSummary")
-		        {
-		            var objectToDelete = new InvoiceFiscalExportSummary {ID = deleteData.ID};
-                    InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
-                    InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceSummaryContainer")
-		        {
-		            var objectToDelete = new InvoiceSummaryContainer {ID = deleteData.ID};
-                    InvoiceSummaryContainerTable.Attach(objectToDelete);
-                    InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Invoice")
-		        {
-		            var objectToDelete = new Invoice {ID = deleteData.ID};
-                    InvoiceTable.Attach(objectToDelete);
-                    InvoiceTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceDetails")
-		        {
-		            var objectToDelete = new InvoiceDetails {ID = deleteData.ID};
-                    InvoiceDetailsTable.Attach(objectToDelete);
-                    InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceUser")
-		        {
-		            var objectToDelete = new InvoiceUser {ID = deleteData.ID};
-                    InvoiceUserTable.Attach(objectToDelete);
-                    InvoiceUserTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowGroup")
-		        {
-		            var objectToDelete = new InvoiceRowGroup {ID = deleteData.ID};
-                    InvoiceRowGroupTable.Attach(objectToDelete);
-                    InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailGroup")
-		        {
-		            var objectToDelete = new InvoiceEventDetailGroup {ID = deleteData.ID};
-                    InvoiceEventDetailGroupTable.Attach(objectToDelete);
-                    InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetail")
-		        {
-		            var objectToDelete = new InvoiceEventDetail {ID = deleteData.ID};
-                    InvoiceEventDetailTable.Attach(objectToDelete);
-                    InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRow")
-		        {
-		            var objectToDelete = new InvoiceRow {ID = deleteData.ID};
-                    InvoiceRowTable.Attach(objectToDelete);
-                    InvoiceRowTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessContainer")
-		        {
-		            var objectToDelete = new ProcessContainer {ID = deleteData.ID};
-                    ProcessContainerTable.Attach(objectToDelete);
-                    ProcessContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Process")
-		        {
-		            var objectToDelete = new Process {ID = deleteData.ID};
-                    ProcessTable.Attach(objectToDelete);
-                    ProcessTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessItem")
-		        {
-		            var objectToDelete = new ProcessItem {ID = deleteData.ID};
-                    ProcessItemTable.Attach(objectToDelete);
-                    ProcessItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SemanticInformationItem")
-		        {
-		            var objectToDelete = new SemanticInformationItem {ID = deleteData.ID};
-                    SemanticInformationItemTable.Attach(objectToDelete);
-                    SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOwnerInfo")
-		        {
-		            var objectToDelete = new InformationOwnerInfo {ID = deleteData.ID};
-                    InformationOwnerInfoTable.Attach(objectToDelete);
-                    InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UsageSummary")
-		        {
-		            var objectToDelete = new UsageSummary {ID = deleteData.ID};
-                    UsageSummaryTable.Attach(objectToDelete);
-                    UsageSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UsageMonitorItem")
-		        {
-		            var objectToDelete = new UsageMonitorItem {ID = deleteData.ID};
-                    UsageMonitorItemTable.Attach(objectToDelete);
-                    UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RequestResourceUsage")
-		        {
-		            var objectToDelete = new RequestResourceUsage {ID = deleteData.ID};
-                    RequestResourceUsageTable.Attach(objectToDelete);
-                    RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessorUsage")
-		        {
-		            var objectToDelete = new ProcessorUsage {ID = deleteData.ID};
-                    ProcessorUsageTable.Attach(objectToDelete);
-                    ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageTransactionUsage")
-		        {
-		            var objectToDelete = new StorageTransactionUsage {ID = deleteData.ID};
-                    StorageTransactionUsageTable.Attach(objectToDelete);
-                    StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageUsage")
-		        {
-		            var objectToDelete = new StorageUsage {ID = deleteData.ID};
-                    StorageUsageTable.Attach(objectToDelete);
-                    StorageUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NetworkUsage")
-		        {
-		            var objectToDelete = new NetworkUsage {ID = deleteData.ID};
-                    NetworkUsageTable.Attach(objectToDelete);
-                    NetworkUsageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TimeRange")
-		        {
-		            var objectToDelete = new TimeRange {ID = deleteData.ID};
-                    TimeRangeTable.Attach(objectToDelete);
-                    TimeRangeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "HTTPActivityDetails")
-		        {
-		            var objectToDelete = new HTTPActivityDetails {ID = deleteData.ID};
-                    HTTPActivityDetailsTable.Attach(objectToDelete);
-                    HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentPackageCollection")
-		        {
-		            var objectToDelete = new ContentPackageCollection {ID = deleteData.ID};
-                    ContentPackageCollectionTable.Attach(objectToDelete);
-                    ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationInputCollection")
-		        {
-		            var objectToDelete = new InformationInputCollection {ID = deleteData.ID};
-                    InformationInputCollectionTable.Attach(objectToDelete);
-                    InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationOutputCollection")
-		        {
-		            var objectToDelete = new InformationOutputCollection {ID = deleteData.ID};
-                    InformationOutputCollectionTable.Attach(objectToDelete);
-                    InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AuthenticatedAsActiveDeviceCollection")
-		        {
-		            var objectToDelete = new AuthenticatedAsActiveDeviceCollection {ID = deleteData.ID};
-                    AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
-                    AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DeviceMembershipCollection")
-		        {
-		            var objectToDelete = new DeviceMembershipCollection {ID = deleteData.ID};
-                    DeviceMembershipCollectionTable.Attach(objectToDelete);
-                    DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceCollection")
-		        {
-		            var objectToDelete = new InvoiceCollection {ID = deleteData.ID};
-                    InvoiceCollectionTable.Attach(objectToDelete);
-                    InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceUserCollection")
-		        {
-		            var objectToDelete = new InvoiceUserCollection {ID = deleteData.ID};
-                    InvoiceUserCollectionTable.Attach(objectToDelete);
-                    InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowGroupCollection")
-		        {
-		            var objectToDelete = new InvoiceRowGroupCollection {ID = deleteData.ID};
-                    InvoiceRowGroupCollectionTable.Attach(objectToDelete);
-                    InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailGroupCollection")
-		        {
-		            var objectToDelete = new InvoiceEventDetailGroupCollection {ID = deleteData.ID};
-                    InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
-                    InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceEventDetailCollection")
-		        {
-		            var objectToDelete = new InvoiceEventDetailCollection {ID = deleteData.ID};
-                    InvoiceEventDetailCollectionTable.Attach(objectToDelete);
-                    InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InvoiceRowCollection")
-		        {
-		            var objectToDelete = new InvoiceRowCollection {ID = deleteData.ID};
-                    InvoiceRowCollectionTable.Attach(objectToDelete);
-                    InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryCollection")
-		        {
-		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
-                    CategoryCollectionTable.Attach(objectToDelete);
-                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RequestResourceUsageCollection")
-		        {
-		            var objectToDelete = new RequestResourceUsageCollection {ID = deleteData.ID};
-                    RequestResourceUsageCollectionTable.Attach(objectToDelete);
-                    RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ProcessorUsageCollection")
-		        {
-		            var objectToDelete = new ProcessorUsageCollection {ID = deleteData.ID};
-                    ProcessorUsageCollectionTable.Attach(objectToDelete);
-                    ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageTransactionUsageCollection")
-		        {
-		            var objectToDelete = new StorageTransactionUsageCollection {ID = deleteData.ID};
-                    StorageTransactionUsageCollectionTable.Attach(objectToDelete);
-                    StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StorageUsageCollection")
-		        {
-		            var objectToDelete = new StorageUsageCollection {ID = deleteData.ID};
-                    StorageUsageCollectionTable.Attach(objectToDelete);
-                    StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NetworkUsageCollection")
-		        {
-		            var objectToDelete = new NetworkUsageCollection {ID = deleteData.ID};
-                    NetworkUsageCollectionTable.Attach(objectToDelete);
-                    NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "HTTPActivityDetailsCollection")
-		        {
-		            var objectToDelete = new HTTPActivityDetailsCollection {ID = deleteData.ID};
-                    HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
-                    HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "Account":
+					{
+						//var objectToDelete = new Account {ID = deleteData.ObjectID};
+						//AccountTable.Attach(objectToDelete);
+						var objectToDelete = AccountTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Group":
+					{
+						//var objectToDelete = new Group {ID = deleteData.ObjectID};
+						//GroupTable.Attach(objectToDelete);
+						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupMembership":
+					{
+						//var objectToDelete = new GroupMembership {ID = deleteData.ObjectID};
+						//GroupMembershipTable.Attach(objectToDelete);
+						var objectToDelete = GroupMembershipTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupMembershipTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentPackage":
+					{
+						//var objectToDelete = new ContentPackage {ID = deleteData.ObjectID};
+						//ContentPackageTable.Attach(objectToDelete);
+						var objectToDelete = ContentPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationInput":
+					{
+						//var objectToDelete = new InformationInput {ID = deleteData.ObjectID};
+						//InformationInputTable.Attach(objectToDelete);
+						var objectToDelete = InformationInputTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationInputTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOutput":
+					{
+						//var objectToDelete = new InformationOutput {ID = deleteData.ObjectID};
+						//InformationOutputTable.Attach(objectToDelete);
+						var objectToDelete = InformationOutputTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOutputTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AuthenticatedAsActiveDevice":
+					{
+						//var objectToDelete = new AuthenticatedAsActiveDevice {ID = deleteData.ObjectID};
+						//AuthenticatedAsActiveDeviceTable.Attach(objectToDelete);
+						var objectToDelete = AuthenticatedAsActiveDeviceTable.Single(item => item.ID == deleteData.ObjectID);
+						AuthenticatedAsActiveDeviceTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DeviceMembership":
+					{
+						//var objectToDelete = new DeviceMembership {ID = deleteData.ObjectID};
+						//DeviceMembershipTable.Attach(objectToDelete);
+						var objectToDelete = DeviceMembershipTable.Single(item => item.ID == deleteData.ObjectID);
+						DeviceMembershipTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceFiscalExportSummary":
+					{
+						//var objectToDelete = new InvoiceFiscalExportSummary {ID = deleteData.ObjectID};
+						//InvoiceFiscalExportSummaryTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceFiscalExportSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceFiscalExportSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceSummaryContainer":
+					{
+						//var objectToDelete = new InvoiceSummaryContainer {ID = deleteData.ObjectID};
+						//InvoiceSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Invoice":
+					{
+						//var objectToDelete = new Invoice {ID = deleteData.ObjectID};
+						//InvoiceTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceDetails":
+					{
+						//var objectToDelete = new InvoiceDetails {ID = deleteData.ObjectID};
+						//InvoiceDetailsTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceDetailsTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceDetailsTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceUser":
+					{
+						//var objectToDelete = new InvoiceUser {ID = deleteData.ObjectID};
+						//InvoiceUserTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceUserTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceUserTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowGroup":
+					{
+						//var objectToDelete = new InvoiceRowGroup {ID = deleteData.ObjectID};
+						//InvoiceRowGroupTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailGroup":
+					{
+						//var objectToDelete = new InvoiceEventDetailGroup {ID = deleteData.ObjectID};
+						//InvoiceEventDetailGroupTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetail":
+					{
+						//var objectToDelete = new InvoiceEventDetail {ID = deleteData.ObjectID};
+						//InvoiceEventDetailTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRow":
+					{
+						//var objectToDelete = new InvoiceRow {ID = deleteData.ObjectID};
+						//InvoiceRowTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessContainer":
+					{
+						//var objectToDelete = new ProcessContainer {ID = deleteData.ObjectID};
+						//ProcessContainerTable.Attach(objectToDelete);
+						var objectToDelete = ProcessContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Process":
+					{
+						//var objectToDelete = new Process {ID = deleteData.ObjectID};
+						//ProcessTable.Attach(objectToDelete);
+						var objectToDelete = ProcessTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessItem":
+					{
+						//var objectToDelete = new ProcessItem {ID = deleteData.ObjectID};
+						//ProcessItemTable.Attach(objectToDelete);
+						var objectToDelete = ProcessItemTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SemanticInformationItem":
+					{
+						//var objectToDelete = new SemanticInformationItem {ID = deleteData.ObjectID};
+						//SemanticInformationItemTable.Attach(objectToDelete);
+						var objectToDelete = SemanticInformationItemTable.Single(item => item.ID == deleteData.ObjectID);
+						SemanticInformationItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOwnerInfo":
+					{
+						//var objectToDelete = new InformationOwnerInfo {ID = deleteData.ObjectID};
+						//InformationOwnerInfoTable.Attach(objectToDelete);
+						var objectToDelete = InformationOwnerInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOwnerInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UsageSummary":
+					{
+						//var objectToDelete = new UsageSummary {ID = deleteData.ObjectID};
+						//UsageSummaryTable.Attach(objectToDelete);
+						var objectToDelete = UsageSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						UsageSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UsageMonitorItem":
+					{
+						//var objectToDelete = new UsageMonitorItem {ID = deleteData.ObjectID};
+						//UsageMonitorItemTable.Attach(objectToDelete);
+						var objectToDelete = UsageMonitorItemTable.Single(item => item.ID == deleteData.ObjectID);
+						UsageMonitorItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RequestResourceUsage":
+					{
+						//var objectToDelete = new RequestResourceUsage {ID = deleteData.ObjectID};
+						//RequestResourceUsageTable.Attach(objectToDelete);
+						var objectToDelete = RequestResourceUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						RequestResourceUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessorUsage":
+					{
+						//var objectToDelete = new ProcessorUsage {ID = deleteData.ObjectID};
+						//ProcessorUsageTable.Attach(objectToDelete);
+						var objectToDelete = ProcessorUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessorUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageTransactionUsage":
+					{
+						//var objectToDelete = new StorageTransactionUsage {ID = deleteData.ObjectID};
+						//StorageTransactionUsageTable.Attach(objectToDelete);
+						var objectToDelete = StorageTransactionUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageTransactionUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageUsage":
+					{
+						//var objectToDelete = new StorageUsage {ID = deleteData.ObjectID};
+						//StorageUsageTable.Attach(objectToDelete);
+						var objectToDelete = StorageUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NetworkUsage":
+					{
+						//var objectToDelete = new NetworkUsage {ID = deleteData.ObjectID};
+						//NetworkUsageTable.Attach(objectToDelete);
+						var objectToDelete = NetworkUsageTable.Single(item => item.ID == deleteData.ObjectID);
+						NetworkUsageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TimeRange":
+					{
+						//var objectToDelete = new TimeRange {ID = deleteData.ObjectID};
+						//TimeRangeTable.Attach(objectToDelete);
+						var objectToDelete = TimeRangeTable.Single(item => item.ID == deleteData.ObjectID);
+						TimeRangeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "HTTPActivityDetails":
+					{
+						//var objectToDelete = new HTTPActivityDetails {ID = deleteData.ObjectID};
+						//HTTPActivityDetailsTable.Attach(objectToDelete);
+						var objectToDelete = HTTPActivityDetailsTable.Single(item => item.ID == deleteData.ObjectID);
+						HTTPActivityDetailsTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentPackageCollection":
+					{
+						//var objectToDelete = new ContentPackageCollection {ID = deleteData.ObjectID};
+						//ContentPackageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ContentPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationInputCollection":
+					{
+						//var objectToDelete = new InformationInputCollection {ID = deleteData.ObjectID};
+						//InformationInputCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InformationInputCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationInputCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationOutputCollection":
+					{
+						//var objectToDelete = new InformationOutputCollection {ID = deleteData.ObjectID};
+						//InformationOutputCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InformationOutputCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationOutputCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AuthenticatedAsActiveDeviceCollection":
+					{
+						//var objectToDelete = new AuthenticatedAsActiveDeviceCollection {ID = deleteData.ObjectID};
+						//AuthenticatedAsActiveDeviceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AuthenticatedAsActiveDeviceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AuthenticatedAsActiveDeviceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DeviceMembershipCollection":
+					{
+						//var objectToDelete = new DeviceMembershipCollection {ID = deleteData.ObjectID};
+						//DeviceMembershipCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DeviceMembershipCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DeviceMembershipCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceCollection":
+					{
+						//var objectToDelete = new InvoiceCollection {ID = deleteData.ObjectID};
+						//InvoiceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceUserCollection":
+					{
+						//var objectToDelete = new InvoiceUserCollection {ID = deleteData.ObjectID};
+						//InvoiceUserCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceUserCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceUserCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowGroupCollection":
+					{
+						//var objectToDelete = new InvoiceRowGroupCollection {ID = deleteData.ObjectID};
+						//InvoiceRowGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailGroupCollection":
+					{
+						//var objectToDelete = new InvoiceEventDetailGroupCollection {ID = deleteData.ObjectID};
+						//InvoiceEventDetailGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceEventDetailCollection":
+					{
+						//var objectToDelete = new InvoiceEventDetailCollection {ID = deleteData.ObjectID};
+						//InvoiceEventDetailCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceEventDetailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceEventDetailCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InvoiceRowCollection":
+					{
+						//var objectToDelete = new InvoiceRowCollection {ID = deleteData.ObjectID};
+						//InvoiceRowCollectionTable.Attach(objectToDelete);
+						var objectToDelete = InvoiceRowCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						InvoiceRowCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryCollection":
+					{
+						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
+						//CategoryCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RequestResourceUsageCollection":
+					{
+						//var objectToDelete = new RequestResourceUsageCollection {ID = deleteData.ObjectID};
+						//RequestResourceUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = RequestResourceUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						RequestResourceUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ProcessorUsageCollection":
+					{
+						//var objectToDelete = new ProcessorUsageCollection {ID = deleteData.ObjectID};
+						//ProcessorUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ProcessorUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ProcessorUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageTransactionUsageCollection":
+					{
+						//var objectToDelete = new StorageTransactionUsageCollection {ID = deleteData.ObjectID};
+						//StorageTransactionUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = StorageTransactionUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageTransactionUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StorageUsageCollection":
+					{
+						//var objectToDelete = new StorageUsageCollection {ID = deleteData.ObjectID};
+						//StorageUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = StorageUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						StorageUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NetworkUsageCollection":
+					{
+						//var objectToDelete = new NetworkUsageCollection {ID = deleteData.ObjectID};
+						//NetworkUsageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = NetworkUsageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						NetworkUsageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "HTTPActivityDetailsCollection":
+					{
+						//var objectToDelete = new HTTPActivityDetailsCollection {ID = deleteData.ObjectID};
+						//HTTPActivityDetailsCollectionTable.Attach(objectToDelete);
+						var objectToDelete = HTTPActivityDetailsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						HTTPActivityDetailsCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 

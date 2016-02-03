@@ -125,7 +125,10 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "InterfaceOperation")
+
+				switch(updateData.ObjectType)
+				{
+		        case "InterfaceOperation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -142,9 +145,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.Finished = serializedObject.Finished;
 		            existingObject.ErrorCode = serializedObject.ErrorCode;
 		            existingObject.ErrorMessage = serializedObject.ErrorMessage;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Connection")
+		        case "Connection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -183,9 +186,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
 		            existingObject.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            existingObject.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TransferPackage")
+		        case "TransferPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -201,9 +204,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.PackageContentBlobs != null)
 	                    serializedObject.PackageContentBlobs.ForEach(item => existingObject.PackageContentBlobs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CategoryLink")
+		        case "CategoryLink":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -214,9 +217,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
 		            existingObject.TargetCategoryID = serializedObject.TargetCategoryID;
 		            existingObject.LinkingType = serializedObject.LinkingType;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -229,9 +232,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            existingObject.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            existingObject.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StatusSummary")
+		        case "StatusSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -255,9 +258,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangeItemTrackingList != null)
 	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationChangeItem")
+		        case "InformationChangeItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -271,9 +274,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangedObjectIDList != null)
 	                    serializedObject.ChangedObjectIDList.ForEach(item => existingObject.ChangedObjectIDList.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "OperationExecutionItem")
+		        case "OperationExecutionItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -289,9 +292,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
 		            existingObject.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericCollectionableObject")
+		        case "GenericCollectionableObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -303,9 +306,9 @@ namespace SQLite.TheBall.Interface {
 						existingObject.ValueObjectID = serializedObject.ValueObject.ID;
 					else
 						existingObject.ValueObjectID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericObject")
+		        case "GenericObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -319,9 +322,9 @@ namespace SQLite.TheBall.Interface {
 					
 		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
 		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericValue")
+		        case "GenericValue":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -359,8 +362,9 @@ namespace SQLite.TheBall.Interface {
 	                    serializedObject.ObjectArray.ForEach(item => existingObject.ObjectArray.Add(item));
 					
 		            existingObject.IndexingInfo = serializedObject.IndexingInfo;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 
@@ -368,7 +372,10 @@ namespace SQLite.TheBall.Interface {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "InterfaceOperation")
+
+				switch(updateData.ObjectType)
+				{
+		        case "InterfaceOperation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -385,9 +392,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.Finished = serializedObject.Finished;
 		            existingObject.ErrorCode = serializedObject.ErrorCode;
 		            existingObject.ErrorMessage = serializedObject.ErrorMessage;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Connection")
+		        case "Connection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -426,9 +433,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ProcessIDToListPackageContents = serializedObject.ProcessIDToListPackageContents;
 		            existingObject.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            existingObject.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TransferPackage")
+		        case "TransferPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -444,9 +451,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.PackageContentBlobs != null)
 	                    serializedObject.PackageContentBlobs.ForEach(item => existingObject.PackageContentBlobs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CategoryLink")
+		        case "CategoryLink":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -457,9 +464,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.SourceCategoryID = serializedObject.SourceCategoryID;
 		            existingObject.TargetCategoryID = serializedObject.TargetCategoryID;
 		            existingObject.LinkingType = serializedObject.LinkingType;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -472,9 +479,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.NativeCategoryObjectName = serializedObject.NativeCategoryObjectName;
 		            existingObject.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            existingObject.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StatusSummary")
+		        case "StatusSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -498,9 +505,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangeItemTrackingList != null)
 	                    serializedObject.ChangeItemTrackingList.ForEach(item => existingObject.ChangeItemTrackingList.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "InformationChangeItem")
+		        case "InformationChangeItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -514,9 +521,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangedObjectIDList != null)
 	                    serializedObject.ChangedObjectIDList.ForEach(item => existingObject.ChangedObjectIDList.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "OperationExecutionItem")
+		        case "OperationExecutionItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -532,9 +539,9 @@ namespace SQLite.TheBall.Interface {
 		            existingObject.ExecutionBeginTime = serializedObject.ExecutionBeginTime;
 		            existingObject.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            existingObject.ExecutionStatus = serializedObject.ExecutionStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericCollectionableObject")
+		        case "GenericCollectionableObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -546,9 +553,9 @@ namespace SQLite.TheBall.Interface {
 						existingObject.ValueObjectID = serializedObject.ValueObject.ID;
 					else
 						existingObject.ValueObjectID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericObject")
+		        case "GenericObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -562,9 +569,9 @@ namespace SQLite.TheBall.Interface {
 					
 		            existingObject.IncludeInCollection = serializedObject.IncludeInCollection;
 		            existingObject.OptionalCollectionName = serializedObject.OptionalCollectionName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GenericValue")
+		        case "GenericValue":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -602,8 +609,9 @@ namespace SQLite.TheBall.Interface {
 	                    serializedObject.ObjectArray.ForEach(item => existingObject.ObjectArray.Add(item));
 					
 		            existingObject.IndexingInfo = serializedObject.IndexingInfo;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -611,7 +619,10 @@ namespace SQLite.TheBall.Interface {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "InterfaceOperation")
+
+				switch(insertData.ObjectType)
+				{
+                case "InterfaceOperation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -628,9 +639,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
 		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
 					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Connection")
+                case "Connection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -659,9 +670,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
 					ConnectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TransferPackage")
+                case "TransferPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -675,9 +686,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.PackageContentBlobs != null)
 						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
 					TransferPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CategoryLink")
+                case "CategoryLink":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -688,9 +699,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
 		            objectToAdd.LinkingType = serializedObject.LinkingType;
 					CategoryLinkTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -703,9 +714,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StatusSummary")
+                case "StatusSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -721,9 +732,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
 					StatusSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationChangeItem")
+                case "InformationChangeItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -735,9 +746,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangedObjectIDList != null)
 						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
 					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "OperationExecutionItem")
+                case "OperationExecutionItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -753,9 +764,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
 					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericCollectionableObject")
+                case "GenericCollectionableObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -767,9 +778,9 @@ namespace SQLite.TheBall.Interface {
 					else
 						objectToAdd.ValueObjectID = null;
 					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericObject")
+                case "GenericObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -781,9 +792,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
 					GenericObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericValue")
+                case "GenericValue":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -811,8 +822,9 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
 		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
 					GenericValueTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -821,7 +833,10 @@ namespace SQLite.TheBall.Interface {
                 if (insertData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "InterfaceOperation")
+
+				switch(insertData.ObjectType)
+				{
+                case "InterfaceOperation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -838,9 +853,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ErrorCode = serializedObject.ErrorCode;
 		            objectToAdd.ErrorMessage = serializedObject.ErrorMessage;
 					InterfaceOperationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Connection")
+                case "Connection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -869,9 +884,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ProcessIDToProcessReceived = serializedObject.ProcessIDToProcessReceived;
 		            objectToAdd.ProcessIDToUpdateThisSideCategories = serializedObject.ProcessIDToUpdateThisSideCategories;
 					ConnectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TransferPackage")
+                case "TransferPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -885,9 +900,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.PackageContentBlobs != null)
 						serializedObject.PackageContentBlobs.ForEach(item => objectToAdd.PackageContentBlobs.Add(item));
 					TransferPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CategoryLink")
+                case "CategoryLink":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -898,9 +913,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.TargetCategoryID = serializedObject.TargetCategoryID;
 		            objectToAdd.LinkingType = serializedObject.LinkingType;
 					CategoryLinkTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -913,9 +928,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.NativeCategoryTitle = serializedObject.NativeCategoryTitle;
 		            objectToAdd.IdentifyingCategoryName = serializedObject.IdentifyingCategoryName;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StatusSummary")
+                case "StatusSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -931,9 +946,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangeItemTrackingList != null)
 						serializedObject.ChangeItemTrackingList.ForEach(item => objectToAdd.ChangeItemTrackingList.Add(item));
 					StatusSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "InformationChangeItem")
+                case "InformationChangeItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -945,9 +960,9 @@ namespace SQLite.TheBall.Interface {
 					if(serializedObject.ChangedObjectIDList != null)
 						serializedObject.ChangedObjectIDList.ForEach(item => objectToAdd.ChangedObjectIDList.Add(item));
 					InformationChangeItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "OperationExecutionItem")
+                case "OperationExecutionItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -963,9 +978,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.ExecutionCompletedTime = serializedObject.ExecutionCompletedTime;
 		            objectToAdd.ExecutionStatus = serializedObject.ExecutionStatus;
 					OperationExecutionItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericCollectionableObject")
+                case "GenericCollectionableObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -977,9 +992,9 @@ namespace SQLite.TheBall.Interface {
 					else
 						objectToAdd.ValueObjectID = null;
 					GenericCollectionableObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericObject")
+                case "GenericObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -991,9 +1006,9 @@ namespace SQLite.TheBall.Interface {
 		            objectToAdd.IncludeInCollection = serializedObject.IncludeInCollection;
 		            objectToAdd.OptionalCollectionName = serializedObject.OptionalCollectionName;
 					GenericObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GenericValue")
+                case "GenericValue":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -1021,8 +1036,9 @@ namespace SQLite.TheBall.Interface {
 						serializedObject.ObjectArray.ForEach(item => objectToAdd.ObjectArray.Add(item));
 		            objectToAdd.IndexingInfo = serializedObject.IndexingInfo;
 					GenericValueTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -1031,98 +1047,115 @@ namespace SQLite.TheBall.Interface {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "InterfaceOperation")
-		        {
-		            var objectToDelete = new InterfaceOperation {ID = deleteData.ID};
-                    InterfaceOperationTable.Attach(objectToDelete);
-                    InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Connection")
-		        {
-		            var objectToDelete = new Connection {ID = deleteData.ID};
-                    ConnectionTable.Attach(objectToDelete);
-                    ConnectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TransferPackage")
-		        {
-		            var objectToDelete = new TransferPackage {ID = deleteData.ID};
-                    TransferPackageTable.Attach(objectToDelete);
-                    TransferPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryLink")
-		        {
-		            var objectToDelete = new CategoryLink {ID = deleteData.ID};
-                    CategoryLinkTable.Attach(objectToDelete);
-                    CategoryLinkTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StatusSummary")
-		        {
-		            var objectToDelete = new StatusSummary {ID = deleteData.ID};
-                    StatusSummaryTable.Attach(objectToDelete);
-                    StatusSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationChangeItem")
-		        {
-		            var objectToDelete = new InformationChangeItem {ID = deleteData.ID};
-                    InformationChangeItemTable.Attach(objectToDelete);
-                    InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "OperationExecutionItem")
-		        {
-		            var objectToDelete = new OperationExecutionItem {ID = deleteData.ID};
-                    OperationExecutionItemTable.Attach(objectToDelete);
-                    OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericCollectionableObject")
-		        {
-		            var objectToDelete = new GenericCollectionableObject {ID = deleteData.ID};
-                    GenericCollectionableObjectTable.Attach(objectToDelete);
-                    GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericObject")
-		        {
-		            var objectToDelete = new GenericObject {ID = deleteData.ID};
-                    GenericObjectTable.Attach(objectToDelete);
-                    GenericObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericValue")
-		        {
-		            var objectToDelete = new GenericValue {ID = deleteData.ID};
-                    GenericValueTable.Attach(objectToDelete);
-                    GenericValueTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ConnectionCollection")
-		        {
-		            var objectToDelete = new ConnectionCollection {ID = deleteData.ID};
-                    ConnectionCollectionTable.Attach(objectToDelete);
-                    ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericObjectCollection")
-		        {
-		            var objectToDelete = new GenericObjectCollection {ID = deleteData.ID};
-                    GenericObjectCollectionTable.Attach(objectToDelete);
-                    GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "InterfaceOperation":
+					{
+						//var objectToDelete = new InterfaceOperation {ID = deleteData.ObjectID};
+						//InterfaceOperationTable.Attach(objectToDelete);
+						var objectToDelete = InterfaceOperationTable.Single(item => item.ID == deleteData.ObjectID);
+						InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Connection":
+					{
+						//var objectToDelete = new Connection {ID = deleteData.ObjectID};
+						//ConnectionTable.Attach(objectToDelete);
+						var objectToDelete = ConnectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ConnectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TransferPackage":
+					{
+						//var objectToDelete = new TransferPackage {ID = deleteData.ObjectID};
+						//TransferPackageTable.Attach(objectToDelete);
+						var objectToDelete = TransferPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						TransferPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryLink":
+					{
+						//var objectToDelete = new CategoryLink {ID = deleteData.ObjectID};
+						//CategoryLinkTable.Attach(objectToDelete);
+						var objectToDelete = CategoryLinkTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StatusSummary":
+					{
+						//var objectToDelete = new StatusSummary {ID = deleteData.ObjectID};
+						//StatusSummaryTable.Attach(objectToDelete);
+						var objectToDelete = StatusSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationChangeItem":
+					{
+						//var objectToDelete = new InformationChangeItem {ID = deleteData.ObjectID};
+						//InformationChangeItemTable.Attach(objectToDelete);
+						var objectToDelete = InformationChangeItemTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "OperationExecutionItem":
+					{
+						//var objectToDelete = new OperationExecutionItem {ID = deleteData.ObjectID};
+						//OperationExecutionItemTable.Attach(objectToDelete);
+						var objectToDelete = OperationExecutionItemTable.Single(item => item.ID == deleteData.ObjectID);
+						OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericCollectionableObject":
+					{
+						//var objectToDelete = new GenericCollectionableObject {ID = deleteData.ObjectID};
+						//GenericCollectionableObjectTable.Attach(objectToDelete);
+						var objectToDelete = GenericCollectionableObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericObject":
+					{
+						//var objectToDelete = new GenericObject {ID = deleteData.ObjectID};
+						//GenericObjectTable.Attach(objectToDelete);
+						var objectToDelete = GenericObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericValue":
+					{
+						//var objectToDelete = new GenericValue {ID = deleteData.ObjectID};
+						//GenericValueTable.Attach(objectToDelete);
+						var objectToDelete = GenericValueTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericValueTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ConnectionCollection":
+					{
+						//var objectToDelete = new ConnectionCollection {ID = deleteData.ObjectID};
+						//ConnectionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ConnectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericObjectCollection":
+					{
+						//var objectToDelete = new GenericObjectCollection {ID = deleteData.ObjectID};
+						//GenericObjectCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GenericObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
@@ -1131,98 +1164,115 @@ namespace SQLite.TheBall.Interface {
                 if (deleteData.SemanticDomain != "TheBall.Interface")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "InterfaceOperation")
-		        {
-		            var objectToDelete = new InterfaceOperation {ID = deleteData.ID};
-                    InterfaceOperationTable.Attach(objectToDelete);
-                    InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Connection")
-		        {
-		            var objectToDelete = new Connection {ID = deleteData.ID};
-                    ConnectionTable.Attach(objectToDelete);
-                    ConnectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TransferPackage")
-		        {
-		            var objectToDelete = new TransferPackage {ID = deleteData.ID};
-                    TransferPackageTable.Attach(objectToDelete);
-                    TransferPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryLink")
-		        {
-		            var objectToDelete = new CategoryLink {ID = deleteData.ID};
-                    CategoryLinkTable.Attach(objectToDelete);
-                    CategoryLinkTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StatusSummary")
-		        {
-		            var objectToDelete = new StatusSummary {ID = deleteData.ID};
-                    StatusSummaryTable.Attach(objectToDelete);
-                    StatusSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "InformationChangeItem")
-		        {
-		            var objectToDelete = new InformationChangeItem {ID = deleteData.ID};
-                    InformationChangeItemTable.Attach(objectToDelete);
-                    InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "OperationExecutionItem")
-		        {
-		            var objectToDelete = new OperationExecutionItem {ID = deleteData.ID};
-                    OperationExecutionItemTable.Attach(objectToDelete);
-                    OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericCollectionableObject")
-		        {
-		            var objectToDelete = new GenericCollectionableObject {ID = deleteData.ID};
-                    GenericCollectionableObjectTable.Attach(objectToDelete);
-                    GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericObject")
-		        {
-		            var objectToDelete = new GenericObject {ID = deleteData.ID};
-                    GenericObjectTable.Attach(objectToDelete);
-                    GenericObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericValue")
-		        {
-		            var objectToDelete = new GenericValue {ID = deleteData.ID};
-                    GenericValueTable.Attach(objectToDelete);
-                    GenericValueTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ConnectionCollection")
-		        {
-		            var objectToDelete = new ConnectionCollection {ID = deleteData.ID};
-                    ConnectionCollectionTable.Attach(objectToDelete);
-                    ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GenericObjectCollection")
-		        {
-		            var objectToDelete = new GenericObjectCollection {ID = deleteData.ID};
-                    GenericObjectCollectionTable.Attach(objectToDelete);
-                    GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "InterfaceOperation":
+					{
+						//var objectToDelete = new InterfaceOperation {ID = deleteData.ObjectID};
+						//InterfaceOperationTable.Attach(objectToDelete);
+						var objectToDelete = InterfaceOperationTable.Single(item => item.ID == deleteData.ObjectID);
+						InterfaceOperationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Connection":
+					{
+						//var objectToDelete = new Connection {ID = deleteData.ObjectID};
+						//ConnectionTable.Attach(objectToDelete);
+						var objectToDelete = ConnectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ConnectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TransferPackage":
+					{
+						//var objectToDelete = new TransferPackage {ID = deleteData.ObjectID};
+						//TransferPackageTable.Attach(objectToDelete);
+						var objectToDelete = TransferPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						TransferPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryLink":
+					{
+						//var objectToDelete = new CategoryLink {ID = deleteData.ObjectID};
+						//CategoryLinkTable.Attach(objectToDelete);
+						var objectToDelete = CategoryLinkTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryLinkTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StatusSummary":
+					{
+						//var objectToDelete = new StatusSummary {ID = deleteData.ObjectID};
+						//StatusSummaryTable.Attach(objectToDelete);
+						var objectToDelete = StatusSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						StatusSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "InformationChangeItem":
+					{
+						//var objectToDelete = new InformationChangeItem {ID = deleteData.ObjectID};
+						//InformationChangeItemTable.Attach(objectToDelete);
+						var objectToDelete = InformationChangeItemTable.Single(item => item.ID == deleteData.ObjectID);
+						InformationChangeItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "OperationExecutionItem":
+					{
+						//var objectToDelete = new OperationExecutionItem {ID = deleteData.ObjectID};
+						//OperationExecutionItemTable.Attach(objectToDelete);
+						var objectToDelete = OperationExecutionItemTable.Single(item => item.ID == deleteData.ObjectID);
+						OperationExecutionItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericCollectionableObject":
+					{
+						//var objectToDelete = new GenericCollectionableObject {ID = deleteData.ObjectID};
+						//GenericCollectionableObjectTable.Attach(objectToDelete);
+						var objectToDelete = GenericCollectionableObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericCollectionableObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericObject":
+					{
+						//var objectToDelete = new GenericObject {ID = deleteData.ObjectID};
+						//GenericObjectTable.Attach(objectToDelete);
+						var objectToDelete = GenericObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericValue":
+					{
+						//var objectToDelete = new GenericValue {ID = deleteData.ObjectID};
+						//GenericValueTable.Attach(objectToDelete);
+						var objectToDelete = GenericValueTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericValueTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ConnectionCollection":
+					{
+						//var objectToDelete = new ConnectionCollection {ID = deleteData.ObjectID};
+						//ConnectionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ConnectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ConnectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GenericObjectCollection":
+					{
+						//var objectToDelete = new GenericObjectCollection {ID = deleteData.ObjectID};
+						//GenericObjectCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GenericObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GenericObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 

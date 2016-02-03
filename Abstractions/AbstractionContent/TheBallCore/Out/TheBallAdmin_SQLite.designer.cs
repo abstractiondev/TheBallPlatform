@@ -112,6 +112,10 @@ namespace SQLite.TheBall.Admin {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
+
+				switch(updateData.ObjectType)
+				{
+				}
 		    }
 
 
@@ -119,6 +123,10 @@ namespace SQLite.TheBall.Admin {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
+
+				switch(updateData.ObjectType)
+				{
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -126,6 +134,10 @@ namespace SQLite.TheBall.Admin {
                 if (insertData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+
+				switch(insertData.ObjectType)
+				{
+				}
             }
 
 
@@ -134,6 +146,10 @@ namespace SQLite.TheBall.Admin {
                 if (insertData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
+
+				switch(insertData.ObjectType)
+				{
+				}
             }
 
 
@@ -142,7 +158,11 @@ namespace SQLite.TheBall.Admin {
                 if (deleteData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+				}
+			}
 
 
 
@@ -151,7 +171,11 @@ namespace SQLite.TheBall.Admin {
                 if (deleteData.SemanticDomain != "TheBall.Admin")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+				}
+			}
 
 
 

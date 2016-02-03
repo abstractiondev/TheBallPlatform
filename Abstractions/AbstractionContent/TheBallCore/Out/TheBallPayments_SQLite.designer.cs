@@ -119,7 +119,10 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "GroupSubscriptionPlan")
+
+				switch(updateData.ObjectType)
+				{
+		        case "GroupSubscriptionPlan":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -133,9 +136,9 @@ namespace SQLite.TheBall.Payments {
 					if(serializedObject.GroupIDs != null)
 	                    serializedObject.GroupIDs.ForEach(item => existingObject.GroupIDs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "SubscriptionPlanStatus")
+		        case "SubscriptionPlanStatus":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -155,9 +158,9 @@ namespace SQLite.TheBall.Payments {
                     }
 
 		            existingObject.ValidUntil = serializedObject.ValidUntil;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CustomerAccount")
+		        case "CustomerAccount":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -185,8 +188,9 @@ namespace SQLite.TheBall.Payments {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 
@@ -194,7 +198,10 @@ namespace SQLite.TheBall.Payments {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "GroupSubscriptionPlan")
+
+				switch(updateData.ObjectType)
+				{
+		        case "GroupSubscriptionPlan":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -208,9 +215,9 @@ namespace SQLite.TheBall.Payments {
 					if(serializedObject.GroupIDs != null)
 	                    serializedObject.GroupIDs.ForEach(item => existingObject.GroupIDs.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "SubscriptionPlanStatus")
+		        case "SubscriptionPlanStatus":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -230,9 +237,9 @@ namespace SQLite.TheBall.Payments {
                     }
 
 		            existingObject.ValidUntil = serializedObject.ValidUntil;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CustomerAccount")
+		        case "CustomerAccount":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -260,8 +267,9 @@ namespace SQLite.TheBall.Payments {
                             });
                     }
 
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -269,7 +277,10 @@ namespace SQLite.TheBall.Payments {
                 if (insertData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "GroupSubscriptionPlan")
+
+				switch(insertData.ObjectType)
+				{
+                case "GroupSubscriptionPlan":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -281,9 +292,9 @@ namespace SQLite.TheBall.Payments {
 					if(serializedObject.GroupIDs != null)
 						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
 					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "SubscriptionPlanStatus")
+                case "SubscriptionPlanStatus":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -303,9 +314,9 @@ namespace SQLite.TheBall.Payments {
 
 		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
 					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CustomerAccount")
+                case "CustomerAccount":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -332,8 +343,9 @@ namespace SQLite.TheBall.Payments {
                     }
 
 					CustomerAccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -342,7 +354,10 @@ namespace SQLite.TheBall.Payments {
                 if (insertData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "GroupSubscriptionPlan")
+
+				switch(insertData.ObjectType)
+				{
+                case "GroupSubscriptionPlan":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -354,9 +369,9 @@ namespace SQLite.TheBall.Payments {
 					if(serializedObject.GroupIDs != null)
 						serializedObject.GroupIDs.ForEach(item => objectToAdd.GroupIDs.Add(item));
 					GroupSubscriptionPlanTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "SubscriptionPlanStatus")
+                case "SubscriptionPlanStatus":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -376,9 +391,9 @@ namespace SQLite.TheBall.Payments {
 
 		            objectToAdd.ValidUntil = serializedObject.ValidUntil;
 					SubscriptionPlanStatusTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CustomerAccount")
+                case "CustomerAccount":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -405,8 +420,9 @@ namespace SQLite.TheBall.Payments {
                     }
 
 					CustomerAccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -415,42 +431,51 @@ namespace SQLite.TheBall.Payments {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
-		        {
-		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
-                    GroupSubscriptionPlanTable.Attach(objectToDelete);
-                    GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SubscriptionPlanStatus")
-		        {
-		            var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ID};
-                    SubscriptionPlanStatusTable.Attach(objectToDelete);
-                    SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CustomerAccount")
-		        {
-		            var objectToDelete = new CustomerAccount {ID = deleteData.ID};
-                    CustomerAccountTable.Attach(objectToDelete);
-                    CustomerAccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupSubscriptionPlanCollection")
-		        {
-		            var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ID};
-                    GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
-                    GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CustomerAccountCollection")
-		        {
-		            var objectToDelete = new CustomerAccountCollection {ID = deleteData.ID};
-                    CustomerAccountCollectionTable.Attach(objectToDelete);
-                    CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "GroupSubscriptionPlan":
+					{
+						//var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ObjectID};
+						//GroupSubscriptionPlanTable.Attach(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SubscriptionPlanStatus":
+					{
+						//var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ObjectID};
+						//SubscriptionPlanStatusTable.Attach(objectToDelete);
+						var objectToDelete = SubscriptionPlanStatusTable.Single(item => item.ID == deleteData.ObjectID);
+						SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CustomerAccount":
+					{
+						//var objectToDelete = new CustomerAccount {ID = deleteData.ObjectID};
+						//CustomerAccountTable.Attach(objectToDelete);
+						var objectToDelete = CustomerAccountTable.Single(item => item.ID == deleteData.ObjectID);
+						CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupSubscriptionPlanCollection":
+					{
+						//var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ObjectID};
+						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CustomerAccountCollection":
+					{
+						//var objectToDelete = new CustomerAccountCollection {ID = deleteData.ObjectID};
+						//CustomerAccountCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CustomerAccountCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
@@ -459,42 +484,51 @@ namespace SQLite.TheBall.Payments {
                 if (deleteData.SemanticDomain != "TheBall.Payments")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "GroupSubscriptionPlan")
-		        {
-		            var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ID};
-                    GroupSubscriptionPlanTable.Attach(objectToDelete);
-                    GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SubscriptionPlanStatus")
-		        {
-		            var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ID};
-                    SubscriptionPlanStatusTable.Attach(objectToDelete);
-                    SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CustomerAccount")
-		        {
-		            var objectToDelete = new CustomerAccount {ID = deleteData.ID};
-                    CustomerAccountTable.Attach(objectToDelete);
-                    CustomerAccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupSubscriptionPlanCollection")
-		        {
-		            var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ID};
-                    GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
-                    GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CustomerAccountCollection")
-		        {
-		            var objectToDelete = new CustomerAccountCollection {ID = deleteData.ID};
-                    CustomerAccountCollectionTable.Attach(objectToDelete);
-                    CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "GroupSubscriptionPlan":
+					{
+						//var objectToDelete = new GroupSubscriptionPlan {ID = deleteData.ObjectID};
+						//GroupSubscriptionPlanTable.Attach(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSubscriptionPlanTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SubscriptionPlanStatus":
+					{
+						//var objectToDelete = new SubscriptionPlanStatus {ID = deleteData.ObjectID};
+						//SubscriptionPlanStatusTable.Attach(objectToDelete);
+						var objectToDelete = SubscriptionPlanStatusTable.Single(item => item.ID == deleteData.ObjectID);
+						SubscriptionPlanStatusTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CustomerAccount":
+					{
+						//var objectToDelete = new CustomerAccount {ID = deleteData.ObjectID};
+						//CustomerAccountTable.Attach(objectToDelete);
+						var objectToDelete = CustomerAccountTable.Single(item => item.ID == deleteData.ObjectID);
+						CustomerAccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupSubscriptionPlanCollection":
+					{
+						//var objectToDelete = new GroupSubscriptionPlanCollection {ID = deleteData.ObjectID};
+						//GroupSubscriptionPlanCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GroupSubscriptionPlanCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSubscriptionPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CustomerAccountCollection":
+					{
+						//var objectToDelete = new CustomerAccountCollection {ID = deleteData.ObjectID};
+						//CustomerAccountCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CustomerAccountCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CustomerAccountCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 

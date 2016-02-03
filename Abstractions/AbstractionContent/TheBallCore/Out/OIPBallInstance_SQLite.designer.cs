@@ -219,7 +219,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if(updateData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "TBSystem")
+
+				switch(updateData.ObjectType)
+				{
+		        case "TBSystem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -229,9 +232,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InstanceName = serializedObject.InstanceName;
 		            existingObject.AdminGroupID = serializedObject.AdminGroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "WebPublishInfo")
+		        case "WebPublishInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -249,9 +252,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.PublicationsID = serializedObject.Publications.ID;
 					else
 						existingObject.PublicationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "PublicationPackage")
+		        case "PublicationPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -261,9 +264,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.PackageName = serializedObject.PackageName;
 		            existingObject.PublicationTime = serializedObject.PublicationTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRLoginRoot")
+		        case "TBRLoginRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -276,9 +279,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRAccountRoot")
+		        case "TBRAccountRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -290,9 +293,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRGroupRoot")
+		        case "TBRGroupRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -304,9 +307,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupID = serializedObject.Group.ID;
 					else
 						existingObject.GroupID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRLoginGroupRoot")
+		        case "TBRLoginGroupRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -316,9 +319,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.GroupID = serializedObject.GroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBREmailRoot")
+		        case "TBREmailRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -330,9 +333,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBAccount")
+		        case "TBAccount":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -352,9 +355,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
 					else
 						existingObject.GroupRoleCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBAccountCollaborationGroup")
+		        case "TBAccountCollaborationGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -365,9 +368,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.GroupRole = serializedObject.GroupRole;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBLoginInfo")
+		        case "TBLoginInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -376,9 +379,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBEmail")
+		        case "TBEmail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -388,9 +391,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.ValidatedAt = serializedObject.ValidatedAt;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBCollaboratorRole")
+		        case "TBCollaboratorRole":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -404,9 +407,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.EmailID = null;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBCollaboratingGroup")
+		        case "TBCollaboratingGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -419,9 +422,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.RolesID = serializedObject.Roles.ID;
 					else
 						existingObject.RolesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBEmailValidation")
+		        case "TBEmailValidation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -453,9 +456,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.MergeAccountsConfirmationID = null;
 		            existingObject.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBMergeAccountConfirmation")
+		        case "TBMergeAccountConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -465,9 +468,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            existingObject.AccountToMergeToID = serializedObject.AccountToMergeToID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBGroupJoinConfirmation")
+		        case "TBGroupJoinConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -477,9 +480,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.InvitationMode = serializedObject.InvitationMode;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBDeviceJoinConfirmation")
+		        case "TBDeviceJoinConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -490,9 +493,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.DeviceMembershipID = serializedObject.DeviceMembershipID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBInformationInputConfirmation")
+		        case "TBInformationInputConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -503,9 +506,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationInputID = serializedObject.InformationInputID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBInformationOutputConfirmation")
+		        case "TBInformationOutputConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -516,9 +519,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationOutputID = serializedObject.InformationOutputID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LoginProvider")
+		        case "LoginProvider":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -531,9 +534,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ProviderType = serializedObject.ProviderType;
 		            existingObject.ProviderUrl = serializedObject.ProviderUrl;
 		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBPRegisterEmail")
+		        case "TBPRegisterEmail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -542,9 +545,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountSummary")
+		        case "AccountSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -556,9 +559,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
 						existingObject.GroupSummaryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountContainer")
+		        case "AccountContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -574,9 +577,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountSummaryID = serializedObject.AccountSummary.ID;
 					else
 						existingObject.AccountSummaryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountModule")
+		        case "AccountModule":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -600,9 +603,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						existingObject.LocationCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LocationContainer")
+		        case "LocationContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -614,9 +617,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationsID = serializedObject.Locations.ID;
 					else
 						existingObject.LocationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddressAndLocation")
+		        case "AddressAndLocation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -636,9 +639,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StreetAddress")
+		        case "StreetAddress":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -650,9 +653,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ZipCode = serializedObject.ZipCode;
 		            existingObject.Town = serializedObject.Town;
 		            existingObject.Country = serializedObject.Country;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountProfile")
+		        case "AccountProfile":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -673,9 +676,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
 		            existingObject.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            existingObject.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountSecurity")
+		        case "AccountSecurity":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -691,9 +694,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.EmailCollectionID = serializedObject.EmailCollection.ID;
 					else
 						existingObject.EmailCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountRoles")
+		        case "AccountRoles":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -710,9 +713,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.MemberInGroupsID = null;
 		            existingObject.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "PersonalInfoVisibility")
+		        case "PersonalInfoVisibility":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -721,9 +724,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ReferenceToInformation")
+		        case "ReferenceToInformation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -733,9 +736,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.URL = serializedObject.URL;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "NodeSummaryContainer")
+		        case "NodeSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -771,9 +774,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
 					else
 						existingObject.NodeSourceCategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "RenderedNode")
+		        case "RenderedNode":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -812,9 +815,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationsID = serializedObject.Locations.ID;
 					else
 						existingObject.LocationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ShortTextObject")
+		        case "ShortTextObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -823,9 +826,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LongTextObject")
+		        case "LongTextObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -834,9 +837,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapMarker")
+		        case "MapMarker":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -854,9 +857,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Moderator")
+		        case "Moderator":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -866,9 +869,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ModeratorName = serializedObject.ModeratorName;
 		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Collaborator")
+		        case "Collaborator":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -881,9 +884,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.CollaboratorName = serializedObject.CollaboratorName;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupSummaryContainer")
+		        case "GroupSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -904,9 +907,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupCollectionID = serializedObject.GroupCollection.ID;
 					else
 						existingObject.GroupCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupContainer")
+		        case "GroupContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -934,9 +937,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						existingObject.LocationCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupIndex")
+		        case "GroupIndex":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -951,9 +954,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddAddressAndLocationInfo")
+		        case "AddAddressAndLocationInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -962,9 +965,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddImageInfo")
+		        case "AddImageInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -973,9 +976,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageTitle = serializedObject.ImageTitle;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddImageGroupInfo")
+		        case "AddImageGroupInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -984,9 +987,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddEmailAddressInfo")
+		        case "AddEmailAddressInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -995,9 +998,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CreateGroupInfo")
+		        case "CreateGroupInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1006,9 +1009,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddActivityInfo")
+		        case "AddActivityInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1017,9 +1020,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ActivityName = serializedObject.ActivityName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddBlogPostInfo")
+		        case "AddBlogPostInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1028,9 +1031,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddCategoryInfo")
+		        case "AddCategoryInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1039,9 +1042,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Group")
+		        case "Group":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1077,9 +1080,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
 					else
 						existingObject.CategoryCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Introduction")
+		        case "Introduction":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1089,9 +1092,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Body = serializedObject.Body;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ContentCategoryRank")
+		        case "ContentCategoryRank":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1104,9 +1107,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.CategoryID = serializedObject.CategoryID;
 		            existingObject.RankName = serializedObject.RankName;
 		            existingObject.RankValue = serializedObject.RankValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LinkToContent")
+		        case "LinkToContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1131,9 +1134,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "EmbeddedContent")
+		        case "EmbeddedContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1154,9 +1157,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DynamicContentGroup")
+		        case "DynamicContentGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1169,9 +1172,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SortValue = serializedObject.SortValue;
 		            existingObject.PageLocation = serializedObject.PageLocation;
 		            existingObject.ContentItemNames = serializedObject.ContentItemNames;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DynamicContent")
+		        case "DynamicContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1194,9 +1197,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ApplyActively = serializedObject.ApplyActively;
 		            existingObject.EditType = serializedObject.EditType;
 		            existingObject.PageLocation = serializedObject.PageLocation;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AttachedToObject")
+		        case "AttachedToObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1210,9 +1213,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
 		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Comment")
+		        case "Comment":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1232,9 +1235,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.LastAuthorName = serializedObject.LastAuthorName;
 		            existingObject.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            existingObject.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Selection")
+		        case "Selection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1249,9 +1252,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TextValue = serializedObject.TextValue;
 		            existingObject.BooleanValue = serializedObject.BooleanValue;
 		            existingObject.DoubleValue = serializedObject.DoubleValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TextContent")
+		        case "TextContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1280,9 +1283,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SortOrderNumber = serializedObject.SortOrderNumber;
 		            existingObject.IFrameSources = serializedObject.IFrameSources;
 		            existingObject.RawHtmlContent = serializedObject.RawHtmlContent;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Map")
+		        case "Map":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1291,9 +1294,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapResult")
+		        case "MapResult":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1305,9 +1308,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapResultsCollection")
+		        case "MapResultsCollection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1327,9 +1330,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ResultByProximityID = serializedObject.ResultByProximity.ID;
 					else
 						existingObject.ResultByProximityID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Video")
+		        case "Video":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1343,9 +1346,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.VideoDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Image")
+		        case "Image":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1372,9 +1375,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "BinaryFile")
+		        case "BinaryFile":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1393,9 +1396,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Longitude")
+		        case "Longitude":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1404,9 +1407,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Latitude")
+		        case "Latitude":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1415,9 +1418,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Location")
+		        case "Location":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1434,9 +1437,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LatitudeID = serializedObject.Latitude.ID;
 					else
 						existingObject.LatitudeID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Date")
+		        case "Date":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1448,9 +1451,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Week = serializedObject.Week;
 		            existingObject.Month = serializedObject.Month;
 		            existingObject.Year = serializedObject.Year;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CategoryContainer")
+		        case "CategoryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1462,9 +1465,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1487,9 +1490,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ParentCategoryID = serializedObject.ParentCategory.ID;
 					else
 						existingObject.ParentCategoryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UpdateWebContentOperation")
+		        case "UpdateWebContentOperation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1506,9 +1509,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.HandlersID = serializedObject.Handlers.ID;
 					else
 						existingObject.HandlersID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UpdateWebContentHandlerItem")
+		        case "UpdateWebContentHandlerItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1518,8 +1521,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
 		            existingObject.OptionName = serializedObject.OptionName;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 
@@ -1527,7 +1531,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		    {
                 if(updateData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "TBSystem")
+
+				switch(updateData.ObjectType)
+				{
+		        case "TBSystem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1537,9 +1544,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InstanceName = serializedObject.InstanceName;
 		            existingObject.AdminGroupID = serializedObject.AdminGroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "WebPublishInfo")
+		        case "WebPublishInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1557,9 +1564,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.PublicationsID = serializedObject.Publications.ID;
 					else
 						existingObject.PublicationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "PublicationPackage")
+		        case "PublicationPackage":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1569,9 +1576,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.PackageName = serializedObject.PackageName;
 		            existingObject.PublicationTime = serializedObject.PublicationTime;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRLoginRoot")
+		        case "TBRLoginRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1584,9 +1591,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRAccountRoot")
+		        case "TBRAccountRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1598,9 +1605,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRGroupRoot")
+		        case "TBRGroupRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1612,9 +1619,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupID = serializedObject.Group.ID;
 					else
 						existingObject.GroupID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBRLoginGroupRoot")
+		        case "TBRLoginGroupRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1624,9 +1631,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.GroupID = serializedObject.GroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBREmailRoot")
+		        case "TBREmailRoot":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1638,9 +1645,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountID = serializedObject.Account.ID;
 					else
 						existingObject.AccountID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBAccount")
+		        case "TBAccount":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1660,9 +1667,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupRoleCollectionID = serializedObject.GroupRoleCollection.ID;
 					else
 						existingObject.GroupRoleCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBAccountCollaborationGroup")
+		        case "TBAccountCollaborationGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1673,9 +1680,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.GroupRole = serializedObject.GroupRole;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBLoginInfo")
+		        case "TBLoginInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1684,9 +1691,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = TBLoginInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OpenIDUrl = serializedObject.OpenIDUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBEmail")
+		        case "TBEmail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1696,9 +1703,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.ValidatedAt = serializedObject.ValidatedAt;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBCollaboratorRole")
+		        case "TBCollaboratorRole":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1712,9 +1719,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.EmailID = null;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.RoleStatus = serializedObject.RoleStatus;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBCollaboratingGroup")
+		        case "TBCollaboratingGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1727,9 +1734,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.RolesID = serializedObject.Roles.ID;
 					else
 						existingObject.RolesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBEmailValidation")
+		        case "TBEmailValidation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1761,9 +1768,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.MergeAccountsConfirmationID = null;
 		            existingObject.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBMergeAccountConfirmation")
+		        case "TBMergeAccountConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1773,9 +1780,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            existingObject.AccountToMergeToID = serializedObject.AccountToMergeToID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBGroupJoinConfirmation")
+		        case "TBGroupJoinConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1785,9 +1792,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.InvitationMode = serializedObject.InvitationMode;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBDeviceJoinConfirmation")
+		        case "TBDeviceJoinConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1798,9 +1805,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.DeviceMembershipID = serializedObject.DeviceMembershipID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBInformationInputConfirmation")
+		        case "TBInformationInputConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1811,9 +1818,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationInputID = serializedObject.InformationInputID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBInformationOutputConfirmation")
+		        case "TBInformationOutputConfirmation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1824,9 +1831,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.GroupID = serializedObject.GroupID;
 		            existingObject.AccountID = serializedObject.AccountID;
 		            existingObject.InformationOutputID = serializedObject.InformationOutputID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LoginProvider")
+		        case "LoginProvider":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1839,9 +1846,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ProviderType = serializedObject.ProviderType;
 		            existingObject.ProviderUrl = serializedObject.ProviderUrl;
 		            existingObject.ReturnUrl = serializedObject.ReturnUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TBPRegisterEmail")
+		        case "TBPRegisterEmail":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1850,9 +1857,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = TBPRegisterEmailTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountSummary")
+		        case "AccountSummary":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1864,9 +1871,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupSummaryID = serializedObject.GroupSummary.ID;
 					else
 						existingObject.GroupSummaryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountContainer")
+		        case "AccountContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1882,9 +1889,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.AccountSummaryID = serializedObject.AccountSummary.ID;
 					else
 						existingObject.AccountSummaryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountModule")
+		        case "AccountModule":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1908,9 +1915,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						existingObject.LocationCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LocationContainer")
+		        case "LocationContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1922,9 +1929,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationsID = serializedObject.Locations.ID;
 					else
 						existingObject.LocationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddressAndLocation")
+		        case "AddressAndLocation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1944,9 +1951,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "StreetAddress")
+		        case "StreetAddress":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1958,9 +1965,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ZipCode = serializedObject.ZipCode;
 		            existingObject.Town = serializedObject.Town;
 		            existingObject.Country = serializedObject.Country;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountProfile")
+		        case "AccountProfile":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1981,9 +1988,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.IsSimplifiedAccount = serializedObject.IsSimplifiedAccount;
 		            existingObject.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            existingObject.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountSecurity")
+		        case "AccountSecurity":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -1999,9 +2006,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.EmailCollectionID = serializedObject.EmailCollection.ID;
 					else
 						existingObject.EmailCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AccountRoles")
+		        case "AccountRoles":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2018,9 +2025,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.MemberInGroupsID = null;
 		            existingObject.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "PersonalInfoVisibility")
+		        case "PersonalInfoVisibility":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2029,9 +2036,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = PersonalInfoVisibilityTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.NoOne_Network_All = serializedObject.NoOne_Network_All;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ReferenceToInformation")
+		        case "ReferenceToInformation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2041,9 +2048,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.URL = serializedObject.URL;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "NodeSummaryContainer")
+		        case "NodeSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2079,9 +2086,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.NodeSourceCategoriesID = serializedObject.NodeSourceCategories.ID;
 					else
 						existingObject.NodeSourceCategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "RenderedNode")
+		        case "RenderedNode":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2120,9 +2127,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationsID = serializedObject.Locations.ID;
 					else
 						existingObject.LocationsID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ShortTextObject")
+		        case "ShortTextObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2131,9 +2138,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = ShortTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LongTextObject")
+		        case "LongTextObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2142,9 +2149,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LongTextObjectTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Content = serializedObject.Content;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapMarker")
+		        case "MapMarker":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2162,9 +2169,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Moderator")
+		        case "Moderator":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2174,9 +2181,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ModeratorName = serializedObject.ModeratorName;
 		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Collaborator")
+		        case "Collaborator":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2189,9 +2196,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.CollaboratorName = serializedObject.CollaboratorName;
 		            existingObject.Role = serializedObject.Role;
 		            existingObject.ProfileUrl = serializedObject.ProfileUrl;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupSummaryContainer")
+		        case "GroupSummaryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2212,9 +2219,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.GroupCollectionID = serializedObject.GroupCollection.ID;
 					else
 						existingObject.GroupCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupContainer")
+		        case "GroupContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2242,9 +2249,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationCollectionID = serializedObject.LocationCollection.ID;
 					else
 						existingObject.LocationCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "GroupIndex")
+		        case "GroupIndex":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2259,9 +2266,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Introduction = serializedObject.Introduction;
 		            existingObject.Summary = serializedObject.Summary;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddAddressAndLocationInfo")
+		        case "AddAddressAndLocationInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2270,9 +2277,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddAddressAndLocationInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.LocationName = serializedObject.LocationName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddImageInfo")
+		        case "AddImageInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2281,9 +2288,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddImageInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageTitle = serializedObject.ImageTitle;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddImageGroupInfo")
+		        case "AddImageGroupInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2292,9 +2299,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddImageGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ImageGroupTitle = serializedObject.ImageGroupTitle;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddEmailAddressInfo")
+		        case "AddEmailAddressInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2303,9 +2310,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddEmailAddressInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CreateGroupInfo")
+		        case "CreateGroupInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2314,9 +2321,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = CreateGroupInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.GroupName = serializedObject.GroupName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddActivityInfo")
+		        case "AddActivityInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2325,9 +2332,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddActivityInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.ActivityName = serializedObject.ActivityName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddBlogPostInfo")
+		        case "AddBlogPostInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2336,9 +2343,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddBlogPostInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AddCategoryInfo")
+		        case "AddCategoryInfo":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2347,9 +2354,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = AddCategoryInfoTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.CategoryName = serializedObject.CategoryName;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Group")
+		        case "Group":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2385,9 +2392,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoryCollectionID = serializedObject.CategoryCollection.ID;
 					else
 						existingObject.CategoryCollectionID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Introduction")
+		        case "Introduction":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2397,9 +2404,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Body = serializedObject.Body;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "ContentCategoryRank")
+		        case "ContentCategoryRank":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2412,9 +2419,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.CategoryID = serializedObject.CategoryID;
 		            existingObject.RankName = serializedObject.RankName;
 		            existingObject.RankValue = serializedObject.RankValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "LinkToContent")
+		        case "LinkToContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2439,9 +2446,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "EmbeddedContent")
+		        case "EmbeddedContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2462,9 +2469,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DynamicContentGroup")
+		        case "DynamicContentGroup":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2477,9 +2484,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SortValue = serializedObject.SortValue;
 		            existingObject.PageLocation = serializedObject.PageLocation;
 		            existingObject.ContentItemNames = serializedObject.ContentItemNames;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "DynamicContent")
+		        case "DynamicContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2502,9 +2509,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ApplyActively = serializedObject.ApplyActively;
 		            existingObject.EditType = serializedObject.EditType;
 		            existingObject.PageLocation = serializedObject.PageLocation;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "AttachedToObject")
+		        case "AttachedToObject":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2518,9 +2525,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TargetObjectID = serializedObject.TargetObjectID;
 		            existingObject.TargetObjectName = serializedObject.TargetObjectName;
 		            existingObject.TargetObjectDomain = serializedObject.TargetObjectDomain;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Comment")
+		        case "Comment":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2540,9 +2547,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.LastAuthorName = serializedObject.LastAuthorName;
 		            existingObject.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            existingObject.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Selection")
+		        case "Selection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2557,9 +2564,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.TextValue = serializedObject.TextValue;
 		            existingObject.BooleanValue = serializedObject.BooleanValue;
 		            existingObject.DoubleValue = serializedObject.DoubleValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "TextContent")
+		        case "TextContent":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2588,9 +2595,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SortOrderNumber = serializedObject.SortOrderNumber;
 		            existingObject.IFrameSources = serializedObject.IFrameSources;
 		            existingObject.RawHtmlContent = serializedObject.RawHtmlContent;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Map")
+		        case "Map":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2599,9 +2606,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = MapTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.Title = serializedObject.Title;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapResult")
+		        case "MapResult":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2613,9 +2620,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LocationID = serializedObject.Location.ID;
 					else
 						existingObject.LocationID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "MapResultsCollection")
+		        case "MapResultsCollection":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2635,9 +2642,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ResultByProximityID = serializedObject.ResultByProximity.ID;
 					else
 						existingObject.ResultByProximityID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Video")
+		        case "Video":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2651,9 +2658,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.VideoDataID = null;
 		            existingObject.Title = serializedObject.Title;
 		            existingObject.Caption = serializedObject.Caption;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Image")
+		        case "Image":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2680,9 +2687,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "BinaryFile")
+		        case "BinaryFile":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2701,9 +2708,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Longitude")
+		        case "Longitude":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2712,9 +2719,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LongitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Latitude")
+		        case "Latitude":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2723,9 +2730,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            var existingObject = LatitudeTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.TextValue = serializedObject.TextValue;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Location")
+		        case "Location":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2742,9 +2749,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.LatitudeID = serializedObject.Latitude.ID;
 					else
 						existingObject.LatitudeID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Date")
+		        case "Date":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2756,9 +2763,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.Week = serializedObject.Week;
 		            existingObject.Month = serializedObject.Month;
 		            existingObject.Year = serializedObject.Year;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "CategoryContainer")
+		        case "CategoryContainer":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2770,9 +2777,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.CategoriesID = serializedObject.Categories.ID;
 					else
 						existingObject.CategoriesID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "Category")
+		        case "Category":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2795,9 +2802,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.ParentCategoryID = serializedObject.ParentCategory.ID;
 					else
 						existingObject.ParentCategoryID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UpdateWebContentOperation")
+		        case "UpdateWebContentOperation":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2814,9 +2821,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						existingObject.HandlersID = serializedObject.Handlers.ID;
 					else
 						existingObject.HandlersID = null;
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "UpdateWebContentHandlerItem")
+		        case "UpdateWebContentHandlerItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -2826,8 +2833,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					existingObject.ETag = updateData.ETag;
 		            existingObject.InformationTypeName = serializedObject.InformationTypeName;
 		            existingObject.OptionName = serializedObject.OptionName;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -2835,7 +2843,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 if (insertData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "TBSystem")
+
+				switch(insertData.ObjectType)
+				{
+                case "TBSystem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2845,9 +2856,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
 					TBSystemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "WebPublishInfo")
+                case "WebPublishInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2865,9 +2876,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.PublicationsID = null;
 					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "PublicationPackage")
+                case "PublicationPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2877,9 +2888,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
 					PublicationPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRLoginRoot")
+                case "TBRLoginRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2892,9 +2903,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRAccountRoot")
+                case "TBRAccountRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2906,9 +2917,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBRAccountRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRGroupRoot")
+                case "TBRGroupRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2920,9 +2931,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupID = null;
 					TBRGroupRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRLoginGroupRoot")
+                case "TBRLoginGroupRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2932,9 +2943,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
 					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBREmailRoot")
+                case "TBREmailRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2946,9 +2957,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBREmailRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBAccount")
+                case "TBAccount":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2968,9 +2979,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupRoleCollectionID = null;
 					TBAccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBAccountCollaborationGroup")
+                case "TBAccountCollaborationGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2981,9 +2992,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
 					TBAccountCollaborationGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBLoginInfo")
+                case "TBLoginInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -2992,9 +3003,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
 					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBEmail")
+                case "TBEmail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3004,9 +3015,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
 					TBEmailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBCollaboratorRole")
+                case "TBCollaboratorRole":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3020,9 +3031,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
 					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBCollaboratingGroup")
+                case "TBCollaboratingGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3035,9 +3046,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.RolesID = null;
 					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBEmailValidation")
+                case "TBEmailValidation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3069,9 +3080,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MergeAccountsConfirmationID = null;
 		            objectToAdd.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
 					TBEmailValidationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBMergeAccountConfirmation")
+                case "TBMergeAccountConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3081,9 +3092,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
 					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBGroupJoinConfirmation")
+                case "TBGroupJoinConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3093,9 +3104,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
 					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBDeviceJoinConfirmation")
+                case "TBDeviceJoinConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3106,9 +3117,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
 					TBDeviceJoinConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBInformationInputConfirmation")
+                case "TBInformationInputConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3119,9 +3130,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
 					TBInformationInputConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBInformationOutputConfirmation")
+                case "TBInformationOutputConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3132,9 +3143,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
 					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LoginProvider")
+                case "LoginProvider":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3147,9 +3158,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ProviderUrl = serializedObject.ProviderUrl;
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
 					LoginProviderTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBPRegisterEmail")
+                case "TBPRegisterEmail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3158,9 +3169,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountSummary")
+                case "AccountSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3172,9 +3183,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupSummaryID = null;
 					AccountSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountContainer")
+                case "AccountContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3190,9 +3201,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountSummaryID = null;
 					AccountContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountModule")
+                case "AccountModule":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3216,9 +3227,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationCollectionID = null;
 					AccountModuleTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LocationContainer")
+                case "LocationContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3230,9 +3241,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationsID = null;
 					LocationContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddressAndLocation")
+                case "AddressAndLocation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3252,9 +3263,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					AddressAndLocationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StreetAddress")
+                case "StreetAddress":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3266,9 +3277,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Town = serializedObject.Town;
 		            objectToAdd.Country = serializedObject.Country;
 					StreetAddressTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountProfile")
+                case "AccountProfile":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3289,9 +3300,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            objectToAdd.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
 					AccountProfileTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountSecurity")
+                case "AccountSecurity":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3307,9 +3318,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.EmailCollectionID = null;
 					AccountSecurityTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountRoles")
+                case "AccountRoles":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3326,9 +3337,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MemberInGroupsID = null;
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 					AccountRolesTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "PersonalInfoVisibility")
+                case "PersonalInfoVisibility":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3337,9 +3348,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
 					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ReferenceToInformation")
+                case "ReferenceToInformation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3349,9 +3360,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
 					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "NodeSummaryContainer")
+                case "NodeSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3387,9 +3398,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.NodeSourceCategoriesID = null;
 					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "RenderedNode")
+                case "RenderedNode":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3428,9 +3439,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationsID = null;
 					RenderedNodeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ShortTextObject")
+                case "ShortTextObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3439,9 +3450,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LongTextObject")
+                case "LongTextObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3450,9 +3461,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					LongTextObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapMarker")
+                case "MapMarker":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3470,9 +3481,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					MapMarkerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Moderator")
+                case "Moderator":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3482,9 +3493,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
 					ModeratorTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Collaborator")
+                case "Collaborator":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3497,9 +3508,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
 					CollaboratorTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupSummaryContainer")
+                case "GroupSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3520,9 +3531,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupCollectionID = null;
 					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupContainer")
+                case "GroupContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3550,9 +3561,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationCollectionID = null;
 					GroupContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupIndex")
+                case "GroupIndex":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3567,9 +3578,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
 					GroupIndexTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddAddressAndLocationInfo")
+                case "AddAddressAndLocationInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3578,9 +3589,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddImageInfo")
+                case "AddImageInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3589,9 +3600,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
 					AddImageInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddImageGroupInfo")
+                case "AddImageGroupInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3600,9 +3611,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
 					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddEmailAddressInfo")
+                case "AddEmailAddressInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3611,9 +3622,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CreateGroupInfo")
+                case "CreateGroupInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3622,9 +3633,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddActivityInfo")
+                case "AddActivityInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3633,9 +3644,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
 					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddBlogPostInfo")
+                case "AddBlogPostInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3644,9 +3655,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddCategoryInfo")
+                case "AddCategoryInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3655,9 +3666,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Group")
+                case "Group":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3693,9 +3704,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoryCollectionID = null;
 					GroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Introduction")
+                case "Introduction":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3705,9 +3716,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
 					IntroductionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ContentCategoryRank")
+                case "ContentCategoryRank":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3720,9 +3731,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.RankName = serializedObject.RankName;
 		            objectToAdd.RankValue = serializedObject.RankValue;
 					ContentCategoryRankTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LinkToContent")
+                case "LinkToContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3747,9 +3758,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					LinkToContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "EmbeddedContent")
+                case "EmbeddedContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3770,9 +3781,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DynamicContentGroup")
+                case "DynamicContentGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3785,9 +3796,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 		            objectToAdd.ContentItemNames = serializedObject.ContentItemNames;
 					DynamicContentGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DynamicContent")
+                case "DynamicContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3810,9 +3821,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.EditType = serializedObject.EditType;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 					DynamicContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AttachedToObject")
+                case "AttachedToObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3826,9 +3837,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
 					AttachedToObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Comment")
+                case "Comment":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3848,9 +3859,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            objectToAdd.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
 					CommentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Selection")
+                case "Selection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3865,9 +3876,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.BooleanValue = serializedObject.BooleanValue;
 		            objectToAdd.DoubleValue = serializedObject.DoubleValue;
 					SelectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TextContent")
+                case "TextContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3896,9 +3907,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
 		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
 					TextContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Map")
+                case "Map":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3907,9 +3918,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					MapTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapResult")
+                case "MapResult":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3921,9 +3932,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					MapResultTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapResultsCollection")
+                case "MapResultsCollection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3943,9 +3954,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ResultByProximityID = null;
 					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Video")
+                case "Video":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3959,9 +3970,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 					VideoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Image")
+                case "Image":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -3988,9 +3999,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					ImageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "BinaryFile")
+                case "BinaryFile":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4009,9 +4020,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					BinaryFileTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Longitude")
+                case "Longitude":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4020,9 +4031,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LongitudeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Latitude")
+                case "Latitude":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4031,9 +4042,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LatitudeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Location")
+                case "Location":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4050,9 +4061,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LatitudeID = null;
 					LocationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Date")
+                case "Date":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4064,9 +4075,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Month = serializedObject.Month;
 		            objectToAdd.Year = serializedObject.Year;
 					DateTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CategoryContainer")
+                case "CategoryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4078,9 +4089,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					CategoryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4103,9 +4114,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ParentCategoryID = null;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UpdateWebContentOperation")
+                case "UpdateWebContentOperation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4122,9 +4133,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.HandlersID = null;
 					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UpdateWebContentHandlerItem")
+                case "UpdateWebContentHandlerItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4134,8 +4145,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
 					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -4144,7 +4156,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 if (insertData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "TBSystem")
+
+				switch(insertData.ObjectType)
+				{
+                case "TBSystem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4154,9 +4169,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.InstanceName = serializedObject.InstanceName;
 		            objectToAdd.AdminGroupID = serializedObject.AdminGroupID;
 					TBSystemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "WebPublishInfo")
+                case "WebPublishInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4174,9 +4189,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.PublicationsID = null;
 					WebPublishInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "PublicationPackage")
+                case "PublicationPackage":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4186,9 +4201,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.PackageName = serializedObject.PackageName;
 		            objectToAdd.PublicationTime = serializedObject.PublicationTime;
 					PublicationPackageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRLoginRoot")
+                case "TBRLoginRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4201,9 +4216,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBRLoginRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRAccountRoot")
+                case "TBRAccountRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4215,9 +4230,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBRAccountRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRGroupRoot")
+                case "TBRGroupRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4229,9 +4244,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupID = null;
 					TBRGroupRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBRLoginGroupRoot")
+                case "TBRLoginGroupRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4241,9 +4256,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.GroupID = serializedObject.GroupID;
 					TBRLoginGroupRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBREmailRoot")
+                case "TBREmailRoot":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4255,9 +4270,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountID = null;
 					TBREmailRootTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBAccount")
+                case "TBAccount":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4277,9 +4292,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupRoleCollectionID = null;
 					TBAccountTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBAccountCollaborationGroup")
+                case "TBAccountCollaborationGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4290,9 +4305,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupRole = serializedObject.GroupRole;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
 					TBAccountCollaborationGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBLoginInfo")
+                case "TBLoginInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4301,9 +4316,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBLoginInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OpenIDUrl = serializedObject.OpenIDUrl;
 					TBLoginInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBEmail")
+                case "TBEmail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4313,9 +4328,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.ValidatedAt = serializedObject.ValidatedAt;
 					TBEmailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBCollaboratorRole")
+                case "TBCollaboratorRole":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4329,9 +4344,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.RoleStatus = serializedObject.RoleStatus;
 					TBCollaboratorRoleTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBCollaboratingGroup")
+                case "TBCollaboratingGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4344,9 +4359,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.RolesID = null;
 					TBCollaboratingGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBEmailValidation")
+                case "TBEmailValidation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4378,9 +4393,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MergeAccountsConfirmationID = null;
 		            objectToAdd.RedirectUrlAfterValidation = serializedObject.RedirectUrlAfterValidation;
 					TBEmailValidationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBMergeAccountConfirmation")
+                case "TBMergeAccountConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4390,9 +4405,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountToBeMergedID = serializedObject.AccountToBeMergedID;
 		            objectToAdd.AccountToMergeToID = serializedObject.AccountToMergeToID;
 					TBMergeAccountConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBGroupJoinConfirmation")
+                case "TBGroupJoinConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4402,9 +4417,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.GroupID = serializedObject.GroupID;
 		            objectToAdd.InvitationMode = serializedObject.InvitationMode;
 					TBGroupJoinConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBDeviceJoinConfirmation")
+                case "TBDeviceJoinConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4415,9 +4430,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.DeviceMembershipID = serializedObject.DeviceMembershipID;
 					TBDeviceJoinConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBInformationInputConfirmation")
+                case "TBInformationInputConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4428,9 +4443,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationInputID = serializedObject.InformationInputID;
 					TBInformationInputConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBInformationOutputConfirmation")
+                case "TBInformationOutputConfirmation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4441,9 +4456,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.AccountID = serializedObject.AccountID;
 		            objectToAdd.InformationOutputID = serializedObject.InformationOutputID;
 					TBInformationOutputConfirmationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LoginProvider")
+                case "LoginProvider":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4456,9 +4471,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ProviderUrl = serializedObject.ProviderUrl;
 		            objectToAdd.ReturnUrl = serializedObject.ReturnUrl;
 					LoginProviderTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TBPRegisterEmail")
+                case "TBPRegisterEmail":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4467,9 +4482,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new TBPRegisterEmail {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					TBPRegisterEmailTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountSummary")
+                case "AccountSummary":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4481,9 +4496,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupSummaryID = null;
 					AccountSummaryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountContainer")
+                case "AccountContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4499,9 +4514,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.AccountSummaryID = null;
 					AccountContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountModule")
+                case "AccountModule":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4525,9 +4540,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationCollectionID = null;
 					AccountModuleTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LocationContainer")
+                case "LocationContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4539,9 +4554,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationsID = null;
 					LocationContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddressAndLocation")
+                case "AddressAndLocation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4561,9 +4576,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					AddressAndLocationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "StreetAddress")
+                case "StreetAddress":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4575,9 +4590,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Town = serializedObject.Town;
 		            objectToAdd.Country = serializedObject.Country;
 					StreetAddressTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountProfile")
+                case "AccountProfile":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4598,9 +4613,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SimplifiedAccountEmail = serializedObject.SimplifiedAccountEmail;
 		            objectToAdd.SimplifiedAccountGroupID = serializedObject.SimplifiedAccountGroupID;
 					AccountProfileTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountSecurity")
+                case "AccountSecurity":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4616,9 +4631,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.EmailCollectionID = null;
 					AccountSecurityTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AccountRoles")
+                case "AccountRoles":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4635,9 +4650,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 						objectToAdd.MemberInGroupsID = null;
 		            objectToAdd.OrganizationsImPartOf = serializedObject.OrganizationsImPartOf;
 					AccountRolesTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "PersonalInfoVisibility")
+                case "PersonalInfoVisibility":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4646,9 +4661,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new PersonalInfoVisibility {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.NoOne_Network_All = serializedObject.NoOne_Network_All;
 					PersonalInfoVisibilityTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ReferenceToInformation")
+                case "ReferenceToInformation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4658,9 +4673,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.URL = serializedObject.URL;
 					ReferenceToInformationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "NodeSummaryContainer")
+                case "NodeSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4696,9 +4711,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.NodeSourceCategoriesID = null;
 					NodeSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "RenderedNode")
+                case "RenderedNode":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4737,9 +4752,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationsID = null;
 					RenderedNodeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ShortTextObject")
+                case "ShortTextObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4748,9 +4763,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new ShortTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					ShortTextObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LongTextObject")
+                case "LongTextObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4759,9 +4774,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new LongTextObject {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Content = serializedObject.Content;
 					LongTextObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapMarker")
+                case "MapMarker":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4779,9 +4794,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					MapMarkerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Moderator")
+                case "Moderator":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4791,9 +4806,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ModeratorName = serializedObject.ModeratorName;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
 					ModeratorTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Collaborator")
+                case "Collaborator":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4806,9 +4821,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Role = serializedObject.Role;
 		            objectToAdd.ProfileUrl = serializedObject.ProfileUrl;
 					CollaboratorTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupSummaryContainer")
+                case "GroupSummaryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4829,9 +4844,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.GroupCollectionID = null;
 					GroupSummaryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupContainer")
+                case "GroupContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4859,9 +4874,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationCollectionID = null;
 					GroupContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "GroupIndex")
+                case "GroupIndex":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4876,9 +4891,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Introduction = serializedObject.Introduction;
 		            objectToAdd.Summary = serializedObject.Summary;
 					GroupIndexTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddAddressAndLocationInfo")
+                case "AddAddressAndLocationInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4887,9 +4902,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddAddressAndLocationInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.LocationName = serializedObject.LocationName;
 					AddAddressAndLocationInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddImageInfo")
+                case "AddImageInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4898,9 +4913,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddImageInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageTitle = serializedObject.ImageTitle;
 					AddImageInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddImageGroupInfo")
+                case "AddImageGroupInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4909,9 +4924,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddImageGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ImageGroupTitle = serializedObject.ImageGroupTitle;
 					AddImageGroupInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddEmailAddressInfo")
+                case "AddEmailAddressInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4920,9 +4935,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddEmailAddressInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 					AddEmailAddressInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CreateGroupInfo")
+                case "CreateGroupInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4931,9 +4946,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new CreateGroupInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.GroupName = serializedObject.GroupName;
 					CreateGroupInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddActivityInfo")
+                case "AddActivityInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4942,9 +4957,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddActivityInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.ActivityName = serializedObject.ActivityName;
 					AddActivityInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddBlogPostInfo")
+                case "AddBlogPostInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4953,9 +4968,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddBlogPostInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					AddBlogPostInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AddCategoryInfo")
+                case "AddCategoryInfo":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -4964,9 +4979,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new AddCategoryInfo {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.CategoryName = serializedObject.CategoryName;
 					AddCategoryInfoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Group")
+                case "Group":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5002,9 +5017,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoryCollectionID = null;
 					GroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Introduction")
+                case "Introduction":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5014,9 +5029,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Body = serializedObject.Body;
 					IntroductionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "ContentCategoryRank")
+                case "ContentCategoryRank":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5029,9 +5044,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.RankName = serializedObject.RankName;
 		            objectToAdd.RankValue = serializedObject.RankValue;
 					ContentCategoryRankTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "LinkToContent")
+                case "LinkToContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5056,9 +5071,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					LinkToContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "EmbeddedContent")
+                case "EmbeddedContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5079,9 +5094,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					EmbeddedContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DynamicContentGroup")
+                case "DynamicContentGroup":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5094,9 +5109,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 		            objectToAdd.ContentItemNames = serializedObject.ContentItemNames;
 					DynamicContentGroupTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "DynamicContent")
+                case "DynamicContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5119,9 +5134,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.EditType = serializedObject.EditType;
 		            objectToAdd.PageLocation = serializedObject.PageLocation;
 					DynamicContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "AttachedToObject")
+                case "AttachedToObject":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5135,9 +5150,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.TargetObjectName = serializedObject.TargetObjectName;
 		            objectToAdd.TargetObjectDomain = serializedObject.TargetObjectDomain;
 					AttachedToObjectTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Comment")
+                case "Comment":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5157,9 +5172,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.LastAuthorEmail = serializedObject.LastAuthorEmail;
 		            objectToAdd.LastAuthorAccountID = serializedObject.LastAuthorAccountID;
 					CommentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Selection")
+                case "Selection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5174,9 +5189,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.BooleanValue = serializedObject.BooleanValue;
 		            objectToAdd.DoubleValue = serializedObject.DoubleValue;
 					SelectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "TextContent")
+                case "TextContent":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5205,9 +5220,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.IFrameSources = serializedObject.IFrameSources;
 		            objectToAdd.RawHtmlContent = serializedObject.RawHtmlContent;
 					TextContentTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Map")
+                case "Map":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5216,9 +5231,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Map {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.Title = serializedObject.Title;
 					MapTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapResult")
+                case "MapResult":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5230,9 +5245,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LocationID = null;
 					MapResultTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "MapResultsCollection")
+                case "MapResultsCollection":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5252,9 +5267,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ResultByProximityID = null;
 					MapResultsCollectionTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Video")
+                case "Video":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5268,9 +5283,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Title = serializedObject.Title;
 		            objectToAdd.Caption = serializedObject.Caption;
 					VideoTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Image")
+                case "Image":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5297,9 +5312,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					ImageTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "BinaryFile")
+                case "BinaryFile":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5318,9 +5333,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					BinaryFileTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Longitude")
+                case "Longitude":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5329,9 +5344,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Longitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LongitudeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Latitude")
+                case "Latitude":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5340,9 +5355,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                     var objectToAdd = new Latitude {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.TextValue = serializedObject.TextValue;
 					LatitudeTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Location")
+                case "Location":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5359,9 +5374,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.LatitudeID = null;
 					LocationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Date")
+                case "Date":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5373,9 +5388,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.Month = serializedObject.Month;
 		            objectToAdd.Year = serializedObject.Year;
 					DateTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "CategoryContainer")
+                case "CategoryContainer":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5387,9 +5402,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.CategoriesID = null;
 					CategoryContainerTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "Category")
+                case "Category":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5412,9 +5427,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ParentCategoryID = null;
 					CategoryTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UpdateWebContentOperation")
+                case "UpdateWebContentOperation":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5431,9 +5446,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.HandlersID = null;
 					UpdateWebContentOperationTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "UpdateWebContentHandlerItem")
+                case "UpdateWebContentHandlerItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -5443,8 +5458,9 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.InformationTypeName = serializedObject.InformationTypeName;
 		            objectToAdd.OptionName = serializedObject.OptionName;
 					UpdateWebContentHandlerItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -5453,756 +5469,867 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 if (deleteData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "TBSystem")
-		        {
-		            var objectToDelete = new TBSystem {ID = deleteData.ID};
-                    TBSystemTable.Attach(objectToDelete);
-                    TBSystemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "WebPublishInfo")
-		        {
-		            var objectToDelete = new WebPublishInfo {ID = deleteData.ID};
-                    WebPublishInfoTable.Attach(objectToDelete);
-                    WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PublicationPackage")
-		        {
-		            var objectToDelete = new PublicationPackage {ID = deleteData.ID};
-                    PublicationPackageTable.Attach(objectToDelete);
-                    PublicationPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRLoginRoot")
-		        {
-		            var objectToDelete = new TBRLoginRoot {ID = deleteData.ID};
-                    TBRLoginRootTable.Attach(objectToDelete);
-                    TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRAccountRoot")
-		        {
-		            var objectToDelete = new TBRAccountRoot {ID = deleteData.ID};
-                    TBRAccountRootTable.Attach(objectToDelete);
-                    TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRGroupRoot")
-		        {
-		            var objectToDelete = new TBRGroupRoot {ID = deleteData.ID};
-                    TBRGroupRootTable.Attach(objectToDelete);
-                    TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRLoginGroupRoot")
-		        {
-		            var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ID};
-                    TBRLoginGroupRootTable.Attach(objectToDelete);
-                    TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBREmailRoot")
-		        {
-		            var objectToDelete = new TBREmailRoot {ID = deleteData.ID};
-                    TBREmailRootTable.Attach(objectToDelete);
-                    TBREmailRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccount")
-		        {
-		            var objectToDelete = new TBAccount {ID = deleteData.ID};
-                    TBAccountTable.Attach(objectToDelete);
-                    TBAccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccountCollaborationGroup")
-		        {
-		            var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ID};
-                    TBAccountCollaborationGroupTable.Attach(objectToDelete);
-                    TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBLoginInfo")
-		        {
-		            var objectToDelete = new TBLoginInfo {ID = deleteData.ID};
-                    TBLoginInfoTable.Attach(objectToDelete);
-                    TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmail")
-		        {
-		            var objectToDelete = new TBEmail {ID = deleteData.ID};
-                    TBEmailTable.Attach(objectToDelete);
-                    TBEmailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratorRole")
-		        {
-		            var objectToDelete = new TBCollaboratorRole {ID = deleteData.ID};
-                    TBCollaboratorRoleTable.Attach(objectToDelete);
-                    TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratingGroup")
-		        {
-		            var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ID};
-                    TBCollaboratingGroupTable.Attach(objectToDelete);
-                    TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmailValidation")
-		        {
-		            var objectToDelete = new TBEmailValidation {ID = deleteData.ID};
-                    TBEmailValidationTable.Attach(objectToDelete);
-                    TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBMergeAccountConfirmation")
-		        {
-		            var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ID};
-                    TBMergeAccountConfirmationTable.Attach(objectToDelete);
-                    TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBGroupJoinConfirmation")
-		        {
-		            var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ID};
-                    TBGroupJoinConfirmationTable.Attach(objectToDelete);
-                    TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBDeviceJoinConfirmation")
-		        {
-		            var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ID};
-                    TBDeviceJoinConfirmationTable.Attach(objectToDelete);
-                    TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBInformationInputConfirmation")
-		        {
-		            var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ID};
-                    TBInformationInputConfirmationTable.Attach(objectToDelete);
-                    TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBInformationOutputConfirmation")
-		        {
-		            var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ID};
-                    TBInformationOutputConfirmationTable.Attach(objectToDelete);
-                    TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LoginProvider")
-		        {
-		            var objectToDelete = new LoginProvider {ID = deleteData.ID};
-                    LoginProviderTable.Attach(objectToDelete);
-                    LoginProviderTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBPRegisterEmail")
-		        {
-		            var objectToDelete = new TBPRegisterEmail {ID = deleteData.ID};
-                    TBPRegisterEmailTable.Attach(objectToDelete);
-                    TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountSummary")
-		        {
-		            var objectToDelete = new AccountSummary {ID = deleteData.ID};
-                    AccountSummaryTable.Attach(objectToDelete);
-                    AccountSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountContainer")
-		        {
-		            var objectToDelete = new AccountContainer {ID = deleteData.ID};
-                    AccountContainerTable.Attach(objectToDelete);
-                    AccountContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountModule")
-		        {
-		            var objectToDelete = new AccountModule {ID = deleteData.ID};
-                    AccountModuleTable.Attach(objectToDelete);
-                    AccountModuleTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LocationContainer")
-		        {
-		            var objectToDelete = new LocationContainer {ID = deleteData.ID};
-                    LocationContainerTable.Attach(objectToDelete);
-                    LocationContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddressAndLocation")
-		        {
-		            var objectToDelete = new AddressAndLocation {ID = deleteData.ID};
-                    AddressAndLocationTable.Attach(objectToDelete);
-                    AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StreetAddress")
-		        {
-		            var objectToDelete = new StreetAddress {ID = deleteData.ID};
-                    StreetAddressTable.Attach(objectToDelete);
-                    StreetAddressTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountProfile")
-		        {
-		            var objectToDelete = new AccountProfile {ID = deleteData.ID};
-                    AccountProfileTable.Attach(objectToDelete);
-                    AccountProfileTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountSecurity")
-		        {
-		            var objectToDelete = new AccountSecurity {ID = deleteData.ID};
-                    AccountSecurityTable.Attach(objectToDelete);
-                    AccountSecurityTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountRoles")
-		        {
-		            var objectToDelete = new AccountRoles {ID = deleteData.ID};
-                    AccountRolesTable.Attach(objectToDelete);
-                    AccountRolesTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PersonalInfoVisibility")
-		        {
-		            var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ID};
-                    PersonalInfoVisibilityTable.Attach(objectToDelete);
-                    PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ReferenceToInformation")
-		        {
-		            var objectToDelete = new ReferenceToInformation {ID = deleteData.ID};
-                    ReferenceToInformationTable.Attach(objectToDelete);
-                    ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NodeSummaryContainer")
-		        {
-		            var objectToDelete = new NodeSummaryContainer {ID = deleteData.ID};
-                    NodeSummaryContainerTable.Attach(objectToDelete);
-                    NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RenderedNode")
-		        {
-		            var objectToDelete = new RenderedNode {ID = deleteData.ID};
-                    RenderedNodeTable.Attach(objectToDelete);
-                    RenderedNodeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ShortTextObject")
-		        {
-		            var objectToDelete = new ShortTextObject {ID = deleteData.ID};
-                    ShortTextObjectTable.Attach(objectToDelete);
-                    ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LongTextObject")
-		        {
-		            var objectToDelete = new LongTextObject {ID = deleteData.ID};
-                    LongTextObjectTable.Attach(objectToDelete);
-                    LongTextObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapMarker")
-		        {
-		            var objectToDelete = new MapMarker {ID = deleteData.ID};
-                    MapMarkerTable.Attach(objectToDelete);
-                    MapMarkerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Moderator")
-		        {
-		            var objectToDelete = new Moderator {ID = deleteData.ID};
-                    ModeratorTable.Attach(objectToDelete);
-                    ModeratorTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Collaborator")
-		        {
-		            var objectToDelete = new Collaborator {ID = deleteData.ID};
-                    CollaboratorTable.Attach(objectToDelete);
-                    CollaboratorTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupSummaryContainer")
-		        {
-		            var objectToDelete = new GroupSummaryContainer {ID = deleteData.ID};
-                    GroupSummaryContainerTable.Attach(objectToDelete);
-                    GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupContainer")
-		        {
-		            var objectToDelete = new GroupContainer {ID = deleteData.ID};
-                    GroupContainerTable.Attach(objectToDelete);
-                    GroupContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupIndex")
-		        {
-		            var objectToDelete = new GroupIndex {ID = deleteData.ID};
-                    GroupIndexTable.Attach(objectToDelete);
-                    GroupIndexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddAddressAndLocationInfo")
-		        {
-		            var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ID};
-                    AddAddressAndLocationInfoTable.Attach(objectToDelete);
-                    AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddImageInfo")
-		        {
-		            var objectToDelete = new AddImageInfo {ID = deleteData.ID};
-                    AddImageInfoTable.Attach(objectToDelete);
-                    AddImageInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddImageGroupInfo")
-		        {
-		            var objectToDelete = new AddImageGroupInfo {ID = deleteData.ID};
-                    AddImageGroupInfoTable.Attach(objectToDelete);
-                    AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddEmailAddressInfo")
-		        {
-		            var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ID};
-                    AddEmailAddressInfoTable.Attach(objectToDelete);
-                    AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CreateGroupInfo")
-		        {
-		            var objectToDelete = new CreateGroupInfo {ID = deleteData.ID};
-                    CreateGroupInfoTable.Attach(objectToDelete);
-                    CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddActivityInfo")
-		        {
-		            var objectToDelete = new AddActivityInfo {ID = deleteData.ID};
-                    AddActivityInfoTable.Attach(objectToDelete);
-                    AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddBlogPostInfo")
-		        {
-		            var objectToDelete = new AddBlogPostInfo {ID = deleteData.ID};
-                    AddBlogPostInfoTable.Attach(objectToDelete);
-                    AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddCategoryInfo")
-		        {
-		            var objectToDelete = new AddCategoryInfo {ID = deleteData.ID};
-                    AddCategoryInfoTable.Attach(objectToDelete);
-                    AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Group")
-		        {
-		            var objectToDelete = new Group {ID = deleteData.ID};
-                    GroupTable.Attach(objectToDelete);
-                    GroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Introduction")
-		        {
-		            var objectToDelete = new Introduction {ID = deleteData.ID};
-                    IntroductionTable.Attach(objectToDelete);
-                    IntroductionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentCategoryRank")
-		        {
-		            var objectToDelete = new ContentCategoryRank {ID = deleteData.ID};
-                    ContentCategoryRankTable.Attach(objectToDelete);
-                    ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LinkToContent")
-		        {
-		            var objectToDelete = new LinkToContent {ID = deleteData.ID};
-                    LinkToContentTable.Attach(objectToDelete);
-                    LinkToContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "EmbeddedContent")
-		        {
-		            var objectToDelete = new EmbeddedContent {ID = deleteData.ID};
-                    EmbeddedContentTable.Attach(objectToDelete);
-                    EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentGroup")
-		        {
-		            var objectToDelete = new DynamicContentGroup {ID = deleteData.ID};
-                    DynamicContentGroupTable.Attach(objectToDelete);
-                    DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContent")
-		        {
-		            var objectToDelete = new DynamicContent {ID = deleteData.ID};
-                    DynamicContentTable.Attach(objectToDelete);
-                    DynamicContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AttachedToObject")
-		        {
-		            var objectToDelete = new AttachedToObject {ID = deleteData.ID};
-                    AttachedToObjectTable.Attach(objectToDelete);
-                    AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Comment")
-		        {
-		            var objectToDelete = new Comment {ID = deleteData.ID};
-                    CommentTable.Attach(objectToDelete);
-                    CommentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Selection")
-		        {
-		            var objectToDelete = new Selection {ID = deleteData.ID};
-                    SelectionTable.Attach(objectToDelete);
-                    SelectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TextContent")
-		        {
-		            var objectToDelete = new TextContent {ID = deleteData.ID};
-                    TextContentTable.Attach(objectToDelete);
-                    TextContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Map")
-		        {
-		            var objectToDelete = new Map {ID = deleteData.ID};
-                    MapTable.Attach(objectToDelete);
-                    MapTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResult")
-		        {
-		            var objectToDelete = new MapResult {ID = deleteData.ID};
-                    MapResultTable.Attach(objectToDelete);
-                    MapResultTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResultsCollection")
-		        {
-		            var objectToDelete = new MapResultsCollection {ID = deleteData.ID};
-                    MapResultsCollectionTable.Attach(objectToDelete);
-                    MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Video")
-		        {
-		            var objectToDelete = new Video {ID = deleteData.ID};
-                    VideoTable.Attach(objectToDelete);
-                    VideoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Image")
-		        {
-		            var objectToDelete = new Image {ID = deleteData.ID};
-                    ImageTable.Attach(objectToDelete);
-                    ImageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BinaryFile")
-		        {
-		            var objectToDelete = new BinaryFile {ID = deleteData.ID};
-                    BinaryFileTable.Attach(objectToDelete);
-                    BinaryFileTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Longitude")
-		        {
-		            var objectToDelete = new Longitude {ID = deleteData.ID};
-                    LongitudeTable.Attach(objectToDelete);
-                    LongitudeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Latitude")
-		        {
-		            var objectToDelete = new Latitude {ID = deleteData.ID};
-                    LatitudeTable.Attach(objectToDelete);
-                    LatitudeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Location")
-		        {
-		            var objectToDelete = new Location {ID = deleteData.ID};
-                    LocationTable.Attach(objectToDelete);
-                    LocationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Date")
-		        {
-		            var objectToDelete = new Date {ID = deleteData.ID};
-                    DateTable.Attach(objectToDelete);
-                    DateTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryContainer")
-		        {
-		            var objectToDelete = new CategoryContainer {ID = deleteData.ID};
-                    CategoryContainerTable.Attach(objectToDelete);
-                    CategoryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentOperation")
-		        {
-		            var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ID};
-                    UpdateWebContentOperationTable.Attach(objectToDelete);
-                    UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentHandlerItem")
-		        {
-		            var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ID};
-                    UpdateWebContentHandlerItemTable.Attach(objectToDelete);
-                    UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PublicationPackageCollection")
-		        {
-		            var objectToDelete = new PublicationPackageCollection {ID = deleteData.ID};
-                    PublicationPackageCollectionTable.Attach(objectToDelete);
-                    PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccountCollaborationGroupCollection")
-		        {
-		            var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ID};
-                    TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
-                    TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBLoginInfoCollection")
-		        {
-		            var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ID};
-                    TBLoginInfoCollectionTable.Attach(objectToDelete);
-                    TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmailCollection")
-		        {
-		            var objectToDelete = new TBEmailCollection {ID = deleteData.ID};
-                    TBEmailCollectionTable.Attach(objectToDelete);
-                    TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratorRoleCollection")
-		        {
-		            var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ID};
-                    TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
-                    TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LoginProviderCollection")
-		        {
-		            var objectToDelete = new LoginProviderCollection {ID = deleteData.ID};
-                    LoginProviderCollectionTable.Attach(objectToDelete);
-                    LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddressAndLocationCollection")
-		        {
-		            var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ID};
-                    AddressAndLocationCollectionTable.Attach(objectToDelete);
-                    AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ReferenceCollection")
-		        {
-		            var objectToDelete = new ReferenceCollection {ID = deleteData.ID};
-                    ReferenceCollectionTable.Attach(objectToDelete);
-                    ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RenderedNodeCollection")
-		        {
-		            var objectToDelete = new RenderedNodeCollection {ID = deleteData.ID};
-                    RenderedNodeCollectionTable.Attach(objectToDelete);
-                    RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ShortTextCollection")
-		        {
-		            var objectToDelete = new ShortTextCollection {ID = deleteData.ID};
-                    ShortTextCollectionTable.Attach(objectToDelete);
-                    ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LongTextCollection")
-		        {
-		            var objectToDelete = new LongTextCollection {ID = deleteData.ID};
-                    LongTextCollectionTable.Attach(objectToDelete);
-                    LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapMarkerCollection")
-		        {
-		            var objectToDelete = new MapMarkerCollection {ID = deleteData.ID};
-                    MapMarkerCollectionTable.Attach(objectToDelete);
-                    MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ModeratorCollection")
-		        {
-		            var objectToDelete = new ModeratorCollection {ID = deleteData.ID};
-                    ModeratorCollectionTable.Attach(objectToDelete);
-                    ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CollaboratorCollection")
-		        {
-		            var objectToDelete = new CollaboratorCollection {ID = deleteData.ID};
-                    CollaboratorCollectionTable.Attach(objectToDelete);
-                    CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupCollection")
-		        {
-		            var objectToDelete = new GroupCollection {ID = deleteData.ID};
-                    GroupCollectionTable.Attach(objectToDelete);
-                    GroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentCategoryRankCollection")
-		        {
-		            var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ID};
-                    ContentCategoryRankCollectionTable.Attach(objectToDelete);
-                    ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LinkToContentCollection")
-		        {
-		            var objectToDelete = new LinkToContentCollection {ID = deleteData.ID};
-                    LinkToContentCollectionTable.Attach(objectToDelete);
-                    LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "EmbeddedContentCollection")
-		        {
-		            var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ID};
-                    EmbeddedContentCollectionTable.Attach(objectToDelete);
-                    EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentGroupCollection")
-		        {
-		            var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ID};
-                    DynamicContentGroupCollectionTable.Attach(objectToDelete);
-                    DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentCollection")
-		        {
-		            var objectToDelete = new DynamicContentCollection {ID = deleteData.ID};
-                    DynamicContentCollectionTable.Attach(objectToDelete);
-                    DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AttachedToObjectCollection")
-		        {
-		            var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ID};
-                    AttachedToObjectCollectionTable.Attach(objectToDelete);
-                    AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CommentCollection")
-		        {
-		            var objectToDelete = new CommentCollection {ID = deleteData.ID};
-                    CommentCollectionTable.Attach(objectToDelete);
-                    CommentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SelectionCollection")
-		        {
-		            var objectToDelete = new SelectionCollection {ID = deleteData.ID};
-                    SelectionCollectionTable.Attach(objectToDelete);
-                    SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TextContentCollection")
-		        {
-		            var objectToDelete = new TextContentCollection {ID = deleteData.ID};
-                    TextContentCollectionTable.Attach(objectToDelete);
-                    TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapCollection")
-		        {
-		            var objectToDelete = new MapCollection {ID = deleteData.ID};
-                    MapCollectionTable.Attach(objectToDelete);
-                    MapCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResultCollection")
-		        {
-		            var objectToDelete = new MapResultCollection {ID = deleteData.ID};
-                    MapResultCollectionTable.Attach(objectToDelete);
-                    MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ImageCollection")
-		        {
-		            var objectToDelete = new ImageCollection {ID = deleteData.ID};
-                    ImageCollectionTable.Attach(objectToDelete);
-                    ImageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BinaryFileCollection")
-		        {
-		            var objectToDelete = new BinaryFileCollection {ID = deleteData.ID};
-                    BinaryFileCollectionTable.Attach(objectToDelete);
-                    BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LocationCollection")
-		        {
-		            var objectToDelete = new LocationCollection {ID = deleteData.ID};
-                    LocationCollectionTable.Attach(objectToDelete);
-                    LocationCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryCollection")
-		        {
-		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
-                    CategoryCollectionTable.Attach(objectToDelete);
-                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentHandlerCollection")
-		        {
-		            var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ID};
-                    UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
-                    UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "TBSystem":
+					{
+						//var objectToDelete = new TBSystem {ID = deleteData.ObjectID};
+						//TBSystemTable.Attach(objectToDelete);
+						var objectToDelete = TBSystemTable.Single(item => item.ID == deleteData.ObjectID);
+						TBSystemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "WebPublishInfo":
+					{
+						//var objectToDelete = new WebPublishInfo {ID = deleteData.ObjectID};
+						//WebPublishInfoTable.Attach(objectToDelete);
+						var objectToDelete = WebPublishInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PublicationPackage":
+					{
+						//var objectToDelete = new PublicationPackage {ID = deleteData.ObjectID};
+						//PublicationPackageTable.Attach(objectToDelete);
+						var objectToDelete = PublicationPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRLoginRoot":
+					{
+						//var objectToDelete = new TBRLoginRoot {ID = deleteData.ObjectID};
+						//TBRLoginRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRLoginRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRAccountRoot":
+					{
+						//var objectToDelete = new TBRAccountRoot {ID = deleteData.ObjectID};
+						//TBRAccountRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRAccountRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRGroupRoot":
+					{
+						//var objectToDelete = new TBRGroupRoot {ID = deleteData.ObjectID};
+						//TBRGroupRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRLoginGroupRoot":
+					{
+						//var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ObjectID};
+						//TBRLoginGroupRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRLoginGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBREmailRoot":
+					{
+						//var objectToDelete = new TBREmailRoot {ID = deleteData.ObjectID};
+						//TBREmailRootTable.Attach(objectToDelete);
+						var objectToDelete = TBREmailRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccount":
+					{
+						//var objectToDelete = new TBAccount {ID = deleteData.ObjectID};
+						//TBAccountTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccountCollaborationGroup":
+					{
+						//var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ObjectID};
+						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBLoginInfo":
+					{
+						//var objectToDelete = new TBLoginInfo {ID = deleteData.ObjectID};
+						//TBLoginInfoTable.Attach(objectToDelete);
+						var objectToDelete = TBLoginInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmail":
+					{
+						//var objectToDelete = new TBEmail {ID = deleteData.ObjectID};
+						//TBEmailTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratorRole":
+					{
+						//var objectToDelete = new TBCollaboratorRole {ID = deleteData.ObjectID};
+						//TBCollaboratorRoleTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratingGroup":
+					{
+						//var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ObjectID};
+						//TBCollaboratingGroupTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratingGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmailValidation":
+					{
+						//var objectToDelete = new TBEmailValidation {ID = deleteData.ObjectID};
+						//TBEmailValidationTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailValidationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBMergeAccountConfirmation":
+					{
+						//var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ObjectID};
+						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBMergeAccountConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBGroupJoinConfirmation":
+					{
+						//var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ObjectID};
+						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBGroupJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBDeviceJoinConfirmation":
+					{
+						//var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ObjectID};
+						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBDeviceJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBInformationInputConfirmation":
+					{
+						//var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ObjectID};
+						//TBInformationInputConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBInformationInputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBInformationOutputConfirmation":
+					{
+						//var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ObjectID};
+						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBInformationOutputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LoginProvider":
+					{
+						//var objectToDelete = new LoginProvider {ID = deleteData.ObjectID};
+						//LoginProviderTable.Attach(objectToDelete);
+						var objectToDelete = LoginProviderTable.Single(item => item.ID == deleteData.ObjectID);
+						LoginProviderTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBPRegisterEmail":
+					{
+						//var objectToDelete = new TBPRegisterEmail {ID = deleteData.ObjectID};
+						//TBPRegisterEmailTable.Attach(objectToDelete);
+						var objectToDelete = TBPRegisterEmailTable.Single(item => item.ID == deleteData.ObjectID);
+						TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountSummary":
+					{
+						//var objectToDelete = new AccountSummary {ID = deleteData.ObjectID};
+						//AccountSummaryTable.Attach(objectToDelete);
+						var objectToDelete = AccountSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountContainer":
+					{
+						//var objectToDelete = new AccountContainer {ID = deleteData.ObjectID};
+						//AccountContainerTable.Attach(objectToDelete);
+						var objectToDelete = AccountContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountModule":
+					{
+						//var objectToDelete = new AccountModule {ID = deleteData.ObjectID};
+						//AccountModuleTable.Attach(objectToDelete);
+						var objectToDelete = AccountModuleTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountModuleTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LocationContainer":
+					{
+						//var objectToDelete = new LocationContainer {ID = deleteData.ObjectID};
+						//LocationContainerTable.Attach(objectToDelete);
+						var objectToDelete = LocationContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddressAndLocation":
+					{
+						//var objectToDelete = new AddressAndLocation {ID = deleteData.ObjectID};
+						//AddressAndLocationTable.Attach(objectToDelete);
+						var objectToDelete = AddressAndLocationTable.Single(item => item.ID == deleteData.ObjectID);
+						AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StreetAddress":
+					{
+						//var objectToDelete = new StreetAddress {ID = deleteData.ObjectID};
+						//StreetAddressTable.Attach(objectToDelete);
+						var objectToDelete = StreetAddressTable.Single(item => item.ID == deleteData.ObjectID);
+						StreetAddressTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountProfile":
+					{
+						//var objectToDelete = new AccountProfile {ID = deleteData.ObjectID};
+						//AccountProfileTable.Attach(objectToDelete);
+						var objectToDelete = AccountProfileTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountProfileTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountSecurity":
+					{
+						//var objectToDelete = new AccountSecurity {ID = deleteData.ObjectID};
+						//AccountSecurityTable.Attach(objectToDelete);
+						var objectToDelete = AccountSecurityTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountRoles":
+					{
+						//var objectToDelete = new AccountRoles {ID = deleteData.ObjectID};
+						//AccountRolesTable.Attach(objectToDelete);
+						var objectToDelete = AccountRolesTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountRolesTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PersonalInfoVisibility":
+					{
+						//var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ObjectID};
+						//PersonalInfoVisibilityTable.Attach(objectToDelete);
+						var objectToDelete = PersonalInfoVisibilityTable.Single(item => item.ID == deleteData.ObjectID);
+						PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ReferenceToInformation":
+					{
+						//var objectToDelete = new ReferenceToInformation {ID = deleteData.ObjectID};
+						//ReferenceToInformationTable.Attach(objectToDelete);
+						var objectToDelete = ReferenceToInformationTable.Single(item => item.ID == deleteData.ObjectID);
+						ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NodeSummaryContainer":
+					{
+						//var objectToDelete = new NodeSummaryContainer {ID = deleteData.ObjectID};
+						//NodeSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = NodeSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RenderedNode":
+					{
+						//var objectToDelete = new RenderedNode {ID = deleteData.ObjectID};
+						//RenderedNodeTable.Attach(objectToDelete);
+						var objectToDelete = RenderedNodeTable.Single(item => item.ID == deleteData.ObjectID);
+						RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ShortTextObject":
+					{
+						//var objectToDelete = new ShortTextObject {ID = deleteData.ObjectID};
+						//ShortTextObjectTable.Attach(objectToDelete);
+						var objectToDelete = ShortTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LongTextObject":
+					{
+						//var objectToDelete = new LongTextObject {ID = deleteData.ObjectID};
+						//LongTextObjectTable.Attach(objectToDelete);
+						var objectToDelete = LongTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapMarker":
+					{
+						//var objectToDelete = new MapMarker {ID = deleteData.ObjectID};
+						//MapMarkerTable.Attach(objectToDelete);
+						var objectToDelete = MapMarkerTable.Single(item => item.ID == deleteData.ObjectID);
+						MapMarkerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Moderator":
+					{
+						//var objectToDelete = new Moderator {ID = deleteData.ObjectID};
+						//ModeratorTable.Attach(objectToDelete);
+						var objectToDelete = ModeratorTable.Single(item => item.ID == deleteData.ObjectID);
+						ModeratorTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Collaborator":
+					{
+						//var objectToDelete = new Collaborator {ID = deleteData.ObjectID};
+						//CollaboratorTable.Attach(objectToDelete);
+						var objectToDelete = CollaboratorTable.Single(item => item.ID == deleteData.ObjectID);
+						CollaboratorTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupSummaryContainer":
+					{
+						//var objectToDelete = new GroupSummaryContainer {ID = deleteData.ObjectID};
+						//GroupSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = GroupSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupContainer":
+					{
+						//var objectToDelete = new GroupContainer {ID = deleteData.ObjectID};
+						//GroupContainerTable.Attach(objectToDelete);
+						var objectToDelete = GroupContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupIndex":
+					{
+						//var objectToDelete = new GroupIndex {ID = deleteData.ObjectID};
+						//GroupIndexTable.Attach(objectToDelete);
+						var objectToDelete = GroupIndexTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupIndexTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddAddressAndLocationInfo":
+					{
+						//var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ObjectID};
+						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddAddressAndLocationInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddImageInfo":
+					{
+						//var objectToDelete = new AddImageInfo {ID = deleteData.ObjectID};
+						//AddImageInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddImageInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddImageGroupInfo":
+					{
+						//var objectToDelete = new AddImageGroupInfo {ID = deleteData.ObjectID};
+						//AddImageGroupInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddImageGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddEmailAddressInfo":
+					{
+						//var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ObjectID};
+						//AddEmailAddressInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddEmailAddressInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CreateGroupInfo":
+					{
+						//var objectToDelete = new CreateGroupInfo {ID = deleteData.ObjectID};
+						//CreateGroupInfoTable.Attach(objectToDelete);
+						var objectToDelete = CreateGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddActivityInfo":
+					{
+						//var objectToDelete = new AddActivityInfo {ID = deleteData.ObjectID};
+						//AddActivityInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddActivityInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddBlogPostInfo":
+					{
+						//var objectToDelete = new AddBlogPostInfo {ID = deleteData.ObjectID};
+						//AddBlogPostInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddBlogPostInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddCategoryInfo":
+					{
+						//var objectToDelete = new AddCategoryInfo {ID = deleteData.ObjectID};
+						//AddCategoryInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddCategoryInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Group":
+					{
+						//var objectToDelete = new Group {ID = deleteData.ObjectID};
+						//GroupTable.Attach(objectToDelete);
+						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Introduction":
+					{
+						//var objectToDelete = new Introduction {ID = deleteData.ObjectID};
+						//IntroductionTable.Attach(objectToDelete);
+						var objectToDelete = IntroductionTable.Single(item => item.ID == deleteData.ObjectID);
+						IntroductionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentCategoryRank":
+					{
+						//var objectToDelete = new ContentCategoryRank {ID = deleteData.ObjectID};
+						//ContentCategoryRankTable.Attach(objectToDelete);
+						var objectToDelete = ContentCategoryRankTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LinkToContent":
+					{
+						//var objectToDelete = new LinkToContent {ID = deleteData.ObjectID};
+						//LinkToContentTable.Attach(objectToDelete);
+						var objectToDelete = LinkToContentTable.Single(item => item.ID == deleteData.ObjectID);
+						LinkToContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "EmbeddedContent":
+					{
+						//var objectToDelete = new EmbeddedContent {ID = deleteData.ObjectID};
+						//EmbeddedContentTable.Attach(objectToDelete);
+						var objectToDelete = EmbeddedContentTable.Single(item => item.ID == deleteData.ObjectID);
+						EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentGroup":
+					{
+						//var objectToDelete = new DynamicContentGroup {ID = deleteData.ObjectID};
+						//DynamicContentGroupTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContent":
+					{
+						//var objectToDelete = new DynamicContent {ID = deleteData.ObjectID};
+						//DynamicContentTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AttachedToObject":
+					{
+						//var objectToDelete = new AttachedToObject {ID = deleteData.ObjectID};
+						//AttachedToObjectTable.Attach(objectToDelete);
+						var objectToDelete = AttachedToObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Comment":
+					{
+						//var objectToDelete = new Comment {ID = deleteData.ObjectID};
+						//CommentTable.Attach(objectToDelete);
+						var objectToDelete = CommentTable.Single(item => item.ID == deleteData.ObjectID);
+						CommentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Selection":
+					{
+						//var objectToDelete = new Selection {ID = deleteData.ObjectID};
+						//SelectionTable.Attach(objectToDelete);
+						var objectToDelete = SelectionTable.Single(item => item.ID == deleteData.ObjectID);
+						SelectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TextContent":
+					{
+						//var objectToDelete = new TextContent {ID = deleteData.ObjectID};
+						//TextContentTable.Attach(objectToDelete);
+						var objectToDelete = TextContentTable.Single(item => item.ID == deleteData.ObjectID);
+						TextContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Map":
+					{
+						//var objectToDelete = new Map {ID = deleteData.ObjectID};
+						//MapTable.Attach(objectToDelete);
+						var objectToDelete = MapTable.Single(item => item.ID == deleteData.ObjectID);
+						MapTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResult":
+					{
+						//var objectToDelete = new MapResult {ID = deleteData.ObjectID};
+						//MapResultTable.Attach(objectToDelete);
+						var objectToDelete = MapResultTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResultsCollection":
+					{
+						//var objectToDelete = new MapResultsCollection {ID = deleteData.ObjectID};
+						//MapResultsCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapResultsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Video":
+					{
+						//var objectToDelete = new Video {ID = deleteData.ObjectID};
+						//VideoTable.Attach(objectToDelete);
+						var objectToDelete = VideoTable.Single(item => item.ID == deleteData.ObjectID);
+						VideoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Image":
+					{
+						//var objectToDelete = new Image {ID = deleteData.ObjectID};
+						//ImageTable.Attach(objectToDelete);
+						var objectToDelete = ImageTable.Single(item => item.ID == deleteData.ObjectID);
+						ImageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "BinaryFile":
+					{
+						//var objectToDelete = new BinaryFile {ID = deleteData.ObjectID};
+						//BinaryFileTable.Attach(objectToDelete);
+						var objectToDelete = BinaryFileTable.Single(item => item.ID == deleteData.ObjectID);
+						BinaryFileTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Longitude":
+					{
+						//var objectToDelete = new Longitude {ID = deleteData.ObjectID};
+						//LongitudeTable.Attach(objectToDelete);
+						var objectToDelete = LongitudeTable.Single(item => item.ID == deleteData.ObjectID);
+						LongitudeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Latitude":
+					{
+						//var objectToDelete = new Latitude {ID = deleteData.ObjectID};
+						//LatitudeTable.Attach(objectToDelete);
+						var objectToDelete = LatitudeTable.Single(item => item.ID == deleteData.ObjectID);
+						LatitudeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Location":
+					{
+						//var objectToDelete = new Location {ID = deleteData.ObjectID};
+						//LocationTable.Attach(objectToDelete);
+						var objectToDelete = LocationTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Date":
+					{
+						//var objectToDelete = new Date {ID = deleteData.ObjectID};
+						//DateTable.Attach(objectToDelete);
+						var objectToDelete = DateTable.Single(item => item.ID == deleteData.ObjectID);
+						DateTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryContainer":
+					{
+						//var objectToDelete = new CategoryContainer {ID = deleteData.ObjectID};
+						//CategoryContainerTable.Attach(objectToDelete);
+						var objectToDelete = CategoryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentOperation":
+					{
+						//var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ObjectID};
+						//UpdateWebContentOperationTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentOperationTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentHandlerItem":
+					{
+						//var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ObjectID};
+						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerItemTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PublicationPackageCollection":
+					{
+						//var objectToDelete = new PublicationPackageCollection {ID = deleteData.ObjectID};
+						//PublicationPackageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = PublicationPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccountCollaborationGroupCollection":
+					{
+						//var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ObjectID};
+						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBLoginInfoCollection":
+					{
+						//var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ObjectID};
+						//TBLoginInfoCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBLoginInfoCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmailCollection":
+					{
+						//var objectToDelete = new TBEmailCollection {ID = deleteData.ObjectID};
+						//TBEmailCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratorRoleCollection":
+					{
+						//var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ObjectID};
+						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LoginProviderCollection":
+					{
+						//var objectToDelete = new LoginProviderCollection {ID = deleteData.ObjectID};
+						//LoginProviderCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LoginProviderCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddressAndLocationCollection":
+					{
+						//var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ObjectID};
+						//AddressAndLocationCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AddressAndLocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ReferenceCollection":
+					{
+						//var objectToDelete = new ReferenceCollection {ID = deleteData.ObjectID};
+						//ReferenceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ReferenceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RenderedNodeCollection":
+					{
+						//var objectToDelete = new RenderedNodeCollection {ID = deleteData.ObjectID};
+						//RenderedNodeCollectionTable.Attach(objectToDelete);
+						var objectToDelete = RenderedNodeCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ShortTextCollection":
+					{
+						//var objectToDelete = new ShortTextCollection {ID = deleteData.ObjectID};
+						//ShortTextCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ShortTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LongTextCollection":
+					{
+						//var objectToDelete = new LongTextCollection {ID = deleteData.ObjectID};
+						//LongTextCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LongTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapMarkerCollection":
+					{
+						//var objectToDelete = new MapMarkerCollection {ID = deleteData.ObjectID};
+						//MapMarkerCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapMarkerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ModeratorCollection":
+					{
+						//var objectToDelete = new ModeratorCollection {ID = deleteData.ObjectID};
+						//ModeratorCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ModeratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CollaboratorCollection":
+					{
+						//var objectToDelete = new CollaboratorCollection {ID = deleteData.ObjectID};
+						//CollaboratorCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CollaboratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupCollection":
+					{
+						//var objectToDelete = new GroupCollection {ID = deleteData.ObjectID};
+						//GroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentCategoryRankCollection":
+					{
+						//var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ObjectID};
+						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ContentCategoryRankCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LinkToContentCollection":
+					{
+						//var objectToDelete = new LinkToContentCollection {ID = deleteData.ObjectID};
+						//LinkToContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LinkToContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "EmbeddedContentCollection":
+					{
+						//var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ObjectID};
+						//EmbeddedContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = EmbeddedContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentGroupCollection":
+					{
+						//var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ObjectID};
+						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentCollection":
+					{
+						//var objectToDelete = new DynamicContentCollection {ID = deleteData.ObjectID};
+						//DynamicContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AttachedToObjectCollection":
+					{
+						//var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ObjectID};
+						//AttachedToObjectCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AttachedToObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CommentCollection":
+					{
+						//var objectToDelete = new CommentCollection {ID = deleteData.ObjectID};
+						//CommentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CommentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SelectionCollection":
+					{
+						//var objectToDelete = new SelectionCollection {ID = deleteData.ObjectID};
+						//SelectionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = SelectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TextContentCollection":
+					{
+						//var objectToDelete = new TextContentCollection {ID = deleteData.ObjectID};
+						//TextContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TextContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapCollection":
+					{
+						//var objectToDelete = new MapCollection {ID = deleteData.ObjectID};
+						//MapCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResultCollection":
+					{
+						//var objectToDelete = new MapResultCollection {ID = deleteData.ObjectID};
+						//MapResultCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapResultCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ImageCollection":
+					{
+						//var objectToDelete = new ImageCollection {ID = deleteData.ObjectID};
+						//ImageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ImageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "BinaryFileCollection":
+					{
+						//var objectToDelete = new BinaryFileCollection {ID = deleteData.ObjectID};
+						//BinaryFileCollectionTable.Attach(objectToDelete);
+						var objectToDelete = BinaryFileCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LocationCollection":
+					{
+						//var objectToDelete = new LocationCollection {ID = deleteData.ObjectID};
+						//LocationCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryCollection":
+					{
+						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
+						//CategoryCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentHandlerCollection":
+					{
+						//var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ObjectID};
+						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
@@ -6211,756 +6338,867 @@ namespace SQLite.AaltoGlobalImpact.OIP {
                 if (deleteData.SemanticDomain != "AaltoGlobalImpact.OIP")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "TBSystem")
-		        {
-		            var objectToDelete = new TBSystem {ID = deleteData.ID};
-                    TBSystemTable.Attach(objectToDelete);
-                    TBSystemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "WebPublishInfo")
-		        {
-		            var objectToDelete = new WebPublishInfo {ID = deleteData.ID};
-                    WebPublishInfoTable.Attach(objectToDelete);
-                    WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PublicationPackage")
-		        {
-		            var objectToDelete = new PublicationPackage {ID = deleteData.ID};
-                    PublicationPackageTable.Attach(objectToDelete);
-                    PublicationPackageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRLoginRoot")
-		        {
-		            var objectToDelete = new TBRLoginRoot {ID = deleteData.ID};
-                    TBRLoginRootTable.Attach(objectToDelete);
-                    TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRAccountRoot")
-		        {
-		            var objectToDelete = new TBRAccountRoot {ID = deleteData.ID};
-                    TBRAccountRootTable.Attach(objectToDelete);
-                    TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRGroupRoot")
-		        {
-		            var objectToDelete = new TBRGroupRoot {ID = deleteData.ID};
-                    TBRGroupRootTable.Attach(objectToDelete);
-                    TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBRLoginGroupRoot")
-		        {
-		            var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ID};
-                    TBRLoginGroupRootTable.Attach(objectToDelete);
-                    TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBREmailRoot")
-		        {
-		            var objectToDelete = new TBREmailRoot {ID = deleteData.ID};
-                    TBREmailRootTable.Attach(objectToDelete);
-                    TBREmailRootTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccount")
-		        {
-		            var objectToDelete = new TBAccount {ID = deleteData.ID};
-                    TBAccountTable.Attach(objectToDelete);
-                    TBAccountTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccountCollaborationGroup")
-		        {
-		            var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ID};
-                    TBAccountCollaborationGroupTable.Attach(objectToDelete);
-                    TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBLoginInfo")
-		        {
-		            var objectToDelete = new TBLoginInfo {ID = deleteData.ID};
-                    TBLoginInfoTable.Attach(objectToDelete);
-                    TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmail")
-		        {
-		            var objectToDelete = new TBEmail {ID = deleteData.ID};
-                    TBEmailTable.Attach(objectToDelete);
-                    TBEmailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratorRole")
-		        {
-		            var objectToDelete = new TBCollaboratorRole {ID = deleteData.ID};
-                    TBCollaboratorRoleTable.Attach(objectToDelete);
-                    TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratingGroup")
-		        {
-		            var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ID};
-                    TBCollaboratingGroupTable.Attach(objectToDelete);
-                    TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmailValidation")
-		        {
-		            var objectToDelete = new TBEmailValidation {ID = deleteData.ID};
-                    TBEmailValidationTable.Attach(objectToDelete);
-                    TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBMergeAccountConfirmation")
-		        {
-		            var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ID};
-                    TBMergeAccountConfirmationTable.Attach(objectToDelete);
-                    TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBGroupJoinConfirmation")
-		        {
-		            var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ID};
-                    TBGroupJoinConfirmationTable.Attach(objectToDelete);
-                    TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBDeviceJoinConfirmation")
-		        {
-		            var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ID};
-                    TBDeviceJoinConfirmationTable.Attach(objectToDelete);
-                    TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBInformationInputConfirmation")
-		        {
-		            var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ID};
-                    TBInformationInputConfirmationTable.Attach(objectToDelete);
-                    TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBInformationOutputConfirmation")
-		        {
-		            var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ID};
-                    TBInformationOutputConfirmationTable.Attach(objectToDelete);
-                    TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LoginProvider")
-		        {
-		            var objectToDelete = new LoginProvider {ID = deleteData.ID};
-                    LoginProviderTable.Attach(objectToDelete);
-                    LoginProviderTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBPRegisterEmail")
-		        {
-		            var objectToDelete = new TBPRegisterEmail {ID = deleteData.ID};
-                    TBPRegisterEmailTable.Attach(objectToDelete);
-                    TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountSummary")
-		        {
-		            var objectToDelete = new AccountSummary {ID = deleteData.ID};
-                    AccountSummaryTable.Attach(objectToDelete);
-                    AccountSummaryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountContainer")
-		        {
-		            var objectToDelete = new AccountContainer {ID = deleteData.ID};
-                    AccountContainerTable.Attach(objectToDelete);
-                    AccountContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountModule")
-		        {
-		            var objectToDelete = new AccountModule {ID = deleteData.ID};
-                    AccountModuleTable.Attach(objectToDelete);
-                    AccountModuleTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LocationContainer")
-		        {
-		            var objectToDelete = new LocationContainer {ID = deleteData.ID};
-                    LocationContainerTable.Attach(objectToDelete);
-                    LocationContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddressAndLocation")
-		        {
-		            var objectToDelete = new AddressAndLocation {ID = deleteData.ID};
-                    AddressAndLocationTable.Attach(objectToDelete);
-                    AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "StreetAddress")
-		        {
-		            var objectToDelete = new StreetAddress {ID = deleteData.ID};
-                    StreetAddressTable.Attach(objectToDelete);
-                    StreetAddressTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountProfile")
-		        {
-		            var objectToDelete = new AccountProfile {ID = deleteData.ID};
-                    AccountProfileTable.Attach(objectToDelete);
-                    AccountProfileTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountSecurity")
-		        {
-		            var objectToDelete = new AccountSecurity {ID = deleteData.ID};
-                    AccountSecurityTable.Attach(objectToDelete);
-                    AccountSecurityTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AccountRoles")
-		        {
-		            var objectToDelete = new AccountRoles {ID = deleteData.ID};
-                    AccountRolesTable.Attach(objectToDelete);
-                    AccountRolesTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PersonalInfoVisibility")
-		        {
-		            var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ID};
-                    PersonalInfoVisibilityTable.Attach(objectToDelete);
-                    PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ReferenceToInformation")
-		        {
-		            var objectToDelete = new ReferenceToInformation {ID = deleteData.ID};
-                    ReferenceToInformationTable.Attach(objectToDelete);
-                    ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "NodeSummaryContainer")
-		        {
-		            var objectToDelete = new NodeSummaryContainer {ID = deleteData.ID};
-                    NodeSummaryContainerTable.Attach(objectToDelete);
-                    NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RenderedNode")
-		        {
-		            var objectToDelete = new RenderedNode {ID = deleteData.ID};
-                    RenderedNodeTable.Attach(objectToDelete);
-                    RenderedNodeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ShortTextObject")
-		        {
-		            var objectToDelete = new ShortTextObject {ID = deleteData.ID};
-                    ShortTextObjectTable.Attach(objectToDelete);
-                    ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LongTextObject")
-		        {
-		            var objectToDelete = new LongTextObject {ID = deleteData.ID};
-                    LongTextObjectTable.Attach(objectToDelete);
-                    LongTextObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapMarker")
-		        {
-		            var objectToDelete = new MapMarker {ID = deleteData.ID};
-                    MapMarkerTable.Attach(objectToDelete);
-                    MapMarkerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Moderator")
-		        {
-		            var objectToDelete = new Moderator {ID = deleteData.ID};
-                    ModeratorTable.Attach(objectToDelete);
-                    ModeratorTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Collaborator")
-		        {
-		            var objectToDelete = new Collaborator {ID = deleteData.ID};
-                    CollaboratorTable.Attach(objectToDelete);
-                    CollaboratorTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupSummaryContainer")
-		        {
-		            var objectToDelete = new GroupSummaryContainer {ID = deleteData.ID};
-                    GroupSummaryContainerTable.Attach(objectToDelete);
-                    GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupContainer")
-		        {
-		            var objectToDelete = new GroupContainer {ID = deleteData.ID};
-                    GroupContainerTable.Attach(objectToDelete);
-                    GroupContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupIndex")
-		        {
-		            var objectToDelete = new GroupIndex {ID = deleteData.ID};
-                    GroupIndexTable.Attach(objectToDelete);
-                    GroupIndexTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddAddressAndLocationInfo")
-		        {
-		            var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ID};
-                    AddAddressAndLocationInfoTable.Attach(objectToDelete);
-                    AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddImageInfo")
-		        {
-		            var objectToDelete = new AddImageInfo {ID = deleteData.ID};
-                    AddImageInfoTable.Attach(objectToDelete);
-                    AddImageInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddImageGroupInfo")
-		        {
-		            var objectToDelete = new AddImageGroupInfo {ID = deleteData.ID};
-                    AddImageGroupInfoTable.Attach(objectToDelete);
-                    AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddEmailAddressInfo")
-		        {
-		            var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ID};
-                    AddEmailAddressInfoTable.Attach(objectToDelete);
-                    AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CreateGroupInfo")
-		        {
-		            var objectToDelete = new CreateGroupInfo {ID = deleteData.ID};
-                    CreateGroupInfoTable.Attach(objectToDelete);
-                    CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddActivityInfo")
-		        {
-		            var objectToDelete = new AddActivityInfo {ID = deleteData.ID};
-                    AddActivityInfoTable.Attach(objectToDelete);
-                    AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddBlogPostInfo")
-		        {
-		            var objectToDelete = new AddBlogPostInfo {ID = deleteData.ID};
-                    AddBlogPostInfoTable.Attach(objectToDelete);
-                    AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddCategoryInfo")
-		        {
-		            var objectToDelete = new AddCategoryInfo {ID = deleteData.ID};
-                    AddCategoryInfoTable.Attach(objectToDelete);
-                    AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Group")
-		        {
-		            var objectToDelete = new Group {ID = deleteData.ID};
-                    GroupTable.Attach(objectToDelete);
-                    GroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Introduction")
-		        {
-		            var objectToDelete = new Introduction {ID = deleteData.ID};
-                    IntroductionTable.Attach(objectToDelete);
-                    IntroductionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentCategoryRank")
-		        {
-		            var objectToDelete = new ContentCategoryRank {ID = deleteData.ID};
-                    ContentCategoryRankTable.Attach(objectToDelete);
-                    ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LinkToContent")
-		        {
-		            var objectToDelete = new LinkToContent {ID = deleteData.ID};
-                    LinkToContentTable.Attach(objectToDelete);
-                    LinkToContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "EmbeddedContent")
-		        {
-		            var objectToDelete = new EmbeddedContent {ID = deleteData.ID};
-                    EmbeddedContentTable.Attach(objectToDelete);
-                    EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentGroup")
-		        {
-		            var objectToDelete = new DynamicContentGroup {ID = deleteData.ID};
-                    DynamicContentGroupTable.Attach(objectToDelete);
-                    DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContent")
-		        {
-		            var objectToDelete = new DynamicContent {ID = deleteData.ID};
-                    DynamicContentTable.Attach(objectToDelete);
-                    DynamicContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AttachedToObject")
-		        {
-		            var objectToDelete = new AttachedToObject {ID = deleteData.ID};
-                    AttachedToObjectTable.Attach(objectToDelete);
-                    AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Comment")
-		        {
-		            var objectToDelete = new Comment {ID = deleteData.ID};
-                    CommentTable.Attach(objectToDelete);
-                    CommentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Selection")
-		        {
-		            var objectToDelete = new Selection {ID = deleteData.ID};
-                    SelectionTable.Attach(objectToDelete);
-                    SelectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TextContent")
-		        {
-		            var objectToDelete = new TextContent {ID = deleteData.ID};
-                    TextContentTable.Attach(objectToDelete);
-                    TextContentTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Map")
-		        {
-		            var objectToDelete = new Map {ID = deleteData.ID};
-                    MapTable.Attach(objectToDelete);
-                    MapTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResult")
-		        {
-		            var objectToDelete = new MapResult {ID = deleteData.ID};
-                    MapResultTable.Attach(objectToDelete);
-                    MapResultTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResultsCollection")
-		        {
-		            var objectToDelete = new MapResultsCollection {ID = deleteData.ID};
-                    MapResultsCollectionTable.Attach(objectToDelete);
-                    MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Video")
-		        {
-		            var objectToDelete = new Video {ID = deleteData.ID};
-                    VideoTable.Attach(objectToDelete);
-                    VideoTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Image")
-		        {
-		            var objectToDelete = new Image {ID = deleteData.ID};
-                    ImageTable.Attach(objectToDelete);
-                    ImageTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BinaryFile")
-		        {
-		            var objectToDelete = new BinaryFile {ID = deleteData.ID};
-                    BinaryFileTable.Attach(objectToDelete);
-                    BinaryFileTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Longitude")
-		        {
-		            var objectToDelete = new Longitude {ID = deleteData.ID};
-                    LongitudeTable.Attach(objectToDelete);
-                    LongitudeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Latitude")
-		        {
-		            var objectToDelete = new Latitude {ID = deleteData.ID};
-                    LatitudeTable.Attach(objectToDelete);
-                    LatitudeTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Location")
-		        {
-		            var objectToDelete = new Location {ID = deleteData.ID};
-                    LocationTable.Attach(objectToDelete);
-                    LocationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Date")
-		        {
-		            var objectToDelete = new Date {ID = deleteData.ID};
-                    DateTable.Attach(objectToDelete);
-                    DateTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryContainer")
-		        {
-		            var objectToDelete = new CategoryContainer {ID = deleteData.ID};
-                    CategoryContainerTable.Attach(objectToDelete);
-                    CategoryContainerTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "Category")
-		        {
-		            var objectToDelete = new Category {ID = deleteData.ID};
-                    CategoryTable.Attach(objectToDelete);
-                    CategoryTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentOperation")
-		        {
-		            var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ID};
-                    UpdateWebContentOperationTable.Attach(objectToDelete);
-                    UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentHandlerItem")
-		        {
-		            var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ID};
-                    UpdateWebContentHandlerItemTable.Attach(objectToDelete);
-                    UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "PublicationPackageCollection")
-		        {
-		            var objectToDelete = new PublicationPackageCollection {ID = deleteData.ID};
-                    PublicationPackageCollectionTable.Attach(objectToDelete);
-                    PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBAccountCollaborationGroupCollection")
-		        {
-		            var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ID};
-                    TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
-                    TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBLoginInfoCollection")
-		        {
-		            var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ID};
-                    TBLoginInfoCollectionTable.Attach(objectToDelete);
-                    TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBEmailCollection")
-		        {
-		            var objectToDelete = new TBEmailCollection {ID = deleteData.ID};
-                    TBEmailCollectionTable.Attach(objectToDelete);
-                    TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TBCollaboratorRoleCollection")
-		        {
-		            var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ID};
-                    TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
-                    TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LoginProviderCollection")
-		        {
-		            var objectToDelete = new LoginProviderCollection {ID = deleteData.ID};
-                    LoginProviderCollectionTable.Attach(objectToDelete);
-                    LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AddressAndLocationCollection")
-		        {
-		            var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ID};
-                    AddressAndLocationCollectionTable.Attach(objectToDelete);
-                    AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ReferenceCollection")
-		        {
-		            var objectToDelete = new ReferenceCollection {ID = deleteData.ID};
-                    ReferenceCollectionTable.Attach(objectToDelete);
-                    ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "RenderedNodeCollection")
-		        {
-		            var objectToDelete = new RenderedNodeCollection {ID = deleteData.ID};
-                    RenderedNodeCollectionTable.Attach(objectToDelete);
-                    RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ShortTextCollection")
-		        {
-		            var objectToDelete = new ShortTextCollection {ID = deleteData.ID};
-                    ShortTextCollectionTable.Attach(objectToDelete);
-                    ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LongTextCollection")
-		        {
-		            var objectToDelete = new LongTextCollection {ID = deleteData.ID};
-                    LongTextCollectionTable.Attach(objectToDelete);
-                    LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapMarkerCollection")
-		        {
-		            var objectToDelete = new MapMarkerCollection {ID = deleteData.ID};
-                    MapMarkerCollectionTable.Attach(objectToDelete);
-                    MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ModeratorCollection")
-		        {
-		            var objectToDelete = new ModeratorCollection {ID = deleteData.ID};
-                    ModeratorCollectionTable.Attach(objectToDelete);
-                    ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CollaboratorCollection")
-		        {
-		            var objectToDelete = new CollaboratorCollection {ID = deleteData.ID};
-                    CollaboratorCollectionTable.Attach(objectToDelete);
-                    CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "GroupCollection")
-		        {
-		            var objectToDelete = new GroupCollection {ID = deleteData.ID};
-                    GroupCollectionTable.Attach(objectToDelete);
-                    GroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ContentCategoryRankCollection")
-		        {
-		            var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ID};
-                    ContentCategoryRankCollectionTable.Attach(objectToDelete);
-                    ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LinkToContentCollection")
-		        {
-		            var objectToDelete = new LinkToContentCollection {ID = deleteData.ID};
-                    LinkToContentCollectionTable.Attach(objectToDelete);
-                    LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "EmbeddedContentCollection")
-		        {
-		            var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ID};
-                    EmbeddedContentCollectionTable.Attach(objectToDelete);
-                    EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentGroupCollection")
-		        {
-		            var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ID};
-                    DynamicContentGroupCollectionTable.Attach(objectToDelete);
-                    DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "DynamicContentCollection")
-		        {
-		            var objectToDelete = new DynamicContentCollection {ID = deleteData.ID};
-                    DynamicContentCollectionTable.Attach(objectToDelete);
-                    DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "AttachedToObjectCollection")
-		        {
-		            var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ID};
-                    AttachedToObjectCollectionTable.Attach(objectToDelete);
-                    AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CommentCollection")
-		        {
-		            var objectToDelete = new CommentCollection {ID = deleteData.ID};
-                    CommentCollectionTable.Attach(objectToDelete);
-                    CommentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "SelectionCollection")
-		        {
-		            var objectToDelete = new SelectionCollection {ID = deleteData.ID};
-                    SelectionCollectionTable.Attach(objectToDelete);
-                    SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "TextContentCollection")
-		        {
-		            var objectToDelete = new TextContentCollection {ID = deleteData.ID};
-                    TextContentCollectionTable.Attach(objectToDelete);
-                    TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapCollection")
-		        {
-		            var objectToDelete = new MapCollection {ID = deleteData.ID};
-                    MapCollectionTable.Attach(objectToDelete);
-                    MapCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "MapResultCollection")
-		        {
-		            var objectToDelete = new MapResultCollection {ID = deleteData.ID};
-                    MapResultCollectionTable.Attach(objectToDelete);
-                    MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "ImageCollection")
-		        {
-		            var objectToDelete = new ImageCollection {ID = deleteData.ID};
-                    ImageCollectionTable.Attach(objectToDelete);
-                    ImageCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "BinaryFileCollection")
-		        {
-		            var objectToDelete = new BinaryFileCollection {ID = deleteData.ID};
-                    BinaryFileCollectionTable.Attach(objectToDelete);
-                    BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "LocationCollection")
-		        {
-		            var objectToDelete = new LocationCollection {ID = deleteData.ID};
-                    LocationCollectionTable.Attach(objectToDelete);
-                    LocationCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "CategoryCollection")
-		        {
-		            var objectToDelete = new CategoryCollection {ID = deleteData.ID};
-                    CategoryCollectionTable.Attach(objectToDelete);
-                    CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "UpdateWebContentHandlerCollection")
-		        {
-		            var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ID};
-                    UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
-                    UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "TBSystem":
+					{
+						//var objectToDelete = new TBSystem {ID = deleteData.ObjectID};
+						//TBSystemTable.Attach(objectToDelete);
+						var objectToDelete = TBSystemTable.Single(item => item.ID == deleteData.ObjectID);
+						TBSystemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "WebPublishInfo":
+					{
+						//var objectToDelete = new WebPublishInfo {ID = deleteData.ObjectID};
+						//WebPublishInfoTable.Attach(objectToDelete);
+						var objectToDelete = WebPublishInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						WebPublishInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PublicationPackage":
+					{
+						//var objectToDelete = new PublicationPackage {ID = deleteData.ObjectID};
+						//PublicationPackageTable.Attach(objectToDelete);
+						var objectToDelete = PublicationPackageTable.Single(item => item.ID == deleteData.ObjectID);
+						PublicationPackageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRLoginRoot":
+					{
+						//var objectToDelete = new TBRLoginRoot {ID = deleteData.ObjectID};
+						//TBRLoginRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRLoginRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRLoginRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRAccountRoot":
+					{
+						//var objectToDelete = new TBRAccountRoot {ID = deleteData.ObjectID};
+						//TBRAccountRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRAccountRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRAccountRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRGroupRoot":
+					{
+						//var objectToDelete = new TBRGroupRoot {ID = deleteData.ObjectID};
+						//TBRGroupRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRGroupRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBRLoginGroupRoot":
+					{
+						//var objectToDelete = new TBRLoginGroupRoot {ID = deleteData.ObjectID};
+						//TBRLoginGroupRootTable.Attach(objectToDelete);
+						var objectToDelete = TBRLoginGroupRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBRLoginGroupRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBREmailRoot":
+					{
+						//var objectToDelete = new TBREmailRoot {ID = deleteData.ObjectID};
+						//TBREmailRootTable.Attach(objectToDelete);
+						var objectToDelete = TBREmailRootTable.Single(item => item.ID == deleteData.ObjectID);
+						TBREmailRootTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccount":
+					{
+						//var objectToDelete = new TBAccount {ID = deleteData.ObjectID};
+						//TBAccountTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccountCollaborationGroup":
+					{
+						//var objectToDelete = new TBAccountCollaborationGroup {ID = deleteData.ObjectID};
+						//TBAccountCollaborationGroupTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountCollaborationGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBLoginInfo":
+					{
+						//var objectToDelete = new TBLoginInfo {ID = deleteData.ObjectID};
+						//TBLoginInfoTable.Attach(objectToDelete);
+						var objectToDelete = TBLoginInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						TBLoginInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmail":
+					{
+						//var objectToDelete = new TBEmail {ID = deleteData.ObjectID};
+						//TBEmailTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratorRole":
+					{
+						//var objectToDelete = new TBCollaboratorRole {ID = deleteData.ObjectID};
+						//TBCollaboratorRoleTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratorRoleTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratingGroup":
+					{
+						//var objectToDelete = new TBCollaboratingGroup {ID = deleteData.ObjectID};
+						//TBCollaboratingGroupTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratingGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratingGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmailValidation":
+					{
+						//var objectToDelete = new TBEmailValidation {ID = deleteData.ObjectID};
+						//TBEmailValidationTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailValidationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailValidationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBMergeAccountConfirmation":
+					{
+						//var objectToDelete = new TBMergeAccountConfirmation {ID = deleteData.ObjectID};
+						//TBMergeAccountConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBMergeAccountConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBMergeAccountConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBGroupJoinConfirmation":
+					{
+						//var objectToDelete = new TBGroupJoinConfirmation {ID = deleteData.ObjectID};
+						//TBGroupJoinConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBGroupJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBGroupJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBDeviceJoinConfirmation":
+					{
+						//var objectToDelete = new TBDeviceJoinConfirmation {ID = deleteData.ObjectID};
+						//TBDeviceJoinConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBDeviceJoinConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBDeviceJoinConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBInformationInputConfirmation":
+					{
+						//var objectToDelete = new TBInformationInputConfirmation {ID = deleteData.ObjectID};
+						//TBInformationInputConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBInformationInputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBInformationInputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBInformationOutputConfirmation":
+					{
+						//var objectToDelete = new TBInformationOutputConfirmation {ID = deleteData.ObjectID};
+						//TBInformationOutputConfirmationTable.Attach(objectToDelete);
+						var objectToDelete = TBInformationOutputConfirmationTable.Single(item => item.ID == deleteData.ObjectID);
+						TBInformationOutputConfirmationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LoginProvider":
+					{
+						//var objectToDelete = new LoginProvider {ID = deleteData.ObjectID};
+						//LoginProviderTable.Attach(objectToDelete);
+						var objectToDelete = LoginProviderTable.Single(item => item.ID == deleteData.ObjectID);
+						LoginProviderTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBPRegisterEmail":
+					{
+						//var objectToDelete = new TBPRegisterEmail {ID = deleteData.ObjectID};
+						//TBPRegisterEmailTable.Attach(objectToDelete);
+						var objectToDelete = TBPRegisterEmailTable.Single(item => item.ID == deleteData.ObjectID);
+						TBPRegisterEmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountSummary":
+					{
+						//var objectToDelete = new AccountSummary {ID = deleteData.ObjectID};
+						//AccountSummaryTable.Attach(objectToDelete);
+						var objectToDelete = AccountSummaryTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountSummaryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountContainer":
+					{
+						//var objectToDelete = new AccountContainer {ID = deleteData.ObjectID};
+						//AccountContainerTable.Attach(objectToDelete);
+						var objectToDelete = AccountContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountModule":
+					{
+						//var objectToDelete = new AccountModule {ID = deleteData.ObjectID};
+						//AccountModuleTable.Attach(objectToDelete);
+						var objectToDelete = AccountModuleTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountModuleTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LocationContainer":
+					{
+						//var objectToDelete = new LocationContainer {ID = deleteData.ObjectID};
+						//LocationContainerTable.Attach(objectToDelete);
+						var objectToDelete = LocationContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddressAndLocation":
+					{
+						//var objectToDelete = new AddressAndLocation {ID = deleteData.ObjectID};
+						//AddressAndLocationTable.Attach(objectToDelete);
+						var objectToDelete = AddressAndLocationTable.Single(item => item.ID == deleteData.ObjectID);
+						AddressAndLocationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "StreetAddress":
+					{
+						//var objectToDelete = new StreetAddress {ID = deleteData.ObjectID};
+						//StreetAddressTable.Attach(objectToDelete);
+						var objectToDelete = StreetAddressTable.Single(item => item.ID == deleteData.ObjectID);
+						StreetAddressTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountProfile":
+					{
+						//var objectToDelete = new AccountProfile {ID = deleteData.ObjectID};
+						//AccountProfileTable.Attach(objectToDelete);
+						var objectToDelete = AccountProfileTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountProfileTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountSecurity":
+					{
+						//var objectToDelete = new AccountSecurity {ID = deleteData.ObjectID};
+						//AccountSecurityTable.Attach(objectToDelete);
+						var objectToDelete = AccountSecurityTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountSecurityTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AccountRoles":
+					{
+						//var objectToDelete = new AccountRoles {ID = deleteData.ObjectID};
+						//AccountRolesTable.Attach(objectToDelete);
+						var objectToDelete = AccountRolesTable.Single(item => item.ID == deleteData.ObjectID);
+						AccountRolesTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PersonalInfoVisibility":
+					{
+						//var objectToDelete = new PersonalInfoVisibility {ID = deleteData.ObjectID};
+						//PersonalInfoVisibilityTable.Attach(objectToDelete);
+						var objectToDelete = PersonalInfoVisibilityTable.Single(item => item.ID == deleteData.ObjectID);
+						PersonalInfoVisibilityTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ReferenceToInformation":
+					{
+						//var objectToDelete = new ReferenceToInformation {ID = deleteData.ObjectID};
+						//ReferenceToInformationTable.Attach(objectToDelete);
+						var objectToDelete = ReferenceToInformationTable.Single(item => item.ID == deleteData.ObjectID);
+						ReferenceToInformationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "NodeSummaryContainer":
+					{
+						//var objectToDelete = new NodeSummaryContainer {ID = deleteData.ObjectID};
+						//NodeSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = NodeSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						NodeSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RenderedNode":
+					{
+						//var objectToDelete = new RenderedNode {ID = deleteData.ObjectID};
+						//RenderedNodeTable.Attach(objectToDelete);
+						var objectToDelete = RenderedNodeTable.Single(item => item.ID == deleteData.ObjectID);
+						RenderedNodeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ShortTextObject":
+					{
+						//var objectToDelete = new ShortTextObject {ID = deleteData.ObjectID};
+						//ShortTextObjectTable.Attach(objectToDelete);
+						var objectToDelete = ShortTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						ShortTextObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LongTextObject":
+					{
+						//var objectToDelete = new LongTextObject {ID = deleteData.ObjectID};
+						//LongTextObjectTable.Attach(objectToDelete);
+						var objectToDelete = LongTextObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						LongTextObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapMarker":
+					{
+						//var objectToDelete = new MapMarker {ID = deleteData.ObjectID};
+						//MapMarkerTable.Attach(objectToDelete);
+						var objectToDelete = MapMarkerTable.Single(item => item.ID == deleteData.ObjectID);
+						MapMarkerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Moderator":
+					{
+						//var objectToDelete = new Moderator {ID = deleteData.ObjectID};
+						//ModeratorTable.Attach(objectToDelete);
+						var objectToDelete = ModeratorTable.Single(item => item.ID == deleteData.ObjectID);
+						ModeratorTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Collaborator":
+					{
+						//var objectToDelete = new Collaborator {ID = deleteData.ObjectID};
+						//CollaboratorTable.Attach(objectToDelete);
+						var objectToDelete = CollaboratorTable.Single(item => item.ID == deleteData.ObjectID);
+						CollaboratorTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupSummaryContainer":
+					{
+						//var objectToDelete = new GroupSummaryContainer {ID = deleteData.ObjectID};
+						//GroupSummaryContainerTable.Attach(objectToDelete);
+						var objectToDelete = GroupSummaryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupSummaryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupContainer":
+					{
+						//var objectToDelete = new GroupContainer {ID = deleteData.ObjectID};
+						//GroupContainerTable.Attach(objectToDelete);
+						var objectToDelete = GroupContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupIndex":
+					{
+						//var objectToDelete = new GroupIndex {ID = deleteData.ObjectID};
+						//GroupIndexTable.Attach(objectToDelete);
+						var objectToDelete = GroupIndexTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupIndexTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddAddressAndLocationInfo":
+					{
+						//var objectToDelete = new AddAddressAndLocationInfo {ID = deleteData.ObjectID};
+						//AddAddressAndLocationInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddAddressAndLocationInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddAddressAndLocationInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddImageInfo":
+					{
+						//var objectToDelete = new AddImageInfo {ID = deleteData.ObjectID};
+						//AddImageInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddImageInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddImageInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddImageGroupInfo":
+					{
+						//var objectToDelete = new AddImageGroupInfo {ID = deleteData.ObjectID};
+						//AddImageGroupInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddImageGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddImageGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddEmailAddressInfo":
+					{
+						//var objectToDelete = new AddEmailAddressInfo {ID = deleteData.ObjectID};
+						//AddEmailAddressInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddEmailAddressInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddEmailAddressInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CreateGroupInfo":
+					{
+						//var objectToDelete = new CreateGroupInfo {ID = deleteData.ObjectID};
+						//CreateGroupInfoTable.Attach(objectToDelete);
+						var objectToDelete = CreateGroupInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						CreateGroupInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddActivityInfo":
+					{
+						//var objectToDelete = new AddActivityInfo {ID = deleteData.ObjectID};
+						//AddActivityInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddActivityInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddActivityInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddBlogPostInfo":
+					{
+						//var objectToDelete = new AddBlogPostInfo {ID = deleteData.ObjectID};
+						//AddBlogPostInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddBlogPostInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddBlogPostInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddCategoryInfo":
+					{
+						//var objectToDelete = new AddCategoryInfo {ID = deleteData.ObjectID};
+						//AddCategoryInfoTable.Attach(objectToDelete);
+						var objectToDelete = AddCategoryInfoTable.Single(item => item.ID == deleteData.ObjectID);
+						AddCategoryInfoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Group":
+					{
+						//var objectToDelete = new Group {ID = deleteData.ObjectID};
+						//GroupTable.Attach(objectToDelete);
+						var objectToDelete = GroupTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Introduction":
+					{
+						//var objectToDelete = new Introduction {ID = deleteData.ObjectID};
+						//IntroductionTable.Attach(objectToDelete);
+						var objectToDelete = IntroductionTable.Single(item => item.ID == deleteData.ObjectID);
+						IntroductionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentCategoryRank":
+					{
+						//var objectToDelete = new ContentCategoryRank {ID = deleteData.ObjectID};
+						//ContentCategoryRankTable.Attach(objectToDelete);
+						var objectToDelete = ContentCategoryRankTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentCategoryRankTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LinkToContent":
+					{
+						//var objectToDelete = new LinkToContent {ID = deleteData.ObjectID};
+						//LinkToContentTable.Attach(objectToDelete);
+						var objectToDelete = LinkToContentTable.Single(item => item.ID == deleteData.ObjectID);
+						LinkToContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "EmbeddedContent":
+					{
+						//var objectToDelete = new EmbeddedContent {ID = deleteData.ObjectID};
+						//EmbeddedContentTable.Attach(objectToDelete);
+						var objectToDelete = EmbeddedContentTable.Single(item => item.ID == deleteData.ObjectID);
+						EmbeddedContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentGroup":
+					{
+						//var objectToDelete = new DynamicContentGroup {ID = deleteData.ObjectID};
+						//DynamicContentGroupTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentGroupTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentGroupTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContent":
+					{
+						//var objectToDelete = new DynamicContent {ID = deleteData.ObjectID};
+						//DynamicContentTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AttachedToObject":
+					{
+						//var objectToDelete = new AttachedToObject {ID = deleteData.ObjectID};
+						//AttachedToObjectTable.Attach(objectToDelete);
+						var objectToDelete = AttachedToObjectTable.Single(item => item.ID == deleteData.ObjectID);
+						AttachedToObjectTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Comment":
+					{
+						//var objectToDelete = new Comment {ID = deleteData.ObjectID};
+						//CommentTable.Attach(objectToDelete);
+						var objectToDelete = CommentTable.Single(item => item.ID == deleteData.ObjectID);
+						CommentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Selection":
+					{
+						//var objectToDelete = new Selection {ID = deleteData.ObjectID};
+						//SelectionTable.Attach(objectToDelete);
+						var objectToDelete = SelectionTable.Single(item => item.ID == deleteData.ObjectID);
+						SelectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TextContent":
+					{
+						//var objectToDelete = new TextContent {ID = deleteData.ObjectID};
+						//TextContentTable.Attach(objectToDelete);
+						var objectToDelete = TextContentTable.Single(item => item.ID == deleteData.ObjectID);
+						TextContentTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Map":
+					{
+						//var objectToDelete = new Map {ID = deleteData.ObjectID};
+						//MapTable.Attach(objectToDelete);
+						var objectToDelete = MapTable.Single(item => item.ID == deleteData.ObjectID);
+						MapTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResult":
+					{
+						//var objectToDelete = new MapResult {ID = deleteData.ObjectID};
+						//MapResultTable.Attach(objectToDelete);
+						var objectToDelete = MapResultTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResultsCollection":
+					{
+						//var objectToDelete = new MapResultsCollection {ID = deleteData.ObjectID};
+						//MapResultsCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapResultsCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultsCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Video":
+					{
+						//var objectToDelete = new Video {ID = deleteData.ObjectID};
+						//VideoTable.Attach(objectToDelete);
+						var objectToDelete = VideoTable.Single(item => item.ID == deleteData.ObjectID);
+						VideoTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Image":
+					{
+						//var objectToDelete = new Image {ID = deleteData.ObjectID};
+						//ImageTable.Attach(objectToDelete);
+						var objectToDelete = ImageTable.Single(item => item.ID == deleteData.ObjectID);
+						ImageTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "BinaryFile":
+					{
+						//var objectToDelete = new BinaryFile {ID = deleteData.ObjectID};
+						//BinaryFileTable.Attach(objectToDelete);
+						var objectToDelete = BinaryFileTable.Single(item => item.ID == deleteData.ObjectID);
+						BinaryFileTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Longitude":
+					{
+						//var objectToDelete = new Longitude {ID = deleteData.ObjectID};
+						//LongitudeTable.Attach(objectToDelete);
+						var objectToDelete = LongitudeTable.Single(item => item.ID == deleteData.ObjectID);
+						LongitudeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Latitude":
+					{
+						//var objectToDelete = new Latitude {ID = deleteData.ObjectID};
+						//LatitudeTable.Attach(objectToDelete);
+						var objectToDelete = LatitudeTable.Single(item => item.ID == deleteData.ObjectID);
+						LatitudeTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Location":
+					{
+						//var objectToDelete = new Location {ID = deleteData.ObjectID};
+						//LocationTable.Attach(objectToDelete);
+						var objectToDelete = LocationTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Date":
+					{
+						//var objectToDelete = new Date {ID = deleteData.ObjectID};
+						//DateTable.Attach(objectToDelete);
+						var objectToDelete = DateTable.Single(item => item.ID == deleteData.ObjectID);
+						DateTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryContainer":
+					{
+						//var objectToDelete = new CategoryContainer {ID = deleteData.ObjectID};
+						//CategoryContainerTable.Attach(objectToDelete);
+						var objectToDelete = CategoryContainerTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryContainerTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Category":
+					{
+						//var objectToDelete = new Category {ID = deleteData.ObjectID};
+						//CategoryTable.Attach(objectToDelete);
+						var objectToDelete = CategoryTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentOperation":
+					{
+						//var objectToDelete = new UpdateWebContentOperation {ID = deleteData.ObjectID};
+						//UpdateWebContentOperationTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentOperationTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentOperationTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentHandlerItem":
+					{
+						//var objectToDelete = new UpdateWebContentHandlerItem {ID = deleteData.ObjectID};
+						//UpdateWebContentHandlerItemTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerItemTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentHandlerItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PublicationPackageCollection":
+					{
+						//var objectToDelete = new PublicationPackageCollection {ID = deleteData.ObjectID};
+						//PublicationPackageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = PublicationPackageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						PublicationPackageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBAccountCollaborationGroupCollection":
+					{
+						//var objectToDelete = new TBAccountCollaborationGroupCollection {ID = deleteData.ObjectID};
+						//TBAccountCollaborationGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBAccountCollaborationGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBAccountCollaborationGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBLoginInfoCollection":
+					{
+						//var objectToDelete = new TBLoginInfoCollection {ID = deleteData.ObjectID};
+						//TBLoginInfoCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBLoginInfoCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBLoginInfoCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBEmailCollection":
+					{
+						//var objectToDelete = new TBEmailCollection {ID = deleteData.ObjectID};
+						//TBEmailCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBEmailCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBEmailCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TBCollaboratorRoleCollection":
+					{
+						//var objectToDelete = new TBCollaboratorRoleCollection {ID = deleteData.ObjectID};
+						//TBCollaboratorRoleCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TBCollaboratorRoleCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TBCollaboratorRoleCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LoginProviderCollection":
+					{
+						//var objectToDelete = new LoginProviderCollection {ID = deleteData.ObjectID};
+						//LoginProviderCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LoginProviderCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LoginProviderCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AddressAndLocationCollection":
+					{
+						//var objectToDelete = new AddressAndLocationCollection {ID = deleteData.ObjectID};
+						//AddressAndLocationCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AddressAndLocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AddressAndLocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ReferenceCollection":
+					{
+						//var objectToDelete = new ReferenceCollection {ID = deleteData.ObjectID};
+						//ReferenceCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ReferenceCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ReferenceCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "RenderedNodeCollection":
+					{
+						//var objectToDelete = new RenderedNodeCollection {ID = deleteData.ObjectID};
+						//RenderedNodeCollectionTable.Attach(objectToDelete);
+						var objectToDelete = RenderedNodeCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						RenderedNodeCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ShortTextCollection":
+					{
+						//var objectToDelete = new ShortTextCollection {ID = deleteData.ObjectID};
+						//ShortTextCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ShortTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ShortTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LongTextCollection":
+					{
+						//var objectToDelete = new LongTextCollection {ID = deleteData.ObjectID};
+						//LongTextCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LongTextCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LongTextCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapMarkerCollection":
+					{
+						//var objectToDelete = new MapMarkerCollection {ID = deleteData.ObjectID};
+						//MapMarkerCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapMarkerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapMarkerCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ModeratorCollection":
+					{
+						//var objectToDelete = new ModeratorCollection {ID = deleteData.ObjectID};
+						//ModeratorCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ModeratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ModeratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CollaboratorCollection":
+					{
+						//var objectToDelete = new CollaboratorCollection {ID = deleteData.ObjectID};
+						//CollaboratorCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CollaboratorCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CollaboratorCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "GroupCollection":
+					{
+						//var objectToDelete = new GroupCollection {ID = deleteData.ObjectID};
+						//GroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = GroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						GroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ContentCategoryRankCollection":
+					{
+						//var objectToDelete = new ContentCategoryRankCollection {ID = deleteData.ObjectID};
+						//ContentCategoryRankCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ContentCategoryRankCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ContentCategoryRankCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LinkToContentCollection":
+					{
+						//var objectToDelete = new LinkToContentCollection {ID = deleteData.ObjectID};
+						//LinkToContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LinkToContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LinkToContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "EmbeddedContentCollection":
+					{
+						//var objectToDelete = new EmbeddedContentCollection {ID = deleteData.ObjectID};
+						//EmbeddedContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = EmbeddedContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						EmbeddedContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentGroupCollection":
+					{
+						//var objectToDelete = new DynamicContentGroupCollection {ID = deleteData.ObjectID};
+						//DynamicContentGroupCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentGroupCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentGroupCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "DynamicContentCollection":
+					{
+						//var objectToDelete = new DynamicContentCollection {ID = deleteData.ObjectID};
+						//DynamicContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = DynamicContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						DynamicContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "AttachedToObjectCollection":
+					{
+						//var objectToDelete = new AttachedToObjectCollection {ID = deleteData.ObjectID};
+						//AttachedToObjectCollectionTable.Attach(objectToDelete);
+						var objectToDelete = AttachedToObjectCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						AttachedToObjectCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CommentCollection":
+					{
+						//var objectToDelete = new CommentCollection {ID = deleteData.ObjectID};
+						//CommentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CommentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CommentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SelectionCollection":
+					{
+						//var objectToDelete = new SelectionCollection {ID = deleteData.ObjectID};
+						//SelectionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = SelectionCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						SelectionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TextContentCollection":
+					{
+						//var objectToDelete = new TextContentCollection {ID = deleteData.ObjectID};
+						//TextContentCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TextContentCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						TextContentCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapCollection":
+					{
+						//var objectToDelete = new MapCollection {ID = deleteData.ObjectID};
+						//MapCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MapResultCollection":
+					{
+						//var objectToDelete = new MapResultCollection {ID = deleteData.ObjectID};
+						//MapResultCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MapResultCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						MapResultCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "ImageCollection":
+					{
+						//var objectToDelete = new ImageCollection {ID = deleteData.ObjectID};
+						//ImageCollectionTable.Attach(objectToDelete);
+						var objectToDelete = ImageCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						ImageCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "BinaryFileCollection":
+					{
+						//var objectToDelete = new BinaryFileCollection {ID = deleteData.ObjectID};
+						//BinaryFileCollectionTable.Attach(objectToDelete);
+						var objectToDelete = BinaryFileCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						BinaryFileCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "LocationCollection":
+					{
+						//var objectToDelete = new LocationCollection {ID = deleteData.ObjectID};
+						//LocationCollectionTable.Attach(objectToDelete);
+						var objectToDelete = LocationCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						LocationCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "CategoryCollection":
+					{
+						//var objectToDelete = new CategoryCollection {ID = deleteData.ObjectID};
+						//CategoryCollectionTable.Attach(objectToDelete);
+						var objectToDelete = CategoryCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						CategoryCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "UpdateWebContentHandlerCollection":
+					{
+						//var objectToDelete = new UpdateWebContentHandlerCollection {ID = deleteData.ObjectID};
+						//UpdateWebContentHandlerCollectionTable.Attach(objectToDelete);
+						var objectToDelete = UpdateWebContentHandlerCollectionTable.Single(item => item.ID == deleteData.ObjectID);
+						UpdateWebContentHandlerCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 

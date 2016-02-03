@@ -115,7 +115,10 @@ namespace SQLite.TheBall.Index {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "IndexingRequest")
+
+				switch(updateData.ObjectType)
+				{
+		        case "IndexingRequest":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -128,9 +131,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.ObjectLocations != null)
 	                    serializedObject.ObjectLocations.ForEach(item => existingObject.ObjectLocations.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "QueryRequest")
+		        case "QueryRequest":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -149,9 +152,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.QueryResultObjects != null)
 	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "QueryResultItem")
+		        case "QueryResultItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -163,8 +166,9 @@ namespace SQLite.TheBall.Index {
 		            existingObject.ObjectName = serializedObject.ObjectName;
 		            existingObject.ObjectID = serializedObject.ObjectID;
 		            existingObject.Rank = serializedObject.Rank;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 
@@ -172,7 +176,10 @@ namespace SQLite.TheBall.Index {
 		    {
                 if(updateData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
-		        if (updateData.ObjectType == "IndexingRequest")
+
+				switch(updateData.ObjectType)
+				{
+		        case "IndexingRequest":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -185,9 +192,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.ObjectLocations != null)
 	                    serializedObject.ObjectLocations.ForEach(item => existingObject.ObjectLocations.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "QueryRequest")
+		        case "QueryRequest":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -206,9 +213,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.QueryResultObjects != null)
 	                    serializedObject.QueryResultObjects.ForEach(item => existingObject.QueryResultObjects.Add(item));
 					
-		            return;
+		            break;
 		        } 
-		        if (updateData.ObjectType == "QueryResultItem")
+		        case "QueryResultItem":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
 		            var serializedObject = 
@@ -220,8 +227,9 @@ namespace SQLite.TheBall.Index {
 		            existingObject.ObjectName = serializedObject.ObjectName;
 		            existingObject.ObjectID = serializedObject.ObjectID;
 		            existingObject.Rank = serializedObject.Rank;
-		            return;
+		            break;
 		        } 
+				}
 		    }
 
 		    public void PerformInsert(string storageRootPath, InformationObjectMetaData insertData)
@@ -229,7 +237,10 @@ namespace SQLite.TheBall.Index {
                 if (insertData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "IndexingRequest")
+
+				switch(insertData.ObjectType)
+				{
+                case "IndexingRequest":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -240,9 +251,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.ObjectLocations != null)
 						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
 					IndexingRequestTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "QueryRequest")
+                case "QueryRequest":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -259,9 +270,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.QueryResultObjects != null)
 						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
 					QueryRequestTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "QueryResultItem")
+                case "QueryResultItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -273,8 +284,9 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.ObjectID = serializedObject.ObjectID;
 		            objectToAdd.Rank = serializedObject.Rank;
 					QueryResultItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -283,7 +295,10 @@ namespace SQLite.TheBall.Index {
                 if (insertData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
                 InformationObjectMetaDataTable.InsertOnSubmit(insertData);
-                if (insertData.ObjectType == "IndexingRequest")
+
+				switch(insertData.ObjectType)
+				{
+                case "IndexingRequest":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -294,9 +309,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.ObjectLocations != null)
 						serializedObject.ObjectLocations.ForEach(item => objectToAdd.ObjectLocations.Add(item));
 					IndexingRequestTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "QueryRequest")
+                case "QueryRequest":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -313,9 +328,9 @@ namespace SQLite.TheBall.Index {
 					if(serializedObject.QueryResultObjects != null)
 						serializedObject.QueryResultObjects.ForEach(item => objectToAdd.QueryResultObjects.Add(item));
 					QueryRequestTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
-                if (insertData.ObjectType == "QueryResultItem")
+                case "QueryResultItem":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
                     var serializedObject =
@@ -327,8 +342,9 @@ namespace SQLite.TheBall.Index {
 		            objectToAdd.ObjectID = serializedObject.ObjectID;
 		            objectToAdd.Rank = serializedObject.Rank;
 					QueryResultItemTable.InsertOnSubmit(objectToAdd);
-                    return;
+                    break;
                 }
+				}
             }
 
 
@@ -337,28 +353,35 @@ namespace SQLite.TheBall.Index {
                 if (deleteData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "IndexingRequest")
-		        {
-		            var objectToDelete = new IndexingRequest {ID = deleteData.ID};
-                    IndexingRequestTable.Attach(objectToDelete);
-                    IndexingRequestTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "QueryRequest")
-		        {
-		            var objectToDelete = new QueryRequest {ID = deleteData.ID};
-                    QueryRequestTable.Attach(objectToDelete);
-                    QueryRequestTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "QueryResultItem")
-		        {
-		            var objectToDelete = new QueryResultItem {ID = deleteData.ID};
-                    QueryResultItemTable.Attach(objectToDelete);
-                    QueryResultItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "IndexingRequest":
+					{
+						//var objectToDelete = new IndexingRequest {ID = deleteData.ObjectID};
+						//IndexingRequestTable.Attach(objectToDelete);
+						var objectToDelete = IndexingRequestTable.Single(item => item.ID == deleteData.ObjectID);
+						IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "QueryRequest":
+					{
+						//var objectToDelete = new QueryRequest {ID = deleteData.ObjectID};
+						//QueryRequestTable.Attach(objectToDelete);
+						var objectToDelete = QueryRequestTable.Single(item => item.ID == deleteData.ObjectID);
+						QueryRequestTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "QueryResultItem":
+					{
+						//var objectToDelete = new QueryResultItem {ID = deleteData.ObjectID};
+						//QueryResultItemTable.Attach(objectToDelete);
+						var objectToDelete = QueryResultItemTable.Single(item => item.ID == deleteData.ObjectID);
+						QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
@@ -367,28 +390,35 @@ namespace SQLite.TheBall.Index {
                 if (deleteData.SemanticDomain != "TheBall.Index")
                     throw new InvalidDataException("Mismatch on domain data");
 				InformationObjectMetaDataTable.DeleteOnSubmit(deleteData);
-		        if (deleteData.ObjectType == "IndexingRequest")
-		        {
-		            var objectToDelete = new IndexingRequest {ID = deleteData.ID};
-                    IndexingRequestTable.Attach(objectToDelete);
-                    IndexingRequestTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "QueryRequest")
-		        {
-		            var objectToDelete = new QueryRequest {ID = deleteData.ID};
-                    QueryRequestTable.Attach(objectToDelete);
-                    QueryRequestTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		        if (deleteData.ObjectType == "QueryResultItem")
-		        {
-		            var objectToDelete = new QueryResultItem {ID = deleteData.ID};
-                    QueryResultItemTable.Attach(objectToDelete);
-                    QueryResultItemTable.DeleteOnSubmit(objectToDelete);
-		            return;
-		        }
-		    }
+
+				switch(deleteData.ObjectType)
+				{
+					case "IndexingRequest":
+					{
+						//var objectToDelete = new IndexingRequest {ID = deleteData.ObjectID};
+						//IndexingRequestTable.Attach(objectToDelete);
+						var objectToDelete = IndexingRequestTable.Single(item => item.ID == deleteData.ObjectID);
+						IndexingRequestTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "QueryRequest":
+					{
+						//var objectToDelete = new QueryRequest {ID = deleteData.ObjectID};
+						//QueryRequestTable.Attach(objectToDelete);
+						var objectToDelete = QueryRequestTable.Single(item => item.ID == deleteData.ObjectID);
+						QueryRequestTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "QueryResultItem":
+					{
+						//var objectToDelete = new QueryResultItem {ID = deleteData.ObjectID};
+						//QueryResultItemTable.Attach(objectToDelete);
+						var objectToDelete = QueryResultItemTable.Single(item => item.ID == deleteData.ObjectID);
+						QueryResultItemTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+				}
+			}
 
 
 
