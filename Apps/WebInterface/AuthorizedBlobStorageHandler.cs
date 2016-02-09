@@ -69,17 +69,22 @@ namespace WebInterface
             }
             try
             {
+                string requestPath = request.Path;
+                if (request.IsShortcutRequest())
+                {
+                    requestPath = getShortcutFromReferrer(request);
+                }
                 if (userIdentity.IsInRole("DeviceAES"))
                 {
                     await HandleEncryptedDeviceRequest(context);
                 }
-                else if (request.IsPersonalRequest())
+                else if (request.IsPersonalRequest(requestPath))
                 {
-                    await HandlePersonalRequest(context);
+                    await HandlePersonalRequest(context, requestPath);
                 }
-                else if (request.IsGroupRequest())
+                else if (request.IsGroupRequest(requestPath))
                 {
-                    await HandleGroupRequest(context);
+                    await HandleGroupRequest(context, requestPath);
                 }
             }
             catch (SecurityException securityException)
@@ -87,6 +92,15 @@ namespace WebInterface
                 response.StatusCode = 403;
                 response.Write(securityException.ToString());
             }
+        }
+
+        private string getShortcutFromReferrer(HttpRequest request)
+        {
+            var currPath = request.Path;
+            var referrer = request.UrlReferrer;
+            var refPath = referrer.AbsolutePath;
+            var lastSlash = refPath.LastIndexOf("/");
+            return refPath.Substring(0, lastSlash) + currPath;
         }
 
         private async Task HandleEncryptedDeviceRequest(HttpContext context)
@@ -280,17 +294,17 @@ namespace WebInterface
             return contentPath.Substring(1);
         }
 
-        private async Task HandleGroupRequest(HttpContext context)
+        private async Task HandleGroupRequest(HttpContext context, string requestPath)
         {
             var request = context.Request;
-            var loginGroupRoot = await request.RequireAndRetrieveGroupAccessRole();
+            var loginGroupRoot = await request.RequireAndRetrieveGroupAccessRole(requestPath);
             InformationContext.AuthenticateContextOwner(loginGroupRoot);
             InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
-            var contentPath = request.GetOwnerContentPath();
+            var contentPath = request.GetOwnerContentPath(requestPath);
             await HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
         }
 
-        private async Task HandlePersonalRequest(HttpContext context)
+        private async Task HandlePersonalRequest(HttpContext context, string requestPath)
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
@@ -304,7 +318,7 @@ namespace WebInterface
             TBAccount account = loginRoot.Account;
             InformationContext.AuthenticateContextOwner(account);
             var request = context.Request;
-            var contentPath = request.GetOwnerContentPath();
+            var contentPath = request.GetOwnerContentPath(requestPath);
             await HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
