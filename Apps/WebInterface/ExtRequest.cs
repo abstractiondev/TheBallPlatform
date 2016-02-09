@@ -34,10 +34,10 @@ namespace WebInterface
         }
 
 
-        public static async Task<TBRLoginGroupRoot> RequireAndRetrieveGroupAccessRole(this HttpRequest request)
+        public static async Task<TBRLoginGroupRoot> RequireAndRetrieveGroupAccessRole(this HttpRequest request, string requestPath = null)
         {
             var context = request.RequestContext;
-            string groupID = request.GetGroupID();
+            string groupID = request.GetGroupID(requestPath);
             string loginUrl = WebSupport.GetLoginUrl(request.RequestContext.HttpContext.User);
             string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
@@ -47,9 +47,14 @@ namespace WebInterface
             return loginGroupRoot;
         }
 
-        public static bool IsGroupRequest(this HttpRequest request)
+        public static bool IsGroupRequest(this HttpRequest request, string requestPath = null)
         {
-            return isGroupRequest(request.Path);
+            return isGroupRequest(requestPath ?? request.Path);
+        }
+
+        public static bool IsShortcutRequest(this HttpRequest request)
+        {
+            return isShortcutRequest(request.Path) && request.UrlReferrer != null;
         }
 
         public static bool IsAboutRequest(this HttpRequest request)
@@ -57,10 +62,16 @@ namespace WebInterface
             return request.Path.StartsWith(AboutPrefix);
         }
 
-        public static bool IsPersonalRequest(this HttpRequest request)
+        public static bool IsPersonalRequest(this HttpRequest request, string requestPath = null)
         {
-            return isPersonalRequest(request.Path);
+            return isPersonalRequest(requestPath ?? request.Path);
         }
+
+        private static bool isShortcutRequest(string path)
+        {
+            return path.StartsWith("/styles/") || path.StartsWith("/scripts/");
+        }
+
 
         private static bool isGroupRequest(string path)
         {
@@ -72,13 +83,13 @@ namespace WebInterface
             return path.StartsWith(AuthPersonalPrefix);
         }
 
-        public static string GetOwnerContentPath(this HttpRequest request)
+        public static string GetOwnerContentPath(this HttpRequest request, string requestPath = null)
         {
-            if(request.IsGroupRequest())
-                return request.Path.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            else if (request.IsPersonalRequest())
-                return request.Path.Substring(AuthPersonalPrefixLen);
-            throw new InvalidDataException("Owner content path not recognized properly: " + request.Path);
+            if(request.IsGroupRequest(requestPath))
+                return (requestPath ?? request.Path).Substring(AuthGroupPrefixLen + GuidIDLen + 1);
+            else if (request.IsPersonalRequest(requestPath))
+                return (requestPath ?? request.Path).Substring(AuthPersonalPrefixLen);
+            throw new InvalidDataException("Owner content path not recognized properly: " + (requestPath ?? request.Path));
         }
 
         public static string GetReferrerOwnerContentPath(this HttpRequest request)
@@ -95,11 +106,12 @@ namespace WebInterface
         }
 
 
-        public static string GetGroupID(this HttpRequest request)
+        public static string GetGroupID(this HttpRequest request, string requestPath = null)
         {
-            if(request.IsGroupRequest() == false)
+            if(request.IsGroupRequest(requestPath) == false)
                 throw new InvalidOperationException("Request is not group request");
-            return request.Path.Substring(AuthGroupPrefixLen, GuidIDLen);
+            var usePath = requestPath ?? request.Path;
+            return usePath.Substring(AuthGroupPrefixLen, GuidIDLen);
         }
 
         public static IContainerOwner GetGroupAsOwner(this HttpRequest request)

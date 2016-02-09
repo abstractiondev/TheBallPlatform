@@ -16,6 +16,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Nito.AsyncEx;
+using TheBall.Infra.AzureRoleSupport;
 
 namespace TheBallWorkerRole
 {
@@ -29,7 +30,7 @@ namespace TheBallWorkerRole
         }
     }
 
-    public class WorkerRole : RoleEntryPoint
+    public class WorkerRole : AcceleratorRole
     {
     }
 }
