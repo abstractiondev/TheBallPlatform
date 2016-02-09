@@ -69,7 +69,7 @@ namespace WebInterface
 
         private static bool isShortcutRequest(string path)
         {
-            return path.StartsWith("/styles/") || path.StartsWith("/scripts/");
+            return path.StartsWith("/styles/") || path.StartsWith("/scripts/") || path.StartsWith("/app/");
         }
 
 
