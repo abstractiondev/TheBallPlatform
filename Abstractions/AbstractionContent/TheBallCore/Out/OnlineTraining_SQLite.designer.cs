@@ -101,6 +101,11 @@ namespace SQLite.ProBroz.OnlineTraining {
 				tableCreationCommands.Add(SubscriptionPlan.GetCreateTableSQL());
 				tableCreationCommands.Add(SubscriptionPaymentOption.GetCreateTableSQL());
 				tableCreationCommands.Add(TenantGym.GetCreateTableSQL());
+				tableCreationCommands.Add(MemberCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(MembershipPlanCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(PaymentOptionCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(SubscriptionCollection.GetCreateTableSQL());
+				tableCreationCommands.Add(TenantGymCollection.GetCreateTableSQL());
 			    var connection = this.Connection;
 				foreach (string commandText in tableCreationCommands)
 			    {
@@ -800,6 +805,51 @@ namespace SQLite.ProBroz.OnlineTraining {
 							TenantGymTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
+					case "MemberCollection":
+					{
+						//var objectToDelete = new MemberCollection {ID = deleteData.ObjectID};
+						//MemberCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MemberCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MemberCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MembershipPlanCollection":
+					{
+						//var objectToDelete = new MembershipPlanCollection {ID = deleteData.ObjectID};
+						//MembershipPlanCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MembershipPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MembershipPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PaymentOptionCollection":
+					{
+						//var objectToDelete = new PaymentOptionCollection {ID = deleteData.ObjectID};
+						//PaymentOptionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = PaymentOptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PaymentOptionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SubscriptionCollection":
+					{
+						//var objectToDelete = new SubscriptionCollection {ID = deleteData.ObjectID};
+						//SubscriptionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = SubscriptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SubscriptionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TenantGymCollection":
+					{
+						//var objectToDelete = new TenantGymCollection {ID = deleteData.ObjectID};
+						//TenantGymCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TenantGymCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TenantGymCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
 				}
 			}
 
@@ -856,6 +906,51 @@ namespace SQLite.ProBroz.OnlineTraining {
 						var objectToDelete = TenantGymTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
 						if(objectToDelete != null)
 							TenantGymTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MemberCollection":
+					{
+						//var objectToDelete = new MemberCollection {ID = deleteData.ObjectID};
+						//MemberCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MemberCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MemberCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "MembershipPlanCollection":
+					{
+						//var objectToDelete = new MembershipPlanCollection {ID = deleteData.ObjectID};
+						//MembershipPlanCollectionTable.Attach(objectToDelete);
+						var objectToDelete = MembershipPlanCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							MembershipPlanCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "PaymentOptionCollection":
+					{
+						//var objectToDelete = new PaymentOptionCollection {ID = deleteData.ObjectID};
+						//PaymentOptionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = PaymentOptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							PaymentOptionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "SubscriptionCollection":
+					{
+						//var objectToDelete = new SubscriptionCollection {ID = deleteData.ObjectID};
+						//SubscriptionCollectionTable.Attach(objectToDelete);
+						var objectToDelete = SubscriptionCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							SubscriptionCollectionTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "TenantGymCollection":
+					{
+						//var objectToDelete = new TenantGymCollection {ID = deleteData.ObjectID};
+						//TenantGymCollectionTable.Attach(objectToDelete);
+						var objectToDelete = TenantGymCollectionTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							TenantGymCollectionTable.DeleteOnSubmit(objectToDelete);
 						break;
 					}
 				}
@@ -916,6 +1011,31 @@ namespace SQLite.ProBroz.OnlineTraining {
 			public Table<TenantGym> TenantGymTable {
 				get {
 					return this.GetTable<TenantGym>();
+				}
+			}
+			public Table<MemberCollection> MemberCollectionTable {
+				get {
+					return this.GetTable<MemberCollection>();
+				}
+			}
+			public Table<MembershipPlanCollection> MembershipPlanCollectionTable {
+				get {
+					return this.GetTable<MembershipPlanCollection>();
+				}
+			}
+			public Table<PaymentOptionCollection> PaymentOptionCollectionTable {
+				get {
+					return this.GetTable<PaymentOptionCollection>();
+				}
+			}
+			public Table<SubscriptionCollection> SubscriptionCollectionTable {
+				get {
+					return this.GetTable<SubscriptionCollection>();
+				}
+			}
+			public Table<TenantGymCollection> TenantGymCollectionTable {
+				get {
+					return this.GetTable<TenantGymCollection>();
 				}
 			}
         }
@@ -1376,6 +1496,216 @@ CREATE TABLE IF NOT EXISTS [TenantGym](
 			if(Country == null)
 				Country = string.Empty;
 		}
+	}
+    [Table(Name = "MemberCollection")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("MemberCollection: {ID}")]
+	public class MemberCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public MemberCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MemberCollection](
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
+	}
+    [Table(Name = "MembershipPlanCollection")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("MembershipPlanCollection: {ID}")]
+	public class MembershipPlanCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public MembershipPlanCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [MembershipPlanCollection](
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
+	}
+    [Table(Name = "PaymentOptionCollection")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("PaymentOptionCollection: {ID}")]
+	public class PaymentOptionCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public PaymentOptionCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [PaymentOptionCollection](
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
+	}
+    [Table(Name = "SubscriptionCollection")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("SubscriptionCollection: {ID}")]
+	public class SubscriptionCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public SubscriptionCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [SubscriptionCollection](
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
+	}
+    [Table(Name = "TenantGymCollection")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("TenantGymCollection: {ID}")]
+	public class TenantGymCollection : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public TenantGymCollection() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [TenantGymCollection](
+[ID] TEXT NOT NULL, 
+[CollectionItemID] TEXT NOT NULL, 
+[ETag] TEXT NOT NULL,
+	PRIMARY KEY (ID) )";
+        }
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		}
+		//[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string CollectionItemID { get; set; }
 	}
     [Table(Name = "MemberSubscriptions")]
 	[ScaffoldTable(true)]

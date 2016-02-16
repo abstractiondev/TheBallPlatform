@@ -129,6 +129,9 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs">
       <Link>AaltoGlobalImpact.OIP\OIPBallInstance.designer.cs</Link>
     </Compile>
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OnlineTraining.designer.cs">
+      <Link>ProBroz.OnlineTraining\OnlineTraining.designer.cs</Link>
+    </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\PersonalWebDiosphere.designer.cs">
       <Link>PersonalWeb.Diosphere\PersonalWebDiosphere.designer.cs</Link>
     </Compile>
@@ -181,6 +184,11 @@
     <Compile Include="Partials\EmbeddedContent.cs" />
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="PersonalWeb.Diosphere\SaveRoomDataImplementation.cs" />
+    <Compile Include="ProBroz.OnlineTraining\Member.cs" />
+    <Compile Include="ProBroz.OnlineTraining\MembershipPlan.cs" />
+    <Compile Include="ProBroz.OnlineTraining\PaymentOption.cs" />
+    <Compile Include="ProBroz.OnlineTraining\Subscription.cs" />
+    <Compile Include="ProBroz.OnlineTraining\TenantGym.cs" />
     <Compile Include="SyncSupport.cs" />
     <Compile Include="SystemOwner.cs" />
     <Compile Include="TheBall.CORE\ConfirmAccountMergeFromEmailImplementation.cs" />

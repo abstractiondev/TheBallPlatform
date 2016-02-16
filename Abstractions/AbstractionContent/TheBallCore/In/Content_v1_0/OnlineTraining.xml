@@ -9,6 +9,9 @@
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
+      <InformationObject name="MemberCollection" designDesc="Collection for members" >
+        <CollectionFor collectionType="Master" contentInformationObjectName="Member"/>
+      </InformationObject>
       <InformationObject name="Member" designDesc="Gym member">
         <InformationItems>
           <InformationItem name="FirstName" logicalDataType="Text_Short"/>
@@ -28,6 +31,9 @@
           <InformationItem name="Subscriptions" logicalDataType="ObjectLink"  objectLinkTargetType="Subscription" isCollection="true"/>
         </InformationItems>
       </InformationObject>
+      <InformationObject name="MembershipPlanCollection" designDesc="Collection for membership plans">
+        <CollectionFor collectionType="Master" contentInformationObjectName="MembershipPlan"/>
+      </InformationObject>
       <InformationObject name="MembershipPlan" designDesc="Member subscription">
         <InformationItems>
           <InformationItem name="PlanName" logicalDataType="Text_Short"/>
@@ -36,12 +42,18 @@
           <InformationItem name="Gym" logicalDataType="ObjectLink" objectLinkTargetType="TenantGym" />
         </InformationItems>
       </InformationObject>
+      <InformationObject name="PaymentOptionCollection" designDesc="Collection for payment options">
+        <CollectionFor collectionType="Master" contentInformationObjectName="PaymentOption"/>
+      </InformationObject>
       <InformationObject name="PaymentOption" designDesc="Subscription option">
         <InformationItems>
           <InformationItem name="OptionName" logicalDataType="Text_Short"/>
           <InformationItem name="PeriodInDays" logicalDataType="Number_Integer"/>
           <InformationItem name="Price" logicalDataType="Number_ExactDecimal"/>
         </InformationItems>
+      </InformationObject>
+      <InformationObject name="SubscriptionCollection" designDesc="Collection for subscriptions">
+        <CollectionFor collectionType="Master" contentInformationObjectName="Subscription"/>
       </InformationObject>
       <InformationObject name="Subscription" designDesc="Subscription to plan">
         <InformationItems>
@@ -51,6 +63,9 @@
           <InformationItem name="ValidFrom" logicalDataType="Time_Date"/>
           <InformationItem name="ValidTo" logicalDataType="Time_Date"/>
         </InformationItems>
+      </InformationObject>
+      <InformationObject name="TenantGymCollection" designDesc="Collection for tenant gyms">
+        <CollectionFor collectionType="Master" contentInformationObjectName="TenantGym"/>
       </InformationObject>
       <InformationObject name="TenantGym" designDesc="Tenant gym where the lessons are held">
         <InformationItems>

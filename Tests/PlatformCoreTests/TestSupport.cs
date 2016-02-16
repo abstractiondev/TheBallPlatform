@@ -29,6 +29,11 @@ namespace PlatformCoreTests
             get { return Path.Combine(TestDataPath, "OIP"); }
         }
 
+        public static string OnlineTrainingPath
+        {
+            get { return Path.Combine(TestDataPath, "OnlineTraining");  }
+        }
+
 
         public static string GetTheBallFileFullPath(string theBallFileRelativePath)
         {

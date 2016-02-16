@@ -14,6 +14,125 @@ using ProtoBuf;
 namespace INT { 
 		 }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
 			[Serializable]
+			public partial class MemberCollection 
+			{
+
+				public MemberCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "ProBroz.OnlineTraining";
+				    this.Name = "MemberCollection";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MemberCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MemberCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MemberCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MemberCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] 
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] 
+                public string Name { get; set; }
+
+                [DataMember] 
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+				
+				[DataMember] public List<Member> CollectionContent = new List<Member>();
+				private Member[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public Member[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				private void CopyContentFrom(MemberCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
+			[Serializable]
 			public partial class Member 
 			{
 
@@ -127,6 +246,125 @@ namespace INT {
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
 			[Serializable]
+			public partial class MembershipPlanCollection 
+			{
+
+				public MembershipPlanCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "ProBroz.OnlineTraining";
+				    this.Name = "MembershipPlanCollection";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MembershipPlanCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static MembershipPlanCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(MembershipPlanCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (MembershipPlanCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] 
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] 
+                public string Name { get; set; }
+
+                [DataMember] 
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+				
+				[DataMember] public List<MembershipPlan> CollectionContent = new List<MembershipPlan>();
+				private MembershipPlan[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public MembershipPlan[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				private void CopyContentFrom(MembershipPlanCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
+			[Serializable]
 			public partial class MembershipPlan 
 			{
 
@@ -203,6 +441,125 @@ namespace INT {
 			[DataMember] 
 			public string Gym { get; set; }
 			private string _unmodified_Gym;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
+			[Serializable]
+			public partial class PaymentOptionCollection 
+			{
+
+				public PaymentOptionCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "ProBroz.OnlineTraining";
+				    this.Name = "PaymentOptionCollection";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(PaymentOptionCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static PaymentOptionCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(PaymentOptionCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (PaymentOptionCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] 
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] 
+                public string Name { get; set; }
+
+                [DataMember] 
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+				
+				[DataMember] public List<PaymentOption> CollectionContent = new List<PaymentOption>();
+				private PaymentOption[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public PaymentOption[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				private void CopyContentFrom(PaymentOptionCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
@@ -289,6 +646,125 @@ namespace INT {
 			[DataMember] 
 			public double Price { get; set; }
 			private double _unmodified_Price;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
+			[Serializable]
+			public partial class SubscriptionCollection 
+			{
+
+				public SubscriptionCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "ProBroz.OnlineTraining";
+				    this.Name = "SubscriptionCollection";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static SubscriptionCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(SubscriptionCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (SubscriptionCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] 
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] 
+                public string Name { get; set; }
+
+                [DataMember] 
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+				
+				[DataMember] public List<Subscription> CollectionContent = new List<Subscription>();
+				private Subscription[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public Subscription[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				private void CopyContentFrom(SubscriptionCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
@@ -383,6 +859,125 @@ namespace INT {
 			[DataMember] 
 			public DateTime ValidTo { get; set; }
 			private DateTime _unmodified_ValidTo;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
+			[Serializable]
+			public partial class TenantGymCollection 
+			{
+
+				public TenantGymCollection()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "ProBroz.OnlineTraining";
+				    this.Name = "TenantGymCollection";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TenantGymCollection));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static TenantGymCollection DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(TenantGymCollection));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (TenantGymCollection) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] 
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] 
+                public string Name { get; set; }
+
+                [DataMember] 
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+				
+				[DataMember] public List<TenantGym> CollectionContent = new List<TenantGym>();
+				private TenantGym[] _unmodified_CollectionContent;
+
+				[DataMember] public bool IsCollectionFiltered;
+				private bool _unmodified_IsCollectionFiltered;
+				
+				[DataMember] public List<string> OrderFilterIDList = new List<string>();
+				private string[] _unmodified_OrderFilterIDList;
+
+				public string SelectedIDCommaSeparated
+				{
+					get
+					{
+						string[] sourceArray;
+						if (OrderFilterIDList != null)
+							sourceArray = OrderFilterIDList.ToArray();
+						else
+							sourceArray = CollectionContent.Select(item => item.ID).ToArray();
+						return String.Join(",", sourceArray);
+					}
+					set 
+					{
+						if (value == null)
+							return;
+						string[] valueArray = value.Split(',');
+						OrderFilterIDList = new List<string>();
+						OrderFilterIDList.AddRange(valueArray);
+						OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+					}
+				}
+
+				public TenantGym[] GetIDSelectedArray()
+				{
+					if (IsCollectionFiltered == false || this.OrderFilterIDList == null)
+						return CollectionContent.ToArray();
+					return
+						this.OrderFilterIDList.Select(id => CollectionContent.FirstOrDefault(item => item.ID == id)).Where(item => item != null).ToArray();
+				}
+
+				public void RefreshOrderAndFilterListFromContent()
+                {
+                    if (OrderFilterIDList == null)
+                        return;
+                    OrderFilterIDList.RemoveAll(item => CollectionContent.Any(colItem => colItem.ID == item) == false);
+                }
+
+				private void CopyContentFrom(TenantGymCollection sourceObject)
+				{
+					CollectionContent = sourceObject.CollectionContent;
+					_unmodified_CollectionContent = sourceObject._unmodified_CollectionContent;
+				}
+				
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/ProBroz.OnlineTraining")] 
