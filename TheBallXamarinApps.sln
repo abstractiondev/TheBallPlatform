@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallMobileApp", "TheBallMobileApp\TheBallMobileApp.csproj", "{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallMobileApp", "Apps\XamarinApps\TheBallMobileApp\TheBallMobileApp.csproj", "{E0352F51-15BB-4235-B1BC-B8DBF4502AEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBalliOSApp", "TheBalliOSApp\TheBalliOSApp.csproj", "{4F504AB1-4F5F-4B8A-B90F-ACBD5CBC2201}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBalliOSApp", "Apps\XamarinApps\TheBalliOSApp\TheBalliOSApp.csproj", "{4F504AB1-4F5F-4B8A-B90F-ACBD5CBC2201}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "..\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDeviceClient", "..\TheBallDeviceClient\TheBallDeviceClient.csproj", "{19F4DEB2-249D-450E-B5C7-BB2D977CF00A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDeviceClient", "Apps\TheBallDeviceClient\TheBallDeviceClient.csproj", "{19F4DEB2-249D-450E-B5C7-BB2D977CF00A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
