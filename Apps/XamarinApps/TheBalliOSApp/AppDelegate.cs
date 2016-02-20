@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Foundation;
+using TestFairyLib;
 using UIKit;
 
 namespace TheBalliOSApp
@@ -15,6 +16,7 @@ namespace TheBalliOSApp
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
             NSUrlProtocol.RegisterClass(new ObjCRuntime.Class(typeof (OperationProtocol)));
+            TestFairy.Begin("468d08d2d854b482b5d00be088c4ec2af4247d1a");
             return true;
         }
 
