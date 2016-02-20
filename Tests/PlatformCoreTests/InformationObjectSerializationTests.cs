@@ -126,6 +126,7 @@ namespace PlatformCoreTests
             members.CollectionContent.Add(member1);
             members.CollectionContent.Add(member2);
             members.ID = "MasterCollection";
+            writeObjectJSON(members);
 
             writeObjectJSON(paymentOption1);
             writeObjectJSON(paymentOption2);
