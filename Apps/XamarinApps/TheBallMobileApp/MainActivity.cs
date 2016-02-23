@@ -67,8 +67,8 @@ namespace TheBallMobileApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            //mediaRouteButton = FindViewById<Android.Support.V7.App.MediaRouteButton>(Resource.Id.mediaRouteButtonX);
-            //testCasting();
+            mediaRouteButton = FindViewById<Android.Support.V7.App.MediaRouteButton>(Resource.Id.mediaRouteButtonX);
+            testCasting();
 
 
             //string connToSync = "members.onlinetaekwondo.net";
