@@ -58,6 +58,7 @@ namespace TheBall.Support.DeviceClient
             request.Headers.Add("Authorization", "DeviceAES:" + ivBase64
                                                  + ":" + device.EstablishedTrustID
                                                  + ":" + device.AccountEmail);
+            request.Headers.Add("BufferOutput", "true");
             var requestStream = request.GetRequestStream();
             var encryptor = aes.CreateEncryptor();
             using (var cryptoStream = new CryptoStream(requestStream, encryptor, CryptoStreamMode.Write))

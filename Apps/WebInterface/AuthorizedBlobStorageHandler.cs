@@ -188,7 +188,7 @@ namespace WebInterface
                 if (contentPath.StartsWith(DeviceSupport.OperationPrefixStr))
                 {
                     response.StatusCode = 200;
-                    response.BufferOutput = false;
+                    response.BufferOutput = request.Headers["BufferOutput"] == "true";
                     string operationName = contentPath.Substring(DeviceSupport.OperationPrefixStr.Length);
                     var reqStream = request.GetBufferedInputStream();
                     bool skipResponseEncryption = request.Headers["CryptoMode"] == "None";
