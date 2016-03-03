@@ -15,6 +15,7 @@ using Xamarin;
 using Android.Support.V7.Media;
 using Android.Gms.Cast;
 using Android.Gms.Common.Apis;
+using Android.Media.Session;
 
 namespace TheBallMobileApp
 {
@@ -77,6 +78,7 @@ namespace TheBallMobileApp
                 cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView));
             }
             
+            
         }
 
         private void testCasting()
@@ -117,7 +119,7 @@ namespace TheBallMobileApp
             mediaRouter = MediaRouter.GetInstance(this);
 
             mediaRouteSelector =
-                new MediaRouteSelector.Builder().AddControlCategory(MediaControlIntent.CategoryRemotePlayback) //CastMediaControlIntent.CategoryForCast (APP_ID))
+                new MediaRouteSelector.Builder().AddControlCategory(CastMediaControlIntent.CategoryForCast (APP_ID))
                     .Build();
             mediaRouteButton.RouteSelector = mediaRouteSelector;
 
@@ -142,7 +144,6 @@ namespace TheBallMobileApp
                         .Build();
 
                     googleApiClient.Connect();
-
                 },
                 OnRouteUnselectedHandler = (router, route) => {
                     Console.WriteLine("Route Unselected: " + route.Name);
@@ -161,15 +162,16 @@ namespace TheBallMobileApp
             Console.WriteLine("Google API: Connected");
 
             CastClass.CastApi.LaunchApplication(googleApiClient, APP_ID)
-                .SetResultCallback<CastClass.IApplicationConnectionResult>(result => {
-
+                .SetResultCallback<CastClass.IApplicationConnectionResult>(result =>
+                {
                     Console.WriteLine("Launch Application Result: " + result.ApplicationStatus);
 
                     mediaPlayer = new RemoteMediaPlayer();
                     mediaPlayer.MetadataUpdated += (sender, e) => {
-                        Console.WriteLine("MediaPlayer: Metadata Updated");
+                                                                      Console.WriteLine("MediaPlayer: Metadata Updated");
                     };
-                    mediaPlayer.StatusUpdated += (sender, e) => {
+                    mediaPlayer.StatusUpdated += (sender, e) =>
+                    {
                         Console.WriteLine("MediaPlayer: Status Updated");
 
                         var s = mediaPlayer.MediaStatus;
@@ -179,8 +181,12 @@ namespace TheBallMobileApp
                         googleApiClient,
                         mediaPlayer.Namespace,
                         mediaPlayer);
+                    
+                    //var mSession = new Session
 
-                    SetSongUri();
+                    //SetSongUri();
+                    //SetVideoUri();
+                    //StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("http://www.youtube.com/watch?v=cxLG2wtE7TM")));
                 });
         }
 
@@ -244,6 +250,44 @@ namespace TheBallMobileApp
             }
         }
 
+        public void SetVideoUri()
+        {
+            string songUri =
+                "http://freemusicarchive.org/music/download/4cc908b1d8b19b9bdfeb87f9f9fd5086b66258b8";
+
+            if (googleApiClient != null && mediaPlayer != null)
+            {
+                try
+                {
+                    //currentSongInfo = info;
+                    var metadata = new MediaMetadata(MediaMetadata.MediaTypeMusicTrack);
+                    metadata.PutString(MediaMetadata.KeyArtist, "Deadlines");
+                    metadata.PutString(MediaMetadata.KeyAlbumTitle, "Magical Inertia");
+                    metadata.PutString(MediaMetadata.KeyTitle, "The Wire");
+                    var androidUri =
+                        Android.Net.Uri.Parse("http://freemusicarchive.org/file/images/albums/Deadlines_-_Magical_Inertia_-_20150407163159222.jpg?width=290&height=290");
+                    var webImage = new Android.Gms.Common.Images.WebImage(androidUri);
+                    metadata.AddImage(webImage);
+
+                    MediaInfo mediaInfo =
+                        new MediaInfo.Builder(songUri).SetContentType("audio/mp3")
+                            .SetMetadata(metadata)
+                            .SetStreamType(MediaInfo.StreamTypeBuffered)
+                            .Build();
+
+                    mediaPlayer.Load(googleApiClient, mediaInfo, true, 0)
+                        .SetResultCallback<RemoteMediaPlayer.IMediaChannelResult>(r => {
+                            Console.WriteLine("Loaded");
+                        });
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception while sending a song. Exception : " + e.Message);
+                }
+            }
+        }
+
+
     }
     class MyMediaRouterCallback : MediaRouter.Callback
     {
@@ -254,7 +298,6 @@ namespace TheBallMobileApp
         public override void OnRouteAdded(MediaRouter router, MediaRouter.RouteInfo route)
         {
             Console.WriteLine("Route Added: " + route.Name);
-
             routeCount++;
 
             if (RouteCountChangedHandler != null)
