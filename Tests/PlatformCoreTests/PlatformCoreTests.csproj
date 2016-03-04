@@ -108,6 +108,7 @@
     <Compile Include="DataShardingTests.cs" />
     <Compile Include="FileSystemSyncTests.cs" />
     <Compile Include="InformationContextTests.cs" />
+    <Compile Include="InformationObjectSerializationTests.cs" />
     <Compile Include="SQLiteStorageSyncTests_OIP.cs" />
     <Compile Include="SQLiteStorageSyncTests.cs" />
     <Compile Include="MetaDataSyncTests.cs" />
@@ -201,7 +202,9 @@
     <None Include="TestData\TheBall\TheBall.Payments\GroupSubscriptionPlanCollection\MasterCollection" />
     <None Include="TestData\TheBall\TheBall.Payments\GroupSubscriptionPlanCollection\MasterCollection.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestData\OnlineTraining\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="TestData\OIP\AaltoGlobalImpact.OIP\MediaContent\11396eba-d378-4dc7-9404-4de3d17793f9.jpg" />
     <Content Include="TestData\OIP\AaltoGlobalImpact.OIP\MediaContent\11396eba-d378-4dc7-9404-4de3d17793f9_1024x768_crop.jpg" />

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="ProBroz.OnlineTraining">
+    <DigitalInterface>
+      <InterfaceModel>
+        <!--
+        <InterfaceObject name=""
+        -->
+      </InterfaceModel>
+    </DigitalInterface>
+    <InformationModel>
+      <InformationObject name="MemberCollection" designDesc="Collection for members" >
+        <CollectionFor collectionType="Master" contentInformationObjectName="Member"/>
+      </InformationObject>
+      <InformationObject name="Member" designDesc="Gym member">
+        <InformationItems>
+          <InformationItem name="FirstName" logicalDataType="Text_Short"/>
+          <InformationItem name="LastName" logicalDataType="Text_Short"/>
+          <InformationItem name="MiddleName" logicalDataType="Text_Short"/>
+          <InformationItem name="BirthDay" logicalDataType="Time_Date"/>
+          <InformationItem name="Email" logicalDataType="Text_Short"/>
+          <InformationItem name="PhoneNumber" logicalDataType="Text_Short"/>
+          <InformationItem name="Address" logicalDataType="Text_Short"/>
+          <InformationItem name="Address2" logicalDataType="Text_Short"/>
+          <InformationItem name="ZipCode" logicalDataType="Text_Short"/>
+          <InformationItem name="PostOffice" logicalDataType="Text_Short"/>
+          <InformationItem name="Country" logicalDataType="Text_Short"/>
+          <InformationItem name="FederationLicense" logicalDataType="Text_Long"/>
+          <InformationItem name="PhotoPermission" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="VideoPermission" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="Subscriptions" logicalDataType="ObjectLink"  objectLinkTargetType="Subscription" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="MembershipPlanCollection" designDesc="Collection for membership plans">
+        <CollectionFor collectionType="Master" contentInformationObjectName="MembershipPlan"/>
+      </InformationObject>
+      <InformationObject name="MembershipPlan" designDesc="Member subscription">
+        <InformationItems>
+          <InformationItem name="PlanName" logicalDataType="Text_Short"/>
+          <InformationItem name="Description" logicalDataType="Text_Long"/>
+          <InformationItem name="PaymentOptions" logicalDataType="ObjectLink" objectLinkTargetType="PaymentOption" isCollection="true"/>
+          <InformationItem name="Gym" logicalDataType="ObjectLink" objectLinkTargetType="TenantGym" />
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="PaymentOptionCollection" designDesc="Collection for payment options">
+        <CollectionFor collectionType="Master" contentInformationObjectName="PaymentOption"/>
+      </InformationObject>
+      <InformationObject name="PaymentOption" designDesc="Subscription option">
+        <InformationItems>
+          <InformationItem name="OptionName" logicalDataType="Text_Short"/>
+          <InformationItem name="PeriodInDays" logicalDataType="Number_Integer"/>
+          <InformationItem name="Price" logicalDataType="Number_ExactDecimal"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="SubscriptionCollection" designDesc="Collection for subscriptions">
+        <CollectionFor collectionType="Master" contentInformationObjectName="Subscription"/>
+      </InformationObject>
+      <InformationObject name="Subscription" designDesc="Subscription to plan">
+        <InformationItems>
+          <InformationItem name="Plan" logicalDataType="ObjectLink" objectLinkTargetType="MembershipPlan"/>
+          <InformationItem name="PaymentOption" logicalDataType="ObjectLink" objectLinkTargetType="PaymentOption"/>
+          <InformationItem name="Created" logicalDataType="Time_DateTime"/>
+          <InformationItem name="ValidFrom" logicalDataType="Time_Date"/>
+          <InformationItem name="ValidTo" logicalDataType="Time_Date"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="TenantGymCollection" designDesc="Collection for tenant gyms">
+        <CollectionFor collectionType="Master" contentInformationObjectName="TenantGym"/>
+      </InformationObject>
+      <InformationObject name="TenantGym" designDesc="Tenant gym where the lessons are held">
+        <InformationItems>
+          <InformationItem name="GymName" logicalDataType="Text_Short"/>
+          <InformationItem name="Email" logicalDataType="Text_Short"/>
+          <InformationItem name="PhoneNumber" logicalDataType="Text_Short"/>
+          <InformationItem name="Address" logicalDataType="Text_Short"/>
+          <InformationItem name="Address2" logicalDataType="Text_Short"/>
+          <InformationItem name="ZipCode" logicalDataType="Text_Short"/>
+          <InformationItem name="PostOffice" logicalDataType="Text_Short"/>
+          <InformationItem name="Country" logicalDataType="Text_Short"/>
+        </InformationItems>
+      </InformationObject>
+    </InformationModel>
+    <Operations>
+      <Operation name="SubscribeToPlan">
+        <OperationSpec>
+          <Description>Subscribe to plan</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberID" dataType="string" designDesc="Member ID to subscribe the plan to" state="implemented"/>
+          <Parameter name="PlanID" dataType="string" designDesc="Membership plan ID" state="implemented"/>
+          <Parameter name="PaymentOptionID" dataType="string" designDesc="Payment option ID to use" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Member" dataType="Member" designDesc="Member to subscribe in" state="implemented">
+              <Parameter name="MemberID"/>
+            </TargetDefinition>
+            <TargetDefinition name="Plan" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented">
+              <Parameter name="PlanID"/>
+            </TargetDefinition>
+            <TargetDefinition name="PaymentOption" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented">
+              <Parameter name="PaymentOptionID"/>
+              <Target name="Plan"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    <Subscriptions />
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

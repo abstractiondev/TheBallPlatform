@@ -16,5 +16,6 @@ namespace PlatformCoreTests
                     TestSupport.GetTheBallFileFullPath("TheBall.Payments/CustomerAccountCollection/MasterCollection")));
             Assert.IsNotNull(customerAccountCollection);
         }
+
     }
 }

@@ -44,6 +44,9 @@
       <Link>TheBallCore\OIPBallInstance.xml</Link>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="..\..\InformationAndProcessModels\OnlineTraining.xml">
+      <Link>TheBallCore\OnlineTraining.xml</Link>
+    </Content>
     <Content Include="..\..\InformationAndProcessModels\PersonalWebDiosphere.xml">
       <Link>TheBallCore\PersonalWebDiosphere.xml</Link>
     </Content>

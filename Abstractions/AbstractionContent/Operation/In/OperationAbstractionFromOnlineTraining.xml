@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Operations codeNamespace="ProBroz.OnlineTraining">
+    <Operation name="SubscribeToPlan">
+      <OperationSpec>
+        <Description>Subscribe to plan</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberID" dataType="string" designDesc="Member ID to subscribe the plan to" state="implemented" />
+        <Parameter name="PlanID" dataType="string" designDesc="Membership plan ID" state="implemented" />
+        <Parameter name="PaymentOptionID" dataType="string" designDesc="Payment option ID to use" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Member" dataType="Member" designDesc="Member to subscribe in" state="implemented">
+            <Parameter name="MemberID" />
+          </TargetDefinition>
+          <TargetDefinition name="Plan" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented">
+            <Parameter name="PlanID" />
+          </TargetDefinition>
+          <TargetDefinition name="PaymentOption" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented">
+            <Parameter name="PaymentOptionID" />
+            <Target name="Plan" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+  </Operations>
+</OperationAbstraction>

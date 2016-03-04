@@ -5,7 +5,16 @@
     android:layout_height="fill_parent">
     <WebView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="200px"
         android:id="@+id/webView"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0.0dp" />
+    <android.support.v7.app.MediaRouteButton
+        android:id="@+id/mediaRouteButtonX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:mediaRouteTypes="user"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center" />
 </LinearLayout>
