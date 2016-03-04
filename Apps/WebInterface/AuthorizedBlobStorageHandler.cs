@@ -239,16 +239,19 @@ namespace WebInterface
                         response.Headers.Add("IV", respivBase64);
                         var respEncryptor = encAES.CreateEncryptor(encAES.Key, encAES.IV);
 
-                        using (
-                            CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor,
-                                CryptoStreamMode.Read),
-                                respEncryptedStream = new CryptoStream(responseStream, respEncryptor,
-                                    CryptoStreamMode.Write))
+                        await InformationContext.ExecuteAsOwnerAsync(contentOwner, async () =>
                         {
-                            OperationSupport.ExecuteOperation(operationName,
-                                new Tuple<string, object>("InputStream", reqDecryptStream),
-                                new Tuple<string, object>("OutputStream", respEncryptedStream));
-                        }
+                            using (
+                                CryptoStream reqDecryptStream = new CryptoStream(reqStream, reqDecryptor,
+                                    CryptoStreamMode.Read),
+                                    respEncryptedStream = new CryptoStream(responseStream, respEncryptor,
+                                        CryptoStreamMode.Write))
+                            {
+                                OperationSupport.ExecuteOperation(operationName,
+                                    new Tuple<string, object>("InputStream", reqDecryptStream),
+                                    new Tuple<string, object>("OutputStream", respEncryptedStream));
+                            }
+                        });
                     }
                 }
                 else
