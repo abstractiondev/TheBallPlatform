@@ -60,7 +60,7 @@ namespace WebInterface
             if (blobPath.EndsWith("/"))
             {
                 string redirectBlobPath = blobPath + "RedirectFromFolder.red";
-                CloudBlockBlob redirectBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath));
+                CloudBlockBlob redirectBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath, UriKind.Relative));
                 string redirectToUrl = null;
                 try
                 {
@@ -79,7 +79,7 @@ namespace WebInterface
             CloudBlockBlob blob;
             try
             {
-                blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath));
+                blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath, UriKind.Relative));
             }
             catch (Exception ex)
             {
