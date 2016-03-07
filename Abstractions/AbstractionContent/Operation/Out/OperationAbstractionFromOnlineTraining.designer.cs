@@ -8,6 +8,23 @@ using System.IO;
 using System.Threading.Tasks;
 
 		namespace ProBroz.OnlineTraining { 
+				public class CreateMemberParameters 
+		{
+				public INT.Member MemberData ;
+				}
+		
+		public class CreateMember 
+		{
+				private static void PrepareParameters(CreateMemberParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(CreateMemberParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Member MemberToCreate = CreateMemberImplementation.GetTarget_MemberToCreate(parameters.MemberData);	
+				 await CreateMemberImplementation.ExecuteMethod_StoreObjectAsync(MemberToCreate);		
+				}
+				}
 				public class SubscribeToPlanParameters 
 		{
 				public string MemberID ;
@@ -20,12 +37,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SubscribeToPlanParameters parameters)
 		{
 					}
-				public static void Execute(SubscribeToPlanParameters parameters)
+				public static async Task ExecuteAsync(SubscribeToPlanParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Member Member = SubscribeToPlanImplementation.GetTarget_Member(parameters.MemberID);	
-				MembershipPlan Plan = SubscribeToPlanImplementation.GetTarget_Plan(parameters.PlanID);	
-				PaymentOption PaymentOption = SubscribeToPlanImplementation.GetTarget_PaymentOption(parameters.PaymentOptionID, Plan);	
+					Member Member =  await SubscribeToPlanImplementation.GetTarget_MemberAsync(parameters.MemberID);	
+				MembershipPlan Plan =  await SubscribeToPlanImplementation.GetTarget_PlanAsync(parameters.PlanID);	
+				PaymentOption PaymentOption =  await SubscribeToPlanImplementation.GetTarget_PaymentOptionAsync(parameters.PaymentOptionID, Plan);	
 				}
 				}
-		 } 
+		} 

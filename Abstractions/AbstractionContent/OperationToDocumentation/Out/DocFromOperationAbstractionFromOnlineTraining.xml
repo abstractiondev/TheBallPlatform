@@ -4,6 +4,53 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromOnlineTraining)" title="Operations (OperationAbstractionFromOnlineTraining)">
         <Content>
+          <Header text="CreateMember (MemberData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create member item to manage</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.Member</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data of member item to be created</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MemberToCreate ( MemberData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Actual member item to be stored</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( MemberToCreate )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store created member</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SubscribeToPlan (MemberID, PlanID, PaymentOptionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

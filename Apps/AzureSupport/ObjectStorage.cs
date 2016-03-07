@@ -53,6 +53,10 @@ namespace TheBall
             return result;
         }
 
+        public static async Task<T> RetrieveFromOwnerContentA<T>(string contentName)
+        {
+            return await RetrieveFromOwnerContentA<T>(InformationContext.CurrentOwner, contentName);
+        }
 
         public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null)
         {
