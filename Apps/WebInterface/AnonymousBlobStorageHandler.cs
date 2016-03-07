@@ -76,8 +76,15 @@ namespace WebInterface
                     return;
                 }
             }
-
-            CloudBlockBlob blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath));
+            CloudBlockBlob blob;
+            try
+            {
+                blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath));
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidDataException("Invalid Uri base: " + blobPath, ex);
+            }
             response.Clear();
             try
             {
