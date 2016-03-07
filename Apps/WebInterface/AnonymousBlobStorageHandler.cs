@@ -41,7 +41,6 @@ namespace WebInterface
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
-            CloudBlobClient blobClient = StorageSupport.CurrBlobClient;
             string blobPath = GetBlobPath(request);
             if (blobPath.Contains("/MediaContent/"))
             {
@@ -54,7 +53,7 @@ namespace WebInterface
             if (blobPath.EndsWith("/"))
             {
                 string redirectBlobPath = blobPath + "RedirectFromFolder.red";
-                CloudBlockBlob redirectBlob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath));
+                CloudBlockBlob redirectBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(redirectBlobPath);
                 string redirectToUrl = null;
                 try
                 {
@@ -73,7 +72,7 @@ namespace WebInterface
             CloudBlockBlob blob;
             try
             {
-                blob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(blobPath));
+                blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobPath);
             }
             catch (Exception ex)
             {
@@ -130,14 +129,12 @@ namespace WebInterface
         private static string GetBlobPath(HttpRequest request)
         {
             string hostName = request.Url.DnsSafeHost;
-            string containerName = hostName.Replace('.', '-');
             string currServingFolder = "";
             try
             {
                 // "/2013-03-20_08-27-28";
-                CloudBlobClient blobClient = StorageSupport.CurrBlobClient;
-                string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
-                var currBlob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(currServingPath));
+                string currServingPath = RenderWebSupport.CurrentToServeFileName;
+                var currBlob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(currServingPath);
                 string currServingData = currBlob.DownloadText();
                 string[] currServeArr = currServingData.Split(':');
                 string currActiveFolder = currServeArr[0];
@@ -148,7 +145,7 @@ namespace WebInterface
             {
                 
             }
-            return containerName + currServingFolder + request.Path;
+            return currServingFolder + request.Path;
         }
 
         private static void HandlePublicBlobRequestWithCacheSupport(HttpContext context, CloudBlob blob, HttpResponse response)
