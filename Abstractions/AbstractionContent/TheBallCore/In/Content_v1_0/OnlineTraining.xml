@@ -3,9 +3,24 @@
   <InstanceOfTheBall semanticDomainName="ProBroz.OnlineTraining">
     <DigitalInterface>
       <InterfaceModel>
-        <!--
-        <InterfaceObject name=""
-        -->
+        <InterfaceObject name="Member" designDesc="Member interface object">
+          <InterfaceItems>
+            <InterfaceItem name="FirstName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="LastName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="MiddleName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="BirthDay" logicalDataType="Time_Date"/>
+            <InterfaceItem name="Email" logicalDataType="Text_Short"/>
+            <InterfaceItem name="PhoneNumber" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Address" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Address2" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ZipCode" logicalDataType="Text_Short"/>
+            <InterfaceItem name="PostOffice" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Country" logicalDataType="Text_Short"/>
+            <InterfaceItem name="FederationLicense" logicalDataType="Text_Long"/>
+            <InterfaceItem name="PhotoPermission" logicalDataType="TrueOrFalse_Boolean"/>
+            <InterfaceItem name="VideoPermission" logicalDataType="TrueOrFalse_Boolean"/>
+          </InterfaceItems>
+        </InterfaceObject>
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
@@ -81,6 +96,24 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="CreateMember">
+        <OperationSpec>
+          <Description>Create member item to manage</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberData" dataType="INT.Member" state="implemented" designDesc="Data of member item to be created"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Member" name="MemberToCreate" state="implemented" designDesc="Actual member item to be stored">
+              <Parameter name="MemberData"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store created member" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="MemberToCreate"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="SubscribeToPlan">
         <OperationSpec>
           <Description>Subscribe to plan</Description>
@@ -92,13 +125,13 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Member" dataType="Member" designDesc="Member to subscribe in" state="implemented">
+            <TargetDefinition name="Member" dataType="Member" designDesc="Member to subscribe in" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="MemberID"/>
             </TargetDefinition>
-            <TargetDefinition name="Plan" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented">
+            <TargetDefinition name="Plan" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PlanID"/>
             </TargetDefinition>
-            <TargetDefinition name="PaymentOption" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented">
+            <TargetDefinition name="PaymentOption" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PaymentOptionID"/>
               <Target name="Plan"/>
             </TargetDefinition>

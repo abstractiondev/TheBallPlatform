@@ -1,6 +1,24 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="ProBroz.OnlineTraining">
+    <Operation name="CreateMember">
+      <OperationSpec>
+        <Description>Create member item to manage</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberData" dataType="INT.Member" designDesc="Data of member item to be created" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="MemberToCreate" dataType="Member" designDesc="Actual member item to be stored" state="implemented">
+            <Parameter name="MemberData" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created member" state="implemented">
+            <Target name="MemberToCreate" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="SubscribeToPlan">
       <OperationSpec>
         <Description>Subscribe to plan</Description>
@@ -12,13 +30,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Member" dataType="Member" designDesc="Member to subscribe in" state="implemented">
+          <TargetDefinition name="Member" asyncSupportMode="AsyncOnly" dataType="Member" designDesc="Member to subscribe in" state="implemented">
             <Parameter name="MemberID" />
           </TargetDefinition>
-          <TargetDefinition name="Plan" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented">
+          <TargetDefinition name="Plan" asyncSupportMode="AsyncOnly" dataType="MembershipPlan" designDesc="MembershipPlan to subscribe in" state="implemented">
             <Parameter name="PlanID" />
           </TargetDefinition>
-          <TargetDefinition name="PaymentOption" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented">
+          <TargetDefinition name="PaymentOption" asyncSupportMode="AsyncOnly" dataType="PaymentOption" designDesc="Payment option to subscribe in. Also verify that plan contains such option." state="implemented">
             <Parameter name="PaymentOptionID" />
             <Target name="Plan" />
           </TargetDefinition>

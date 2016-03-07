@@ -31,7 +31,40 @@ using TheBall.CORE;
 
 
 namespace INT { 
-		 } 		public static class DomainInformationSupport
+					[DataContract]
+			public partial class Member
+			{
+				[DataMember]
+				public string FirstName { get; set; }
+				[DataMember]
+				public string LastName { get; set; }
+				[DataMember]
+				public string MiddleName { get; set; }
+				[DataMember]
+				public DateTime BirthDay { get; set; }
+				[DataMember]
+				public string Email { get; set; }
+				[DataMember]
+				public string PhoneNumber { get; set; }
+				[DataMember]
+				public string Address { get; set; }
+				[DataMember]
+				public string Address2 { get; set; }
+				[DataMember]
+				public string ZipCode { get; set; }
+				[DataMember]
+				public string PostOffice { get; set; }
+				[DataMember]
+				public string Country { get; set; }
+				[DataMember]
+				public string FederationLicense { get; set; }
+				[DataMember]
+				public bool PhotoPermission { get; set; }
+				[DataMember]
+				public bool VideoPermission { get; set; }
+			}
+
+ } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
             {

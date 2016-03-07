@@ -228,7 +228,41 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromOnlineTraining)</p>
 </div>
-		<h1>SubscribeToPlan (MemberID, PlanID, PaymentOptionID)</h1>
+		<h1>CreateMember (MemberData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Create member item to manage
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MemberData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.Member
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data of member item to be created
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: MemberToCreate ( MemberData )</h2>
+		<p>		<div class="MsoNormal" >
+		Actual member item to be stored
+		</div>
+		</p><h2>Method Call: StoreObject ( MemberToCreate )</h2>
+		<p>		<div class="MsoNormal" >
+		Store created member
+		</div>
+		</p><h1>SubscribeToPlan (MemberID, PlanID, PaymentOptionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Subscribe to plan
