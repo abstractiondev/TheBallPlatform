@@ -5,14 +5,17 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using AaltoGlobalImpact.OIP;
-using JsonFx.Json;
 using JsonFx.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Newtonsoft.Json;
 using TheBall.Index;
+using JsonReader = JsonFx.Json.JsonReader;
+using JsonWriter = JsonFx.Json.JsonWriter;
 
 namespace AzureSupport
 {
