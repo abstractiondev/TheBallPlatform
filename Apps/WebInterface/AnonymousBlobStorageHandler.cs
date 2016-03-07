@@ -139,11 +139,11 @@ namespace WebInterface
                 string[] currServeArr = currServingData.Split(':');
                 string currActiveFolder = currServeArr[0];
                 var currOwner = VirtualOwner.FigureOwner(currServeArr[1]);
-                currServingFolder = "/" + currActiveFolder;
+                currServingFolder = currActiveFolder;
             }
             catch
             {
-                
+                //throw;
             }
             return currServingFolder + request.Path;
         }
