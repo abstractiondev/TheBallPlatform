@@ -18,12 +18,6 @@ namespace WebInterface
 {
     public class AnonymousBlobStorageHandler : IHttpHandler
     {
-        private static string CloudStorageRootUrl
-        {
-            get { return String.Format("http://{0}.blob.core.windows.net/", SecureConfig.Current.AzureAccountName); }
-
-        }
-
         /// <summary>
         /// You will need to configure this handler in the web.config file of your 
         /// web and register it with IIS before being able to use it. For more information
@@ -47,7 +41,7 @@ namespace WebInterface
 
         private void ProcessAnonymousRequest(HttpRequest request, HttpResponse response)
         {
-            CloudBlobClient publicClient = new CloudBlobClient(new Uri(CloudStorageRootUrl));
+            CloudBlobClient blobClient = StorageSupport.CurrBlobClient;
             string blobPath = GetBlobPath(request);
             if (blobPath.Contains("/MediaContent/"))
             {
@@ -60,7 +54,7 @@ namespace WebInterface
             if (blobPath.EndsWith("/"))
             {
                 string redirectBlobPath = blobPath + "RedirectFromFolder.red";
-                CloudBlockBlob redirectBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath, UriKind.Relative));
+                CloudBlockBlob redirectBlob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(redirectBlobPath));
                 string redirectToUrl = null;
                 try
                 {
@@ -79,7 +73,7 @@ namespace WebInterface
             CloudBlockBlob blob;
             try
             {
-                blob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(blobPath, UriKind.Relative));
+                blob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(blobPath));
             }
             catch (Exception ex)
             {
@@ -141,9 +135,9 @@ namespace WebInterface
             try
             {
                 // "/2013-03-20_08-27-28";
-                CloudBlobClient publicClient = new CloudBlobClient(new Uri(CloudStorageRootUrl));
+                CloudBlobClient blobClient = StorageSupport.CurrBlobClient;
                 string currServingPath = containerName + "/" + RenderWebSupport.CurrentToServeFileName;
-                var currBlob = (CloudBlockBlob) publicClient.GetBlobReferenceFromServer(new Uri(currServingPath));
+                var currBlob = (CloudBlockBlob) blobClient.GetBlobReferenceFromServer(new Uri(currServingPath));
                 string currServingData = currBlob.DownloadText();
                 string[] currServeArr = currServingData.Split(':');
                 string currActiveFolder = currServeArr[0];
