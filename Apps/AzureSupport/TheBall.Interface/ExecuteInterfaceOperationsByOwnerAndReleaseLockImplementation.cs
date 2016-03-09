@@ -138,6 +138,12 @@ namespace TheBall.Interface
                 {
                     var getInstanceMethod = collType.GetMethod("GetMasterCollectionInstance");
                     IInformationCollection masterObject = (IInformationCollection) getInstanceMethod.Invoke(null, new object[] { InformationContext.CurrentOwner});
+                    if (masterObject == null)
+                    {
+                        masterObject = (IInformationCollection) Activator.CreateInstance(collType);
+                        IInformationObject iobj = (IInformationObject) masterObject;
+                        iobj.FixCurrentOwnerLocation();
+                    }
                     masterObject.RefreshContent();
                     await StorageSupport.StoreInformationAsync((IInformationObject) masterObject);
                     //var masterCollection = TextContentCollection.GetMasterCollectionInstance(CurrentOwner); 

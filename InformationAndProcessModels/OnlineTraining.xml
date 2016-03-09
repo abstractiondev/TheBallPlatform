@@ -24,7 +24,7 @@
       </InterfaceModel>
     </DigitalInterface>
     <InformationModel>
-      <InformationObject name="MemberCollection" designDesc="Collection for members" >
+      <InformationObject name="MemberCollection" designDesc="Collection for members">
         <CollectionFor collectionType="Master" contentInformationObjectName="Member"/>
       </InformationObject>
       <InformationObject name="Member" designDesc="Gym member">
