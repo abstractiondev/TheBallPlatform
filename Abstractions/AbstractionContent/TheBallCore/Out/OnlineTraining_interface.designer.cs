@@ -23,6 +23,12 @@ using System.Runtime.Serialization;
                 public string ETag { get; set; }
 
 			[DataMember]
+			public string ID;
+
+			[DataMember]
+			public string ETag;
+
+			[DataMember]
 			public string FirstName;
 
 			[DataMember]

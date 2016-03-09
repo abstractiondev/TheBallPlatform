@@ -188,12 +188,14 @@
     <Compile Include="Partials\LinkToContent.cs" />
     <Compile Include="PersonalWeb.Diosphere\SaveRoomDataImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\CreateMemberImplementation.cs" />
+    <Compile Include="ProBroz.OnlineTraining\DeleteMemberImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\Member.cs" />
     <Compile Include="ProBroz.OnlineTraining\MemberCollection.cs" />
     <Compile Include="ProBroz.OnlineTraining\MembershipPlan.cs" />
     <Compile Include="ProBroz.OnlineTraining\MembershipPlanCollection.cs" />
     <Compile Include="ProBroz.OnlineTraining\PaymentOption.cs" />
     <Compile Include="ProBroz.OnlineTraining\PaymentOptionCollection.cs" />
+    <Compile Include="ProBroz.OnlineTraining\SaveMemberImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\SubscribeToPlanImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\Subscription.cs" />
     <Compile Include="ProBroz.OnlineTraining\SubscriptionCollection.cs" />

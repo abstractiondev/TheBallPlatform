@@ -10,6 +10,24 @@
     <StatusItem name="CreateMember_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store created member">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="SaveMember_MemberData" displayName="VariableType: MemberData" description="Data of member item">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveMember_MemberToSave" displayName="TargetDefinitionType: MemberToSave" description="Actual member item to be stored">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveMember_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store saved member">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_MemberData" displayName="VariableType: MemberData" description="Data of member item">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_MemberToDelete" displayName="TargetDefinitionType: MemberToDelete" description="Actual member item to be deleted">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete existing member">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="SubscribeToPlan_MemberID" displayName="VariableType: MemberID" description="Member ID to subscribe the plan to">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -34,6 +52,16 @@
       <ItemRef itemName="CreateMember_MemberData" />
       <ItemRef itemName="CreateMember_MemberToCreate" />
       <ItemRef itemName="CreateMember_StoreObject" />
+    </Group>
+    <Group name="SaveMember">
+      <ItemRef itemName="SaveMember_MemberData" />
+      <ItemRef itemName="SaveMember_MemberToSave" />
+      <ItemRef itemName="SaveMember_StoreObject" />
+    </Group>
+    <Group name="DeleteMember">
+      <ItemRef itemName="DeleteMember_MemberData" />
+      <ItemRef itemName="DeleteMember_MemberToDelete" />
+      <ItemRef itemName="DeleteMember_DeleteObject" />
     </Group>
     <Group name="SubscribeToPlan">
       <ItemRef itemName="SubscribeToPlan_MemberID" />

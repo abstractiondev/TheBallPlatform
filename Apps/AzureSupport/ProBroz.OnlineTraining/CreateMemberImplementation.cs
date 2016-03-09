@@ -33,7 +33,7 @@ namespace ProBroz.OnlineTraining
         {
             if(InformationContext.CurrentOwner == null)
                 throw new InvalidOperationException("CurrentOwner must not be null");
-            await StorageSupport.StoreInformationAsync(memberToCreate, InformationContext.CurrentOwner);
+            await memberToCreate.StoreInformationAsync(InformationContext.CurrentOwner);
         }
     }
 }

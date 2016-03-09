@@ -262,6 +262,74 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store created member
 		</div>
+		</p><h1>DeleteMember (MemberData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Delete member item
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MemberData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.Member
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data of member item
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: MemberToDelete ( MemberData )</h2>
+		<p>		<div class="MsoNormal" >
+		Actual member item to be deleted
+		</div>
+		</p><h2>Method Call: DeleteObject ( MemberToDelete )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete existing member
+		</div>
+		</p><h1>SaveMember (MemberData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Save member item
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		MemberData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.Member
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data of member item
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: MemberToSave ( MemberData )</h2>
+		<p>		<div class="MsoNormal" >
+		Actual member item to be stored
+		</div>
+		</p><h2>Method Call: StoreObject ( MemberToSave )</h2>
+		<p>		<div class="MsoNormal" >
+		Store saved member
+		</div>
 		</p><h1>SubscribeToPlan (MemberID, PlanID, PaymentOptionID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

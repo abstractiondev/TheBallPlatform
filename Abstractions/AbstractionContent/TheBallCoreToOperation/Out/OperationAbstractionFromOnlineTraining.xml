@@ -19,6 +19,42 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="SaveMember">
+      <OperationSpec>
+        <Description>Save member item</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberData" dataType="INT.Member" designDesc="Data of member item" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="MemberToSave" asyncSupportMode="AsyncOnly" dataType="Member" designDesc="Actual member item to be stored" state="implemented">
+            <Parameter name="MemberData" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store saved member" state="implemented">
+            <Target name="MemberToSave" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="DeleteMember">
+      <OperationSpec>
+        <Description>Delete member item</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="MemberData" dataType="INT.Member" designDesc="Data of member item" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="MemberToDelete" asyncSupportMode="AsyncOnly" dataType="Member" designDesc="Actual member item to be deleted" state="implemented">
+            <Parameter name="MemberData" />
+          </TargetDefinition>
+          <MethodExecute name="DeleteObject" asyncSupportMode="AsyncOnly" designDesc="Delete existing member" state="implemented">
+            <Target name="MemberToDelete" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="SubscribeToPlan">
       <OperationSpec>
         <Description>Subscribe to plan</Description>

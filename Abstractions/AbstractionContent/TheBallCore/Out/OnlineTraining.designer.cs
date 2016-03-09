@@ -35,6 +35,10 @@ namespace INT {
 			public partial class Member
 			{
 				[DataMember]
+				public string ID { get; set; }
+				[DataMember]
+				public string ETag { get; set; }
+				[DataMember]
 				public string FirstName { get; set; }
 				[DataMember]
 				public string LastName { get; set; }

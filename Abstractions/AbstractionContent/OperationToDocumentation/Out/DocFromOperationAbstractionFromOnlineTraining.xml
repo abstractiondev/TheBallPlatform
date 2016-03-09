@@ -51,6 +51,100 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteMember (MemberData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete member item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.Member</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data of member item</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MemberToDelete ( MemberData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Actual member item to be deleted</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( MemberToDelete )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete existing member</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SaveMember (MemberData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save member item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.Member</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data of member item</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MemberToSave ( MemberData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Actual member item to be stored</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( MemberToSave )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store saved member</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SubscribeToPlan (MemberID, PlanID, PaymentOptionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

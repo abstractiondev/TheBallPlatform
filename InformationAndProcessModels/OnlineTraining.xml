@@ -5,6 +5,8 @@
       <InterfaceModel>
         <InterfaceObject name="Member" designDesc="Member interface object">
           <InterfaceItems>
+            <InterfaceItem name="ID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ETag" logicalDataType="Text_Short"/>
             <InterfaceItem name="FirstName" logicalDataType="Text_Short"/>
             <InterfaceItem name="LastName" logicalDataType="Text_Short"/>
             <InterfaceItem name="MiddleName" logicalDataType="Text_Short"/>
@@ -110,6 +112,42 @@
             </TargetDefinition>
             <MethodExecute name="StoreObject" designDesc="Store created member" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="MemberToCreate"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="SaveMember">
+        <OperationSpec>
+          <Description>Save member item</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberData" dataType="INT.Member" state="implemented" designDesc="Data of member item"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Member" name="MemberToSave" state="implemented" designDesc="Actual member item to be stored" asyncSupportMode="AsyncOnly">
+              <Parameter name="MemberData"/>
+            </TargetDefinition>
+            <MethodExecute name="StoreObject" designDesc="Store saved member" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="MemberToSave"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DeleteMember">
+        <OperationSpec>
+          <Description>Delete member item</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="MemberData" dataType="INT.Member" state="implemented" designDesc="Data of member item"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="Member" name="MemberToDelete" state="implemented" designDesc="Actual member item to be deleted" asyncSupportMode="AsyncOnly">
+              <Parameter name="MemberData"/>
+            </TargetDefinition>
+            <MethodExecute name="DeleteObject" designDesc="Delete existing member" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="MemberToDelete"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
