@@ -27,7 +27,6 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure;
 using SQLite.TheBall.Payments;
 using SQLiteSupport;
-using Stripe;
 using TheBall;
 using TheBall.CORE.InstanceSupport;
 using MetaModel = System.Web.DynamicData.MetaModel;

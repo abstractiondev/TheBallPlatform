@@ -8,6 +8,36 @@ using System.IO;
 using System.Threading.Tasks;
 
 		namespace ProBroz.OnlineTraining { 
+		
+		public class SyncPlansAndPaymentOptionsFromStripe 
+		{
+				public static async Task ExecuteAsync()
+		{
+						
+					MembershipPlan[] CurrentPlans =  await SyncPlansAndPaymentOptionsFromStripeImplementation.GetTarget_CurrentPlansAsync();	
+				PaymentOption[] CurrentPaymentOptions =  await SyncPlansAndPaymentOptionsFromStripeImplementation.GetTarget_CurrentPaymentOptionsAsync();	
+				Tuple<MembershipPlan[], PaymentOption[]> StripeFetchedPlansAndPaymentOptions = SyncPlansAndPaymentOptionsFromStripeImplementation.GetTarget_StripeFetchedPlansAndPaymentOptions();	
+				MembershipPlan[] StripeFetchedPlans = SyncPlansAndPaymentOptionsFromStripeImplementation.GetTarget_StripeFetchedPlans(StripeFetchedPlansAndPaymentOptions);	
+				PaymentOption[] StripeFetchedPaymentOptions = SyncPlansAndPaymentOptionsFromStripeImplementation.GetTarget_StripeFetchedPaymentOptions(StripeFetchedPlansAndPaymentOptions);	
+				 await SyncPlansAndPaymentOptionsFromStripeImplementation.ExecuteMethod_SynchronizeLocalFromStripeAsync(CurrentPlans, CurrentPaymentOptions, StripeFetchedPlans, StripeFetchedPaymentOptions);		
+				}
+				}
+		
+		public class GetOrInitiateDefaultGym 
+		{
+				public static async Task<GetOrInitiateDefaultGymReturnValue> ExecuteAsync()
+		{
+						
+					TenantGymCollection AllGyms =  await GetOrInitiateDefaultGymImplementation.GetTarget_AllGymsAsync();	
+				TenantGym GetOrCreateDefaultGymIfMissingOutput =  await GetOrInitiateDefaultGymImplementation.ExecuteMethod_GetOrCreateDefaultGymIfMissingAsync(AllGyms);		
+				GetOrInitiateDefaultGymReturnValue returnValue = GetOrInitiateDefaultGymImplementation.Get_ReturnValue(GetOrCreateDefaultGymIfMissingOutput);
+		return returnValue;
+				}
+				}
+				public class GetOrInitiateDefaultGymReturnValue 
+		{
+				public TenantGym DefaultGym ;
+				}
 				public class CreateMemberParameters 
 		{
 				public INT.Member MemberData ;
@@ -59,8 +89,7 @@ using System.Threading.Tasks;
 				 await DeleteMemberImplementation.ExecuteMethod_DeleteObjectAsync(MemberToDelete);		
 				}
 				}
-
-		    public class SubscribeToPlanParameters 
+				public class SubscribeToPlanParameters 
 		{
 				public string MemberID ;
 				public string PlanID ;

@@ -79,8 +79,9 @@
     <Reference Include="protobuf-net">
       <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Stripe.net">
-      <HintPath>..\..\packages\Stripe.net.2.3.3\lib\net40\Stripe.net.dll</HintPath>
+    <Reference Include="Stripe.net, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Stripe.net.5.3.0\lib\Stripe.net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -189,6 +190,7 @@
     <Compile Include="PersonalWeb.Diosphere\SaveRoomDataImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\CreateMemberImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\DeleteMemberImplementation.cs" />
+    <Compile Include="ProBroz.OnlineTraining\GetOrInitiateDefaultGymImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\Member.cs" />
     <Compile Include="ProBroz.OnlineTraining\MemberCollection.cs" />
     <Compile Include="ProBroz.OnlineTraining\MembershipPlan.cs" />
@@ -199,6 +201,7 @@
     <Compile Include="ProBroz.OnlineTraining\SubscribeToPlanImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\Subscription.cs" />
     <Compile Include="ProBroz.OnlineTraining\SubscriptionCollection.cs" />
+    <Compile Include="ProBroz.OnlineTraining\SyncPlansAndPaymentOptionsFromStripeImplementation.cs" />
     <Compile Include="ProBroz.OnlineTraining\TenantGym.cs" />
     <Compile Include="ProBroz.OnlineTraining\TenantGymCollection.cs" />
     <Compile Include="SyncSupport.cs" />

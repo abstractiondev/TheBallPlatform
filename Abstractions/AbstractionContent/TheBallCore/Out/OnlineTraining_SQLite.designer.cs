@@ -220,7 +220,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            var existingObject = PaymentOptionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OptionName = serializedObject.OptionName;
-		            existingObject.PeriodInDays = serializedObject.PeriodInDays;
+		            existingObject.PeriodInMonths = serializedObject.PeriodInMonths;
 		            existingObject.Price = serializedObject.Price;
 		            break;
 		        } 
@@ -378,7 +378,7 @@ namespace SQLite.ProBroz.OnlineTraining {
 		            var existingObject = PaymentOptionTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.OptionName = serializedObject.OptionName;
-		            existingObject.PeriodInDays = serializedObject.PeriodInDays;
+		            existingObject.PeriodInMonths = serializedObject.PeriodInMonths;
 		            existingObject.Price = serializedObject.Price;
 		            break;
 		        } 
@@ -533,7 +533,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new PaymentOption {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OptionName = serializedObject.OptionName;
-		            objectToAdd.PeriodInDays = serializedObject.PeriodInDays;
+		            objectToAdd.PeriodInMonths = serializedObject.PeriodInMonths;
 		            objectToAdd.Price = serializedObject.Price;
 					PaymentOptionTable.InsertOnSubmit(objectToAdd);
                     break;
@@ -690,7 +690,7 @@ namespace SQLite.ProBroz.OnlineTraining {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new PaymentOption {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.OptionName = serializedObject.OptionName;
-		            objectToAdd.PeriodInDays = serializedObject.PeriodInDays;
+		            objectToAdd.PeriodInMonths = serializedObject.PeriodInMonths;
 		            objectToAdd.Price = serializedObject.Price;
 					PaymentOptionTable.InsertOnSubmit(objectToAdd);
                     break;
@@ -1294,7 +1294,7 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
 [ETag] TEXT NOT NULL
 , 
 [OptionName] TEXT NOT NULL, 
-[PeriodInDays] INTEGER NOT NULL, 
+[PeriodInMonths] INTEGER NOT NULL, 
 [Price] REAL NOT NULL
 )";
         }
@@ -1307,8 +1307,8 @@ CREATE TABLE IF NOT EXISTS [PaymentOption](
 
 		[Column]
         [ScaffoldColumn(true)]
-		public long PeriodInDays { get; set; }
-		// private long _unmodified_PeriodInDays;
+		public long PeriodInMonths { get; set; }
+		// private long _unmodified_PeriodInMonths;
 
 		[Column]
         [ScaffoldColumn(true)]

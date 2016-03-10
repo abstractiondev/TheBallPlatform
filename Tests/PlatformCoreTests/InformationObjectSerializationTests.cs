@@ -49,25 +49,25 @@ namespace PlatformCoreTests
             var paymentOption1 = new PaymentOption
             {
                 OptionName = "Family 1",
-                PeriodInDays = 120,
+                PeriodInMonths = 4,
                 Price = 120
             };
             var paymentOption2 = new PaymentOption
             {
                 OptionName = "Family 1",
-                PeriodInDays = 360,
+                PeriodInMonths = 12,
                 Price = 300
             };
             var paymentOption3 = new PaymentOption
             {
                 OptionName = "Premium",
-                PeriodInDays = 120,
+                PeriodInMonths = 4,
                 Price = 1200
             };
             var paymentOption4 = new PaymentOption
             {
                 OptionName = "Premium",
-                PeriodInDays = 360,
+                PeriodInMonths = 12,
                 Price = 3600
             };
             var tenantGym = new TenantGym

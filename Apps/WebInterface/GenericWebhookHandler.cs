@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
-using Stripe;
 using TheBall;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;

@@ -1,6 +1,48 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="ProBroz.OnlineTraining">
+    <Operation name="SyncPlansAndPaymentOptionsFromStripe">
+      <OperationSpec>
+        <Description>Sync plan and payment option data from Stripe</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="CurrentPlans" asyncSupportMode="AsyncOnly" dataType="MembershipPlan[]" designDesc="Current listed plans (before sync)" state="implemented" />
+          <TargetDefinition name="CurrentPaymentOptions" asyncSupportMode="AsyncOnly" dataType="PaymentOption[]" designDesc="Current listed payment options (before sync)" state="implemented" />
+          <TargetDefinition name="StripeFetchedPlansAndPaymentOptions" dataType="Tuple&lt;MembershipPlan[], PaymentOption[]&gt;" designDesc="Stripe fetched plans and payment options" state="implemented" />
+          <TargetDefinition name="StripeFetchedPlans" dataType="MembershipPlan[]" designDesc="Stripe fetched plans" state="implemented">
+            <Target name="StripeFetchedPlansAndPaymentOptions" />
+          </TargetDefinition>
+          <TargetDefinition name="StripeFetchedPaymentOptions" dataType="PaymentOption[]" designDesc="Stripe fetched payment options" state="implemented">
+            <Target name="StripeFetchedPlansAndPaymentOptions" />
+          </TargetDefinition>
+          <MethodExecute name="SynchronizeLocalFromStripe" asyncSupportMode="AsyncOnly" designDesc="Synchronize local plans and payment options from Stripe fetched" state="implemented">
+            <Target name="CurrentPlans" />
+            <Target name="CurrentPaymentOptions" />
+            <Target name="StripeFetchedPlans" />
+            <Target name="StripeFetchedPaymentOptions" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="GetOrInitiateDefaultGym">
+      <OperationSpec>
+        <Description>Initiate default Gym if missing</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AllGyms" asyncSupportMode="AsyncOnly" dataType="TenantGymCollection" designDesc="All available Gyms" state="implemented" />
+          <MethodExecute name="GetOrCreateDefaultGymIfMissing" asyncSupportMode="AsyncOnly" designDesc="" state="implemented">
+            <Target name="AllGyms" />
+            <ReturnValue name="DefaultGymResult" dataType="TenantGym" designDesc="Default Gym" state="implemented" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="DefaultGym" dataType="TenantGym" designDesc="Default Gym" state="implemented" />
+        <Target name="GetOrCreateDefaultGymIfMissingOutput" />
+      </OperationReturnValues>
+    </Operation>
     <Operation name="CreateMember">
       <OperationSpec>
         <Description>Create member item to manage</Description>

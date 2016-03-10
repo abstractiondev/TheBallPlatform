@@ -296,6 +296,60 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete existing member
 		</div>
+		</p><h1>GetOrInitiateDefaultGym</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Initiate default Gym if missing
+		</div>
+		</p><h2>Target Definition: AllGyms</h2>
+		<p>		<div class="MsoNormal" >
+		All available Gyms
+		</div>
+		</p><h2>Method Call: GetOrCreateDefaultGymIfMissing ( AllGyms )</h2>
+		<p>		<div class="MsoNormal" >
+		
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DefaultGymResult
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TenantGym
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Default Gym
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Return Value : GetOrInitiateDefaultGymReturnValue ( GetOrCreateDefaultGymIfMissingOutput )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DefaultGym
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TenantGym
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Default Gym
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>SaveMember (MemberData)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -401,6 +455,35 @@ div.WordSection1
 		</p><h2>Target Definition: PaymentOption ( Plan, PaymentOptionID )</h2>
 		<p>		<div class="MsoNormal" >
 		Payment option to subscribe in. Also verify that plan contains such option.
+		</div>
+		</p><h1>SyncPlansAndPaymentOptionsFromStripe</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Sync plan and payment option data from Stripe
+		</div>
+		</p><h2>Target Definition: CurrentPlans</h2>
+		<p>		<div class="MsoNormal" >
+		Current listed plans (before sync)
+		</div>
+		</p><h2>Target Definition: CurrentPaymentOptions</h2>
+		<p>		<div class="MsoNormal" >
+		Current listed payment options (before sync)
+		</div>
+		</p><h2>Target Definition: StripeFetchedPlansAndPaymentOptions</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe fetched plans and payment options
+		</div>
+		</p><h2>Target Definition: StripeFetchedPlans ( StripeFetchedPlansAndPaymentOptions )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe fetched plans
+		</div>
+		</p><h2>Target Definition: StripeFetchedPaymentOptions ( StripeFetchedPlansAndPaymentOptions )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe fetched payment options
+		</div>
+		</p><h2>Method Call: SynchronizeLocalFromStripe ( CurrentPlans, CurrentPaymentOptions, StripeFetchedPlans, StripeFetchedPaymentOptions )</h2>
+		<p>		<div class="MsoNormal" >
+		Synchronize local plans and payment options from Stripe fetched
 		</div>
 		</p></div>
 

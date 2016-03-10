@@ -19,7 +19,7 @@ namespace TheBall.Payments
         {
             StripeCustomerService stripeCustomerService = new StripeCustomerService();
             var stripeCustomer = stripeCustomerService.Get(customerAccount.StripeID);
-            var stripeSubscriptions = stripeCustomer.StripeSubscriptionList.StripeSubscriptions;
+            var stripeSubscriptions = stripeCustomer.StripeSubscriptionList.Data;
             var planSubscriptions =
                 stripeSubscriptions.Where(subscription => subscription.StripePlan.Id == planName).ToArray();
             StripeSubscriptionService subscriptionService = new StripeSubscriptionService();

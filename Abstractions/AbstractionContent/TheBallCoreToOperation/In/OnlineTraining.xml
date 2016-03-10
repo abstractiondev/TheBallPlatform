@@ -65,7 +65,7 @@
       <InformationObject name="PaymentOption" designDesc="Subscription option">
         <InformationItems>
           <InformationItem name="OptionName" logicalDataType="Text_Short"/>
-          <InformationItem name="PeriodInDays" logicalDataType="Number_Integer"/>
+          <InformationItem name="PeriodInMonths" logicalDataType="Number_Integer"/>
           <InformationItem name="Price" logicalDataType="Number_ExactDecimal"/>
         </InformationItems>
       </InformationObject>
@@ -98,6 +98,48 @@
       </InformationObject>
     </InformationModel>
     <Operations>
+      <Operation name="SyncPlansAndPaymentOptionsFromStripe">
+        <OperationSpec>
+          <Description>Sync plan and payment option data from Stripe</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="MembershipPlan[]" name="CurrentPlans" designDesc="Current listed plans (before sync)" asyncSupportMode="AsyncOnly" state="implemented" />
+            <TargetDefinition dataType="PaymentOption[]" name="CurrentPaymentOptions" designDesc="Current listed payment options (before sync)" asyncSupportMode="AsyncOnly" state="implemented" />
+            <TargetDefinition dataType="Tuple&lt;MembershipPlan[], PaymentOption[]&gt;" name="StripeFetchedPlansAndPaymentOptions" designDesc="Stripe fetched plans and payment options" asyncSupportMode="SyncOnly" state="implemented" />
+            <TargetDefinition dataType="MembershipPlan[]" name="StripeFetchedPlans" designDesc="Stripe fetched plans" asyncSupportMode="SyncOnly" state="implemented">
+              <Target name="StripeFetchedPlansAndPaymentOptions"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="PaymentOption[]" name="StripeFetchedPaymentOptions" designDesc="Stripe fetched payment options" asyncSupportMode="SyncOnly" state="implemented">
+              <Target name="StripeFetchedPlansAndPaymentOptions"/>
+            </TargetDefinition>
+            <MethodExecute name="SynchronizeLocalFromStripe" designDesc="Synchronize local plans and payment options from Stripe fetched" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="CurrentPlans" />
+              <Target name="CurrentPaymentOptions" />
+              <Target name="StripeFetchedPlans" />
+              <Target name="StripeFetchedPaymentOptions" />
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="GetOrInitiateDefaultGym">
+        <OperationSpec>
+          <Description>Initiate default Gym if missing</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="TenantGymCollection" name="AllGyms" designDesc="All available Gyms" asyncSupportMode="AsyncOnly" state="implemented" />
+            <MethodExecute name="GetOrCreateDefaultGymIfMissing" designDesc="" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="AllGyms"/>
+              <ReturnValue dataType="TenantGym" designDesc="Default Gym" name="DefaultGymResult" state="implemented" />
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      <OperationReturnValues>
+        <ReturnValue dataType="TenantGym" name="DefaultGym" designDesc="Default Gym" state="implemented"/>
+        <Target name="GetOrCreateDefaultGymIfMissingOutput"/>
+      </OperationReturnValues>
+      </Operation>
       <Operation name="CreateMember">
         <OperationSpec>
           <Description>Create member item to manage</Description>

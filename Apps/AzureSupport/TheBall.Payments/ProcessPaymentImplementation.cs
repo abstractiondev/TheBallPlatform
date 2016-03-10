@@ -44,7 +44,8 @@ namespace TheBall.Payments
             var subscriptionService = new StripeSubscriptionService();
             var subscription = subscriptionService.Create(customerID, paymentToken.currentproduct, new StripeSubscriptionCreateOptions
             {
-                TokenId = paymentToken.id
+                //TokenId = paymentToken.id
+                Card = new StripeCreditCardOptions {  TokenId = paymentToken.id}
             });
             customerAccount.ActivePlans.Add(paymentToken.currentproduct);
             HttpContext.Current.Response.Write("{}");
