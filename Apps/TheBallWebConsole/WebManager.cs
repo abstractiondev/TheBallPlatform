@@ -79,7 +79,7 @@ namespace TheBall.Infra.TheBallWebConsole
                     {
                         var pipeMessage = pipeMessageAwaitable.Result;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
-                        File.WriteAllText(shutdownLogPath,
+                        File.AppendAllText(shutdownLogPath,
                             "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
                         break;
                     }
