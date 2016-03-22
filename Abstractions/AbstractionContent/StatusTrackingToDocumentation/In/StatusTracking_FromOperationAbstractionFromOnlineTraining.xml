@@ -1,6 +1,33 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="ProBroz.OnlineTraining">
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_CurrentPlans" displayName="TargetDefinitionType: CurrentPlans" description="Current listed plans (before sync)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_CurrentPaymentOptions" displayName="TargetDefinitionType: CurrentPaymentOptions" description="Current listed payment options (before sync)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPlansAndPaymentOptions" displayName="TargetDefinitionType: StripeFetchedPlansAndPaymentOptions" description="Stripe fetched plans and payment options">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPlans" displayName="TargetDefinitionType: StripeFetchedPlans" description="Stripe fetched plans">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPaymentOptions" displayName="TargetDefinitionType: StripeFetchedPaymentOptions" description="Stripe fetched payment options">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SyncPlansAndPaymentOptionsFromStripe_SynchronizeLocalFromStripe" displayName="MethodExecuteType: SynchronizeLocalFromStripe" description="Synchronize local plans and payment options from Stripe fetched">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="GetOrInitiateDefaultGym_AllGyms" displayName="TargetDefinitionType: AllGyms" description="All available Gyms">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="GetOrInitiateDefaultGym_GetOrCreateDefaultGymIfMissing" displayName="MethodExecuteType: GetOrCreateDefaultGymIfMissing" description="">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="GetOrInitiateDefaultGym_DefaultGym" displayName="VariableType: DefaultGym" description="Default Gym">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateMember_MemberData" displayName="VariableType: MemberData" description="Data of member item to be created">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -8,6 +35,24 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateMember_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store created member">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveMember_MemberData" displayName="VariableType: MemberData" description="Data of member item">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveMember_MemberToSave" displayName="TargetDefinitionType: MemberToSave" description="Actual member item to be stored">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveMember_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store saved member">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_MemberData" displayName="VariableType: MemberData" description="Data of member item">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_MemberToDelete" displayName="TargetDefinitionType: MemberToDelete" description="Actual member item to be deleted">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="DeleteMember_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete existing member">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="SubscribeToPlan_MemberID" displayName="VariableType: MemberID" description="Member ID to subscribe the plan to">
@@ -30,10 +75,33 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="SyncPlansAndPaymentOptionsFromStripe">
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_CurrentPlans" />
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_CurrentPaymentOptions" />
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPlansAndPaymentOptions" />
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPlans" />
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_StripeFetchedPaymentOptions" />
+      <ItemRef itemName="SyncPlansAndPaymentOptionsFromStripe_SynchronizeLocalFromStripe" />
+    </Group>
+    <Group name="GetOrInitiateDefaultGym">
+      <ItemRef itemName="GetOrInitiateDefaultGym_AllGyms" />
+      <ItemRef itemName="GetOrInitiateDefaultGym_GetOrCreateDefaultGymIfMissing" />
+      <ItemRef itemName="GetOrInitiateDefaultGym_DefaultGym" />
+    </Group>
     <Group name="CreateMember">
       <ItemRef itemName="CreateMember_MemberData" />
       <ItemRef itemName="CreateMember_MemberToCreate" />
       <ItemRef itemName="CreateMember_StoreObject" />
+    </Group>
+    <Group name="SaveMember">
+      <ItemRef itemName="SaveMember_MemberData" />
+      <ItemRef itemName="SaveMember_MemberToSave" />
+      <ItemRef itemName="SaveMember_StoreObject" />
+    </Group>
+    <Group name="DeleteMember">
+      <ItemRef itemName="DeleteMember_MemberData" />
+      <ItemRef itemName="DeleteMember_MemberToDelete" />
+      <ItemRef itemName="DeleteMember_DeleteObject" />
     </Group>
     <Group name="SubscribeToPlan">
       <ItemRef itemName="SubscribeToPlan_MemberID" />

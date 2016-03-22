@@ -51,6 +51,169 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteMember (MemberData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete member item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.Member</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data of member item</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MemberToDelete ( MemberData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Actual member item to be deleted</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( MemberToDelete )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete existing member</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="GetOrInitiateDefaultGym" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Initiate default Gym if missing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AllGyms" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>All available Gyms</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: GetOrCreateDefaultGymIfMissing ( AllGyms )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent />
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DefaultGymResult</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TenantGym</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Default Gym</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : GetOrInitiateDefaultGymReturnValue ( GetOrCreateDefaultGymIfMissingOutput )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DefaultGym</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TenantGym</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Default Gym</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SaveMember (MemberData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save member item</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>MemberData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.Member</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data of member item</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MemberToSave ( MemberData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Actual member item to be stored</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( MemberToSave )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store saved member</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SubscribeToPlan (MemberID, PlanID, PaymentOptionID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -123,6 +286,57 @@
               <Paragraph>
                 <Text>
                   <TextContent>Payment option to subscribe in. Also verify that plan contains such option.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SyncPlansAndPaymentOptionsFromStripe" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync plan and payment option data from Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentPlans" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current listed plans (before sync)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentPaymentOptions" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current listed payment options (before sync)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StripeFetchedPlansAndPaymentOptions" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe fetched plans and payment options</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StripeFetchedPlans ( StripeFetchedPlansAndPaymentOptions )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe fetched plans</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StripeFetchedPaymentOptions ( StripeFetchedPlansAndPaymentOptions )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe fetched payment options</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SynchronizeLocalFromStripe ( CurrentPlans, CurrentPaymentOptions, StripeFetchedPlans, StripeFetchedPaymentOptions )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Synchronize local plans and payment options from Stripe fetched</TextContent>
                 </Text>
               </Paragraph>
             </Header>

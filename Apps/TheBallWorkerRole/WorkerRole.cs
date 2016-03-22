@@ -32,5 +32,7 @@ namespace TheBallWorkerRole
 
     public class WorkerRole : AcceleratorRole
     {
+        protected override string AppPackageContainerName => "tb-instanceworkers";
+        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
     }
 }

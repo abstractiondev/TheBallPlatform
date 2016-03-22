@@ -44,23 +44,25 @@ namespace TheBall
             return result;
         }
 
-        public static async Task<T> RetrieveFromOwnerContentA<T>(IContainerOwner containerOwner, string contentName)
+        public static async Task<T> RetrieveFromOwnerContentA<T>(IContainerOwner containerOwner, string contentName, string eTag = null, bool requireExisting = false)
         {
             string namespaceName = typeof(T).Namespace;
             string className = typeof(T).Name;
-            string locationPath = String.Format("{0}/{1}/{2}", namespaceName, className, contentName);
-            var result = await RetrieveObjectA<T>(locationPath, containerOwner);
+            string locationPath = $"{namespaceName}/{className}/{contentName}";
+            var result = await RetrieveObjectA<T>(locationPath, containerOwner, eTag);
+            if (result == null && requireExisting)
+                throw new InvalidDataException($"{className} missing or changed");
             return result;
         }
 
-        public static async Task<T> RetrieveFromOwnerContentA<T>(string contentName)
+        public static async Task<T> RetrieveFromOwnerContentA<T>(string contentName, string eTag = null, bool requireExisting = false)
         {
-            return await RetrieveFromOwnerContentA<T>(InformationContext.CurrentOwner, contentName);
+            return await RetrieveFromOwnerContentA<T>(InformationContext.CurrentOwner, contentName, eTag, requireExisting);
         }
 
-        public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null)
+        public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null, string eTag = null)
         {
-            var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T), null, owner);
+            var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T), eTag, owner);
             return result;
         }
 

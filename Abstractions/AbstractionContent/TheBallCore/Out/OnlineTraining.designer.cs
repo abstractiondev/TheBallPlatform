@@ -35,6 +35,10 @@ namespace INT {
 			public partial class Member
 			{
 				[DataMember]
+				public string ID { get; set; }
+				[DataMember]
+				public string ETag { get; set; }
+				[DataMember]
 				public string FirstName { get; set; }
 				[DataMember]
 				public string LastName { get; set; }
@@ -2591,7 +2595,7 @@ MembershipPlan.Description
 
 						if(OptionName != _unmodified_OptionName)
 							return true;
-						if(PeriodInDays != _unmodified_PeriodInDays)
+						if(PeriodInMonths != _unmodified_PeriodInMonths)
 							return true;
 						if(Price != _unmodified_Price)
 							return true;
@@ -2608,7 +2612,7 @@ MembershipPlan.Description
 				private void CopyContentFrom(PaymentOption sourceObject)
 				{
 					OptionName = sourceObject.OptionName;
-					PeriodInDays = sourceObject.PeriodInDays;
+					PeriodInMonths = sourceObject.PeriodInMonths;
 					Price = sourceObject.Price;
 				}
 				
@@ -2617,7 +2621,7 @@ MembershipPlan.Description
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_OptionName = OptionName;
-					_unmodified_PeriodInDays = PeriodInDays;
+					_unmodified_PeriodInMonths = PeriodInMonths;
 					_unmodified_Price = Price;
 				
 				
@@ -2631,8 +2635,8 @@ MembershipPlan.Description
 						case "OptionName":
 							OptionName = value;
 							break;
-						case "PeriodInDays":
-							PeriodInDays = long.Parse(value);
+						case "PeriodInMonths":
+							PeriodInMonths = long.Parse(value);
 							break;
 						case "Price":
 							Price = double.Parse(value);
@@ -2645,8 +2649,8 @@ MembershipPlan.Description
 			public string OptionName { get; set; }
 			private string _unmodified_OptionName;
 			[DataMember] 
-			public long PeriodInDays { get; set; }
-			private long _unmodified_PeriodInDays;
+			public long PeriodInMonths { get; set; }
+			private long _unmodified_PeriodInMonths;
 			[DataMember] 
 			public double Price { get; set; }
 			private double _unmodified_Price;

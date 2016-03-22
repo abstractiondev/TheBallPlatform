@@ -135,6 +135,19 @@ namespace TheBall.Payments
                 var cardInfo = paymentToken.card;
                 var subscription = subscriptionService.Create(customerID, planName, new StripeSubscriptionCreateOptions
                 {
+                    Card = new StripeCreditCardOptions
+                    {
+                        AddressCity = cardInfo.address_city,
+                        AddressCountry = cardInfo.address_country,
+                        AddressLine1 = cardInfo.address_line1,
+                        Name = cardInfo.name,
+                        AddressZip = cardInfo.address_zip,
+                        Cvc = cardInfo.cvc_check,
+                        ExpirationMonth = cardInfo.exp_month,
+                        ExpirationYear = cardInfo.exp_year,
+                        TokenId = paymentToken.id
+                    },
+                    /*
                     CardName = cardInfo.name,
                     CardAddressCity = cardInfo.address_city,
                     CardAddressCountry = cardInfo.address_country,
@@ -142,7 +155,7 @@ namespace TheBall.Payments
                     CardAddressZip = cardInfo.address_zip,
                     CardExpirationMonth = cardInfo.exp_month,
                     CardExpirationYear = cardInfo.exp_year,
-                    TokenId = paymentToken.id,
+                    TokenId = paymentToken.id,*/
                 });
             }
             HttpContext.Current.Response.Write("{}");

@@ -53,7 +53,7 @@ namespace TheBall.Payments
             if (stripeCustomer == null)
                 return new GroupSubscriptionPlan[0];
             var stripePlans =
-                stripeCustomer.StripeSubscriptionList.StripeSubscriptions.Select(stripeSub => stripeSub.StripePlan)
+                stripeCustomer.StripeSubscriptionList.Data.Select(stripeSub => stripeSub.StripePlan)
                     .ToArray();
             var plans = stripePlans.Select(stripePlan => GetGroupSubscriptionPlan(stripePlan.Id)).ToArray();
             return plans;

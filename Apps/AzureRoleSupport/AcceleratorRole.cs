@@ -18,16 +18,17 @@ namespace TheBall.Infra.AzureRoleSupport
 {
     public abstract class AcceleratorRole : RoleEntryPoint
     {
-        private const string SiteContainerName = "tb-instanceworkers";
+        protected abstract string AppPackageContainerName { get; }
+
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
         private const string PathTo7Zip = @"E:\TheBallInfra\7z\7z.exe";
 
         private CloudStorageAccount StorageAccount;
         private CloudBlobClient BlobClient;
-        private CloudBlobContainer InstanceWorkerContainer;
+        private CloudBlobContainer AppContainer;
 
-        private string[] ValidWorkerInstanceTypes = { "Dev", "Test", "Stage", "Prod" };
-        private Dictionary<string, WorkerManager> WorkerTypeManagersDict = new Dictionary<string, WorkerManager>();
+        private string[] ValidAppTypes = { "Dev", "Test", "Stage", "Prod" };
+        private Dictionary<string, WorkerManager> AppTypeManagersDict = new Dictionary<string, WorkerManager>();
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
@@ -48,9 +49,9 @@ namespace TheBall.Infra.AzureRoleSupport
 
         public override bool OnStart()
         {
-            WorkerTypeManagersDict = new Dictionary<string, WorkerManager>();
-            foreach (var workerType in ValidWorkerInstanceTypes)
-                WorkerTypeManagersDict.Add(workerType, null);
+            AppTypeManagersDict = new Dictionary<string, WorkerManager>();
+            foreach (var workerType in ValidAppTypes)
+                AppTypeManagersDict.Add(workerType, null);
 
             const string appInsightsKeyPath = @"E:\TheBallInfra\AppInsightsKey.txt";
             if (File.Exists(appInsightsKeyPath))
@@ -72,7 +73,7 @@ namespace TheBall.Infra.AzureRoleSupport
             StorageAccount = new CloudStorageAccount(new StorageCredentials(storageAccountName, storageAccountKey), true);
 
             BlobClient = StorageAccount.CreateCloudBlobClient();
-            InstanceWorkerContainer = BlobClient.GetContainerReference(SiteContainerName);
+            AppContainer = BlobClient.GetContainerReference(AppPackageContainerName);
 
 
             // For information on handling configuration changes
@@ -80,21 +81,21 @@ namespace TheBall.Infra.AzureRoleSupport
 
             bool result = base.OnStart();
 
-            Trace.TraceInformation("TheBallWorkerRole has been started");
+            Trace.TraceInformation("TheBallRole has been started");
 
             return result;
         }
 
         public override void OnStop()
         {
-            Trace.TraceInformation("TheBallWorkerRole is stopping");
+            Trace.TraceInformation("TheBallRole is stopping");
 
             this.cancellationTokenSource.Cancel();
             this.runCompleteEvent.WaitOne();
 
             base.OnStop();
 
-            Trace.TraceInformation("TheBallWorkerRole has stopped");
+            Trace.TraceInformation("TheBallRole has stopped");
         }
 
         private async Task RunAsync(CancellationToken cancellationToken)
@@ -110,24 +111,24 @@ namespace TheBall.Infra.AzureRoleSupport
                     await Task.Delay(30000, cancellationToken);
                 }
 
-                var allWorkers = WorkerTypeManagersDict.Values.Where(value => value != null);
+                var allWorkers = AppTypeManagersDict.Values.Where(value => value != null);
                 var shutdownTasks = allWorkers.Select(worker => worker.ShutdownWorkerConsole()).ToArray();
                 await Task.WhenAll(shutdownTasks);
             }
             catch (Exception exception)
             {
-                File.WriteAllText(Path.Combine(WorkerRootFolder, "RunError.txt"), exception.ToString());
+                File.WriteAllText(Path.Combine(AppRootFolder, "RunError.txt"), exception.ToString());
                 throw;
             }
         }
 
         private async Task PollAndUpdateStartWorkerIfNeeded()
         {
-            var workerFilesDownloaded = await PollAndDownloadWorkerPackageFromStorage();
-            var managerTypes = WorkerTypeManagersDict.Keys.ToArray();
+            var workerFilesDownloaded = await PollAndDownloadAppPackageFromStorage();
+            var managerTypes = AppTypeManagersDict.Keys.ToArray();
             foreach (var managerType in managerTypes)
             {
-                var currentManager = WorkerTypeManagersDict[managerType];
+                var currentManager = AppTypeManagersDict[managerType];
                 var workerTypeDownloaded = workerFilesDownloaded.FirstOrDefault(item => item.Item1 == managerType);
                 bool needsUpdating = workerTypeDownloaded != null;
                 if (needsUpdating)
@@ -141,7 +142,7 @@ namespace TheBall.Infra.AzureRoleSupport
                 }
                 if (currentManager == null)
                 {
-                    var workerFolder = Path.Combine(WorkerRootFolder, managerType);
+                    var workerFolder = Path.Combine(AppRootFolder, managerType);
                     var directory = new DirectoryInfo(workerFolder);
                     if (!directory.Exists)
                         directory.Create();
@@ -152,14 +153,14 @@ namespace TheBall.Infra.AzureRoleSupport
                         currentManager = new WorkerManager(consoleExePath);
                         await currentManager.StartWorkerConsole();
                     }
-                    WorkerTypeManagersDict[managerType] = currentManager;
+                    AppTypeManagersDict[managerType] = currentManager;
                 }
             }
         }
 
         private void unzipFiles(string workerType, string zipFileName)
         {
-            var workerTypedDir = Path.Combine(WorkerRootFolder, workerType);
+            var workerTypedDir = Path.Combine(AppRootFolder, workerType);
             if (Directory.Exists(workerTypedDir))
             {
                 Directory.Delete(workerTypedDir, true);
@@ -172,14 +173,14 @@ namespace TheBall.Infra.AzureRoleSupport
         }
 
 
-        private async Task<Tuple<string, string>[]> PollAndDownloadWorkerPackageFromStorage()
+        private async Task<Tuple<string, string>[]> PollAndDownloadAppPackageFromStorage()
         {
-            //var blobSegment = await InstanceWorkerContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
+            //var blobSegment = await AppContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
             //var blobs = blobSegment.Results;
-            var blobs = InstanceWorkerContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
+            var blobs = AppContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
-            List<Tuple<string, string>> workerFilesDownloaded = new List<Tuple<string, string>>();
-            var validFileNames = ValidWorkerInstanceTypes.Select(typeName => typeName + ".zip").ToArray();
+            List<Tuple<string, string>> appFilesDownloaded = new List<Tuple<string, string>>();
+            var validFileNames = ValidAppTypes.Select(typeName => typeName + ".zip").ToArray();
             foreach (CloudBlockBlob blob in blobsInOrder)
             {
                 string blobFileName = blob.Name;
@@ -187,8 +188,8 @@ namespace TheBall.Infra.AzureRoleSupport
                 if (!validFileNames.Contains(fileName))
                     continue;
                 var workerType = fileName.Replace(".zip", "");
-                string workerFolderFile = Path.Combine(WorkerRootFolder, fileName);
-                FileInfo currentFile = new FileInfo(workerFolderFile);
+                string appFolderFile = Path.Combine(AppRootFolder, fileName);
+                FileInfo currentFile = new FileInfo(appFolderFile);
                 if (!currentFile.Directory.Exists)
                     currentFile.Directory.Create();
                 var blobLastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
@@ -197,31 +198,24 @@ namespace TheBall.Infra.AzureRoleSupport
                 {
                     if (needsProcessing)
                     {
-                        await blob.DownloadToFileAsync(workerFolderFile, FileMode.Create);
+                        await blob.DownloadToFileAsync(appFolderFile, FileMode.Create);
                         currentFile.Refresh();
                         currentFile.LastWriteTimeUtc = blobLastModified;
-                        workerFilesDownloaded.Add(new Tuple<string, string>(workerType, fileName));
+                        appFilesDownloaded.Add(new Tuple<string, string>(workerType, fileName));
                     }
                 }
                 catch (Exception exception)
                 {
-                    var errorFileName = Path.Combine(WorkerRootFolder, "LastError.txt");
+                    var errorFileName = Path.Combine(AppRootFolder, "LastError.txt");
                     File.WriteAllText(errorFileName, exception.ToString());
                 }
             }
-            return workerFilesDownloaded.ToArray();
+            return appFilesDownloaded.ToArray();
         }
 
 
 
-        private static string WorkerRootFolder
-        {
-            get
-            {
-                var localResource = RoleEnvironment.GetLocalResource("WorkerFolder");
-                return localResource.RootPath;
-            }
-        }
+        protected abstract string AppRootFolder { get; }
 
 
 

@@ -1,6 +1,8 @@
  
 
 var Member {
+	ID: string;
+	ETag: string;
 	FirstName: string;
 	LastName: string;
 	MiddleName: string;
@@ -17,7 +19,9 @@ var Member {
 	VideoPermission: boolean;
 
     constructor() {
-					this.FirstName = ko.observable(this.FirstName);
+					this.ID = ko.observable(this.ID);
+			this.ETag = ko.observable(this.ETag);
+			this.FirstName = ko.observable(this.FirstName);
 			this.LastName = ko.observable(this.LastName);
 			this.MiddleName = ko.observable(this.MiddleName);
 			this.BirthDay = ko.observable(this.BirthDay);

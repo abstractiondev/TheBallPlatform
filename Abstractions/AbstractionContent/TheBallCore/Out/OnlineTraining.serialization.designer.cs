@@ -16,6 +16,10 @@ namespace INT {
 			public partial class Member
 			{
 				[DataMember]
+				public string ID { get; set; }
+				[DataMember]
+				public string ETag { get; set; }
+				[DataMember]
 				public string FirstName { get; set; }
 				[DataMember]
 				public string LastName { get; set; }
@@ -663,7 +667,7 @@ namespace INT {
 				private void CopyContentFrom(PaymentOption sourceObject)
 				{
 					OptionName = sourceObject.OptionName;
-					PeriodInDays = sourceObject.PeriodInDays;
+					PeriodInMonths = sourceObject.PeriodInMonths;
 					Price = sourceObject.Price;
 				}
 				
@@ -674,8 +678,8 @@ namespace INT {
 			public string OptionName { get; set; }
 			private string _unmodified_OptionName;
 			[DataMember] 
-			public long PeriodInDays { get; set; }
-			private long _unmodified_PeriodInDays;
+			public long PeriodInMonths { get; set; }
+			private long _unmodified_PeriodInMonths;
 			[DataMember] 
 			public double Price { get; set; }
 			private double _unmodified_Price;

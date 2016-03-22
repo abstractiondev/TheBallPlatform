@@ -69,17 +69,26 @@ namespace TheBall
 
             var parametersType = Type.GetType(parametersTypeName);
             var executeMethod = operationType.GetMethod("Execute");
+            var executeMethodAsync = operationType.GetMethod("ExecuteAsync");
+            if(executeMethod == null && executeMethodAsync == null)
+                throw new InvalidDataException("Operationg Execute(Async) method is missing - cannot execute: " + operationName);
             LogicalOperationContext.SetCurrentContext(reqData);
             try
             {
+                object[] paramObjs = null;
                 if (parametersType != null)
                 {
-                    var paramObj = PrepareParameters(reqData, parametersType);
-                    executeMethod.Invoke(null, new object[] {paramObj});
+                    var preparedParameters = PrepareParameters(reqData, parametersType);
+                    paramObjs = new object[] { preparedParameters};
+                }
+                if (executeMethodAsync != null)
+                {
+                    Task awaitable = (Task) executeMethodAsync.Invoke(null, paramObjs);
+                    await awaitable;
                 }
                 else
                 {
-                    executeMethod.Invoke(null, null);
+                    executeMethod.Invoke(null, paramObjs);
                 }
                 await InformationContext.Current.LogicalOperationContext.ExecuteRegisteredFinalizingActions();
             }
