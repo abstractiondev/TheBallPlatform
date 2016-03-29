@@ -492,12 +492,13 @@ namespace TheBall
                 }
                 case "UnregisterEmailAddress":
                     {
-                        var owningAccount = containerOwner as TBAccount;
-                        if(owningAccount == null)
+                        var isAccount = containerOwner.IsAccountContainer();
+                        if (!isAccount)
                             throw new NotSupportedException("Unregistering email address is only supported for accounts");
+                        var accountID = containerOwner.LocationPrefix;
                         UnregisterEmailAddressParameters parameters = new UnregisterEmailAddressParameters
                             {
-                                AccountID = owningAccount.ID,
+                                AccountID = accountID,
                                 EmailAddress = form["EmailAddress"],
                             };
                         UnregisterEmailAddress.Execute(parameters);
@@ -505,12 +506,13 @@ namespace TheBall
                     }
                 case "BeginAccountEmailAddressRegistration":
                     {
-                        var owningAccount = containerOwner as TBAccount;
-                        if(owningAccount == null)
+                        var isAccount = containerOwner.IsAccountContainer();
+                        if (!isAccount)
                             throw new NotSupportedException("Email address registration is only supported for accounts");
+                        var accountID = containerOwner.LocationPrefix;
                         BeginAccountEmailAddressRegistrationParameters parameters = new BeginAccountEmailAddressRegistrationParameters
                             {
-                                AccountID = owningAccount.ID,
+                                AccountID = accountID,
                                 RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
                                 EmailAddress = form["EmailAddress"],
                             };

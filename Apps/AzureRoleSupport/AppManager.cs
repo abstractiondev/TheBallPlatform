@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
-    internal class WorkerManager
+    public class AppManager
     {
-        private readonly string WorkerConsolePath;
-        public WorkerManager(string fullPathToWorkerConsole)
+        private readonly string _appConsolePath;
+        public readonly string _appConfigPath;
+
+        public AppManager(string fullPathToAppConsole, string fullPathToAppConfig)
         {
-            WorkerConsolePath = fullPathToWorkerConsole;
+            _appConsolePath = fullPathToAppConsole;
+            _appConfigPath = fullPathToAppConfig;
         }
 
         private Process ClientProcess;
         private AnonymousPipeServerStream PipeServer = null;
 
-        internal async Task StartWorkerConsole()
+        internal async Task StartAppConsole()
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            string args = $@"X:\Configs\WorkerConsole.json {clientPipeHandler}";
-            var startInfo = new ProcessStartInfo(WorkerConsolePath, args)
+            string args = $@"{_appConfigPath} {clientPipeHandler}";
+            var startInfo = new ProcessStartInfo(_appConsolePath, args)
             {
                 UseShellExecute = false
             };
@@ -30,7 +33,7 @@ namespace TheBall.Infra.AzureRoleSupport
             ClientProcess.Start();
         }
 
-        internal async Task ShutdownWorkerConsole()
+        internal async Task ShutdownAppConsole()
         {
             PipeServer.DisposeLocalCopyOfClientHandle();
             try

@@ -32,7 +32,18 @@ namespace TheBallWorkerRole
 
     public class WorkerRole : AcceleratorRole
     {
+        const string TheBallWorkerConsoleName = "TheBallWorkerConsole.exe";
         protected override string AppPackageContainerName => "tb-instanceworkers";
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
+        //protected override string[] ValidAppTypes => new [] { "Dev", "Test", "Stage", "Prod" };
+        //protected override string AppConfigPath => @"X:\Configs\WorkerConsole.json";
+
+        protected override AppTypeInfo[] ValidAppTypes => new[]
+        {
+            new AppTypeInfo("Dev", Path.Combine(AppRootFolder, "Dev", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
+            new AppTypeInfo("Test", Path.Combine(AppRootFolder, "Test", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Test.config")),
+            new AppTypeInfo("Prod", Path.Combine(AppRootFolder, "Prod", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Prod.config")),
+        };
+
     }
 }

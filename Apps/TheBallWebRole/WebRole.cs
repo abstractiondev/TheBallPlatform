@@ -15,11 +15,25 @@ using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.Infra.AzureRoleSupport;
 using TheBall.Infra.WebServerManager;
 
 namespace TheBallWebRole
 {
-    public class WebRole : RoleEntryPoint
+    public class WebRole : AcceleratorRole
+    {
+        const string TheBallWebConsoleName = "TheBallWebConsole.exe";
+        protected override string AppPackageContainerName => "tb-instancesites";
+        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("TempSites").RootPath;
+        protected override AppTypeInfo[] ValidAppTypes => new []
+        {
+            new AppTypeInfo("Dev", Path.Combine(AppRootFolder, "Dev", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
+            new AppTypeInfo("Test", Path.Combine(AppRootFolder, "Test", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Test.config")),
+            new AppTypeInfo("Prod", Path.Combine(AppRootFolder, "Prod", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Prod.config")), 
+        };
+    }
+
+    public class WebRolex : RoleEntryPoint
     {
         private const string SiteContainerName = "tb-instancesites";
         //private const string PathTo7Zip = @"d:\bin\7z.exe";

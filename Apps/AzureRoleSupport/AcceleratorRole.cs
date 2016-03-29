@@ -27,8 +27,9 @@ namespace TheBall.Infra.AzureRoleSupport
         private CloudBlobClient BlobClient;
         private CloudBlobContainer AppContainer;
 
-        private string[] ValidAppTypes = { "Dev", "Test", "Stage", "Prod" };
-        private Dictionary<string, WorkerManager> AppTypeManagersDict = new Dictionary<string, WorkerManager>();
+        protected abstract AppTypeInfo[] ValidAppTypes { get; }
+
+        private Dictionary<string, AppTypeInfo> AppTypeDict = new Dictionary<string, AppTypeInfo>();
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
@@ -49,9 +50,9 @@ namespace TheBall.Infra.AzureRoleSupport
 
         public override bool OnStart()
         {
-            AppTypeManagersDict = new Dictionary<string, WorkerManager>();
+            AppTypeDict = new Dictionary<string, AppTypeInfo>();
             foreach (var workerType in ValidAppTypes)
-                AppTypeManagersDict.Add(workerType, null);
+                AppTypeDict.Add(workerType.AppType, workerType);
 
             const string appInsightsKeyPath = @"E:\TheBallInfra\AppInsightsKey.txt";
             if (File.Exists(appInsightsKeyPath))
@@ -106,13 +107,13 @@ namespace TheBall.Infra.AzureRoleSupport
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     // TODO Polling update and launching
-                    await PollAndUpdateStartWorkerIfNeeded();
+                    await PollAndUpdateStartAppIfNeeded();
                     // Poll or exit on cancel
                     await Task.Delay(30000, cancellationToken);
                 }
 
-                var allWorkers = AppTypeManagersDict.Values.Where(value => value != null);
-                var shutdownTasks = allWorkers.Select(worker => worker.ShutdownWorkerConsole()).ToArray();
+                var allManagers = AppTypeDict.Values.Select(appType => appType.CurrentManager).Where(value => value != null);
+                var shutdownTasks = allManagers.Select(app => app.ShutdownAppConsole()).ToArray();
                 await Task.WhenAll(shutdownTasks);
             }
             catch (Exception exception)
@@ -122,38 +123,34 @@ namespace TheBall.Infra.AzureRoleSupport
             }
         }
 
-        private async Task PollAndUpdateStartWorkerIfNeeded()
+        private async Task PollAndUpdateStartAppIfNeeded()
         {
-            var workerFilesDownloaded = await PollAndDownloadAppPackageFromStorage();
-            var managerTypes = AppTypeManagersDict.Keys.ToArray();
-            foreach (var managerType in managerTypes)
+            var appFilesDownloaded = await PollAndDownloadAppPackageFromStorage();
+            var appTypes = AppTypeDict.Keys.ToArray();
+            foreach (var appTypeName in appTypes)
             {
-                var currentManager = AppTypeManagersDict[managerType];
-                var workerTypeDownloaded = workerFilesDownloaded.FirstOrDefault(item => item.Item1 == managerType);
-                bool needsUpdating = workerTypeDownloaded != null;
+                var appType = AppTypeDict[appTypeName];
+                var currentManager = appType.CurrentManager;
+                var appTypeDownloaded = appFilesDownloaded.FirstOrDefault(item => item.Item1 == appTypeName);
+                bool needsUpdating = appTypeDownloaded != null;
                 if (needsUpdating)
                 {
-                    var workerType = workerTypeDownloaded.Item1;
-                    var zipFileRelativeToWorkerType = @"..\" + workerTypeDownloaded.Item2;
+                    var zipFileRelativeToAppType = @"..\" + appTypeDownloaded.Item2;
                     if (currentManager != null)
-                        await currentManager.ShutdownWorkerConsole();
+                        await currentManager.ShutdownAppConsole();
                     currentManager = null;
-                    unzipFiles(workerType, zipFileRelativeToWorkerType);
+                    unzipFiles(appTypeName, zipFileRelativeToAppType);
                 }
                 if (currentManager == null)
                 {
-                    var workerFolder = Path.Combine(AppRootFolder, managerType);
-                    var directory = new DirectoryInfo(workerFolder);
-                    if (!directory.Exists)
-                        directory.Create();
-                    var files = directory.GetFiles("*Console.exe");
-                    var consoleExePath = files.FirstOrDefault()?.FullName;
-                    if (consoleExePath != null)
+                    var consoleExePath = appType.AppExecutablePath;
+                    if (File.Exists(consoleExePath))
                     {
-                        currentManager = new WorkerManager(consoleExePath);
-                        await currentManager.StartWorkerConsole();
+                        var appConfigPath = appType.AppConfigPath;
+                        currentManager = new AppManager(consoleExePath, appConfigPath);
+                        await currentManager.StartAppConsole();
                     }
-                    AppTypeManagersDict[managerType] = currentManager;
+                    appType.CurrentManager = currentManager;
                 }
             }
         }

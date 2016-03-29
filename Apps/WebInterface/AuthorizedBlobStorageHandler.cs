@@ -595,7 +595,7 @@ namespace WebInterface
             bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
             if (filesystemOverrideEnabled && (context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev" || context.Request.Url.Host == "home.theball.me") && 
                 (contentPath.Contains("groupmanagement/") || 
-                contentPath.Contains("wwwsite/") || 
+                //contentPath.Contains("wwwsite/") || 
                 contentPath.Contains("webview/") ||
                 (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
                 contentPath.StartsWith("cpanel/") ||
@@ -805,8 +805,8 @@ namespace WebInterface
             string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
             string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string LocalGroupControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanel\";
-            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount_iZENZEi\";
-            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount\";
+            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount_iZENZEi\";
+            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount\";
             string LocalOIPControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
             if (prefixStrippedContent.Contains("groupmanagement/"))

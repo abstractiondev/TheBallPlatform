@@ -173,6 +173,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AzureRoleSupport\AzureRoleSupport.csproj">
+      <Project>{0fa0909c-d860-466f-8bc6-ffe440edde5c}</Project>
+      <Name>AzureRoleSupport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WebServerManager\WebServerManager.csproj">
       <Project>{977cbddf-a160-4224-a15a-824074a6f915}</Project>
       <Name>WebServerManager</Name>
