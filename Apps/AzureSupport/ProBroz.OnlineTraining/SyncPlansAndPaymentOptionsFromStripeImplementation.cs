@@ -48,7 +48,7 @@ namespace ProBroz.OnlineTraining
             {
                 var stripePlans = logicalPlanDict[key];
                 var infoSource = stripePlans.First();
-                var planName = infoSource.Name.Trim();
+                var planName = infoSource.Name.Substring(0, infoSource.Name.IndexOf("-")).Trim();
                 return new MembershipPlan
                 {
                     PlanName = planName,
