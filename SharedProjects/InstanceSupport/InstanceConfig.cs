@@ -37,9 +37,44 @@ namespace TheBall.CORE.InstanceSupport
 
 
         public string AdminGroupID;
-        public string PaymentsGroupID;
         public string AllowDirectServingRegexp;
         public bool EnableFilesystemOverride;
+
+        public string[] OperationOwnerScopes;
+        private Dictionary<string, string> _operationOwnerScopesDict;
+
+        public string PaymentsGroupID
+        {
+            get
+            {
+                string groupID = null;
+                if ((OperationOwnerScopesDict?.TryGetValue("TheBall.Payments", out groupID)).GetValueOrDefault())
+                {
+                    return groupID;
+                }
+                return null;
+            }
+        }
+
+        public Dictionary<string, string> OperationOwnerScopesDict
+        {
+            get
+            {
+                if (_operationOwnerScopesDict == null)
+                {
+                    _operationOwnerScopesDict = OperationOwnerScopes?.ToDictionary(keyItem =>
+                    {
+                        var split = keyItem.Split(':');
+                        return split[0];
+                    }, valItem =>
+                    {
+                        var split = valItem.Split(':');
+                        return split[1];
+                    }) ?? new Dictionary<string, string>();
+                }
+                return _operationOwnerScopesDict;
+            }
+        }
 
         public string[] ContainerRedirects;
         private Dictionary<string, string> _containerRedirectsDict;

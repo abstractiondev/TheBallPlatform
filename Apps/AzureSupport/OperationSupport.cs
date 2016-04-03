@@ -33,7 +33,9 @@ namespace TheBall
         public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
         {
             if (operationName.StartsWith("TheBall.Payments"))
+            {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
+            }
             var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
             {
                 var file = request.Files[key];
