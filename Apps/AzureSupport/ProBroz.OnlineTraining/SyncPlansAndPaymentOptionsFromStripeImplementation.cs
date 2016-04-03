@@ -97,7 +97,9 @@ namespace ProBroz.OnlineTraining
             var currentModifiedPlans = currentPlans.Where(plan =>
             {
                 var removed = plan.PaymentOptions.RemoveAll(id => currentPaymentOptions.Any(cpo => cpo.ID == id));
-                return removed > 0;
+                bool anyRemoved = removed > 0;
+                bool anyAdded = plan.PaymentOptions.Any(po => newPaymentOptions.Any(added => added.ID == po));
+                return anyRemoved || anyAdded;
             }).ToArray();
 
             var objectsToSave =
