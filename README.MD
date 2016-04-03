@@ -7,6 +7,7 @@ The Ball Platform Core
 - Integrations concepted around Dropbox for owner level storage control
 - Payment system integration to Stripe for "in-platform-payments" of user's content & apps
 - Mobile ecosystem alike app-isolation designed in architecture, alongside with data security
+- Embedded Microservices - XML & T4 based semantic code generation in the core architecture
 
 Blog about status & example cases
 ---------------------------------
