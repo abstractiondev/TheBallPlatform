@@ -8,6 +8,10 @@ The Ball Platform Core
 - Payment system integration to Stripe for "in-platform-payments" of user's content & apps
 - Mobile ecosystem alike app-isolation designed in architecture, alongside with data security
 
+Blog about status & example cases
+---------------------------------
+[https://abstractiondev.wordpress.com/](https://abstractiondev.wordpress.com/)
+
 License
 -------
 - Open source from day 1, the most liberate WTFPL (= MIT with attitude) & MIT licensed
