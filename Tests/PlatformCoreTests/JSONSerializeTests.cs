@@ -50,7 +50,7 @@ namespace PlatformCoreTests
         }
 
         [TestMethod]
-        public void SerializeDeserializeCustomJSON()
+        public void SerializeDeserializeCustomJSONData1()
         {
             var expObj = new ExpandoObject();
             dynamic dynObj = expObj;
@@ -71,5 +71,29 @@ namespace PlatformCoreTests
             Assert.IsTrue(origObj.Prop3 == 3);
             Assert.IsTrue(origObj.Prop4 == 4.0);
         }
+
+        [TestMethod]
+        public void SerializeDeserializeCustomJSONData2()
+        {
+            var expObj = new ExpandoObject();
+            dynamic dynObj = expObj;
+            dynObj.Prop1 = "prop1";
+            dynObj.Prop2 = "prop2";
+            dynObj.Prop3 = 3;
+            dynObj.Prop4 = 4.0;
+            CustomJSONData testData = new CustomJSONData()
+            {
+                Name = "DataName",
+                Data = dynObj
+            };
+            var serialized = JSONSupport.SerializeToJSONString(testData);
+            dynamic deser = JSONSupport.GetObjectFromString<CustomJSONData>(serialized);
+            var origObj = deser.Data;
+            Assert.IsTrue(origObj.Prop1 == "prop1");
+            Assert.IsTrue(origObj.Prop2 == "prop2");
+            Assert.IsTrue(origObj.Prop3 == 3);
+            Assert.IsTrue(origObj.Prop4 == 4.0);
+        }
+
     }
 }
