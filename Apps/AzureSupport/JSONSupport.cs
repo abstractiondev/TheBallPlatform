@@ -13,6 +13,8 @@ using AaltoGlobalImpact.OIP;
 using JsonFx.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using TheBall.Index;
 using JsonReader = JsonFx.Json.JsonReader;
 using JsonWriter = JsonFx.Json.JsonWriter;
@@ -112,6 +114,26 @@ namespace AzureSupport
             watch.Stop();
             var elapsed = watch.ElapsedMilliseconds;
             return result;
+        }
+
+        public static ExpandoObject GetExpandoObject(string jsonString)
+        {
+            var converter = new ExpandoObjectConverter();
+            var result = JsonConvert.DeserializeObject<ExpandoObject>(jsonString, converter);
+            return result;
+        }
+
+
+        public static ExpandoObject GetExpandoObject(Stream stream)
+        {
+            var serializer = new JsonSerializer();
+            using (var streamReader = new StreamReader(stream, Encoding.UTF8))
+                using(var jsonTextReader = new JsonTextReader(streamReader))
+            {
+                dynamic result = serializer.Deserialize<ExpandoObject>(jsonTextReader);
+                return result;
+            }
+                
         }
     }
 }

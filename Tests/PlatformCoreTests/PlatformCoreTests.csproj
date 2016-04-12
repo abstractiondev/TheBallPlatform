@@ -111,6 +111,7 @@
     <Compile Include="FileSystemSyncTests.cs" />
     <Compile Include="InformationContextTests.cs" />
     <Compile Include="InformationObjectSerializationTests.cs" />
+    <Compile Include="JSONSerializeTests.cs" />
     <Compile Include="SQLiteStorageSyncTests_OIP.cs" />
     <Compile Include="SQLiteStorageSyncTests.cs" />
     <Compile Include="MetaDataSyncTests.cs" />
