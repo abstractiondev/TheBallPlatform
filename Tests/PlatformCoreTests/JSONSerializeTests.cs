@@ -8,8 +8,7 @@ namespace PlatformCoreTests
     [TestClass]
     public class JSONSerializeTests
     {
-        const string CustomJson = @"
-{
+        const string CustomJson = @"{
     'propno1':1,
     'propno2':2,
     'propstr1':'hello',
@@ -35,6 +34,17 @@ namespace PlatformCoreTests
             }
             var readStream = new MemoryStream(data);
             var customObject = JSONSupport.GetExpandoObject(readStream);
+        }
+
+        [TestMethod]
+        public void SerializeUnknownObjectToString()
+        {
+            var customObject = JSONSupport.GetExpandoObject(CustomJson);
+            var serialized = JSONSupport.SerializeToJSONString(customObject);
+            Assert.IsTrue(serialized.Contains("propno1"));
+            Assert.IsTrue(serialized.Contains("propno2"));
+            Assert.IsTrue(serialized.Contains("hello"));
+            Assert.IsTrue(serialized.Contains("world"));
         }
     }
 }
