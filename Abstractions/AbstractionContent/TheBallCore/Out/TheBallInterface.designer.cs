@@ -32,6 +32,15 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class CustomJSONData
+			{
+				[DataMember]
+				public string Name { get; set; }
+				[DataMember]
+				public System.Dynamic.ExpandoObject Data { get; set; }
+			}
+
+			[DataContract]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]

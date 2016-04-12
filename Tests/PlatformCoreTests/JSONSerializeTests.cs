@@ -1,7 +1,9 @@
+using System.Dynamic;
 using System.IO;
 using System.Text;
 using AzureSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TheBall.Interface.INT;
 
 namespace PlatformCoreTests
 {
@@ -45,6 +47,29 @@ namespace PlatformCoreTests
             Assert.IsTrue(serialized.Contains("propno2"));
             Assert.IsTrue(serialized.Contains("hello"));
             Assert.IsTrue(serialized.Contains("world"));
+        }
+
+        [TestMethod]
+        public void SerializeDeserializeCustomJSON()
+        {
+            var expObj = new ExpandoObject();
+            dynamic dynObj = expObj;
+            dynObj.Prop1 = "prop1";
+            dynObj.Prop2 = "prop2";
+            dynObj.Prop3 = 3;
+            dynObj.Prop4 = 4.0;
+            CustomJSONData testData = new CustomJSONData()
+            {
+                Name = "DataName",
+                Data = dynObj
+            };
+            var serialized = JSONSupport.SerializeToJSONString(testData);
+            dynamic deser = JSONSupport.GetExpandoObject(serialized);
+            var origObj = deser.Data;
+            Assert.IsTrue(origObj.Prop1 == "prop1");
+            Assert.IsTrue(origObj.Prop2 == "prop2");
+            Assert.IsTrue(origObj.Prop3 == 3);
+            Assert.IsTrue(origObj.Prop4 == 4.0);
         }
     }
 }

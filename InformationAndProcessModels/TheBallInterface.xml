@@ -3,6 +3,12 @@
   <InstanceOfTheBall semanticDomainName="TheBall.Interface">
     <DigitalInterface>
       <InterfaceModel>
+        <InterfaceObject name="CustomJSONData" designDesc="Custom JSON data">
+          <InterfaceItems>
+            <InterfaceItem name="Name" logicalDataType="Text_Short"/>
+            <ObjectInstance name="Data" interfaceObjectName="System.Dynamic.ExpandoObject" isCollection="false"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="ConnectionCommunicationData" designDesc="Connection communication data object model">
           <InterfaceItems>
             <InterfaceItem name="ActiveSideConnectionID" logicalDataType="Text_Short"/>

@@ -14,6 +14,23 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
+			public partial class CustomJSONData 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string Name;
+
+			[DataMember]
+			public System.Dynamic.ExpandoObject Data;
+
+			
+			}
+			[DataContract]
 			public partial class ConnectionCommunicationData 
 			{
 				[DataMember]

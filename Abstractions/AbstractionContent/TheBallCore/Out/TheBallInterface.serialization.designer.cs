@@ -13,6 +13,15 @@ using ProtoBuf;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class CustomJSONData
+			{
+				[DataMember]
+				public string Name { get; set; }
+				[DataMember]
+				public System.Dynamic.ExpandoObject Data { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]
