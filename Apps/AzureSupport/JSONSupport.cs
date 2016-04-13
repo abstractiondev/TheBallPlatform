@@ -106,8 +106,7 @@ namespace AzureSupport
 
         public static string SerializeToJSONString(object obj)
         {
-            var writer = new JsonWriter();
-            return writer.Write(obj);
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
         }
 
         public static T GetObjectFromString<T>(string jsonString)

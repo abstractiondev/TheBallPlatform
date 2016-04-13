@@ -58,7 +58,7 @@ namespace PlatformCoreTests
             dynObj.Prop2 = "prop2";
             dynObj.Prop3 = 3;
             dynObj.Prop4 = 4.0;
-            CustomJSONData testData = new CustomJSONData()
+            var testData = new InterfaceJSONData()
             {
                 Name = "DataName",
                 Data = dynObj
@@ -81,13 +81,13 @@ namespace PlatformCoreTests
             dynObj.Prop2 = "prop2";
             dynObj.Prop3 = 3;
             dynObj.Prop4 = 4.0;
-            CustomJSONData testData = new CustomJSONData()
+            var testData = new InterfaceJSONData()
             {
                 Name = "DataName",
                 Data = dynObj
             };
             var serialized = JSONSupport.SerializeToJSONString(testData);
-            dynamic deser = JSONSupport.GetObjectFromString<CustomJSONData>(serialized);
+            dynamic deser = JSONSupport.GetObjectFromString<InterfaceJSONData>(serialized);
             var origObj = deser.Data;
             Assert.IsTrue(origObj.Prop1 == "prop1");
             Assert.IsTrue(origObj.Prop2 == "prop2");

@@ -13,7 +13,7 @@ using ProtoBuf;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
-			public partial class CustomJSONData
+			public partial class InterfaceJSONData
 			{
 				[DataMember]
 				public string Name { get; set; }

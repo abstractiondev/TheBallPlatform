@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
-			public partial class CustomJSONData 
+			public partial class InterfaceJSONData 
 			{
 				[DataMember]
 				public string ID { get; set; }

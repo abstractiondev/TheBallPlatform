@@ -1,6 +1,6 @@
  
 
-var CustomJSONData {
+var InterfaceJSONData {
 	Name: string;
 	Data: System.Dynamic.ExpandoObject;
 

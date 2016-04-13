@@ -600,18 +600,49 @@
         </SequentialExecution>
       </Execution>
     </Operation>
-    <Operation name="SaveCustomJSON">
+    <Operation name="DeleteInterfaceJSON">
       <OperationSpec>
-        <Description>Save custom JSON object with given name</Description>
+        <Description>Delete Interface JSON object with given name</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="SaveDataInfo" dataType="INT.CustomJSONData" designDesc="Custom data to save" state="implemented" />
+        <Parameter name="SaveDataInfo" dataType="INT.InterfaceJSONData" designDesc="Interface JSON data to delete" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="DataName" dataType="string" designDesc="Data name for custom data" state="implemented">
             <Parameter name="SaveDataInfo" />
           </TargetDefinition>
+          <TargetDefinition name="JSONDataFileLocation" dataType="string" designDesc="JSONDataFileLocation" state="implemented">
+            <Target name="DataName" />
+          </TargetDefinition>
+          <MethodExecute name="DeleteJSONData" asyncSupportMode="AsyncOnly" designDesc="Delete data JSON from its location" state="implemented">
+            <Target name="JSONDataFileLocation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="SaveInterfaceJSON">
+      <OperationSpec>
+        <Description>Save Interface JSON object with given name</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="SaveDataInfo" dataType="INT.InterfaceJSONData" designDesc="Interface JSON data to save" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="DataName" dataType="string" designDesc="Data name for custom data" state="implemented">
+            <Parameter name="SaveDataInfo" />
+          </TargetDefinition>
+          <TargetDefinition name="DataObject" dataType="System.Dynamic.ExpandoObject" designDesc="Data to save as ExpandoObject" state="implemented">
+            <Parameter name="SaveDataInfo" />
+          </TargetDefinition>
+          <TargetDefinition name="JSONDataFileLocation" dataType="string" designDesc="JSONDataFileLocation" state="implemented">
+            <Target name="DataName" />
+          </TargetDefinition>
+          <MethodExecute name="StoreJSONData" asyncSupportMode="AsyncOnly" designDesc="Save data JSON to location as serialized" state="implemented">
+            <Target name="JSONDataFileLocation" />
+            <Target name="DataObject" />
+          </MethodExecute>
         </SequentialExecution>
       </Execution>
     </Operation>

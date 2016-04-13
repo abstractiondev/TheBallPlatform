@@ -415,6 +415,60 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="DeleteInterfaceJSON (SaveDataInfo)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete Interface JSON object with given name</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>SaveDataInfo</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.InterfaceJSONData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Interface JSON data to delete</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DataName ( SaveDataInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Data name for custom data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: JSONDataFileLocation ( DataName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>JSONDataFileLocation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteJSONData ( JSONDataFileLocation )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete data JSON from its location</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="DeleteInterfaceOperation (OperationID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1521,11 +1575,11 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="SaveCustomJSON (SaveDataInfo)" level="1">
+          <Header text="SaveInterfaceJSON (SaveDataInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Save custom JSON object with given name</TextContent>
+                  <TextContent>Save Interface JSON object with given name</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -1543,10 +1597,10 @@
                         <TextContent>SaveDataInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>INT.CustomJSONData</TextContent>
+                        <TextContent>INT.InterfaceJSONData</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Custom data to save</TextContent>
+                        <TextContent>Interface JSON data to save</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -1557,6 +1611,27 @@
               <Paragraph>
                 <Text>
                   <TextContent>Data name for custom data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DataObject ( SaveDataInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Data to save as ExpandoObject</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: JSONDataFileLocation ( DataName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>JSONDataFileLocation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreJSONData ( JSONDataFileLocation, DataObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save data JSON to location as serialized</TextContent>
                 </Text>
               </Paragraph>
             </Header>

@@ -456,20 +456,41 @@ using System.Threading.Tasks;
 				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
-				public class SaveCustomJSONParameters 
+				public class DeleteInterfaceJSONParameters 
 		{
-				public INT.CustomJSONData SaveDataInfo ;
+				public INT.InterfaceJSONData SaveDataInfo ;
 				}
 		
-		public class SaveCustomJSON 
+		public class DeleteInterfaceJSON 
 		{
-				private static void PrepareParameters(SaveCustomJSONParameters parameters)
+				private static void PrepareParameters(DeleteInterfaceJSONParameters parameters)
 		{
 					}
-				public static void Execute(SaveCustomJSONParameters parameters)
+				public static async Task ExecuteAsync(DeleteInterfaceJSONParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string DataName = SaveCustomJSONImplementation.GetTarget_DataName(parameters.SaveDataInfo);	
+					string DataName = DeleteInterfaceJSONImplementation.GetTarget_DataName(parameters.SaveDataInfo);	
+				string JSONDataFileLocation = DeleteInterfaceJSONImplementation.GetTarget_JSONDataFileLocation(DataName);	
+				 await DeleteInterfaceJSONImplementation.ExecuteMethod_DeleteJSONDataAsync(JSONDataFileLocation);		
+				}
+				}
+				public class SaveInterfaceJSONParameters 
+		{
+				public INT.InterfaceJSONData SaveDataInfo ;
+				}
+		
+		public class SaveInterfaceJSON 
+		{
+				private static void PrepareParameters(SaveInterfaceJSONParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SaveInterfaceJSONParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string DataName = SaveInterfaceJSONImplementation.GetTarget_DataName(parameters.SaveDataInfo);	
+				System.Dynamic.ExpandoObject DataObject = SaveInterfaceJSONImplementation.GetTarget_DataObject(parameters.SaveDataInfo);	
+				string JSONDataFileLocation = SaveInterfaceJSONImplementation.GetTarget_JSONDataFileLocation(DataName);	
+				 await SaveInterfaceJSONImplementation.ExecuteMethod_StoreJSONDataAsync(JSONDataFileLocation, DataObject);		
 				}
 				}
 				public class FetchURLAsGroupContentParameters 

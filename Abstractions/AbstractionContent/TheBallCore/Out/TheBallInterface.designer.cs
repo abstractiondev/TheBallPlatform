@@ -32,7 +32,7 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
-			public partial class CustomJSONData
+			public partial class InterfaceJSONData
 			{
 				[DataMember]
 				public string Name { get; set; }

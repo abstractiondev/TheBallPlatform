@@ -218,6 +218,7 @@
     <Compile Include="TheBall.CORE\GetOwnerSemanticDomainsImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateAccountMergeFromEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\InitiateImportedGroupWithUnchangedIDImplementation.cs" />
+    <Compile Include="TheBall.Interface\DeleteInterfaceJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\InterfaceOperation.cs" />
     <Compile Include="TheBall.CORE\JoinAccountToGroupImplementation.cs" />
     <Compile Include="TheBall.CORE\MergeAccountsDestructivelyImplementation.cs" />
@@ -396,7 +397,7 @@
     <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\PutInterfaceOperationToQueueImplementation.cs" />
-    <Compile Include="TheBall.Interface\SaveCustomJSONImplementation.cs" />
+    <Compile Include="TheBall.Interface\SaveInterfaceJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />

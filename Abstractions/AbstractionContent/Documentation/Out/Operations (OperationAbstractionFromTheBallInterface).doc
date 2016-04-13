@@ -556,6 +556,44 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Delete the actual connection object
 		</div>
+		</p><h1>DeleteInterfaceJSON (SaveDataInfo)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Delete Interface JSON object with given name
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SaveDataInfo
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.InterfaceJSONData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Interface JSON data to delete
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: DataName ( SaveDataInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Data name for custom data
+		</div>
+		</p><h2>Target Definition: JSONDataFileLocation ( DataName )</h2>
+		<p>		<div class="MsoNormal" >
+		JSONDataFileLocation
+		</div>
+		</p><h2>Method Call: DeleteJSONData ( JSONDataFileLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete data JSON from its location
+		</div>
 		</p><h1>DeleteInterfaceOperation (OperationID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1521,10 +1559,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create queue entry to item with content of invoker account within
 		</div>
-		</p><h1>SaveCustomJSON (SaveDataInfo)</h1>
+		</p><h1>SaveInterfaceJSON (SaveDataInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Save custom JSON object with given name
+		Save Interface JSON object with given name
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
@@ -1537,12 +1575,12 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		INT.CustomJSONData
+		INT.InterfaceJSONData
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Custom data to save
+		Interface JSON data to save
 		</div>
 				</td>
 				</tr>
@@ -1550,6 +1588,18 @@ div.WordSection1
 		</p><h2>Target Definition: DataName ( SaveDataInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Data name for custom data
+		</div>
+		</p><h2>Target Definition: DataObject ( SaveDataInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Data to save as ExpandoObject
+		</div>
+		</p><h2>Target Definition: JSONDataFileLocation ( DataName )</h2>
+		<p>		<div class="MsoNormal" >
+		JSONDataFileLocation
+		</div>
+		</p><h2>Method Call: StoreJSONData ( JSONDataFileLocation, DataObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Save data JSON to location as serialized
 		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>
