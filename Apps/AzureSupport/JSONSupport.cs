@@ -89,9 +89,7 @@ namespace AzureSupport
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-
-            T result = (T) serializer.ReadObject(stream);
+            T result = (T) GetObjectFromStream(stream, typeof (T));
             watch.Stop();
             var elapsed = watch.ElapsedMilliseconds;
             return result;
