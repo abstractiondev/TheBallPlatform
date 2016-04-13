@@ -396,6 +396,7 @@
     <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\PutInterfaceOperationToQueueImplementation.cs" />
+    <Compile Include="TheBall.Interface\SaveCustomJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />

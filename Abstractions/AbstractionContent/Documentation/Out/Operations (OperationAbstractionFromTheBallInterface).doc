@@ -1521,6 +1521,36 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create queue entry to item with content of invoker account within
 		</div>
+		</p><h1>SaveCustomJSON (SaveDataInfo)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Save custom JSON object with given name
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SaveDataInfo
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.CustomJSONData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Custom data to save
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: DataName ( SaveDataInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Data name for custom data
+		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

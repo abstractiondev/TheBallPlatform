@@ -600,6 +600,21 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="SaveCustomJSON">
+      <OperationSpec>
+        <Description>Save custom JSON object with given name</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="SaveDataInfo" dataType="INT.CustomJSONData" designDesc="Custom data to save" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="DataName" dataType="string" designDesc="Data name for custom data" state="implemented">
+            <Parameter name="SaveDataInfo" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="FetchURLAsGroupContent">
       <OperationSpec>
         <Description>Fetch URL data as group BinaryFile/MediaContent</Description>

@@ -456,6 +456,22 @@ using System.Threading.Tasks;
 				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
+				public class SaveCustomJSONParameters 
+		{
+				public INT.CustomJSONData SaveDataInfo ;
+				}
+		
+		public class SaveCustomJSON 
+		{
+				private static void PrepareParameters(SaveCustomJSONParameters parameters)
+		{
+					}
+				public static void Execute(SaveCustomJSONParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string DataName = SaveCustomJSONImplementation.GetTarget_DataName(parameters.SaveDataInfo);	
+				}
+				}
 				public class FetchURLAsGroupContentParameters 
 		{
 				public string GroupID ;

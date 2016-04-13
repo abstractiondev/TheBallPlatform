@@ -74,8 +74,15 @@ namespace AzureSupport
 
         public static object GetObjectFromStream(Stream stream, Type objectType)
         {
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectType);
-            return serializer.ReadObject(stream);
+            var serializer = new JsonSerializer();
+            using (var streamReader = new StreamReader(stream, Encoding.UTF8))
+            using (var jsonTextReader = new JsonTextReader(streamReader))
+            {
+                var result = serializer.Deserialize(jsonTextReader, objectType);
+                return result;
+            }
+            //DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectType);
+            //return serializer.ReadObject(stream);
         }
 
         public static T GetObjectFromStream<T>(Stream stream)
