@@ -508,7 +508,7 @@ namespace WebInterface
 
         private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
         {
-            if (InstanceConfig.Current.SkipReferrerValidation)
+            if (!InstanceConfig.Current.SkipReferrerValidation)
             {
                 var request = context.Request;
                 var requestUrl = request.Url;
