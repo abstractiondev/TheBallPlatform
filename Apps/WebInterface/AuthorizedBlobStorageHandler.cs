@@ -22,6 +22,8 @@ using System.Web.Security;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -91,6 +93,8 @@ namespace WebInterface
             {
                 response.StatusCode = 403;
                 response.Write(securityException.ToString());
+                TelemetryClient telemetryClient = new TelemetryClient(TelemetryConfiguration.Active);
+                telemetryClient.TrackException(securityException);
             }
         }
 
