@@ -34,6 +34,8 @@ namespace TheBall.CORE.InstanceSupport
         public string[] PlatformDefaultGroupIDList;
         public string[] RestrictedEmailAddresses;
         public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
+        public bool SkipReferrerValidation = true;
+
 
 
         public string AdminGroupID;

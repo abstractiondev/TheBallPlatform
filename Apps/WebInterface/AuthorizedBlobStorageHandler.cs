@@ -508,11 +508,14 @@ namespace WebInterface
 
         private void validateThatOwnerPostComesFromSameReferrer(HttpContext context)
         {
-            var request = context.Request;
-            var requestUrl = request.Url;
-            var referrerUrl = request.UrlReferrer;
-            if(referrerUrl == null || requestUrl.AbsolutePath != referrerUrl.AbsolutePath)
-                throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
+            if (InstanceConfig.Current.SkipReferrerValidation)
+            {
+                var request = context.Request;
+                var requestUrl = request.Url;
+                var referrerUrl = request.UrlReferrer;
+                if (referrerUrl == null || requestUrl.AbsolutePath != referrerUrl.AbsolutePath)
+                    throw new SecurityException("UrlReferrer mismatch or missing - potential cause is (un)intentionally malicious web template.");
+            }
         }
 
         [Obsolete("To be replaced with worker implementation", true)]
