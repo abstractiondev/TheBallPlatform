@@ -28,7 +28,7 @@ Build Statuses
 Full Platform (master-branch):
 ![Build Status](https://theballfactory2.theball.me/app/rest/builds/buildType:%28id:TheBallPlatform_PlatformBinaries%29/statusIcon)
 
-Xamarin Mobile Platform(s)
+Xamarin Mobile Platform(s) (master-branch):
 ![Build Status](https://theballfactory2.theball.me/app/rest/builds/buildType:%28id:TheBallPlatform_XamarinMobile%29/statusIcon)
 
 Related Projects
