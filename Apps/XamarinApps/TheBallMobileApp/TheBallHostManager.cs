@@ -53,9 +53,8 @@ namespace TheBallMobileApp
                             {
                                 new {displayName = "home.theball.me", value = "home.theball.me"},
                                 new {displayName = "test.theball.me", value = "test.theball.me"},
-                                //new {displayName = "members.onlinetaekwondo.net", value = "members.onlinetaekwondo.net"},
                                 new {displayName = "dev.agens.fi", value = "dev.agens.fi"},
-                                new {displayName = "beta.diosphere.org", value = "beta.diosphere.org"},
+                                new {displayName = "dev.footvoter.org", value = "dev.footvoter.org"},
                             }
                         }, stream);
                         data = stream.ToArray();
