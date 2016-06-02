@@ -138,6 +138,61 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="ActivateAccountDefaultPlan">
+        <OperationSpec>
+          <Description>Activate and pay account default plan</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="PaymentToken" dataType="INT.PaymentToken" designDesc="Obtain Stripe Token from request stream" state="implemented"  />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+              <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+              <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
+                <Target name="AccountID"/>
+              </TargetDefinition>
+              <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
+                <Parameter name="PaymentToken"/>
+                <Target name="CustomerAccount"/>
+              </MethodExecute>
+              <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
+                <Target name="CustomerAccount"/>
+              </TargetDefinition>
+              <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
+                <Parameter name="PaymentToken"/>
+              </TargetDefinition>
+              <MethodExecute name="ValidateStripePlanName" designDesc="Validate plan name from Stripe" state="implemented">
+                <Target name="PlanName"/>
+              </MethodExecute>
+              <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
+                <Target name="StripeCustomerID"/>
+              </TargetDefinition>
+              <TargetDefinition name="CustomersActivePlanNames" dataType="string[]" designDesc="Customer's active plan names" state="implemented">
+                <Target name="CustomersActiveSubscriptions"/>
+              </TargetDefinition>
+              <MethodExecute name="SyncCurrentCustomerActivePlans" designDesc="Sync current plans to customer account" state="implemented">
+                <Target name="CustomerAccount"/>
+                <Target name="CustomersActivePlanNames"/>
+              </MethodExecute>
+              <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented" asyncSupportMode="AsyncOnly">
+                <Parameter name="PaymentToken"/>
+                <Target name="StripeCustomerID"/>
+                <Target name="PlanName"/>
+                <Target name="CustomersActivePlanNames"/>
+              </MethodExecute>
+              <MethodExecute name="AddPlanAsActiveToCustomer" designDesc="Add plan to customer if missing (and thus payment was processed)" state="implemented">
+                <Target name="CustomerAccount"/>
+                <Target name="PlanName"/>
+              </MethodExecute>
+              <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+                <Target name="CustomerAccount"/>
+              </MethodExecute>
+              <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount" asyncSupportMode="AsyncOnly">
+                <Target name="AccountID"/>
+              </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ActivateAndPayGroupSubscriptionPlan">
         <OperationSpec>
           <Description>Activate and pay group subscription</Description>
