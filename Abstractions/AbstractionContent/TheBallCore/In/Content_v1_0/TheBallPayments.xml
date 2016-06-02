@@ -114,7 +114,7 @@
             <TargetDefinition name="EventData" dataType="Stripe.StripeEvent" designDesc="Stripe event object" state="implemented">
               <Target name="EventID"/>
             </TargetDefinition>
-            <MethodExecute name="ProcessStripeEvent" designDesc="Process Stripe event" state="implemented">
+            <MethodExecute name="ProcessStripeEvent" designDesc="Process Stripe event" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="EventData"/>
             </MethodExecute>
           </SequentialExecution>
@@ -147,49 +147,52 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-              <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
-              <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
-                <Target name="AccountID"/>
-              </TargetDefinition>
-              <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
-                <Parameter name="PaymentToken"/>
-                <Target name="CustomerAccount"/>
-              </MethodExecute>
-              <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
-                <Target name="CustomerAccount"/>
-              </TargetDefinition>
-              <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
-                <Parameter name="PaymentToken"/>
-              </TargetDefinition>
-              <MethodExecute name="ValidateStripePlanName" designDesc="Validate plan name from Stripe" state="implemented">
-                <Target name="PlanName"/>
-              </MethodExecute>
-              <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
-                <Target name="StripeCustomerID"/>
-              </TargetDefinition>
-              <TargetDefinition name="CustomersActivePlanNames" dataType="string[]" designDesc="Customer's active plan names" state="implemented">
-                <Target name="CustomersActiveSubscriptions"/>
-              </TargetDefinition>
-              <MethodExecute name="SyncCurrentCustomerActivePlans" designDesc="Sync current plans to customer account" state="implemented">
-                <Target name="CustomerAccount"/>
-                <Target name="CustomersActivePlanNames"/>
-              </MethodExecute>
-              <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented" asyncSupportMode="AsyncOnly">
-                <Parameter name="PaymentToken"/>
-                <Target name="StripeCustomerID"/>
-                <Target name="PlanName"/>
-                <Target name="CustomersActivePlanNames"/>
-              </MethodExecute>
-              <MethodExecute name="AddPlanAsActiveToCustomer" designDesc="Add plan to customer if missing (and thus payment was processed)" state="implemented">
-                <Target name="CustomerAccount"/>
-                <Target name="PlanName"/>
-              </MethodExecute>
-              <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
-                <Target name="CustomerAccount"/>
-              </MethodExecute>
-              <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount" asyncSupportMode="AsyncOnly">
-                <Target name="AccountID"/>
-              </OperationExecute>
+            <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
+              <Parameter name="PaymentToken"/>
+            </MethodExecute>
+            <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="AccountID"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented" asyncSupportMode="AsyncOnly">
+              <Parameter name="PaymentToken"/>
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+            <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
+              <Target name="CustomerAccount"/>
+            </TargetDefinition>
+            <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
+              <Parameter name="PaymentToken"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateStripePlanName" designDesc="Validate plan name from Stripe" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="PlanName"/>
+            </MethodExecute>
+            <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="StripeCustomerID"/>
+            </TargetDefinition>
+            <TargetDefinition name="CustomersActivePlanNames" dataType="string[]" designDesc="Customer's active plan names" state="implemented">
+              <Target name="CustomersActiveSubscriptions"/>
+            </TargetDefinition>
+            <MethodExecute name="SyncCurrentCustomerActivePlans" designDesc="Sync current plans to customer account" state="implemented">
+              <Target name="CustomerAccount"/>
+              <Target name="CustomersActivePlanNames"/>
+            </MethodExecute>
+            <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented" asyncSupportMode="AsyncOnly">
+              <Parameter name="PaymentToken"/>
+              <Target name="StripeCustomerID"/>
+              <Target name="PlanName"/>
+              <Target name="CustomersActivePlanNames"/>
+            </MethodExecute>
+            <MethodExecute name="AddPlanAsActiveToCustomer" designDesc="Add plan to customer if missing (and thus payment was processed)" state="implemented">
+              <Target name="CustomerAccount"/>
+              <Target name="PlanName"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+            <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount" asyncSupportMode="AsyncOnly">
+              <Target name="AccountID"/>
+            </OperationExecute>
           </SequentialExecution>
         </Execution>
       </Operation>
@@ -204,7 +207,7 @@
               <Target name="PaymentToken"/>
             </MethodExecute>
             <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
-            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="AccountID"/>
             </TargetDefinition>
             <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
@@ -246,7 +249,7 @@
             <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented">
               <Target name="CustomerAccount"/>
             </MethodExecute>
-            <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount">
+            <OperationExecute name="GrantAccessToPaidPlan" designDesc="Grant access to paid plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount" asyncSupportMode="AsyncOnly">
               <Target name="AccountID"/>
             </OperationExecute>
           </SequentialExecution>
@@ -270,7 +273,7 @@
               <Target name="PlanName"/>
               <Target name="CustomerAccount"/>
             </MethodExecute>
-            <OperationExecute name="RevokeAccessFromCanceledPlan" designDesc="Revoke access to canceled plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount">
+            <OperationExecute name="RevokeAccessFromCanceledPlan" designDesc="Revoke access to canceled plan" state="implemented" targetOperationName="SyncEffectivePlanAccessesToAccount" asyncSupportMode="AsyncOnly">
               <Target name="AccountID"/>
             </OperationExecute>
           </SequentialExecution>
@@ -285,7 +288,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Customer account" state="implemented">
+            <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Customer account" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="AccountID"/>
             </TargetDefinition>
             <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">

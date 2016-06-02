@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Stripe;
 
@@ -29,9 +30,9 @@ namespace TheBall.Payments
             //return GroupSubscriptionPlan.RetrieveFromOwnerContent(InformationContext.CurrentOwner, planID);
         }
 
-        public static CustomerAccount GetTarget_Account(string accountID)
+        public static async Task<CustomerAccount> GetTarget_AccountAsync(string accountID)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(InformationContext.CurrentOwner, accountID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(InformationContext.CurrentOwner, accountID);
         }
 
         public static GroupSubscriptionPlan[] GetTarget_CurrentPlansBeforeSync(CustomerAccount account)
@@ -155,5 +156,6 @@ namespace TheBall.Payments
             account.ActivePlans.AddRange(addedStatusIDs);
             account.StoreInformation(InformationContext.CurrentOwner);
         }
+
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Security;
+using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
 using Stripe;
@@ -30,7 +31,7 @@ namespace TheBall.Payments
             return accountID;
         }
 
-        public static CustomerAccount GetTarget_CustomerAccount(string accountId)
+        public static async Task<CustomerAccount> GetTarget_CustomerAccountAsync(string accountId)
         {
             var owner = InformationContext.CurrentOwner;
             var ownerID = owner.GetIDFromLocationPrefix();
@@ -39,7 +40,7 @@ namespace TheBall.Payments
             string accountEmail = InformationContext.CurrentAccount.AccountEmail;
             if (String.IsNullOrEmpty(accountEmail))
                 throw new SecurityException("Cannot get customer account without valid email");
-            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountId);
+            CustomerAccount customerAccount = await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(owner, accountId);
             if (customerAccount == null)
             {
                 customerAccount = new CustomerAccount();
@@ -51,7 +52,7 @@ namespace TheBall.Payments
                     Email = accountEmail
                 });
                 customerAccount.StripeID = stripeCustomer.Id;
-                customerAccount.StoreInformation();
+                await customerAccount.StoreInformationAsync();
             }
             return customerAccount;
         }

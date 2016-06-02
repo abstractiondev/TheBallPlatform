@@ -41,12 +41,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ProcessStripeWebhookParameters parameters)
 		{
 					}
-				public static void Execute(ProcessStripeWebhookParameters parameters)
+				public static async Task ExecuteAsync(ProcessStripeWebhookParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string EventID = ProcessStripeWebhookImplementation.GetTarget_EventID(parameters.JSONObject);	
 				Stripe.StripeEvent EventData = ProcessStripeWebhookImplementation.GetTarget_EventData(EventID);	
-				ProcessStripeWebhookImplementation.ExecuteMethod_ProcessStripeEvent(EventData);		
+				 await ProcessStripeWebhookImplementation.ExecuteMethod_ProcessStripeEventAsync(EventData);		
 				}
 				}
 				public class ValidatePlanContainingGroupsParameters 
@@ -79,12 +79,13 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(ActivateAccountDefaultPlanParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string AccountID = ActivateAccountDefaultPlanImplementation.GetTarget_AccountID();	
+					ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateMatchingEmail(parameters.PaymentToken);		
+				string AccountID = ActivateAccountDefaultPlanImplementation.GetTarget_AccountID();	
 				CustomerAccount CustomerAccount =  await ActivateAccountDefaultPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
-				ActivateAccountDefaultPlanImplementation.ExecuteMethod_UpdateStripeCustomerData(parameters.PaymentToken, CustomerAccount);		
+				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_UpdateStripeCustomerDataAsync(parameters.PaymentToken, CustomerAccount);		
 				string StripeCustomerID = ActivateAccountDefaultPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				string PlanName = ActivateAccountDefaultPlanImplementation.GetTarget_PlanName(parameters.PaymentToken);	
-				ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateStripePlanName(PlanName);		
+				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName);		
 				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
 				string[] CustomersActivePlanNames = ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActivePlanNames(CustomersActiveSubscriptions);	
 				ActivateAccountDefaultPlanImplementation.ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount, CustomersActivePlanNames);		
@@ -99,16 +100,16 @@ using System.Threading.Tasks;
 		} // Local block closing
 				}
 				}
-
-		    public class ActivateAndPayGroupSubscriptionPlan 
+		
+		public class ActivateAndPayGroupSubscriptionPlan 
 		{
-				public static void Execute()
+				public static async Task ExecuteAsync()
 		{
 						
 					INT.PaymentToken PaymentToken = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PaymentToken();	
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
 				string AccountID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
-				CustomerAccount CustomerAccount = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
+				CustomerAccount CustomerAccount =  await ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				ActivateAndPayGroupSubscriptionPlanImplementation.ExecuteMethod_UpdateStripeCustomerData(CustomerAccount, PaymentToken);		
 				string StripeCustomerID = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				string PlanName = ActivateAndPayGroupSubscriptionPlanImplementation.GetTarget_PlanName(PaymentToken);	
@@ -128,7 +129,7 @@ using System.Threading.Tasks;
 				
 		{ // Local block to allow local naming
 			SyncEffectivePlanAccessesToAccountParameters operationParameters = ActivateAndPayGroupSubscriptionPlanImplementation.GrantAccessToPaidPlan_GetParameters(AccountID);
-			SyncEffectivePlanAccessesToAccount.Execute(operationParameters);
+			 await SyncEffectivePlanAccessesToAccount.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				}
@@ -136,7 +137,7 @@ using System.Threading.Tasks;
 		
 		public class CancelGroupSubscriptionPlan 
 		{
-				public static void Execute()
+				public static async Task ExecuteAsync()
 		{
 						
 					INT.CancelSubscriptionParams CancelParams = CancelGroupSubscriptionPlanImplementation.GetTarget_CancelParams();	
@@ -147,7 +148,7 @@ using System.Threading.Tasks;
 				
 		{ // Local block to allow local naming
 			SyncEffectivePlanAccessesToAccountParameters operationParameters = CancelGroupSubscriptionPlanImplementation.RevokeAccessFromCanceledPlan_GetParameters(AccountID);
-			SyncEffectivePlanAccessesToAccount.Execute(operationParameters);
+			 await SyncEffectivePlanAccessesToAccount.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				}
@@ -162,10 +163,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SyncEffectivePlanAccessesToAccountParameters parameters)
 		{
 					}
-				public static void Execute(SyncEffectivePlanAccessesToAccountParameters parameters)
+				public static async Task ExecuteAsync(SyncEffectivePlanAccessesToAccountParameters parameters)
 		{
 						PrepareParameters(parameters);
-					CustomerAccount Account = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_Account(parameters.AccountID);	
+					CustomerAccount Account =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
 				GroupSubscriptionPlan[] CurrentPlansBeforeSync = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSync(Account);	
 				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(Account);	
 				string[] GroupsToHaveAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToHaveAccessTo(ActivePlansFromStripe);	
@@ -176,12 +177,7 @@ using System.Threading.Tasks;
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_RevokeAccessFromGroups(parameters.AccountID, GroupsToRevokeAccessFrom);		
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_SyncCurrentStripePlansToAccount(Account, CurrentPlansBeforeSync, ActivePlansFromStripe);		
 				}
-
-		    public static Task ExecuteAsync(SyncEffectivePlanAccessesToAccountParameters operationParameters)
-		    {
-		        throw new NotImplementedException();
-		    }
-		}
+				}
 				public class GrantPaidAccessToGroupParameters 
 		{
 				public string GroupID ;

@@ -37,7 +37,7 @@
           <TargetDefinition name="EventData" dataType="Stripe.StripeEvent" designDesc="Stripe event object" state="implemented">
             <Target name="EventID" />
           </TargetDefinition>
-          <MethodExecute name="ProcessStripeEvent" designDesc="Process Stripe event" state="implemented">
+          <MethodExecute name="ProcessStripeEvent" asyncSupportMode="AsyncOnly" designDesc="Process Stripe event" state="implemented">
             <Target name="EventData" />
           </MethodExecute>
         </SequentialExecution>
@@ -70,11 +70,14 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
+          <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
+            <Parameter name="PaymentToken" />
+          </MethodExecute>
           <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
           <TargetDefinition name="CustomerAccount" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
             <Target name="AccountID" />
           </TargetDefinition>
-          <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
+          <MethodExecute name="UpdateStripeCustomerData" asyncSupportMode="AsyncOnly" designDesc="Update Stripe customer data from payment info" state="implemented">
             <Parameter name="PaymentToken" />
             <Target name="CustomerAccount" />
           </MethodExecute>
@@ -84,7 +87,7 @@
           <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
             <Parameter name="PaymentToken" />
           </TargetDefinition>
-          <MethodExecute name="ValidateStripePlanName" designDesc="Validate plan name from Stripe" state="implemented">
+          <MethodExecute name="ValidateStripePlanName" asyncSupportMode="AsyncOnly" designDesc="Validate plan name from Stripe" state="implemented">
             <Target name="PlanName" />
           </MethodExecute>
           <TargetDefinition name="CustomersActiveSubscriptions" asyncSupportMode="AsyncOnly" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented">
@@ -127,7 +130,7 @@
             <Target name="PaymentToken" />
           </MethodExecute>
           <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
-          <TargetDefinition name="CustomerAccount" dataType="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
+          <TargetDefinition name="CustomerAccount" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented">
             <Target name="AccountID" />
           </TargetDefinition>
           <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented">
@@ -169,7 +172,7 @@
           <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented">
             <Target name="CustomerAccount" />
           </MethodExecute>
-          <OperationExecute name="GrantAccessToPaidPlan" targetOperationName="SyncEffectivePlanAccessesToAccount" designDesc="Grant access to paid plan" state="implemented">
+          <OperationExecute name="GrantAccessToPaidPlan" asyncSupportMode="AsyncOnly" targetOperationName="SyncEffectivePlanAccessesToAccount" designDesc="Grant access to paid plan" state="implemented">
             <Target name="AccountID" />
           </OperationExecute>
         </SequentialExecution>
@@ -193,7 +196,7 @@
             <Target name="PlanName" />
             <Target name="CustomerAccount" />
           </MethodExecute>
-          <OperationExecute name="RevokeAccessFromCanceledPlan" targetOperationName="SyncEffectivePlanAccessesToAccount" designDesc="Revoke access to canceled plan" state="implemented">
+          <OperationExecute name="RevokeAccessFromCanceledPlan" asyncSupportMode="AsyncOnly" targetOperationName="SyncEffectivePlanAccessesToAccount" designDesc="Revoke access to canceled plan" state="implemented">
             <Target name="AccountID" />
           </OperationExecute>
         </SequentialExecution>
@@ -208,7 +211,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Customer account" state="implemented">
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account" state="implemented">
             <Parameter name="AccountID" />
           </TargetDefinition>
           <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">

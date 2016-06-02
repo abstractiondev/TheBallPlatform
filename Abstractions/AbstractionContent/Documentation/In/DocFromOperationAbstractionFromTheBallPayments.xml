@@ -36,6 +36,13 @@
                 </Table>
               </Paragraph>
             </Header>
+            <Header text="Method Call: ValidateMatchingEmail ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that account active email matches payment token email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Target Definition: AccountID" level="2">
               <Paragraph>
                 <Text>

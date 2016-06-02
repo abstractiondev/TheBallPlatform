@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Stripe;
 using TheBall.CORE;
@@ -31,7 +32,7 @@ namespace TheBall.Payments
             }
         }
 
-        public static void ExecuteMethod_ProcessStripeEvent(StripeEvent eventData)
+        public static async Task ExecuteMethod_ProcessStripeEventAsync(StripeEvent eventData)
         {
             if (eventData == null)
                 return;
@@ -52,7 +53,7 @@ namespace TheBall.Payments
                     if (account != null)
                     {
                         string accountID = output.ResultAccount.ID;
-                        var accountRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRAccountRoot>(accountID);
+                        var accountRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRAccountRoot>(accountID);
                         var currAccount = accountRoot.Account;
                         string accountName;
                         string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
@@ -62,7 +63,7 @@ namespace TheBall.Payments
                         accountName = accountName.Trim();
                         InformationContext.Current.Account = new CoreAccountData(accountID,
                             accountName, accountEmail);
-                        SyncEffectivePlanAccessesToAccount.Execute(new SyncEffectivePlanAccessesToAccountParameters
+                        await SyncEffectivePlanAccessesToAccount.ExecuteAsync(new SyncEffectivePlanAccessesToAccountParameters
                         {
                             AccountID = accountID
                         });
