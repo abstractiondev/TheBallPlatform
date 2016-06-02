@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstractions", "Abstractions", "{D0EF7B40-E356-470F-886A-5AB58C98950A}"
 EndProject
@@ -37,6 +37,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlatformCoreTests", "Tests\PlatformCoreTests\PlatformCoreTests.csproj", "{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B8D540D-11A2-41E7-AFA5-C034A1D9F633}"
+	ProjectSection(SolutionItems) = preProject
+		Build.testsettings = Build.testsettings
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
