@@ -86,6 +86,7 @@ namespace PlatformCoreTests
 
 
         [TestMethod]
+        [Ignore]
         public void InsertAndRetrieveCollectionTest()
         {
             var ctx = new PAY.TheBallDataContext(new SQLiteConnection("Data Source=:memory:"));
