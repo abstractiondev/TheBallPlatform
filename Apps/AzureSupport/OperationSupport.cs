@@ -74,7 +74,24 @@ namespace TheBall
             var executeMethodAsync = operationType.GetMethod("ExecuteAsync");
             if(executeMethod == null && executeMethodAsync == null)
                 throw new InvalidDataException("Operationg Execute(Async) method is missing - cannot execute: " + operationName);
-            LogicalOperationContext.SetCurrentContext(reqData);
+            await LogicalOperationContext.SetCurrentContext(reqData, async (initialOwner, executingOwner) =>
+            {
+                InformationContext.Current.OwnerStack.Push(executingOwner);
+                if (initialOwner.IsAccountContainer())
+                {
+                    string accountID = initialOwner.LocationPrefix;
+                    var accountRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRAccountRoot>(accountID);
+                    var currAccount = accountRoot.Account;
+                    string accountName;
+                    string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
+                    if (accountEmail == null)
+                        accountEmail = "";
+                    accountName = accountEmail;
+                    accountName = accountName.Trim();
+                    InformationContext.Current.Account = new CoreAccountData(accountID,
+                        accountName, accountEmail);
+                }
+            });
             try
             {
                 object[] paramObjs = null;
@@ -96,7 +113,10 @@ namespace TheBall
             }
             finally
             {
-                LogicalOperationContext.ReleaseCurrentContext();
+                await LogicalOperationContext.ReleaseCurrentContext(async (initialOwner, executingOwner) =>
+                {
+                    InformationContext.Current.OwnerStack.Pop();
+                });
             }
 
 

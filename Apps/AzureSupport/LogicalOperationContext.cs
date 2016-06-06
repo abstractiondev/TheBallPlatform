@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AzureSupport;
 using AzureSupport.TheBall.CORE;
+using TheBall.CORE;
 
 namespace TheBall
 {
@@ -28,23 +29,47 @@ namespace TheBall
 
         public readonly HttpOperationData HttpParameters;
 
-        public static void SetCurrentContext(HttpOperationData httpOperationData)
+        public static async Task SetCurrentContext(HttpOperationData httpOperationData, BeginImpersonation beginImpersonation)
         {
             var loCtx = new LogicalOperationContext(httpOperationData);
+            if (loCtx.IsImpersonating)
+            {
+                await beginImpersonation(loCtx.InitialOwner, loCtx.ExecutingOwner);
+            }
             loCtx.setInitializeFinalizingActions(InformationContext.Current.OperationFinalizingActions);
             InformationContext.Current.LogicalOperationContext = loCtx;
-
         }
 
-        public static void ReleaseCurrentContext()
+        public static async Task ReleaseCurrentContext(EndImpersonation endImpersonation)
         {
+            if (Current.IsImpersonating)
+            {
+                await endImpersonation(Current.InitialOwner, Current.ExecutingOwner);
+            }
             InformationContext.Current.LogicalOperationContext = null;
         }
+
+        public delegate Task BeginImpersonation(IContainerOwner initialOwner, IContainerOwner executingOwner);
+        public delegate Task EndImpersonation(IContainerOwner initialOwner, IContainerOwner executingOwner);
 
         private LogicalOperationContext(HttpOperationData httpOperationData)
         {
             HttpParameters = httpOperationData;
+            var initialOwner = InformationContext.CurrentOwner;
+            var executingOwner = VirtualOwner.FigureOwner(httpOperationData.OwnerRootLocation);
+            bool isImpersonating = !executingOwner.IsSameOwner(initialOwner);
+            IsImpersonating = isImpersonating;
+            if (isImpersonating)
+            {
+                InitialOwner = initialOwner;
+                ExecutingOwner = executingOwner;
+            }
         }
+
+        private readonly IContainerOwner InitialOwner;
+        private readonly IContainerOwner ExecutingOwner;
+
+        public readonly bool IsImpersonating;
 
         private void setInitializeFinalizingActions(FinalizingDependencyAction[] finalizingActions)
         {

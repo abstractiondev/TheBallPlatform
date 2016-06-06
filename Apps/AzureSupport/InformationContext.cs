@@ -269,7 +269,7 @@ namespace TheBall
             get { return _account; }
         }
 
-        private readonly Stack<IContainerOwner> OwnerStack;
+        internal readonly Stack<IContainerOwner> OwnerStack;
         public IContainerOwner Owner => OwnerStack.Peek();
 
         private DeviceMembership _executingForDevice;

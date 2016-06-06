@@ -33,7 +33,7 @@ namespace TheBall.Payments
                 customerAccount = new CustomerAccount();
                 customerAccount.ID = accountId;
                 customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
-                StripeCustomerService stripeCustomerService = new StripeCustomerService();
+                StripeCustomerService stripeCustomerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
                 var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
                 {
                     Email = accountEmail
@@ -46,7 +46,7 @@ namespace TheBall.Payments
 
         public static async Task ExecuteMethod_UpdateStripeCustomerDataAsync(PaymentToken paymentToken, CustomerAccount customerAccount)
         {
-            StripeCustomerService customerService = new StripeCustomerService();
+            StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
             var customer = await customerService.GetAsync(customerAccount.StripeID);
             if (!customer.Metadata.ContainsKey("business_type"))
                 customer.Metadata.Add("business_type", "B2C");
@@ -70,7 +70,7 @@ namespace TheBall.Payments
 
         public static async Task ExecuteMethod_ValidateStripePlanNameAsync(string planName)
         {
-            var planService = new StripePlanService();
+            var planService = new StripePlanService(SecureConfig.Current.StripeSecretKey);
             var stripePlan = await planService.GetAsync(planName);
             if (stripePlan == null)
                 throw new InvalidDataException("Stripe plan not found: " + planName);
@@ -78,7 +78,7 @@ namespace TheBall.Payments
 
         public static async Task<StripeSubscription[]> GetTarget_CustomersActiveSubscriptionsAsync(string stripeCustomerID)
         {
-            StripeSubscriptionService subscriptionService = new StripeSubscriptionService();
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
             var stripeList = await subscriptionService.ListAsync(stripeCustomerID);
             return stripeList.ToArray();
         }
@@ -99,7 +99,7 @@ namespace TheBall.Payments
             if (!customerHasPlanAlready)
             {
                 var customerID = stripeCustomerId;
-                var subscriptionService = new StripeSubscriptionService();
+                var subscriptionService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
                 var cardInfo = paymentToken.card;
                 var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions
                 {
@@ -146,7 +146,8 @@ namespace TheBall.Payments
 
         public static void ExecuteMethod_ValidateMatchingEmail(PaymentToken paymentToken)
         {
-            throw new System.NotImplementedException();
+            //if (paymentToken.email.ToLower() != InformationContext.CurrentAccount.AccountEmail.ToLower())
+            //    throw new SecurityException("Account email and payment email mismatch");
         }
 
     }
