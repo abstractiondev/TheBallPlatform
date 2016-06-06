@@ -813,7 +813,8 @@ namespace WebInterface
             string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string LocalGroupControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanel\";
             //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount_iZENZEi\";
-            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\IZHelsinki\helsinkitempl\WebTemplates\AccountTemplate\";
+            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\Kuubiiz\memberstempl\WebTemplates\AccountTemplate\";
+            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\IZHelsinki\helsinkitempl\WebTemplates\AccountTemplate\";
             //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount\";
             string LocalOIPControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
