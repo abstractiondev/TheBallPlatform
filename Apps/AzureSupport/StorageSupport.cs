@@ -69,6 +69,15 @@ namespace TheBall
             }
         }
 
+        public static async Task<byte[]> DownloadByteArrayAsync(this CloudBlockBlob blob)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                await blob.DownloadToStreamAsync(memStream);
+                return memStream.ToArray();
+            }
+        }
+
         public static void UploadByteArray(this CloudBlockBlob blob, byte[] data)
         {
             blob.UploadFromByteArray(data, 0, data.Length);

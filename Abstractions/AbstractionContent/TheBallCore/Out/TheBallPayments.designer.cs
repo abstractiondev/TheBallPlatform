@@ -89,6 +89,22 @@ namespace INT {
 				public string last4 { get; set; }
 			}
 
+			[DataContract]
+			public partial class CustomerActivePlans
+			{
+				[DataMember]
+				public PlanStatus[] PlanStatuses { get; set; }
+			}
+
+			[DataContract]
+			public partial class PlanStatus
+			{
+				[DataMember]
+				public string name { get; set; }
+				[DataMember]
+				public DateTime validuntil { get; set; }
+			}
+
  } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)

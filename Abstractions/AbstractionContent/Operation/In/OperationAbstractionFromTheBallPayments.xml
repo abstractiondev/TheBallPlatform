@@ -234,10 +234,15 @@
             <Parameter name="AccountID" />
             <Target name="GroupsToRevokeAccessFrom" />
           </MethodExecute>
-          <MethodExecute name="SyncCurrentStripePlansToAccount" designDesc="Sync current Stripe plans to account" state="implemented">
+          <MethodExecute name="SyncCurrentStripePlansToAccount" asyncSupportMode="AsyncOnly" designDesc="Sync current Stripe plans to account" state="implemented">
             <Target name="Account" />
             <Target name="CurrentPlansBeforeSync" />
             <Target name="ActivePlansFromStripe" />
+            <ReturnValue name="ActiveStatuses" dataType="SubscriptionPlanStatus[]" designDesc="Active statuses after sync" state="implemented" />
+          </MethodExecute>
+          <MethodExecute name="UpdateStatusesOnAccount" asyncSupportMode="AsyncOnly" designDesc="Update statuses on account interface object" state="implemented">
+            <Parameter name="AccountID" />
+            <Target name="SyncCurrentStripePlansToAccountOutput" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

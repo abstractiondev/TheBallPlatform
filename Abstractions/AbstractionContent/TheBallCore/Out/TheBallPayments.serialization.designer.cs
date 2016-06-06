@@ -70,6 +70,22 @@ namespace INT {
 				public string last4 { get; set; }
 			}
 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class CustomerActivePlans
+			{
+				[DataMember]
+				public PlanStatus[] PlanStatuses { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class PlanStatus
+			{
+				[DataMember]
+				public string name { get; set; }
+				[DataMember]
+				public DateTime validuntil { get; set; }
+			}
+
  }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 
 			[Serializable]
 			public partial class GroupSubscriptionPlanCollection 

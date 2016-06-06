@@ -4,8 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using Stripe;
+using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
+using TheBall.Payments.INT;
 
 namespace TheBall.Payments
 {
@@ -123,15 +126,14 @@ namespace TheBall.Payments
             }
         }
 
-        public static void ExecuteMethod_SyncCurrentStripePlansToAccount(CustomerAccount account, GroupSubscriptionPlan[] currentPlansBeforeSync, GroupSubscriptionPlan[] activePlansFromStripe)
+        public static async Task<SubscriptionPlanStatus[]> ExecuteMethod_SyncCurrentStripePlansToAccountAsync(CustomerAccount account, GroupSubscriptionPlan[] currentPlansBeforeSync, GroupSubscriptionPlan[] activePlansFromStripe)
         {
             var activePlanIDs = activePlansFromStripe.Select(plan => plan.PlanName).ToArray();
 
             var currentStatusIDs = account.ActivePlans;
             var currentStatuses =
                 currentStatusIDs.Select(
-                    statusID =>
-                        ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, statusID))
+                    statusID => ObjectStorage.RetrieveFromOwnerContent<SubscriptionPlanStatus>(InformationContext.CurrentOwner, statusID))
                     .Where(status => status != null).ToArray();
             var statusesToRemove =
                 currentStatuses.Where(status => activePlanIDs.All(planID => planID != status.SubscriptionPlan))
@@ -139,7 +141,7 @@ namespace TheBall.Payments
             var plansToAddStatusesFor =
                 activePlanIDs.Where(planID => currentStatuses.All(status => status.SubscriptionPlan != planID))
                     .ToArray();
-            foreach(var status in statusesToRemove)
+            foreach (var status in statusesToRemove)
                 status.DeleteInformationObject(InformationContext.CurrentOwner);
             List<string> addedStatusIDs = new List<string>();
             foreach (var planToAddStatus in plansToAddStatusesFor)
@@ -147,7 +149,7 @@ namespace TheBall.Payments
                 SubscriptionPlanStatus planStatus = new SubscriptionPlanStatus();
                 planStatus.SetLocationAsOwnerContent(InformationContext.CurrentOwner, planStatus.ID);
                 planStatus.SubscriptionPlan = planToAddStatus;
-                planStatus.StoreInformation(InformationContext.CurrentOwner);
+                await planStatus.StoreInformationAsync(InformationContext.CurrentOwner);
                 addedStatusIDs.Add(planStatus.ID);
             }
 
@@ -155,8 +157,38 @@ namespace TheBall.Payments
             account.ActivePlans.RemoveAll(
                 removedPlan => statusesToRemove.Any(status => status.ID == removedPlan));
             account.ActivePlans.AddRange(addedStatusIDs);
-            account.StoreInformation(InformationContext.CurrentOwner);
+            await account.StoreInformationAsync(InformationContext.CurrentOwner);
+            return currentStatuses;
         }
 
+        public async static Task ExecuteMethod_UpdateStatusesOnAccountAsync(string accountID, SubscriptionPlanStatus[] syncCurrentStripePlansToAccountOutput)
+        {
+            // TODO: Sync to account InterfaceData
+            string objectName = "TheBall.Interface/InterfaceData/CustomerActivePlans.json";
+            var accountOwner = new VirtualOwner("acc", accountID);
+            var jsonBlob = StorageSupport.GetOwnerBlobReference(accountOwner, objectName);
+            CustomerActivePlans customerActivePlans = null;
+            try
+            {
+                var blobData = await jsonBlob.DownloadByteArrayAsync();
+                customerActivePlans = JSONSupport.GetObjectFromData<CustomerActivePlans>(blobData);
+            }
+            catch
+            {
+            }
+            if (customerActivePlans == null)
+            {
+                customerActivePlans = new CustomerActivePlans();
+            }
+            customerActivePlans.PlanStatuses =
+                syncCurrentStripePlansToAccountOutput.Select(
+                    item => new PlanStatus {name = item.SubscriptionPlan, validuntil = item.ValidUntil}).ToArray();
+            using (var memStream = new MemoryStream())
+            {
+                JSONSupport.SerializeToJSONStream(customerActivePlans, memStream);
+                var data = memStream.ToArray();
+                await jsonBlob.UploadFromByteArrayAsync(data, 0, data.Length);
+            }
+        }
     }
 }

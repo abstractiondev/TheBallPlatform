@@ -173,7 +173,8 @@ using System.Threading.Tasks;
 				string[] GroupsToRevokeAccessFrom = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToRevokeAccessFrom(GroupsToHaveAccessTo, CurrentGroupAccesses);	
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_GrantAccessToGroups(parameters.AccountID, GroupsToAddAccessTo);		
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_RevokeAccessFromGroups(parameters.AccountID, GroupsToRevokeAccessFrom);		
-				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_SyncCurrentStripePlansToAccount(Account, CurrentPlansBeforeSync, ActivePlansFromStripe);		
+				SubscriptionPlanStatus[] SyncCurrentStripePlansToAccountOutput =  await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_SyncCurrentStripePlansToAccountAsync(Account, CurrentPlansBeforeSync, ActivePlansFromStripe);		
+				 await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_UpdateStatusesOnAccountAsync(parameters.AccountID, SyncCurrentStripePlansToAccountOutput);		
 				}
 				}
 				public class GrantPaidAccessToGroupParameters 

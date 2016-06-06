@@ -114,4 +114,35 @@ using System.Runtime.Serialization;
 
 			
 			}
+			[DataContract]
+			public partial class CustomerActivePlans 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<PlanStatus> PlanStatuses= new List<PlanStatus>();
+
+			
+			}
+			[DataContract]
+			public partial class PlanStatus 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string name;
+
+			[DataMember]
+			public DateTime validuntil;
+
+			
+			}
  } 

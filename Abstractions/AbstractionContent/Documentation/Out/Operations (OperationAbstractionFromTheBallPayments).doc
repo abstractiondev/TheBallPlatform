@@ -767,6 +767,30 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Sync current Stripe plans to account
 		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ActiveStatuses
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		SubscriptionPlanStatus[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Active statuses after sync
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: UpdateStatusesOnAccount ( SyncCurrentStripePlansToAccountOutput, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Update statuses on account interface object
+		</div>
 		</p><h1>ValidatePlanContainingGroups (PlanName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
