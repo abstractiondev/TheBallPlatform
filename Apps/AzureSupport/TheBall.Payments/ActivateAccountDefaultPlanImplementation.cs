@@ -88,11 +88,6 @@ namespace TheBall.Payments
             return customersActiveSubscriptions.Select(sub => sub.StripePlan.Id).ToArray();
         }
 
-        public static void ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount customerAccount, string[] customersActivePlanNames)
-        {
-            customerAccount.ActivePlans = customersActivePlanNames.ToList();
-        }
-
         public static async Task ExecuteMethod_ProcessPaymentAsync(PaymentToken paymentToken, string stripeCustomerId, string planName, string[] customersActivePlanNames)
         {
             bool customerHasPlanAlready = customersActivePlanNames.Contains(planName);
@@ -102,36 +97,21 @@ namespace TheBall.Payments
                 var subscriptionService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
                 var cardInfo = paymentToken.card;
                 var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions
-                {
+                { 
                     Card = new StripeCreditCardOptions
                     {
-                        AddressCity = cardInfo.address_city,
-                        AddressCountry = cardInfo.address_country,
-                        AddressLine1 = cardInfo.address_line1,
-                        Name = cardInfo.name,
-                        AddressZip = cardInfo.address_zip,
-                        Cvc = cardInfo.cvc_check,
-                        ExpirationMonth = cardInfo.exp_month,
-                        ExpirationYear = cardInfo.exp_year,
+                        //AddressCity = cardInfo.address_city,
+                        //AddressCountry = cardInfo.address_country,
+                        //AddressLine1 = cardInfo.address_line1,
+                        //Name = cardInfo.name,
+                        //AddressZip = cardInfo.address_zip,
+                        //Cvc = cardInfo.cvc_check,
+                        //ExpirationMonth = cardInfo.exp_month,
+                        //ExpirationYear = cardInfo.exp_year,
                         TokenId = paymentToken.id
                     },
-                    /*
-                    CardName = cardInfo.name,
-                    CardAddressCity = cardInfo.address_city,
-                    CardAddressCountry = cardInfo.address_country,
-                    CardAddressLine1 = cardInfo.address_line1,
-                    CardAddressZip = cardInfo.address_zip,
-                    CardExpirationMonth = cardInfo.exp_month,
-                    CardExpirationYear = cardInfo.exp_year,
-                    TokenId = paymentToken.id,*/
                 });
             }
-        }
-
-        public static void ExecuteMethod_AddPlanAsActiveToCustomer(CustomerAccount customerAccount, string planName)
-        {
-            if (!customerAccount.ActivePlans.Contains(planName))
-                customerAccount.ActivePlans.Add(planName);
         }
 
         public static async Task ExecuteMethod_StoreObjectsAsync(CustomerAccount customerAccount)

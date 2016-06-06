@@ -88,9 +88,7 @@ using System.Threading.Tasks;
 				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName);		
 				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
 				string[] CustomersActivePlanNames = ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActivePlanNames(CustomersActiveSubscriptions);	
-				ActivateAccountDefaultPlanImplementation.ExecuteMethod_SyncCurrentCustomerActivePlans(CustomerAccount, CustomersActivePlanNames);		
 				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, PlanName, CustomersActivePlanNames);		
-				ActivateAccountDefaultPlanImplementation.ExecuteMethod_AddPlanAsActiveToCustomer(CustomerAccount, PlanName);		
 				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				
 		{ // Local block to allow local naming

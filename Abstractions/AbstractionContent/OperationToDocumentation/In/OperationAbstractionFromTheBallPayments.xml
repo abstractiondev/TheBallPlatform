@@ -96,19 +96,11 @@
           <TargetDefinition name="CustomersActivePlanNames" dataType="string[]" designDesc="Customer's active plan names" state="implemented">
             <Target name="CustomersActiveSubscriptions" />
           </TargetDefinition>
-          <MethodExecute name="SyncCurrentCustomerActivePlans" designDesc="Sync current plans to customer account" state="implemented">
-            <Target name="CustomerAccount" />
-            <Target name="CustomersActivePlanNames" />
-          </MethodExecute>
           <MethodExecute name="ProcessPayment" asyncSupportMode="AsyncOnly" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented">
             <Parameter name="PaymentToken" />
             <Target name="StripeCustomerID" />
             <Target name="PlanName" />
             <Target name="CustomersActivePlanNames" />
-          </MethodExecute>
-          <MethodExecute name="AddPlanAsActiveToCustomer" designDesc="Add plan to customer if missing (and thus payment was processed)" state="implemented">
-            <Target name="CustomerAccount" />
-            <Target name="PlanName" />
           </MethodExecute>
           <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
             <Target name="CustomerAccount" />

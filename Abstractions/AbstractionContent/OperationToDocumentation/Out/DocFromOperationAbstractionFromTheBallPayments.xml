@@ -99,24 +99,10 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SyncCurrentCustomerActivePlans ( CustomerAccount, CustomersActivePlanNames )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Sync current plans to customer account</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
             <Header text="Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentToken )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe, if lacking with current plan/subscription</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Method Call: AddPlanAsActiveToCustomer ( CustomerAccount, PlanName )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Add plan to customer if missing (and thus payment was processed)</TextContent>
                 </Text>
               </Paragraph>
             </Header>

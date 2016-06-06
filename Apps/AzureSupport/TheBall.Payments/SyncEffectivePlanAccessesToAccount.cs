@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Stripe;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.Payments
 {
@@ -22,7 +23,7 @@ namespace TheBall.Payments
             {
                 //result.GroupIDs.Add("e710a1f8-94a3-4d38-85df-193936624ce4");
                 //result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc"); // test.theball.me
-                result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4"); // members.onlinetaekwondo.net
+                //result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4"); // members.onlinetaekwondo.net
             }
 
             return result;
@@ -49,7 +50,7 @@ namespace TheBall.Payments
 
         public static GroupSubscriptionPlan[] GetTarget_ActivePlansFromStripe(CustomerAccount account)
         {
-            StripeCustomerService customerService = new StripeCustomerService();
+            StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
             StripeCustomer stripeCustomer = customerService.Get(account.StripeID);
             if (stripeCustomer == null)
                 return new GroupSubscriptionPlan[0];
