@@ -722,10 +722,17 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ActivePlansFromStripe ( Account )" level="2">
+            <Header text="Target Definition: ActivePlanStatusesFromStripe ( Account )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Group subscription plans of account - fetched from Stripe.</TextContent>
+                  <TextContent>Plan statuses of account - fetched from Stripe.</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ActivePlansFromStripe ( ActivePlanStatusesFromStripe )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group subscription plans - based on Stripe accounts.</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -777,30 +784,8 @@
                   <TextContent>Sync current Stripe plans to account</TextContent>
                 </Text>
               </Paragraph>
-              <Paragraph>
-                <Table>
-                  <Columns>
-                    <Column name="Output value field" />
-                    <Column name="DataType" />
-                    <Column name="Description" />
-                  </Columns>
-                  <Rows>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>ActiveStatuses</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>SubscriptionPlanStatus[]</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Active statuses after sync</TextContent>
-                      </ColumnData>
-                    </Row>
-                  </Rows>
-                </Table>
-              </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateStatusesOnAccount ( SyncCurrentStripePlansToAccountOutput, AccountID )" level="2">
+            <Header text="Method Call: UpdateStatusesOnAccount ( ActivePlanStatusesFromStripe, AccountID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Update statuses on account interface object</TextContent>

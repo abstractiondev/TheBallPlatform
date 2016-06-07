@@ -51,16 +51,24 @@ namespace TheBall.Payments
             return plans;
         }
 
-        public static GroupSubscriptionPlan[] GetTarget_ActivePlansFromStripe(CustomerAccount account)
+        public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account)
         {
             StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
-            StripeCustomer stripeCustomer = customerService.Get(account.StripeID);
+            StripeCustomer stripeCustomer = await customerService.GetAsync(account.StripeID);
             if (stripeCustomer == null)
-                return new GroupSubscriptionPlan[0];
-            var stripePlans =
-                stripeCustomer.StripeSubscriptionList.Data.Select(stripeSub => stripeSub.StripePlan)
+                return new PlanStatus[0];
+            var stripeSubs =
+                stripeCustomer.StripeSubscriptionList.Data
+                    .Select(stripeSub => new {Plan = stripeSub.StripePlan, Subscription = stripeSub})
                     .ToArray();
-            var plans = stripePlans.Select(stripePlan => GetGroupSubscriptionPlan(stripePlan.Id)).ToArray();
+            var plans = stripeSubs.Select(stripeSub => new PlanStatus() { name = stripeSub.Plan.Id, validuntil = stripeSub.Subscription.CurrentPeriodEnd.GetValueOrDefault(DateTime.MaxValue)}).ToArray();
+            return plans;
+        }
+
+
+        public static GroupSubscriptionPlan[] GetTarget_ActivePlansFromStripe(PlanStatus[] activePlanStatusesFromStripe)
+        {
+            var plans = activePlanStatusesFromStripe.Select(stripePlan => GetGroupSubscriptionPlan(stripePlan.name)).ToArray();
             return plans;
         }
 
@@ -161,28 +169,15 @@ namespace TheBall.Payments
             return currentStatuses;
         }
 
-        public async static Task ExecuteMethod_UpdateStatusesOnAccountAsync(string accountID, SubscriptionPlanStatus[] syncCurrentStripePlansToAccountOutput)
+        public async static Task ExecuteMethod_UpdateStatusesOnAccountAsync(string accountID, PlanStatus[] activePlanStatusesFromStripe)
         {
             // TODO: Sync to account InterfaceData
             string objectName = "TheBall.Interface/InterfaceData/CustomerActivePlans.json";
             var accountOwner = new VirtualOwner("acc", accountID);
             var jsonBlob = StorageSupport.GetOwnerBlobReference(accountOwner, objectName);
-            CustomerActivePlans customerActivePlans = null;
-            try
-            {
-                var blobData = await jsonBlob.DownloadByteArrayAsync();
-                customerActivePlans = JSONSupport.GetObjectFromData<CustomerActivePlans>(blobData);
-            }
-            catch
-            {
-            }
-            if (customerActivePlans == null)
-            {
-                customerActivePlans = new CustomerActivePlans();
-            }
+            var customerActivePlans = new CustomerActivePlans();
             customerActivePlans.PlanStatuses =
-                syncCurrentStripePlansToAccountOutput.Select(
-                    item => new PlanStatus {name = item.SubscriptionPlan, validuntil = item.ValidUntil}).ToArray();
+                activePlanStatusesFromStripe;
             using (var memStream = new MemoryStream())
             {
                 JSONSupport.SerializeToJSONStream(customerActivePlans, memStream);
@@ -190,5 +185,6 @@ namespace TheBall.Payments
                 await jsonBlob.UploadFromByteArrayAsync(data, 0, data.Length);
             }
         }
+
     }
 }

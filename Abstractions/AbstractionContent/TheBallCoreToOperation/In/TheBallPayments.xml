@@ -297,8 +297,11 @@
             <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
               <Target name="Account"/>
             </TargetDefinition>
-            <TargetDefinition name="ActivePlansFromStripe" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans of account - fetched from Stripe." state="implemented">
+            <TargetDefinition name="ActivePlanStatusesFromStripe" dataType="INT.PlanStatus[]" designDesc="Plan statuses of account - fetched from Stripe." state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Account"/>
+            </TargetDefinition>
+            <TargetDefinition name="ActivePlansFromStripe" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans - based on Stripe accounts." state="implemented">
+              <Target name="ActivePlanStatusesFromStripe"/>
             </TargetDefinition>
             <TargetDefinition name="GroupsToHaveAccessTo" dataType="string[]" designDesc="Group IDs of having access to" state="implemented">
               <Target name="ActivePlansFromStripe"/>
@@ -326,11 +329,10 @@
               <Target name="Account"/>
               <Target name="CurrentPlansBeforeSync"/>
               <Target name="ActivePlansFromStripe"/>
-              <ReturnValue dataType="SubscriptionPlanStatus[]" name="ActiveStatuses" designDesc="Active statuses after sync" state="implemented"/>
             </MethodExecute>
             <MethodExecute name="UpdateStatusesOnAccount" designDesc="Update statuses on account interface object" asyncSupportMode="AsyncOnly" state="implemented">
               <Parameter name="AccountID"/>
-              <Target name="SyncCurrentStripePlansToAccountOutput"/>
+              <Target name="ActivePlanStatusesFromStripe"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>

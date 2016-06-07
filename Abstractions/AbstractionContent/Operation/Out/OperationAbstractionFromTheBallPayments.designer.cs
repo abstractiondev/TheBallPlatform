@@ -166,15 +166,16 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					CustomerAccount Account =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
 				GroupSubscriptionPlan[] CurrentPlansBeforeSync = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSync(Account);	
-				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(Account);	
+				INT.PlanStatus[] ActivePlanStatusesFromStripe =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlanStatusesFromStripeAsync(Account);	
+				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(ActivePlanStatusesFromStripe);	
 				string[] GroupsToHaveAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToHaveAccessTo(ActivePlansFromStripe);	
 				string[] CurrentGroupAccesses = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentGroupAccesses(CurrentPlansBeforeSync);	
 				string[] GroupsToAddAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToAddAccessTo(GroupsToHaveAccessTo, CurrentGroupAccesses);	
 				string[] GroupsToRevokeAccessFrom = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToRevokeAccessFrom(GroupsToHaveAccessTo, CurrentGroupAccesses);	
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_GrantAccessToGroups(parameters.AccountID, GroupsToAddAccessTo);		
 				SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_RevokeAccessFromGroups(parameters.AccountID, GroupsToRevokeAccessFrom);		
-				SubscriptionPlanStatus[] SyncCurrentStripePlansToAccountOutput =  await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_SyncCurrentStripePlansToAccountAsync(Account, CurrentPlansBeforeSync, ActivePlansFromStripe);		
-				 await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_UpdateStatusesOnAccountAsync(parameters.AccountID, SyncCurrentStripePlansToAccountOutput);		
+				 await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_SyncCurrentStripePlansToAccountAsync(Account, CurrentPlansBeforeSync, ActivePlansFromStripe);		
+				 await SyncEffectivePlanAccessesToAccountImplementation.ExecuteMethod_UpdateStatusesOnAccountAsync(parameters.AccountID, ActivePlanStatusesFromStripe);		
 				}
 				}
 				public class GrantPaidAccessToGroupParameters 
