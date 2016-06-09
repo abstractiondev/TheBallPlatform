@@ -388,7 +388,7 @@ namespace WebInterface
                                  OperationSupport.GetLegacyMappedType(operationName);
             if (operationType == null)
             {
-                EndResponseWithStatusCode(context, 404);
+                context.EndResponseWithStatusCode(404);
                 return;
             }
             operationName = operationType.FullName;
@@ -402,17 +402,8 @@ namespace WebInterface
             var response = context.Response;
             response.ContentType = "application/json";
             response.Write(String.Format("{{ \"OperationID\": \"{0}\" }}", operationID));
-            EndResponseWithStatusCode(context, 202);
+            context.EndResponseWithStatusCode(202);
             //EndResponseWithStatusCode(context, 200);
-        }
-
-        private static void EndResponseWithStatusCode(HttpContext context, int statusCode)
-        {
-            var response = context.Response;
-            response.StatusCode = statusCode;
-            response.Flush();
-            response.SuppressContent = true;
-            context.ApplicationInstance.CompleteRequest();
         }
 
         private async Task<bool> HandleOwnerPostRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)

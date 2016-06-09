@@ -9,6 +9,15 @@ namespace AzureSupport
 {
     public static class WebSupport
     {
+        public static void EndResponseWithStatusCode(this HttpContext context, int statusCode)
+        {
+            var response = context.Response;
+            response.StatusCode = statusCode;
+            response.Flush();
+            response.SuppressContent = true;
+            context.ApplicationInstance.CompleteRequest();
+        }
+
         public static string GetLoginUrl(IPrincipal identityPrincipal)
         {
             return identityPrincipal.Identity.Name;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Stripe;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 using TheBall.Payments.INT;
 
 namespace TheBall.Payments
@@ -23,7 +24,7 @@ namespace TheBall.Payments
             {
                 if (eventID == null)
                     return null;
-                StripeEventService service = new StripeEventService();
+                StripeEventService service = new StripeEventService(SecureConfig.Current.StripeSecretKey);
                 return service.Get(eventID);
             }
             catch

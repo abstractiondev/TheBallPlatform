@@ -45,7 +45,7 @@ namespace TheBall.Interface
         {
             string content = String.Join(Environment.NewLine,
                 new string[]
-                {operationID, invokerAccount.AccountID, invokerAccount.AccountEmail, invokerAccount.AccountName});
+                {operationID, invokerAccount?.AccountID, invokerAccount?.AccountEmail, invokerAccount?.AccountName});
             StorageSupport.CurrActiveContainer.UploadBlobText(queueItemFullPath, content);
         }
 
@@ -53,7 +53,7 @@ namespace TheBall.Interface
         {
             string content = String.Join(Environment.NewLine,
                 new string[]
-                {operationID, invokerAccount.AccountID, invokerAccount.AccountEmail, invokerAccount.AccountName});
+                {operationID, invokerAccount?.AccountID, invokerAccount?.AccountEmail, invokerAccount?.AccountName});
             await StorageSupport.CurrActiveContainer.UploadBlobTextAsync(queueItemFullPath, content);
         }
     }
