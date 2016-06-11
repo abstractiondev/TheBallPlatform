@@ -8366,9 +8366,11 @@ namespace INT {
 				{
 					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
+					OpenArticleTitle = sourceObject.OpenArticleTitle;
 					SubTitle = sourceObject.SubTitle;
 					Published = sourceObject.Published;
 					Author = sourceObject.Author;
+					ArticleImage = sourceObject.ArticleImage;
 					Excerpt = sourceObject.Excerpt;
 					Body = sourceObject.Body;
 					Locations = sourceObject.Locations;
@@ -8388,6 +8390,9 @@ namespace INT {
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			[DataMember] 
+			public string OpenArticleTitle { get; set; }
+			private string _unmodified_OpenArticleTitle;
+			[DataMember] 
 			public string SubTitle { get; set; }
 			private string _unmodified_SubTitle;
 			[DataMember] 
@@ -8396,6 +8401,9 @@ namespace INT {
 			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
+			[DataMember] 
+			public MediaContent ArticleImage { get; set; }
+			private MediaContent _unmodified_ArticleImage;
 			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;

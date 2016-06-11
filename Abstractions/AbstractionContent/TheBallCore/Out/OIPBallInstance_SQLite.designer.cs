@@ -1267,9 +1267,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.ImageDataID = null;
 		            existingObject.Title = serializedObject.Title;
+		            existingObject.OpenArticleTitle = serializedObject.OpenArticleTitle;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
+					if(serializedObject.ArticleImage != null)
+						existingObject.ArticleImageID = serializedObject.ArticleImage.ID;
+					else
+						existingObject.ArticleImageID = null;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -2579,9 +2584,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						existingObject.ImageDataID = null;
 		            existingObject.Title = serializedObject.Title;
+		            existingObject.OpenArticleTitle = serializedObject.OpenArticleTitle;
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
+					if(serializedObject.ArticleImage != null)
+						existingObject.ArticleImageID = serializedObject.ArticleImage.ID;
+					else
+						existingObject.ArticleImageID = null;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -3890,9 +3900,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ImageDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.OpenArticleTitle = serializedObject.OpenArticleTitle;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
+					if(serializedObject.ArticleImage != null)
+						objectToAdd.ArticleImageID = serializedObject.ArticleImage.ID;
+					else
+						objectToAdd.ArticleImageID = null;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -5203,9 +5218,14 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 					else
 						objectToAdd.ImageDataID = null;
 		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.OpenArticleTitle = serializedObject.OpenArticleTitle;
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
+					if(serializedObject.ArticleImage != null)
+						objectToAdd.ArticleImageID = serializedObject.ArticleImage.ID;
+					else
+						objectToAdd.ArticleImageID = null;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -12258,9 +12278,11 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 , 
 [ImageDataID] TEXT NULL, 
 [Title] TEXT NOT NULL, 
+[OpenArticleTitle] TEXT NOT NULL, 
 [SubTitle] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
+[ArticleImageID] TEXT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
 [LocationsID] TEXT NULL, 
@@ -12281,6 +12303,11 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 
 		[Column]
         [ScaffoldColumn(true)]
+		public string OpenArticleTitle { get; set; }
+		// private string _unmodified_OpenArticleTitle;
+
+		[Column]
+        [ScaffoldColumn(true)]
 		public string SubTitle { get; set; }
 		// private string _unmodified_SubTitle;
 
@@ -12293,6 +12320,8 @@ CREATE TABLE IF NOT EXISTS [TextContent](
         [ScaffoldColumn(true)]
 		public string Author { get; set; }
 		// private string _unmodified_Author;
+			[Column]
+			public string ArticleImageID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -12341,6 +12370,8 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 		
 			if(Title == null)
 				Title = string.Empty;
+			if(OpenArticleTitle == null)
+				OpenArticleTitle = string.Empty;
 			if(SubTitle == null)
 				SubTitle = string.Empty;
 			if(Author == null)

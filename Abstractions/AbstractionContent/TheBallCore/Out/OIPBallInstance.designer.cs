@@ -37220,6 +37220,7 @@ Comment.CommentText
 				{
 					var result = new TextContent();
 					result.ImageData = MediaContent.CreateDefault();
+					result.ArticleImage = MediaContent.CreateDefault();
 					result.Locations = AddressAndLocationCollection.CreateDefault();
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
@@ -37235,10 +37236,13 @@ Comment.CommentText
 					result.ImageData = MediaContent.CreateDemoDefault();
 					result.Title = @"TextContent.Title";
 
+					result.OpenArticleTitle = @"TextContent.OpenArticleTitle";
+
 					result.SubTitle = @"TextContent.SubTitle";
 
 					result.Author = @"TextContent.Author";
 
+					result.ArticleImage = MediaContent.CreateDemoDefault();
 					result.Excerpt = @"TextContent.Excerpt
 TextContent.Excerpt
 TextContent.Excerpt
@@ -37282,6 +37286,10 @@ TextContent.RawHtmlContent
 						((IInformationObject) ImageData).UpdateCollections(masterInstance);
 					}
 
+					if(ArticleImage != null) {
+						((IInformationObject) ArticleImage).UpdateCollections(masterInstance);
+					}
+
 					if(masterInstance is AddressAndLocationCollection) {
 						AaltoGlobalImpact.OIP.CollectionUpdateImplementation.Update_TextContent_Locations(this, localCollection:Locations, masterCollection:(AddressAndLocationCollection) masterInstance);
 					} else if(Locations != null) {
@@ -37318,6 +37326,14 @@ TextContent.RawHtmlContent
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
+						IInformationObject item = ArticleImage;
+						if(item != null)
+						{
+							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
+						}
+					} // Scoping block end
+
+					{ // Scoping block for variable name reusability
 						IInformationObject item = Locations;
 						if(item != null)
 						{
@@ -37342,6 +37358,15 @@ TextContent.RawHtmlContent
 				{
 					{
 						var item = ImageData;
+						if(item != null)
+						{
+							object result = item.FindObjectByID(objectId);
+							if(result != null)
+								return result;
+						}
+					}
+					{
+						var item = ArticleImage;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37392,6 +37417,11 @@ TextContent.RawHtmlContent
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
+						var item = (IInformationObject) ArticleImage;
+						if(item != null)
+							item.CollectMasterObjectsFromTree(result, filterOnFalse);
+					}
+					{
 						var item = (IInformationObject) Locations;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
@@ -37411,11 +37441,15 @@ TextContent.RawHtmlContent
 							return true;
 						if(Title != _unmodified_Title)
 							return true;
+						if(OpenArticleTitle != _unmodified_OpenArticleTitle)
+							return true;
 						if(SubTitle != _unmodified_SubTitle)
 							return true;
 						if(Published != _unmodified_Published)
 							return true;
 						if(Author != _unmodified_Author)
+							return true;
+						if(ArticleImage != _unmodified_ArticleImage)
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
@@ -37433,6 +37467,15 @@ TextContent.RawHtmlContent
 							return true;
 						{
 							IInformationObject item = (IInformationObject) ImageData;
+							if(item != null) 
+							{
+								bool isItemTreeModified = item.IsInstanceTreeModified;
+								if(isItemTreeModified)
+									return true;
+							}
+						}
+						{
+							IInformationObject item = (IInformationObject) ArticleImage;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37473,6 +37516,14 @@ TextContent.RawHtmlContent
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
+					if(ArticleImage != null) {
+						if(ArticleImage.ID == replacingObject.ID)
+							ArticleImage = (MediaContent) replacingObject;
+						else {
+							IInformationObject iObject = ArticleImage;
+							iObject.ReplaceObjectInTree(replacingObject);
+						}
+					}
 					if(Locations != null) {
 						if(Locations.ID == replacingObject.ID)
 							Locations = (AddressAndLocationCollection) replacingObject;
@@ -37496,9 +37547,11 @@ TextContent.RawHtmlContent
 				{
 					ImageData = sourceObject.ImageData;
 					Title = sourceObject.Title;
+					OpenArticleTitle = sourceObject.OpenArticleTitle;
 					SubTitle = sourceObject.SubTitle;
 					Published = sourceObject.Published;
 					Author = sourceObject.Author;
+					ArticleImage = sourceObject.ArticleImage;
 					Excerpt = sourceObject.Excerpt;
 					Body = sourceObject.Body;
 					Locations = sourceObject.Locations;
@@ -37513,6 +37566,7 @@ TextContent.RawHtmlContent
 				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
 				{
 					_unmodified_Title = Title;
+					_unmodified_OpenArticleTitle = OpenArticleTitle;
 					_unmodified_SubTitle = SubTitle;
 					_unmodified_Published = Published;
 					_unmodified_Author = Author;
@@ -37525,6 +37579,10 @@ TextContent.RawHtmlContent
 					_unmodified_ImageData = ImageData;
 					if(ImageData != null)
 						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
+
+					_unmodified_ArticleImage = ArticleImage;
+					if(ArticleImage != null)
+						((IInformationObject) ArticleImage).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_Locations = Locations;
 					if(Locations != null)
@@ -37544,6 +37602,9 @@ TextContent.RawHtmlContent
 					{
 						case "Title":
 							Title = value;
+							break;
+						case "OpenArticleTitle":
+							OpenArticleTitle = value;
 							break;
 						case "SubTitle":
 							SubTitle = value;
@@ -37580,6 +37641,9 @@ TextContent.RawHtmlContent
 			public string Title { get; set; }
 			private string _unmodified_Title;
 			[DataMember] 
+			public string OpenArticleTitle { get; set; }
+			private string _unmodified_OpenArticleTitle;
+			[DataMember] 
 			public string SubTitle { get; set; }
 			private string _unmodified_SubTitle;
 			[DataMember] 
@@ -37588,6 +37652,9 @@ TextContent.RawHtmlContent
 			[DataMember] 
 			public string Author { get; set; }
 			private string _unmodified_Author;
+			[DataMember] 
+			public MediaContent ArticleImage { get; set; }
+			private MediaContent _unmodified_ArticleImage;
 			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;
