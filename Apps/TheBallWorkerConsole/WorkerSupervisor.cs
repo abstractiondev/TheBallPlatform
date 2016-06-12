@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.VisualBasic.Devices;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
@@ -18,6 +20,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         private readonly string ConfigRootFolder;
         private readonly Stream HostPollingStream;
         private readonly WorkerConsoleConfig WorkerConfig;
+        internal TelemetryClient AppInsightsClient { get; private set; }
 
         private WorkerSupervisor(Stream hostPollingStream, WorkerConsoleConfig workerConfig, string configRootFolder)
         {
@@ -40,6 +43,9 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             var infraConfigFullPath = Path.Combine(ConfigRootFolder, "InfraShared", "InfraConfig.json");
             await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
+            Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
+                InfraSharedConfig.Current.AppInsightInstrumentationKey;
+            AppInsightsClient = new TelemetryClient();
         }
 
         internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)
@@ -63,12 +69,18 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 var startupMessage = "Starting up process (UTC): " + DateTime.UtcNow.ToString() + " for instances: " +
                                      String.Join(", ", instanceNames);
                 File.WriteAllText(startupLogPath, startupMessage);
+                AppInsightsClient.TrackEvent("WorkerStartup", new Dictionary<string, string>
+                {
+                    { "Instances", String.Join(", ", instanceNames) }
+                });
 
                 var pipeMessageAwaitable = reader?.ReadToEndAsync();
 
                 bool keepWorkerRunning = true;
                 SemaphoreSlim throttlingSemaphore = new SemaphoreSlim(MaxParallelExecutingTasks);
-                var pollingTaskItems = instances.Select(instance => getPollingTaskItem(instance, throttlingSemaphore, dedicatedToOwner)).ToArray();
+                var pollingTaskItems =
+                    instances.Select(instance => getPollingTaskItem(instance, throttlingSemaphore, dedicatedToOwner))
+                        .ToArray();
                 List<Task> executingOperations = new List<Task>();
 
                 while (keepWorkerRunning)
@@ -87,9 +99,11 @@ namespace TheBall.Infra.TheBallWorkerConsole
                             .Where(item => item.Task.IsCompleted).ToArray();
                         executingOperations.RemoveAll(item => item.IsCompleted);
                         Task[] executionTasks =
-                            completedPollingTaskItems.Select(item => getOperationExecutionTask(item, throttlingSemaphore)).ToArray();
+                            completedPollingTaskItems.Select(
+                                item => getOperationExecutionTask(item, throttlingSemaphore)).ToArray();
                         executingOperations.AddRange(executionTasks);
-                        pollingTaskItems = refreshPollingTasks(pollingTaskItems, completedPollingTaskItems.Select(item => item.Task).ToArray());
+                        pollingTaskItems = refreshPollingTasks(pollingTaskItems,
+                            completedPollingTaskItems.Select(item => item.Task).ToArray());
                     }
                     else
                     {
@@ -110,6 +124,11 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         keepWorkerRunning = false;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                AppInsightsClient.TrackException(ex);
+                throw;
             }
             finally
             {
@@ -242,6 +261,17 @@ namespace TheBall.Infra.TheBallWorkerConsole
                             OperationIDs = operationIDs
                         });
                     //InformationContext.ProcessAndClearCurrentIfAvailable();
+                }
+                catch (Exception ex)
+                {
+                    var trackProperties = new Dictionary<string, string>
+                    {
+                        { "Instance", instanceName },
+                        { "Owner", lockedOwnerPrefix },
+                        { "OperationIDs", String.Join(", ", operationIDs) }
+                    };
+                    AppInsightsClient.TrackException(ex, trackProperties);
+                    throw;
                 }
                 finally
                 {

@@ -60,12 +60,19 @@ namespace TheBall.Infra.TheBallWorkerConsole
             string dedicatedToOwnerPrefix;
             parseDedicatedParts(dedicatedToOwner, out dedicatedToInstance, out dedicatedToOwnerPrefix);
 
-
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
             var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath);
-            await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
+            try
+            {
+                await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
+            }
+            catch (Exception ex)
+            {
+                supervisor.AppInsightsClient.TrackException(ex);
+                throw;
+            }
         }
 
         private static void parseDedicatedParts(string dedicatedToOwner, out string dedicatedToInstance, out string dedicatedToOwnerPrefix)
