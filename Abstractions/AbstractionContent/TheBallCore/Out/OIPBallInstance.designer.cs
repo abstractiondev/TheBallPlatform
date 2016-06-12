@@ -18647,6 +18647,8 @@ AccountRoles.OrganizationsImPartOf
 
 					result.Title = @"RenderedNode.Title";
 
+					result.OpenNodeTitle = @"RenderedNode.OpenNodeTitle";
+
 					result.ActualContentUrl = @"RenderedNode.ActualContentUrl";
 
 					result.Excerpt = @"RenderedNode.Excerpt
@@ -18865,6 +18867,8 @@ RenderedNode.Excerpt
 							return true;
 						if(Title != _unmodified_Title)
 							return true;
+						if(OpenNodeTitle != _unmodified_OpenNodeTitle)
+							return true;
 						if(ActualContentUrl != _unmodified_ActualContentUrl)
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
@@ -18989,6 +18993,7 @@ RenderedNode.Excerpt
 					ImageBaseUrl = sourceObject.ImageBaseUrl;
 					ImageExt = sourceObject.ImageExt;
 					Title = sourceObject.Title;
+					OpenNodeTitle = sourceObject.OpenNodeTitle;
 					ActualContentUrl = sourceObject.ActualContentUrl;
 					Excerpt = sourceObject.Excerpt;
 					TimestampText = sourceObject.TimestampText;
@@ -19011,6 +19016,7 @@ RenderedNode.Excerpt
 					_unmodified_ImageBaseUrl = ImageBaseUrl;
 					_unmodified_ImageExt = ImageExt;
 					_unmodified_Title = Title;
+					_unmodified_OpenNodeTitle = OpenNodeTitle;
 					_unmodified_ActualContentUrl = ActualContentUrl;
 					_unmodified_Excerpt = Excerpt;
 					_unmodified_TimestampText = TimestampText;
@@ -19061,6 +19067,9 @@ RenderedNode.Excerpt
 						case "Title":
 							Title = value;
 							break;
+						case "OpenNodeTitle":
+							OpenNodeTitle = value;
+							break;
 						case "ActualContentUrl":
 							ActualContentUrl = value;
 							break;
@@ -19098,6 +19107,9 @@ RenderedNode.Excerpt
 			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
+			[DataMember] 
+			public string OpenNodeTitle { get; set; }
+			private string _unmodified_OpenNodeTitle;
 			[DataMember] 
 			public string ActualContentUrl { get; set; }
 			private string _unmodified_ActualContentUrl;

@@ -116,6 +116,11 @@ namespace AaltoGlobalImpact.OIP
                                                       node.Categories.CollectionContent.Count == 0));
             // Note the node1 and node2 are opposite parameters, because we want descending sort
             nodes.CollectionContent.Sort((node1, node2) => String.CompareOrdinal(node2.MainSortableText, node1.MainSortableText));
+            foreach (var node in nodes.CollectionContent)
+            {
+                if (node.OpenNodeTitle == null)
+                    node.OpenNodeTitle = node.Title;
+            }
         }
 
         private static string getTitleOrNameFromCategory(Category category)
@@ -395,6 +400,7 @@ namespace AaltoGlobalImpact.OIP
             node.OriginalContentID = textContent.ID;
             node.TechnicalSource = NodeSourceTypeTextContent;
             node.Title = textContent.Title;
+            node.OpenNodeTitle = textContent.OpenArticleTitle;
             node.Excerpt = textContent.Excerpt;
             if (textContent.ImageData != null)
             {

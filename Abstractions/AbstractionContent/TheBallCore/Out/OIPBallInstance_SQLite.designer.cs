@@ -789,6 +789,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.ImageExt = serializedObject.ImageExt;
 		            existingObject.Title = serializedObject.Title;
+		            existingObject.OpenNodeTitle = serializedObject.OpenNodeTitle;
 		            existingObject.ActualContentUrl = serializedObject.ActualContentUrl;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.TimestampText = serializedObject.TimestampText;
@@ -2106,6 +2107,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            existingObject.ImageExt = serializedObject.ImageExt;
 		            existingObject.Title = serializedObject.Title;
+		            existingObject.OpenNodeTitle = serializedObject.OpenNodeTitle;
 		            existingObject.ActualContentUrl = serializedObject.ActualContentUrl;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.TimestampText = serializedObject.TimestampText;
@@ -3422,6 +3424,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.ImageExt = serializedObject.ImageExt;
 		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.OpenNodeTitle = serializedObject.OpenNodeTitle;
 		            objectToAdd.ActualContentUrl = serializedObject.ActualContentUrl;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.TimestampText = serializedObject.TimestampText;
@@ -4740,6 +4743,7 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.ImageBaseUrl = serializedObject.ImageBaseUrl;
 		            objectToAdd.ImageExt = serializedObject.ImageExt;
 		            objectToAdd.Title = serializedObject.Title;
+		            objectToAdd.OpenNodeTitle = serializedObject.OpenNodeTitle;
 		            objectToAdd.ActualContentUrl = serializedObject.ActualContentUrl;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.TimestampText = serializedObject.TimestampText;
@@ -10181,6 +10185,7 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 [ImageBaseUrl] TEXT NOT NULL, 
 [ImageExt] TEXT NOT NULL, 
 [Title] TEXT NOT NULL, 
+[OpenNodeTitle] TEXT NOT NULL, 
 [ActualContentUrl] TEXT NOT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [TimestampText] TEXT NOT NULL, 
@@ -10220,6 +10225,11 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
         [ScaffoldColumn(true)]
 		public string Title { get; set; }
 		// private string _unmodified_Title;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string OpenNodeTitle { get; set; }
+		// private string _unmodified_OpenNodeTitle;
 
 		[Column]
         [ScaffoldColumn(true)]
@@ -10308,6 +10318,8 @@ CREATE TABLE IF NOT EXISTS [RenderedNode](
 				ImageExt = string.Empty;
 			if(Title == null)
 				Title = string.Empty;
+			if(OpenNodeTitle == null)
+				OpenNodeTitle = string.Empty;
 			if(ActualContentUrl == null)
 				ActualContentUrl = string.Empty;
 			if(Excerpt == null)

@@ -4078,6 +4078,7 @@ namespace INT {
 					ImageBaseUrl = sourceObject.ImageBaseUrl;
 					ImageExt = sourceObject.ImageExt;
 					Title = sourceObject.Title;
+					OpenNodeTitle = sourceObject.OpenNodeTitle;
 					ActualContentUrl = sourceObject.ActualContentUrl;
 					Excerpt = sourceObject.Excerpt;
 					TimestampText = sourceObject.TimestampText;
@@ -4109,6 +4110,9 @@ namespace INT {
 			[DataMember] 
 			public string Title { get; set; }
 			private string _unmodified_Title;
+			[DataMember] 
+			public string OpenNodeTitle { get; set; }
+			private string _unmodified_OpenNodeTitle;
 			[DataMember] 
 			public string ActualContentUrl { get; set; }
 			private string _unmodified_ActualContentUrl;
