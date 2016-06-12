@@ -26,7 +26,8 @@ namespace TheBall.Interface
                             ExecuteInterfaceOperation.ExecuteAsync(new ExecuteInterfaceOperationParameters
                             {
                                 OperationID = operationID,
-                                UseSQLiteDB = true
+                                //UseSQLiteDB = true
+                                UseSQLiteDB = false
                             });
                     }
                     catch (Exception exception)

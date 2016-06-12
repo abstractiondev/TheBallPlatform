@@ -43,7 +43,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             var infraConfigFullPath = Path.Combine(ConfigRootFolder, "InfraShared", "InfraConfig.json");
             await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
-            Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
+            TelemetryConfiguration.Active.InstrumentationKey =
                 InfraSharedConfig.Current.AppInsightInstrumentationKey;
             AppInsightsClient = new TelemetryClient();
             RuntimeSupport.ExceptionReportHandler =
