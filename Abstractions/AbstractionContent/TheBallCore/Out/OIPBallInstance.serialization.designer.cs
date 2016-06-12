@@ -8370,7 +8370,7 @@ namespace INT {
 					SubTitle = sourceObject.SubTitle;
 					Published = sourceObject.Published;
 					Author = sourceObject.Author;
-					ArticleImage = sourceObject.ArticleImage;
+					ArticleImageData = sourceObject.ArticleImageData;
 					Excerpt = sourceObject.Excerpt;
 					Body = sourceObject.Body;
 					Locations = sourceObject.Locations;
@@ -8402,8 +8402,8 @@ namespace INT {
 			public string Author { get; set; }
 			private string _unmodified_Author;
 			[DataMember] 
-			public MediaContent ArticleImage { get; set; }
-			private MediaContent _unmodified_ArticleImage;
+			public MediaContent ArticleImageData { get; set; }
+			private MediaContent _unmodified_ArticleImageData;
 			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;

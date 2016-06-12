@@ -30,7 +30,7 @@ namespace TheBall.Interface
                 var fileName = Path.GetFileName(blob.Name);
                 string ownerPrefix;
                 string ownerID;
-                bool isLockEntry = fileName.EndsWith(".lock");
+                bool isLockEntry = fileName.EndsWith(OperationSupport.LockExtension) || fileName.EndsWith(OperationSupport.DedicatedLockExtension);
                 if (isLockEntry)
                     OperationSupport.GetLockItemComponents(fileName, out ownerPrefix, out ownerID);
                 else
@@ -50,22 +50,53 @@ namespace TheBall.Interface
             return OperationSupport.LockFileNameFormat;
         }
 
-        public static async Task<LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue> ExecuteMethod_AcquireFirstObtainableLockAsync(IEnumerable<IGrouping<string, string>> ownerGroupedItems, IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
+        public static async Task<LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue> ExecuteMethod_AcquireFirstObtainableLockAsync(IContainerOwner dedicatedToOwner, IEnumerable<IGrouping<string, string>> ownerGroupedItems, IContainerOwner queueOwner, string queueLocation, string lockFileNameFormat)
         {
             var fullLockPathFormat =
                 Path.Combine(queueOwner.GetOwnerPrefix(), queueLocation, lockFileNameFormat).Replace(@"\", "/");
             string currLockFile = null;
-            foreach (var grp in ownerGroupedItems)
+            bool isDedicated = dedicatedToOwner != null;
+            string dedicatedToOwnerPrefix = isDedicated 
+                ? dedicatedToOwner.ContainerName + "_" + dedicatedToOwner.LocationPrefix : null;
+
+            var groupsOfInterest = getGroupsOfInterest(isDedicated, ownerGroupedItems, dedicatedToOwnerPrefix);
+
+            Func<string, bool> lockPredicate = item => item.EndsWith(OperationSupport.LockExtension);
+            Func<string, bool> dedicatedLockPredicate = item => item.EndsWith(OperationSupport.DedicatedLockExtension);
+
+            foreach (var grp in groupsOfInterest)
             {
-                var allGroupItems = grp.ToArray();
-                if (allGroupItems.Any(item => item.EndsWith(".lock")))
-                    continue;
                 var ownerprefix_id = grp.Key;
-                currLockFile = String.Format(fullLockPathFormat, ownerprefix_id);
+                var allGroupItems = grp.ToArray();
+                bool hasOperationLock = allGroupItems.Any(lockPredicate);
+                if (hasOperationLock)
+                    continue;
+                bool hasDedicatedLock = allGroupItems.Any(dedicatedLockPredicate);
+                var operationItems =
+                    allGroupItems.Where(item => lockPredicate(item) == false && dedicatedLockPredicate(item) == false)
+                        .ToArray();
+                // If has dedicated lock and its not our dedicated lock
+                if (hasDedicatedLock && ownerprefix_id != dedicatedToOwnerPrefix)
+                {
+                    continue;
+                }
+                if (isDedicated && !hasDedicatedLock) // Fabricated key only, no dedicated lock yet
+                {
+                    // Attempt to acquire dedicated lock and return afterwards (regardless)
+                    var dedicatedLockFile = String.Format(fullLockPathFormat, ownerprefix_id,
+                        OperationSupport.DedicatedLockExtension);
+                    bool dedicatedAcquired =
+                        await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(dedicatedLockFile);
+                    return null;
+                }
+                // If there are no other than dedicated lock file, do nothing
+                if (operationItems.Length == 0)
+                    continue;
+                currLockFile = String.Format(fullLockPathFormat, ownerprefix_id, OperationSupport.LockExtension);
                 bool acquireLock = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(currLockFile);
                 if (!acquireLock)
                     continue;
-                var ownerOperationBlobNames = allGroupItems;
+                var ownerOperationBlobNames = operationItems;
                 var ownerOperationIDs = ownerOperationBlobNames.Select(blobName =>
                 {
                     var fileName = Path.GetFileName(blobName);
@@ -90,7 +121,27 @@ namespace TheBall.Interface
                 await lockBlob.UploadBlobTextAsync(blobContents, false);
                 return result;
             }
+            // If there was no locks
             return null;
+        }
+
+        private static IEnumerable<IGrouping<string, string>> getGroupsOfInterest(bool isDedicated, IEnumerable<IGrouping<string, string>> ownerGroupedItems,
+            string dedicatedToOwnerPrefix)
+        {
+            var groupsOfInterest = isDedicated
+                ? ownerGroupedItems.Where(grp => grp.Key == dedicatedToOwnerPrefix)
+                : ownerGroupedItems;
+            if (isDedicated)
+            {
+                var workArray = groupsOfInterest.ToArray();
+                if (workArray.Length == 0)
+                {
+                    var fabricatedGroup = new[] {dedicatedToOwnerPrefix}.GroupBy(item => item);
+                    workArray = fabricatedGroup.ToArray();
+                }
+                groupsOfInterest = workArray;
+            }
+            return groupsOfInterest;
         }
 
         public static LockInterfaceOperationsByOwnerReturnValue Get_ReturnValue(LockInterfaceOperationsByOwner.AcquireFirstObtainableLockReturnValue acquireFirstObtainableLockOutput)

@@ -37220,7 +37220,7 @@ Comment.CommentText
 				{
 					var result = new TextContent();
 					result.ImageData = MediaContent.CreateDefault();
-					result.ArticleImage = MediaContent.CreateDefault();
+					result.ArticleImageData = MediaContent.CreateDefault();
 					result.Locations = AddressAndLocationCollection.CreateDefault();
 					result.Categories = CategoryCollection.CreateDefault();
 					return result;
@@ -37242,7 +37242,7 @@ Comment.CommentText
 
 					result.Author = @"TextContent.Author";
 
-					result.ArticleImage = MediaContent.CreateDemoDefault();
+					result.ArticleImageData = MediaContent.CreateDemoDefault();
 					result.Excerpt = @"TextContent.Excerpt
 TextContent.Excerpt
 TextContent.Excerpt
@@ -37286,8 +37286,8 @@ TextContent.RawHtmlContent
 						((IInformationObject) ImageData).UpdateCollections(masterInstance);
 					}
 
-					if(ArticleImage != null) {
-						((IInformationObject) ArticleImage).UpdateCollections(masterInstance);
+					if(ArticleImageData != null) {
+						((IInformationObject) ArticleImageData).UpdateCollections(masterInstance);
 					}
 
 					if(masterInstance is AddressAndLocationCollection) {
@@ -37326,7 +37326,7 @@ TextContent.RawHtmlContent
 					} // Scoping block end
 
 					{ // Scoping block for variable name reusability
-						IInformationObject item = ArticleImage;
+						IInformationObject item = ArticleImageData;
 						if(item != null)
 						{
 							item.FindObjectsFromTree(result, filterOnFalse, searchWithinCurrentMasterOnly);
@@ -37366,7 +37366,7 @@ TextContent.RawHtmlContent
 						}
 					}
 					{
-						var item = ArticleImage;
+						var item = ArticleImageData;
 						if(item != null)
 						{
 							object result = item.FindObjectByID(objectId);
@@ -37417,7 +37417,7 @@ TextContent.RawHtmlContent
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
 					{
-						var item = (IInformationObject) ArticleImage;
+						var item = (IInformationObject) ArticleImageData;
 						if(item != null)
 							item.CollectMasterObjectsFromTree(result, filterOnFalse);
 					}
@@ -37449,7 +37449,7 @@ TextContent.RawHtmlContent
 							return true;
 						if(Author != _unmodified_Author)
 							return true;
-						if(ArticleImage != _unmodified_ArticleImage)
+						if(ArticleImageData != _unmodified_ArticleImageData)
 							return true;
 						if(Excerpt != _unmodified_Excerpt)
 							return true;
@@ -37475,7 +37475,7 @@ TextContent.RawHtmlContent
 							}
 						}
 						{
-							IInformationObject item = (IInformationObject) ArticleImage;
+							IInformationObject item = (IInformationObject) ArticleImageData;
 							if(item != null) 
 							{
 								bool isItemTreeModified = item.IsInstanceTreeModified;
@@ -37516,11 +37516,11 @@ TextContent.RawHtmlContent
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
-					if(ArticleImage != null) {
-						if(ArticleImage.ID == replacingObject.ID)
-							ArticleImage = (MediaContent) replacingObject;
+					if(ArticleImageData != null) {
+						if(ArticleImageData.ID == replacingObject.ID)
+							ArticleImageData = (MediaContent) replacingObject;
 						else {
-							IInformationObject iObject = ArticleImage;
+							IInformationObject iObject = ArticleImageData;
 							iObject.ReplaceObjectInTree(replacingObject);
 						}
 					}
@@ -37551,7 +37551,7 @@ TextContent.RawHtmlContent
 					SubTitle = sourceObject.SubTitle;
 					Published = sourceObject.Published;
 					Author = sourceObject.Author;
-					ArticleImage = sourceObject.ArticleImage;
+					ArticleImageData = sourceObject.ArticleImageData;
 					Excerpt = sourceObject.Excerpt;
 					Body = sourceObject.Body;
 					Locations = sourceObject.Locations;
@@ -37580,9 +37580,9 @@ TextContent.RawHtmlContent
 					if(ImageData != null)
 						((IInformationObject) ImageData).SetInstanceTreeValuesAsUnmodified();
 
-					_unmodified_ArticleImage = ArticleImage;
-					if(ArticleImage != null)
-						((IInformationObject) ArticleImage).SetInstanceTreeValuesAsUnmodified();
+					_unmodified_ArticleImageData = ArticleImageData;
+					if(ArticleImageData != null)
+						((IInformationObject) ArticleImageData).SetInstanceTreeValuesAsUnmodified();
 
 					_unmodified_Locations = Locations;
 					if(Locations != null)
@@ -37653,8 +37653,8 @@ TextContent.RawHtmlContent
 			public string Author { get; set; }
 			private string _unmodified_Author;
 			[DataMember] 
-			public MediaContent ArticleImage { get; set; }
-			private MediaContent _unmodified_ArticleImage;
+			public MediaContent ArticleImageData { get; set; }
+			private MediaContent _unmodified_ArticleImageData;
 			[DataMember] 
 			public string Excerpt { get; set; }
 			private string _unmodified_Excerpt;

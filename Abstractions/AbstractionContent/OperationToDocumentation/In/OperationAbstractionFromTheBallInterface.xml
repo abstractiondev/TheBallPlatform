@@ -282,6 +282,9 @@
       <OperationSpec>
         <Description>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</Description>
       </OperationSpec>
+      <Parameters>
+        <Parameter name="DedicatedToOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Dedicated to owner - null if not dedicated" state="implemented" />
+      </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="QueueOwner" dataType="TheBall.CORE.IContainerOwner" designDesc="Get system as queue owner" state="implemented" />
@@ -292,6 +295,7 @@
           </TargetDefinition>
           <TargetDefinition name="LockFileNameFormat" dataType="string" designDesc="Lock file name as: _ownerprefix_ownerid.lock" state="implemented" />
           <MethodExecute name="AcquireFirstObtainableLock" asyncSupportMode="AsyncOnly" designDesc="Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content." state="implemented">
+            <Parameter name="DedicatedToOwner" />
             <Target name="OwnerGroupedItems" />
             <Target name="QueueOwner" />
             <Target name="QueueLocation" />

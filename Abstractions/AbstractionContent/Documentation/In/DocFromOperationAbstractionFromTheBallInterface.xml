@@ -1085,12 +1085,36 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="LockInterfaceOperationsByOwner" level="1">
+          <Header text="LockInterfaceOperationsByOwner (DedicatedToOwner)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DedicatedToOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Dedicated to owner - null if not dedicated</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
             <Header text="Target Definition: QueueOwner" level="2">
@@ -1121,7 +1145,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat )" level="2">
+            <Header text="Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat, DedicatedToOwner )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content.</TextContent>

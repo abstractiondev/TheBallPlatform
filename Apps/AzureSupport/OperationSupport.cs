@@ -258,8 +258,11 @@ namespace TheBall
             // { "", typeof(object)},
         };
 
+        public const string LockExtension = ".lock";
+        public const string DedicatedLockExtension = ".dedicatedlock";
+
         public const string QueueFileNameFormat = "{0:yyyy-MM-dd-HH-mm-ss}_{1}_{2}_{3}";
-        public const string LockFileNameFormat = "0000_{0}.lock";
+        public const string LockFileNameFormat = "0000_{0}{1}";
 
         public static Type GetLegacyMappedType(string operationLegacyName)
         {
@@ -274,8 +277,8 @@ namespace TheBall
 
         public static void GetLockItemComponents(string fileName, out string ownerPrefix, out string ownerID)
         {
-            Contract.Assert(fileName.EndsWith(".lock"));
-            var nameData = fileName.Replace(".lock", "");
+            Contract.Assert(fileName.EndsWith(LockExtension) || fileName.EndsWith(DedicatedLockExtension));
+            var nameData = fileName.Replace(LockExtension, "").Replace(DedicatedLockExtension, "");
             var split = nameData.Split('_');
             ownerPrefix = split[1];
             ownerID = split[2];
@@ -284,7 +287,7 @@ namespace TheBall
         public static void GetQueueItemComponents(string fileName, out string timestampPart, out string ownerPrefix,
             out string ownerID, out string operationID)
         {
-            Contract.Assert(!fileName.EndsWith(".lock"));
+            Contract.Assert(!fileName.EndsWith(LockExtension) && !fileName.EndsWith(DedicatedLockExtension));
             var split = fileName.Split('_');
             timestampPart = split[0];
             ownerPrefix = split[1];

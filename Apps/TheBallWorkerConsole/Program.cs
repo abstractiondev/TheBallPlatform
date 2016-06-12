@@ -52,14 +52,27 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var workerConfigFullPath = args.Length > 0 ? args[0] : null;
             if (workerConfigFullPath == null)
                 throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
-            
-            var clientHandle = args.Length > 1 ? args[1] : null;
+
+            var clientHandle = args.Length > 1 && args[1] != "0" ? args[1] : null;
+
+            string dedicatedToOwner = args.Length > 2 ? args[2] : null;
+            string dedicatedToInstance;
+            string dedicatedToOwnerPrefix;
+            parseDedicatedParts(dedicatedToOwner, out dedicatedToInstance, out dedicatedToOwnerPrefix);
+
 
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
             var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath);
-            await supervisor.RunWorkerLoop();
+            await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
+        }
+
+        private static void parseDedicatedParts(string dedicatedToOwner, out string dedicatedToInstance, out string dedicatedToOwnerPrefix)
+        {
+            var split = dedicatedToOwner.Split('_');
+            dedicatedToInstance = split[0];
+            dedicatedToOwnerPrefix = split[1];
         }
 
         private static void ensureXDrive()

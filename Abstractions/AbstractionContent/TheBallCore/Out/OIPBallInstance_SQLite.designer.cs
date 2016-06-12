@@ -1271,10 +1271,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
-					if(serializedObject.ArticleImage != null)
-						existingObject.ArticleImageID = serializedObject.ArticleImage.ID;
+					if(serializedObject.ArticleImageData != null)
+						existingObject.ArticleImageDataID = serializedObject.ArticleImageData.ID;
 					else
-						existingObject.ArticleImageID = null;
+						existingObject.ArticleImageDataID = null;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -2588,10 +2588,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            existingObject.SubTitle = serializedObject.SubTitle;
 		            existingObject.Published = serializedObject.Published;
 		            existingObject.Author = serializedObject.Author;
-					if(serializedObject.ArticleImage != null)
-						existingObject.ArticleImageID = serializedObject.ArticleImage.ID;
+					if(serializedObject.ArticleImageData != null)
+						existingObject.ArticleImageDataID = serializedObject.ArticleImageData.ID;
 					else
-						existingObject.ArticleImageID = null;
+						existingObject.ArticleImageDataID = null;
 		            existingObject.Excerpt = serializedObject.Excerpt;
 		            existingObject.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -3904,10 +3904,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
-					if(serializedObject.ArticleImage != null)
-						objectToAdd.ArticleImageID = serializedObject.ArticleImage.ID;
+					if(serializedObject.ArticleImageData != null)
+						objectToAdd.ArticleImageDataID = serializedObject.ArticleImageData.ID;
 					else
-						objectToAdd.ArticleImageID = null;
+						objectToAdd.ArticleImageDataID = null;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -5222,10 +5222,10 @@ namespace SQLite.AaltoGlobalImpact.OIP {
 		            objectToAdd.SubTitle = serializedObject.SubTitle;
 		            objectToAdd.Published = serializedObject.Published;
 		            objectToAdd.Author = serializedObject.Author;
-					if(serializedObject.ArticleImage != null)
-						objectToAdd.ArticleImageID = serializedObject.ArticleImage.ID;
+					if(serializedObject.ArticleImageData != null)
+						objectToAdd.ArticleImageDataID = serializedObject.ArticleImageData.ID;
 					else
-						objectToAdd.ArticleImageID = null;
+						objectToAdd.ArticleImageDataID = null;
 		            objectToAdd.Excerpt = serializedObject.Excerpt;
 		            objectToAdd.Body = serializedObject.Body;
 					if(serializedObject.Locations != null)
@@ -12282,7 +12282,7 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 [SubTitle] TEXT NOT NULL, 
 [Published] TEXT NOT NULL, 
 [Author] TEXT NOT NULL, 
-[ArticleImageID] TEXT NULL, 
+[ArticleImageDataID] TEXT NULL, 
 [Excerpt] TEXT NOT NULL, 
 [Body] TEXT NOT NULL, 
 [LocationsID] TEXT NULL, 
@@ -12321,7 +12321,7 @@ CREATE TABLE IF NOT EXISTS [TextContent](
 		public string Author { get; set; }
 		// private string _unmodified_Author;
 			[Column]
-			public string ArticleImageID { get; set; }
+			public string ArticleImageDataID { get; set; }
 
 		[Column]
         [ScaffoldColumn(true)]

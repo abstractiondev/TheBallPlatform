@@ -178,6 +178,9 @@
     <StatusItem name="PutInterfaceOperationToQueue_CreateQueueEntry" displayName="MethodExecuteType: CreateQueueEntry" description="Create queue entry to item with content of invoker account within">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="LockInterfaceOperationsByOwner_DedicatedToOwner" displayName="VariableType: DedicatedToOwner" description="Dedicated to owner - null if not dedicated">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="LockInterfaceOperationsByOwner_QueueOwner" displayName="TargetDefinitionType: QueueOwner" description="Get system as queue owner">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -516,6 +519,7 @@
       <ItemRef itemName="PutInterfaceOperationToQueue_CreateQueueEntry" />
     </Group>
     <Group name="LockInterfaceOperationsByOwner">
+      <ItemRef itemName="LockInterfaceOperationsByOwner_DedicatedToOwner" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_QueueOwner" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_QueueLocation" />
       <ItemRef itemName="LockInterfaceOperationsByOwner_OwnerGroupedItems" />

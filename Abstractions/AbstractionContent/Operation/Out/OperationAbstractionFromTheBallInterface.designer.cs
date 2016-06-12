@@ -205,9 +205,16 @@ using System.Threading.Tasks;
 				 await PutInterfaceOperationToQueueImplementation.ExecuteMethod_CreateQueueEntryAsync(parameters.OperationID, QueueItemFullPath, InvokerAccount);		
 				}
 				}
+				public class LockInterfaceOperationsByOwnerParameters 
+		{
+				public TheBall.CORE.IContainerOwner DedicatedToOwner ;
+				}
 		
 		public class LockInterfaceOperationsByOwner 
 		{
+				private static void PrepareParameters(LockInterfaceOperationsByOwnerParameters parameters)
+		{
+					}
 				public class AcquireFirstObtainableLockReturnValue 
 		{
 				public string LockedOwnerPrefix ;
@@ -216,14 +223,14 @@ using System.Threading.Tasks;
 				public string[] OperationQueueItems ;
 				public string LockBlobFullPath ;
 				}
-				public static async Task<LockInterfaceOperationsByOwnerReturnValue> ExecuteAsync()
+				public static async Task<LockInterfaceOperationsByOwnerReturnValue> ExecuteAsync(LockInterfaceOperationsByOwnerParameters parameters)
 		{
-						
+						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner QueueOwner = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueOwner();	
 				string QueueLocation = LockInterfaceOperationsByOwnerImplementation.GetTarget_QueueLocation();	
 				IEnumerable<System.Linq.IGrouping<string, string>> OwnerGroupedItems =  await LockInterfaceOperationsByOwnerImplementation.GetTarget_OwnerGroupedItemsAsync(QueueOwner, QueueLocation);	
 				string LockFileNameFormat = LockInterfaceOperationsByOwnerImplementation.GetTarget_LockFileNameFormat();	
-				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
+				AcquireFirstObtainableLockReturnValue AcquireFirstObtainableLockOutput =  await LockInterfaceOperationsByOwnerImplementation.ExecuteMethod_AcquireFirstObtainableLockAsync(parameters.DedicatedToOwner, OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat);		
 				LockInterfaceOperationsByOwnerReturnValue returnValue = LockInterfaceOperationsByOwnerImplementation.Get_ReturnValue(AcquireFirstObtainableLockOutput);
 		return returnValue;
 				}

@@ -42,7 +42,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
         }
 
-        internal async Task RunWorkerLoop()
+        internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -50,8 +50,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
             try
             {
                 var instances = WorkerConfig.InstancePollItems;
+                IContainerOwner dedicatedToOwner = null;
+                if (dedicatedToInstance != null)
+                {
+                    instances = instances.Where(item => item.InstanceHostName == dedicatedToInstance).ToArray();
+                    dedicatedToOwner = VirtualOwner.FigureOwner(dedicatedToOwnerPrefix);
+                }
 
-                var instanceNames = WorkerConfig.InstancePollItems.Select(item => item.InstanceHostName).ToArray();
+                var instanceNames = instances.Select(item => item.InstanceHostName).ToArray();
 
                 string startupLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleStartupLog.txt");
                 var startupMessage = "Starting up process (UTC): " + DateTime.UtcNow.ToString() + " for instances: " +
@@ -62,7 +68,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
                 bool keepWorkerRunning = true;
                 SemaphoreSlim throttlingSemaphore = new SemaphoreSlim(MaxParallelExecutingTasks);
-                var pollingTaskItems = instances.Select(instance => getPollingTaskItem(instance, throttlingSemaphore)).ToArray();
+                var pollingTaskItems = instances.Select(instance => getPollingTaskItem(instance, throttlingSemaphore, dedicatedToOwner)).ToArray();
                 List<Task> executingOperations = new List<Task>();
 
                 while (keepWorkerRunning)
@@ -155,18 +161,18 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             var toReplace = currentTasks.Where(item => completedPollingTasks.Contains(item.Task)).ToArray();
             var toKeep = currentTasks.Where(item => toReplace.Contains(item) == false).ToArray();
-            var replacements = toReplace.Select(item => getPollingTaskItem(item.InstancePollItem, item.ThrottlingSemaphore)).ToArray();
+            var replacements = toReplace.Select(item => getPollingTaskItem(item.InstancePollItem, item.ThrottlingSemaphore, item.DedicatedToOwner)).ToArray();
             return toKeep.Concat(replacements).ToArray();
         }
 
-        private static PollingTaskItem getPollingTaskItem(InstancePollItem instancePollItem, SemaphoreSlim throttlingSemaphore)
+        private static PollingTaskItem getPollingTaskItem(InstancePollItem instancePollItem, SemaphoreSlim throttlingSemaphore, IContainerOwner dedicatedToOwner)
         {
-            var pollingTaskTuple = getPollingTask(instancePollItem, throttlingSemaphore);
+            var pollingTaskTuple = getPollingTask(instancePollItem, throttlingSemaphore, dedicatedToOwner);
             return new PollingTaskItem(instancePollItem, pollingTaskTuple.Item1,
-                pollingTaskTuple.Item2, throttlingSemaphore);
+                pollingTaskTuple.Item2, throttlingSemaphore, dedicatedToOwner);
         }
 
-        private static Tuple<Task, CancellationTokenSource> getPollingTask(InstancePollItem instancePollItem, SemaphoreSlim throttlingSemaphore)
+        private static Tuple<Task, CancellationTokenSource> getPollingTask(InstancePollItem instancePollItem, SemaphoreSlim throttlingSemaphore, IContainerOwner dedicatedToOwner)
         {
             var cancellationTokenSource = new CancellationTokenSource();
             var cancellationToken = cancellationTokenSource.Token;
@@ -183,7 +189,10 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         keepRunning = !cancellationToken.IsCancellationRequested;
                         if (keepRunning)
                         {
-                            var obtainedLock = await LockInterfaceOperationsByOwner.ExecuteAsync();
+                            var obtainedLock = await LockInterfaceOperationsByOwner.ExecuteAsync(new LockInterfaceOperationsByOwnerParameters
+                            {
+                                DedicatedToOwner = dedicatedToOwner
+                            });
                             if (obtainedLock != null)
                             {
                                 Console.WriteLine("Found: " + obtainedLock.OperationIDs.Length + " operations...");

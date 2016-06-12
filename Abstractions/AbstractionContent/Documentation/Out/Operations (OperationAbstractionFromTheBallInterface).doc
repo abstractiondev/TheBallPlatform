@@ -1135,11 +1135,32 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Negotiate device connection
 		</div>
-		</p><h1>LockInterfaceOperationsByOwner</h1>
+		</p><h1>LockInterfaceOperationsByOwner (DedicatedToOwner)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Fetch oldest-first queue entries, group by owner and lock whole oldest-entry-owning owner for processing (retry for next oldest if lock wasn't possible). Return all found entries of that owner
 		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DedicatedToOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Dedicated to owner - null if not dedicated
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h2>Target Definition: QueueOwner</h2>
 		<p>		<div class="MsoNormal" >
 		Get system as queue owner
@@ -1156,7 +1177,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Lock file name as: _ownerprefix_ownerid.lock
 		</div>
-		</p><h2>Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat )</h2>
+		</p><h2>Method Call: AcquireFirstObtainableLock ( OwnerGroupedItems, QueueOwner, QueueLocation, LockFileNameFormat, DedicatedToOwner )</h2>
 		<p>		<div class="MsoNormal" >
 		Acquire first lock from grouped items, that is obtainable. List operation IDs as lock content.
 		</div>
