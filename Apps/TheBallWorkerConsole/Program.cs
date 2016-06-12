@@ -70,9 +70,17 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         private static void parseDedicatedParts(string dedicatedToOwner, out string dedicatedToInstance, out string dedicatedToOwnerPrefix)
         {
-            var split = dedicatedToOwner.Split('_');
-            dedicatedToInstance = split[0];
-            dedicatedToOwnerPrefix = split[1];
+            if (dedicatedToOwner != null)
+            {
+                var split = dedicatedToOwner.Split('_');
+                dedicatedToInstance = split[0];
+                dedicatedToOwnerPrefix = split[1];
+            }
+            else
+            {
+                dedicatedToInstance = null;
+                dedicatedToOwnerPrefix = null;
+            }
         }
 
         private static void ensureXDrive()
