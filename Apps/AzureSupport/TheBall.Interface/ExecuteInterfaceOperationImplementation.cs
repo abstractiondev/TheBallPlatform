@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using AzureSupport;
 using TheBall.CORE;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.Interface
 {
@@ -39,6 +40,7 @@ namespace TheBall.Interface
             {
                 if (exceptionToReport.InnerException != null)
                     exceptionToReport = exceptionToReport.InnerException;
+                exceptionToReport.ReportException();
                 operation.ErrorCode = exceptionToReport.HResult.ToString();
                 operation.ErrorMessage = exceptionToReport.Message;
                 operation.Finished = DateTime.UtcNow;

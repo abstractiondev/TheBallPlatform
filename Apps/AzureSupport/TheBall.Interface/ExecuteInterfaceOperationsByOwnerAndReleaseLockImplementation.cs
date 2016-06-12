@@ -31,7 +31,7 @@ namespace TheBall.Interface
                     }
                     catch (Exception exception)
                     {
-                        // mark operation as error and continue
+                        exception.ReportException();
                     }
 
                 }

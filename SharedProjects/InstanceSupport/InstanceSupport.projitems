@@ -6,11 +6,12 @@
     <SharedGUID>3e4ea4b4-8b6d-4422-bc92-2d291e967aa0</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>InstanceSupport</Import_RootNamespace>
+    <Import_RootNamespace>TheBall.CORE.InstanceSupport</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)InfraSharedConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RuntimeConfiguration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeSupport.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SecureConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InstanceConfig.cs" />
   </ItemGroup>

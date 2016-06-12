@@ -46,6 +46,8 @@ namespace TheBall.Infra.TheBallWorkerConsole
             Microsoft.ApplicationInsights.Extensibility.TelemetryConfiguration.Active.InstrumentationKey =
                 InfraSharedConfig.Current.AppInsightInstrumentationKey;
             AppInsightsClient = new TelemetryClient();
+            RuntimeSupport.ExceptionReportHandler =
+                (exception, properties) => AppInsightsClient.TrackException(exception, properties);
         }
 
         internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)
@@ -127,7 +129,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             }
             catch (Exception ex)
             {
-                AppInsightsClient.TrackException(ex);
+                ex.ReportException();
                 throw;
             }
             finally
@@ -270,7 +272,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         { "Owner", lockedOwnerPrefix },
                         { "OperationIDs", String.Join(", ", operationIDs) }
                     };
-                    AppInsightsClient.TrackException(ex, trackProperties);
+                    ex.ReportException(trackProperties);
                     throw;
                 }
                 finally
