@@ -331,17 +331,23 @@ namespace WebInterface
 
         private async Task HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
         {
+            bool isUploadRequest = contentPath.StartsWith("upload/");
             if (context.Request.RequestType == "POST")
             {
                 // Do first post, and then get to the same URL
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
-                if (contentPath.StartsWith("op/"))
+                bool isOperationRequest = contentPath.StartsWith("op/");
+                
+                if (isOperationRequest || isUploadRequest)
                 {
                     try
                     {
                         await SetCurrentAccountFromLogin(context);
-                        await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
+                        if(isOperationRequest)
+                            await HandleOwnerOperationRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
+                        if(isUploadRequest)
+                            await HandleOwnerUploadRequestWithUrlPath(containerOwner, context, contentPath.Substring(3));
                     }
                     catch (Exception ex)
                     {
@@ -371,7 +377,58 @@ namespace WebInterface
                 }
                 return;
             }
-            await HandleOwnerGetRequest(containerOwner, context, contentPath);
+            if (isUploadRequest)
+            {
+                await HandleOwnerUploadRequestWithUrlPath(containerOwner, context, contentPath);
+            } else 
+                await HandleOwnerGetRequest(containerOwner, context, contentPath);
+        }
+
+        private async Task HandleOwnerUploadRequestWithUrlPath(IContainerOwner containerOwner, HttpContext context, string uploadRequestPath)
+        {
+            string uploadName = uploadRequestPath.Split('/')[0];
+            await HandleOwnerUploadRequest(containerOwner, context, uploadName);
+        }
+
+        private async Task HandleOwnerUploadRequest(IContainerOwner containerOwner, HttpContext context, string uploadName)
+        {
+            var request = context.Request;
+            bool isGet = request.HttpMethod == "GET";
+            var sourceColl = isGet ? request.Params : request.Form;
+            if (isGet)
+            {
+                var resumableChunkNumber = sourceColl["resumableChunkNumber"];
+                var resumableChunkSize = sourceColl["resumableChunkSize"];
+                var resumableCurrentChunkSize = sourceColl["resumableCurrentChunkSize"];
+                var resumableTotalSize = sourceColl["resumableTotalSize"];
+                var resumableType = sourceColl["resumableType"];
+                var resumableIdentifier = sourceColl["resumableIdentifier"];
+                var resumableFilename = sourceColl["resumableFilename"];
+                var resumableRelativePath = sourceColl["resumableRelativePath"];
+                var resumableTotalChunks = sourceColl["resumableTotalChunks"];
+            }
+            else // POST
+            {
+                var currChunkFile = request.Files[0];
+                var resumableChunkNumber = sourceColl["resumableChunkNumber"];
+                var resumableChunkSize = sourceColl["resumableChunkSize"];
+                var resumableCurrentChunkSize = sourceColl["resumableCurrentChunkSize"];
+                var resumableTotalSize = sourceColl["resumableTotalSize"];
+                var resumableType = sourceColl["resumableType"];
+                var resumableIdentifier = sourceColl["resumableIdentifier"];
+                var resumableFilename = sourceColl["resumableFilename"];
+                var resumableRelativePath = sourceColl["resumableRelativePath"];
+                var resumableTotalChunks = sourceColl["resumableTotalChunks"];
+                byte[] data = null;
+                using (var memoryStream = new MemoryStream())
+                {
+                    var fileStream = currChunkFile.InputStream;
+                    CloudBlockBlob blob = null;
+                    //blob.blo
+                    await fileStream.CopyToAsync(memoryStream);
+                    data = memoryStream.ToArray();
+                }
+            }
         }
 
         private async Task HandleOwnerOperationRequestWithUrlPath(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
