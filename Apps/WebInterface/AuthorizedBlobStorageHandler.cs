@@ -395,40 +395,103 @@ namespace WebInterface
             var request = context.Request;
             bool isGet = request.HttpMethod == "GET";
             var sourceColl = isGet ? request.Params : request.Form;
+            var resumableChunkNumber = int.Parse(sourceColl["resumableChunkNumber"]);
+            var resumableChunkSize = int.Parse(sourceColl["resumableChunkSize"]);
+            var resumableCurrentChunkSize = int.Parse(sourceColl["resumableCurrentChunkSize"]);
+            var resumableTotalSize = long.Parse(sourceColl["resumableTotalSize"]);
+            var resumableType = sourceColl["resumableType"];
+            var resumableIdentifier = sourceColl["resumableIdentifier"];
+            var resumableFilename = sourceColl["resumableFilename"];
+            var resumableRelativePath = sourceColl["resumableRelativePath"];
+            var resumableTotalChunks = sourceColl["resumableTotalChunks"];
+
+            var blobPath = Path.Combine("TheBall.Interface", "InterfaceData", "Upload", resumableFilename)
+                .Replace(@"\", "/");
+            var blob = StorageSupport.GetOwnerBlobReference(blobPath);
+            bool isExisting = await blob.ExistsAsync();
+            const string ResumableTotalLength = "ResumableTotalLength";
+
+            long currLength = 0;
+            bool isSameData = false;
+
+            if (isExisting)
+            {
+                await blob.FetchAttributesAsync();
+                currLength = blob.Properties.Length;
+                var completedTotalLength = blob.Metadata.ContainsKey(ResumableTotalLength)
+                    ? long.Parse(blob.Metadata[ResumableTotalLength])
+                    : currLength;
+                isSameData = completedTotalLength == resumableTotalSize;
+            }
+            if (!isSameData)
+            {
+                currLength = 0;
+            }
+
+            var currentBeginPosition = (resumableChunkNumber - 1) * resumableChunkSize;
+            var currentEndPosition = currentBeginPosition + resumableCurrentChunkSize;
             if (isGet)
             {
-                var resumableChunkNumber = sourceColl["resumableChunkNumber"];
-                var resumableChunkSize = sourceColl["resumableChunkSize"];
-                var resumableCurrentChunkSize = sourceColl["resumableCurrentChunkSize"];
-                var resumableTotalSize = sourceColl["resumableTotalSize"];
-                var resumableType = sourceColl["resumableType"];
-                var resumableIdentifier = sourceColl["resumableIdentifier"];
-                var resumableFilename = sourceColl["resumableFilename"];
-                var resumableRelativePath = sourceColl["resumableRelativePath"];
-                var resumableTotalChunks = sourceColl["resumableTotalChunks"];
+                if (!isSameData)
+                {
+                    context.EndResponseWithStatusCode(404);
+                    return;
+                }
+                if (currentEndPosition <= currLength)
+                {
+                    context.EndResponseWithStatusCode(200);
+                    return;
+                }
+                context.EndResponseWithStatusCode(404);
+                return;
             }
             else // POST
             {
+                if (resumableCurrentChunkSize == 0)
+                    return;
                 var currChunkFile = request.Files[0];
-                var resumableChunkNumber = sourceColl["resumableChunkNumber"];
-                var resumableChunkSize = sourceColl["resumableChunkSize"];
-                var resumableCurrentChunkSize = sourceColl["resumableCurrentChunkSize"];
-                var resumableTotalSize = sourceColl["resumableTotalSize"];
-                var resumableType = sourceColl["resumableType"];
-                var resumableIdentifier = sourceColl["resumableIdentifier"];
-                var resumableFilename = sourceColl["resumableFilename"];
-                var resumableRelativePath = sourceColl["resumableRelativePath"];
-                var resumableTotalChunks = sourceColl["resumableTotalChunks"];
-                byte[] data = null;
-                using (var memoryStream = new MemoryStream())
+                var uploadedContentStream = currChunkFile.InputStream;
+                var currContentLength = currChunkFile.ContentLength;
+                const int blobBlockSize = 4*1024*1024;
+                if(resumableChunkSize != blobBlockSize)
+                    throw new NotSupportedException("Resumable block size only supported for fixed: " + blobBlockSize);
+                int written = 0;
+                var blockList = new List<string>();
+                var buffer = new byte[blobBlockSize];
+                do
                 {
-                    var fileStream = currChunkFile.InputStream;
-                    CloudBlockBlob blob = null;
-                    //blob.blo
-                    await fileStream.CopyToAsync(memoryStream);
-                    data = memoryStream.ToArray();
+                    var blockID = getBlockId(resumableChunkNumber);
+                    blockList.Add(blockID);
+                    var bytesToProcess = Math.Min(currContentLength - written, blobBlockSize);
+                    await uploadedContentStream.ReadAsync(buffer, 0, bytesToProcess);
+                    using (var memoryStream = new MemoryStream(buffer, 0, bytesToProcess, false))
+                    {
+                        await blob.PutBlockAsync(blockID, memoryStream, null);
+                    }
+                    written += bytesToProcess;
+                } while (written < currContentLength);
+                var priorList = Enumerable.Range(1, resumableChunkNumber - 1).Select(getBlockId).ToArray();
+                await blob.PutBlockListAsync(priorList.Concat(blockList));
+                var currentTotalUploadedLength = currLength + written;
+                if (currentTotalUploadedLength < resumableTotalSize)
+                {
+                    if (blob.Metadata.ContainsKey(ResumableTotalLength))
+                        blob.Metadata[ResumableTotalLength] = resumableTotalSize.ToString();
+                    else
+                        blob.Metadata.Add(ResumableTotalLength, resumableTotalSize.ToString());
                 }
+                else
+                {
+                    blob.Metadata.Clear();
+                }
+                await blob.SetMetadataAsync();
             }
+        }
+
+        private static string getBlockId(int resumableChunkNumber)
+        {
+            var blockID = Convert.ToBase64String(Encoding.Default.GetBytes(resumableChunkNumber.ToString("D6")));
+            return blockID;
         }
 
         private async Task HandleOwnerOperationRequestWithUrlPath(IContainerOwner containerOwner, HttpContext context, string operationRequestPath)
