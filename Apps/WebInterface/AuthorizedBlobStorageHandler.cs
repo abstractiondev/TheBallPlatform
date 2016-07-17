@@ -677,7 +677,7 @@ namespace WebInterface
             bool isGetRequest = request.RequestType == "GET";
             var contentPath = request.GetOwnerContentPath();
             if (isGetRequest)
-                await HandleAboutGetRequest(context, request);
+                await HandleAboutGetRequest(context, request, request.Path);
             else
             {
                 bool isOperationRequest = contentPath.StartsWith("op/");
@@ -688,15 +688,17 @@ namespace WebInterface
             }
         }
 
-        private static async Task HandleAboutGetRequest(HttpContext context, HttpRequest request)
+        private async Task HandleAboutGetRequest(HttpContext context, HttpRequest request, string contentPath)
         {
             var response = context.Response;
             string blobPath = GetBlobPath(request);
             CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobPath);
                 //publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
-            bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
-            var fsOverrides = InstanceConfig.Current.FileSystemOverrides;
+
+            bool filesystemHandled = await HandleFileSystemGetRequest(null, context, contentPath);
+            if (filesystemHandled)
+                return;
             try
             {
                 await HandleBlobRequestWithCacheSupport(context, blob, response);
@@ -919,39 +921,23 @@ namespace WebInterface
 
         private async Task<bool> HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
-            return false;
-            bool isAccount = containerOwner is TBAccount;
+            var cfg = InstanceConfig.Current;
+            if (!cfg.EnableFilesystemOverride)
+                return false;
+            var overrideContext = containerOwner?.ContainerName ?? "about";
+
+            InstanceConfig.OverrideReplacement replacements;
+            if (!cfg.FileSystemOverrides.TryGetValue(overrideContext, out replacements))
+                return false;
+
+            var replacementItem = replacements.Overrides.FirstOrDefault(item => contentPath.StartsWith(item[0]));
+            if (replacementItem == null)
+                return false;
+            var pattern = replacementItem[0];
+            var replacement = replacementItem[1];
+            var fileName = contentPath.Replace(pattern, replacement);
             var response = context.Response;
-            string contentType = StorageSupport.GetMimeType(Path.GetExtension(contentPath));
-            response.ContentType = contentType;
-            string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            string LocalWebCatConFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
-            string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
-            string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
-            string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
-            string LocalGroupControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanel\";
-            string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\Kuubiiz\memberstempl\WebTemplates\AccountTemplate\";
-            string LocalOIPControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
-            string fileName;
-            if (prefixStrippedContent.Contains("webui/"))
-                fileName = prefixStrippedContent.Replace("webui/", LocalOIPAccountFolder);
-            else if (prefixStrippedContent.Contains("cpanel/"))
-            {
-                if(isAccount)
-                    fileName = prefixStrippedContent.Replace("cpanel/", LocalAccountControlPanelFolder);
-                else
-                    fileName = prefixStrippedContent.Replace("cpanel/", LocalGroupControlPanelFolder);
-            }
-            else if (prefixStrippedContent.Contains("foundation-one/"))
-                fileName = prefixStrippedContent.Replace("foundation-one/", LocalFoundationOneAccountFolder);
-            else if (prefixStrippedContent.Contains("categoriesandcontent/"))
-                fileName = prefixStrippedContent.Replace("categoriesandcontent/", LocalWebCatConFolder);
-            else if (prefixStrippedContent.Contains("wwwsite/"))
-                fileName = prefixStrippedContent.Replace("wwwsite/", LocalWwwSiteFolder);
-            else if (prefixStrippedContent.Contains("controlpanel_comments_v1/"))
-                fileName = prefixStrippedContent.Replace("controlpanel_comments_v1/", LocalOIPControlPanelFolder);
-            else
-                fileName = prefixStrippedContent.Replace("webview/", LocalWwwSiteFolder);
+
             if (File.Exists(fileName))
             {
                 var lastModified = File.GetLastWriteTimeUtc(fileName);
@@ -979,6 +965,7 @@ namespace WebInterface
                 response.Cache.SetCacheability(HttpCacheability.Private);
                 using(var fileStream = File.OpenRead(fileName))
                     await fileStream.CopyToAsync(context.Response.OutputStream);
+                response.ContentType = StorageSupport.GetMimeType(fileName);
             }
             else
             {
