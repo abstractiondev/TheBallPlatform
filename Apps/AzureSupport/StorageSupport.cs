@@ -701,6 +701,7 @@ namespace TheBall
                 case ".sv4cpio": return "application/x-sv4cpio";
                 case ".sv4crc": return "application/x-sv4crc";
                 case ".svc": return "application/xml";
+                case ".svg": return "image/svg+xml";
                 case ".swf": return "application/x-shockwave-flash";
                 case ".t": return "application/x-troff";
                 case ".tar": return "application/x-tar";

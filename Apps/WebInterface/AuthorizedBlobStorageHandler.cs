@@ -930,7 +930,7 @@ namespace WebInterface
             if (!cfg.FileSystemOverrides.TryGetValue(overrideContext, out replacements))
                 return false;
 
-            var replacementItem = replacements.Overrides.FirstOrDefault(item => contentPath.StartsWith(item[0]));
+            var replacementItem = replacements.Overrides?.FirstOrDefault(item => contentPath.StartsWith(item[0]));
             if (replacementItem == null)
                 return false;
             var pattern = replacementItem[0];

@@ -407,7 +407,7 @@ namespace WebInterface
         protected static Uri GetGoogleServiceLoginUrl(Uri returnUrl)
         {
             string authorizationEndpoint = "https://accounts.google.com/o/oauth2/auth";
-            var state = string.IsNullOrEmpty(returnUrl.Query) ? string.Empty : returnUrl.Query.Substring(1);
+            var state = string.IsNullOrEmpty(returnUrl.Query) ? string.Empty : returnUrl.Query.Substring(1) + returnUrl.Fragment ?? "";
             var req = HttpContext.Current.Request;
             string client_id = SecureConfig.Current.GoogleOAuthClientID;
 
