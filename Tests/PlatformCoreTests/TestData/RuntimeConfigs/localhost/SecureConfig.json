@@ -1,0 +1,21 @@
+{
+  "AWSAccessKey": "",
+  "AWSSecretKey": "",
+  "AzureStorageConnectionString": "",
+  "AzureAccountName": "",
+  "AzureStorageKey": "",
+  "CoreFileShareAccountName": "",
+  "CoreFileShareAccountKey": "",
+  "CoreShareWithFolderName": "X:\\tbcore",
+
+  "WilmaSharedSecret": "",
+
+  "GoogleOAuthClientID": "",
+  "GoogleOAuthClientSecret": "",
+
+  "FacebookOAuthClientID": "",
+  "FacebookOAuthClientSecret": "",
+
+  "StripePublicKey": "",
+  "StripeSecretKey": ""
+}

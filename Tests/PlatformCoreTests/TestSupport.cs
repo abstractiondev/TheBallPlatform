@@ -9,30 +9,15 @@ namespace PlatformCoreTests
 {
     public static class TestSupport
     {
-        public static string CurrPath
-        {
-            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location); }
-        }
+        public static string CurrPath => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-        public static string TestDataPath
-        {
-            get { return Path.Combine(CurrPath, "TestData"); }
-        }
+        public static string TestDataPath => Path.Combine(CurrPath, "TestData");
 
-        public static string TheBallPath
-        {
-            get { return Path.Combine(TestDataPath, "TheBall"); }
-        }
+        public static string TheBallPath => Path.Combine(TestDataPath, "TheBall");
 
-        public static string OIPPath
-        {
-            get { return Path.Combine(TestDataPath, "OIP"); }
-        }
+        public static string OIPPath => Path.Combine(TestDataPath, "OIP");
 
-        public static string OnlineTrainingPath
-        {
-            get { return Path.Combine(TestDataPath, "OnlineTraining");  }
-        }
+        public static string OnlineTrainingPath => Path.Combine(TestDataPath, "OnlineTraining");
 
 
         public static string GetTheBallFileFullPath(string theBallFileRelativePath)

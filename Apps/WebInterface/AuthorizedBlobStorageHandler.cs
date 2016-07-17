@@ -61,7 +61,7 @@ namespace WebInterface
             var response = context.Response;
             if (request.IsAboutRequest())
             {
-                await HandleAboutGetRequest(context, request.Path);
+                await HandleAboutAnonRequest(context);
                 return;
             }
 
@@ -671,13 +671,32 @@ namespace WebInterface
             throw new NotImplementedException();
         }
 
-        private async Task HandleAboutGetRequest(HttpContext context, string contentPath)
+        private async Task HandleAboutAnonRequest(HttpContext context)
+        {
+            var request = context.Request;
+            bool isGetRequest = request.RequestType == "GET";
+            var contentPath = request.GetOwnerContentPath();
+            if (isGetRequest)
+                await HandleAboutGetRequest(context, request);
+            else
+            {
+                bool isOperationRequest = contentPath.StartsWith("op/");
+                if (isOperationRequest)
+                {
+                    await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
+                }
+            }
+        }
+
+        private static async Task HandleAboutGetRequest(HttpContext context, HttpRequest request)
         {
             var response = context.Response;
-            var request = context.Request;
             string blobPath = GetBlobPath(request);
-            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobPath);  //publicClient.GetBlockBlobReference(blobPath);
+            CloudBlob blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobPath);
+                //publicClient.GetBlockBlobReference(blobPath);
             response.Clear();
+            bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
+            var fsOverrides = InstanceConfig.Current.FileSystemOverrides;
             try
             {
                 await HandleBlobRequestWithCacheSupport(context, blob, response);
@@ -685,16 +704,17 @@ namespace WebInterface
             catch (StorageException scEx)
             {
                 if (scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound ||
-                    scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
+                    scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.BadRequest)
                 {
                     response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
                     response.StatusCode = scEx.RequestInformation.HttpStatusCode;
                 }
                 else
                 {
-                    response.Write("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() + Environment.NewLine);
+                    response.Write("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() +
+                                   Environment.NewLine);
                     response.Write(scEx.ToString());
-                    response.StatusCode = (int)scEx.RequestInformation.HttpStatusCode;
+                    response.StatusCode = (int) scEx.RequestInformation.HttpStatusCode;
                 }
             }
             finally
@@ -702,7 +722,6 @@ namespace WebInterface
                 //response.End();
                 context.ApplicationInstance.CompleteRequest();
             }
-
         }
 
         private async Task HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
@@ -711,19 +730,9 @@ namespace WebInterface
             if(String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
             bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
-            if (filesystemOverrideEnabled && (context.Request.Url.Host == "localhost" || context.Request.Url.Host == "localdev" || context.Request.Url.Host == "home.theball.me") && 
-                (contentPath.Contains("groupmanagement/") || 
-                //contentPath.Contains("wwwsite/") || 
-                contentPath.Contains("webview/") ||
-                (contentPath.Contains("webui/") && containerOwner is TBAccount) ||
-                contentPath.StartsWith("cpanel/") ||
-                (contentPath.Contains("foundation-one/") && containerOwner is TBAccount) ||
-                contentPath.Contains("categoriesandcontent/") ||
-                contentPath.Contains("controlpanel_comments_v1/")))
-            {
-                await HandleFileSystemGetRequest(containerOwner, context, contentPath);
+            bool fileSystemHandled = await HandleFileSystemGetRequest(containerOwner, context, contentPath);
+            if(fileSystemHandled)
                 return;
-            }
             if (String.IsNullOrEmpty(contentPath) || contentPath.EndsWith("/"))
             {
                 CloudBlockBlob redirectBlob = StorageSupport.GetOwnerBlobReference(containerOwner, contentPath +
@@ -908,30 +917,23 @@ namespace WebInterface
             }
         }
 
-        private async Task HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private async Task<bool> HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
+            return false;
             bool isAccount = containerOwner is TBAccount;
             var response = context.Response;
             string contentType = StorageSupport.GetMimeType(Path.GetExtension(contentPath));
             response.ContentType = contentType;
             string prefixStrippedContent = contentPath; //.Substring(AuthGroupPrefixLen + GuidIDLen + 1);
-            string LocalWebRootFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\groupmanagement\";
             string LocalWebCatConFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\categoriesandcontent\";
-            //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\EarthhouseWww\UI\earthhouse\";
-            //string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\CustomerWww\FOIPWww\UI\foip\";
             string LocalWwwSiteFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\webpresence_welearnit\";
             string LocalOIPAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\account\";
             string LocalFoundationOneAccountFolder = @"d:\UserData\Kalle\WebstormProjects\OIPTemplates\UI\foundation-one\";
             string LocalGroupControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanel\";
-            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount_iZENZEi\";
             string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\Kuubiiz\memberstempl\WebTemplates\AccountTemplate\";
-            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\work\abs\IZHelsinki\helsinkitempl\WebTemplates\AccountTemplate\";
-            //string LocalAccountControlPanelFolder = @"D:\UserData\Kalle\WebstormProjects\TheBallMeWeb\WebTemplates\CPanelAccount\";
             string LocalOIPControlPanelFolder = @"d:\UserData\Kalle\WebstormProjects\agi-oip-ng\WebTemplates\controlpanel_comments_v1\";
             string fileName;
-            if (prefixStrippedContent.Contains("groupmanagement/"))
-                fileName = prefixStrippedContent.Replace("groupmanagement/", LocalWebRootFolder);
-            else if (prefixStrippedContent.Contains("webui/"))
+            if (prefixStrippedContent.Contains("webui/"))
                 fileName = prefixStrippedContent.Replace("webui/", LocalOIPAccountFolder);
             else if (prefixStrippedContent.Contains("cpanel/"))
             {
@@ -968,7 +970,7 @@ namespace WebInterface
                             response.ClearContent();
                             response.ClearHeaders();
                             response.StatusCode = 304;
-                            return;
+                            return true;
                         }
                     }
                 }
@@ -983,6 +985,7 @@ namespace WebInterface
                 response.StatusCode = 404;
             }
             context.ApplicationInstance.CompleteRequest();
+            return true;
         }
 
         #endregion

@@ -19,6 +19,7 @@ namespace WebInterface
         private const string AboutPrefix = "/about/";
         private static int AuthGroupPrefixLen;
         private static int AuthPersonalPrefixLen;
+        private static int AboutPrefixLen;
         //private static int AuthAccountPrefixLen;
         private static int AuthProcPrefixLen;
         private static int AuthPrefixLen;
@@ -28,6 +29,7 @@ namespace WebInterface
         {
             AuthGroupPrefixLen = AuthGroupPrefix.Length;
             AuthPersonalPrefixLen = AuthPersonalPrefix.Length;
+            AboutPrefixLen = AboutPrefix.Length;
             //AuthAccountPrefixLen = AuthAccountPrefix.Length;
             AuthPrefixLen = AuthPrefix.Length;
             GuidIDLen = Guid.Empty.ToString().Length;
@@ -57,9 +59,9 @@ namespace WebInterface
             return isShortcutRequest(request.Path) && request.UrlReferrer != null;
         }
 
-        public static bool IsAboutRequest(this HttpRequest request)
+        public static bool IsAboutRequest(this HttpRequest request, string requestPath = null)
         {
-            return request.Path.StartsWith(AboutPrefix);
+            return (requestPath ?? request.Path).StartsWith(AboutPrefix);
         }
 
         public static bool IsPersonalRequest(this HttpRequest request, string requestPath = null)
@@ -89,6 +91,8 @@ namespace WebInterface
                 return (requestPath ?? request.Path).Substring(AuthGroupPrefixLen + GuidIDLen + 1);
             else if (request.IsPersonalRequest(requestPath))
                 return (requestPath ?? request.Path).Substring(AuthPersonalPrefixLen);
+            else if (request.IsAboutRequest(requestPath))
+                return (requestPath ?? request.Path).Substring(AboutPrefixLen);
             throw new InvalidDataException("Owner content path not recognized properly: " + (requestPath ?? request.Path));
         }
 

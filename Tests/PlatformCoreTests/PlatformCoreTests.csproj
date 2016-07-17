@@ -113,6 +113,7 @@
     <Compile Include="InformationContextTests.cs" />
     <Compile Include="InformationObjectSerializationTests.cs" />
     <Compile Include="JSONSerializeTests.cs" />
+    <Compile Include="RuntimeConfigurationTests.cs" />
     <Compile Include="SQLiteStorageSyncTests_OIP.cs" />
     <Compile Include="SQLiteStorageSyncTests.cs" />
     <Compile Include="MetaDataSyncTests.cs" />
@@ -198,6 +199,9 @@
     <None Include="TestData\OIP\AaltoGlobalImpact.OIP\TextContent\c70570ca-c3fa-43b4-b095-918e16444cf5.json" />
     <None Include="TestData\OIP\AaltoGlobalImpact.OIP\TextContent\f30e0e6f-8133-4792-b0f2-e808640068d7" />
     <None Include="TestData\OIP\AaltoGlobalImpact.OIP\TextContent\f30e0e6f-8133-4792-b0f2-e808640068d7.json" />
+    <None Include="TestData\RuntimeConfigs\InfraShared\InfraConfig.json" />
+    <None Include="TestData\RuntimeConfigs\localhost\InstanceConfig.json" />
+    <None Include="TestData\RuntimeConfigs\localhost\SecureConfig.json" />
     <None Include="TestData\TheBall\TheBall.Payments\CustomerAccountCollection\MasterCollection" />
     <None Include="TestData\TheBall\TheBall.Payments\CustomerAccountCollection\MasterCollection.json" />
     <None Include="TestData\TheBall\TheBall.Payments\CustomerAccount\ecf14035-9cf5-4153-98c1-bfed7644b972" />

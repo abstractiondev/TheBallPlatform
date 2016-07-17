@@ -1,0 +1,36 @@
+{
+  "WorkerActiveContainerName": "test-theball-me",
+
+  "DefaultAccountTemplateList": [ "webui", "cpanel" ],
+  "AccountDefaultRedirect": "cpanel/html/account.html",
+  "DefaultGroupTemplateList": [ "cpanel" ],
+  "GroupDefaultRedirect": "cpanel/html/cpanel.html",
+  "PlatformDefaultGroupIDList": "",
+  "AllowDirectServingRegexp": null,
+  "EnableFilesystemOverride": true,
+
+  "AdminGroupID": "",
+  "PaymentsGroupID": "",
+  "RestrictedEmailAddresses": [ "" ],
+
+  "ContainerRedirects": [ "localhost:test-theball-me" ],
+  "WebhookHandlers": [ "stripe:TheBall.Payments.ProcessStripeWebhook:-groupidhere-" ],
+
+  "EmailValidationURLWithoutID": "http://localhost/emailvalidation/",
+  "EmailFromAddress": "no-reply-test@theball.me",
+  "EmailValidationSubjectFormat": "Welcome to The Ball for DEVELOPMENT TESTING!",
+  "EmailValidationMessageFormat": "Welcome to The Ball for DEVELOPMENT TESTING!\n\nYour email address '{0}' has been registered on the The Ball for DEVELOPMENT TESTING!. Before you start your collaboration we simply need to confirm that you did register your email. Please follow the link below during which you might be redirected to perform the authentication.\n\nUse the following link to complete your registration (the link is valid for 30 minutes after which you need to resend the validation): {1}\n\nWishing you all the best from The Ball team!",
+  "EmailDeviceJoinSubjectFormat": "Approve device connection to owner: {0}",
+  "EmailDeviceJoinMessageFormat": "Your confirmation is required to trust the following device 'Connection from Tool with name: {0}' to be joined to trust within collaboration group ID {1}.\n\nClick the following link to confirm this action:\n{2}",
+  "EmailGroupJoinSubjectFormat": "",
+  "EmailGroupJoinMessageFormat": "",
+  "EmailGroupAndPlatformJoinSubjectFormat": "",
+  "EmailGroupAndPlatformJoinMessageFormat": "",
+  "EmailInputJoinSubjectFormat": "",
+  "EmailInputJoinMessageFormat": "",
+  "EmailOutputJoinSubjectFormat": "",
+  "EmailOutputJoinMessageFormat": "",
+  "EmailAccountMergeValidationSubjectFormat": "Confirm Account Merge Operation for The Ball DEVTEST",
+  "EmailAccountMergeValidationMessageFormat": "Confirm Account Merge Operation for The Ball DEVTEST!\n\nYour email address '{0}' has been registered on the The Ball for DEVELOPMENT TESTING!. Before you start your collaboration we simply need to confirm that you did register your email. Please follow the link below during which you might be redirected to perform the authentication.\n\nUse the following link to complete your registration (the link is valid for 30 minutes after which you need to resend the validation): {1}\n\nWishing you all the best from The Ball team!"
+
+}

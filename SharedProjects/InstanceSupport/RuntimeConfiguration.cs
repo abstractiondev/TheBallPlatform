@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -66,7 +67,11 @@ namespace TheBall.CORE.InstanceSupport
             using (var stream = File.OpenText(fullPathName))
             {
                 var textContent = await stream.ReadToEndAsync();
-                T result = JsonConvert.DeserializeObject<T>(textContent);
+                var deserializeSettings = new JsonSerializerSettings()
+                {
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                };
+                T result = JsonConvert.DeserializeObject<T>(textContent, deserializeSettings);
                 return result;
             }
         }

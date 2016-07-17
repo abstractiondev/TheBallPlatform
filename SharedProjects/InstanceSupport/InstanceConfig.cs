@@ -10,6 +10,11 @@ namespace TheBall.CORE.InstanceSupport
 {
     public class InstanceConfig
     {
+        public class OverrideReplacement
+        {
+            public string[][] Overrides;
+        }
+
         public string EmailFromAddress;
         public string EmailValidationSubjectFormat;
         public string EmailValidationMessageFormat;
@@ -41,6 +46,7 @@ namespace TheBall.CORE.InstanceSupport
         public string AdminGroupID;
         public string AllowDirectServingRegexp;
         public bool EnableFilesystemOverride;
+        public Dictionary<string, OverrideReplacement> FileSystemOverrides;
 
         public string[] OperationOwnerScopes;
         private Dictionary<string, string> _operationOwnerScopesDict;
@@ -128,7 +134,6 @@ namespace TheBall.CORE.InstanceSupport
                 return _webhookHandlerDict;
             }
         }
-
 
         public static InstanceConfig Current => InformationContext.InstanceConfiguration.InstanceConfig;
     }
