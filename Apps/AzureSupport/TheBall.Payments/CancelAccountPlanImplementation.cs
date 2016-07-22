@@ -50,11 +50,12 @@ namespace TheBall.Payments
         public static async Task ExecuteMethod_RemoveCustomerPaymentSourceAsync(string stripeCustomerID)
         {
             StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
-            await customerService.UpdateAsync(stripeCustomerID, new StripeCustomerUpdateOptions
+            var customer = await customerService.GetAsync(stripeCustomerID);
+            if(customer.DefaultSourceId != null)
             {
-                Source = null,
-                DefaultSource = null
-            });
+                StripeCardService cardService = new StripeCardService(SecureConfig.Current.StripeSecretKey);
+                await cardService.DeleteAsync(stripeCustomerID, customer.DefaultSourceId);
+            }
         }
 
         public static string GetTarget_PlanName(CancelSubscriptionParams cancelParameters)
@@ -88,5 +89,6 @@ namespace TheBall.Payments
         {
             await customerAccount.StoreInformationAsync();
         }
+
     }
 }

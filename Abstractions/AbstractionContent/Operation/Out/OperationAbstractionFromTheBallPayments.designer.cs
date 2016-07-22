@@ -89,8 +89,7 @@ using System.Threading.Tasks;
 				 await CancelAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				}
 				}
-
-		    public class ActivateAccountPlanParameters 
+				public class ActivateAccountPlanParameters 
 		{
 				public INT.PaymentToken PaymentToken ;
 				}
