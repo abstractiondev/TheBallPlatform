@@ -84,6 +84,8 @@ namespace INT {
 				public string name { get; set; }
 				[DataMember]
 				public DateTime validuntil { get; set; }
+				[DataMember]
+				public bool cancelatperiodend { get; set; }
 			}
 
  }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments")] 

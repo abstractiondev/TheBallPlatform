@@ -50,6 +50,7 @@
           <InterfaceItems>
             <InterfaceItem name="name" logicalDataType="Text_Short"/>
             <InterfaceItem name="validuntil" logicalDataType="Time_DateTime"/>
+            <InterfaceItem name="cancelatperiodend" logicalDataType="TrueOrFalse_Boolean"/>
           </InterfaceItems>
         </InterfaceObject>
       </InterfaceModel>
@@ -149,9 +150,45 @@
           </SequentialExecution>
         </Execution>
       </Operation>
-      <Operation name="ActivateAccountDefaultPlan">
+      <Operation name="CancelAccountPlan">
         <OperationSpec>
-          <Description>Activate and pay account default plan</Description>
+          <Description>Cancel account default plan at current period end</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="INT.CancelSubscriptionParams" name="CancelParameters" designDesc="Cancellation parameters" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
+              <Target name="CustomerAccount"/>
+            </TargetDefinition>
+            <MethodExecute name="RemoveCustomerPaymentSource" designDesc="Remove current card from Stripe customer" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="StripeCustomerID"/>
+            </MethodExecute>
+            <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
+              <Parameter name="CancelParameters"/>
+            </TargetDefinition>
+            <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="StripeCustomerID"/>
+            </TargetDefinition>
+            <MethodExecute name="CancelSubscriptionAtPeriodEnd" designDesc="Cancel current subscription at period end" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="StripeCustomerID"/>
+              <Target name="PlanName"/>
+              <Target name="CustomersActiveSubscriptions"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="ActivateAccountPlan">
+        <OperationSpec>
+          <Description>Activate and pay account named plan</Description>
         </OperationSpec>
         <Parameters>
           <Parameter name="PaymentToken" dataType="INT.PaymentToken" designDesc="Obtain Stripe Token from request stream" state="implemented"  />
@@ -181,14 +218,11 @@
             <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="StripeCustomerID"/>
             </TargetDefinition>
-            <TargetDefinition name="CustomersActivePlanNames" dataType="string[]" designDesc="Customer's active plan names" state="implemented">
-              <Target name="CustomersActiveSubscriptions"/>
-            </TargetDefinition>
             <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PaymentToken"/>
               <Target name="StripeCustomerID"/>
               <Target name="PlanName"/>
-              <Target name="CustomersActivePlanNames"/>
+              <Target name="CustomersActiveSubscriptions"/>
             </MethodExecute>
             <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="CustomerAccount"/>

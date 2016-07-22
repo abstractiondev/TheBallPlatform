@@ -143,6 +143,9 @@ using System.Runtime.Serialization;
 			[DataMember]
 			public DateTime validuntil;
 
+			[DataMember]
+			public bool cancelatperiodend;
+
 			
 			}
  } 

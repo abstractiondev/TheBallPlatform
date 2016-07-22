@@ -66,33 +66,56 @@ using System.Threading.Tasks;
 				ValidatePlanContainingGroupsImplementation.ExecuteMethod_ValidateGroupsInPlan(GroupSubscriptionPlan);		
 				}
 				}
-				public class ActivateAccountDefaultPlanParameters 
+				public class CancelAccountPlanParameters 
+		{
+				public INT.CancelSubscriptionParams CancelParameters ;
+				}
+		
+		public class CancelAccountPlan 
+		{
+				private static void PrepareParameters(CancelAccountPlanParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(CancelAccountPlanParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string AccountID = CancelAccountPlanImplementation.GetTarget_AccountID();	
+				CustomerAccount CustomerAccount =  await CancelAccountPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
+				string StripeCustomerID = CancelAccountPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
+				 await CancelAccountPlanImplementation.ExecuteMethod_RemoveCustomerPaymentSourceAsync(StripeCustomerID);		
+				string PlanName = CancelAccountPlanImplementation.GetTarget_PlanName(parameters.CancelParameters);	
+				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await CancelAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
+				 await CancelAccountPlanImplementation.ExecuteMethod_CancelSubscriptionAtPeriodEndAsync(StripeCustomerID, PlanName, CustomersActiveSubscriptions);		
+				 await CancelAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
+				}
+				}
+
+		    public class ActivateAccountPlanParameters 
 		{
 				public INT.PaymentToken PaymentToken ;
 				}
 		
-		public class ActivateAccountDefaultPlan 
+		public class ActivateAccountPlan 
 		{
-				private static void PrepareParameters(ActivateAccountDefaultPlanParameters parameters)
+				private static void PrepareParameters(ActivateAccountPlanParameters parameters)
 		{
 					}
-				public static async Task ExecuteAsync(ActivateAccountDefaultPlanParameters parameters)
+				public static async Task ExecuteAsync(ActivateAccountPlanParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateMatchingEmail(parameters.PaymentToken);		
-				string AccountID = ActivateAccountDefaultPlanImplementation.GetTarget_AccountID();	
-				CustomerAccount CustomerAccount =  await ActivateAccountDefaultPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
-				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_UpdateStripeCustomerDataAsync(parameters.PaymentToken, CustomerAccount);		
-				string StripeCustomerID = ActivateAccountDefaultPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
-				string PlanName = ActivateAccountDefaultPlanImplementation.GetTarget_PlanName(parameters.PaymentToken);	
-				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName);		
-				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
-				string[] CustomersActivePlanNames = ActivateAccountDefaultPlanImplementation.GetTarget_CustomersActivePlanNames(CustomersActiveSubscriptions);	
-				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, PlanName, CustomersActivePlanNames);		
-				 await ActivateAccountDefaultPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
+					ActivateAccountPlanImplementation.ExecuteMethod_ValidateMatchingEmail(parameters.PaymentToken);		
+				string AccountID = ActivateAccountPlanImplementation.GetTarget_AccountID();	
+				CustomerAccount CustomerAccount =  await ActivateAccountPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
+				 await ActivateAccountPlanImplementation.ExecuteMethod_UpdateStripeCustomerDataAsync(parameters.PaymentToken, CustomerAccount);		
+				string StripeCustomerID = ActivateAccountPlanImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
+				string PlanName = ActivateAccountPlanImplementation.GetTarget_PlanName(parameters.PaymentToken);	
+				 await ActivateAccountPlanImplementation.ExecuteMethod_ValidateStripePlanNameAsync(PlanName);		
+				Stripe.StripeSubscription[] CustomersActiveSubscriptions =  await ActivateAccountPlanImplementation.GetTarget_CustomersActiveSubscriptionsAsync(StripeCustomerID);	
+				 await ActivateAccountPlanImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, PlanName, CustomersActiveSubscriptions);		
+				 await ActivateAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				
 		{ // Local block to allow local naming
-			SyncEffectivePlanAccessesToAccountParameters operationParameters = ActivateAccountDefaultPlanImplementation.GrantAccessToPaidPlan_GetParameters(AccountID);
+			SyncEffectivePlanAccessesToAccountParameters operationParameters = ActivateAccountPlanImplementation.GrantAccessToPaidPlan_GetParameters(AccountID);
 			 await SyncEffectivePlanAccessesToAccount.ExecuteAsync(operationParameters);
 									
 		} // Local block closing

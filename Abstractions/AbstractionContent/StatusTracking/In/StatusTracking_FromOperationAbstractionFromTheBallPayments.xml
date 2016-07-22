@@ -34,43 +34,67 @@
     <StatusItem name="ValidatePlanContainingGroups_ValidateGroupsInPlan" displayName="MethodExecuteType: ValidateGroupsInPlan" description="Validate groups exist (at least one) in plan">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_PaymentToken" displayName="VariableType: PaymentToken" description="Obtain Stripe Token from request stream">
+    <StatusItem name="CancelAccountPlan_CancelParameters" displayName="VariableType: CancelParameters" description="Cancellation parameters">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_ValidateMatchingEmail" displayName="MethodExecuteType: ValidateMatchingEmail" description="Validate that account active email matches payment token email">
+    <StatusItem name="CancelAccountPlan_AccountID" displayName="TargetDefinitionType: AccountID" description="Active account ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_AccountID" displayName="TargetDefinitionType: AccountID" description="Active account ID">
+    <StatusItem name="CancelAccountPlan_CustomerAccount" displayName="TargetDefinitionType: CustomerAccount" description="Customer account object based accountID. Created if missing">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_CustomerAccount" displayName="TargetDefinitionType: CustomerAccount" description="Customer account object based accountID. Created if missing">
+    <StatusItem name="CancelAccountPlan_StripeCustomerID" displayName="TargetDefinitionType: StripeCustomerID" description="Stripe customer ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_UpdateStripeCustomerData" displayName="MethodExecuteType: UpdateStripeCustomerData" description="Update Stripe customer data from payment info">
+    <StatusItem name="CancelAccountPlan_RemoveCustomerPaymentSource" displayName="MethodExecuteType: RemoveCustomerPaymentSource" description="Remove current card from Stripe customer">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_StripeCustomerID" displayName="TargetDefinitionType: StripeCustomerID" description="Stripe customer ID">
+    <StatusItem name="CancelAccountPlan_PlanName" displayName="TargetDefinitionType: PlanName" description="Plan name from the payment token">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_PlanName" displayName="TargetDefinitionType: PlanName" description="Plan name from the payment token">
+    <StatusItem name="CancelAccountPlan_CustomersActiveSubscriptions" displayName="TargetDefinitionType: CustomersActiveSubscriptions" description="Active Stripe subscriptions of customer">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_ValidateStripePlanName" displayName="MethodExecuteType: ValidateStripePlanName" description="Validate plan name from Stripe">
+    <StatusItem name="CancelAccountPlan_CancelSubscriptionAtPeriodEnd" displayName="MethodExecuteType: CancelSubscriptionAtPeriodEnd" description="Cancel current subscription at period end">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_CustomersActiveSubscriptions" displayName="TargetDefinitionType: CustomersActiveSubscriptions" description="Active Stripe subscriptions of customer">
+    <StatusItem name="CancelAccountPlan_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store processed object(s)">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_CustomersActivePlanNames" displayName="TargetDefinitionType: CustomersActivePlanNames" description="Customer's active plan names">
+    <StatusItem name="ActivateAccountPlan_PaymentToken" displayName="VariableType: PaymentToken" description="Obtain Stripe Token from request stream">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe, if lacking with current plan/subscription">
+    <StatusItem name="ActivateAccountPlan_ValidateMatchingEmail" displayName="MethodExecuteType: ValidateMatchingEmail" description="Validate that account active email matches payment token email">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store processed object(s)">
+    <StatusItem name="ActivateAccountPlan_AccountID" displayName="TargetDefinitionType: AccountID" description="Active account ID">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ActivateAccountDefaultPlan_GrantAccessToPaidPlan" displayName="OperationExecuteType: GrantAccessToPaidPlan" description="Grant access to paid plan">
+    <StatusItem name="ActivateAccountPlan_CustomerAccount" displayName="TargetDefinitionType: CustomerAccount" description="Customer account object based accountID. Created if missing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_UpdateStripeCustomerData" displayName="MethodExecuteType: UpdateStripeCustomerData" description="Update Stripe customer data from payment info">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_StripeCustomerID" displayName="TargetDefinitionType: StripeCustomerID" description="Stripe customer ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_PlanName" displayName="TargetDefinitionType: PlanName" description="Plan name from the payment token">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_ValidateStripePlanName" displayName="MethodExecuteType: ValidateStripePlanName" description="Validate plan name from Stripe">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_CustomersActiveSubscriptions" displayName="TargetDefinitionType: CustomersActiveSubscriptions" description="Active Stripe subscriptions of customer">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_ProcessPayment" displayName="MethodExecuteType: ProcessPayment" description="Process payment to Stripe, if lacking with current plan/subscription">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store processed object(s)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ActivateAccountPlan_GrantAccessToPaidPlan" displayName="OperationExecuteType: GrantAccessToPaidPlan" description="Grant access to paid plan">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ActivateAndPayGroupSubscriptionPlan_PaymentToken" displayName="TargetDefinitionType: PaymentToken" description="Obtain Stripe Token from request stream">
@@ -254,20 +278,30 @@
       <ItemRef itemName="ValidatePlanContainingGroups_GroupSubscriptionPlan" />
       <ItemRef itemName="ValidatePlanContainingGroups_ValidateGroupsInPlan" />
     </Group>
-    <Group name="ActivateAccountDefaultPlan">
-      <ItemRef itemName="ActivateAccountDefaultPlan_PaymentToken" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_ValidateMatchingEmail" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_AccountID" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_CustomerAccount" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_UpdateStripeCustomerData" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_StripeCustomerID" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_PlanName" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_ValidateStripePlanName" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_CustomersActiveSubscriptions" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_CustomersActivePlanNames" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_ProcessPayment" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_StoreObjects" />
-      <ItemRef itemName="ActivateAccountDefaultPlan_GrantAccessToPaidPlan" />
+    <Group name="CancelAccountPlan">
+      <ItemRef itemName="CancelAccountPlan_CancelParameters" />
+      <ItemRef itemName="CancelAccountPlan_AccountID" />
+      <ItemRef itemName="CancelAccountPlan_CustomerAccount" />
+      <ItemRef itemName="CancelAccountPlan_StripeCustomerID" />
+      <ItemRef itemName="CancelAccountPlan_RemoveCustomerPaymentSource" />
+      <ItemRef itemName="CancelAccountPlan_PlanName" />
+      <ItemRef itemName="CancelAccountPlan_CustomersActiveSubscriptions" />
+      <ItemRef itemName="CancelAccountPlan_CancelSubscriptionAtPeriodEnd" />
+      <ItemRef itemName="CancelAccountPlan_StoreObjects" />
+    </Group>
+    <Group name="ActivateAccountPlan">
+      <ItemRef itemName="ActivateAccountPlan_PaymentToken" />
+      <ItemRef itemName="ActivateAccountPlan_ValidateMatchingEmail" />
+      <ItemRef itemName="ActivateAccountPlan_AccountID" />
+      <ItemRef itemName="ActivateAccountPlan_CustomerAccount" />
+      <ItemRef itemName="ActivateAccountPlan_UpdateStripeCustomerData" />
+      <ItemRef itemName="ActivateAccountPlan_StripeCustomerID" />
+      <ItemRef itemName="ActivateAccountPlan_PlanName" />
+      <ItemRef itemName="ActivateAccountPlan_ValidateStripePlanName" />
+      <ItemRef itemName="ActivateAccountPlan_CustomersActiveSubscriptions" />
+      <ItemRef itemName="ActivateAccountPlan_ProcessPayment" />
+      <ItemRef itemName="ActivateAccountPlan_StoreObjects" />
+      <ItemRef itemName="ActivateAccountPlan_GrantAccessToPaidPlan" />
       <GroupRef groupName="SyncEffectivePlanAccessesToAccount" />
     </Group>
     <Group name="ActivateAndPayGroupSubscriptionPlan">

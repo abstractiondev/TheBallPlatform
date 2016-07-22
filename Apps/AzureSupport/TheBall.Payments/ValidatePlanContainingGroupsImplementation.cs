@@ -7,26 +7,14 @@ namespace TheBall.Payments
     {
         public static GroupSubscriptionPlan GetTarget_GroupSubscriptionPlan(string planName)
         {
-            // Hard coded prototype of local-version operation-modules
             var result = new GroupSubscriptionPlan
             {
                 PlanName = planName,
                 Description = planName
             };
 
-            if (planName == "ONLINE")
-            {
-                result.GroupIDs.Add("1b466a35-49ad-4608-949a-a1b029dc87f4");
-                //result.GroupIDs.Add("b22f0329-34f8-433d-bc44-b689627468cc");
-            } 
-
+            // TODO: Fetch groups mapped to plan names...
             return result;
-
-            var groupSubscriptionPlan = ObjectStorage.RetrieveFromOwnerContent<GroupSubscriptionPlan>(InformationContext.CurrentOwner,
-                planName);
-            if(groupSubscriptionPlan == null)
-                throw new InvalidDataException("Cannot find GroupSubscriptionPlan with name: " + planName);
-            return groupSubscriptionPlan;
         }
 
         public static void ExecuteMethod_ValidateGroupsInPlan(GroupSubscriptionPlan groupSubscriptionPlan)

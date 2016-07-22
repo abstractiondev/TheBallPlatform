@@ -228,10 +228,10 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallPayments)</p>
 </div>
-		<h1>ActivateAccountDefaultPlan (PaymentToken)</h1>
+		<h1>ActivateAccountPlan (PaymentToken)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Activate and pay account default plan
+		Activate and pay account named plan
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
@@ -286,11 +286,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Active Stripe subscriptions of customer
 		</div>
-		</p><h2>Target Definition: CustomersActivePlanNames ( CustomersActiveSubscriptions )</h2>
-		<p>		<div class="MsoNormal" >
-		Customer's active plan names
-		</div>
-		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActivePlanNames, PaymentToken )</h2>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, PlanName, CustomersActiveSubscriptions, PaymentToken )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe, if lacking with current plan/subscription
 		</div>
@@ -417,6 +413,64 @@ div.WordSection1
 		</p><h2>Target Definition: GroupAsOwner ( GroupID )</h2>
 		<p>		<div class="MsoNormal" >
 		Group as owner
+		</div>
+		</p><h1>CancelAccountPlan (CancelParameters)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Cancel account default plan at current period end
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CancelParameters
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.CancelSubscriptionParams
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Cancellation parameters
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AccountID</h2>
+		<p>		<div class="MsoNormal" >
+		Active account ID
+		</div>
+		</p><h2>Target Definition: CustomerAccount ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Customer account object based accountID. Created if missing
+		</div>
+		</p><h2>Target Definition: StripeCustomerID ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe customer ID
+		</div>
+		</p><h2>Method Call: RemoveCustomerPaymentSource ( StripeCustomerID )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove current card from Stripe customer
+		</div>
+		</p><h2>Target Definition: PlanName ( CancelParameters )</h2>
+		<p>		<div class="MsoNormal" >
+		Plan name from the payment token
+		</div>
+		</p><h2>Target Definition: CustomersActiveSubscriptions ( StripeCustomerID )</h2>
+		<p>		<div class="MsoNormal" >
+		Active Stripe subscriptions of customer
+		</div>
+		</p><h2>Method Call: CancelSubscriptionAtPeriodEnd ( StripeCustomerID, PlanName, CustomersActiveSubscriptions )</h2>
+		<p>		<div class="MsoNormal" >
+		Cancel current subscription at period end
+		</div>
+		</p><h2>Method Call: StoreObjects ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Store processed object(s)
 		</div>
 		</p><h1>CancelGroupSubscriptionPlan</h1>
 		<h2>Specifications</h2>

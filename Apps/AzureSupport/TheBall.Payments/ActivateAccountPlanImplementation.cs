@@ -10,7 +10,7 @@ using TheBall.Payments.INT;
 
 namespace TheBall.Payments
 {
-    public class ActivateAccountDefaultPlanImplementation
+    public class ActivateAccountPlanImplementation
     {
         public static string GetTarget_AccountID()
         {
@@ -30,8 +30,7 @@ namespace TheBall.Payments
             CustomerAccount customerAccount = await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(owner, accountId);
             if (customerAccount == null)
             {
-                customerAccount = new CustomerAccount();
-                customerAccount.ID = accountId;
+                customerAccount = new CustomerAccount {ID = accountId};
                 customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
                 StripeCustomerService stripeCustomerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
                 var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
@@ -51,10 +50,12 @@ namespace TheBall.Payments
             if (!customer.Metadata.ContainsKey("business_type"))
                 customer.Metadata.Add("business_type", "B2C");
             var cardInfo = paymentToken.card;
+            var tokenId = paymentToken.id;
             await customerService.UpdateAsync(customer.Id, new StripeCustomerUpdateOptions
             {
                 Metadata = customer.Metadata,
-                Description = paymentToken.card.name
+                Description = paymentToken.card.name,
+                SourceToken = tokenId,
             });
         }
 
@@ -83,34 +84,29 @@ namespace TheBall.Payments
             return stripeList.ToArray();
         }
 
-        public static string[] GetTarget_CustomersActivePlanNames(StripeSubscription[] customersActiveSubscriptions)
+        public static async Task ExecuteMethod_ProcessPaymentAsync(PaymentToken paymentToken, string stripeCustomerId, string planName, StripeSubscription[] customersActiveSubscriptions)
         {
-            return customersActiveSubscriptions.Select(sub => sub.StripePlan.Id).ToArray();
-        }
-
-        public static async Task ExecuteMethod_ProcessPaymentAsync(PaymentToken paymentToken, string stripeCustomerId, string planName, string[] customersActivePlanNames)
-        {
-            bool customerHasPlanAlready = customersActivePlanNames.Contains(planName);
-            if (!customerHasPlanAlready)
+            var existingSubscription = customersActiveSubscriptions.FirstOrDefault(sub => sub.StripePlan.Id == planName);
+            bool noExistingSubscription = existingSubscription == null || existingSubscription.Status == "canceled";
+            if (noExistingSubscription)
             {
                 var customerID = stripeCustomerId;
                 var subscriptionService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
                 var cardInfo = paymentToken.card;
-                var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions
-                { 
-                    Card = new StripeCreditCardOptions
-                    {
-                        //AddressCity = cardInfo.address_city,
-                        //AddressCountry = cardInfo.address_country,
-                        //AddressLine1 = cardInfo.address_line1,
-                        //Name = cardInfo.name,
-                        //AddressZip = cardInfo.address_zip,
-                        //Cvc = cardInfo.cvc_check,
-                        //ExpirationMonth = cardInfo.exp_month,
-                        //ExpirationYear = cardInfo.exp_year,
-                        TokenId = paymentToken.id
-                    },
-                });
+                var subscription = await subscriptionService.CreateAsync(customerID, planName);
+            }
+            else
+            {
+                if (existingSubscription.CancelAtPeriodEnd)
+                {
+                    var subService = new StripeSubscriptionService(SecureConfig.Current.StripeSecretKey);
+                    await
+                        subService.UpdateAsync(stripeCustomerId, existingSubscription.Id,
+                            new StripeSubscriptionUpdateOptions
+                            {
+                                PlanId = existingSubscription.StripePlan.Id
+                            });
+                }
             }
         }
 

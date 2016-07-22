@@ -103,6 +103,8 @@ namespace INT {
 				public string name { get; set; }
 				[DataMember]
 				public DateTime validuntil { get; set; }
+				[DataMember]
+				public bool cancelatperiodend { get; set; }
 			}
 
  } 		public static class DomainInformationSupport
