@@ -3,7 +3,7 @@
  */
 angular.module('TheBallMobileUI')
 
-    .controller('demoController', ['$scope', function($scope) {
+    .controller('connectionsController', ['$scope', function($scope) {
         $("#AlpacaDemo").alpaca({
             "optionsSource": "/data/options.json",
             "schemaSource": "/data/schema.json",

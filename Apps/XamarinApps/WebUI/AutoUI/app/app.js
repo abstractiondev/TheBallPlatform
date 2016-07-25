@@ -1,4 +1,4 @@
-angular.module('healthyGulpAngularApp', ['ui.router'])
+angular.module('TheBallMobileUI', ['ui.router'])
 
 .config(['$stateProvider', '$urlRouterProvider',
     function($stateProvider, $urlRouterProvider) {
@@ -10,7 +10,7 @@ angular.module('healthyGulpAngularApp', ['ui.router'])
             .state('home', {
                 url: '/',
                 templateUrl: 'components/home.html',
-                controller: 'demoController'
+                controller: 'connectionsController'
             });
 
     }]);

@@ -1,4 +1,4 @@
-angular.module('healthyGulpAngularApp')
+angular.module('TheBallMobileUI')
 
 .directive('demoComponent', [function() {
         return {
