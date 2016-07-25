@@ -5,6 +5,7 @@ var es = require('event-stream');
 var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var flatten = require('gulp-flatten');
+var cleanCSS = require('gulp-clean-css');
 var Q = require('q');
 
 // == PATH STRINGS ========
@@ -135,10 +136,10 @@ pipes.builtStylesDev = function() {
 
 pipes.builtStylesProd = function() {
     return gulp.src(paths.styles)
-        .pipe(plugins.sourcemaps.init())
+        //.pipe(plugins.sourcemaps.init())
             .pipe(plugins.sass())
-            .pipe(plugins.minifyCss())
-        .pipe(plugins.sourcemaps.write())
+            .pipe(cleanCSS())
+        //.pipe(plugins.sourcemaps.write())
         .pipe(pipes.minifiedFileName())
         .pipe(gulp.dest(paths.distProd));
 };
