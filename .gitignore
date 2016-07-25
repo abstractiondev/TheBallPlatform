@@ -46,3 +46,4 @@ Apps/TheBallWebFarm/.vs/config/applicationhost.config
 **/.idea/workspace.xml
 **/.vs/**
 build/**
+**/.idea/deployment.xml

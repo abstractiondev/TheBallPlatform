@@ -28,6 +28,8 @@ var application;
         return ConnectionService;
     })();
     application.ConnectionService = ConnectionService;
-    window.appModule.factory('ConnectionService', ["$http", "$location", "promiseCache", function ($http, $location, promiseCache) { return new ConnectionService($http, $location, promiseCache); }]);
+    window.appModule.factory('ConnectionService', ["$http", "$location", "promiseCache", function ($http, $location, promiseCache) {
+            return new ConnectionService($http, $location, promiseCache);
+        }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionService.js.map

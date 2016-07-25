@@ -61,9 +61,7 @@ var application;
         ConnectionController.prototype.GoToConnection = function (connectionID) {
             var me = this;
             me.foundationApi.publish("progressBarModal", "open");
-            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) {
-                me.foundationApi.publish("progressBarModal", "close");
-            }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) {
+            me.operationService.executeOperation("TheBall.LocalApp.GoToConnection", { "connectionID": connectionID }).then(function (successData) { me.foundationApi.publish("progressBarModal", "close"); }, function (failedData) { return me.LastOperationDump = "Failed: " + JSON.stringify(failedData); }, function (updateData) {
                 me.scope.progressCurrent = me.scope.progressMax * updateData.progress;
             });
         };
@@ -84,12 +82,16 @@ var application;
             };
             me.$timeout(repeat, 200);
             return;
-            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000", color: "alert" });
+            me.foundationApi.publish('main-notifications', { title: 'Deleting Connection', content: connectionID, autoclose: "3000",
+                color: "alert" });
             this.operationService.executeOperation("TheBall.LocalApp.DeleteConnection", { "connectionID": connectionID }); /*.then(data => me.LastOperationDump = JSON.stringify(data));*/
         };
         ConnectionController.$inject = ['$scope'];
         return ConnectionController;
     })();
-    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", "$timeout", function ($scope, connectionService, operationService, foundationApi, $timeout) { return new ConnectionController($scope, connectionService, operationService, foundationApi, $timeout); }]);
+    window.appModule.controller("ConnectionController", ["$scope", "ConnectionService", "OperationService", "FoundationApi", "$timeout",
+        function ($scope, connectionService, operationService, foundationApi, $timeout) {
+            return new ConnectionController($scope, connectionService, operationService, foundationApi, $timeout);
+        }]);
 })(application || (application = {}));
 //# sourceMappingURL=ConnectionController.js.map
