@@ -226,10 +226,10 @@ pipes.builtAppProd = function() {
 };
 
 pipes.zipAppProd = function() {
-    var zipFileName = 'prodarchive.zip';
+    var zipFileName = 'uipackage.zip';
     return gulp.src([paths.distProd + '/**/*', '!' + paths.distProd + "/" + zipFileName])
         .pipe(zip(zipFileName))
-        .pipe(gulp.dest(paths.distProd));
+        .pipe(gulp.dest('../build/'));
 };
 
 // == TASKS ========
