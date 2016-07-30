@@ -6,6 +6,7 @@ var bowerFiles = require('main-bower-files');
 var print = require('gulp-print');
 var flatten = require('gulp-flatten');
 var cleanCSS = require('gulp-clean-css');
+var zip = require('gulp-zip');
 var Q = require('q');
 
 // == PATH STRINGS ========
@@ -224,6 +225,13 @@ pipes.builtAppProd = function() {
     return es.merge(pipes.builtIndexProd(), pipes.processedImagesProd(), pipes.processedDataProd(), pipes.processedFontsProd());
 };
 
+pipes.zipAppProd = function() {
+    var zipFileName = 'prodarchive.zip';
+    return gulp.src([paths.distProd + '/**/*', '!' + paths.distProd + "/" + zipFileName])
+        .pipe(zip(zipFileName))
+        .pipe(gulp.dest(paths.distProd));
+};
+
 // == TASKS ========
 
 // removes all compiled dev files
@@ -291,6 +299,10 @@ gulp.task('build-app-dev', pipes.builtAppDev);
 
 // builds a complete prod environment
 gulp.task('build-app-prod', pipes.builtAppProd);
+
+gulp.task('zip-app-prod', pipes.zipAppProd);
+
+gulp.task('zip-clean-app-prod', ['clean-build-app-prod'], pipes.zipAppProd);
 
 // cleans and builds a complete dev environment
 gulp.task('clean-build-app-dev', ['clean-dev'], pipes.builtAppDev);
