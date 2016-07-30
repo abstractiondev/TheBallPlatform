@@ -4,9 +4,11 @@
 angular.module('TheBallMobileUI')
 
     .controller('connectionsController', ['$scope', function($scope) {
-        $("#AlpacaDemo").alpaca({
-            "optionsSource": "/data/options.json",
-            "schemaSource": "/data/schema.json",
-            "view": "bootstrap-create"
-        });
+        setTimeout(function() {
+            $("#AlpacaDemo").alpaca({
+                "optionsSource": "/data/options.json",
+                "schemaSource": "/data/schema.json",
+                "view": "bootstrap-create"
+            });
+        }, 1000);
     }]);
