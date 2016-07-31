@@ -16,6 +16,7 @@ using Android.Support.V7.Media;
 using Android.Gms.Cast;
 using Android.Gms.Common.Apis;
 using Android.Media.Session;
+using TheBall.CORE.MobileSupport;
 
 namespace TheBallMobileApp
 {
@@ -68,8 +69,8 @@ namespace TheBallMobileApp
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            mediaRouteButton = FindViewById<Android.Support.V7.App.MediaRouteButton>(Resource.Id.mediaRouteButtonX);
-            testCasting();
+            //mediaRouteButton = FindViewById<Android.Support.V7.App.MediaRouteButton>(Resource.Id.mediaRouteButtonX);
+            //testCasting();
 
 
             //string connToSync = "members.onlinetaekwondo.net";
@@ -77,8 +78,8 @@ namespace TheBallMobileApp
             {
                 cWebView = hookToWebView(FindViewById<WebView>(Resource.Id.webView));
             }
-            
-            
+
+            await AssetSupport.ExtractZip(Assets.Open("uipackage.zip"), "AutoUI");
         }
 
         private void testCasting()
