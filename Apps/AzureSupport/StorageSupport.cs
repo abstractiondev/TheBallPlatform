@@ -1248,7 +1248,7 @@ namespace TheBall
         public static string GetOwnerContentLocation(IContainerOwner owner, string blobAddress)
         {
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
-            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("dev/") || blobAddress.StartsWith("sys/"))
+            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("sys/"))
             {
                 if(blobAddress.StartsWith(ownerPrefix))
                     return blobAddress;
