@@ -343,6 +343,11 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="SubmitCollaborationData">
+        <OperationSpec>
+          <Description>Submit collaboration data to other owner. Data is positioned under collab/submitting_owner_id/TheBall.Interface/InterfaceData/</Description>
+        </OperationSpec>
+      </Operation>
       <Operation name="CreateInterfaceOperationForExecution">
         <OperationSpec>
           <Description>Create interface operation for execution. Return ID to follow-up on status.</Description>
