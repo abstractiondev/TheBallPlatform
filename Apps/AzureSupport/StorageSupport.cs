@@ -238,7 +238,6 @@ namespace TheBall
             InformationContext.AddStorageTransactionToCurrent();
         }
 
-
         public static async Task UploadBlobBinaryAsync(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
@@ -1269,6 +1268,13 @@ namespace TheBall
             return CurrActiveContainer.UploadBlobText(uploadAddress, content);
         }
 
+        public static async Task<CloudBlockBlob> UploadOwnerBlobTextAsync(IContainerOwner owner, string blobAddress, string content)
+        {
+            var uploadAddress = GetOwnerContentLocation(owner, blobAddress);
+            var blob = await CurrActiveContainer.UploadBlobTextAsync(uploadAddress, content);
+            return blob;
+        }
+
         public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
             string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
@@ -1771,6 +1777,37 @@ namespace TheBall
             deleteLockFile(owner, ownerLockFileName, lockID);
         }
 
+        const string InterfaceDataPrefixFolder = "TheBall.Interface/InterfaceData";
+        const string ShareDataPrefixFolder = "TheBall.Interface/ShareInfo";
+        public static string GetOwnerInterfaceDataFullPath(string fileName)
+        {
+            var interfaceDataName = Path.Combine(InterfaceDataPrefixFolder, fileName).Replace("\\", "/");
+            if(!interfaceDataName.StartsWith(InterfaceDataPrefixFolder + "/"))
+                throw new ArgumentException("Relative filename not allowed: " + fileName);
+            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
+            return ownerPrefixed;
+        }
+
+        public static string GetCollaborationOwnerShareFullPath(IContainerOwner collaborationTarget, string shareFileName, bool isMetadataFile)
+        {
+            var storedFileName = isMetadataFile ? "_" + shareFileName + ".json" : shareFileName;
+            var interfaceDataName = Path.Combine(ShareDataPrefixFolder, collaborationTarget.ContainerName,
+                collaborationTarget.LocationPrefix, storedFileName).Replace("\\", "/");
+            if (!interfaceDataName.StartsWith(ShareDataPrefixFolder + "/"))
+                throw new ArgumentException("Relative filename not allowed: " + shareFileName);
+            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
+            return ownerPrefixed;
+        }
+
+        public static async Task<Tuple<string, long, DateTime>> GetFileInfoA(string sourceFullPath)
+        {
+            var blob = GetOwnerBlobReference(sourceFullPath);
+            await blob.FetchAttributesAsync();
+            var contentMd5 = blob.Properties.ContentMD5;
+            var length = blob.Properties.Length;
+            var modified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
+            return new Tuple<string, long, DateTime>(contentMd5, length, modified);
+        }
     }
 
     public class ReferenceOutdatedException : Exception

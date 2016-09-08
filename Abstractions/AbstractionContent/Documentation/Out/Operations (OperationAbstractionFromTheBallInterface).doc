@@ -1643,6 +1643,65 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store objects
 		</div>
+		</p><h1>ShareCollabInterfaceObject (CollaborationTarget, FileName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Share existing InterfaceData content to collab/owner_id/TheBall.Interface/InterfaceData
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CollaborationTarget
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		TheBall.CORE.IContainerOwner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Collaborating target owner
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		FileName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		File to share
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: SourceFullPath ( FileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Source file full path
+		</div>
+		</p><h2>Target Definition: MetadataFullPath ( CollaborationTarget, FileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Target file full path
+		</div>
+		</p><h2>Target Definition: MetadataObject ( SourceFullPath, FileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Metadata object retrieved from source
+		</div>
+		</p><h2>Method Call: StoreShareMetadata ( MetadataFullPath, MetadataObject )</h2>
+		<p>		<div class="MsoNormal" >
+		Store ShareInfo object
+		</div>
 		</p><h1>SyncConnectionContentToDeviceToSend (Connection)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

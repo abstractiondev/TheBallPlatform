@@ -1697,6 +1697,78 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="ShareCollabInterfaceObject (CollaborationTarget, FileName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Share existing InterfaceData content to collab/owner_id/TheBall.Interface/InterfaceData</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CollaborationTarget</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>TheBall.CORE.IContainerOwner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Collaborating target owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>FileName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>File to share</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SourceFullPath ( FileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Source file full path</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MetadataFullPath ( CollaborationTarget, FileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Target file full path</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MetadataObject ( SourceFullPath, FileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Metadata object retrieved from source</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreShareMetadata ( MetadataFullPath, MetadataObject )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store ShareInfo object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SyncConnectionContentToDeviceToSend (Connection)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

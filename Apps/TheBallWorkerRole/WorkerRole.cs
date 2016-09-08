@@ -20,24 +20,11 @@ using TheBall.Infra.AzureRoleSupport;
 
 namespace TheBallWorkerRole
 {
-    internal static class TaskExt
-    {
-        public static Task AsAwaitable(this CancellationToken token)
-        {
-            var ev = new AsyncManualResetEvent();
-            token.Register(() => ev.Set());
-            return ev.WaitAsync();
-        }
-    }
-
     public class WorkerRole : AcceleratorRole
     {
         const string TheBallWorkerConsoleName = "TheBallWorkerConsole.exe";
         protected override string AppPackageContainerName => "tb-instanceworkers";
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
-        //protected override string[] ValidAppTypes => new [] { "Dev", "Test", "Stage", "Prod" };
-        //protected override string AppConfigPath => @"X:\Configs\WorkerConsole.json";
-
         protected override AppTypeInfo[] ValidAppTypes => new[]
         {
             new AppTypeInfo("Dev", Path.Combine(AppRootFolder, "Dev", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Dev.config")),

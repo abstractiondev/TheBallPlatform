@@ -36,7 +36,7 @@ namespace TheBall.Infra.AzureRoleSupport
 
         public override void Run()
         {
-            Trace.TraceInformation("TheBallWorkerRole is running");
+            Trace.TraceInformation("TheBallRole is running");
 
             try
             {
@@ -66,8 +66,6 @@ namespace TheBall.Infra.AzureRoleSupport
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 100;
-
-
 
             var storageAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
             var storageAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");

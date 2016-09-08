@@ -41,6 +41,19 @@ namespace INT {
 			}
 
 			[DataContract]
+			public partial class ShareInfo
+			{
+				[DataMember]
+				public string ItemName { get; set; }
+				[DataMember]
+				public string ContentMD5 { get; set; }
+				[DataMember]
+				public DateTime Modified { get; set; }
+				[DataMember]
+				public double Length { get; set; }
+			}
+
+			[DataContract]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]

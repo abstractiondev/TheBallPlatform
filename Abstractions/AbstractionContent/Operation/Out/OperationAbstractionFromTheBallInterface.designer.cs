@@ -463,6 +463,26 @@ using System.Threading.Tasks;
 				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
 				}
 				}
+				public class ShareCollabInterfaceObjectParameters 
+		{
+				public TheBall.CORE.IContainerOwner CollaborationTarget ;
+				public string FileName ;
+				}
+		
+		public class ShareCollabInterfaceObject 
+		{
+				private static void PrepareParameters(ShareCollabInterfaceObjectParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(ShareCollabInterfaceObjectParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string SourceFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_SourceFullPath(parameters.FileName);	
+				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(parameters.CollaborationTarget, parameters.FileName);	
+				INT.ShareInfo MetadataObject =  await ShareCollabInterfaceObjectImplementation.GetTarget_MetadataObjectAsync(parameters.FileName, SourceFullPath);	
+				 await ShareCollabInterfaceObjectImplementation.ExecuteMethod_StoreShareMetadataAsync(MetadataFullPath, MetadataObject);		
+				}
+				}
 				public class DeleteInterfaceJSONParameters 
 		{
 				public INT.InterfaceJSONData SaveDataInfo ;

@@ -604,6 +604,34 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="ShareCollabInterfaceObject">
+      <OperationSpec>
+        <Description>Share existing InterfaceData content to collab/owner_id/TheBall.Interface/InterfaceData</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="CollaborationTarget" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaborating target owner" state="implemented" />
+        <Parameter name="FileName" dataType="string" designDesc="File to share" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="SourceFullPath" dataType="string" designDesc="Source file full path" state="implemented">
+            <Parameter name="FileName" />
+          </TargetDefinition>
+          <TargetDefinition name="MetadataFullPath" dataType="string" designDesc="Target file full path" state="implemented">
+            <Parameter name="CollaborationTarget" />
+            <Parameter name="FileName" />
+          </TargetDefinition>
+          <TargetDefinition name="MetadataObject" asyncSupportMode="AsyncOnly" dataType="INT.ShareInfo" designDesc="Metadata object retrieved from source" state="implemented">
+            <Parameter name="FileName" />
+            <Target name="SourceFullPath" />
+          </TargetDefinition>
+          <MethodExecute name="StoreShareMetadata" asyncSupportMode="AsyncOnly" designDesc="Store ShareInfo object" state="implemented">
+            <Target name="MetadataFullPath" />
+            <Target name="MetadataObject" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="DeleteInterfaceJSON">
       <OperationSpec>
         <Description>Delete Interface JSON object with given name</Description>

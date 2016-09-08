@@ -407,6 +407,7 @@
     <Compile Include="TheBall.Interface\PutInterfaceOperationToQueueImplementation.cs" />
     <Compile Include="TheBall.Interface\SaveInterfaceJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />
+    <Compile Include="TheBall.Interface\ShareCollabInterfaceObjectImplementation.cs" />
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />

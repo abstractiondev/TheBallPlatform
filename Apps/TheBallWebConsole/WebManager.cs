@@ -6,6 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
 
 namespace TheBall.Infra.TheBallWebConsole
 {
@@ -47,6 +50,28 @@ namespace TheBall.Infra.TheBallWebConsole
 
             var webManager = new WebManager(hostPollingStream, webConsoleConfig, configRootFolder);
             return webManager;
+        }
+
+        private void InitStuff()
+        {
+            var storageAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
+            var storageAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+            var StorageAccount = new CloudStorageAccount(new StorageCredentials(storageAccountName, storageAccountKey), true);
+
+            var BlobClient = StorageAccount.CreateCloudBlobClient();
+            var SiteContainerName = "";
+            var InstanceSiteContainer = BlobClient.GetContainerReference(SiteContainerName);
+
+            string hostsFileContents =
+@"127.0.0.1 dev
+127.0.0.1   test
+127.0.0.1   prod
+127.0.0.1   websites
+";
+            var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
+            File.WriteAllText(hostsFilePath, hostsFileContents);
+
+
         }
 
         internal async Task RunUpdateLoop()

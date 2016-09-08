@@ -31,6 +31,29 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
+			public partial class ShareInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string ItemName;
+
+			[DataMember]
+			public string ContentMD5;
+
+			[DataMember]
+			public DateTime Modified;
+
+			[DataMember]
+			public double Length;
+
+			
+			}
+			[DataContract]
 			public partial class ConnectionCommunicationData 
 			{
 				[DataMember]

@@ -22,6 +22,19 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class ShareInfo
+			{
+				[DataMember]
+				public string ItemName { get; set; }
+				[DataMember]
+				public string ContentMD5 { get; set; }
+				[DataMember]
+				public DateTime Modified { get; set; }
+				[DataMember]
+				public double Length { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class ConnectionCommunicationData
 			{
 				[DataMember]
