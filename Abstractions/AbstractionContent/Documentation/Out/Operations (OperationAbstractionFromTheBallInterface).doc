@@ -1643,7 +1643,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store objects
 		</div>
-		</p><h1>ShareCollabInterfaceObject (CollaborationTarget, FileName)</h1>
+		</p><h1>ShareCollabInterfaceObject (ColTargetType, ColTargetID, FileName)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Share existing InterfaceData content to collab/owner_id/TheBall.Interface/InterfaceData
@@ -1654,17 +1654,34 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		CollaborationTarget
+		ColTargetType
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		TheBall.CORE.IContainerOwner
+		string
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Collaborating target owner
+		Collaboration target type acc or grp
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ColTargetID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Collaboration target type ID
 		</div>
 				</td>
 				</tr>
@@ -1686,6 +1703,10 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h2>Target Definition: CollaborationTarget ( ColTargetType, ColTargetID )</h2>
+		<p>		<div class="MsoNormal" >
+		Collaboration target verified and instanced
+		</div>
 		</p><h2>Target Definition: SourceFullPath ( FileName )</h2>
 		<p>		<div class="MsoNormal" >
 		Source file full path

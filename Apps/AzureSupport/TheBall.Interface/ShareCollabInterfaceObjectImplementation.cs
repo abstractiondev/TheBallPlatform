@@ -15,7 +15,7 @@ namespace TheBall.Interface
             return StorageSupport.GetOwnerInterfaceDataFullPath(fileName);
         }
 
-        public static string GetTarget_MetadataFullPath(IContainerOwner collaborationTarget, string fileName)
+        public static string GetTarget_MetadataFullPath(string fileName, IContainerOwner collaborationTarget)
         {
             var metadataFullPath = StorageSupport.GetCollaborationOwnerShareFullPath(collaborationTarget, fileName, true);
             return metadataFullPath;
@@ -43,5 +43,10 @@ namespace TheBall.Interface
             await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
         }
 
+        public static IContainerOwner GetTarget_CollaborationTarget(string colTargetType, string colTargetId)
+        {
+            VirtualOwner owner = new VirtualOwner(colTargetType, colTargetId, true);
+            return owner;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using TheBall;
 using TheBall.CORE;
@@ -33,8 +34,16 @@ namespace TheBall.CORE
             throw new InvalidDataException("Cannot figure owner of: " + relativeLocation);
         }
 
-        public VirtualOwner(string containerName, string locationPrefix)
+        public VirtualOwner(string containerName, string locationPrefix, bool requireSafeAccountOrGroup = false)
         {
+            if (requireSafeAccountOrGroup)
+            {
+                if (containerName != "acc" && containerName != "grp")
+                    throw new ArgumentException("Invalid owner type: " + containerName, "containerName");
+                Guid realGuid;
+                if(!Guid.TryParse(locationPrefix, out realGuid) || realGuid.ToString() != locationPrefix)
+                    throw new ArgumentException("Invalid owner ID: " + locationPrefix);
+            }
             this.containerName = containerName;
             this.locationPrefix = locationPrefix;
         }

@@ -465,7 +465,8 @@ using System.Threading.Tasks;
 				}
 				public class ShareCollabInterfaceObjectParameters 
 		{
-				public TheBall.CORE.IContainerOwner CollaborationTarget ;
+				public string ColTargetType ;
+				public string ColTargetID ;
 				public string FileName ;
 				}
 		
@@ -477,8 +478,9 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(ShareCollabInterfaceObjectParameters parameters)
 		{
 						PrepareParameters(parameters);
-					string SourceFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_SourceFullPath(parameters.FileName);	
-				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(parameters.CollaborationTarget, parameters.FileName);	
+					TheBall.CORE.IContainerOwner CollaborationTarget = ShareCollabInterfaceObjectImplementation.GetTarget_CollaborationTarget(parameters.ColTargetType, parameters.ColTargetID);	
+				string SourceFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_SourceFullPath(parameters.FileName);	
+				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(parameters.FileName, CollaborationTarget);	
 				INT.ShareInfo MetadataObject =  await ShareCollabInterfaceObjectImplementation.GetTarget_MetadataObjectAsync(parameters.FileName, SourceFullPath);	
 				 await ShareCollabInterfaceObjectImplementation.ExecuteMethod_StoreShareMetadataAsync(MetadataFullPath, MetadataObject);		
 				}
