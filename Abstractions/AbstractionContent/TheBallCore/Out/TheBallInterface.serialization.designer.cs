@@ -13,6 +13,17 @@ using ProtoBuf;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class ShareCollabParams
+			{
+				[DataMember]
+				public string ColTargetType { get; set; }
+				[DataMember]
+				public string ColTargetID { get; set; }
+				[DataMember]
+				public string FileName { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class InterfaceJSONData
 			{
 				[DataMember]

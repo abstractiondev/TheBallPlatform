@@ -43,10 +43,16 @@ namespace TheBall.Interface
             await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
         }
 
-        public static IContainerOwner GetTarget_CollaborationTarget(string colTargetType, string colTargetId)
+        public static IContainerOwner GetTarget_CollaborationTarget(ShareCollabParams collabParams)
         {
-            VirtualOwner owner = new VirtualOwner(colTargetType, colTargetId, true);
+            VirtualOwner owner = new VirtualOwner(collabParams.ColTargetType, collabParams.ColTargetID, true);
             return owner;
         }
+
+        public static string GetTarget_FileName(ShareCollabParams collabParams)
+        {
+            return collabParams.FileName;
+        }
+
     }
 }

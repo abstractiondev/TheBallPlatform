@@ -1643,7 +1643,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store objects
 		</div>
-		</p><h1>ShareCollabInterfaceObject (ColTargetType, ColTargetID, FileName)</h1>
+		</p><h1>ShareCollabInterfaceObject (CollabParams)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Share existing InterfaceData content to collab/owner_id/TheBall.Interface/InterfaceData
@@ -1654,56 +1654,26 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		ColTargetType
+		CollabParams
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		INT.ShareCollabParams
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Collaboration target type acc or grp
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		ColTargetID
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Collaboration target type ID
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		FileName
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		string
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		File to share
+		Collaboration parameters
 		</div>
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: CollaborationTarget ( ColTargetType, ColTargetID )</h2>
+		</p><h2>Target Definition: FileName ( CollabParams )</h2>
+		<p>		<div class="MsoNormal" >
+		Source filename
+		</div>
+		</p><h2>Target Definition: CollaborationTarget ( CollabParams )</h2>
 		<p>		<div class="MsoNormal" >
 		Collaboration target verified and instanced
 		</div>
@@ -1711,11 +1681,11 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Source file full path
 		</div>
-		</p><h2>Target Definition: MetadataFullPath ( CollaborationTarget, FileName )</h2>
+		</p><h2>Target Definition: MetadataFullPath ( FileName, CollaborationTarget )</h2>
 		<p>		<div class="MsoNormal" >
 		Target file full path
 		</div>
-		</p><h2>Target Definition: MetadataObject ( SourceFullPath, FileName )</h2>
+		</p><h2>Target Definition: MetadataObject ( FileName, SourceFullPath )</h2>
 		<p>		<div class="MsoNormal" >
 		Metadata object retrieved from source
 		</div>

@@ -14,6 +14,26 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
+			public partial class ShareCollabParams 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string ColTargetType;
+
+			[DataMember]
+			public string ColTargetID;
+
+			[DataMember]
+			public string FileName;
+
+			
+			}
+			[DataContract]
 			public partial class InterfaceJSONData 
 			{
 				[DataMember]

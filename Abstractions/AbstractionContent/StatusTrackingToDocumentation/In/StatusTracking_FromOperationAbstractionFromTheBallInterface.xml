@@ -391,13 +391,10 @@
     <StatusItem name="SynchronizeConnectionCategories_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store connection object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ShareCollabInterfaceObject_ColTargetType" displayName="VariableType: ColTargetType" description="Collaboration target type acc or grp">
+    <StatusItem name="ShareCollabInterfaceObject_CollabParams" displayName="VariableType: CollabParams" description="Collaboration parameters">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="ShareCollabInterfaceObject_ColTargetID" displayName="VariableType: ColTargetID" description="Collaboration target type ID">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="ShareCollabInterfaceObject_FileName" displayName="VariableType: FileName" description="File to share">
+    <StatusItem name="ShareCollabInterfaceObject_FileName" displayName="TargetDefinitionType: FileName" description="Source filename">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="ShareCollabInterfaceObject_CollaborationTarget" displayName="TargetDefinitionType: CollaborationTarget" description="Collaboration target verified and instanced">
@@ -638,8 +635,7 @@
       <ItemRef itemName="SynchronizeConnectionCategories_StoreObject" />
     </Group>
     <Group name="ShareCollabInterfaceObject">
-      <ItemRef itemName="ShareCollabInterfaceObject_ColTargetType" />
-      <ItemRef itemName="ShareCollabInterfaceObject_ColTargetID" />
+      <ItemRef itemName="ShareCollabInterfaceObject_CollabParams" />
       <ItemRef itemName="ShareCollabInterfaceObject_FileName" />
       <ItemRef itemName="ShareCollabInterfaceObject_CollaborationTarget" />
       <ItemRef itemName="ShareCollabInterfaceObject_SourceFullPath" />

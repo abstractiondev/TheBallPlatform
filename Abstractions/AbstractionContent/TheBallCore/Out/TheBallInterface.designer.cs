@@ -32,6 +32,17 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class ShareCollabParams
+			{
+				[DataMember]
+				public string ColTargetType { get; set; }
+				[DataMember]
+				public string ColTargetID { get; set; }
+				[DataMember]
+				public string FileName { get; set; }
+			}
+
+			[DataContract]
 			public partial class InterfaceJSONData
 			{
 				[DataMember]
