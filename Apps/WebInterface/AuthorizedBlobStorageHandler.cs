@@ -466,7 +466,11 @@ namespace WebInterface
                     await uploadedContentStream.ReadAsync(buffer, 0, bytesToProcess);
                     using (var memoryStream = new MemoryStream(buffer, 0, bytesToProcess, false))
                     {
-                        await blob.PutBlockAsync(blockID, memoryStream, null);
+                        await blob.PutBlockAsync(blockID, memoryStream, null, null, new BlobRequestOptions
+                        {
+                         StoreBlobContentMD5 = true,
+                         UseTransactionalMD5 = true
+                        }, null);
                     }
                     written += bytesToProcess;
                 } while (written < currContentLength);
