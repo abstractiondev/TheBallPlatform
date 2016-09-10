@@ -464,9 +464,12 @@ namespace WebInterface
                     blockList.Add(blockID);
                     var bytesToProcess = Math.Min(currContentLength - written, blobBlockSize);
                     await uploadedContentStream.ReadAsync(buffer, 0, bytesToProcess);
+                    MD5 md5 = new MD5Cng();
+                    var hash = md5.ComputeHash(buffer, 0, bytesToProcess);
+                    var contentMD5 = Convert.ToBase64String(hash);
                     using (var memoryStream = new MemoryStream(buffer, 0, bytesToProcess, false))
                     {
-                        await blob.PutBlockAsync(blockID, memoryStream, null, null, new BlobRequestOptions
+                        await blob.PutBlockAsync(blockID, memoryStream, contentMD5, null, new BlobRequestOptions
                         {
                          StoreBlobContentMD5 = true,
                          UseTransactionalMD5 = true
@@ -475,7 +478,10 @@ namespace WebInterface
                     written += bytesToProcess;
                 } while (written < currContentLength);
                 var priorList = Enumerable.Range(1, resumableChunkNumber - 1).Select(getBlockId).ToArray();
-                await blob.PutBlockListAsync(priorList.Concat(blockList));
+                await blob.PutBlockListAsync(priorList.Concat(blockList), null, new BlobRequestOptions
+                {
+                    StoreBlobContentMD5 = true
+                }, null);
                 var currentTotalUploadedLength = currLength + written;
                 bool isIncomplete = currentTotalUploadedLength < resumableTotalSize;
                 if (isIncomplete)
@@ -496,6 +502,7 @@ namespace WebInterface
                     var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
                     var finalBlobPath = blobPath.Replace(originalFilename, timePrefix + originalFilename);
                     var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
+
                     await finalBlob.StartCopyAsync(blob);
                 }
             }
