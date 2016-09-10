@@ -1790,7 +1790,16 @@ namespace TheBall
 
         public static string GetCollaborationOwnerShareFullPath(IContainerOwner collaborationTarget, string shareFileName, bool isMetadataFile)
         {
-            var storedFileName = isMetadataFile ? "_" + shareFileName + ".json" : shareFileName;
+            string storedFileName;
+            if (isMetadataFile)
+            {
+                var injectIndex = shareFileName.LastIndexOf('/') + 1;
+                var beforeInject = shareFileName.Substring(0, injectIndex);
+                var afterInject = shareFileName.Substring(injectIndex);
+                storedFileName = beforeInject +  "_" + afterInject + ".json";
+            }
+            else
+                storedFileName = shareFileName;
             var interfaceDataName = Path.Combine(ShareDataPrefixFolder, collaborationTarget.ContainerName,
                 collaborationTarget.LocationPrefix, storedFileName).Replace("\\", "/");
             if (!interfaceDataName.StartsWith(ShareDataPrefixFolder + "/"))

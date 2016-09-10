@@ -473,7 +473,8 @@ namespace WebInterface
                 var priorList = Enumerable.Range(1, resumableChunkNumber - 1).Select(getBlockId).ToArray();
                 await blob.PutBlockListAsync(priorList.Concat(blockList));
                 var currentTotalUploadedLength = currLength + written;
-                if (currentTotalUploadedLength < resumableTotalSize)
+                bool isIncomplete = currentTotalUploadedLength < resumableTotalSize;
+                if (isIncomplete)
                 {
                     if (blob.Metadata.ContainsKey(ResumableTotalLength))
                         blob.Metadata[ResumableTotalLength] = resumableTotalSize.ToString();
@@ -485,6 +486,14 @@ namespace WebInterface
                     blob.Metadata.Clear();
                 }
                 await blob.SetMetadataAsync();
+                if (!isIncomplete)
+                {
+                    var originalFilename = Path.GetFileName(blobPath);
+                    var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
+                    var finalBlobPath = blobPath.Replace(originalFilename, timePrefix + originalFilename);
+                    var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
+                    await finalBlob.StartCopyAsync(blob);
+                }
             }
         }
 
