@@ -484,20 +484,15 @@ namespace WebInterface
                         blob.Metadata[ResumableTotalLength] = resumableTotalSize.ToString();
                     else
                         blob.Metadata.Add(ResumableTotalLength, resumableTotalSize.ToString());
-                }
-                else
-                {
-                    blob.Metadata.Clear();
-                }
-                await blob.SetMetadataAsync();
-                if (!isIncomplete)
-                {
+                    await blob.SetMetadataAsync();
+                } else {
                     var originalFilename = Path.GetFileName(blobPath);
                     var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
                     var finalBlobPath = blobPath.Replace(originalFilename, timePrefix + originalFilename);
                     var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
                     using (var copyingStream = await blob.OpenReadAsync())
                         await finalBlob.UploadFromStreamAsync(copyingStream);
+                    await blob.DeleteAsync();
                 }
             }
         }
