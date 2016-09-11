@@ -465,15 +465,9 @@ namespace WebInterface
                     var bytesToProcess = Math.Min(currContentLength - written, blobBlockSize);
                     await uploadedContentStream.ReadAsync(buffer, 0, bytesToProcess);
                     MD5 md5 = new MD5Cng();
-                    var hash = md5.ComputeHash(buffer, 0, bytesToProcess);
-                    var contentMD5 = Convert.ToBase64String(hash);
                     using (var memoryStream = new MemoryStream(buffer, 0, bytesToProcess, false))
                     {
-                        await blob.PutBlockAsync(blockID, memoryStream, contentMD5, null, new BlobRequestOptions
-                        {
-                         StoreBlobContentMD5 = true,
-                         UseTransactionalMD5 = true
-                        }, null);
+                        await blob.PutBlockAsync(blockID, memoryStream, null);
                     }
                     written += bytesToProcess;
                 } while (written < currContentLength);
@@ -502,8 +496,8 @@ namespace WebInterface
                     var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
                     var finalBlobPath = blobPath.Replace(originalFilename, timePrefix + originalFilename);
                     var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
-
-                    await finalBlob.StartCopyAsync(blob);
+                    using (var copyingStream = await blob.OpenReadAsync())
+                        await finalBlob.UploadFromStreamAsync(copyingStream);
                 }
             }
         }
