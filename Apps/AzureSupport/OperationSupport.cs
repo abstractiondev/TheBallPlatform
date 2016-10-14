@@ -30,6 +30,26 @@ namespace TheBall
             return JSONSupport.GetObjectFromStream<T>(inputStream);
         }
 
+        public static HttpOperationData GetOperationDataFromParameters(IContainerOwner owner, string operationName, object jsonParameters)
+        {
+            byte[] requestContent = null;
+            if (jsonParameters != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    JSONSupport.SerializeToJSONStream(jsonParameters, memoryStream);
+                    requestContent = memoryStream.ToArray();
+                }
+            }
+            var operationData = new HttpOperationData
+            {
+                OperationName = operationName,
+                OwnerRootLocation = owner.GetOwnerPrefix(),
+                RequestContent = requestContent
+            };
+            return operationData;
+        }
+
         public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
         {
             if (operationName.StartsWith("TheBall.Payments"))
@@ -154,7 +174,7 @@ namespace TheBall
                     }
                 }
             }
-            if (reqData.RequestContent.Length > 0)
+            if (reqData.RequestContent?.Length > 0)
             {
                 string parameterTypeNS = parametersType.Namespace;
                 string interfaceTypeNS = parameterTypeNS + ".INT";

@@ -27,9 +27,9 @@ namespace TheBallWorkerRole
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
         protected override AppTypeInfo[] ValidAppTypes => new[]
         {
-            new AppTypeInfo("Dev", Path.Combine(AppRootFolder, "Dev", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
-            new AppTypeInfo("Test", Path.Combine(AppRootFolder, "Test", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Test.config")),
-            new AppTypeInfo("Prod", Path.Combine(AppRootFolder, "Prod", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Prod.config")),
+            new AppTypeInfo("Dev", "DevConsole.zip", Path.Combine(AppRootFolder, "Dev", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
+            new AppTypeInfo("Test", "TestConsole.zip", Path.Combine(AppRootFolder, "Test", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Test.config")),
+            new AppTypeInfo("Prod", "ProdConsole.zip", Path.Combine(AppRootFolder, "Prod", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Prod.config")),
         };
 
     }

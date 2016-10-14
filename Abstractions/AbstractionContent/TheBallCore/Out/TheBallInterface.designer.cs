@@ -35,11 +35,18 @@ namespace INT {
 			public partial class ShareCollabParams
 			{
 				[DataMember]
-				public string ColTargetType { get; set; }
-				[DataMember]
-				public string ColTargetID { get; set; }
+				public CollaborationPartner Partner { get; set; }
 				[DataMember]
 				public string FileName { get; set; }
+			}
+
+			[DataContract]
+			public partial class CollaborationPartner
+			{
+				[DataMember]
+				public string PartnerType { get; set; }
+				[DataMember]
+				public string PartnerID { get; set; }
 			}
 
 			[DataContract]

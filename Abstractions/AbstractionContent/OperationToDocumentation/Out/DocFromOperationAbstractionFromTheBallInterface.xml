@@ -1517,6 +1517,100 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="PullSyncData (Partner)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Pull sync data from collaboration partner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Partner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.CollaborationPartner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Collaboration partner</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CollaborationSource ( Partner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Collaboration target owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="PushSyncNotification (Partner)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Push sync notification to collaboration target</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Partner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.CollaborationPartner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Collaboration partner</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CollaborationTarget ( Partner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Collaboration target owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncOperationData ( CollaborationTarget )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>OperationData for Sync notification</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: QueueSyncOperationToTarget ( CollaborationTarget, SyncOperationData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Queue sync operation to target owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="PutInterfaceOperationToQueue (OperationID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -1768,6 +1862,13 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store ShareInfo object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: NotifyPartner ( CollabParams )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Notify partner for sharing</TextContent>
                 </Text>
               </Paragraph>
             </Header>

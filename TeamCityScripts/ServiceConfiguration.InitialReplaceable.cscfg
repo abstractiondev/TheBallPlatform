@@ -5,6 +5,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
+      <Setting name="InfraToolsRootFolder" value="E:\TheBallInfra" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="$RDPUserName$" />
@@ -21,6 +22,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" value="$CoreFileShareAccountName$"/>
       <Setting name="CoreFileShareAccountKey" value="$CoreFileShareAccountKey$"/>
+      <Setting name="InfraToolsRootFolder" value="E:\TheBallInfra" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=$StorageAccountName$;AccountKey=$StorageAccountKey$" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
       <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="$RDPUserName$" />

@@ -1526,6 +1526,74 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Call other side to process copied content
 		</div>
+		</p><h1>PullSyncData (Partner)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Pull sync data from collaboration partner
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Partner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.CollaborationPartner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Collaboration partner
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: CollaborationSource ( Partner )</h2>
+		<p>		<div class="MsoNormal" >
+		Collaboration target owner
+		</div>
+		</p><h1>PushSyncNotification (Partner)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Push sync notification to collaboration target
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Partner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.CollaborationPartner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Collaboration partner
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: CollaborationTarget ( Partner )</h2>
+		<p>		<div class="MsoNormal" >
+		Collaboration target owner
+		</div>
+		</p><h2>Target Definition: SyncOperationData ( CollaborationTarget )</h2>
+		<p>		<div class="MsoNormal" >
+		OperationData for Sync notification
+		</div>
+		</p><h2>Method Call: QueueSyncOperationToTarget ( CollaborationTarget, SyncOperationData )</h2>
+		<p>		<div class="MsoNormal" >
+		Queue sync operation to target owner
+		</div>
 		</p><h1>PutInterfaceOperationToQueue (OperationID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1692,6 +1760,10 @@ div.WordSection1
 		</p><h2>Method Call: StoreShareMetadata ( MetadataFullPath, MetadataObject )</h2>
 		<p>		<div class="MsoNormal" >
 		Store ShareInfo object
+		</div>
+		</p><h2>Operation Call: NotifyPartner ( CollabParams )</h2>
+		<p>		<div class="MsoNormal" >
+		Notify partner for sharing
 		</div>
 		</p><h1>SyncConnectionContentToDeviceToSend (Connection)</h1>
 		<h2>Specifications</h2>

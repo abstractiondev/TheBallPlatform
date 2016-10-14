@@ -23,13 +23,27 @@ using System.Runtime.Serialization;
                 public string ETag { get; set; }
 
 			[DataMember]
-			public string ColTargetType;
-
-			[DataMember]
-			public string ColTargetID;
+			public CollaborationPartner Partner;
 
 			[DataMember]
 			public string FileName;
+
+			
+			}
+			[DataContract]
+			public partial class CollaborationPartner 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string PartnerType;
+
+			[DataMember]
+			public string PartnerID;
 
 			
 			}

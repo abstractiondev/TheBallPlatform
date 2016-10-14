@@ -20,8 +20,10 @@ namespace TheBall.Infra.AzureRoleSupport
     {
         protected abstract string AppPackageContainerName { get; }
 
+        protected string InfraToolsDir => CloudConfigurationManager.GetSetting("InfraToolsRootFolder");
+
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
-        private const string PathTo7Zip = @"E:\TheBallInfra\7z\7z.exe";
+        private string PathTo7Zip => Path.Combine(InfraToolsDir, @"7z\7z.exe");
 
         private CloudStorageAccount StorageAccount;
         private CloudBlobClient BlobClient;
@@ -54,13 +56,12 @@ namespace TheBall.Infra.AzureRoleSupport
             foreach (var workerType in ValidAppTypes)
                 AppTypeDict.Add(workerType.AppType, workerType);
 
-            const string appInsightsKeyPath = @"E:\TheBallInfra\AppInsightsKey.txt";
+            string appInsightsKeyPath = Path.Combine(InfraToolsDir, @"AppInsightsKey.txt");
             if (File.Exists(appInsightsKeyPath))
             {
                 var appInsightsKey = File.ReadAllText(appInsightsKeyPath);
                 TelemetryConfiguration.Active.InstrumentationKey = appInsightsKey;
             }
-
 
             // Set the maximum number of concurrent connections
             ServicePointManager.UseNagleAlgorithm = false;
@@ -129,11 +130,11 @@ namespace TheBall.Infra.AzureRoleSupport
             {
                 var appType = AppTypeDict[appTypeName];
                 var currentManager = appType.CurrentManager;
-                var appTypeDownloaded = appFilesDownloaded.FirstOrDefault(item => item.Item1 == appTypeName);
+                var appTypeDownloaded = appFilesDownloaded.FirstOrDefault(item => item.AppType == appTypeName);
                 bool needsUpdating = appTypeDownloaded != null;
                 if (needsUpdating)
                 {
-                    var zipFileRelativeToAppType = @"..\" + appTypeDownloaded.Item2;
+                    var zipFileRelativeToAppType = @"..\" + appTypeDownloaded.AppPackageName;
                     if (currentManager != null)
                         await currentManager.ShutdownAppConsole();
                     currentManager = null;
@@ -168,21 +169,20 @@ namespace TheBall.Infra.AzureRoleSupport
         }
 
 
-        private async Task<Tuple<string, string>[]> PollAndDownloadAppPackageFromStorage()
+        private async Task<AppTypeInfo[]> PollAndDownloadAppPackageFromStorage()
         {
             //var blobSegment = await AppContainer.ListBlobsSegmentedAsync("", true, BlobListingDetails.Metadata, null, null, null, null);
             //var blobs = blobSegment.Results;
             var blobs = AppContainer.ListBlobs(null, true, BlobListingDetails.Metadata);
             var blobsInOrder = blobs.Cast<CloudBlockBlob>().OrderByDescending(blob => Path.GetExtension(blob.Name));
-            List<Tuple<string, string>> appFilesDownloaded = new List<Tuple<string, string>>();
-            var validFileNames = ValidAppTypes.Select(typeName => typeName + ".zip").ToArray();
+            var appTypesDownloaded = new List<AppTypeInfo>();
             foreach (CloudBlockBlob blob in blobsInOrder)
             {
                 string blobFileName = blob.Name;
                 string fileName = Path.GetFileName(blobFileName);
-                if (!validFileNames.Contains(fileName))
+                var matchingAppType = ValidAppTypes.FirstOrDefault(appType => appType.AppPackageName == fileName);
+                if (matchingAppType == null)
                     continue;
-                var workerType = fileName.Replace(".zip", "");
                 string appFolderFile = Path.Combine(AppRootFolder, fileName);
                 FileInfo currentFile = new FileInfo(appFolderFile);
                 if (!currentFile.Directory.Exists)
@@ -196,7 +196,7 @@ namespace TheBall.Infra.AzureRoleSupport
                         await blob.DownloadToFileAsync(appFolderFile, FileMode.Create);
                         currentFile.Refresh();
                         currentFile.LastWriteTimeUtc = blobLastModified;
-                        appFilesDownloaded.Add(new Tuple<string, string>(workerType, fileName));
+                        appTypesDownloaded.Add(matchingAppType);
                     }
                 }
                 catch (Exception exception)
@@ -205,7 +205,7 @@ namespace TheBall.Infra.AzureRoleSupport
                     File.WriteAllText(errorFileName, exception.ToString());
                 }
             }
-            return appFilesDownloaded.ToArray();
+            return appTypesDownloaded.ToArray();
         }
 
 

@@ -10,6 +10,9 @@
           <Variable name="CoreFileShareAccountKey">
             <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountKey']/@value" />
           </Variable>
+          <Variable name="InfraToolsRootFolder">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='InfraToolsRootFolder']/@value" />
+          </Variable>
         </Environment>
       </Task>
     </Startup>
@@ -20,6 +23,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
+      <Setting name="InfraToolsRootFolder" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <LocalResources>
@@ -37,6 +41,9 @@
           </Variable>
           <Variable name="CoreFileShareAccountKey">
             <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountKey']/@value" />
+          </Variable>
+          <Variable name="InfraToolsRootFolder">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='InfraToolsRootFolder']/@value" />
           </Variable>
         </Environment>
       </Task>
@@ -89,6 +96,7 @@
     <ConfigurationSettings>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
+      <Setting name="InfraToolsRootFolder" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Certificates>

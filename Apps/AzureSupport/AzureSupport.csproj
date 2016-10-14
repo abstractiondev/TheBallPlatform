@@ -404,6 +404,8 @@
     <Compile Include="TheBall.Interface\LockInterfaceOperationsByOwnerImplementation.cs" />
     <Compile Include="TheBall.Interface\PackageAndPushCollaborationContentImplementation.cs" />
     <Compile Include="TheBall.Interface\PublishCollaborationContentOverConnectionImplementation.cs" />
+    <Compile Include="TheBall.Interface\PullSyncDataImplementation.cs" />
+    <Compile Include="TheBall.Interface\PushSyncNotificationImplementation.cs" />
     <Compile Include="TheBall.Interface\PutInterfaceOperationToQueueImplementation.cs" />
     <Compile Include="TheBall.Interface\SaveInterfaceJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\SetCategoryLinkingForConnectionImplementation.cs" />

@@ -45,7 +45,8 @@ namespace TheBall.Interface
 
         public static IContainerOwner GetTarget_CollaborationTarget(ShareCollabParams collabParams)
         {
-            VirtualOwner owner = new VirtualOwner(collabParams.ColTargetType, collabParams.ColTargetID, true);
+            var partner = collabParams.Partner;
+            VirtualOwner owner = new VirtualOwner(partner.PartnerType, partner.PartnerID, true);
             return owner;
         }
 
@@ -54,5 +55,12 @@ namespace TheBall.Interface
             return collabParams.FileName;
         }
 
+        public static PushSyncNotificationParameters NotifyPartner_GetParameters(ShareCollabParams collabParams)
+        {
+            return new PushSyncNotificationParameters
+            {
+                Partner = collabParams.Partner
+            };
+        }
     }
 }

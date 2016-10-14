@@ -412,6 +412,27 @@
     <StatusItem name="ShareCollabInterfaceObject_StoreShareMetadata" displayName="MethodExecuteType: StoreShareMetadata" description="Store ShareInfo object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="ShareCollabInterfaceObject_NotifyPartner" displayName="OperationExecuteType: NotifyPartner" description="Notify partner for sharing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushSyncNotification_Partner" displayName="VariableType: Partner" description="Collaboration partner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushSyncNotification_CollaborationTarget" displayName="TargetDefinitionType: CollaborationTarget" description="Collaboration target owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushSyncNotification_SyncOperationData" displayName="TargetDefinitionType: SyncOperationData" description="OperationData for Sync notification">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PushSyncNotification_QueueSyncOperationToTarget" displayName="MethodExecuteType: QueueSyncOperationToTarget" description="Queue sync operation to target owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PullSyncData_Partner" displayName="VariableType: Partner" description="Collaboration partner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="PullSyncData_CollaborationSource" displayName="TargetDefinitionType: CollaborationSource" description="Collaboration target owner">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="DeleteInterfaceJSON_SaveDataInfo" displayName="VariableType: SaveDataInfo" description="Interface JSON data to delete">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -642,6 +663,18 @@
       <ItemRef itemName="ShareCollabInterfaceObject_MetadataFullPath" />
       <ItemRef itemName="ShareCollabInterfaceObject_MetadataObject" />
       <ItemRef itemName="ShareCollabInterfaceObject_StoreShareMetadata" />
+      <ItemRef itemName="ShareCollabInterfaceObject_NotifyPartner" />
+      <GroupRef groupName="PushSyncNotification" />
+    </Group>
+    <Group name="PushSyncNotification">
+      <ItemRef itemName="PushSyncNotification_Partner" />
+      <ItemRef itemName="PushSyncNotification_CollaborationTarget" />
+      <ItemRef itemName="PushSyncNotification_SyncOperationData" />
+      <ItemRef itemName="PushSyncNotification_QueueSyncOperationToTarget" />
+    </Group>
+    <Group name="PullSyncData">
+      <ItemRef itemName="PullSyncData_Partner" />
+      <ItemRef itemName="PullSyncData_CollaborationSource" />
     </Group>
     <Group name="DeleteInterfaceJSON">
       <ItemRef itemName="DeleteInterfaceJSON_SaveDataInfo" />

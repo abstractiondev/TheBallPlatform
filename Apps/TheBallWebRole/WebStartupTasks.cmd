@@ -1,7 +1,7 @@
 ﻿REM   *** Mount X: as infra utility drive for role ***
 net use x: \\%CoreFileShareAccountName%.file.core.windows.net\tbcore /u:%CoreFileShareAccountName% %CoreFileShareAccountKey%  >> "%~dp0\NetOutput.txt" 2>&1
 dir x: >> "%~dp0\NetOutput.txt"
-robocopy /MIR x:\Infra e:\TheBallInfra
+robocopy /MIR x:\Infra %InfraToolsRootFolder%
 
 REM   *** Allow websites to define system.webServer/access. ***
 %windir%\system32\inetsrv\appcmd unlock config /section:system.webServer/security/access >> "%TEMP%\StartupLog.txt" 2>&1

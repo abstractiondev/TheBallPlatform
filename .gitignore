@@ -47,3 +47,4 @@ Apps/TheBallWebFarm/.vs/config/applicationhost.config
 **/.vs/**
 build/**
 **/.idea/deployment.xml
+Apps/AzureConfiguration/ecf/*

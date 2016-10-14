@@ -482,6 +482,46 @@ using System.Threading.Tasks;
 				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(FileName, CollaborationTarget);	
 				INT.ShareInfo MetadataObject =  await ShareCollabInterfaceObjectImplementation.GetTarget_MetadataObjectAsync(FileName, SourceFullPath);	
 				 await ShareCollabInterfaceObjectImplementation.ExecuteMethod_StoreShareMetadataAsync(MetadataFullPath, MetadataObject);		
+				
+		{ // Local block to allow local naming
+			PushSyncNotificationParameters operationParameters = ShareCollabInterfaceObjectImplementation.NotifyPartner_GetParameters(parameters.CollabParams);
+			 await PushSyncNotification.ExecuteAsync(operationParameters);
+									
+		} // Local block closing
+				}
+				}
+				public class PushSyncNotificationParameters 
+		{
+				public INT.CollaborationPartner Partner ;
+				}
+		
+		public class PushSyncNotification 
+		{
+				private static void PrepareParameters(PushSyncNotificationParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(PushSyncNotificationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner CollaborationTarget = PushSyncNotificationImplementation.GetTarget_CollaborationTarget(parameters.Partner);	
+				AzureSupport.HttpOperationData SyncOperationData = PushSyncNotificationImplementation.GetTarget_SyncOperationData(CollaborationTarget);	
+				 await PushSyncNotificationImplementation.ExecuteMethod_QueueSyncOperationToTargetAsync(CollaborationTarget, SyncOperationData);		
+				}
+				}
+				public class PullSyncDataParameters 
+		{
+				public INT.CollaborationPartner Partner ;
+				}
+		
+		public class PullSyncData 
+		{
+				private static void PrepareParameters(PullSyncDataParameters parameters)
+		{
+					}
+				public static void Execute(PullSyncDataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.IContainerOwner CollaborationSource = PullSyncDataImplementation.GetTarget_CollaborationSource(parameters.Partner);	
 				}
 				}
 				public class DeleteInterfaceJSONParameters 

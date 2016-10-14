@@ -27,10 +27,26 @@ namespace TheBallWebRole
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("TempSites").RootPath;
         protected override AppTypeInfo[] ValidAppTypes => new []
         {
-            new AppTypeInfo("Dev", Path.Combine(AppRootFolder, "Dev", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
-            new AppTypeInfo("Test", Path.Combine(AppRootFolder, "Test", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Test.config")),
-            new AppTypeInfo("Prod", Path.Combine(AppRootFolder, "Prod", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Prod.config")), 
+            new AppTypeInfo("Dev", "DevConsole.zip", Path.Combine(AppRootFolder, "Dev", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
+            new AppTypeInfo("Test", "TestConsole.zip", Path.Combine(AppRootFolder, "Test", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Test.config")),
+            new AppTypeInfo("Prod", "ProdConsole.zip", Path.Combine(AppRootFolder, "Prod", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Prod.config")), 
         };
+
+        public override bool OnStart()
+        {
+            if (!RoleEnvironment.IsEmulated)
+            {
+                string hostsFileContents =
+    @"127.0.0.1 dev
+127.0.0.1   test
+127.0.0.1   prod
+127.0.0.1   websites
+";
+                var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hostsx");
+                File.WriteAllText(hostsFilePath, hostsFileContents);
+            }
+            return base.OnStart();
+        }
     }
 
     public class WebRolex : RoleEntryPoint

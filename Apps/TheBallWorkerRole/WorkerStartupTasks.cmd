@@ -1,7 +1,7 @@
 ﻿REM   *** Mount X: as infra utility drive for role ***
 net use x: \\%CoreFileShareAccountName%.file.core.windows.net\tbcore /u:%CoreFileShareAccountName% %CoreFileShareAccountKey%  >> "%~dp0\NetOutput.txt" 2>&1
 dir x: >> "%~dp0\NetOutput.txt"
-robocopy /MIR x:\Infra e:\TheBallInfra
+robocopy /MIR x:\Infra %InfraToolsRootFolder%
 
 IF %ERRORLEVEL% EQU 183 DO VERIFY > NUL
 

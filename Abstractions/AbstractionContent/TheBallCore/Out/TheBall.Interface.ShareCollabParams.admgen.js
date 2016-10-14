@@ -1,13 +1,11 @@
  
 
 var ShareCollabParams {
-	ColTargetType: string;
-	ColTargetID: string;
+	Partner: CollaborationPartner;
 	FileName: string;
 
     constructor() {
-					this.ColTargetType = ko.observable(this.ColTargetType);
-			this.ColTargetID = ko.observable(this.ColTargetID);
+					this.Partner = ko.observable(this.Partner);
 			this.FileName = ko.observable(this.FileName);
     }
 }
