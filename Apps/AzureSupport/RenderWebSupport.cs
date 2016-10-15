@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -949,18 +950,35 @@ namespace TheBall
             SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
         }
 
-        public static void RefreshAccountTemplate(string acctID, string templateName)
+
+        public static async Task RefreshGroupTemplateA(string groupID, string templateName)
+        {
+            string currContainerName = StorageSupport.CurrActiveContainer.Name;
+            string syscontentRoot = SystemSupport.SystemOwnerRoot + "/group/";
+            string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
+            string sysLocationSource = syscontentRoot + templateName;
+            await SyncTemplatesToSiteA(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
+        }
+
+        public static async Task RefreshAccountTemplateA(string acctID, string templateName)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/account/";
             string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
             string sysLocationSource = syscontentRoot + templateName;
-            SyncTemplatesToSite(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
+            await SyncTemplatesToSiteA(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
         }
 
-        public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool renderWhileSync)
+
+        public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot,
+            string targetContainerName, string targetPathRoot, bool renderWhileSync)
         {
             WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+        }
+
+        public static async Task SyncTemplatesToSiteA(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool renderWhileSync)
+        {
+            await WorkerSupport.WebContentSyncA(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
         }
 
         public static bool CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
@@ -973,22 +991,18 @@ namespace TheBall
             return false;
         }
 
-        public static void RefreshAllGroupTemplates(string templateName)
+        public static async Task RefreshAllGroupTemplatesA(string templateName)
         {
             string[] groupIDs = TBRGroupRoot.GetAllGroupIDs();
-            foreach (var groupID in groupIDs)
-            {
-                RefreshGroupTemplate(groupID, templateName);
-            }
+            var refreshTasks = groupIDs.Select(groupID => RefreshGroupTemplateA(groupID, templateName)).ToArray();
+            await Task.WhenAll(refreshTasks);
         }
 
-        public static void RefreshAllAccountTemplates(string templateName)
+        public static async Task RefreshAllAccountTemplatesA(string templateName)
         {
             string[] accountIDs = TBRAccountRoot.GetAllAccountIDs();
-            foreach (var acctID in accountIDs)
-            {
-                RefreshAccountTemplate(acctID, templateName);
-            }
+            var refreshTasks = accountIDs.Select(acctID => RefreshAccountTemplateA(acctID, templateName)).ToArray();
+            await Task.WhenAll(refreshTasks);
         }
 
     }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using AaltoGlobalImpact.OIP;
+using Nito.AsyncEx;
 using SecuritySupport;
 using TheBall;
 using TheBall.CORE;
@@ -15,7 +16,12 @@ namespace WebTemplateManager
 {
     internal class Program
     {
-        private static void Main(string[] arguments)
+        static void Main(string[] args)
+        {
+            AsyncContext.Run(() => MainAsync(args));
+        }
+
+        static async void MainAsync(string[] arguments)
         {
             try
             {
@@ -96,7 +102,7 @@ namespace WebTemplateManager
                 {
                     throw new NotSupportedException();
                     /*
-                    FileSystemSupport.UploadTemplateContent(allFiles, owner,
+                    FileSystemSupport.UploadTemplateContentA(allFiles, owner,
                                                             RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
                                                             Preprocessor, ContentFilterer, InformationTypeResolver);
                     RenderWebSupport.RenderWebTemplate(owner.LocationPrefix, true, "AaltoGlobalImpact.OIP.Blog",
@@ -107,13 +113,13 @@ namespace WebTemplateManager
                 {
                     string templateLocation = isSystem ? sysTemplateOwner + "/" + templateName : templateName;
 
-                    FileSystemSupport.UploadTemplateContent(allFiles, owner, templateLocation, true);
+                    await FileSystemSupport.UploadTemplateContentA(allFiles, owner, templateLocation, true);
                     if (isSystem)
                     {
                         if (isAccount)
-                            RenderWebSupport.RefreshAllAccountTemplates(templateName);
+                            await RenderWebSupport.RefreshAllAccountTemplatesA(templateName);
                         else
-                            RenderWebSupport.RefreshAllGroupTemplates(templateName);
+                            await RenderWebSupport.RefreshAllGroupTemplatesA(templateName);
                     }
                 }
             }

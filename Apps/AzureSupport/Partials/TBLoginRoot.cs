@@ -97,14 +97,9 @@ namespace AaltoGlobalImpact.OIP
                 //RenderWebSupport.RefreshAccountTemplates(accountRoot.ID, useBackgroundWorker);
                 foreach (var templateName in InstanceConfig.Current.DefaultAccountTemplateList)
                 {
-                    RenderWebSupport.RefreshAccountTemplate(accountID, templateName);
+                    await RenderWebSupport.RefreshAccountTemplateA(accountID, templateName);
                 }
                 accountRoot.Account.InitializeAndConnectMastersAndCollections();
-                if (isAccountRequest)
-                {
-                    // Sleep a bit to compensate async blob.Copy above, so that all of them area "likely" copied
-                    Thread.Sleep(5000);
-                }
                 loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginRootID);
             }
             return loginRoot;

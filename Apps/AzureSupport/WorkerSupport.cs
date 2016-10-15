@@ -89,6 +89,73 @@ namespace TheBall
             //} while (masterEtagUpdated);
         }
 
+
+        public static async Task<int> WebContentSyncA(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
+        {
+            //requestOptions.BlobListingDetails = BlobListingDetails.Metadata;
+            string sourceSearchRoot = sourceContainerName + "/" + sourcePathRoot;
+            string targetSearchRoot = targetContainerName + "/" + targetPathRoot;
+            CloudBlobContainer targetContainer = StorageSupport.CurrBlobClient.GetContainerReference(targetContainerName);
+            var sourceBlobList = StorageSupport.CurrBlobClient.ListBlobs(sourceSearchRoot, true, BlobListingDetails.Metadata).
+                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
+            var targetBlobList = StorageSupport.CurrBlobClient.ListBlobs(targetSearchRoot, true, BlobListingDetails.Metadata).
+                OfType<CloudBlockBlob>().OrderBy(blob => blob.Name).ToArray();
+            List<CloudBlockBlob> targetBlobsToDelete;
+            List<BlobCopyItem> blobCopyList;
+            int sourcePathLen = sourcePathRoot.Length;
+            int targetPathLen = targetPathRoot.Length;
+            CompareSourceToTarget(sourceBlobList, targetBlobList, sourcePathLen, targetPathLen,
+                out blobCopyList, out targetBlobsToDelete);
+            var processTasks = new List<Task>();
+            foreach (var blobToDelete in targetBlobsToDelete)
+            {
+                bool handled = false;
+                if (customHandler != null)
+                {
+                    handled = customHandler(null, blobToDelete, SyncOperationType.Delete);
+                }
+                if (handled == false)
+                {
+                    var deleteTask = blobToDelete.DeleteIfExistsAsync();
+                    processTasks.Add(deleteTask);
+                }
+            }
+            foreach (var blobCopyItem in blobCopyList)
+            {
+                CloudBlockBlob targetBlob;
+                if (blobCopyItem.TargetBlob == null)
+                {
+                    string sourceBlobNameWithoutSourcePrefix =
+                        blobCopyItem.SourceBlob.Name.Substring(sourcePathRoot.Length);
+                    string targetBlobName;
+                    if (sourceBlobNameWithoutSourcePrefix.StartsWith("/") && String.IsNullOrEmpty(targetPathRoot))
+                        targetBlobName = sourceBlobNameWithoutSourcePrefix.Substring(1);
+                    else
+                        targetBlobName = targetPathRoot + sourceBlobNameWithoutSourcePrefix;
+                    //string targetBlobName = String.IsNullOrEmpty(targetPathRoot) ? sourceBlobName.
+                    //string targetBlobName = 
+                    //    blobCopyItem.SourceBlob.Name.Replace(sourcePathRoot, targetPathRoot);
+                    targetBlob = targetContainer.GetBlockBlobReference(targetBlobName);
+                }
+                else
+                    targetBlob = blobCopyItem.TargetBlob;
+                bool handled = false;
+                Console.WriteLine("Processing sync: " + blobCopyItem.SourceBlob.Name + " => " + targetBlob.Name);
+                if (customHandler != null)
+                {
+                    handled = customHandler(blobCopyItem.SourceBlob, targetBlob, SyncOperationType.Copy);
+                }
+                if (handled == false)
+                {
+                    var copyTask = targetBlob.StartCopyAsync(blobCopyItem.SourceBlob);
+                    processTasks.Add(copyTask);
+                }
+            }
+            await Task.WhenAll(processTasks);
+            return targetBlobsToDelete.Count + blobCopyList.Count;
+        }
+
+        [Obsolete("Should use Async version")]
         public static int WebContentSync(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, PerformCustomOperation customHandler = null)
         {
             //requestOptions.BlobListingDetails = BlobListingDetails.Metadata;
@@ -226,20 +293,6 @@ namespace TheBall
         private static int counter = 0;
 
         
-        public static void ProcessUpdateWebContent(UpdateWebContentOperation operation)
-        {
-            string sourceContainerName = operation.SourceContainerName;
-            string sourcePathRoot = operation.SourcePathRoot;
-            string targetContainerName = operation.TargetContainerName;
-            string targetPathRoot = operation.TargetPathRoot;
-            bool renderWhileSync = operation.RenderWhileSync;
-            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot,
-                                         renderWhileSync
-                                             ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler
-                                             : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
-        }
-
-
         public static void DeleteEntireOwner(IContainerOwner containerOwner)
         {
             StorageSupport.DeleteEntireOwner(containerOwner);

@@ -1271,10 +1271,10 @@ namespace TheBall
             return blob;
         }
 
-        public static void UploadOwnerBlobBinary(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
+        public static async Task UploadOwnerBlobBinaryA(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
             string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
-            CurrActiveContainer.UploadBlobBinary(uploadAddress, binaryContent);
+            await CurrActiveContainer.UploadBlobBinaryAsync(uploadAddress, binaryContent);
         }
 
 
@@ -1455,7 +1455,6 @@ namespace TheBall
             return deletedCount;
         }
 
-
         public static int DeleteBlobsFromOwnerTarget(IContainerOwner owner, string targetLocation)
         {
             string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
@@ -1468,6 +1467,23 @@ namespace TheBall
             }
             return deletedCount;
         }
+
+        public static async Task<int> DeleteBlobsFromOwnerTargetA(IContainerOwner owner, string targetLocation)
+        {
+            string rootAddress = CurrActiveContainer.Name + "/" + GetOwnerContentLocation(owner, targetLocation);
+            var blobs = CurrBlobClient.ListBlobs(rootAddress, true, BlobListingDetails.Metadata);
+            int deletedCount = 0;
+            var deleteTasks = new List<Task>();
+            foreach (CloudBlockBlob blob in blobs)
+            {
+                var deleteTask = blob.DeleteIfExistsAsync();
+                deleteTasks.Add(deleteTask);
+                deletedCount++;
+            }
+            await Task.WhenAll(deleteTasks);
+            return deletedCount;
+        }
+
 
         public static bool CanContainExternalMetadata(this CloudBlockBlob blob)
         {
