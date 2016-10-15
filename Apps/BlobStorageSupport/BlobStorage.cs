@@ -87,5 +87,22 @@ namespace TheBall.CORE.Storage
         {
             await StorageSupport.DeleteBlobAsync(name);
         }
+
+        public static async Task<byte[]> GetBlobContentA(string name)
+        {
+            return await getBlobContentA(name, null);
+        }
+
+        public static async Task<byte[]> GetBlobContentFromOtherOwnerA(IContainerOwner owner, string name)
+        {
+            return await getBlobContentA(name, owner);
+        }
+
+        private static async Task<byte[]> getBlobContentA(string name, IContainerOwner owner)
+        {
+            var data = await StorageSupport.DownloadBlobByteArrayAsync(name, false, owner);
+            return data;
+
+        }
     }
 }

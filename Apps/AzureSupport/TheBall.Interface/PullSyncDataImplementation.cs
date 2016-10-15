@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using System.Threading.Tasks;
+using AzureSupport;
 using TheBall.CORE;
 using TheBall.CORE.Storage;
 using TheBall.Interface.INT;
@@ -49,9 +50,11 @@ namespace TheBall.Interface
 
         private static async Task<BlobStorageItem> getRealItemFromShareMetadata(IContainerOwner owner, BlobStorageItem metadataItem)
         {
-            var interfaceDataItemPath = BlobStorage.CombinePath("TheBall.Interface", "InterfaceData", metadataItem.FileName);
+            var metadataContent = await BlobStorage.GetBlobContentFromOtherOwnerA(owner, metadataItem.Name);
+            var shareInfo = JSONSupport.GetObjectFromData<ShareInfo>(metadataContent);
+            var interfaceDataItemPath = BlobStorage.CombinePath("TheBall.Interface", "InterfaceData", shareInfo.ItemName);
             var blobItem = await BlobStorage.GetBlobStorageItemA(interfaceDataItemPath, owner);
-            if (blobItem.ContentMD5 != metadataItem.ContentMD5 || blobItem.Length != metadataItem.Length)
+            if (blobItem.ContentMD5 != shareInfo.ContentMD5)
                 return null;
             return blobItem;
         }

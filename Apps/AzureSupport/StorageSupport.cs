@@ -151,11 +151,13 @@ namespace TheBall
             }
         }
 
-        public static async Task<byte[]> DownloadBlobByteArrayAsync(string blobPath, bool returnNullIfMissing = false)
+        public static async Task<byte[]> DownloadBlobByteArrayAsync(string blobPath, bool returnNullIfMissing = false, IContainerOwner dedicatedOwner = null)
         {
             try
             {
-                var blob = GetOwnerBlobReference(blobPath);
+                if (dedicatedOwner == null)
+                    dedicatedOwner = InformationContext.CurrentOwner;
+                var blob = GetOwnerBlobReference(dedicatedOwner, blobPath);
                 using (var memStream = new MemoryStream())
                 {
                     await blob.DownloadToStreamAsync(memStream);
