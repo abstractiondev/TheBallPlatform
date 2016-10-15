@@ -12,12 +12,11 @@ namespace TheBall.CORE.Storage
         const string InterfaceDataPrefixFolder = "TheBall.Interface/InterfaceData";
         const string ShareDataPrefixFolder = "TheBall.Interface/ShareInfo";
 
-        public static async Task<BlobStorageItem> GetBlobStorageItemA(string sourceFullPath)
+        public static async Task<BlobStorageItem> GetBlobStorageItemA(string sourceFullPath, IContainerOwner owner = null)
         {
-            BlobStorageItem blob = await StorageSupport.GetBlobStorageItem(sourceFullPath);
+            BlobStorageItem blob = await StorageSupport.GetBlobStorageItem(sourceFullPath, owner);
             return blob;
         }
-
 
         public static string GetOwnerInterfaceDataFullPath(string fileName)
         {
@@ -64,6 +63,29 @@ namespace TheBall.CORE.Storage
         {
             var owner = InformationContext.CurrentOwner;
             await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
+        }
+
+        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner containerOwner, string directoryLocation)
+        {
+            var blobItems = await StorageSupport.GetBlobItemsA(containerOwner, directoryLocation);
+            return blobItems;
+        }
+
+        public static string CombinePath(params string[] pathComponents)
+        {
+            var path = Path.Combine(pathComponents).Replace(@"\", @"/");
+            return path;
+        }
+
+        public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
+        {
+            await
+                StorageSupport.CopyBlobBetweenOwnersA(sourceOwner, sourceItemName, targetOwner, targetItemName);
+        }
+
+        public static async Task DeleteBlobA(string name)
+        {
+            await StorageSupport.DeleteBlobAsync(name);
         }
     }
 }

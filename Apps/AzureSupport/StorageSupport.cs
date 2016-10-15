@@ -1527,6 +1527,22 @@ namespace TheBall
             return blob;
         }
 
+        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation)
+        {
+            BlobContinuationToken continuationToken = null;
+            List<BlobStorageItem> storageItems = new List<BlobStorageItem>();
+            do
+            {
+                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, null, true);
+                var storageItemsToAdd = blobListItems.Results.Cast<CloudBlockBlob>()
+                    .Select(blob => new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified.GetValueOrDefault().UtcDateTime));
+                storageItems.AddRange(storageItemsToAdd);
+                continuationToken = blobListItems.ContinuationToken;
+            } while (continuationToken != null);
+            return storageItems.ToArray();
+        }
+
+
         public static IEnumerable<IListBlobItem> GetOwnerBlobListing(this IContainerOwner owner, string directoryLocation, bool withMetaData = false)
         {
             string storageListingPrefix = GetOwnerContentLocation(owner, directoryLocation);
@@ -1771,18 +1787,22 @@ namespace TheBall
             deleteLockFile(owner, ownerLockFileName, lockID);
         }
 
-        public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath)
+        public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner = null)
         {
-            var blob = GetOwnerBlobReference(sourceFullPath);
+            if (owner == null)
+                owner = InformationContext.CurrentOwner;
+            var blob = GetOwnerBlobReference(owner, sourceFullPath);
             await blob.FetchAttributesAsync();
-            var storageItem = new BlobStorageItem
-            {
-                Name = blob.Name,
-                ContentMD5 = blob.Properties.ContentMD5,
-                Length = blob.Properties.Length,
-                LastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime
-            };
+            var storageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
+                blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
             return storageItem;
+        }
+
+        public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
+        {
+            var sourceBlob = GetOwnerBlobReference(sourceOwner, sourceItemName);
+            var targetBlob = GetOwnerBlobReference(targetOwner, targetItemName);
+            await targetBlob.StartCopyAsync(sourceBlob);
         }
     }
 

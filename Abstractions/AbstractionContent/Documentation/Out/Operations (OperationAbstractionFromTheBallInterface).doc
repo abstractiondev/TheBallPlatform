@@ -1556,6 +1556,30 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Collaboration target owner
 		</div>
+		</p><h2>Target Definition: CollaborationTarget</h2>
+		<p>		<div class="MsoNormal" >
+		Collaboration target owner
+		</div>
+		</p><h2>Target Definition: SyncSourceRoot ( CollaborationTarget )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync source root folder
+		</div>
+		</p><h2>Target Definition: SyncTargetRoot ( CollaborationSource )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync target root folder
+		</div>
+		</p><h2>Target Definition: ExistingSourceItems ( CollaborationSource, SyncSourceRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync source items
+		</div>
+		</p><h2>Target Definition: ExistingTargetItems ( CollaborationTarget, SyncTargetRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Existing target items
+		</div>
+		</p><h2>Method Call: SyncItems ( CollaborationSource, SyncSourceRoot, ExistingSourceItems, CollaborationTarget, SyncTargetRoot, ExistingTargetItems )</h2>
+		<p>		<div class="MsoNormal" >
+		Copy sync items to target
+		</div>
 		</p><h1>PushSyncNotification (Partner)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1740,6 +1764,10 @@ div.WordSection1
 		</p><h2>Target Definition: FileName ( CollabParams )</h2>
 		<p>		<div class="MsoNormal" >
 		Source filename
+		</div>
+		</p><h2>Method Call: ValidateFileName ( FileName )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate file name for not being metadata-alike
 		</div>
 		</p><h2>Target Definition: CollaborationTarget ( CollabParams )</h2>
 		<p>		<div class="MsoNormal" >

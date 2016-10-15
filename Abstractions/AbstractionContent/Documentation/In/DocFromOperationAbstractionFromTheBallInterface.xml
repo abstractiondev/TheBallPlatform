@@ -1556,6 +1556,48 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Target Definition: CollaborationTarget" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Collaboration target owner</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncSourceRoot ( CollaborationTarget )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync source root folder</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: SyncTargetRoot ( CollaborationSource )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync target root folder</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ExistingSourceItems ( CollaborationSource, SyncSourceRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sync source items</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ExistingTargetItems ( CollaborationTarget, SyncTargetRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Existing target items</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SyncItems ( CollaborationSource, SyncSourceRoot, ExistingSourceItems, CollaborationTarget, SyncTargetRoot, ExistingTargetItems )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy sync items to target</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="PushSyncNotification (Partner)" level="1">
             <Header text="Specifications" level="2">
@@ -1827,6 +1869,13 @@
               <Paragraph>
                 <Text>
                   <TextContent>Source filename</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateFileName ( FileName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate file name for not being metadata-alike</TextContent>
                 </Text>
               </Paragraph>
             </Header>

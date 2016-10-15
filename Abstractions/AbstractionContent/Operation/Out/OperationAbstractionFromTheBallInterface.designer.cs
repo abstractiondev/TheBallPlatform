@@ -477,6 +477,7 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					string FileName = ShareCollabInterfaceObjectImplementation.GetTarget_FileName(parameters.CollabParams);	
+				ShareCollabInterfaceObjectImplementation.ExecuteMethod_ValidateFileName(FileName);		
 				TheBall.CORE.IContainerOwner CollaborationTarget = ShareCollabInterfaceObjectImplementation.GetTarget_CollaborationTarget(parameters.CollabParams);	
 				string SourceFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_SourceFullPath(FileName);	
 				string MetadataFullPath = ShareCollabInterfaceObjectImplementation.GetTarget_MetadataFullPath(FileName, CollaborationTarget);	
@@ -518,10 +519,16 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PullSyncDataParameters parameters)
 		{
 					}
-				public static void Execute(PullSyncDataParameters parameters)
+				public static async Task ExecuteAsync(PullSyncDataParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner CollaborationSource = PullSyncDataImplementation.GetTarget_CollaborationSource(parameters.Partner);	
+				TheBall.CORE.IContainerOwner CollaborationTarget = PullSyncDataImplementation.GetTarget_CollaborationTarget();	
+				string SyncSourceRoot = PullSyncDataImplementation.GetTarget_SyncSourceRoot(CollaborationTarget);	
+				string SyncTargetRoot = PullSyncDataImplementation.GetTarget_SyncTargetRoot(CollaborationSource);	
+				TheBall.CORE.Storage.BlobStorageItem[] ExistingSourceItems =  await PullSyncDataImplementation.GetTarget_ExistingSourceItemsAsync(CollaborationSource, SyncSourceRoot);	
+				TheBall.CORE.Storage.BlobStorageItem[] ExistingTargetItems =  await PullSyncDataImplementation.GetTarget_ExistingTargetItemsAsync(CollaborationTarget, SyncTargetRoot);	
+				 await PullSyncDataImplementation.ExecuteMethod_SyncItemsAsync(CollaborationSource, SyncSourceRoot, ExistingSourceItems, CollaborationTarget, SyncTargetRoot, ExistingTargetItems);		
 				}
 				}
 				public class DeleteInterfaceJSONParameters 

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Security;
 using System.Threading.Tasks;
 using System.Web.ModelBinding;
 using AzureSupport;
@@ -58,6 +59,13 @@ namespace TheBall.Interface
             {
                 Partner = collabParams.Partner
             };
+        }
+
+        public static void ExecuteMethod_ValidateFileName(string fileName)
+        {
+            bool isMetadataAlike = fileName.StartsWith("_") && fileName.EndsWith(".json");
+            if(isMetadataAlike)
+                throw new SecurityException("Invalid Metadata alike filename: " + fileName);
         }
     }
 }

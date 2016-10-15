@@ -616,6 +616,9 @@
           <TargetDefinition name="FileName" dataType="string" designDesc="Source filename" state="implemented">
             <Parameter name="CollabParams" />
           </TargetDefinition>
+          <MethodExecute name="ValidateFileName" designDesc="Validate file name for not being metadata-alike" state="implemented">
+            <Target name="FileName" />
+          </MethodExecute>
           <TargetDefinition name="CollaborationTarget" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target verified and instanced" state="implemented">
             <Parameter name="CollabParams" />
           </TargetDefinition>
@@ -674,6 +677,29 @@
           <TargetDefinition name="CollaborationSource" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target owner" state="implemented">
             <Parameter name="Partner" />
           </TargetDefinition>
+          <TargetDefinition name="CollaborationTarget" dataType="TheBall.CORE.IContainerOwner" designDesc="Collaboration target owner" state="implemented" />
+          <TargetDefinition name="SyncSourceRoot" dataType="string" designDesc="Sync source root folder" state="implemented">
+            <Target name="CollaborationTarget" />
+          </TargetDefinition>
+          <TargetDefinition name="SyncTargetRoot" dataType="string" designDesc="Sync target root folder" state="implemented">
+            <Target name="CollaborationSource" />
+          </TargetDefinition>
+          <TargetDefinition name="ExistingSourceItems" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Storage.BlobStorageItem[]" designDesc="Sync source items" state="implemented">
+            <Target name="CollaborationSource" />
+            <Target name="SyncSourceRoot" />
+          </TargetDefinition>
+          <TargetDefinition name="ExistingTargetItems" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Storage.BlobStorageItem[]" designDesc="Existing target items" state="implemented">
+            <Target name="CollaborationTarget" />
+            <Target name="SyncTargetRoot" />
+          </TargetDefinition>
+          <MethodExecute name="SyncItems" asyncSupportMode="AsyncOnly" designDesc="Copy sync items to target" state="implemented">
+            <Target name="CollaborationSource" />
+            <Target name="SyncSourceRoot" />
+            <Target name="ExistingSourceItems" />
+            <Target name="CollaborationTarget" />
+            <Target name="SyncTargetRoot" />
+            <Target name="ExistingTargetItems" />
+          </MethodExecute>
         </SequentialExecution>
       </Execution>
     </Operation>

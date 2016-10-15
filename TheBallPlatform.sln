@@ -49,11 +49,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedProjects", "SharedPro
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedProjects\InstanceSupport\InstanceSupport.shproj", "{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
+		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -200,5 +203,6 @@ Global
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA} = {729DDCC1-5D06-448D-9490-94F1AA750C2B}
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0} = {85C8A69D-C362-4E72-A24D-04ED771CFA7F}
+		{7EE65749-80A3-42A1-A16E-A32EFE7C8633} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 	EndGlobalSection
 EndGlobal
