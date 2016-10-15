@@ -14,12 +14,13 @@ namespace TheBall.Interface
 
         public static HttpOperationData GetTarget_SyncOperationData(IContainerOwner collaborationTarget)
         {
+            var currentOwner = InformationContext.CurrentOwner;
             var operationData = OperationSupport.GetOperationDataFromParameters(collaborationTarget,
                 "TheBall.Interface.PullSyncData",
                 new INT.CollaborationPartner
                 {
-                    PartnerType = collaborationTarget.ContainerName,
-                    PartnerID = collaborationTarget.LocationPrefix
+                    PartnerType = currentOwner.ContainerName,
+                    PartnerID = currentOwner.LocationPrefix
                 });
             return operationData;
         }
