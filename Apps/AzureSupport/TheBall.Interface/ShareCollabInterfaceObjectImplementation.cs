@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.ModelBinding;
 using AzureSupport;
 using TheBall.CORE;
+using TheBall.CORE.Storage;
 using TheBall.Interface.INT;
 
 namespace TheBall.Interface
@@ -12,26 +13,23 @@ namespace TheBall.Interface
     {
         public static string GetTarget_SourceFullPath(string fileName)
         {
-            return StorageSupport.GetOwnerInterfaceDataFullPath(fileName);
+            return BlobStorage.GetOwnerInterfaceDataFullPath(fileName);
         }
 
         public static string GetTarget_MetadataFullPath(string fileName, IContainerOwner collaborationTarget)
         {
-            var metadataFullPath = StorageSupport.GetCollaborationOwnerShareFullPath(collaborationTarget, fileName, true);
+            var metadataFullPath = BlobStorage.GetCollaborationOwnerShareFullPath(collaborationTarget, fileName, true);
             return metadataFullPath;
         }
         public static async Task<ShareInfo> GetTarget_MetadataObjectAsync(string fileName, string sourceFullPath)
         {
-            var fileInfo = await StorageSupport.GetFileInfoA(sourceFullPath);
-            string contentMD5 = fileInfo.Item1;
-            long length = fileInfo.Item2;
-            DateTime modified = fileInfo.Item3;
+            var blob = await BlobStorage.GetBlobStorageItemA(sourceFullPath);
             var result = new ShareInfo
             {
                 ItemName = fileName,
-                ContentMD5 = contentMD5,
-                Length = length,
-                Modified = modified
+                ContentMD5 = blob.ContentMD5,
+                Length = blob.Length,
+                Modified = blob.LastModified
             };
             return result;
         }
@@ -39,8 +37,7 @@ namespace TheBall.Interface
         public static async Task ExecuteMethod_StoreShareMetadataAsync(string metadataFullPath, ShareInfo metadataObject)
         {
             var jsonData = JSONSupport.SerializeToJSONString(metadataObject);
-            var owner = InformationContext.CurrentOwner;
-            await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
+            await BlobStorage.UploadCurrentOwnerBlobTextAsync(metadataFullPath, jsonData);
         }
 
         public static IContainerOwner GetTarget_CollaborationTarget(ShareCollabParams collabParams)

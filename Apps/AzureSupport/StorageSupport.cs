@@ -20,6 +20,7 @@ using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 using TheBall.Index;
 
 namespace TheBall
@@ -1246,14 +1247,7 @@ namespace TheBall
 
         public static string GetOwnerContentLocation(IContainerOwner owner, string blobAddress)
         {
-            string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
-            if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("sys/"))
-            {
-                if(blobAddress.StartsWith(ownerPrefix))
-                    return blobAddress;
-                throw new SecurityException("Invalid reference to blob: " + blobAddress + " by owner prefix: " + owner.LocationPrefix);
-            }
-            return ownerPrefix + blobAddress;
+            return BlobStorage.GetOwnerContentLocation(owner, blobAddress);
         }
 
         public static string DownloadOwnerBlobText(IContainerOwner owner, string blobAddress, bool returnNullIfMissing = false)
@@ -1777,45 +1771,18 @@ namespace TheBall
             deleteLockFile(owner, ownerLockFileName, lockID);
         }
 
-        const string InterfaceDataPrefixFolder = "TheBall.Interface/InterfaceData";
-        const string ShareDataPrefixFolder = "TheBall.Interface/ShareInfo";
-        public static string GetOwnerInterfaceDataFullPath(string fileName)
-        {
-            var interfaceDataName = Path.Combine(InterfaceDataPrefixFolder, fileName).Replace("\\", "/");
-            if(!interfaceDataName.StartsWith(InterfaceDataPrefixFolder + "/"))
-                throw new ArgumentException("Relative filename not allowed: " + fileName);
-            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
-            return ownerPrefixed;
-        }
-
-        public static string GetCollaborationOwnerShareFullPath(IContainerOwner collaborationTarget, string shareFileName, bool isMetadataFile)
-        {
-            string storedFileName;
-            if (isMetadataFile)
-            {
-                var injectIndex = shareFileName.LastIndexOf('/') + 1;
-                var beforeInject = shareFileName.Substring(0, injectIndex);
-                var afterInject = shareFileName.Substring(injectIndex);
-                storedFileName = beforeInject +  "_" + afterInject + ".json";
-            }
-            else
-                storedFileName = shareFileName;
-            var interfaceDataName = Path.Combine(ShareDataPrefixFolder, collaborationTarget.ContainerName,
-                collaborationTarget.LocationPrefix, storedFileName).Replace("\\", "/");
-            if (!interfaceDataName.StartsWith(ShareDataPrefixFolder + "/"))
-                throw new ArgumentException("Relative filename not allowed: " + shareFileName);
-            var ownerPrefixed = GetOwnerContentLocation(InformationContext.CurrentOwner, interfaceDataName);
-            return ownerPrefixed;
-        }
-
-        public static async Task<Tuple<string, long, DateTime>> GetFileInfoA(string sourceFullPath)
+        public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath)
         {
             var blob = GetOwnerBlobReference(sourceFullPath);
             await blob.FetchAttributesAsync();
-            var contentMd5 = blob.Properties.ContentMD5;
-            var length = blob.Properties.Length;
-            var modified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
-            return new Tuple<string, long, DateTime>(contentMd5, length, modified);
+            var storageItem = new BlobStorageItem
+            {
+                Name = blob.Name,
+                ContentMD5 = blob.Properties.ContentMD5,
+                Length = blob.Properties.Length,
+                LastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime
+            };
+            return storageItem;
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Abstractions", "Abstractions", "{D0EF7B40-E356-470F-886A-5AB58C98950A}"
 EndProject
@@ -51,8 +51,9 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedPr
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
+		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
+		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

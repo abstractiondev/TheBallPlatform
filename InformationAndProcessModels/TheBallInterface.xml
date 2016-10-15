@@ -906,7 +906,9 @@
             <TargetDefinition name="SyncSourceRoot" dataType="string" designDesc="Sync source root folder" state="implemented">
               <Target name="CollaborationSource"/>
             </TargetDefinition>
-            <TargetDefinition name="SyncTargetRoot" dataType="string" designDesc="Sync target root folder" state="implemented" />
+            <TargetDefinition name="SyncTargetRoot" dataType="string" designDesc="Sync target root folder" state="implemented">
+              <Parameter name="Partner"/>
+            </TargetDefinition>
           </SequentialExecution>
         </Execution>
       </Operation>
