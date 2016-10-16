@@ -104,6 +104,15 @@ namespace AzureSupport
             }
         }
 
+        public static byte[] SerializeToJSONData(object obj)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                SerializeToJSONStream(obj, memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
         public static string SerializeToJSONString(object obj)
         {
             return JsonConvert.SerializeObject(obj, Formatting.Indented);

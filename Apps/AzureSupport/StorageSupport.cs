@@ -1412,6 +1412,27 @@ namespace TheBall
             return CurrBlobClient.ListBlobsSegmented(searchRoot, true, BlobListingDetails.Metadata, maxresults, null, null, null);
         }
 
+        public static async Task<string[]> ListOwnerFoldersA(string rootFolder)
+        {
+            var owner = InformationContext.CurrentOwner;
+            var ownerRootFolder = GetOwnerContentLocation(owner, rootFolder);
+            var searchRoot = CurrActiveContainer.Name + "/" + ownerRootFolder;
+            List<string> result = new List<string>();
+            BlobContinuationToken continuationToken = null;
+            do
+            {
+                var listingResult =
+                    await
+                        CurrBlobClient.ListBlobsSegmentedAsync(searchRoot, true, BlobListingDetails.None, null,
+                            continuationToken, null, null);
+                continuationToken = listingResult.ContinuationToken;
+                var foldersLQ = listingResult.Results.Where(item => item is CloudBlobDirectory).Cast<CloudBlobDirectory>().Select(item => item.Prefix);
+                result.AddRange(foldersLQ);
+            } while (continuationToken != null);
+            return result.ToArray();
+        }
+
+
         public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
             bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false)
         {
@@ -1545,6 +1566,12 @@ namespace TheBall
             return blob;
         }
 
+        private static BlobStorageItem getBlobStorageItem(CloudBlockBlob blob)
+        {
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
+                blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
+        }
+
         public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation)
         {
             BlobContinuationToken continuationToken = null;
@@ -1553,7 +1580,7 @@ namespace TheBall
             {
                 var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, null, true);
                 var storageItemsToAdd = blobListItems.Results.Cast<CloudBlockBlob>()
-                    .Select(blob => new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length, blob.Properties.LastModified.GetValueOrDefault().UtcDateTime));
+                    .Select(getBlobStorageItem);
                 storageItems.AddRange(storageItemsToAdd);
                 continuationToken = blobListItems.ContinuationToken;
             } while (continuationToken != null);
@@ -1822,6 +1849,7 @@ namespace TheBall
             var targetBlob = GetOwnerBlobReference(targetOwner, targetItemName);
             await targetBlob.StartCopyAsync(sourceBlob);
         }
+
     }
 
     public class ReferenceOutdatedException : Exception

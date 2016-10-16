@@ -1949,11 +1949,31 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Collaboration partner(s) to sync summary data for
 		</div>
-		</p><h2>Method Call: UpdatePartnerSummaries ( CollaborationPartners )</h2>
+		</p><h2>Method Call: UpdatePartnerSummaries ( CollaborationPartners, IsCompleteUpdate )</h2>
 		<p>		<div class="MsoNormal" >
 		Update individual partner summaries
 		</div>
-		</p><h2>Method Call: UpdateCompleteShareSummary ( CollaborationPartners, IsCompleteUpdate )</h2>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DataStatuses
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Tuple<TheBall.CORE.IContainerOwner, bool>[]
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data status item for each owner
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: UpdateCompleteShareSummary ( UpdatePartnerSummariesOutput, IsCompleteUpdate )</h2>
 		<p>		<div class="MsoNormal" >
 		Update complete share summary
 		</div>

@@ -2142,14 +2142,36 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: UpdatePartnerSummaries ( CollaborationPartners )" level="2">
+            <Header text="Method Call: UpdatePartnerSummaries ( CollaborationPartners, IsCompleteUpdate )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Update individual partner summaries</TextContent>
                 </Text>
               </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>DataStatuses</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Tuple&lt;TheBall.CORE.IContainerOwner, bool&gt;[]</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Data status item for each owner</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
             </Header>
-            <Header text="Method Call: UpdateCompleteShareSummary ( CollaborationPartners, IsCompleteUpdate )" level="2">
+            <Header text="Method Call: UpdateCompleteShareSummary ( UpdatePartnerSummariesOutput, IsCompleteUpdate )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Update complete share summary</TextContent>

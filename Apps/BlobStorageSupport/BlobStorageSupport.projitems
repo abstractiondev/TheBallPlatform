@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BlobStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlobStorageFolder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BlobStorageItem.cs" />
   </ItemGroup>
 </Project>

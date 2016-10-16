@@ -724,9 +724,11 @@
           </TargetDefinition>
           <MethodExecute name="UpdatePartnerSummaries" asyncSupportMode="AsyncOnly" designDesc="Update individual partner summaries" state="implemented">
             <Target name="CollaborationPartners" />
+            <Target name="IsCompleteUpdate" />
+            <ReturnValue name="DataStatuses" dataType="Tuple&lt;TheBall.CORE.IContainerOwner, bool&gt;[]" designDesc="Data status item for each owner" state="implemented" />
           </MethodExecute>
           <MethodExecute name="UpdateCompleteShareSummary" asyncSupportMode="AsyncOnly" designDesc="Update complete share summary" state="implemented">
-            <Target name="CollaborationPartners" />
+            <Target name="UpdatePartnerSummariesOutput" />
             <Target name="IsCompleteUpdate" />
           </MethodExecute>
         </SequentialExecution>

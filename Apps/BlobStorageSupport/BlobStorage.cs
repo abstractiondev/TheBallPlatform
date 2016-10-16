@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using AzureSupport;
+using TheBall.Interface.INT;
 
 namespace TheBall.CORE.Storage
 {
@@ -88,21 +91,48 @@ namespace TheBall.CORE.Storage
             await StorageSupport.DeleteBlobAsync(name);
         }
 
-        public static async Task<byte[]> GetBlobContentA(string name)
+        public static async Task<byte[]> GetBlobContentA(string name, bool returnNullIfMissing)
         {
-            return await getBlobContentA(name, null);
+            return await getBlobContentA(name, null, returnNullIfMissing );
         }
 
-        public static async Task<byte[]> GetBlobContentFromOtherOwnerA(IContainerOwner owner, string name)
+        public static async Task<byte[]> GetBlobContentFromOtherOwnerA(IContainerOwner owner, string name, bool returnNullIfMissing = false)
         {
-            return await getBlobContentA(name, owner);
+            return await getBlobContentA(name, owner, returnNullIfMissing);
         }
 
-        private static async Task<byte[]> getBlobContentA(string name, IContainerOwner owner)
+        private static async Task<byte[]> getBlobContentA(string name, IContainerOwner owner, bool returnNullIfMissing)
         {
-            var data = await StorageSupport.DownloadBlobByteArrayAsync(name, false, owner);
+            var data = await StorageSupport.DownloadBlobByteArrayAsync(name, returnNullIfMissing, owner);
             return data;
 
+        }
+
+        public static async Task<BlobStorageFolder[]> GetOwnerFoldersA(string rootFolder)
+        {
+            var folders = await StorageSupport.ListOwnerFoldersA(rootFolder);
+            var blobFolders = folders.Select(folder => new BlobStorageFolder(folder)).ToArray();
+            return blobFolders;
+        }
+
+        public static async Task<BlobStorageItem[]> GetOwnerBlobsA(string rootFolder)
+        {
+            return await GetBlobItemsA(InformationContext.CurrentOwner, rootFolder);
+        }
+
+        public static async Task<T> GetBlobJsonContentA<T>(string name) where T : class
+        {
+            var blobData = await GetBlobContentA(name, true);
+            if (blobData == null)
+                return null;
+            var data = JSONSupport.GetObjectFromData<T>(blobData);
+            return data;
+        }
+
+        public static async Task StoreBlobJsonContentA(string name, object dataObject)
+        {
+            var data = JSONSupport.SerializeToJSONData(dataObject);
+            await StorageSupport.UploadOwnerBlobBinaryA(InformationContext.CurrentOwner, name, data);
         }
     }
 }

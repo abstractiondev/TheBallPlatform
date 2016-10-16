@@ -964,9 +964,11 @@
             </TargetDefinition>
             <MethodExecute name="UpdatePartnerSummaries" designDesc="Update individual partner summaries" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="CollaborationPartners"/>
+              <Target name="IsCompleteUpdate"/>
+              <ReturnValue dataType="Tuple&lt;TheBall.CORE.IContainerOwner, bool&gt;[]" name="DataStatuses" designDesc="Data status item for each owner" state="implemented"/>
             </MethodExecute>
             <MethodExecute name="UpdateCompleteShareSummary" designDesc="Update complete share summary" state="implemented" asyncSupportMode="AsyncOnly">
-              <Target name="CollaborationPartners"/>
+              <Target name="UpdatePartnerSummariesOutput"/>
               <Target name="IsCompleteUpdate"/>
             </MethodExecute>
           </SequentialExecution>

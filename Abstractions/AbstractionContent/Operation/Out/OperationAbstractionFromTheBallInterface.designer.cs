@@ -552,12 +552,11 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					bool IsCompleteUpdate = UpdateSharedDataSummaryDataImplementation.GetTarget_IsCompleteUpdate(parameters.Partner);	
 				TheBall.CORE.IContainerOwner[] CollaborationPartners =  await UpdateSharedDataSummaryDataImplementation.GetTarget_CollaborationPartnersAsync(parameters.Partner, IsCompleteUpdate);	
-				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners);		
-				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdateCompleteShareSummaryAsync(CollaborationPartners, IsCompleteUpdate);		
+				Tuple<TheBall.CORE.IContainerOwner, bool>[] UpdatePartnerSummariesOutput =  await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners, IsCompleteUpdate);		
+				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdateCompleteShareSummaryAsync(UpdatePartnerSummariesOutput, IsCompleteUpdate);		
 				}
 				}
-
-		    public class DeleteInterfaceJSONParameters 
+				public class DeleteInterfaceJSONParameters 
 		{
 				public INT.InterfaceJSONData SaveDataInfo ;
 				}
