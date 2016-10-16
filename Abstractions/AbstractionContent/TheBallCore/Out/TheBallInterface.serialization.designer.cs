@@ -40,6 +40,22 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class CollaborationPartnerSummary
+			{
+				[DataMember]
+				public CollaborationPartner[] Partners { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class ShareInfoSummary
+			{
+				[DataMember]
+				public ShareInfo[] SharedByMe { get; set; }
+				[DataMember]
+				public ShareInfo[] SharedForMe { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
 			public partial class ShareInfo
 			{
 				[DataMember]

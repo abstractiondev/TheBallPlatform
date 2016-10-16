@@ -529,9 +529,35 @@ using System.Threading.Tasks;
 				TheBall.CORE.Storage.BlobStorageItem[] ExistingSourceItems =  await PullSyncDataImplementation.GetTarget_ExistingSourceItemsAsync(CollaborationSource, SyncSourceRoot);	
 				TheBall.CORE.Storage.BlobStorageItem[] ExistingTargetItems =  await PullSyncDataImplementation.GetTarget_ExistingTargetItemsAsync(CollaborationTarget, SyncTargetRoot);	
 				 await PullSyncDataImplementation.ExecuteMethod_SyncItemsAsync(CollaborationSource, SyncSourceRoot, ExistingSourceItems, CollaborationTarget, SyncTargetRoot, ExistingTargetItems);		
+				
+		{ // Local block to allow local naming
+			UpdateSharedDataSummaryDataParameters operationParameters = PullSyncDataImplementation.UpdateSummaryData_GetParameters(parameters.Partner);
+			 await UpdateSharedDataSummaryData.ExecuteAsync(operationParameters);
+									
+		} // Local block closing
 				}
 				}
-				public class DeleteInterfaceJSONParameters 
+				public class UpdateSharedDataSummaryDataParameters 
+		{
+				public INT.CollaborationPartner Partner ;
+				}
+		
+		public class UpdateSharedDataSummaryData 
+		{
+				private static void PrepareParameters(UpdateSharedDataSummaryDataParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateSharedDataSummaryDataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					bool IsCompleteUpdate = UpdateSharedDataSummaryDataImplementation.GetTarget_IsCompleteUpdate(parameters.Partner);	
+				TheBall.CORE.IContainerOwner[] CollaborationPartners =  await UpdateSharedDataSummaryDataImplementation.GetTarget_CollaborationPartnersAsync(parameters.Partner, IsCompleteUpdate);	
+				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners);		
+				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdateCompleteShareSummaryAsync(CollaborationPartners, IsCompleteUpdate);		
+				}
+				}
+
+		    public class DeleteInterfaceJSONParameters 
 		{
 				public INT.InterfaceJSONData SaveDataInfo ;
 				}

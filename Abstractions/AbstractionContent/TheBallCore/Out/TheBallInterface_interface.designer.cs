@@ -65,6 +65,37 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
+			public partial class CollaborationPartnerSummary 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<CollaborationPartner> Partners= new List<CollaborationPartner>();
+
+			
+			}
+			[DataContract]
+			public partial class ShareInfoSummary 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<ShareInfo> SharedByMe= new List<ShareInfo>();
+
+			[DataMember]
+			public List<ShareInfo> SharedForMe= new List<ShareInfo>();
+
+			
+			}
+			[DataContract]
 			public partial class ShareInfo 
 			{
 				[DataMember]

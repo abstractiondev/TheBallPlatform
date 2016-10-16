@@ -412,6 +412,7 @@
     <Compile Include="TheBall.Interface\StatusSummary.cs" />
     <Compile Include="TheBall.Interface\SyncConnectionContentToDeviceToSendImplementation.cs" />
     <Compile Include="TheBall.Interface\SynchronizeConnectionCategoriesImplementation.cs" />
+    <Compile Include="TheBall.Interface\UpdateSharedDataSummaryDataImplementation.cs" />
     <Compile Include="TheBall.Interface\UpdateStatusSummaryImplementation.cs" />
     <Compile Include="TheBall.Payments\ActivateAccountPlanImplementation.cs" />
     <Compile Include="TheBall.Payments\ActivateAndPayGroupSubscriptionPlanImplementation.cs" />

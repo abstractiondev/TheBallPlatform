@@ -133,5 +133,10 @@ namespace TheBall.Interface
             }
             await Task.WhenAll(processTasks);
         }
+
+        public static UpdateSharedDataSummaryDataParameters UpdateSummaryData_GetParameters(CollaborationPartner partner)
+        {
+            return new UpdateSharedDataSummaryDataParameters {Partner = partner};
+        }
     }
 }

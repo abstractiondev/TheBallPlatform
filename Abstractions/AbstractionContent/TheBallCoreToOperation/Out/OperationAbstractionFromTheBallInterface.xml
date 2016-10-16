@@ -700,6 +700,35 @@
             <Target name="SyncTargetRoot" />
             <Target name="ExistingTargetItems" />
           </MethodExecute>
+          <OperationExecute name="UpdateSummaryData" asyncSupportMode="AsyncOnly" targetOperationName="UpdateSharedDataSummaryData" designDesc="Update summary data with operation call" state="implemented">
+            <Parameter name="Partner" />
+          </OperationExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="UpdateSharedDataSummaryData">
+      <OperationSpec>
+        <Description>Update shared data summary data, for given collaboration partner or for all currently shared</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="Partner" dataType="INT.CollaborationPartner" designDesc="Collaboration partner (optional), for all if not given" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="IsCompleteUpdate" dataType="bool" designDesc="Define if this is complete sync" state="implemented">
+            <Parameter name="Partner" />
+          </TargetDefinition>
+          <TargetDefinition name="CollaborationPartners" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.IContainerOwner[]" designDesc="Collaboration partner(s) to sync summary data for" state="implemented">
+            <Parameter name="Partner" />
+            <Target name="IsCompleteUpdate" />
+          </TargetDefinition>
+          <MethodExecute name="UpdatePartnerSummaries" asyncSupportMode="AsyncOnly" designDesc="Update individual partner summaries" state="implemented">
+            <Target name="CollaborationPartners" />
+          </MethodExecute>
+          <MethodExecute name="UpdateCompleteShareSummary" asyncSupportMode="AsyncOnly" designDesc="Update complete share summary" state="implemented">
+            <Target name="CollaborationPartners" />
+            <Target name="IsCompleteUpdate" />
+          </MethodExecute>
         </SequentialExecution>
       </Execution>
     </Operation>

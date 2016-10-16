@@ -1580,6 +1580,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Copy sync items to target
 		</div>
+		</p><h2>Operation Call: UpdateSummaryData ( Partner )</h2>
+		<p>		<div class="MsoNormal" >
+		Update summary data with operation call
+		</div>
 		</p><h1>PushSyncNotification (Partner)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -1910,6 +1914,48 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( Connection )</h2>
 		<p>		<div class="MsoNormal" >
 		Store connection object
+		</div>
+		</p><h1>UpdateSharedDataSummaryData (Partner)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update shared data summary data, for given collaboration partner or for all currently shared
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Partner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.CollaborationPartner
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Collaboration partner (optional), for all if not given
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: IsCompleteUpdate ( Partner )</h2>
+		<p>		<div class="MsoNormal" >
+		Define if this is complete sync
+		</div>
+		</p><h2>Target Definition: CollaborationPartners ( IsCompleteUpdate, Partner )</h2>
+		<p>		<div class="MsoNormal" >
+		Collaboration partner(s) to sync summary data for
+		</div>
+		</p><h2>Method Call: UpdatePartnerSummaries ( CollaborationPartners )</h2>
+		<p>		<div class="MsoNormal" >
+		Update individual partner summaries
+		</div>
+		</p><h2>Method Call: UpdateCompleteShareSummary ( CollaborationPartners, IsCompleteUpdate )</h2>
+		<p>		<div class="MsoNormal" >
+		Update complete share summary
 		</div>
 		</p><h1>UpdateStatusSummary (Owner, UpdateTime, ChangedIDList, RemoveExpiredEntriesSeconds)</h1>
 		<h2>Specifications</h2>

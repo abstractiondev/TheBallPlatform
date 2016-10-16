@@ -1598,6 +1598,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Operation Call: UpdateSummaryData ( Partner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update summary data with operation call</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="PushSyncNotification (Partner)" level="1">
             <Header text="Specifications" level="2">
@@ -2085,6 +2092,67 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store connection object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateSharedDataSummaryData (Partner)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update shared data summary data, for given collaboration partner or for all currently shared</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Partner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.CollaborationPartner</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Collaboration partner (optional), for all if not given</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: IsCompleteUpdate ( Partner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Define if this is complete sync</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CollaborationPartners ( IsCompleteUpdate, Partner )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Collaboration partner(s) to sync summary data for</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdatePartnerSummaries ( CollaborationPartners )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update individual partner summaries</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateCompleteShareSummary ( CollaborationPartners, IsCompleteUpdate )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update complete share summary</TextContent>
                 </Text>
               </Paragraph>
             </Header>
