@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security;
 using System.Text;
 using AaltoGlobalImpact.OIP;
@@ -25,6 +26,9 @@ namespace WebTemplateManager
         {
             try
             {
+                ServicePointManager.UseNagleAlgorithm = false;
+                ServicePointManager.DefaultConnectionLimit = 500;
+                ServicePointManager.Expect100Continue = false;
                 /*
                 Console.WriteLine("Running test EKE...");
                 TheBallEKE.TestExecution();
