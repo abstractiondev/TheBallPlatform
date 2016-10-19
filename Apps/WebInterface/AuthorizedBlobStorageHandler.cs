@@ -488,11 +488,13 @@ namespace WebInterface
                 } else {
                     var originalFilename = Path.GetFileName(blobPath);
                     var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
-                    var finalBlobPath = blobPath.Replace(originalFilename, timePrefix + originalFilename);
+                    var prefixedFileName = timePrefix + originalFilename;
+                    var finalBlobPath = blobPath.Replace(originalFilename, prefixedFileName);
                     var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
                     using (var copyingStream = await blob.OpenReadAsync())
                         await finalBlob.UploadFromStreamAsync(copyingStream);
                     await blob.DeleteAsync();
+                    context.Response.Write(prefixedFileName);
                 }
             }
         }
