@@ -487,8 +487,8 @@ namespace WebInterface
                     await blob.SetMetadataAsync();
                 } else {
                     var originalFilename = Path.GetFileName(blobPath);
-                    var timePrefix = DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
-                    var prefixedFileName = timePrefix + originalFilename;
+                    var completePrefix = "Uploaded_"; //DateTime.UtcNow.ToString("yyyy-MM-dd_HHmmss") + "_";
+                    var prefixedFileName = completePrefix + originalFilename;
                     var finalBlobPath = blobPath.Replace(originalFilename, prefixedFileName);
                     var finalBlob = StorageSupport.GetOwnerBlobReference(finalBlobPath);
                     using (var copyingStream = await blob.OpenReadAsync())
