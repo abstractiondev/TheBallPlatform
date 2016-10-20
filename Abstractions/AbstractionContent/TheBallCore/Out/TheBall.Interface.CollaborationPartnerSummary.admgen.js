@@ -1,10 +1,10 @@
  
 
 var CollaborationPartnerSummary {
-	Partners: CollaborationPartner[];
+	PartnerData: PartnerSummaryItem[];
 
     constructor() {
-					this.Partners = ko.observableArray(this.Partners);
+					this.PartnerData = ko.observableArray(this.PartnerData);
     }
 }
 

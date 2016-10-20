@@ -241,12 +241,13 @@ namespace TheBall
             InformationContext.AddStorageTransactionToCurrent();
         }
 
-        public static async Task UploadBlobBinaryAsync(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
+        public static async Task<CloudBlockBlob> UploadBlobBinaryAsync(this CloudBlobContainer container, string blobPath, byte[] binaryContent)
         {
             var blob = container.GetBlockBlobReference(blobPath);
             blob.Properties.ContentType = GetMimeType(Path.GetExtension(blobPath));
             await blob.UploadFromByteArrayAsync(binaryContent, 0, binaryContent.Length);
             InformationContext.AddStorageTransactionToCurrent();
+            return blob;
         }
 
         public static void UploadBlobStream(this CloudBlobContainer container,
@@ -1271,10 +1272,11 @@ namespace TheBall
             return blob;
         }
 
-        public static async Task UploadOwnerBlobBinaryA(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
+        public static async Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner owner, string blobAddress, byte[] binaryContent, string contentInformationType = null)
         {
             string uploadAddress = GetOwnerContentLocation(owner, blobAddress);
-            await CurrActiveContainer.UploadBlobBinaryAsync(uploadAddress, binaryContent);
+            var blob = await CurrActiveContainer.UploadBlobBinaryAsync(uploadAddress, binaryContent);
+            return getBlobStorageItem(blob);
         }
 
 

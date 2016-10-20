@@ -1963,7 +1963,7 @@ div.WordSection1
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Tuple<TheBall.CORE.IContainerOwner, bool>[]
+		Tuple<TheBall.CORE.IContainerOwner, string>[]
 		</div>
 				</td>
 				<td>

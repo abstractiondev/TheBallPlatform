@@ -552,7 +552,7 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					bool IsCompleteUpdate = UpdateSharedDataSummaryDataImplementation.GetTarget_IsCompleteUpdate(parameters.Partner);	
 				TheBall.CORE.IContainerOwner[] CollaborationPartners =  await UpdateSharedDataSummaryDataImplementation.GetTarget_CollaborationPartnersAsync(parameters.Partner, IsCompleteUpdate);	
-				Tuple<TheBall.CORE.IContainerOwner, bool>[] UpdatePartnerSummariesOutput =  await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners, IsCompleteUpdate);		
+				Tuple<TheBall.CORE.IContainerOwner, string>[] UpdatePartnerSummariesOutput =  await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdatePartnerSummariesAsync(CollaborationPartners, IsCompleteUpdate);		
 				 await UpdateSharedDataSummaryDataImplementation.ExecuteMethod_UpdateCompleteShareSummaryAsync(UpdatePartnerSummariesOutput, IsCompleteUpdate);		
 				}
 				}

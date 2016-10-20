@@ -49,7 +49,7 @@ namespace TheBall.Interface
             return fileName.StartsWith("_") && fileName.EndsWith(".json");
         }
 
-        public static async Task<Tuple<IContainerOwner, bool>> updatePartnerSummary(IContainerOwner partner, string summariesFolder)
+        public static async Task<Tuple<IContainerOwner, string>> updatePartnerSummary(IContainerOwner partner, string summariesFolder)
         {
             ShareInfoSummary summaryObject = new ShareInfoSummary();
 
@@ -73,13 +73,12 @@ namespace TheBall.Interface
             // TODO: add shared by me
             summaryObject.SharedByMe = new ShareInfo[0];
 
-            bool hadData = partnerSharedBlobs.Length > 0;
             var summaryFileName = BlobStorage.CombinePath(summariesFolder, getSummaryFileName(partner.ContainerName, partner.LocationPrefix));
-            await BlobStorage.StoreBlobJsonContentA(summaryFileName, summaryObject);
-            return new Tuple<IContainerOwner, bool>(partner, hadData);
+            var blobInfo = await BlobStorage.StoreBlobJsonContentA(summaryFileName, summaryObject);
+            return new Tuple<IContainerOwner, string>(partner, blobInfo.ContentMD5);
         }
 
-        public static async Task<Tuple<IContainerOwner, bool>[]> ExecuteMethod_UpdatePartnerSummariesAsync(IContainerOwner[] collaborationPartners, bool isCompleteUpdate)
+        public static async Task<Tuple<IContainerOwner, string>[]> ExecuteMethod_UpdatePartnerSummariesAsync(IContainerOwner[] collaborationPartners, bool isCompleteUpdate)
         {
             var summariesFolder = BlobStorage.CombinePath(ShareInfoDirectory, "Summaries");
 
@@ -91,7 +90,7 @@ namespace TheBall.Interface
             {
                 var existingSummaryBlobs = await BlobStorage.GetOwnerBlobsA(summariesFolder);
                 var existingDataSummaryNames =
-                    result.Where(item => item.Item2)
+                    result.Where(item => item.Item2 != null)
                         .Select(
                             item => getSummaryFileName(item.Item1.ContainerName, item.Item1.LocationPrefix)).ToArray();
                 var blobsToDelete =
@@ -103,7 +102,7 @@ namespace TheBall.Interface
             return result;
         }
 
-        public static async Task ExecuteMethod_UpdateCompleteShareSummaryAsync(Tuple<IContainerOwner, bool>[] updatePartnerSummariesOutput, bool isCompleteUpdate)
+        public static async Task ExecuteMethod_UpdateCompleteShareSummaryAsync(Tuple<IContainerOwner, string>[] updatePartnerSummariesOutput, bool isCompleteUpdate)
         {
             var shareStatusData = updatePartnerSummariesOutput;
             var summaryDataPath = BlobStorage.CombinePath(ShareInfoDirectory, "CollaborationPartnerSummary.json");
@@ -111,48 +110,48 @@ namespace TheBall.Interface
             if (isCompleteUpdate)
             {
                 summaryObject = new CollaborationPartnerSummary();
-                summaryObject.Partners = shareStatusData
-                    .Where(item => item.Item2).Select(item => getPartnerFromOwner(item.Item1))
-                    .ToArray();
+                summaryObject.PartnerData = shareStatusData
+                    .Where(item => item.Item2 != null).Select(item =>
+                        new PartnerSummaryItem
+                        {
+                            Partner = getPartnerFromOwner(item.Item1),
+                            ShareInfoSummaryMD5 = item.Item2
+                        }).ToArray();
             }
             else
             {
                 summaryObject = await BlobStorage.GetBlobJsonContentA<CollaborationPartnerSummary>(summaryDataPath) ??
                                 new CollaborationPartnerSummary
                                 {
-                                    Partners = new CollaborationPartner[0]
+                                    PartnerData = new PartnerSummaryItem[0]
                                 };
-                var partnersWithData = shareStatusData.Where(item => item.Item2).Select(item => getPartnerFromOwner(item.Item1)).Select(partnerToTuple).ToArray();
-                var partnersWithoutData = shareStatusData.Where(item => item.Item2 == false).Select(item => getPartnerFromOwner(item.Item1)).Select(partnerToTuple).ToArray();
-                var existingPartners = summaryObject.Partners.Select(partnerToTuple);
-                var setPartners =
-                    existingPartners.Union(partnersWithData)
-                        .Except(partnersWithoutData)
-                        .Select(tupleToPartner)
-                        .OrderBy(partner => partner.PartnerType + "_" + partner.PartnerID)
-                        .ToArray();
-                summaryObject.Partners = setPartners;
+                var partnersWithData = shareStatusData.Where(item => item.Item2 != null)
+                    .Select(item => new { Partner = getPartnerFromOwner(item.Item1), ShareInfoSummaryMD5 = item.Item2}).ToArray();
+                var partnersWithoutData = shareStatusData.Where(item => item.Item2 == null)
+                    .Select(item => new { Partner = getPartnerFromOwner(item.Item1), ShareInfoSummaryMD5 = (string) null }).ToArray();
+                var replacingDict =
+                    partnersWithData.Concat(partnersWithoutData)
+                        .ToDictionary(item => getDictKey(item.Partner));
+                var existingPartners = summaryObject.PartnerData.Where(
+                    item => !replacingDict.ContainsKey(getDictKey(item.Partner)))
+                    .Concat(partnersWithData.Select(item => new PartnerSummaryItem
+                    {
+                        Partner = item.Partner,
+                        ShareInfoSummaryMD5 = item.ShareInfoSummaryMD5
+                    })).OrderBy(item => getDictKey(item.Partner)).ToArray();
+                summaryObject.PartnerData = existingPartners;
             }
             await BlobStorage.StoreBlobJsonContentA(summaryDataPath, summaryObject);
+        }
+
+        private static string getDictKey(CollaborationPartner partner)
+        {
+            return partner.PartnerType + "_" + partner.PartnerID;
         }
 
         private static string getSummaryFileName(string partnerType, string partnerID)
         {
             return $"{partnerType}_{partnerID}.json";
-        }
-
-        private static Tuple<string, string> partnerToTuple(CollaborationPartner partner)
-        {
-            return new Tuple<string, string>(partner.PartnerType, partner.PartnerID);
-        }
-
-        private static CollaborationPartner tupleToPartner(Tuple<string, string> tuple)
-        {
-            return new CollaborationPartner
-            {
-                PartnerType = tuple.Item1,
-                PartnerID = tuple.Item2
-            };
         }
 
         private static CollaborationPartner getPartnerFromOwner(IContainerOwner owner)

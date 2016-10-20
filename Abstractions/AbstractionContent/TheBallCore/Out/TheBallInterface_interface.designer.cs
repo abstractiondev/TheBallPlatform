@@ -74,7 +74,24 @@ using System.Runtime.Serialization;
                 public string ETag { get; set; }
 
 			[DataMember]
-			public List<CollaborationPartner> Partners= new List<CollaborationPartner>();
+			public List<PartnerSummaryItem> PartnerData= new List<PartnerSummaryItem>();
+
+			
+			}
+			[DataContract]
+			public partial class PartnerSummaryItem 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public CollaborationPartner Partner;
+
+			[DataMember]
+			public string ShareInfoSummaryMD5;
 
 			
 			}

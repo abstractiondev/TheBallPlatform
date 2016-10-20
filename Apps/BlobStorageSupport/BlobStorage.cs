@@ -129,10 +129,11 @@ namespace TheBall.CORE.Storage
             return data;
         }
 
-        public static async Task StoreBlobJsonContentA(string name, object dataObject)
+        public static async Task<BlobStorageItem> StoreBlobJsonContentA(string name, object dataObject)
         {
             var data = JSONSupport.SerializeToJSONData(dataObject);
-            await StorageSupport.UploadOwnerBlobBinaryA(InformationContext.CurrentOwner, name, data);
+            var blobStorageItem = await StorageSupport.UploadOwnerBlobBinaryA(InformationContext.CurrentOwner, name, data);
+            return blobStorageItem;
         }
     }
 }

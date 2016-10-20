@@ -23,7 +23,13 @@
         </InterfaceObject>
         <InterfaceObject name="CollaborationPartnerSummary" designDesc="Collaboration partner summary">
           <InterfaceItems>
-            <ObjectInstance name="Partners" interfaceObjectName="CollaborationPartner" isCollection="true"/>
+            <ObjectInstance name="PartnerData" interfaceObjectName="PartnerSummaryItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="PartnerSummaryItem" designDesc="Collaboration partner summary item">
+          <InterfaceItems>
+            <ObjectInstance name="Partner" interfaceObjectName="CollaborationPartner" />
+            <InterfaceItem name="ShareInfoSummaryMD5" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="ShareInfoSummary" designDesc="ShareInfo summary over collaboration partner">
@@ -965,7 +971,7 @@
             <MethodExecute name="UpdatePartnerSummaries" designDesc="Update individual partner summaries" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="CollaborationPartners"/>
               <Target name="IsCompleteUpdate"/>
-              <ReturnValue dataType="Tuple&lt;TheBall.CORE.IContainerOwner, bool&gt;[]" name="DataStatuses" designDesc="Data status item for each owner" state="implemented"/>
+              <ReturnValue dataType="Tuple&lt;TheBall.CORE.IContainerOwner, string&gt;[]" name="DataStatuses" designDesc="Data status item for each owner" state="implemented"/>
             </MethodExecute>
             <MethodExecute name="UpdateCompleteShareSummary" designDesc="Update complete share summary" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="UpdatePartnerSummariesOutput"/>

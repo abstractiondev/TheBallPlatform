@@ -2161,7 +2161,7 @@
                         <TextContent>DataStatuses</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Tuple&lt;TheBall.CORE.IContainerOwner, bool&gt;[]</TextContent>
+                        <TextContent>Tuple&lt;TheBall.CORE.IContainerOwner, string&gt;[]</TextContent>
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Data status item for each owner</TextContent>

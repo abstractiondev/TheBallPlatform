@@ -62,7 +62,16 @@ namespace INT {
 			public partial class CollaborationPartnerSummary
 			{
 				[DataMember]
-				public CollaborationPartner[] Partners { get; set; }
+				public PartnerSummaryItem[] PartnerData { get; set; }
+			}
+
+			[DataContract]
+			public partial class PartnerSummaryItem
+			{
+				[DataMember]
+				public CollaborationPartner Partner { get; set; }
+				[DataMember]
+				public string ShareInfoSummaryMD5 { get; set; }
 			}
 
 			[DataContract]
