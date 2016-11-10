@@ -23,7 +23,7 @@ namespace AaltoGlobalImpact.OIP
                 loginRoot.ID = loginRootID;
                 loginRoot.UpdateRelativeLocationFromID();
                 loginRoot.DomainName = currentDomainName;
-                StorageSupport.StoreInformation(loginRoot);
+                await StorageSupport.StoreInformationAsync(loginRoot);
 
                 // Creating login info for account and storing the account
                 TBLoginInfo loginInfo = TBLoginInfo.CreateDefault();

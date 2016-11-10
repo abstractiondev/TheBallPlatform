@@ -45,7 +45,7 @@ namespace WebInterface
             string requestPath = context.Request.Path;
             string emailValidationID = requestPath.Substring(AuthEmailValidationLen);
             TBAccount account = loginRoot.Account;
-            TBEmailValidation emailValidation = ObjectStorage.RetrieveFromDefaultLocation<TBEmailValidation>(emailValidationID);
+            TBEmailValidation emailValidation = await ObjectStorage.RetrieveFromDefaultLocationA<TBEmailValidation>(emailValidationID);
             if (emailValidation == null)
             {
                 RespondEmailValidationRecordNotExist(context);
@@ -91,7 +91,7 @@ namespace WebInterface
             finally
             {
                 if(deleteEmailValidation)
-                    StorageSupport.DeleteInformationObject(emailValidation);
+                    await StorageSupport.DeleteInformationObjectAsync(emailValidation);
             }
         }
 
