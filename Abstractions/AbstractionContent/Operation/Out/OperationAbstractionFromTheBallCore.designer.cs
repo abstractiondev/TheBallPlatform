@@ -8,6 +8,181 @@ using System.IO;
 using System.Threading.Tasks;
 
 		namespace TheBall.CORE { 
+				public class CreateAccountParameters 
+		{
+				public string AccountID ;
+				public string LoginUrl ;
+				public string EmailAddress ;
+				}
+		
+		public class CreateAccount 
+		{
+				private static void PrepareParameters(CreateAccountParameters parameters)
+		{
+					}
+				public static async Task<CreateAccountReturnValue> ExecuteAsync(CreateAccountParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Login Login =  await CreateAccountImplementation.GetTarget_LoginAsync(parameters.LoginUrl);	
+				Email Email =  await CreateAccountImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
+				Account AccountToBeCreated = CreateAccountImplementation.GetTarget_AccountToBeCreated(parameters.AccountID, Login, Email);	
+				CreateAccountImplementation.ExecuteMethod_SetAccountIDToLogin(Login, AccountToBeCreated);		
+				CreateAccountImplementation.ExecuteMethod_SetAccountIDToEmail(Email, AccountToBeCreated);		
+				 await CreateAccountImplementation.ExecuteMethod_StoreObjectsAsync(AccountToBeCreated, Login, Email);		
+				CreateAccountReturnValue returnValue = CreateAccountImplementation.Get_ReturnValue(AccountToBeCreated);
+		return returnValue;
+				}
+				}
+				public class CreateAccountReturnValue 
+		{
+				public Account CreatedAccount ;
+				}
+				public class CreateGroupParameters 
+		{
+				public string GroupID ;
+				}
+		
+		public class CreateGroup 
+		{
+				private static void PrepareParameters(CreateGroupParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(CreateGroupParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Group GroupToBeCreated = CreateGroupImplementation.GetTarget_GroupToBeCreated(parameters.GroupID);	
+				 await CreateGroupImplementation.ExecuteMethod_StoreObjectAsync(GroupToBeCreated);		
+				}
+				}
+				public class SetGroupMembershipParameters 
+		{
+				public string GroupID ;
+				public string AccountID ;
+				public string Role ;
+				}
+		
+		public class SetGroupMembership 
+		{
+				private static void PrepareParameters(SetGroupMembershipParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetGroupMembershipParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await SetGroupMembershipImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				Group Group =  await SetGroupMembershipImplementation.GetTarget_GroupAsync(parameters.GroupID);	
+				GroupMembership GroupMembership =  await SetGroupMembershipImplementation.GetTarget_GroupMembershipAsync(parameters.AccountID, parameters.GroupID);	
+				SetGroupMembershipImplementation.ExecuteMethod_SetRoleToMembership(parameters.Role, GroupMembership);		
+				SetGroupMembershipImplementation.ExecuteMethod_SetMembershipToGroup(GroupMembership, Group);		
+				SetGroupMembershipImplementation.ExecuteMethod_SetMembershipToAccount(GroupMembership, Account);		
+				 await SetGroupMembershipImplementation.ExecuteMethod_StoreObjectsAsync(GroupMembership, Group, Account);		
+				}
+				}
+				public class RemoveGroupMembershipParameters 
+		{
+				public string GroupID ;
+				public string AccountID ;
+				}
+		
+		public class RemoveGroupMembership 
+		{
+				private static void PrepareParameters(RemoveGroupMembershipParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(RemoveGroupMembershipParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await RemoveGroupMembershipImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				Group Group =  await RemoveGroupMembershipImplementation.GetTarget_GroupAsync(parameters.GroupID);	
+				GroupMembership GroupMembership =  await RemoveGroupMembershipImplementation.GetTarget_GroupMembershipAsync(parameters.AccountID, parameters.GroupID);	
+				RemoveGroupMembershipImplementation.ExecuteMethod_RemoveMembershipFromGroup(GroupMembership, Group);		
+				RemoveGroupMembershipImplementation.ExecuteMethod_RemoveMembershipFromAccount(GroupMembership, Account);		
+				 await RemoveGroupMembershipImplementation.ExecuteMethod_StoreObjectsAsync(Group, Account);		
+				 await RemoveGroupMembershipImplementation.ExecuteMethod_DeleteObjectAsync(GroupMembership);		
+				}
+				}
+				public class AddLoginToAccountParameters 
+		{
+				public string AccountID ;
+				public string LoginUrl ;
+				}
+		
+		public class AddLoginToAccount 
+		{
+				private static void PrepareParameters(AddLoginToAccountParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(AddLoginToAccountParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await AddLoginToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				Login Login =  await AddLoginToAccountImplementation.GetTarget_LoginAsync(parameters.LoginUrl);	
+				AddLoginToAccountImplementation.ExecuteMethod_AddLoginToAccount(Account, Login);		
+				AddLoginToAccountImplementation.ExecuteMethod_AddAccountToLogin(Login, Account);		
+				 await AddLoginToAccountImplementation.ExecuteMethod_StoreObjectsAsync(Account, Login);		
+				}
+				}
+				public class RemoveLoginParameters 
+		{
+				public string LoginUrl ;
+				}
+		
+		public class RemoveLogin 
+		{
+				private static void PrepareParameters(RemoveLoginParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(RemoveLoginParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Login Login =  await RemoveLoginImplementation.GetTarget_LoginAsync(parameters.LoginUrl);	
+				Account Account =  await RemoveLoginImplementation.GetTarget_AccountAsync(Login);	
+				RemoveLoginImplementation.ExecuteMethod_RemoveLoginFromAccount(Account, Login);		
+				 await RemoveLoginImplementation.ExecuteMethod_DeleteObjectAsync(Login);		
+				 await RemoveLoginImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
+				}
+				public class AddEmailToAccountParameters 
+		{
+				public string AccountID ;
+				public string EmailAddress ;
+				}
+		
+		public class AddEmailToAccount 
+		{
+				private static void PrepareParameters(AddEmailToAccountParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(AddEmailToAccountParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await AddEmailToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				Email Email =  await AddEmailToAccountImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
+				AddEmailToAccountImplementation.ExecuteMethod_AddEmailToAccount(Account, Email);		
+				AddEmailToAccountImplementation.ExecuteMethod_AddAccountToEmail(Email, Account);		
+				 await AddEmailToAccountImplementation.ExecuteMethod_StoreObjectsAsync(Account, Email);		
+				}
+				}
+				public class RemoveEmailParameters 
+		{
+				public string EmailAddress ;
+				}
+		
+		public class RemoveEmail 
+		{
+				private static void PrepareParameters(RemoveEmailParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(RemoveEmailParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Email Email =  await RemoveEmailImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
+				Account Account =  await RemoveEmailImplementation.GetTarget_AccountAsync(Email);	
+				RemoveEmailImplementation.ExecuteMethod_RemoveEmailFromAccount(Account, Email);		
+				 await RemoveEmailImplementation.ExecuteMethod_DeleteObjectAsync(Email);		
+				 await RemoveEmailImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
+				}
 				public class ObtainSystemProcessLockParameters 
 		{
 				public IContainerOwner Owner ;

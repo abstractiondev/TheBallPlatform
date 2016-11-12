@@ -1,6 +1,180 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.CORE">
+    <StatusItem name="CreateAccount_AccountID" displayName="VariableType: AccountID" description="AccountID (optional) to be created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_LoginUrl" displayName="VariableType: LoginUrl" description="Login url to be used to create the account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_EmailAddress" displayName="VariableType: EmailAddress" description="Email address to be used to create the account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_Login" displayName="TargetDefinitionType: Login" description="Login object - retrieve or create">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_Email" displayName="TargetDefinitionType: Email" description="Email object - retrieve or create">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_AccountToBeCreated" displayName="TargetDefinitionType: AccountToBeCreated" description="Account object to be created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_SetAccountIDToLogin" displayName="MethodExecuteType: SetAccountIDToLogin" description="Set account object ID to login">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_SetAccountIDToEmail" displayName="MethodExecuteType: SetAccountIDToEmail" description="Set account object ID to email">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects, account first then others that relate to it">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_CreatedAccount" displayName="VariableType: CreatedAccount" description="Created account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateGroup_GroupID" displayName="VariableType: GroupID" description="GroupID (optional) to be created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateGroup_GroupToBeCreated" displayName="TargetDefinitionType: GroupToBeCreated" description="Group object to be created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateGroup_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_GroupID" displayName="VariableType: GroupID" description="Group ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_AccountID" displayName="VariableType: AccountID" description="Account ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_Role" displayName="VariableType: Role" description="Role to set - null if to remove role entirely">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_Group" displayName="TargetDefinitionType: Group" description="Group object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_GroupMembership" displayName="TargetDefinitionType: GroupMembership" description="Get or create group membership for account and group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_SetRoleToMembership" displayName="MethodExecuteType: SetRoleToMembership" description="Set account role to membership">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_SetMembershipToGroup" displayName="MethodExecuteType: SetMembershipToGroup" description="Set membership to group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_SetMembershipToAccount" displayName="MethodExecuteType: SetMembershipToAccount" description="Set membership to account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SetGroupMembership_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_GroupID" displayName="VariableType: GroupID" description="Group ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_AccountID" displayName="VariableType: AccountID" description="Account ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_Group" displayName="TargetDefinitionType: Group" description="Group object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_GroupMembership" displayName="TargetDefinitionType: GroupMembership" description="Get or create group membership for account and group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_RemoveMembershipFromGroup" displayName="MethodExecuteType: RemoveMembershipFromGroup" description="Remove membership from group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_RemoveMembershipFromAccount" displayName="MethodExecuteType: RemoveMembershipFromAccount" description="Remove membership from account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveGroupMembership_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_AccountID" displayName="VariableType: AccountID" description="Account ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_LoginUrl" displayName="VariableType: LoginUrl" description="Login Url">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_Login" displayName="TargetDefinitionType: Login" description="Login object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_AddLoginToAccount" displayName="MethodExecuteType: AddLoginToAccount" description="Add login object to account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_AddAccountToLogin" displayName="MethodExecuteType: AddAccountToLogin" description="Add account object to login">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddLoginToAccount_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_LoginUrl" displayName="VariableType: LoginUrl" description="Login Url">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_Login" displayName="TargetDefinitionType: Login" description="Login object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_RemoveLoginFromAccount" displayName="MethodExecuteType: RemoveLoginFromAccount" description="Remove login from account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveLogin_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_AccountID" displayName="VariableType: AccountID" description="Account ID">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_EmailAddress" displayName="VariableType: EmailAddress" description="Email address">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_Email" displayName="TargetDefinitionType: Email" description="Email object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_AddEmailToAccount" displayName="MethodExecuteType: AddEmailToAccount" description="Add email link to account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_AddAccountToEmail" displayName="MethodExecuteType: AddAccountToEmail" description="Add account link to email">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="AddEmailToAccount_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_EmailAddress" displayName="VariableType: EmailAddress" description="Email address">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_Email" displayName="TargetDefinitionType: Email" description="Email object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_Account" displayName="TargetDefinitionType: Account" description="Account object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_RemoveEmailFromAccount" displayName="MethodExecuteType: RemoveEmailFromAccount" description="Remove email link from account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_DeleteObject" displayName="MethodExecuteType: DeleteObject" description="Delete object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="RemoveEmail_StoreObject" displayName="MethodExecuteType: StoreObject" description="Store object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ObtainSystemProcessLock_Owner" displayName="VariableType: Owner" description="Container owner to obtain the lock for. Always obtain first on owner, then mark also to systemwide">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1149,6 +1323,80 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="CreateAccount">
+      <ItemRef itemName="CreateAccount_AccountID" />
+      <ItemRef itemName="CreateAccount_LoginUrl" />
+      <ItemRef itemName="CreateAccount_EmailAddress" />
+      <ItemRef itemName="CreateAccount_Login" />
+      <ItemRef itemName="CreateAccount_Email" />
+      <ItemRef itemName="CreateAccount_AccountToBeCreated" />
+      <ItemRef itemName="CreateAccount_SetAccountIDToLogin" />
+      <ItemRef itemName="CreateAccount_SetAccountIDToEmail" />
+      <ItemRef itemName="CreateAccount_StoreObjects" />
+      <ItemRef itemName="CreateAccount_CreatedAccount" />
+    </Group>
+    <Group name="CreateGroup">
+      <ItemRef itemName="CreateGroup_GroupID" />
+      <ItemRef itemName="CreateGroup_GroupToBeCreated" />
+      <ItemRef itemName="CreateGroup_StoreObject" />
+    </Group>
+    <Group name="SetGroupMembership">
+      <ItemRef itemName="SetGroupMembership_GroupID" />
+      <ItemRef itemName="SetGroupMembership_AccountID" />
+      <ItemRef itemName="SetGroupMembership_Role" />
+      <ItemRef itemName="SetGroupMembership_Account" />
+      <ItemRef itemName="SetGroupMembership_Group" />
+      <ItemRef itemName="SetGroupMembership_GroupMembership" />
+      <ItemRef itemName="SetGroupMembership_SetRoleToMembership" />
+      <ItemRef itemName="SetGroupMembership_SetMembershipToGroup" />
+      <ItemRef itemName="SetGroupMembership_SetMembershipToAccount" />
+      <ItemRef itemName="SetGroupMembership_StoreObjects" />
+    </Group>
+    <Group name="RemoveGroupMembership">
+      <ItemRef itemName="RemoveGroupMembership_GroupID" />
+      <ItemRef itemName="RemoveGroupMembership_AccountID" />
+      <ItemRef itemName="RemoveGroupMembership_Account" />
+      <ItemRef itemName="RemoveGroupMembership_Group" />
+      <ItemRef itemName="RemoveGroupMembership_GroupMembership" />
+      <ItemRef itemName="RemoveGroupMembership_RemoveMembershipFromGroup" />
+      <ItemRef itemName="RemoveGroupMembership_RemoveMembershipFromAccount" />
+      <ItemRef itemName="RemoveGroupMembership_StoreObjects" />
+      <ItemRef itemName="RemoveGroupMembership_DeleteObject" />
+    </Group>
+    <Group name="AddLoginToAccount">
+      <ItemRef itemName="AddLoginToAccount_AccountID" />
+      <ItemRef itemName="AddLoginToAccount_LoginUrl" />
+      <ItemRef itemName="AddLoginToAccount_Account" />
+      <ItemRef itemName="AddLoginToAccount_Login" />
+      <ItemRef itemName="AddLoginToAccount_AddLoginToAccount" />
+      <ItemRef itemName="AddLoginToAccount_AddAccountToLogin" />
+      <ItemRef itemName="AddLoginToAccount_StoreObjects" />
+    </Group>
+    <Group name="RemoveLogin">
+      <ItemRef itemName="RemoveLogin_LoginUrl" />
+      <ItemRef itemName="RemoveLogin_Login" />
+      <ItemRef itemName="RemoveLogin_Account" />
+      <ItemRef itemName="RemoveLogin_RemoveLoginFromAccount" />
+      <ItemRef itemName="RemoveLogin_DeleteObject" />
+      <ItemRef itemName="RemoveLogin_StoreObject" />
+    </Group>
+    <Group name="AddEmailToAccount">
+      <ItemRef itemName="AddEmailToAccount_AccountID" />
+      <ItemRef itemName="AddEmailToAccount_EmailAddress" />
+      <ItemRef itemName="AddEmailToAccount_Account" />
+      <ItemRef itemName="AddEmailToAccount_Email" />
+      <ItemRef itemName="AddEmailToAccount_AddEmailToAccount" />
+      <ItemRef itemName="AddEmailToAccount_AddAccountToEmail" />
+      <ItemRef itemName="AddEmailToAccount_StoreObjects" />
+    </Group>
+    <Group name="RemoveEmail">
+      <ItemRef itemName="RemoveEmail_EmailAddress" />
+      <ItemRef itemName="RemoveEmail_Email" />
+      <ItemRef itemName="RemoveEmail_Account" />
+      <ItemRef itemName="RemoveEmail_RemoveEmailFromAccount" />
+      <ItemRef itemName="RemoveEmail_DeleteObject" />
+      <ItemRef itemName="RemoveEmail_StoreObject" />
+    </Group>
     <Group name="ObtainSystemProcessLock">
       <ItemRef itemName="ObtainSystemProcessLock_Owner" />
       <ItemRef itemName="ObtainSystemProcessLock_LatestEntryTime" />

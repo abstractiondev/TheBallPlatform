@@ -228,7 +228,133 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallCore)</p>
 </div>
-		<h1>BeginAccountEmailAddressRegistration (AccountID, EmailAddress, RedirectUrlAfterValidation)</h1>
+		<h1>AddEmailToAccount (AccountID, EmailAddress)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Add email to account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: Email ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Email object
+		</div>
+		</p><h2>Method Call: AddEmailToAccount ( Account, Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Add email link to account
+		</div>
+		</p><h2>Method Call: AddAccountToEmail ( Email, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Add account link to email
+		</div>
+		</p><h2>Method Call: StoreObjects ( Account, Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
+		</p><h1>AddLoginToAccount (AccountID, LoginUrl)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LoginUrl
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login Url
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: Login ( LoginUrl )</h2>
+		<p>		<div class="MsoNormal" >
+		Login object
+		</div>
+		</p><h2>Method Call: AddLoginToAccount ( Account, Login )</h2>
+		<p>		<div class="MsoNormal" >
+		Add login object to account
+		</div>
+		</p><h2>Method Call: AddAccountToLogin ( Login, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Add account object to login
+		</div>
+		</p><h2>Method Call: StoreObjects ( Account, Login )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
+		</p><h1>BeginAccountEmailAddressRegistration (AccountID, EmailAddress, RedirectUrlAfterValidation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		
@@ -361,6 +487,111 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Perform account merge with source and target IDs
 		</div>
+		</p><h1>CreateAccount (AccountID, LoginUrl, EmailAddress)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Create account with given login and email
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AccountID (optional) to be created
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LoginUrl
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login url to be used to create the account
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address to be used to create the account
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Login ( LoginUrl )</h2>
+		<p>		<div class="MsoNormal" >
+		Login object - retrieve or create
+		</div>
+		</p><h2>Target Definition: Email ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Email object - retrieve or create
+		</div>
+		</p><h2>Target Definition: AccountToBeCreated ( Login, Email, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object to be created
+		</div>
+		</p><h2>Method Call: SetAccountIDToLogin ( Login, AccountToBeCreated )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account object ID to login
+		</div>
+		</p><h2>Method Call: SetAccountIDToEmail ( Email, AccountToBeCreated )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account object ID to email
+		</div>
+		</p><h2>Method Call: StoreObjects ( AccountToBeCreated, Login, Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects, account first then others that relate to it
+		</div>
+		</p><h2>Return Value : CreateAccountReturnValue ( AccountToBeCreated )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		CreatedAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Created account object
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>CreateAndSendEmailValidationForDeviceJoinConfirmation (OwningAccount, OwningGroup, DeviceMembership)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -802,6 +1033,40 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h1>CreateGroup (GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Create group with optionally given ID
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		GroupID (optional) to be created
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupToBeCreated ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group object to be created
+		</div>
+		</p><h2>Method Call: StoreObject ( GroupToBeCreated )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
 		</p><h1>CreateGroupWithTemplates (GroupName, AccountID, TemplateNameList, GroupDefaultRedirect, RedirectUrlAfterCreation)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -3664,6 +3929,169 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Remove account from group using AGI namespace operation(s)
 		</div>
+		</p><h1>RemoveEmail (EmailAddress)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Remove email object and link from account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Email ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Email object
+		</div>
+		</p><h2>Target Definition: Account ( Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Method Call: RemoveEmailFromAccount ( Account, Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove email link from account
+		</div>
+		</p><h2>Method Call: DeleteObject ( Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete object
+		</div>
+		</p><h2>Method Call: StoreObject ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h1>RemoveGroupMembership (GroupID, AccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Set group membership of an account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: Group ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group object
+		</div>
+		</p><h2>Target Definition: GroupMembership ( AccountID, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Get or create group membership for account and group
+		</div>
+		</p><h2>Method Call: RemoveMembershipFromGroup ( GroupMembership, Group )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove membership from group
+		</div>
+		</p><h2>Method Call: RemoveMembershipFromAccount ( GroupMembership, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove membership from account
+		</div>
+		</p><h2>Method Call: StoreObjects ( Group, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
+		</div>
+		</p><h2>Method Call: DeleteObject ( GroupMembership )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete object
+		</div>
+		</p><h1>RemoveLogin (LoginUrl)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Remove login from system and from accounts
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LoginUrl
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login Url
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Login ( LoginUrl )</h2>
+		<p>		<div class="MsoNormal" >
+		Login object
+		</div>
+		</p><h2>Target Definition: Account ( Login )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Method Call: RemoveLoginFromAccount ( Account, Login )</h2>
+		<p>		<div class="MsoNormal" >
+		Remove login from account
+		</div>
+		</p><h2>Method Call: DeleteObject ( Login )</h2>
+		<p>		<div class="MsoNormal" >
+		Delete object
+		</div>
+		</p><h2>Method Call: StoreObject ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
 		</p><h1>SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -3737,6 +4165,94 @@ div.WordSection1
 		</p><h2>Method Call: StoreObject ( DeviceMembership )</h2>
 		<p>		<div class="MsoNormal" >
 		Store created object
+		</div>
+		</p><h1>SetGroupMembership (GroupID, AccountID, Role)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Set group membership of an account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Role
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Role to set - null if to remove role entirely
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: Group ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group object
+		</div>
+		</p><h2>Target Definition: GroupMembership ( AccountID, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Get or create group membership for account and group
+		</div>
+		</p><h2>Method Call: SetRoleToMembership ( GroupMembership, Role )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account role to membership
+		</div>
+		</p><h2>Method Call: SetMembershipToGroup ( GroupMembership, Group )</h2>
+		<p>		<div class="MsoNormal" >
+		Set membership to group
+		</div>
+		</p><h2>Method Call: SetMembershipToAccount ( GroupMembership, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Set membership to account
+		</div>
+		</p><h2>Method Call: StoreObjects ( GroupMembership, Group, Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store objects
 		</div>
 		</p><h1>SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>

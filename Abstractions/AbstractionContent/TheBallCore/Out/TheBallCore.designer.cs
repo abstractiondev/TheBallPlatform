@@ -186,6 +186,728 @@ namespace INT {
 		}
 			[DataContract] [ProtoContract]
 			[Serializable]
+			public partial class Login : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.ProtoBuf;
+					}
+				}
+
+				public Login()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Login";
+					UpdateRelativeLocationFromID();
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/Login/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Login), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Login>(ID);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Login");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Login), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Login/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Login/" + contentName);
+                }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Login) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Login));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Login DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Login));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Login) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "Login", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Login", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref Login customDemoObject);
+
+
+
+				public static Login CreateDefault()
+				{
+					var result = new Login();
+					return result;
+				}
+				/*
+				public static Login CreateDemoDefault()
+				{
+					Login customDemo = null;
+					Login.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new Login();
+					result.LoginName = @"Login.LoginName";
+
+					result.PasswordHash = @"Login.PasswordHash";
+
+					result.PasswordSalt = @"Login.PasswordSalt";
+
+				
+					return result;
+				}
+				*/
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(LoginName != _unmodified_LoginName)
+							return true;
+						if(PasswordHash != _unmodified_PasswordHash)
+							return true;
+						if(PasswordSalt != _unmodified_PasswordSalt)
+							return true;
+						if(Account != _unmodified_Account)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Login sourceObject)
+				{
+					LoginName = sourceObject.LoginName;
+					PasswordHash = sourceObject.PasswordHash;
+					PasswordSalt = sourceObject.PasswordSalt;
+					Account = sourceObject.Account;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_LoginName = LoginName;
+					_unmodified_PasswordHash = PasswordHash;
+					_unmodified_PasswordSalt = PasswordSalt;
+					_unmodified_Account = Account;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "LoginName":
+							LoginName = value;
+							break;
+						case "PasswordHash":
+							PasswordHash = value;
+							break;
+						case "PasswordSalt":
+							PasswordSalt = value;
+							break;
+						case "Account":
+							Account = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember] [ProtoMember(1)]
+			public string LoginName { get; set; }
+			private string _unmodified_LoginName;
+			[DataMember] [ProtoMember(2)]
+			public string PasswordHash { get; set; }
+			private string _unmodified_PasswordHash;
+			[DataMember] [ProtoMember(3)]
+			public string PasswordSalt { get; set; }
+			private string _unmodified_PasswordSalt;
+			[DataMember] [ProtoMember(4)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			
+			}
+			[DataContract] [ProtoContract]
+			[Serializable]
+			public partial class Email : IInformationObject 
+			{
+		        public static StorageSerializationType ClassStorageSerializationType { 
+					get {
+						return StorageSerializationType.ProtoBuf;
+					}
+				}
+
+				public Email()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.OwnerID = StorageSupport.ActiveOwnerID;
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Email";
+					UpdateRelativeLocationFromID();
+				}
+
+				public static IInformationObject[] RetrieveCollectionFromOwnerContent(IContainerOwner owner)
+				{
+					//string contentTypeName = ""; // SemanticDomainName + "." + Name
+					string contentTypeName = "TheBall.CORE/Email/";
+					List<IInformationObject> informationObjects = new List<IInformationObject>();
+					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
+					foreach(CloudBlockBlob blob in blobListing)
+					{
+						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
+							continue;
+						IInformationObject informationObject = StorageSupport.RetrieveInformation(blob.Name, typeof(Email), null, owner);
+					    informationObject.MasterETag = informationObject.ETag;
+						informationObjects.Add(informationObject);
+					}
+					return informationObjects.ToArray();
+				}
+
+				public void UpdateRelativeLocationFromID()
+				{
+					RelativeLocation = ObjectStorage.GetRelativeLocationFromID<Email>(ID);
+				}
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing, out bool initiated)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster == false)
+						throw new NotSupportedException("Cannot retrieve master for non-master type: Email");
+					initiated = false;
+					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Email), null, owner);
+					if(master == null && initiateIfMissing)
+					{
+						StorageSupport.StoreInformation(this, owner);
+						master = this;
+						initiated = true;
+					}
+					return master;
+				}
+
+
+				IInformationObject IInformationObject.RetrieveMaster(bool initiateIfMissing)
+				{
+					bool initiated;
+					IInformationObject iObject = this;
+					return iObject.RetrieveMaster(initiateIfMissing, out initiated);
+				}
+
+				public void SetLocationAsOwnerContent(IContainerOwner containerOwner, string contentName)
+                {
+                    // RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "Content/TheBall.CORE/Email/" + contentName);
+                    RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Email/" + contentName);
+                }
+
+				partial void DoPostStoringExecute(IContainerOwner owner);
+
+				public void PostStoringExecute(IContainerOwner owner)
+				{
+					DoPostStoringExecute(owner);
+				}
+
+				partial void DoPostDeleteExecute(IContainerOwner owner);
+
+				public void PostDeleteExecute(IContainerOwner owner)
+				{
+					DoPostDeleteExecute(owner);
+				}
+
+
+				bool IInformationObject.IsIndependentMaster { 
+					get {
+						return false;
+					}
+				}
+
+
+			    public void SetValuesToObjects(NameValueCollection nameValueCollection)
+			    {
+                    foreach(string key in nameValueCollection.AllKeys)
+                    {
+                        if (key.StartsWith("Root"))
+                            continue;
+                        int indexOfUnderscore = key.IndexOf("_");
+						if (indexOfUnderscore < 0) // >
+                            continue;
+                        string objectID = key.Substring(0, indexOfUnderscore);
+                        object targetObject = FindObjectByID(objectID);
+                        if (targetObject == null)
+                            continue;
+                        string propertyName = key.Substring(indexOfUnderscore + 1);
+                        string propertyValue = nameValueCollection[key];
+                        dynamic dyn = targetObject;
+                        dyn.ParsePropertyValue(propertyName, propertyValue);
+                    }
+			    }
+
+			    public object FindObjectByID(string objectId)
+			    {
+                    if (objectId == ID)
+                        return this;
+			        return FindFromObjectTree(objectId);
+			    }
+
+				void IInformationObject.UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceMaster)
+				{
+					if (sourceMaster == null)
+						throw new ArgumentNullException("sourceMaster");
+					if (GetType() != sourceMaster.GetType())
+						throw new InvalidDataException("Type mismatch in UpdateMasterValueTree");
+					IInformationObject iObject = this;
+					if(iObject.IsIndependentMaster == false)
+						throw new InvalidDataException("UpdateMasterValueTree called on non-master type");
+					if(ID != sourceMaster.ID)
+						throw new InvalidDataException("UpdateMasterValueTree is supported only on masters with same ID");
+					CopyContentFrom((Email) sourceMaster);
+				}
+
+
+				Dictionary<string, List<IInformationObject>> IInformationObject.CollectMasterObjects(Predicate<IInformationObject> filterOnFalse)
+				{
+					Dictionary<string, List<IInformationObject>> result = new Dictionary<string, List<IInformationObject>>();
+					IInformationObject iObject = (IInformationObject) this;
+					iObject.CollectMasterObjectsFromTree(result, filterOnFalse);
+					return result;
+				}
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Email));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Email DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Email));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Email) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+				public void SetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					RelativeLocation = GetRelativeLocationAsMetadataTo(masterRelativeLocation);
+				}
+
+				public static string GetRelativeLocationAsMetadataTo(string masterRelativeLocation)
+				{
+					return Path.Combine("TheBall.CORE", "Email", masterRelativeLocation + ".metadata").Replace("\\", "/"); 
+				}
+
+				public void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+				{
+				    RelativeLocation = GetLocationRelativeToContentRoot(referenceLocation, sourceName);
+				}
+
+                public string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName)
+                {
+                    string relativeLocation;
+                    if (String.IsNullOrEmpty(sourceName))
+                        sourceName = "default";
+                    string contentRootLocation = StorageSupport.GetContentRootLocation(referenceLocation);
+                    relativeLocation = Path.Combine(contentRootLocation, "TheBall.CORE", "Email", sourceName).Replace("\\", "/");
+                    return relativeLocation;
+                }
+
+				static partial void CreateCustomDemo(ref Email customDemoObject);
+
+
+
+				public static Email CreateDefault()
+				{
+					var result = new Email();
+					return result;
+				}
+				/*
+				public static Email CreateDemoDefault()
+				{
+					Email customDemo = null;
+					Email.CreateCustomDemo(ref customDemo);
+					if(customDemo != null)
+						return customDemo;
+					var result = new Email();
+					result.EmailAddress = @"Email.EmailAddress";
+
+				
+					return result;
+				}
+				*/
+
+				void IInformationObject.UpdateCollections(IInformationCollection masterInstance)
+				{
+					//Type collType = masterInstance.GetType();
+					//string typeName = collType.Name;
+				}
+
+                public void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent)
+                {
+                    IInformationObject targetObject = (IInformationObject) FindObjectByID(contentObjectID);
+                    if (targetObject == null)
+                        return;
+					if(targetObject == this)
+						throw new InvalidDataException("SetMediaContent referring to self (not media container)");
+                    targetObject.SetMediaContent(containerOwner, contentObjectID, mediaContent);
+                }
+
+
+				void IInformationObject.FindObjectsFromTree(List<IInformationObject> result, Predicate<IInformationObject> filterOnFalse, bool searchWithinCurrentMasterOnly)
+				{
+					if(filterOnFalse(this))
+						result.Add(this);
+					if(searchWithinCurrentMasterOnly == false)
+					{
+					}					
+				}
+
+				private object FindFromObjectTree(string objectId)
+				{
+					return null;
+				}
+				void IInformationObject.CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse)
+				{
+					IInformationObject iObject = (IInformationObject) this;
+					if(iObject.IsIndependentMaster)
+					{
+						if(filterOnFalse == null || filterOnFalse(iObject)) 
+						{
+							string key = iObject.ID;
+							List<IInformationObject> existingValue;
+							bool keyFound = result.TryGetValue(key, out existingValue);
+							if(keyFound == false) {
+								existingValue = new List<IInformationObject>();
+								result.Add(key, existingValue);
+							}
+							existingValue.Add(iObject);
+						}
+					}
+
+				}
+
+				bool IInformationObject.IsInstanceTreeModified {
+					get { 
+
+						if(EmailAddress != _unmodified_EmailAddress)
+							return true;
+						if(Account != _unmodified_Account)
+							return true;
+				
+						return false;
+					}
+				}
+
+				void IInformationObject.ReplaceObjectInTree(IInformationObject replacingObject)
+				{
+				}
+
+
+				private void CopyContentFrom(Email sourceObject)
+				{
+					EmailAddress = sourceObject.EmailAddress;
+					Account = sourceObject.Account;
+				}
+				
+
+
+				void IInformationObject.SetInstanceTreeValuesAsUnmodified()
+				{
+					_unmodified_EmailAddress = EmailAddress;
+					_unmodified_Account = Account;
+				
+				
+				}
+
+
+				public void ParsePropertyValue(string propertyName, string value)
+				{
+					switch (propertyName)
+					{
+						case "EmailAddress":
+							EmailAddress = value;
+							break;
+						case "Account":
+							Account = value;
+							break;
+						default:
+							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
+					}
+	        }
+			[DataMember] [ProtoMember(1)]
+			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
+			[DataMember] [ProtoMember(2)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			
+			}
+			[DataContract] [ProtoContract]
+			[Serializable]
 			public partial class Account : IInformationObject 
 			{
 		        public static StorageSerializationType ClassStorageSerializationType { 
@@ -386,10 +1108,6 @@ namespace INT {
 					if(customDemo != null)
 						return customDemo;
 					var result = new Account();
-					result.Emails = @"Account.Emails";
-
-					result.Logins = @"Account.Logins";
-
 				
 					return result;
 				}

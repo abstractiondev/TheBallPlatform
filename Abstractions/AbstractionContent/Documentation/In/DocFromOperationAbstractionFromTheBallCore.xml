@@ -4,6 +4,164 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallCore)" title="Operations (OperationAbstractionFromTheBallCore)">
         <Content>
+          <Header text="AddEmailToAccount (AccountID, EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add email to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Email ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddEmailToAccount ( Account, Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add email link to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddAccountToEmail ( Email, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add account link to email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( Account, Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="AddLoginToAccount (AccountID, LoginUrl)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent />
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LoginUrl</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login Url</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Login ( LoginUrl )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Login object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddLoginToAccount ( Account, Login )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add login object to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddAccountToLogin ( Login, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add account object to login</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( Account, Login )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="BeginAccountEmailAddressRegistration (AccountID, EmailAddress, RedirectUrlAfterValidation)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -151,6 +309,127 @@
                 <Text>
                   <TextContent>Perform account merge with source and target IDs</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateAccount (AccountID, LoginUrl, EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create account with given login and email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AccountID (optional) to be created</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LoginUrl</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login url to be used to create the account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address to be used to create the account</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Login ( LoginUrl )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Login object - retrieve or create</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Email ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email object - retrieve or create</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountToBeCreated ( Login, Email, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object to be created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetAccountIDToLogin ( Login, AccountToBeCreated )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set account object ID to login</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetAccountIDToEmail ( Email, AccountToBeCreated )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set account object ID to email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( AccountToBeCreated, Login, Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects, account first then others that relate to it</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : CreateAccountReturnValue ( AccountToBeCreated )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CreatedAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Created account object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>
@@ -621,6 +900,53 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="CreateGroup (GroupID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Create group with optionally given ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>GroupID (optional) to be created</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupToBeCreated ( GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group object to be created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( GroupToBeCreated )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
               </Paragraph>
             </Header>
           </Header>
@@ -3839,6 +4165,235 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="RemoveEmail (EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove email object and link from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Email ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveEmailFromAccount ( Account, Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove email link from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RemoveGroupMembership (GroupID, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set group membership of an account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Group ( GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupMembership ( AccountID, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get or create group membership for account and group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveMembershipFromGroup ( GroupMembership, Group )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove membership from group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveMembershipFromAccount ( GroupMembership, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove membership from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( Group, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( GroupMembership )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="RemoveLogin (LoginUrl)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove login from system and from accounts</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LoginUrl</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login Url</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Login ( LoginUrl )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Login object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( Login )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: RemoveLoginFromAccount ( Account, Login )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Remove login from account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: DeleteObject ( Login )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Delete object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -3913,6 +4468,110 @@
               <Paragraph>
                 <Text>
                   <TextContent>Store created object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetGroupMembership (GroupID, AccountID, Role)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set group membership of an account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Role</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Role to set - null if to remove role entirely</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Group ( GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupMembership ( AccountID, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get or create group membership for account and group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetRoleToMembership ( GroupMembership, Role )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set account role to membership</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetMembershipToGroup ( GroupMembership, Group )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set membership to group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetMembershipToAccount ( GroupMembership, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set membership to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( GroupMembership, Group, Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store objects</TextContent>
                 </Text>
               </Paragraph>
             </Header>

@@ -91,7 +91,13 @@ namespace SQLite.TheBall.CORE {
 			{
 				List<string> tableCreationCommands = new List<string>();
                 tableCreationCommands.AddRange(InformationObjectMetaData.GetMetaDataTableCreateSQLs());
+				tableCreationCommands.Add(Login.GetCreateTableSQL());
+				tableCreationCommands.Add(LoginAccount.GetCreateTableSQL());
+				tableCreationCommands.Add(Email.GetCreateTableSQL());
+				tableCreationCommands.Add(EmailAccount.GetCreateTableSQL());
 				tableCreationCommands.Add(Account.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountEmails.GetCreateTableSQL());
+				tableCreationCommands.Add(AccountLogins.GetCreateTableSQL());
 				tableCreationCommands.Add(AccountGroupMemberships.GetCreateTableSQL());
 				tableCreationCommands.Add(Group.GetCreateTableSQL());
 				tableCreationCommands.Add(GroupGroupMemberships.GetCreateTableSQL());
@@ -169,6 +175,52 @@ namespace SQLite.TheBall.CORE {
 
 				switch(updateData.ObjectType)
 				{
+		        case "Login":
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.CORE.Login.DeserializeFromXml(
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = LoginTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.LoginName = serializedObject.LoginName;
+		            existingObject.PasswordHash = serializedObject.PasswordHash;
+		            existingObject.PasswordSalt = serializedObject.PasswordSalt;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new LoginAccount
+                            {
+                                LoginID = existingObject.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            LoginAccountTable.InsertOnSubmit(relationObject);
+							existingObject.Account = relationObject;
+                    }
+
+		            break;
+		        } 
+		        case "Email":
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.CORE.Email.DeserializeFromXml(
+		                     ContentStorage.GetContentAsString(currentFullStoragePath));
+		            var existingObject = EmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new EmailAccount
+                            {
+                                EmailID = existingObject.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            EmailAccountTable.InsertOnSubmit(relationObject);
+							existingObject.Account = relationObject;
+                    }
+
+		            break;
+		        } 
 		        case "Account":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -177,14 +229,40 @@ namespace SQLite.TheBall.CORE {
 		                     ContentStorage.GetContentAsString(currentFullStoragePath));
 		            var existingObject = AccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-                    existingObject.Emails.Clear();
-					if(serializedObject.Emails != null)
-	                    serializedObject.Emails.ForEach(item => existingObject.Emails.Add(item));
-					
-                    existingObject.Logins.Clear();
-					if(serializedObject.Logins != null)
-	                    serializedObject.Logins.ForEach(item => existingObject.Logins.Add(item));
-					
+                    if (serializedObject.Emails != null)
+                    {
+						existingObject.Emails.Clear();
+                        serializedObject.Emails.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountEmails
+                                {
+                                    AccountID = existingObject.ID,
+                                    EmailID = item
+                                };
+                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                existingObject.Emails.Add(relationObject);
+
+                            });
+                    }
+
+                    if (serializedObject.Logins != null)
+                    {
+						existingObject.Logins.Clear();
+                        serializedObject.Logins.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountLogins
+                                {
+                                    AccountID = existingObject.ID,
+                                    LoginID = item
+                                };
+                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                existingObject.Logins.Add(relationObject);
+
+                            });
+                    }
+
                     if (serializedObject.GroupMemberships != null)
                     {
 						existingObject.GroupMemberships.Clear();
@@ -792,6 +870,52 @@ namespace SQLite.TheBall.CORE {
 
 				switch(updateData.ObjectType)
 				{
+		        case "Login":
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.CORE.Login.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = LoginTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.LoginName = serializedObject.LoginName;
+		            existingObject.PasswordHash = serializedObject.PasswordHash;
+		            existingObject.PasswordSalt = serializedObject.PasswordSalt;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new LoginAccount
+                            {
+                                LoginID = existingObject.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            LoginAccountTable.InsertOnSubmit(relationObject);
+							existingObject.Account = relationObject;
+                    }
+
+		            break;
+		        } 
+		        case "Email":
+		        {
+		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
+		            var serializedObject = 
+		                global::SER.TheBall.CORE.Email.DeserializeFromXml(
+		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+		            var existingObject = EmailTable.Single(item => item.ID == updateData.ObjectID);
+					existingObject.ETag = updateData.ETag;
+		            existingObject.EmailAddress = serializedObject.EmailAddress;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new EmailAccount
+                            {
+                                EmailID = existingObject.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            EmailAccountTable.InsertOnSubmit(relationObject);
+							existingObject.Account = relationObject;
+                    }
+
+		            break;
+		        } 
 		        case "Account":
 		        {
 		            string currentFullStoragePath = Path.Combine(storageRootPath, updateData.CurrentStoragePath);
@@ -800,14 +924,40 @@ namespace SQLite.TheBall.CORE {
 		                    await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
 		            var existingObject = AccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
-                    existingObject.Emails.Clear();
-					if(serializedObject.Emails != null)
-	                    serializedObject.Emails.ForEach(item => existingObject.Emails.Add(item));
-					
-                    existingObject.Logins.Clear();
-					if(serializedObject.Logins != null)
-	                    serializedObject.Logins.ForEach(item => existingObject.Logins.Add(item));
-					
+                    if (serializedObject.Emails != null)
+                    {
+						existingObject.Emails.Clear();
+                        serializedObject.Emails.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountEmails
+                                {
+                                    AccountID = existingObject.ID,
+                                    EmailID = item
+                                };
+                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                existingObject.Emails.Add(relationObject);
+
+                            });
+                    }
+
+                    if (serializedObject.Logins != null)
+                    {
+						existingObject.Logins.Clear();
+                        serializedObject.Logins.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountLogins
+                                {
+                                    AccountID = existingObject.ID,
+                                    LoginID = item
+                                };
+                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                existingObject.Logins.Add(relationObject);
+
+                            });
+                    }
+
                     if (serializedObject.GroupMemberships != null)
                     {
 						existingObject.GroupMemberships.Clear();
@@ -1415,6 +1565,52 @@ namespace SQLite.TheBall.CORE {
 
 				switch(insertData.ObjectType)
 				{
+                case "Login":
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Login.DeserializeFromXml(
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Login {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.LoginName = serializedObject.LoginName;
+		            objectToAdd.PasswordHash = serializedObject.PasswordHash;
+		            objectToAdd.PasswordSalt = serializedObject.PasswordSalt;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new LoginAccount
+                            {
+                                LoginID = objectToAdd.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Account = relationObject;
+                    }
+
+					LoginTable.InsertOnSubmit(objectToAdd);
+                    break;
+                }
+                case "Email":
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Email.DeserializeFromXml(
+                             ContentStorage.GetContentAsString(currentFullStoragePath));
+                    var objectToAdd = new Email {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new EmailAccount
+                            {
+                                EmailID = objectToAdd.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Account = relationObject;
+                    }
+
+					EmailTable.InsertOnSubmit(objectToAdd);
+                    break;
+                }
                 case "Account":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -1422,10 +1618,38 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.Account.DeserializeFromXml(
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new Account {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Emails != null)
-						serializedObject.Emails.ForEach(item => objectToAdd.Emails.Add(item));
-					if(serializedObject.Logins != null)
-						serializedObject.Logins.ForEach(item => objectToAdd.Logins.Add(item));
+                    if (serializedObject.Emails != null)
+                    {
+                        serializedObject.Emails.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountEmails
+                                {
+                                    AccountID = objectToAdd.ID,
+                                    EmailID = item
+                                };
+                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.Emails.Add(relationObject);
+
+                            });
+                    }
+
+                    if (serializedObject.Logins != null)
+                    {
+                        serializedObject.Logins.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountLogins
+                                {
+                                    AccountID = objectToAdd.ID,
+                                    LoginID = item
+                                };
+                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.Logins.Add(relationObject);
+
+                            });
+                    }
+
                     if (serializedObject.GroupMemberships != null)
                     {
                         serializedObject.GroupMemberships.ForEach(
@@ -2023,6 +2247,52 @@ namespace SQLite.TheBall.CORE {
 
 				switch(insertData.ObjectType)
 				{
+                case "Login":
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Login.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Login {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.LoginName = serializedObject.LoginName;
+		            objectToAdd.PasswordHash = serializedObject.PasswordHash;
+		            objectToAdd.PasswordSalt = serializedObject.PasswordSalt;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new LoginAccount
+                            {
+                                LoginID = objectToAdd.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            LoginAccountTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Account = relationObject;
+                    }
+
+					LoginTable.InsertOnSubmit(objectToAdd);
+                    break;
+                }
+                case "Email":
+                {
+                    string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
+                    var serializedObject =
+                        global::SER.TheBall.CORE.Email.DeserializeFromXml(
+                            await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
+                    var objectToAdd = new Email {ID = insertData.ObjectID, ETag = insertData.ETag};
+		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
+                    if (serializedObject.Account != null)
+                    {
+                            var relationObject = new EmailAccount
+                            {
+                                EmailID = objectToAdd.ID,
+                                AccountID = serializedObject.Account
+                            };
+                            EmailAccountTable.InsertOnSubmit(relationObject);
+                            objectToAdd.Account = relationObject;
+                    }
+
+					EmailTable.InsertOnSubmit(objectToAdd);
+                    break;
+                }
                 case "Account":
                 {
                     string currentFullStoragePath = Path.Combine(storageRootPath, insertData.CurrentStoragePath);
@@ -2030,10 +2300,38 @@ namespace SQLite.TheBall.CORE {
                         global::SER.TheBall.CORE.Account.DeserializeFromXml(
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new Account {ID = insertData.ObjectID, ETag = insertData.ETag};
-					if(serializedObject.Emails != null)
-						serializedObject.Emails.ForEach(item => objectToAdd.Emails.Add(item));
-					if(serializedObject.Logins != null)
-						serializedObject.Logins.ForEach(item => objectToAdd.Logins.Add(item));
+                    if (serializedObject.Emails != null)
+                    {
+                        serializedObject.Emails.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountEmails
+                                {
+                                    AccountID = objectToAdd.ID,
+                                    EmailID = item
+                                };
+                                AccountEmailsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.Emails.Add(relationObject);
+
+                            });
+                    }
+
+                    if (serializedObject.Logins != null)
+                    {
+                        serializedObject.Logins.ForEach(
+                            item =>
+                            {
+                                var relationObject = new AccountLogins
+                                {
+                                    AccountID = objectToAdd.ID,
+                                    LoginID = item
+                                };
+                                AccountLoginsTable.InsertOnSubmit(relationObject);
+                                objectToAdd.Logins.Add(relationObject);
+
+                            });
+                    }
+
                     if (serializedObject.GroupMemberships != null)
                     {
                         serializedObject.GroupMemberships.ForEach(
@@ -2631,6 +2929,24 @@ namespace SQLite.TheBall.CORE {
 
 				switch(deleteData.ObjectType)
 				{
+					case "Login":
+					{
+						//var objectToDelete = new Login {ID = deleteData.ObjectID};
+						//LoginTable.Attach(objectToDelete);
+						var objectToDelete = LoginTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Email":
+					{
+						//var objectToDelete = new Email {ID = deleteData.ObjectID};
+						//EmailTable.Attach(objectToDelete);
+						var objectToDelete = EmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
 					case "Account":
 					{
 						//var objectToDelete = new Account {ID = deleteData.ObjectID};
@@ -3094,6 +3410,24 @@ namespace SQLite.TheBall.CORE {
 
 				switch(deleteData.ObjectType)
 				{
+					case "Login":
+					{
+						//var objectToDelete = new Login {ID = deleteData.ObjectID};
+						//LoginTable.Attach(objectToDelete);
+						var objectToDelete = LoginTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							LoginTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
+					case "Email":
+					{
+						//var objectToDelete = new Email {ID = deleteData.ObjectID};
+						//EmailTable.Attach(objectToDelete);
+						var objectToDelete = EmailTable.SingleOrDefault(item => item.ID == deleteData.ObjectID);
+						if(objectToDelete != null)
+							EmailTable.DeleteOnSubmit(objectToDelete);
+						break;
+					}
 					case "Account":
 					{
 						//var objectToDelete = new Account {ID = deleteData.ObjectID};
@@ -3549,11 +3883,45 @@ namespace SQLite.TheBall.CORE {
 
 
 
+			public Table<Login> LoginTable {
+				get {
+					return this.GetTable<Login>();
+				}
+			}
+			public Table<LoginAccount> LoginAccountTable {
+				get {
+					return this.GetTable<LoginAccount>();
+				}
+			}
+
+			public Table<Email> EmailTable {
+				get {
+					return this.GetTable<Email>();
+				}
+			}
+			public Table<EmailAccount> EmailAccountTable {
+				get {
+					return this.GetTable<EmailAccount>();
+				}
+			}
+
 			public Table<Account> AccountTable {
 				get {
 					return this.GetTable<Account>();
 				}
 			}
+			public Table<AccountEmails> AccountEmailsTable {
+				get {
+					return this.GetTable<AccountEmails>();
+				}
+			}
+
+			public Table<AccountLogins> AccountLoginsTable {
+				get {
+					return this.GetTable<AccountLogins>();
+				}
+			}
+
 			public Table<AccountGroupMemberships> AccountGroupMembershipsTable {
 				get {
 					return this.GetTable<AccountGroupMemberships>();
@@ -3825,6 +4193,132 @@ namespace SQLite.TheBall.CORE {
 			}
         }
 
+    [Table(Name = "Login")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("Login: {ID}")]
+	public class Login : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Login() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Login](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[LoginName] TEXT NOT NULL, 
+[PasswordHash] TEXT NOT NULL, 
+[PasswordSalt] TEXT NOT NULL
+)";
+        }
+
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string LoginName { get; set; }
+		// private string _unmodified_LoginName;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string PasswordHash { get; set; }
+		// private string _unmodified_PasswordHash;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string PasswordSalt { get; set; }
+		// private string _unmodified_PasswordSalt;
+		private EntityRef<LoginAccount> _Account = new EntityRef<LoginAccount>();
+        [Association(ThisKey = "ID", OtherKey = "LoginID", Storage="_Account")]
+        public LoginAccount Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+			if(LoginName == null)
+				LoginName = string.Empty;
+			if(PasswordHash == null)
+				PasswordHash = string.Empty;
+			if(PasswordSalt == null)
+				PasswordSalt = string.Empty;
+		}
+	}
+    [Table(Name = "Email")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("Email: {ID}")]
+	public class Email : ITheBallDataContextStorable
+	{
+
+		[Column(IsPrimaryKey = true)]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ID { get; set; }
+
+		[Column]
+        [ScaffoldColumn(true)]
+        [Editable(false)]
+		public string ETag { get; set; }
+
+
+		public Email() 
+		{
+			ID = Guid.NewGuid().ToString();
+			ETag = String.Empty;
+		}
+
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [Email](
+[ID] TEXT NOT NULL PRIMARY KEY, 
+[ETag] TEXT NOT NULL
+, 
+[EmailAddress] TEXT NOT NULL
+)";
+        }
+
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string EmailAddress { get; set; }
+		// private string _unmodified_EmailAddress;
+		private EntityRef<EmailAccount> _Account = new EntityRef<EmailAccount>();
+        [Association(ThisKey = "ID", OtherKey = "EmailID", Storage="_Account")]
+        public EmailAccount Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+        public void PrepareForStoring(bool isInitialInsert)
+        {
+		
+			if(EmailAddress == null)
+				EmailAddress = string.Empty;
+		}
+	}
     [Table(Name = "Account")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("Account: {ID}")]
@@ -3855,101 +4349,23 @@ namespace SQLite.TheBall.CORE {
 CREATE TABLE IF NOT EXISTS [Account](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-, 
-[Emails] TEXT NOT NULL, 
-[Logins] TEXT NOT NULL
+
 )";
         }
 
-        [Column(Name = "Emails")] 
-        [ScaffoldColumn(true)]
-		public string EmailsData { get; set; }
+		private EntitySet<AccountEmails> _Emails = new EntitySet<AccountEmails>();
+        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Emails")]
+        public EntitySet<AccountEmails> Emails { 
+			get { return _Emails; }
+			set { _Emails.Assign(value); }
+		}
 
-        private bool _IsEmailsRetrieved = false;
-        private bool _IsEmailsChanged = false;
-        private ObservableCollection<string> _Emails = null;
-        public ObservableCollection<string> Emails
-        {
-            get
-            {
-                if (!_IsEmailsRetrieved)
-                {
-                    if (EmailsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<string[]>(EmailsData);
-                        _Emails = new ObservableCollection<string>(arrayData);
-                    }
-                    else
-                    {
-                        _Emails = new ObservableCollection<string>();
-						EmailsData = Guid.NewGuid().ToString();
-						_IsEmailsChanged = true;
-                    }
-                    _IsEmailsRetrieved = true;
-                    _Emails.CollectionChanged += (sender, args) =>
-						{
-							EmailsData = Guid.NewGuid().ToString();
-							_IsEmailsChanged = true;
-						};
-                }
-                return _Emails;
-            }
-            set 
-			{ 
-				_Emails = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsEmailsRetrieved = true;
-                EmailsData = Guid.NewGuid().ToString();
-                _IsEmailsChanged = true;
-
-			}
-        }
-
-        [Column(Name = "Logins")] 
-        [ScaffoldColumn(true)]
-		public string LoginsData { get; set; }
-
-        private bool _IsLoginsRetrieved = false;
-        private bool _IsLoginsChanged = false;
-        private ObservableCollection<string> _Logins = null;
-        public ObservableCollection<string> Logins
-        {
-            get
-            {
-                if (!_IsLoginsRetrieved)
-                {
-                    if (LoginsData != null)
-                    {
-                        var arrayData = JsonConvert.DeserializeObject<string[]>(LoginsData);
-                        _Logins = new ObservableCollection<string>(arrayData);
-                    }
-                    else
-                    {
-                        _Logins = new ObservableCollection<string>();
-						LoginsData = Guid.NewGuid().ToString();
-						_IsLoginsChanged = true;
-                    }
-                    _IsLoginsRetrieved = true;
-                    _Logins.CollectionChanged += (sender, args) =>
-						{
-							LoginsData = Guid.NewGuid().ToString();
-							_IsLoginsChanged = true;
-						};
-                }
-                return _Logins;
-            }
-            set 
-			{ 
-				_Logins = value; 
-                // Reset the data field to unique value
-                // to trigger change on object, just in case nothing else changed
-                _IsLoginsRetrieved = true;
-                LoginsData = Guid.NewGuid().ToString();
-                _IsLoginsChanged = true;
-
-			}
-        }
+		private EntitySet<AccountLogins> _Logins = new EntitySet<AccountLogins>();
+        [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_Logins")]
+        public EntitySet<AccountLogins> Logins { 
+			get { return _Logins; }
+			set { _Logins.Assign(value); }
+		}
 
 		private EntitySet<AccountGroupMemberships> _GroupMemberships = new EntitySet<AccountGroupMemberships>();
         [Association(ThisKey = "ID", OtherKey = "AccountID", Storage="_GroupMemberships")]
@@ -3961,18 +4377,6 @@ CREATE TABLE IF NOT EXISTS [Account](
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
-            if (_IsEmailsChanged || isInitialInsert)
-            {
-                var dataToStore = Emails.ToArray();
-                EmailsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
-            if (_IsLoginsChanged || isInitialInsert)
-            {
-                var dataToStore = Logins.ToArray();
-                LoginsData = JsonConvert.SerializeObject(dataToStore);
-            }
-
 		}
 	}
     [Table(Name = "Group")]
@@ -7254,6 +7658,178 @@ CREATE TABLE IF NOT EXISTS [HTTPActivityDetailsCollection](
         [Editable(false)]
 		public string CollectionItemID { get; set; }
 	}
+    [Table(Name = "LoginAccount")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("LoginAccount: {LoginID} - {AccountID}")]
+	public class LoginAccount // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [LoginAccount](
+[LoginID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL,
+PRIMARY KEY (LoginID, AccountID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string LoginID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+
+
+        private EntityRef<Login> _Login = new EntityRef<Login>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
+			Storage = "_Login", IsUnique = true)]
+        public Login Login 
+		{ 
+			get { return _Login.Entity; }
+			set { _Login.Entity = value; }
+		}
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account")]
+		public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "EmailAccount")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("EmailAccount: {EmailID} - {AccountID}")]
+	public class EmailAccount // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [EmailAccount](
+[EmailID] TEXT NOT NULL, 
+[AccountID] TEXT NOT NULL,
+PRIMARY KEY (EmailID, AccountID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string EmailID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+
+
+        private EntityRef<Email> _Email = new EntityRef<Email>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
+			Storage = "_Email", IsUnique = true)]
+        public Email Email 
+		{ 
+			get { return _Email.Entity; }
+			set { _Email.Entity = value; }
+		}
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account")]
+		public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "AccountEmails")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountEmails: {AccountID} - {EmailID}")]
+	public class AccountEmails // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountEmails](
+[AccountID] TEXT NOT NULL, 
+[EmailID] TEXT NOT NULL,
+PRIMARY KEY (AccountID, EmailID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string EmailID { get; set; }
+
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account", IsUnique = false)]
+        public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+        private EntityRef<Email> _Email = new EntityRef<Email>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "EmailID", OtherKey = "ID", 
+			Storage = "_Email")]
+		public Email Email 
+		{ 
+			get { return _Email.Entity; }
+			set { _Email.Entity = value; }
+		}
+
+    }
+
+    [Table(Name = "AccountLogins")]
+	[ScaffoldTable(true)]
+	[DebuggerDisplay("AccountLogins: {AccountID} - {LoginID}")]
+	public class AccountLogins // : ITheBallDataContextStorable
+	{
+        public static string GetCreateTableSQL()
+        {
+            return
+                @"
+CREATE TABLE IF NOT EXISTS [AccountLogins](
+[AccountID] TEXT NOT NULL, 
+[LoginID] TEXT NOT NULL,
+PRIMARY KEY (AccountID, LoginID)
+)";
+        }
+
+
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string AccountID { get; set; }
+        [Column(IsPrimaryKey = true, CanBeNull = false)]
+        public string LoginID { get; set; }
+
+
+        private EntityRef<Account> _Account = new EntityRef<Account>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "AccountID", OtherKey = "ID", 
+			Storage = "_Account", IsUnique = false)]
+        public Account Account 
+		{ 
+			get { return _Account.Entity; }
+			set { _Account.Entity = value; }
+		}
+
+        private EntityRef<Login> _Login = new EntityRef<Login>();
+        [Association(DeleteOnNull = true, IsForeignKey = true, ThisKey = "LoginID", OtherKey = "ID", 
+			Storage = "_Login")]
+		public Login Login 
+		{ 
+			get { return _Login.Entity; }
+			set { _Login.Entity = value; }
+		}
+
+    }
+
     [Table(Name = "AccountGroupMemberships")]
 	[ScaffoldTable(true)]
 	[DebuggerDisplay("AccountGroupMemberships: {AccountID} - {GroupMembershipID}")]

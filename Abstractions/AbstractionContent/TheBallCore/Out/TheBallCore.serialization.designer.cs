@@ -49,6 +49,178 @@ namespace INT {
 
  }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
 			[Serializable]
+			public partial class Login 
+			{
+
+				public Login()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Login";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Login));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Login DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Login));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Login) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+
+				private void CopyContentFrom(Login sourceObject)
+				{
+					LoginName = sourceObject.LoginName;
+					PasswordHash = sourceObject.PasswordHash;
+					PasswordSalt = sourceObject.PasswordSalt;
+					Account = sourceObject.Account;
+				}
+				
+
+
+
+			[DataMember] [ProtoMember(1)]
+			public string LoginName { get; set; }
+			private string _unmodified_LoginName;
+			[DataMember] [ProtoMember(2)]
+			public string PasswordHash { get; set; }
+			private string _unmodified_PasswordHash;
+			[DataMember] [ProtoMember(3)]
+			public string PasswordSalt { get; set; }
+			private string _unmodified_PasswordSalt;
+			[DataMember] [ProtoMember(4)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+			[Serializable]
+			public partial class Email 
+			{
+
+				public Email()
+				{
+					this.ID = Guid.NewGuid().ToString();
+				    this.SemanticDomainName = "TheBall.CORE";
+				    this.Name = "Email";
+				}
+
+
+				public string SerializeToXml(bool noFormatting = false)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Email));
+					using (var output = new StringWriter())
+					{
+						using (var writer = new XmlTextWriter(output))
+						{
+                            if(noFormatting == false)
+						        writer.Formatting = Formatting.Indented;
+							serializer.WriteObject(writer, this);
+						}
+						return output.GetStringBuilder().ToString();
+					}
+				}
+
+				public static Email DeserializeFromXml(string xmlString)
+				{
+					DataContractSerializer serializer = new DataContractSerializer(typeof(Email));
+					using(StringReader reader = new StringReader(xmlString))
+					{
+						using (var xmlReader = new XmlTextReader(reader))
+							return (Email) serializer.ReadObject(xmlReader);
+					}
+            
+				}
+
+				[DataMember] [ProtoMember(2000)]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+                [DataMember]
+                public Guid OwnerID { get; set; }
+
+                [DataMember]
+                public string RelativeLocation { get; set; }
+
+                [DataMember] [ProtoMember(2001)]
+                public string Name { get; set; }
+
+                [DataMember] [ProtoMember(2002)]
+                public string SemanticDomainName { get; set; }
+
+				[DataMember]
+				public string MasterETag { get; set; }
+
+				[DataMember]
+				public string GeneratedByProcessID { get; set; }
+
+
+
+				private void CopyContentFrom(Email sourceObject)
+				{
+					EmailAddress = sourceObject.EmailAddress;
+					Account = sourceObject.Account;
+				}
+				
+
+
+
+			[DataMember] [ProtoMember(1)]
+			public string EmailAddress { get; set; }
+			private string _unmodified_EmailAddress;
+			[DataMember] [ProtoMember(2)]
+			public string Account { get; set; }
+			private string _unmodified_Account;
+			
+			}
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]
+			[Serializable]
 			public partial class Account 
 			{
 

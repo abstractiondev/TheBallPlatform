@@ -1,4 +1,5 @@
 using System.Web;
+using OIP = AaltoGlobalImpact.OIP;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -8,12 +9,12 @@ namespace TheBall.CORE
     {
         public static string ExecuteMethod_ExecuteCreateGroup(string groupName, string accountId)
         {
-            CreateGroupParameters parameters = new CreateGroupParameters()
+            var parameters = new OIP.CreateGroupParameters()
                 {
                     AccountID = accountId,
                     GroupName = groupName
                 };
-            var result = CreateGroup.Execute(parameters);
+            var result = OIP.CreateGroup.Execute(parameters);
             return result.GroupID;
         }
 

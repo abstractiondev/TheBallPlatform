@@ -1,6 +1,263 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.CORE">
+    <Operation name="CreateAccount">
+      <OperationSpec>
+        <Description>Create account with given login and email</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountID" dataType="string" designDesc="AccountID (optional) to be created" state="implemented" />
+        <Parameter name="LoginUrl" dataType="string" designDesc="Login url to be used to create the account" state="implemented" />
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address to be used to create the account" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Login" asyncSupportMode="AsyncOnly" dataType="Login" designDesc="Login object - retrieve or create" state="implemented">
+            <Parameter name="LoginUrl" />
+          </TargetDefinition>
+          <TargetDefinition name="Email" asyncSupportMode="AsyncOnly" dataType="Email" designDesc="Email object - retrieve or create" state="implemented">
+            <Parameter name="EmailAddress" />
+          </TargetDefinition>
+          <TargetDefinition name="AccountToBeCreated" dataType="Account" designDesc="Account object to be created" state="implemented">
+            <Parameter name="AccountID" />
+            <Target name="Login" />
+            <Target name="Email" />
+          </TargetDefinition>
+          <MethodExecute name="SetAccountIDToLogin" designDesc="Set account object ID to login" state="implemented">
+            <Target name="Login" />
+            <Target name="AccountToBeCreated" />
+          </MethodExecute>
+          <MethodExecute name="SetAccountIDToEmail" designDesc="Set account object ID to email" state="implemented">
+            <Target name="Email" />
+            <Target name="AccountToBeCreated" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects, account first then others that relate to it" state="implemented">
+            <Target name="AccountToBeCreated" />
+            <Target name="Login" />
+            <Target name="Email" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="CreatedAccount" dataType="Account" designDesc="Created account object" state="implemented" />
+        <Target name="AccountToBeCreated" />
+      </OperationReturnValues>
+    </Operation>
+    <Operation name="CreateGroup">
+      <OperationSpec>
+        <Description>Create group with optionally given ID</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="GroupID (optional) to be created" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupToBeCreated" dataType="Group" designDesc="Group object to be created" state="implemented">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="GroupToBeCreated" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="SetGroupMembership">
+      <OperationSpec>
+        <Description>Set group membership of an account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="implemented" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
+        <Parameter name="Role" dataType="string" designDesc="Role to set - null if to remove role entirely" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="Group" asyncSupportMode="AsyncOnly" dataType="Group" designDesc="Group object" state="implemented">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupMembership" asyncSupportMode="AsyncOnly" dataType="GroupMembership" designDesc="Get or create group membership for account and group" state="implemented">
+            <Parameter name="AccountID" />
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <MethodExecute name="SetRoleToMembership" designDesc="Set account role to membership" state="implemented">
+            <Parameter name="Role" />
+            <Target name="GroupMembership" />
+          </MethodExecute>
+          <MethodExecute name="SetMembershipToGroup" designDesc="Set membership to group" state="implemented">
+            <Target name="GroupMembership" />
+            <Target name="Group" />
+          </MethodExecute>
+          <MethodExecute name="SetMembershipToAccount" designDesc="Set membership to account" state="implemented">
+            <Target name="GroupMembership" />
+            <Target name="Account" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
+            <Target name="GroupMembership" />
+            <Target name="Group" />
+            <Target name="Account" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="RemoveGroupMembership">
+      <OperationSpec>
+        <Description>Set group membership of an account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="implemented" />
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="Group" asyncSupportMode="AsyncOnly" dataType="Group" designDesc="Group object" state="implemented">
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <TargetDefinition name="GroupMembership" asyncSupportMode="AsyncOnly" dataType="GroupMembership" designDesc="Get or create group membership for account and group" state="implemented">
+            <Parameter name="AccountID" />
+            <Parameter name="GroupID" />
+          </TargetDefinition>
+          <MethodExecute name="RemoveMembershipFromGroup" designDesc="Remove membership from group" state="implemented">
+            <Target name="GroupMembership" />
+            <Target name="Group" />
+          </MethodExecute>
+          <MethodExecute name="RemoveMembershipFromAccount" designDesc="Remove membership from account" state="implemented">
+            <Target name="GroupMembership" />
+            <Target name="Account" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
+            <Target name="Group" />
+            <Target name="Account" />
+          </MethodExecute>
+          <MethodExecute name="DeleteObject" asyncSupportMode="AsyncOnly" designDesc="Delete object" state="implemented">
+            <Target name="GroupMembership" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="AddLoginToAccount">
+      <OperationSpec>
+        <Description />
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
+        <Parameter name="LoginUrl" dataType="string" designDesc="Login Url" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="Login" asyncSupportMode="AsyncOnly" dataType="Login" designDesc="Login object" state="implemented">
+            <Parameter name="LoginUrl" />
+          </TargetDefinition>
+          <MethodExecute name="AddLoginToAccount" designDesc="Add login object to account" state="implemented">
+            <Target name="Account" />
+            <Target name="Login" />
+          </MethodExecute>
+          <MethodExecute name="AddAccountToLogin" designDesc="Add account object to login" state="implemented">
+            <Target name="Login" />
+            <Target name="Account" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
+            <Target name="Account" />
+            <Target name="Login" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="RemoveLogin">
+      <OperationSpec>
+        <Description>Remove login from system and from accounts</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="LoginUrl" dataType="string" designDesc="Login Url" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Login" asyncSupportMode="AsyncOnly" dataType="Login" designDesc="Login object" state="implemented">
+            <Parameter name="LoginUrl" />
+          </TargetDefinition>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Target name="Login" />
+          </TargetDefinition>
+          <MethodExecute name="RemoveLoginFromAccount" designDesc="Remove login from account" state="implemented">
+            <Target name="Account" />
+            <Target name="Login" />
+          </MethodExecute>
+          <MethodExecute name="DeleteObject" asyncSupportMode="AsyncOnly" designDesc="Delete object" state="implemented">
+            <Target name="Login" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="Account" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="AddEmailToAccount">
+      <OperationSpec>
+        <Description>Add email to account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Parameter name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="Email" asyncSupportMode="AsyncOnly" dataType="Email" designDesc="Email object" state="implemented">
+            <Parameter name="EmailAddress" />
+          </TargetDefinition>
+          <MethodExecute name="AddEmailToAccount" designDesc="Add email link to account" state="implemented">
+            <Target name="Account" />
+            <Target name="Email" />
+          </MethodExecute>
+          <MethodExecute name="AddAccountToEmail" designDesc="Add account link to email" state="implemented">
+            <Target name="Email" />
+            <Target name="Account" />
+          </MethodExecute>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
+            <Target name="Account" />
+            <Target name="Email" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
+    <Operation name="RemoveEmail">
+      <OperationSpec>
+        <Description>Remove email object and link from account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Email" asyncSupportMode="AsyncOnly" dataType="Email" designDesc="Email object" state="implemented">
+            <Parameter name="EmailAddress" />
+          </TargetDefinition>
+          <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
+            <Target name="Email" />
+          </TargetDefinition>
+          <MethodExecute name="RemoveEmailFromAccount" designDesc="Remove email link from account" state="implemented">
+            <Target name="Account" />
+            <Target name="Email" />
+          </MethodExecute>
+          <MethodExecute name="DeleteObject" asyncSupportMode="AsyncOnly" designDesc="Delete object" state="implemented">
+            <Target name="Email" />
+          </MethodExecute>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="Account" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ObtainSystemProcessLock">
       <OperationSpec>
         <Description>Obtain system process lock for owner</Description>
