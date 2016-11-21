@@ -547,27 +547,67 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: Login ( LoginUrl )</h2>
-		<p>		<div class="MsoNormal" >
-		Login object - retrieve or create
-		</div>
-		</p><h2>Target Definition: Email ( EmailAddress )</h2>
-		<p>		<div class="MsoNormal" >
-		Email object - retrieve or create
-		</div>
-		</p><h2>Target Definition: AccountToBeCreated ( Login, Email, AccountID )</h2>
+		</p><h2>Target Definition: AccountToBeCreated ( AccountID )</h2>
 		<p>		<div class="MsoNormal" >
 		Account object to be created
 		</div>
-		</p><h2>Method Call: SetAccountIDToLogin ( Login, AccountToBeCreated )</h2>
+		</p><h2>Operation Call: Login ( AccountToBeCreated, LoginUrl )</h2>
 		<p>		<div class="MsoNormal" >
-		Set account object ID to login
+		Call operation to retrieve or create
 		</div>
-		</p><h2>Method Call: SetAccountIDToEmail ( Email, AccountToBeCreated )</h2>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Login
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Operation Call: Email ( AccountToBeCreated, EmailAddress )</h2>
 		<p>		<div class="MsoNormal" >
-		Set account object ID to email
+		Call operation to retrieve or create
 		</div>
-		</p><h2>Method Call: StoreObjects ( AccountToBeCreated, Login, Email )</h2>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ConnectLoginAndAccount ( AccountToBeCreated, LoginOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account object ID to login and vice versa
+		</div>
+		</p><h2>Method Call: ConnectEmailAndAccount ( AccountToBeCreated, EmailOutput )</h2>
+		<p>		<div class="MsoNormal" >
+		Set account object ID to email and vice versa
+		</div>
+		</p><h2>Method Call: StoreObjects ( AccountToBeCreated, LoginOutput, EmailOutput )</h2>
 		<p>		<div class="MsoNormal" >
 		Store objects, account first then others that relate to it
 		</div>

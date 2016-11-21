@@ -78,8 +78,7 @@ using System.Threading.Tasks;
 		return returnValue;
 				}
 				}
-
-		    public class EnsureEmailReturnValue 
+				public class EnsureEmailReturnValue 
 		{
 				public Email EnsuredEmail ;
 				}
@@ -98,12 +97,22 @@ using System.Threading.Tasks;
 				public static async Task<CreateAccountReturnValue> ExecuteAsync(CreateAccountParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Login Login =  await CreateAccountImplementation.GetTarget_LoginAsync(parameters.LoginUrl);	
-				Email Email =  await CreateAccountImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
-				Account AccountToBeCreated = CreateAccountImplementation.GetTarget_AccountToBeCreated(parameters.AccountID, Login, Email);	
-				CreateAccountImplementation.ExecuteMethod_SetAccountIDToLogin(Login, AccountToBeCreated);		
-				CreateAccountImplementation.ExecuteMethod_SetAccountIDToEmail(Email, AccountToBeCreated);		
-				 await CreateAccountImplementation.ExecuteMethod_StoreObjectsAsync(AccountToBeCreated, Login, Email);		
+					Account AccountToBeCreated = CreateAccountImplementation.GetTarget_AccountToBeCreated(parameters.AccountID);	
+				Login LoginOutput;
+		{ // Local block to allow local naming
+			EnsureLoginParameters operationParameters = CreateAccountImplementation.Login_GetParameters(parameters.LoginUrl, AccountToBeCreated);
+			var operationReturnValue =  await EnsureLogin.ExecuteAsync(operationParameters);
+			LoginOutput = CreateAccountImplementation.Login_GetOutput(operationReturnValue, parameters.LoginUrl, AccountToBeCreated);						
+		} // Local block closing
+				Email EmailOutput;
+		{ // Local block to allow local naming
+			EnsureEmailParameters operationParameters = CreateAccountImplementation.Email_GetParameters(parameters.EmailAddress, AccountToBeCreated);
+			var operationReturnValue =  await EnsureEmail.ExecuteAsync(operationParameters);
+			EmailOutput = CreateAccountImplementation.Email_GetOutput(operationReturnValue, parameters.EmailAddress, AccountToBeCreated);						
+		} // Local block closing
+				CreateAccountImplementation.ExecuteMethod_ConnectLoginAndAccount(AccountToBeCreated, LoginOutput);		
+				CreateAccountImplementation.ExecuteMethod_ConnectEmailAndAccount(AccountToBeCreated, EmailOutput);		
+				 await CreateAccountImplementation.ExecuteMethod_StoreObjectsAsync(AccountToBeCreated, LoginOutput, EmailOutput);		
 				CreateAccountReturnValue returnValue = CreateAccountImplementation.Get_ReturnValue(AccountToBeCreated);
 		return returnValue;
 				}

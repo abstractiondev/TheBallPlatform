@@ -366,42 +366,86 @@
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: Login ( LoginUrl )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Login object - retrieve or create</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: Email ( EmailAddress )" level="2">
-              <Paragraph>
-                <Text>
-                  <TextContent>Email object - retrieve or create</TextContent>
-                </Text>
-              </Paragraph>
-            </Header>
-            <Header text="Target Definition: AccountToBeCreated ( Login, Email, AccountID )" level="2">
+            <Header text="Target Definition: AccountToBeCreated ( AccountID )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Account object to be created</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SetAccountIDToLogin ( Login, AccountToBeCreated )" level="2">
+            <Header text="Operation Call: Login ( AccountToBeCreated, LoginUrl )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Set account object ID to login</TextContent>
+                  <TextContent>Call operation to retrieve or create</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Login</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: Email ( AccountToBeCreated, EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call operation to retrieve or create</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ConnectLoginAndAccount ( AccountToBeCreated, LoginOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set account object ID to login and vice versa</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SetAccountIDToEmail ( Email, AccountToBeCreated )" level="2">
+            <Header text="Method Call: ConnectEmailAndAccount ( AccountToBeCreated, EmailOutput )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Set account object ID to email</TextContent>
+                  <TextContent>Set account object ID to email and vice versa</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: StoreObjects ( AccountToBeCreated, Login, Email )" level="2">
+            <Header text="Method Call: StoreObjects ( AccountToBeCreated, LoginOutput, EmailOutput )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Store objects, account first then others that relate to it</TextContent>

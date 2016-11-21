@@ -61,19 +61,19 @@
     <StatusItem name="CreateAccount_EmailAddress" displayName="VariableType: EmailAddress" description="Email address to be used to create the account">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateAccount_Login" displayName="TargetDefinitionType: Login" description="Login object - retrieve or create">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
-    <StatusItem name="CreateAccount_Email" displayName="TargetDefinitionType: Email" description="Email object - retrieve or create">
-      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
-    </StatusItem>
     <StatusItem name="CreateAccount_AccountToBeCreated" displayName="TargetDefinitionType: AccountToBeCreated" description="Account object to be created">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateAccount_SetAccountIDToLogin" displayName="MethodExecuteType: SetAccountIDToLogin" description="Set account object ID to login">
+    <StatusItem name="CreateAccount_Login" displayName="OperationExecuteType: Login" description="Call operation to retrieve or create">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
-    <StatusItem name="CreateAccount_SetAccountIDToEmail" displayName="MethodExecuteType: SetAccountIDToEmail" description="Set account object ID to email">
+    <StatusItem name="CreateAccount_Email" displayName="OperationExecuteType: Email" description="Call operation to retrieve or create">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_ConnectLoginAndAccount" displayName="MethodExecuteType: ConnectLoginAndAccount" description="Set account object ID to login and vice versa">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_ConnectEmailAndAccount" displayName="MethodExecuteType: ConnectEmailAndAccount" description="Set account object ID to email and vice versa">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateAccount_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects, account first then others that relate to it">
@@ -1401,13 +1401,15 @@
       <ItemRef itemName="CreateAccount_AccountID" />
       <ItemRef itemName="CreateAccount_LoginUrl" />
       <ItemRef itemName="CreateAccount_EmailAddress" />
+      <ItemRef itemName="CreateAccount_AccountToBeCreated" />
       <ItemRef itemName="CreateAccount_Login" />
       <ItemRef itemName="CreateAccount_Email" />
-      <ItemRef itemName="CreateAccount_AccountToBeCreated" />
-      <ItemRef itemName="CreateAccount_SetAccountIDToLogin" />
-      <ItemRef itemName="CreateAccount_SetAccountIDToEmail" />
+      <ItemRef itemName="CreateAccount_ConnectLoginAndAccount" />
+      <ItemRef itemName="CreateAccount_ConnectEmailAndAccount" />
       <ItemRef itemName="CreateAccount_StoreObjects" />
       <ItemRef itemName="CreateAccount_CreatedAccount" />
+      <GroupRef groupName="EnsureLogin" />
+      <GroupRef groupName="EnsureEmail" />
     </Group>
     <Group name="CreateGroup">
       <ItemRef itemName="CreateGroup_GroupID" />

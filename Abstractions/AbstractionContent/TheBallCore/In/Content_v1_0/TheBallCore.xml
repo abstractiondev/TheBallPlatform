@@ -486,29 +486,31 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="Login" dataType="Login" designDesc="Login object - retrieve or create" asyncSupportMode="AsyncOnly" state="implemented">
-              <Parameter name="LoginUrl"/>
-            </TargetDefinition>
-            <TargetDefinition name="Email" dataType="Email" designDesc="Email object - retrieve or create" asyncSupportMode="AsyncOnly" state="implemented">
-              <Parameter name="EmailAddress"/>
-            </TargetDefinition>
             <TargetDefinition name="AccountToBeCreated" dataType="Account" designDesc="Account object to be created" state="implemented">
               <Parameter name="AccountID"/>
-              <Target name="Login"/>
-              <Target name="Email"/>
             </TargetDefinition>
-            <MethodExecute name="SetAccountIDToLogin" designDesc="Set account object ID to login" state="implemented">
-              <Target name="Login"/>
+            <OperationExecute name="Login" targetOperationName="EnsureLogin" asyncSupportMode="AsyncOnly" designDesc="Call operation to retrieve or create" state="implemented">
+              <Parameter name="LoginUrl"/>
               <Target name="AccountToBeCreated"/>
+              <ReturnValue dataType="Login" name="Login" designDesc="Login" state="implemented"/>
+            </OperationExecute>
+            <OperationExecute name="Email" targetOperationName="EnsureEmail" asyncSupportMode="AsyncOnly" designDesc="Call operation to retrieve or create" state="implemented">
+              <Parameter name="EmailAddress"/>
+              <Target name="AccountToBeCreated"/>
+              <ReturnValue dataType="Email" name="Email" designDesc="Email" state="implemented"/>
+            </OperationExecute>
+            <MethodExecute name="ConnectLoginAndAccount" designDesc="Set account object ID to login and vice versa" state="implemented">
+              <Target name="AccountToBeCreated"/>
+              <Target name="LoginOutput"/>
             </MethodExecute>
-            <MethodExecute name="SetAccountIDToEmail" designDesc="Set account object ID to email" state="implemented">
-              <Target name="Email"/>
+            <MethodExecute name="ConnectEmailAndAccount" designDesc="Set account object ID to email and vice versa" state="implemented">
               <Target name="AccountToBeCreated"/>
+              <Target name="EmailOutput"/>
             </MethodExecute>
             <MethodExecute name="StoreObjects" designDesc="Store objects, account first then others that relate to it" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="AccountToBeCreated"/>
-              <Target name="Login"/>
-              <Target name="Email"/>
+              <Target name="LoginOutput"/>
+              <Target name="EmailOutput"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
