@@ -2218,6 +2218,170 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="EnsureEmail (EmailAddress, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ensure email with given email address, if given accountID, ensure that its matching or none</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address to fetch or create</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>(Optional) Account ID to require if the object is already existing and has any</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Email ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email, created or fetched. Store object if it was created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateExistingAccountIDToMatch ( Email, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that existing account ID matches the given</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : EnsureEmailReturnValue ( Email )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EnsuredEmail</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Ensured email object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="EnsureLogin (LoginURL, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ensure login with given URL, if given accountID, ensure that its matching or none</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LoginURL</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login URL to fetch or create</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>(Optional) Account ID to require if the object is already existing and has any</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Login ( LoginURL )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Login, created or fetched. Store object if it was created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateExistingAccountIDToMatch ( Login, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that existing account ID matches the given</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : EnsureLoginReturnValue ( Login )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EnsuredLogin</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Ensured login object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="ExecuteProcess (ProcessID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -2532,6 +2696,98 @@
                       </ColumnData>
                       <ColumnData>
                         <TextContent>Owner domains</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="ImportAccountFromOIPLegacy (LegacyLogin)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Imports account from OIP Legacy data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LegacyLogin</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>AaltoGlobalImpact.OIP.TBRLoginRoot</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Legacy login object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LegacyAccountRoot ( LegacyLogin )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Legacy account root</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: LegacyAccount ( LegacyAccountRoot )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Legacy account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( LegacyAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account to be created; retrieved or created</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddMissingLogins ( Account, LegacyAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add missing logins to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: AddMissingEmails ( Account, LegacyAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Add missing emails to account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : ImportAccountFromOIPLegacyReturnValue ( Account )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ImportedAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Imported account</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>

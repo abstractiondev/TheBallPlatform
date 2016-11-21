@@ -2259,6 +2259,150 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Write full response to stream
 		</div>
+		</p><h1>EnsureEmail (EmailAddress, AccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Ensure email with given email address, if given accountID, ensure that its matching or none
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailAddress
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email address to fetch or create
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		(Optional) Account ID to require if the object is already existing and has any
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Email ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Email, created or fetched. Store object if it was created
+		</div>
+		</p><h2>Method Call: ValidateExistingAccountIDToMatch ( Email, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that existing account ID matches the given
+		</div>
+		</p><h2>Return Value : EnsureEmailReturnValue ( Email )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EnsuredEmail
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Ensured email object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>EnsureLogin (LoginURL, AccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Ensure login with given URL, if given accountID, ensure that its matching or none
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LoginURL
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login URL to fetch or create
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		(Optional) Account ID to require if the object is already existing and has any
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Login ( LoginURL )</h2>
+		<p>		<div class="MsoNormal" >
+		Login, created or fetched. Store object if it was created
+		</div>
+		</p><h2>Method Call: ValidateExistingAccountIDToMatch ( Login, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that existing account ID matches the given
+		</div>
+		</p><h2>Return Value : EnsureLoginReturnValue ( Login )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EnsuredLogin
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Login
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Ensured login object
+		</div>
+				</td>
+				</tr>
+		</table>
 		</p><h1>ExecuteProcess (ProcessID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -2522,6 +2666,73 @@ div.WordSection1
 				<td>
 				<div class="MsoNormal" >
 		Owner domains
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h1>ImportAccountFromOIPLegacy (LegacyLogin)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Imports account from OIP Legacy data
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		LegacyLogin
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		AaltoGlobalImpact.OIP.TBRLoginRoot
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Legacy login object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: LegacyAccountRoot ( LegacyLogin )</h2>
+		<p>		<div class="MsoNormal" >
+		Legacy account root
+		</div>
+		</p><h2>Target Definition: LegacyAccount ( LegacyAccountRoot )</h2>
+		<p>		<div class="MsoNormal" >
+		Legacy account
+		</div>
+		</p><h2>Target Definition: Account ( LegacyAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Account to be created; retrieved or created
+		</div>
+		</p><h2>Method Call: AddMissingLogins ( Account, LegacyAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Add missing logins to account
+		</div>
+		</p><h2>Method Call: AddMissingEmails ( Account, LegacyAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Add missing emails to account
+		</div>
+		</p><h2>Return Value : ImportAccountFromOIPLegacyReturnValue ( Account )</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ImportedAccount
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Imported account
 		</div>
 				</td>
 				</tr>

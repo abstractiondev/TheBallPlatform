@@ -8,6 +8,81 @@ using System.IO;
 using System.Threading.Tasks;
 
 		namespace TheBall.CORE { 
+				public class ImportAccountFromOIPLegacyParameters 
+		{
+				public AaltoGlobalImpact.OIP.TBRLoginRoot LegacyLogin ;
+				}
+		
+		public class ImportAccountFromOIPLegacy 
+		{
+				private static void PrepareParameters(ImportAccountFromOIPLegacyParameters parameters)
+		{
+					}
+				public static async Task<ImportAccountFromOIPLegacyReturnValue> ExecuteAsync(ImportAccountFromOIPLegacyParameters parameters)
+		{
+						PrepareParameters(parameters);
+					AaltoGlobalImpact.OIP.TBRAccountRoot LegacyAccountRoot =  await ImportAccountFromOIPLegacyImplementation.GetTarget_LegacyAccountRootAsync(parameters.LegacyLogin);	
+				AaltoGlobalImpact.OIP.TBAccount LegacyAccount = ImportAccountFromOIPLegacyImplementation.GetTarget_LegacyAccount(LegacyAccountRoot);	
+				Account Account =  await ImportAccountFromOIPLegacyImplementation.GetTarget_AccountAsync(LegacyAccount);	
+				 await ImportAccountFromOIPLegacyImplementation.ExecuteMethod_AddMissingLoginsAsync(Account, LegacyAccount);		
+				 await ImportAccountFromOIPLegacyImplementation.ExecuteMethod_AddMissingEmailsAsync(Account, LegacyAccount);		
+				ImportAccountFromOIPLegacyReturnValue returnValue = ImportAccountFromOIPLegacyImplementation.Get_ReturnValue(Account);
+		return returnValue;
+				}
+				}
+				public class ImportAccountFromOIPLegacyReturnValue 
+		{
+				public Account ImportedAccount ;
+				}
+				public class EnsureLoginParameters 
+		{
+				public string LoginURL ;
+				public string AccountID ;
+				}
+		
+		public class EnsureLogin 
+		{
+				private static void PrepareParameters(EnsureLoginParameters parameters)
+		{
+					}
+				public static async Task<EnsureLoginReturnValue> ExecuteAsync(EnsureLoginParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Login Login =  await EnsureLoginImplementation.GetTarget_LoginAsync(parameters.LoginURL);	
+				EnsureLoginImplementation.ExecuteMethod_ValidateExistingAccountIDToMatch(parameters.AccountID, Login);		
+				EnsureLoginReturnValue returnValue = EnsureLoginImplementation.Get_ReturnValue(Login);
+		return returnValue;
+				}
+				}
+				public class EnsureLoginReturnValue 
+		{
+				public Login EnsuredLogin ;
+				}
+				public class EnsureEmailParameters 
+		{
+				public string EmailAddress ;
+				public string AccountID ;
+				}
+		
+		public class EnsureEmail 
+		{
+				private static void PrepareParameters(EnsureEmailParameters parameters)
+		{
+					}
+				public static async Task<EnsureEmailReturnValue> ExecuteAsync(EnsureEmailParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Email Email =  await EnsureEmailImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
+				EnsureEmailImplementation.ExecuteMethod_ValidateExistingAccountIDToMatch(parameters.AccountID, Email);		
+				EnsureEmailReturnValue returnValue = EnsureEmailImplementation.Get_ReturnValue(Email);
+		return returnValue;
+				}
+				}
+
+		    public class EnsureEmailReturnValue 
+		{
+				public Email EnsuredEmail ;
+				}
 				public class CreateAccountParameters 
 		{
 				public string AccountID ;

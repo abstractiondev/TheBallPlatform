@@ -1,6 +1,57 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.CORE">
+    <StatusItem name="ImportAccountFromOIPLegacy_LegacyLogin" displayName="VariableType: LegacyLogin" description="Legacy login object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_LegacyAccountRoot" displayName="TargetDefinitionType: LegacyAccountRoot" description="Legacy account root">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_LegacyAccount" displayName="TargetDefinitionType: LegacyAccount" description="Legacy account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_Account" displayName="TargetDefinitionType: Account" description="Account to be created; retrieved or created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_AddMissingLogins" displayName="MethodExecuteType: AddMissingLogins" description="Add missing logins to account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_AddMissingEmails" displayName="MethodExecuteType: AddMissingEmails" description="Add missing emails to account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="ImportAccountFromOIPLegacy_ImportedAccount" displayName="VariableType: ImportedAccount" description="Imported account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureLogin_LoginURL" displayName="VariableType: LoginURL" description="Login URL to fetch or create">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureLogin_AccountID" displayName="VariableType: AccountID" description="(Optional) Account ID to require if the object is already existing and has any">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureLogin_Login" displayName="TargetDefinitionType: Login" description="Login, created or fetched. Store object if it was created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureLogin_ValidateExistingAccountIDToMatch" displayName="MethodExecuteType: ValidateExistingAccountIDToMatch" description="Validate that existing account ID matches the given">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureLogin_EnsuredLogin" displayName="VariableType: EnsuredLogin" description="Ensured login object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureEmail_EmailAddress" displayName="VariableType: EmailAddress" description="Email address to fetch or create">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureEmail_AccountID" displayName="VariableType: AccountID" description="(Optional) Account ID to require if the object is already existing and has any">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureEmail_Email" displayName="TargetDefinitionType: Email" description="Email, created or fetched. Store object if it was created">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureEmail_ValidateExistingAccountIDToMatch" displayName="MethodExecuteType: ValidateExistingAccountIDToMatch" description="Validate that existing account ID matches the given">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureEmail_EnsuredEmail" displayName="VariableType: EnsuredEmail" description="Ensured email object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateAccount_AccountID" displayName="VariableType: AccountID" description="AccountID (optional) to be created">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1323,6 +1374,29 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="ImportAccountFromOIPLegacy">
+      <ItemRef itemName="ImportAccountFromOIPLegacy_LegacyLogin" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_LegacyAccountRoot" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_LegacyAccount" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_Account" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_AddMissingLogins" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_AddMissingEmails" />
+      <ItemRef itemName="ImportAccountFromOIPLegacy_ImportedAccount" />
+    </Group>
+    <Group name="EnsureLogin">
+      <ItemRef itemName="EnsureLogin_LoginURL" />
+      <ItemRef itemName="EnsureLogin_AccountID" />
+      <ItemRef itemName="EnsureLogin_Login" />
+      <ItemRef itemName="EnsureLogin_ValidateExistingAccountIDToMatch" />
+      <ItemRef itemName="EnsureLogin_EnsuredLogin" />
+    </Group>
+    <Group name="EnsureEmail">
+      <ItemRef itemName="EnsureEmail_EmailAddress" />
+      <ItemRef itemName="EnsureEmail_AccountID" />
+      <ItemRef itemName="EnsureEmail_Email" />
+      <ItemRef itemName="EnsureEmail_ValidateExistingAccountIDToMatch" />
+      <ItemRef itemName="EnsureEmail_EnsuredEmail" />
+    </Group>
     <Group name="CreateAccount">
       <ItemRef itemName="CreateAccount_AccountID" />
       <ItemRef itemName="CreateAccount_LoginUrl" />

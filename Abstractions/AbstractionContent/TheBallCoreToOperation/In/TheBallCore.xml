@@ -394,6 +394,87 @@
           </SequentialExecution>
         </Execution>
       </Operation>-->
+      <Operation name="ImportAccountFromOIPLegacy">
+        <OperationSpec>
+          <Description>Imports account from OIP Legacy data</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="LegacyLogin" dataType="AaltoGlobalImpact.OIP.TBRLoginRoot" designDesc="Legacy login object" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="LegacyAccountRoot" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Legacy account root" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="LegacyLogin"/>
+            </TargetDefinition>
+            <TargetDefinition name="LegacyAccount" dataType="AaltoGlobalImpact.OIP.TBAccount" designDesc="Legacy account" state="implemented">
+              <Target name="LegacyAccountRoot"/>
+            </TargetDefinition>
+            <TargetDefinition name="Account" dataType="Account" designDesc="Account to be created; retrieved or created" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="LegacyAccount"/>
+            </TargetDefinition>
+            <MethodExecute name="AddMissingLogins" designDesc="Add missing logins to account" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+              <Target name="LegacyAccount"/>
+            </MethodExecute>
+            <MethodExecute name="AddMissingEmails" designDesc="Add missing emails to account" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+              <Target name="LegacyAccount"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="ImportedAccount" dataType="Account" designDesc="Imported account" state="implemented"/>
+          <Target name="Account"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="EnsureLogin">
+        <OperationSpec>
+          <Description>Ensure login with given URL, if given accountID, ensure that its matching or none</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="LoginURL" dataType="string" designDesc="Login URL to fetch or create" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="(Optional) Account ID to require if the object is already existing and has any" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Login" dataType="Login" asyncSupportMode="AsyncOnly" designDesc="Login, created or fetched. Store object if it was created" state="implemented">
+              <Parameter name="LoginURL"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateExistingAccountIDToMatch" designDesc="Validate that existing account ID matches the given" state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="Login"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="EnsuredLogin" dataType="Login" designDesc="Ensured login object" state="implemented"/>
+          <Target name="Login"/>
+        </OperationReturnValues>
+      </Operation>
+      <Operation name="EnsureEmail">
+        <OperationSpec>
+          <Description>Ensure email with given email address, if given accountID, ensure that its matching or none</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="EmailAddress" dataType="string" designDesc="Email address to fetch or create" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="(Optional) Account ID to require if the object is already existing and has any" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Email" dataType="Email" asyncSupportMode="AsyncOnly" designDesc="Email, created or fetched. Store object if it was created" state="implemented">
+              <Parameter name="EmailAddress"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateExistingAccountIDToMatch" designDesc="Validate that existing account ID matches the given" state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="Email"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue name="EnsuredEmail" dataType="Email" designDesc="Ensured email object" state="implemented"/>
+          <Target name="Email"/>
+        </OperationReturnValues>
+      </Operation>
       <Operation name="CreateAccount">
         <OperationSpec>
           <Description>Create account with given login and email</Description>
