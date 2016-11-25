@@ -43,6 +43,9 @@
         <InformationItems>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short" fieldOrderNumber="1"/>
           <InformationItem name="Account" logicalDataType="ObjectLink" isCollection="false" objectLinkTargetType="Account" fieldOrderNumber="2"/>
+          <InformationItem name="PendingValidation" logicalDataType="TrueOrFalse_Boolean" fieldOrderNumber="3"/>
+          <InformationItem name="ValidationKey" logicalDataType="Text_Short" fieldOrderNumber="4" />
+          <InformationItem name="ValidationProcessExpiration" logicalDataType="Time_DateTime" fieldOrderNumber="5"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="Account" designDesc="Core level account" serializationType="ProtoBuf">

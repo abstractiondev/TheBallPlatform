@@ -206,6 +206,9 @@ namespace INT {
 				{
 					EmailAddress = sourceObject.EmailAddress;
 					Account = sourceObject.Account;
+					PendingValidation = sourceObject.PendingValidation;
+					ValidationKey = sourceObject.ValidationKey;
+					ValidationProcessExpiration = sourceObject.ValidationProcessExpiration;
 				}
 				
 
@@ -217,6 +220,15 @@ namespace INT {
 			[DataMember] [ProtoMember(2)]
 			public string Account { get; set; }
 			private string _unmodified_Account;
+			[DataMember] [ProtoMember(3)]
+			public bool PendingValidation { get; set; }
+			private bool _unmodified_PendingValidation;
+			[DataMember] [ProtoMember(4)]
+			public string ValidationKey { get; set; }
+			private string _unmodified_ValidationKey;
+			[DataMember] [ProtoMember(5)]
+			public DateTime ValidationProcessExpiration { get; set; }
+			private DateTime _unmodified_ValidationProcessExpiration;
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]

@@ -219,6 +219,9 @@ namespace SQLite.TheBall.CORE {
 							existingObject.Account = relationObject;
                     }
 
+		            existingObject.PendingValidation = serializedObject.PendingValidation;
+		            existingObject.ValidationKey = serializedObject.ValidationKey;
+		            existingObject.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
 		            break;
 		        } 
 		        case "Account":
@@ -914,6 +917,9 @@ namespace SQLite.TheBall.CORE {
 							existingObject.Account = relationObject;
                     }
 
+		            existingObject.PendingValidation = serializedObject.PendingValidation;
+		            existingObject.ValidationKey = serializedObject.ValidationKey;
+		            existingObject.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
 		            break;
 		        } 
 		        case "Account":
@@ -1608,6 +1614,9 @@ namespace SQLite.TheBall.CORE {
                             objectToAdd.Account = relationObject;
                     }
 
+		            objectToAdd.PendingValidation = serializedObject.PendingValidation;
+		            objectToAdd.ValidationKey = serializedObject.ValidationKey;
+		            objectToAdd.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
 					EmailTable.InsertOnSubmit(objectToAdd);
                     break;
                 }
@@ -2290,6 +2299,9 @@ namespace SQLite.TheBall.CORE {
                             objectToAdd.Account = relationObject;
                     }
 
+		            objectToAdd.PendingValidation = serializedObject.PendingValidation;
+		            objectToAdd.ValidationKey = serializedObject.ValidationKey;
+		            objectToAdd.ValidationProcessExpiration = serializedObject.ValidationProcessExpiration;
 					EmailTable.InsertOnSubmit(objectToAdd);
                     break;
                 }
@@ -4295,7 +4307,10 @@ CREATE TABLE IF NOT EXISTS [Email](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
 , 
-[EmailAddress] TEXT NOT NULL
+[EmailAddress] TEXT NOT NULL, 
+[PendingValidation] INTEGER NOT NULL, 
+[ValidationKey] TEXT NOT NULL, 
+[ValidationProcessExpiration] TEXT NOT NULL
 )";
         }
 
@@ -4312,11 +4327,28 @@ CREATE TABLE IF NOT EXISTS [Email](
 			set { _Account.Entity = value; }
 		}
 
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public bool PendingValidation { get; set; }
+		// private bool _unmodified_PendingValidation;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string ValidationKey { get; set; }
+		// private string _unmodified_ValidationKey;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public DateTime ValidationProcessExpiration { get; set; }
+		// private DateTime _unmodified_ValidationProcessExpiration;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
 			if(EmailAddress == null)
 				EmailAddress = string.Empty;
+			if(ValidationKey == null)
+				ValidationKey = string.Empty;
 		}
 	}
     [Table(Name = "Account")]

@@ -795,6 +795,8 @@ namespace INT {
 					var result = new Email();
 					result.EmailAddress = @"Email.EmailAddress";
 
+					result.ValidationKey = @"Email.ValidationKey";
+
 				
 					return result;
 				}
@@ -857,6 +859,12 @@ namespace INT {
 							return true;
 						if(Account != _unmodified_Account)
 							return true;
+						if(PendingValidation != _unmodified_PendingValidation)
+							return true;
+						if(ValidationKey != _unmodified_ValidationKey)
+							return true;
+						if(ValidationProcessExpiration != _unmodified_ValidationProcessExpiration)
+							return true;
 				
 						return false;
 					}
@@ -871,6 +879,9 @@ namespace INT {
 				{
 					EmailAddress = sourceObject.EmailAddress;
 					Account = sourceObject.Account;
+					PendingValidation = sourceObject.PendingValidation;
+					ValidationKey = sourceObject.ValidationKey;
+					ValidationProcessExpiration = sourceObject.ValidationProcessExpiration;
 				}
 				
 
@@ -879,6 +890,9 @@ namespace INT {
 				{
 					_unmodified_EmailAddress = EmailAddress;
 					_unmodified_Account = Account;
+					_unmodified_PendingValidation = PendingValidation;
+					_unmodified_ValidationKey = ValidationKey;
+					_unmodified_ValidationProcessExpiration = ValidationProcessExpiration;
 				
 				
 				}
@@ -894,6 +908,15 @@ namespace INT {
 						case "Account":
 							Account = value;
 							break;
+						case "PendingValidation":
+							PendingValidation = bool.Parse(value);
+							break;
+						case "ValidationKey":
+							ValidationKey = value;
+							break;
+						case "ValidationProcessExpiration":
+							ValidationProcessExpiration = DateTime.Parse(value);
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -904,6 +927,15 @@ namespace INT {
 			[DataMember] [ProtoMember(2)]
 			public string Account { get; set; }
 			private string _unmodified_Account;
+			[DataMember] [ProtoMember(3)]
+			public bool PendingValidation { get; set; }
+			private bool _unmodified_PendingValidation;
+			[DataMember] [ProtoMember(4)]
+			public string ValidationKey { get; set; }
+			private string _unmodified_ValidationKey;
+			[DataMember] [ProtoMember(5)]
+			public DateTime ValidationProcessExpiration { get; set; }
+			private DateTime _unmodified_ValidationProcessExpiration;
 			
 			}
 			[DataContract] [ProtoContract]
