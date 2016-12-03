@@ -78,7 +78,7 @@ namespace WebInterface
                 var login =
                     await
                         ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, account.Logins.First());
-                var salt = Guid.NewGuid().ToString();
+                var salt = BCrypt.Net.BCrypt.GenerateSalt();
                 var password = registrationInfo.LoginInfo.Password;
                 var passwordHash = getPasswordHash(password, salt);
                 login.PasswordSalt = salt;
@@ -89,7 +89,13 @@ namespace WebInterface
             }
         }
 
-        static string getPasswordHash(string password, string salt)
+        private static string getPasswordHash(string password, string salt)
+        {
+            var hash = BCrypt.Net.BCrypt.HashPassword(password, salt);
+            return hash;
+        }
+
+        static string getPasswordHashx(string password, string salt)
         {
             var passwordBytes = Encoding.UTF8.GetBytes(password);
             var argon2 = new Argon2d(passwordBytes);
@@ -113,8 +119,7 @@ namespace WebInterface
             var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
             var salt = login.PasswordSalt;
-            var passwordHash = getPasswordHash(password, salt);
-            bool validLogin = passwordHash == login.PasswordHash;
+            bool validLogin = BCrypt.Net.BCrypt.Verify(password, login.PasswordHash);
             if (validLogin)
             {
                 AuthenticationSupport.SetAuthenticationCookie(response, loginUrl, emailAddress);
