@@ -14,6 +14,40 @@ using System.Runtime.Serialization;
 
 
 			[DataContract]
+			public partial class LoginInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string EmailAddress;
+
+			[DataMember]
+			public string Password;
+
+			
+			}
+			[DataContract]
+			public partial class ConfirmedLoginInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string ConfirmationCode;
+
+			[DataMember]
+			public LoginInfo LoginInfo;
+
+			
+			}
+			[DataContract]
 			public partial class DeviceOperationData 
 			{
 				[DataMember]

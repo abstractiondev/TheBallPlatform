@@ -4,6 +4,97 @@
     <Documents>
       <Document name="Operations (OperationAbstractionFromTheBallCore)" title="Operations (OperationAbstractionFromTheBallCore)">
         <Content>
+          <Header text="ActivateEmailValidation (Email, SendValidationCodeIfReissued, ResendValidationCode)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Activate email validation based on current time, (re)send validation code based on parameters</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email to confirm the validity for</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>SendValidationCodeIfReissued</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Send validation email, if validation code is (re)issued</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ResendValidationCode</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Resend validation email even when the code wasn't reissued</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessEmailValidationActivation ( Email, SendValidationCodeIfReissued, ResendValidationCode )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Issue email validation if required, send the validation emails if required</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ValidationReissued</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>bool</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Reissued validation, needs to store Email object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreEmailIfChanged ( ProcessEmailValidationActivationOutput, Email )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store Email object if changed due to revalidation</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="AddEmailToAccount (AccountID, EmailAddress)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
@@ -2303,6 +2394,13 @@
                     </Row>
                   </Rows>
                 </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateEmailAddress ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate given email address, throw exception if not valid</TextContent>
+                </Text>
               </Paragraph>
             </Header>
             <Header text="Target Definition: Email ( EmailAddress )" level="2">

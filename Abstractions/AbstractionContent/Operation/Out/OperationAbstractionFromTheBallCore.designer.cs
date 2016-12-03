@@ -58,7 +58,27 @@ using System.Threading.Tasks;
 		{
 				public Login EnsuredLogin ;
 				}
-				public class EnsureEmailParameters 
+				public class ActivateEmailValidationParameters 
+		{
+				public Email Email ;
+				public bool SendValidationCodeIfReissued ;
+				public bool ResendValidationCode ;
+				}
+		
+		public class ActivateEmailValidation 
+		{
+				private static void PrepareParameters(ActivateEmailValidationParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(ActivateEmailValidationParameters parameters)
+		{
+						PrepareParameters(parameters);
+					bool ProcessEmailValidationActivationOutput =  await ActivateEmailValidationImplementation.ExecuteMethod_ProcessEmailValidationActivationAsync(parameters.Email, parameters.SendValidationCodeIfReissued, parameters.ResendValidationCode);		
+				 await ActivateEmailValidationImplementation.ExecuteMethod_StoreEmailIfChangedAsync(parameters.Email, ProcessEmailValidationActivationOutput);		
+				}
+				}
+
+		    public class EnsureEmailParameters 
 		{
 				public string EmailAddress ;
 				public string AccountID ;
@@ -72,7 +92,8 @@ using System.Threading.Tasks;
 				public static async Task<EnsureEmailReturnValue> ExecuteAsync(EnsureEmailParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Email Email =  await EnsureEmailImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
+					EnsureEmailImplementation.ExecuteMethod_ValidateEmailAddress(parameters.EmailAddress);		
+				Email Email =  await EnsureEmailImplementation.GetTarget_EmailAsync(parameters.EmailAddress);	
 				EnsureEmailImplementation.ExecuteMethod_ValidateExistingAccountIDToMatch(parameters.AccountID, Email);		
 				EnsureEmailReturnValue returnValue = EnsureEmailImplementation.Get_ReturnValue(Email);
 		return returnValue;

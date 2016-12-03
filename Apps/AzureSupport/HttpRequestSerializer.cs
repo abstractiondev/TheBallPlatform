@@ -133,6 +133,16 @@ namespace AzureSupport
             }
         }
 
+        public static object DeserializeProtobuf(this Stream stream, Type type)
+        {
+            return Serializer.NonGeneric.Deserialize(type, stream);
+        }
+
+        public static void SerializeProtobuf(this Stream stream, object obj)
+        {
+            Serializer.NonGeneric.Serialize(stream, obj);
+        }
+
         public static T DeserializeProtobuf<T>(this Stream stream)
         {
             return Serializer.Deserialize<T>(stream);

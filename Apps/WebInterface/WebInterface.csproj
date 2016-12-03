@@ -258,6 +258,7 @@
     <Compile Include="ExtRequest.cs" />
     <Compile Include="FileUploadHandler.cs" />
     <Compile Include="InformationContextManagerModule.cs" />
+    <Compile Include="LoginSupport.cs" />
     <Compile Include="RESTForwarderModule.cs" />
     <Compile Include="RESTRequestForwardingHandler.cs" />
     <Compile Include="Site.master.cs">

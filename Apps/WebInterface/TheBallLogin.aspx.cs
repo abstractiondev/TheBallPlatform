@@ -33,8 +33,14 @@ namespace WebInterface
 {
     public partial class TheBallLogin : System.Web.UI.Page
     {
+        const string OperationUrlParameterPart = "?operation=";
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Request.Url.PathAndQuery.Contains(OperationUrlParameterPart))
+            {
+                handleOperation();
+                return;
+            }
             if (Request.Params["ssokey"] != null)
             {
                 AuthenticationSupport.ClearAuthenticationCookie(Response);
@@ -100,6 +106,31 @@ namespace WebInterface
                     performLoginForProvider(idprovider, requestEmail);
                 }
             }
+        }
+
+        private void handleOperation()
+        {
+            const string LoginOpName = "TheBall.WEB.LoginOperation";
+            const string RegisterOpName = "TheBall.WEB.RegisterOperation";
+            const string ForgotPasswordOpName = "TheBall.WEB.ForgotPasswordOperation";
+
+            var operationName = Request.Params["operation"];
+            switch (operationName)
+            {
+                case LoginOpName:
+                    performLoginOperation(Request, Response);
+                    break;
+                case RegisterOpName:
+                    break;
+                case ForgotPasswordOpName:
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid operation: " + operationName);
+            }
+        }
+
+        private void performLoginOperation(HttpRequest request, HttpResponse response)
+        {
         }
 
         private string FinalizeOAuthLogin(string oauthCode, string provider, string redirectUrl)

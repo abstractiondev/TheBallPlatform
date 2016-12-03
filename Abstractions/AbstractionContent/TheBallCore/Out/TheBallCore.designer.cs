@@ -32,6 +32,24 @@ using TheBall.CORE;
 
 namespace INT { 
 					[DataContract]
+			public partial class LoginInfo
+			{
+				[DataMember]
+				public string EmailAddress { get; set; }
+				[DataMember]
+				public string Password { get; set; }
+			}
+
+			[DataContract]
+			public partial class ConfirmedLoginInfo
+			{
+				[DataMember]
+				public string ConfirmationCode { get; set; }
+				[DataMember]
+				public LoginInfo LoginInfo { get; set; }
+			}
+
+			[DataContract]
 			public partial class DeviceOperationData
 			{
 				[DataMember]

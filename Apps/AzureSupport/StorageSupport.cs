@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -1180,6 +1181,9 @@ namespace TheBall
             {
                 BinaryFormatter binaryFormatter = new BinaryFormatter();
                 informationObject = (IInformationObject) binaryFormatter.Deserialize(memoryStream);
+            } else if (storageSerializationType == StorageSerializationType.ProtoBuf)
+            {
+                informationObject = (IInformationObject) memoryStream.DeserializeProtobuf(typeToRetrieve);
             }
             else // if(storageSerializationType == StorageSerializationType.Custom)
             {
@@ -1219,7 +1223,12 @@ namespace TheBall
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
                     binaryFormatter.Serialize(memoryStream, informationObject);
                     dataContent = memoryStream.ToArray();
-                } else // if (storageSerializationType == StorageSerializationType.Custom)
+                } else if (storageSerializationType == StorageSerializationType.ProtoBuf)
+                {
+                    memoryStream.SerializeProtobuf(informationObject);
+                    dataContent = memoryStream.ToArray();
+                }
+                else // if (storageSerializationType == StorageSerializationType.Custom)
                 {
                     throw new NotSupportedException("Custom or unspecified formatting not supported");
                 }

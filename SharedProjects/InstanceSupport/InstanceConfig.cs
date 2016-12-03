@@ -18,6 +18,8 @@ namespace TheBall.CORE.InstanceSupport
         public string EmailFromAddress;
         public string EmailValidationSubjectFormat;
         public string EmailValidationMessageFormat;
+        public string EmailValidationCodeSubjectFormat;
+        public string EmailValidationCodeMessageFormat;
         public string EmailDeviceJoinSubjectFormat;
         public string EmailDeviceJoinMessageFormat;
         public string EmailGroupJoinSubjectFormat;

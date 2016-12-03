@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using Amazon;
@@ -18,85 +19,17 @@ namespace TheBall
 {
     public static class EmailSupport
     {
-        public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
+
+        public static async Task<Boolean> SendEmailAsync(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
             if (Text != null || HTML != null)
             {
                 try
                 {
+                    var request = createEmailRequest(From, To, Subject, Text, HTML, emailReplyTo, returnPath);
 
-                    String from = From;
-
-                    List<String> to
-                        = To
-                            .Replace(", ", ",")
-                            .Split(',')
-                            .ToList();
-
-                    Destination destination = new Destination(to);
-                    //destination.WithCcAddresses(cc);
-                    //destination.WithBccAddresses(bcc);
-
-                    Content subject = new Content();
-                    subject.Charset = "UTF-8";
-                    subject.Data = Subject;
-
-                    Body body = new Body();
-
-
-                    if (HTML != null)
-                    {
-                        Content html = new Content();
-                        html.Charset = "UTF-8";
-                        html.Data = HTML;
-                        body.Html = html;
-                    }
-
-                    if (Text != null)
-                    {
-                        Content text = new Content();
-                        text.Charset = "UTF-8";
-                        text.Data = Text;
-                        body.Text = text;
-                    }
-
-                    Message message = new Message();
-                    message.Body = body;
-                    message.Subject = subject;
-
-                    string awsAccessKey = SecureConfig.Current.AWSAccessKey;
-                    string awsSecretKey = SecureConfig.Current.AWSSecretKey;
-                    //AmazonSimpleEmailService ses = AWSClientFactory.CreateAmazonSimpleEmailServiceClient(AppConfig["AWSAccessKey"], AppConfig["AWSSecretKey"]);
-                    AmazonSimpleEmailServiceClient ses = new AmazonSimpleEmailServiceClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey), RegionEndpoint.EUWest1);
-
-                    SendEmailRequest request = new SendEmailRequest();
-                    request.Destination = destination;
-                    request.Message = message;
-                    request.Source = from;
-
-                    if (emailReplyTo != null)
-                    {
-                        List<String> replyto
-                            = emailReplyTo
-                                .Replace(", ", ",")
-                                .Split(',')
-                                .ToList();
-
-                        request.ReplyToAddresses = replyto;
-                    }
-
-                    if (returnPath != null)
-                    {
-                        request.ReturnPath = returnPath;
-                    }
-
-                    SendEmailResponse response = ses.SendEmail(request);
-
-                    /*
-                    Console.WriteLine("Email sent.");
-                    Console.WriteLine(String.Format("Message ID: {0}",
-                                                    response.MessageId));
-                                                    */
+                    var ses = createEmailClient();
+                    SendEmailResponse response = await ses.SendEmailAsync(request);
                     return true;
                 }
                 catch (Exception ex)
@@ -116,6 +49,112 @@ namespace TheBall
             Console.WriteLine("Specify Text and/or HTML for the email body!");
 
             return false;
+        }
+
+
+        public static Boolean SendEmail(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
+        {
+            if (Text != null || HTML != null)
+            {
+                try
+                {
+                    var request = createEmailRequest(From, To, Subject, Text, HTML, emailReplyTo, returnPath);
+
+                    var ses = createEmailClient();
+                    SendEmailResponse response = ses.SendEmail(request);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    //throw;
+                    return false;
+                }
+                finally
+                {
+                    String queueMessage = String.Format("From: {1}{0}To: {2}{0}Subject: {3}{0}Message:{0}{4}",
+                                                        Environment.NewLine, From, To, Subject, Text ?? HTML);
+                    QueueSupport.CurrStatisticsQueue?.AddMessage(new CloudQueueMessage(queueMessage));
+                }
+            }
+
+            Console.WriteLine("Specify Text and/or HTML for the email body!");
+
+            return false;
+        }
+
+        private static AmazonSimpleEmailServiceClient createEmailClient()
+        {
+            string awsAccessKey = SecureConfig.Current.AWSAccessKey;
+            string awsSecretKey = SecureConfig.Current.AWSSecretKey;
+            AmazonSimpleEmailServiceClient ses =
+                new AmazonSimpleEmailServiceClient(new BasicAWSCredentials(awsAccessKey, awsSecretKey), RegionEndpoint.EUWest1);
+            return ses;
+        }
+
+        private static SendEmailRequest createEmailRequest(string From, string To, string Subject, string Text,
+            string HTML, string emailReplyTo, string returnPath)
+        {
+            String from = From;
+
+            List<String> to
+                = To
+                    .Replace(", ", ",")
+                    .Split(',')
+                    .ToList();
+
+            Destination destination = new Destination(to);
+            //destination.WithCcAddresses(cc);
+            //destination.WithBccAddresses(bcc);
+
+            Content subject = new Content();
+            subject.Charset = "UTF-8";
+            subject.Data = Subject;
+
+            Body body = new Body();
+
+
+            if (HTML != null)
+            {
+                Content html = new Content();
+                html.Charset = "UTF-8";
+                html.Data = HTML;
+                body.Html = html;
+            }
+
+            if (Text != null)
+            {
+                Content text = new Content();
+                text.Charset = "UTF-8";
+                text.Data = Text;
+                body.Text = text;
+            }
+
+            Message message = new Message();
+            message.Body = body;
+            message.Subject = subject;
+
+            var request = new SendEmailRequest();
+            request.Destination = destination;
+            request.Message = message;
+            request.Source = @from;
+
+            if (emailReplyTo != null)
+            {
+                List<String> replyto
+                    = emailReplyTo
+                        .Replace(", ", ",")
+                        .Split(',')
+                        .ToList();
+
+                request.ReplyToAddresses = replyto;
+            }
+
+            if (returnPath != null)
+            {
+                request.ReturnPath = returnPath;
+            }
+            return request;
         }
 
         public static void SendValidationEmail(TBEmailValidation emailValidation)
@@ -214,6 +253,15 @@ namespace TheBall
             SendEmail(InstanceConfig.Current.EmailFromAddress, emailValidation.Email,
                 String.Format(InstanceConfig.Current.EmailGroupAndPlatformJoinSubjectFormat, collaboratingGroup.Title),
                       message);
+        }
+
+        public static async Task SendEmailValidationAsync(string emailAddress, string validationKey)
+        {
+            var emailMessageFormat = InstanceConfig.Current.EmailValidationCodeMessageFormat;
+            var emailSubject = InstanceConfig.Current.EmailValidationCodeSubjectFormat;
+
+            var emailMessage = String.Format(emailMessageFormat, emailAddress, validationKey);
+            await SendEmailAsync(InstanceConfig.Current.EmailFromAddress, emailAddress, emailSubject, emailMessage);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using RestSharp.Extensions.MonoHttp;
 
 namespace TheBall.CORE
@@ -21,6 +22,13 @@ namespace TheBall.CORE
                 throw new NotSupportedException("Not supported user name prefix: " + loginURL);
             var loginID = HttpUtility.UrlEncode(pureId);
             return loginID;
+        }
+
+        public static string GetLoginUrlFromEmailAddress(string emailAddress)
+        {
+            if(emailAddress.StartsWith(emailPrefix))
+                throw new InvalidDataException("Email address already starts with prefix: " + emailAddress);
+            return emailPrefix + emailAddress;
         }
 
     }

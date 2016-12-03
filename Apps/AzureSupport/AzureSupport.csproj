@@ -213,6 +213,7 @@
     <Compile Include="ProBroz.OnlineTraining\TenantGymCollection.cs" />
     <Compile Include="SyncSupport.cs" />
     <Compile Include="SystemOwner.cs" />
+    <Compile Include="TheBall.CORE\ActivateEmailValidationImplementation.cs" />
     <Compile Include="TheBall.CORE\AddEmailToAccountImplementation.cs" />
     <Compile Include="TheBall.CORE\AddLoginToAccountImplementation.cs" />
     <Compile Include="TheBall.CORE\ConfirmAccountMergeFromEmailImplementation.cs" />

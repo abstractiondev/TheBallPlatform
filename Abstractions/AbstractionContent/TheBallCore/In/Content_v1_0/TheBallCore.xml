@@ -6,6 +6,23 @@
   <InstanceOfTheBall semanticDomainName="TheBall.CORE">
     <DigitalInterface>
       <InterfaceModel>
+        <InterfaceObject name="LoginInfo" designDesc="Login data for login operations">
+          <InterfaceItems>
+            <InterfaceItem name="EmailAddress" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Password" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="ConfirmedLoginInfo" designDesc="Confirmed login info for authorized operations">
+          <InterfaceItems>
+            <InterfaceItem name="ConfirmationCode" logicalDataType="Text_Short" />
+            <ObjectInstance name="LoginInfo" interfaceObjectName="LoginInfo"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="LoginRegistrationResult" designDesc="Login or registration operation result">
+          <InterfaceItems>
+            <InterfaceItem name="Success" logicalDataType="TrueOrFalse_Boolean"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="DeviceOperationData" designDesc="Device operation data for device-connection related remote operations">
           <InterfaceItems>
             <InterfaceItem name="OperationRequestString" logicalDataType="Text_Short"/>
@@ -454,6 +471,30 @@
           <Target name="Login"/>
         </OperationReturnValues>
       </Operation>
+      <Operation name="ActivateEmailValidation">
+        <OperationSpec>
+          <Description>Activate email validation based on current time, (re)send validation code based on parameters</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="Email" dataType="Email" designDesc="Email to confirm the validity for" state="implemented"/>
+          <Parameter name="SendValidationCodeIfReissued" dataType="bool" designDesc="Send validation email, if validation code is (re)issued" state="implemented"/>
+          <Parameter name="ResendValidationCode" dataType="bool" designDesc="Resend validation email even when the code wasn't reissued" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ProcessEmailValidationActivation" designDesc="Issue email validation if required, send the validation emails if required" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="Email"/>
+              <Parameter name="SendValidationCodeIfReissued"/>
+              <Parameter name="ResendValidationCode"/>
+              <ReturnValue name="ValidationReissued" dataType="bool" designDesc="Reissued validation, needs to store Email object" state="implemented" />
+            </MethodExecute>
+            <MethodExecute name="StoreEmailIfChanged" designDesc="Store Email object if changed due to revalidation" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="Email"/>
+              <Target name="ProcessEmailValidationActivationOutput"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="EnsureEmail">
         <OperationSpec>
           <Description>Ensure email with given email address, if given accountID, ensure that its matching or none</Description>
@@ -464,6 +505,9 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
+            <MethodExecute name="ValidateEmailAddress" designDesc="Validate given email address, throw exception if not valid" state="implemented">
+              <Parameter name="EmailAddress"/>
+            </MethodExecute>
             <TargetDefinition name="Email" dataType="Email" asyncSupportMode="AsyncOnly" designDesc="Email, created or fetched. Store object if it was created" state="implemented">
               <Parameter name="EmailAddress"/>
             </TargetDefinition>

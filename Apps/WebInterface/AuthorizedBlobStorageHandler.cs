@@ -691,10 +691,19 @@ namespace WebInterface
                 await HandleAboutGetRequest(context, request, request.Path);
             else
             {
-                bool isOperationRequest = contentPath.StartsWith("op/");
-                if (isOperationRequest)
+                bool isUrlOperationRequest = contentPath.StartsWith("op/");
+                if (isUrlOperationRequest)
                 {
                     await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
+                }
+                else
+                {
+                    var operationName = request.Params["operation"];
+                    bool isLoginOperationRequest = operationName.Contains("TheBall.Login.");
+                    if (isLoginOperationRequest)
+                    {
+                        await LoginSupport.HandleLoginOperationRequest(SystemSupport.SystemOwner, context, operationName);
+                    }
                 }
             }
         }

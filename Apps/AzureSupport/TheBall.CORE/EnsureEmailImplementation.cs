@@ -1,4 +1,6 @@
+using System.IO;
 using System.Security;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TheBall.CORE
@@ -13,6 +15,7 @@ namespace TheBall.CORE
             {
                 email = new Email();
                 email.ID = emailID;
+                email.EmailAddress = emailAddress;
                 email.SetLocationAsOwnerContent(SystemOwner.CurrentSystem, emailID);
                 await email.StoreInformationAsync();
             }
@@ -34,6 +37,13 @@ namespace TheBall.CORE
             {
                 EnsuredEmail = email
             };
+        }
+
+        public static void ExecuteMethod_ValidateEmailAddress(string emailAddress)
+        {
+            var regex = new Regex(@"^[^@]+@[^@]+\.[^@]+$");
+            if (!regex.IsMatch(emailAddress))
+                throw new InvalidDataException("Not accepted email address: " + emailAddress);
         }
     }
 }

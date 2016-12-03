@@ -10,6 +10,7 @@ namespace TheBall.CORE
             if (accountId != null)
                 account.ID = accountId;
             account.UpdateRelativeLocationFromID();
+            account.SetLocationAsOwnerContent(SystemSupport.SystemOwner, account.ID);
             return account;
         }
 

@@ -13,6 +13,24 @@ using ProtoBuf;
 
 namespace INT { 
 		            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+			public partial class LoginInfo
+			{
+				[DataMember]
+				public string EmailAddress { get; set; }
+				[DataMember]
+				public string Password { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+			public partial class ConfirmedLoginInfo
+			{
+				[DataMember]
+				public string ConfirmationCode { get; set; }
+				[DataMember]
+				public LoginInfo LoginInfo { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class DeviceOperationData
 			{
 				[DataMember]

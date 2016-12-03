@@ -228,7 +228,95 @@ div.WordSection1
 		<div style='border:none;border-bottom:solid #4F81BD 1.0pt;padding:0cm 0cm 4.0pt 0cm'>
 <p class="MsoTitle">Operations (OperationAbstractionFromTheBallCore)</p>
 </div>
-		<h1>AddEmailToAccount (AccountID, EmailAddress)</h1>
+		<h1>ActivateEmailValidation (Email, SendValidationCodeIfReissued, ResendValidationCode)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Activate email validation based on current time, (re)send validation code based on parameters
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email to confirm the validity for
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		SendValidationCodeIfReissued
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Send validation email, if validation code is (re)issued
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ResendValidationCode
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Resend validation email even when the code wasn't reissued
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ProcessEmailValidationActivation ( Email, SendValidationCodeIfReissued, ResendValidationCode )</h2>
+		<p>		<div class="MsoNormal" >
+		Issue email validation if required, send the validation emails if required
+		</div>
+		</p><p><table border="1">
+				<tr><th><div class=MsoNormal>Output value field</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		ValidationReissued
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		bool
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Reissued validation, needs to store Email object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: StoreEmailIfChanged ( ProcessEmailValidationActivationOutput, Email )</h2>
+		<p>		<div class="MsoNormal" >
+		Store Email object if changed due to revalidation
+		</div>
+		</p><h1>AddEmailToAccount (AccountID, EmailAddress)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Add email to account
@@ -2342,6 +2430,10 @@ div.WordSection1
 				</td>
 				</tr>
 		</table>
+		</p><h2>Method Call: ValidateEmailAddress ( EmailAddress )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate given email address, throw exception if not valid
+		</div>
 		</p><h2>Target Definition: Email ( EmailAddress )</h2>
 		<p>		<div class="MsoNormal" >
 		Email, created or fetched. Store object if it was created
