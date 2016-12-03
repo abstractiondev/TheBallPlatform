@@ -241,7 +241,6 @@
     </Content>
     <Content Include="index.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="LICENSE.txt" />
     <Content Include="Site.css" />
     <Content Include="TheBallCertLogin.aspx" />
     <Content Include="TheBallLogin.aspx" />
