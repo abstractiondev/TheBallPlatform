@@ -2848,6 +2848,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Add missing emails to account
 		</div>
+		</p><h2>Method Call: StoreObject ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
 		</p><h2>Return Value : ImportAccountFromOIPLegacyReturnValue ( Account )</h2>
 		<p><table border="1">
 				<tr><th><div class=MsoNormal>Return Value</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>

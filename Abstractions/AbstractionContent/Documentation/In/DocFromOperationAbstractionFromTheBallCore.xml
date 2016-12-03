@@ -2912,6 +2912,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: StoreObject ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Return Value : ImportAccountFromOIPLegacyReturnValue ( Account )" level="2">
               <Paragraph>
                 <Table>

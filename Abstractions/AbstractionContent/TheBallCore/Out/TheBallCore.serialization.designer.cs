@@ -31,6 +31,13 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+			public partial class LoginRegistrationResult
+			{
+				[DataMember]
+				public bool Success { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class DeviceOperationData
 			{
 				[DataMember]

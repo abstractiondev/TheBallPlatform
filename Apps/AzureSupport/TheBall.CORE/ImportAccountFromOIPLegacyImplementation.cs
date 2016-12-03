@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
@@ -35,14 +36,37 @@ namespace TheBall.CORE
             return account;
         }
 
-        public static Task ExecuteMethod_AddMissingLoginsAsync(Account account, TBAccount legacyAccount)
+        public static async Task ExecuteMethod_AddMissingLoginsAsync(Account account, TBAccount legacyAccount)
         {
-            throw new System.NotImplementedException();
+            var legacyLoginUrls = legacyAccount.Logins.CollectionContent.Select(login => login.OpenIDUrl).ToArray();
+            List<Login> logins = new List<Login>();
+            foreach(var loginUrl in legacyLoginUrls)
+            {
+                var ensureOpResult = await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
+                {
+                    AccountID = account.ID,
+                    LoginURL = loginUrl
+                });
+                logins.Add(ensureOpResult.EnsuredLogin);
+            }
+            account.Logins = account.Logins.Union(logins.Select(login => login.ID)).ToList();
         }
 
-        public static Task ExecuteMethod_AddMissingEmailsAsync(Account account, TBAccount legacyAccount)
+        public static async Task ExecuteMethod_AddMissingEmailsAsync(Account account, TBAccount legacyAccount)
         {
-            throw new System.NotImplementedException();
+            var legacyEmailAddresses =
+                legacyAccount.Emails.CollectionContent.Select(email => email.EmailAddress.ToLower()).ToArray();
+            List<Email> emails = new List<Email>();
+            foreach (var emailAddress in legacyEmailAddresses)
+            {
+                var ensureOpResult = await EnsureEmail.ExecuteAsync(new EnsureEmailParameters
+                {
+                    AccountID = account.ID,
+                    EmailAddress = emailAddress
+                });
+                emails.Add(ensureOpResult.EnsuredEmail);
+            }
+            account.Emails = account.Emails.Union(emails.Select(email => email.ID)).ToList();
         }
 
         public static ImportAccountFromOIPLegacyReturnValue Get_ReturnValue(Account account)
@@ -50,5 +74,9 @@ namespace TheBall.CORE
             return new ImportAccountFromOIPLegacyReturnValue {ImportedAccount = account};
         }
 
+        public static async Task ExecuteMethod_StoreObjectAsync(Account account)
+        {
+            await account.StoreInformationAsync();
+        }
     }
 }

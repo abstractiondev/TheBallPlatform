@@ -440,6 +440,9 @@
               <Target name="Account"/>
               <Target name="LegacyAccount"/>
             </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+            </MethodExecute>
           </SequentialExecution>
         </Execution>
         <OperationReturnValues>

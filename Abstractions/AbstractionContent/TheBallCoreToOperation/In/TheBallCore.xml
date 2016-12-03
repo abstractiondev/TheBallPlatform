@@ -18,6 +18,11 @@
             <ObjectInstance name="LoginInfo" interfaceObjectName="LoginInfo"/>
           </InterfaceItems>
         </InterfaceObject>
+        <InterfaceObject name="LoginRegistrationResult" designDesc="Login or registration operation result">
+          <InterfaceItems>
+            <InterfaceItem name="Success" logicalDataType="TrueOrFalse_Boolean"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="DeviceOperationData" designDesc="Device operation data for device-connection related remote operations">
           <InterfaceItems>
             <InterfaceItem name="OperationRequestString" logicalDataType="Text_Short"/>
@@ -434,6 +439,9 @@
             <MethodExecute name="AddMissingEmails" designDesc="Add missing emails to account" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="Account"/>
               <Target name="LegacyAccount"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>

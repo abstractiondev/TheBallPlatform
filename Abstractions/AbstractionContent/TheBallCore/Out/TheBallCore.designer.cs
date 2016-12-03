@@ -50,6 +50,13 @@ namespace INT {
 			}
 
 			[DataContract]
+			public partial class LoginRegistrationResult
+			{
+				[DataMember]
+				public bool Success { get; set; }
+			}
+
+			[DataContract]
 			public partial class DeviceOperationData
 			{
 				[DataMember]

@@ -27,6 +27,9 @@
             <Target name="Account" />
             <Target name="LegacyAccount" />
           </MethodExecute>
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
+            <Target name="Account" />
+          </MethodExecute>
         </SequentialExecution>
       </Execution>
       <OperationReturnValues>

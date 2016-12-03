@@ -315,14 +315,24 @@ namespace WebInterface
         {
             var domainName = context.Request.Url.Host;
             string loginUrl = WebSupport.GetLoginUrl(context);
-            TBRLoginRoot loginRoot = await TBRLoginRoot.GetOrCreateLoginRootWithAccount(loginUrl, true, domainName);
-            bool doDelete = false;
-            if(doDelete)
+            var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(Login.GetLoginIDFromLoginURL(loginUrl));
+            if (login == null)
             {
-                loginRoot.DeleteInformationObject();
-                return;
+                string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
+                var loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginRootID);
+                if (loginRoot != null)
+                {
+                    var importResult = await ImportAccountFromOIPLegacy.ExecuteAsync(new ImportAccountFromOIPLegacyParameters
+                    {
+                        LegacyLogin = loginRoot
+                    });
+                    var loginID = importResult.ImportedAccount.Logins.First();
+                    login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
+                }
             }
-            TBAccount account = loginRoot.Account;
+            if(login == null)
+                throw new SecurityException("Unknown login: " + loginUrl);
+            var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(login.Account);
             InformationContext.AuthenticateContextOwner(account);
             var request = context.Request;
             var contentPath = request.GetOwnerContentPath(requestPath);

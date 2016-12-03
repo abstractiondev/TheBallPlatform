@@ -26,6 +26,7 @@ using System.Threading.Tasks;
 				Account Account =  await ImportAccountFromOIPLegacyImplementation.GetTarget_AccountAsync(LegacyAccount);	
 				 await ImportAccountFromOIPLegacyImplementation.ExecuteMethod_AddMissingLoginsAsync(Account, LegacyAccount);		
 				 await ImportAccountFromOIPLegacyImplementation.ExecuteMethod_AddMissingEmailsAsync(Account, LegacyAccount);		
+				 await ImportAccountFromOIPLegacyImplementation.ExecuteMethod_StoreObjectAsync(Account);		
 				ImportAccountFromOIPLegacyReturnValue returnValue = ImportAccountFromOIPLegacyImplementation.Get_ReturnValue(Account);
 		return returnValue;
 				}
@@ -77,8 +78,7 @@ using System.Threading.Tasks;
 				 await ActivateEmailValidationImplementation.ExecuteMethod_StoreEmailIfChangedAsync(parameters.Email, ProcessEmailValidationActivationOutput);		
 				}
 				}
-
-		    public class EnsureEmailParameters 
+				public class EnsureEmailParameters 
 		{
 				public string EmailAddress ;
 				public string AccountID ;

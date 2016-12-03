@@ -48,6 +48,20 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
+			public partial class LoginRegistrationResult 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public bool Success;
+
+			
+			}
+			[DataContract]
 			public partial class DeviceOperationData 
 			{
 				[DataMember]
