@@ -525,6 +525,35 @@
           <Target name="Email"/>
         </OperationReturnValues>
       </Operation>
+      <Operation name="EnsureAccount">
+        <OperationSpec>
+          <Description>Connect to existing account or create new one based on email</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="LoginUrl" dataType="string" designDesc="Login url to be used to create the account" state="implemented"/>
+          <Parameter name="EmailAddress" dataType="string" designDesc="Email address" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <OperationExecute name="EnsureEmail" targetOperationName="EnsureEmail" designDesc="Ensure email object defined for address" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="EmailAddress"/>
+              <ReturnValue dataType="Email" name="EnsuredEmail" designDesc="Returned email" state="implemented"/>
+            </OperationExecute>
+            <TargetDefinition name="ExistingAccount" dataType="Account" designDesc="Existing account, if any" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="EnsureEmailOutput"/>
+            </TargetDefinition>
+            <TargetDefinition name="ResultingAccount" dataType="Account" designDesc="Existing or newly created account, with email attached to it" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="LoginUrl"/>
+              <Target name="EnsureEmailOutput"/>
+              <Target name="ExistingAccount"/>
+            </TargetDefinition>
+          </SequentialExecution>
+        </Execution>
+        <OperationReturnValues>
+          <ReturnValue dataType="Account" name="EnsuredAccount" designDesc="Ensured account, with given email ensured and connected to it" state="implemented" />
+          <Target name="ResultingAccount"/>
+        </OperationReturnValues>
+      </Operation>
       <Operation name="CreateAccount">
         <OperationSpec>
           <Description>Create account with given login and email</Description>
@@ -561,6 +590,9 @@
               <Target name="AccountToBeCreated"/>
               <Target name="LoginOutput"/>
               <Target name="EmailOutput"/>
+            </MethodExecute>
+            <MethodExecute name="CopyAccountTemplates" designDesc="Copy account web templates to newly created account" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="AccountToBeCreated"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>

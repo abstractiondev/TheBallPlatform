@@ -1,10 +1,12 @@
 using System;
 using System.IO;
+using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using RestSharp.Extensions.MonoHttp;
 
 namespace TheBall.CORE
 {
-    partial class Login
+    partial class Login : IAdditionalFormatProvider
     {
         const string httpsPrefix = "https://";
         const string httpPrefix = "http://";
@@ -31,5 +33,14 @@ namespace TheBall.CORE
             return emailPrefix + emailAddress;
         }
 
+        AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
+        {
+            return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
+        }
+
+        string[] IAdditionalFormatProvider.GetAdditionalFormatExtensions()
+        {
+            return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
+        }
     }
 }

@@ -47,7 +47,13 @@ namespace TheBall.CORE
                     AccountID = account.ID,
                     LoginURL = loginUrl
                 });
-                logins.Add(ensureOpResult.EnsuredLogin);
+                var login = ensureOpResult.EnsuredLogin;
+                if (login.Account != account.ID)
+                {
+                    login.Account = account.ID;
+                    await login.StoreInformationAsync();
+                }
+                logins.Add(login);
             }
             account.Logins = account.Logins.Union(logins.Select(login => login.ID)).ToList();
         }
@@ -64,6 +70,12 @@ namespace TheBall.CORE
                     AccountID = account.ID,
                     EmailAddress = emailAddress
                 });
+                var email = ensureOpResult.EnsuredEmail;
+                if (email.Account != account.ID)
+                {
+                    email.Account = account.ID;
+                    await email.StoreInformationAsync();
+                }
                 emails.Add(ensureOpResult.EnsuredEmail);
             }
             account.Emails = account.Emails.Union(emails.Select(email => email.ID)).ToList();

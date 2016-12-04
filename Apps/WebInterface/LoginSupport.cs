@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -84,6 +85,7 @@ namespace WebInterface
                 login.PasswordSalt = salt;
                 login.PasswordHash = passwordHash;
                 await login.StoreInformationAsync();
+                email = await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, email.ID);
                 email.PendingValidation = false;
                 await email.StoreInformationAsync();
             }

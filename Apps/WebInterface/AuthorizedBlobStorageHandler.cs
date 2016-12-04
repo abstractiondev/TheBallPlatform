@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -322,11 +323,26 @@ namespace WebInterface
                 var loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginRootID);
                 if (loginRoot != null)
                 {
-                    var importResult = await ImportAccountFromOIPLegacy.ExecuteAsync(new ImportAccountFromOIPLegacyParameters
-                    {
-                        LegacyLogin = loginRoot
-                    });
+                    var importResult =
+                        await ImportAccountFromOIPLegacy.ExecuteAsync(new ImportAccountFromOIPLegacyParameters
+                        {
+                            LegacyLogin = loginRoot
+                        });
                     var loginID = importResult.ImportedAccount.Logins.First();
+                    login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
+                }
+                else // Login info without account/login data
+                {
+                    GenericPrincipal principal = (GenericPrincipal)context.User;
+                    TheBallIdentity identity = (TheBallIdentity)principal.Identity;
+                    string emailAddress = identity.EmailAddress;
+                    var ensuredAccountResult = await EnsureAccount.ExecuteAsync(new EnsureAccountParameters
+                    {
+                        EmailAddress = emailAddress,
+                        LoginUrl = loginUrl
+                    });
+                    var ensuredAccount = ensuredAccountResult.EnsuredAccount;
+                    var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
                     login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
                 }
             }

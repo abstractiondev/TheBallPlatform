@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using TheBall.CORE.InstanceSupport;
 
 namespace TheBall.CORE
 {
@@ -69,6 +70,16 @@ namespace TheBall.CORE
             if(!accountToBeCreated.Emails.Contains(emailOutput.ID))
                 accountToBeCreated.Emails.Add(emailOutput.ID);
             emailOutput.Account = accountToBeCreated.ID;
+        }
+
+        public static async Task ExecuteMethod_CopyAccountTemplatesAsync(Account accountToBeCreated)
+        {
+            var accountID = accountToBeCreated.ID;
+            foreach (var templateName in InstanceConfig.Current.DefaultAccountTemplateList)
+            {
+                await RenderWebSupport.RefreshAccountTemplateA(accountID, templateName);
+            }
+
         }
     }
 }

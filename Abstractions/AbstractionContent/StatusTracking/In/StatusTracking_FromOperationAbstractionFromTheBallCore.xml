@@ -73,6 +73,24 @@
     <StatusItem name="EnsureEmail_EnsuredEmail" displayName="VariableType: EnsuredEmail" description="Ensured email object">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="EnsureAccount_LoginUrl" displayName="VariableType: LoginUrl" description="Login url to be used to create the account">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureAccount_EmailAddress" displayName="VariableType: EmailAddress" description="Email address">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureAccount_EnsureEmail" displayName="OperationExecuteType: EnsureEmail" description="Ensure email object defined for address">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureAccount_ExistingAccount" displayName="TargetDefinitionType: ExistingAccount" description="Existing account, if any">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureAccount_ResultingAccount" displayName="TargetDefinitionType: ResultingAccount" description="Existing or newly created account, with email attached to it">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="EnsureAccount_EnsuredAccount" displayName="VariableType: EnsuredAccount" description="Ensured account, with given email ensured and connected to it">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="CreateAccount_AccountID" displayName="VariableType: AccountID" description="AccountID (optional) to be created">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -98,6 +116,9 @@
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateAccount_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store objects, account first then others that relate to it">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="CreateAccount_CopyAccountTemplates" displayName="MethodExecuteType: CopyAccountTemplates" description="Copy account web templates to newly created account">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
     <StatusItem name="CreateAccount_CreatedAccount" displayName="VariableType: CreatedAccount" description="Created account object">
@@ -1427,6 +1448,15 @@
       <ItemRef itemName="EnsureEmail_ValidateExistingAccountIDToMatch" />
       <ItemRef itemName="EnsureEmail_EnsuredEmail" />
     </Group>
+    <Group name="EnsureAccount">
+      <ItemRef itemName="EnsureAccount_LoginUrl" />
+      <ItemRef itemName="EnsureAccount_EmailAddress" />
+      <ItemRef itemName="EnsureAccount_EnsureEmail" />
+      <ItemRef itemName="EnsureAccount_ExistingAccount" />
+      <ItemRef itemName="EnsureAccount_ResultingAccount" />
+      <ItemRef itemName="EnsureAccount_EnsuredAccount" />
+      <GroupRef groupName="EnsureEmail" />
+    </Group>
     <Group name="CreateAccount">
       <ItemRef itemName="CreateAccount_AccountID" />
       <ItemRef itemName="CreateAccount_LoginUrl" />
@@ -1437,6 +1467,7 @@
       <ItemRef itemName="CreateAccount_ConnectLoginAndAccount" />
       <ItemRef itemName="CreateAccount_ConnectEmailAndAccount" />
       <ItemRef itemName="CreateAccount_StoreObjects" />
+      <ItemRef itemName="CreateAccount_CopyAccountTemplates" />
       <ItemRef itemName="CreateAccount_CreatedAccount" />
       <GroupRef groupName="EnsureLogin" />
       <GroupRef groupName="EnsureEmail" />

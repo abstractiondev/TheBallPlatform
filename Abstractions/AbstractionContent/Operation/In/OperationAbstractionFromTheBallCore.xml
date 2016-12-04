@@ -112,6 +112,35 @@
         <Target name="Email" />
       </OperationReturnValues>
     </Operation>
+    <Operation name="EnsureAccount">
+      <OperationSpec>
+        <Description>Connect to existing account or create new one based on email</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="LoginUrl" dataType="string" designDesc="Login url to be used to create the account" state="implemented" />
+        <Parameter name="EmailAddress" dataType="string" designDesc="Email address" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <OperationExecute name="EnsureEmail" asyncSupportMode="AsyncOnly" targetOperationName="EnsureEmail" designDesc="Ensure email object defined for address" state="implemented">
+            <Parameter name="EmailAddress" />
+            <ReturnValue name="EnsuredEmail" dataType="Email" designDesc="Returned email" state="implemented" />
+          </OperationExecute>
+          <TargetDefinition name="ExistingAccount" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Existing account, if any" state="implemented">
+            <Target name="EnsureEmailOutput" />
+          </TargetDefinition>
+          <TargetDefinition name="ResultingAccount" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Existing or newly created account, with email attached to it" state="implemented">
+            <Parameter name="LoginUrl" />
+            <Target name="EnsureEmailOutput" />
+            <Target name="ExistingAccount" />
+          </TargetDefinition>
+        </SequentialExecution>
+      </Execution>
+      <OperationReturnValues>
+        <ReturnValue name="EnsuredAccount" dataType="Account" designDesc="Ensured account, with given email ensured and connected to it" state="implemented" />
+        <Target name="ResultingAccount" />
+      </OperationReturnValues>
+    </Operation>
     <Operation name="CreateAccount">
       <OperationSpec>
         <Description>Create account with given login and email</Description>
@@ -148,6 +177,9 @@
             <Target name="AccountToBeCreated" />
             <Target name="LoginOutput" />
             <Target name="EmailOutput" />
+          </MethodExecute>
+          <MethodExecute name="CopyAccountTemplates" asyncSupportMode="AsyncOnly" designDesc="Copy account web templates to newly created account" state="implemented">
+            <Target name="AccountToBeCreated" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

@@ -543,6 +543,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Method Call: CopyAccountTemplates ( AccountToBeCreated )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Copy account web templates to newly created account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
             <Header text="Return Value : CreateAccountReturnValue ( AccountToBeCreated )" level="2">
               <Paragraph>
                 <Table>
@@ -2350,6 +2357,117 @@
                 <Text>
                   <TextContent>Write full response to stream</TextContent>
                 </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="EnsureAccount (LoginUrl, EmailAddress)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Connect to existing account or create new one based on email</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>LoginUrl</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Login url to be used to create the account</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailAddress</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email address</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Operation Call: EnsureEmail ( EmailAddress )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Ensure email object defined for address</TextContent>
+                </Text>
+              </Paragraph>
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Output value field" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EnsuredEmail</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Returned email</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ExistingAccount ( EnsureEmailOutput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Existing account, if any</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ResultingAccount ( EnsureEmailOutput, ExistingAccount, LoginUrl )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Existing or newly created account, with email attached to it</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Return Value : EnsureAccountReturnValue ( ResultingAccount )" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Return Value" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EnsuredAccount</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Ensured account, with given email ensured and connected to it</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
               </Paragraph>
             </Header>
           </Header>

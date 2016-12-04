@@ -103,6 +103,36 @@ using System.Threading.Tasks;
 		{
 				public Email EnsuredEmail ;
 				}
+				public class EnsureAccountParameters 
+		{
+				public string LoginUrl ;
+				public string EmailAddress ;
+				}
+		
+		public class EnsureAccount 
+		{
+				private static void PrepareParameters(EnsureAccountParameters parameters)
+		{
+					}
+				public static async Task<EnsureAccountReturnValue> ExecuteAsync(EnsureAccountParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Email EnsureEmailOutput;
+		{ // Local block to allow local naming
+			EnsureEmailParameters operationParameters = EnsureAccountImplementation.EnsureEmail_GetParameters(parameters.EmailAddress);
+			var operationReturnValue =  await EnsureEmail.ExecuteAsync(operationParameters);
+			EnsureEmailOutput = EnsureAccountImplementation.EnsureEmail_GetOutput(operationReturnValue, parameters.EmailAddress);						
+		} // Local block closing
+				Account ExistingAccount =  await EnsureAccountImplementation.GetTarget_ExistingAccountAsync(EnsureEmailOutput);	
+				Account ResultingAccount =  await EnsureAccountImplementation.GetTarget_ResultingAccountAsync(parameters.LoginUrl, EnsureEmailOutput, ExistingAccount);	
+				EnsureAccountReturnValue returnValue = EnsureAccountImplementation.Get_ReturnValue(ResultingAccount);
+		return returnValue;
+				}
+				}
+				public class EnsureAccountReturnValue 
+		{
+				public Account EnsuredAccount ;
+				}
 				public class CreateAccountParameters 
 		{
 				public string AccountID ;
@@ -134,6 +164,7 @@ using System.Threading.Tasks;
 				CreateAccountImplementation.ExecuteMethod_ConnectLoginAndAccount(AccountToBeCreated, LoginOutput);		
 				CreateAccountImplementation.ExecuteMethod_ConnectEmailAndAccount(AccountToBeCreated, EmailOutput);		
 				 await CreateAccountImplementation.ExecuteMethod_StoreObjectsAsync(AccountToBeCreated, LoginOutput, EmailOutput);		
+				 await CreateAccountImplementation.ExecuteMethod_CopyAccountTemplatesAsync(AccountToBeCreated);		
 				CreateAccountReturnValue returnValue = CreateAccountImplementation.Get_ReturnValue(AccountToBeCreated);
 		return returnValue;
 				}

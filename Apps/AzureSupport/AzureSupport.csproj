@@ -225,6 +225,7 @@
     <Compile Include="TheBall.CORE\DeviceSupport.cs" />
     <Compile Include="TheBall.CORE\DeviceSyncFullAccountOperationImplementation.cs" />
     <Compile Include="TheBall.CORE\Email.cs" />
+    <Compile Include="TheBall.CORE\EnsureAccountImplementation.cs" />
     <Compile Include="TheBall.CORE\EnsureEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\EnsureLoginImplementation.cs" />
     <Compile Include="TheBall.CORE\ExecuteProcessImplementation.cs" />
