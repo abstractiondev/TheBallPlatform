@@ -6,14 +6,14 @@ namespace TheBall.CORE
     {
         public static async Task<Account> GetTarget_AccountAsync(string accountId)
         {
-            var account = await ObjectStorage.RetrieveFromDefaultLocationA<Account>(accountId);
+            var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountId);
             return account;
         }
 
         public static async Task<Email> GetTarget_EmailAsync(string emailAddress)
         {
             var emailId = Email.GetIDFromEmailAddress(emailAddress);
-            var email = await ObjectStorage.RetrieveFromDefaultLocationA<Email>(emailId);
+            var email = await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, emailId);
             return email;
         }
 

@@ -63,9 +63,9 @@ namespace WebInterface
                 var emailAddress = email.EmailAddress;
                 var accountID = email.Account;
                 Account account;
+                var loginUrl = Login.GetLoginUrlFromEmailAddress(emailAddress);
                 if (accountID == null)
                 {
-                    var loginUrl = Login.GetLoginUrlFromEmailAddress(emailAddress);
                     var accountResult = await CreateAccount.ExecuteAsync(new CreateAccountParameters
                     {
                         LoginUrl = loginUrl,
@@ -76,9 +76,21 @@ namespace WebInterface
                 else
                     account =
                         await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountID);
-                var login =
-                    await
-                        ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, account.Logins.First());
+                var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
+                if (!account.Logins.Contains(loginID))
+                {
+                    var ensuredLogin = (await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
+                    {
+                        AccountID = accountID,
+                        LoginURL = loginUrl
+                    })).EnsuredLogin;
+                    await AddLoginToAccount.ExecuteAsync(new AddLoginToAccountParameters
+                    {
+                        AccountID = accountID,
+                        LoginUrl = loginUrl
+                    });
+                }
+                var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
                 var salt = BCrypt.Net.BCrypt.GenerateSalt();
                 var password = registrationInfo.LoginInfo.Password;
                 var passwordHash = getPasswordHash(password, salt);
