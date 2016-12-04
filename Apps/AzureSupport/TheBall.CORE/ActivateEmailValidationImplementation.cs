@@ -14,7 +14,7 @@ namespace TheBall.CORE
             bool isReissued = false;
             if (email.ValidationKey == null || email.ValidationProcessExpiration < utcNow)
             {
-                var expirationTime = utcNow.AddMinutes(30);
+                var expirationTime = utcNow.AddMinutes(5);
                 email.PendingValidation = true;
                 email.ValidationKey = KeyGenerator.GetUniqueKey(8);
                 email.ValidationProcessExpiration = expirationTime;

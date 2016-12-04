@@ -58,7 +58,7 @@ namespace WebInterface
                 EmailAddress = registrationInfo.LoginInfo.EmailAddress
             });
             var email = emailResult.EnsuredEmail;
-            if (registrationInfo.ConfirmationCode == email.ValidationKey)
+            if (registrationInfo.ConfirmationCode == email.ValidationKey) // TODO: Add expiration check here as well
             {
                 var emailAddress = email.EmailAddress;
                 var accountID = email.Account;
@@ -99,6 +99,8 @@ namespace WebInterface
                 await login.StoreInformationAsync();
                 email = await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, email.ID);
                 email.PendingValidation = false;
+                email.ValidationProcessExpiration = DateTime.UtcNow;
+                email.ValidationKey = null;
                 await email.StoreInformationAsync();
             }
         }
