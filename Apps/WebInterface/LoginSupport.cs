@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -103,6 +104,8 @@ namespace WebInterface
                 email.ValidationKey = null;
                 await email.StoreInformationAsync();
             }
+            else
+                throw new SecurityException("Invalid confirmation code");
         }
 
         private static string getPasswordHash(string password, string salt)
@@ -139,8 +142,8 @@ namespace WebInterface
             if (validLogin)
             {
                 AuthenticationSupport.SetAuthenticationCookie(response, loginUrl, emailAddress);
-            }
-
+            } else
+                throw new SecurityException("Invalid login or password");
         }
     }
 }
