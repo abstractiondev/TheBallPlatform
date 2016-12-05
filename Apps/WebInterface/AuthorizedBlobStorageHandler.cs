@@ -618,6 +618,26 @@ namespace WebInterface
         private static async Task SetCurrentAccountFromLogin(HttpContext context)
         {
             var loginUrl = context.User.Identity.Name;
+            string loginID = Login.GetLoginIDFromLoginURL(loginUrl);
+            var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
+            if (login != null)
+            {
+                var accountID = login.Account;
+                var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountID);
+                string accountEmailID = account.Emails.FirstOrDefault();
+                var email =
+                    await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, accountEmailID);
+                var emailAddress = email.EmailAddress;
+                var accountName = emailAddress;
+                InformationContext.Current.Account = new CoreAccountData(accountID,
+                    accountName, emailAddress);
+            }
+        }
+
+
+        private static async Task SetCurrentAccountFromLoginxx(HttpContext context)
+        {
+            var loginUrl = context.User.Identity.Name;
             string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
             TBRLoginRoot loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginID);
             if (loginRoot != null)
