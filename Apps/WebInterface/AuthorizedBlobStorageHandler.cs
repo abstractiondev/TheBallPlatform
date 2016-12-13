@@ -25,6 +25,7 @@ using AzureSupport;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.ApplicationInsights.Web;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -343,7 +344,19 @@ namespace WebInterface
                     });
                     var ensuredAccount = ensuredAccountResult.EnsuredAccount;
                     var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
+                    var accountID = ensuredAccount.ID;
                     login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
+                    if (login == null)
+                    {
+                        var ensuredLoginResult = await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
+                        {
+                            AccountID = accountID,
+                            LoginURL = loginUrl
+                        });
+                        login = ensuredLoginResult.EnsuredLogin;
+                        login.Account = accountID;
+                        await login.StoreInformationAsync();
+                    }
                 }
             }
             if(login == null)
