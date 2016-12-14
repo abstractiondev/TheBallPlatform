@@ -859,7 +859,7 @@ namespace TheBall
 
         public static void ReconnectMastersAndCollections(this IInformationObject informationObject, bool updateContents)
         {
-            VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
+            var owner = VirtualOwner.FigureOwner(informationObject);
             if (updateContents)
             {
                 IBeforeStoreHandler beforeStoreHandler = informationObject as IBeforeStoreHandler;
@@ -1065,7 +1065,7 @@ namespace TheBall
         private static string resolveTypeNameFromRelativeLocation(string relativeLocation)
         {
             string[] partsOfLocation = relativeLocation.Split('/');
-            VirtualOwner owner = VirtualOwner.FigureOwner(relativeLocation);
+            var owner = VirtualOwner.FigureOwner(relativeLocation);
             return partsOfLocation[2] + "." + partsOfLocation[3];
         }
 

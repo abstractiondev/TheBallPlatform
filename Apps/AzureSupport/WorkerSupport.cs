@@ -390,7 +390,7 @@ namespace TheBall
             string targetRootFolderName = currPublishTimeUtc.ToString("yyyy-MM-dd_HH-mm-ss");
             // Sync website
             string targetWebsiteRoot = targetRootFolderName;
-            VirtualOwner owner = VirtualOwner.FigureOwner(sourceOwner);
+            var owner = VirtualOwner.FigureOwner(sourceOwner);
             string sourceWebsiteRoot = sourceOwner + "/" + sourceRoot;
             WebContentSync(sourceContainerName, sourceWebsiteRoot, targetContainerName, targetWebsiteRoot,
                            RenderWebSupport.CopyAsIsSyncHandler);

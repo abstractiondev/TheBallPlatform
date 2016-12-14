@@ -52,7 +52,7 @@ namespace TheBall
                 string relativeLocation;
                 string oldETag;
                 retrieveDataSourceInfo(sourceInfo, out relativeLocation, out oldETag);
-                VirtualOwner verifyOwner = VirtualOwner.FigureOwner(relativeLocation);
+                var verifyOwner = VirtualOwner.FigureOwner(relativeLocation);
                 if (verifyOwner.IsSameOwner(containerOwner) == false)
                     throw new SecurityException("Mismatch in ownership of data submission");
                 IInformationObject rootObject = StorageSupport.RetrieveInformation(relativeLocation, oldETag,

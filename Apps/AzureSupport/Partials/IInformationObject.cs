@@ -93,7 +93,7 @@ namespace TheBall.CORE
                 }
                 else
                 {
-                    VirtualOwner owner = VirtualOwner.FigureOwner(rootObject.RelativeLocation);
+                    var owner = VirtualOwner.FigureOwner(rootObject.RelativeLocation);
                     Type contentType = prop.PropertyType;
                     string contentDomain = contentType.Namespace;
                     string contentTypeName = contentType.Name;

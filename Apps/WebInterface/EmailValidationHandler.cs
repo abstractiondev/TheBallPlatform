@@ -109,7 +109,7 @@ namespace WebInterface
         private void HandleOutputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
-            VirtualOwner owner;
+            IContainerOwner owner;
             var outputJoinInfo = emailValidation.InformationOutputConfirmation;
             string redirectUrl;
             if (String.IsNullOrEmpty(outputJoinInfo.AccountID) == false)
@@ -136,7 +136,7 @@ namespace WebInterface
         private void HandleInputJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
-            VirtualOwner owner;
+            IContainerOwner owner;
             var inputJoinInfo = emailValidation.InformationInputConfirmation;
             string redirectUrl;
             if (String.IsNullOrEmpty(inputJoinInfo.AccountID) == false)
@@ -163,7 +163,7 @@ namespace WebInterface
         private void HandleDeviceJoinConfirmation(HttpContext context, TBAccount account, TBEmailValidation emailValidation)
         {
             ValidateAccountsEmailAddress(account, emailValidation);
-            VirtualOwner owner;
+            IContainerOwner owner;
             var deviceJoinInfo = emailValidation.DeviceJoinConfirmation;
             string redirectUrl;
             if (String.IsNullOrEmpty(deviceJoinInfo.AccountID) == false)

@@ -80,7 +80,6 @@ namespace TheBall
         }
 
 
-
         public static async Task ExecuteHttpOperationAsync(HttpOperationData reqData)
         {
             string operationName = reqData.OperationName;
@@ -88,38 +87,37 @@ namespace TheBall
             var operationType = Type.GetType(operationName);
             if (operationType == null)
                 throw new InvalidDataException("Operation fully qualified type or parameter type not found in executing assembly: " + operationName);
-
-            var parametersType = Type.GetType(parametersTypeName);
             var executeMethod = operationType.GetMethod("Execute");
             var executeMethodAsync = operationType.GetMethod("ExecuteAsync");
-            if(executeMethod == null && executeMethodAsync == null)
+            if (executeMethod == null && executeMethodAsync == null)
                 throw new InvalidDataException("Operationg Execute(Async) method is missing - cannot execute: " + operationName);
+            var parametersType = Type.GetType(parametersTypeName);
+            object[] paramObjs = null;
+            if (parametersType != null)
+            {
+                var preparedParameters = PrepareParameters(reqData, parametersType);
+                paramObjs = new object[] { preparedParameters };
+            }
             await LogicalOperationContext.SetCurrentContext(reqData, async (initialOwner, executingOwner) =>
             {
                 InformationContext.Current.OwnerStack.Push(executingOwner);
                 if (initialOwner.IsAccountContainer())
                 {
                     string accountID = initialOwner.LocationPrefix;
-                    var accountRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRAccountRoot>(accountID);
-                    var currAccount = accountRoot.Account;
-                    string accountName;
-                    string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
-                    if (accountEmail == null)
+                    var currAccount = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountID);
+                    string accountEmailID = currAccount.Emails.FirstOrDefault();
+                    string accountEmail;
+                    if (accountEmailID == null)
                         accountEmail = "";
-                    accountName = accountEmail;
-                    accountName = accountName.Trim();
+                    else
+                        accountEmail = Email.GetEmailAddressFromID(accountEmailID);
+                    var accountName = accountEmail;
                     InformationContext.Current.Account = new CoreAccountData(accountID,
                         accountName, accountEmail);
                 }
             });
             try
             {
-                object[] paramObjs = null;
-                if (parametersType != null)
-                {
-                    var preparedParameters = PrepareParameters(reqData, parametersType);
-                    paramObjs = new object[] { preparedParameters};
-                }
                 if (executeMethodAsync != null)
                 {
                     Task awaitable = (Task) executeMethodAsync.Invoke(null, paramObjs);

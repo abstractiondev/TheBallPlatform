@@ -20,17 +20,19 @@ namespace TheBall.CORE
         private string containerName;
         private string locationPrefix;
 
-        public static VirtualOwner FigureOwner(IInformationObject ownedObject)
+        public static IContainerOwner FigureOwner(IInformationObject ownedObject)
         {
             string relativeLocation = ownedObject.RelativeLocation;
             return FigureOwner(relativeLocation);
         }
 
-        public static VirtualOwner FigureOwner(string relativeLocation)
+        public static IContainerOwner FigureOwner(string relativeLocation)
         {
             if (relativeLocation.StartsWith("acc/") || relativeLocation.StartsWith("grp/"))
                 return new VirtualOwner(relativeLocation.Substring(0, 3),
                     relativeLocation.Substring(4, StorageSupport.GuidLength));
+            if (relativeLocation.StartsWith("sys/AAA"))
+                return SystemSupport.SystemOwner;
             throw new InvalidDataException("Cannot figure owner of: " + relativeLocation);
         }
 
@@ -58,9 +60,5 @@ namespace TheBall.CORE
             get { return locationPrefix; }
         }
 
-        public bool IsSameOwner(IContainerOwner containerOwner)
-        {
-            return ContainerName == containerOwner.ContainerName && LocationPrefix == containerOwner.LocationPrefix;
-        }
     }
 }

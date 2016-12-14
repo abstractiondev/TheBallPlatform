@@ -7,7 +7,7 @@ namespace TheBall.CORE
     {
         public static AccountContainer GetTarget_AccountContainerBeforeGroupRemoval(string accountId)
         {
-            VirtualOwner owner = VirtualOwner.FigureOwner("acc/" + accountId);
+            var owner = VirtualOwner.FigureOwner("acc/" + accountId);
             return ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(owner, "default");
         }
 

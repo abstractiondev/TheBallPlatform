@@ -9,7 +9,7 @@ namespace TheBall.CORE
             Group group = new Group();
             if (groupId != null)
                 group.ID = groupId;
-            group.UpdateRelativeLocationFromID();
+            group.SetLocationAsOwnerContent(SystemSupport.SystemOwner, group.ID);
             return group;
         }
 

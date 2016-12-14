@@ -377,7 +377,7 @@ namespace TheBall
             IIndexedDocument iDoc = informationObject as IIndexedDocument;
             if (iDoc != null)
             {
-                VirtualOwner owner = VirtualOwner.FigureOwner(informationObject);
+                var owner = VirtualOwner.FigureOwner(informationObject);
                 if (owner.IsEqualOwner(Owner))
                 {
                     IndexedIDInfos.Add(informationObject.RelativeLocation);

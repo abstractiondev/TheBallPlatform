@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3DE89F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{89AD2678-AAC2-4108-B018-B6EC19A4A042}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallTool", "Tools\TheBallTool\TheBallTool.csproj", "{5377CB63-1979-4596-A1F4-DF9417C9B037}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebInterface", "Apps\WebInterface\WebInterface.csproj", "{639EF079-5944-480A-BF5B-691B3F133507}"
@@ -51,6 +49,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedPr
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationRunnerTool", "Tools\OperationRunnerTool\OperationRunnerTool.csproj", "{48F2FCE5-F134-4827-8772-8DE737FD1951}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
@@ -67,18 +67,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|Any CPU.Build.0 = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|x86.ActiveCfg = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Debug|x86.Build.0 = Debug|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|Any CPU.ActiveCfg = Release|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|Any CPU.Build.0 = Release|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|Mixed Platforms.Build.0 = Release|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|x86.ActiveCfg = Release|x86
-		{5377CB63-1979-4596-A1F4-DF9417C9B037}.Release|x86.Build.0 = Release|x86
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33F04EB2-55DE-4539-8E67-152A6057F100}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -187,12 +175,23 @@ Global
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|x86.ActiveCfg = Release|Any CPU
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890}.Release|x86.Build.0 = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Debug|x86.Build.0 = Debug|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|x86.ActiveCfg = Release|Any CPU
+		{48F2FCE5-F134-4827-8772-8DE737FD1951}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{5377CB63-1979-4596-A1F4-DF9417C9B037} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
 		{33F04EB2-55DE-4539-8E67-152A6057F100} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{639EF079-5944-480A-BF5B-691B3F133507} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{3A9EEC93-0E0B-4740-853F-ACD9397E3E46} = {D0EF7B40-E356-470F-886A-5AB58C98950A}
@@ -204,5 +203,6 @@ Global
 		{C5D4D065-D884-4590-A3F5-BB2566C0A890} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0} = {85C8A69D-C362-4E72-A24D-04ED771CFA7F}
 		{7EE65749-80A3-42A1-A16E-A32EFE7C8633} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
+		{48F2FCE5-F134-4827-8772-8DE737FD1951} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
 	EndGlobalSection
 EndGlobal

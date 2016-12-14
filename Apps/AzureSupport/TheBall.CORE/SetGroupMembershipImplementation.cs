@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 
 namespace TheBall.CORE
@@ -6,25 +7,35 @@ namespace TheBall.CORE
     {
         public static async Task<Account> GetTarget_AccountAsync(string accountId)
         {
-            var account = await ObjectStorage.RetrieveFromDefaultLocationA<Account>(accountId);
+            var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountId);
             return account;
         }
 
         public static async Task<Group> GetTarget_GroupAsync(string groupId)
         {
-            var group = await ObjectStorage.RetrieveFromDefaultLocationA<Group>(groupId);
+            var group = await ObjectStorage.RetrieveFromOwnerContentA<Group>(SystemSupport.SystemOwner, groupId);
             return group;
         }
 
         public static async Task<GroupMembership> GetTarget_GroupMembershipAsync(string accountId, string groupId)
         {
             var membershipID = GroupMembership.GetIDFromAccountAndGroup(accountId, groupId);
-            var membership = await ObjectStorage.RetrieveFromDefaultLocationA<GroupMembership>(membershipID);
+            var membership = await ObjectStorage.RetrieveFromOwnerContentA<GroupMembership>(SystemSupport.SystemOwner, membershipID);
+            if (membership == null)
+            {
+                membership = new GroupMembership();
+                membership.ID = membershipID;
+                membership.SetLocationAsOwnerContent(SystemSupport.SystemOwner, membershipID);
+            }
+            membership.Account = accountId;
+            membership.Group = groupId;
             return membership;
         }
 
         public static void ExecuteMethod_SetRoleToMembership(string role, GroupMembership groupMembership)
         {
+            if (!GroupMembership.IsValidRole(role))
+                throw new InvalidDataException("Invalid group membership role: " + role);
             groupMembership.Role = role;
         }
 

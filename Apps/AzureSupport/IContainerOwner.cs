@@ -19,6 +19,12 @@ namespace TheBall.CORE
         {
             return containerOwner.LocationPrefix;
         }
+
+        public static bool IsSameOwner(this IContainerOwner thisOwner, IContainerOwner containerOwner)
+        {
+            return thisOwner.ContainerName == containerOwner.ContainerName && thisOwner.LocationPrefix == containerOwner.LocationPrefix;
+        }
+
     }
 
 }

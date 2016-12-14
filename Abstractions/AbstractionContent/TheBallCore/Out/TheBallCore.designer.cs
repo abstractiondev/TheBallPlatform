@@ -256,7 +256,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Login");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Login), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -629,7 +629,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Email");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Email), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1010,7 +1010,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Account");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Account), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1291,7 +1291,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Group");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Group), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1562,7 +1562,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: GroupMembership");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(GroupMembership), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -1921,7 +1921,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentPackageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContentPackageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2116,14 +2116,14 @@ namespace INT {
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -2133,7 +2133,7 @@ namespace INT {
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ContentPackage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -2404,7 +2404,7 @@ namespace INT {
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ContentPackage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ContentPackage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2794,7 +2794,7 @@ ContentPackage.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationInputCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationInputCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -2989,14 +2989,14 @@ ContentPackage.Description
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -3006,7 +3006,7 @@ ContentPackage.Description
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationInput>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -3277,7 +3277,7 @@ ContentPackage.Description
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationInput");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationInput), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3667,7 +3667,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOutputCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationOutputCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -3862,14 +3862,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -3879,7 +3879,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InformationOutput>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -4150,7 +4150,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOutput");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationOutput), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4547,7 +4547,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AuthenticatedAsActiveDeviceCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AuthenticatedAsActiveDeviceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -4742,14 +4742,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -4759,7 +4759,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<AuthenticatedAsActiveDevice>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -5030,7 +5030,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: AuthenticatedAsActiveDevice");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(AuthenticatedAsActiveDevice), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5434,7 +5434,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeviceMembershipCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeviceMembershipCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -5629,14 +5629,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -5646,7 +5646,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<DeviceMembership>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -5917,7 +5917,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: DeviceMembership");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(DeviceMembership), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6285,7 +6285,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceFiscalExportSummary");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceFiscalExportSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -6688,7 +6688,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceSummaryContainer");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceSummaryContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7239,7 +7239,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -7434,14 +7434,14 @@ InformationInput.AuthenticatedDeviceID
 
 				string IInformationCollection.GetMasterLocation()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionLocation(owner);
 					
 				}
 
 				IInformationCollection IInformationCollection.GetMasterInstance()
 				{
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					return GetMasterCollectionInstance(owner);
 					
 				}
@@ -7451,7 +7451,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Invoice>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -7722,7 +7722,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Invoice");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Invoice), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8251,7 +8251,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceDetails");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceDetails), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8650,7 +8650,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceUserCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceUserCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -8860,7 +8860,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceUser>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -9115,7 +9115,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceUser");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceUser), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9612,7 +9612,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowGroupCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceRowGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -9822,7 +9822,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRowGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -10077,7 +10077,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailGroupCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceEventDetailGroupCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10287,7 +10287,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetailGroup>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -10542,7 +10542,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowGroup");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceRowGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -10972,7 +10972,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailGroup");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceEventDetailGroup), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11366,7 +11366,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetailCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceEventDetailCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -11576,7 +11576,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceEventDetail>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -11831,7 +11831,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRowCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceRowCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12041,7 +12041,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<InvoiceRow>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -12296,7 +12296,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceEventDetail");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceEventDetail), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -12739,7 +12739,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InvoiceRow");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InvoiceRow), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13150,7 +13150,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: CategoryCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(CategoryCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13360,7 +13360,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<Category>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -13615,7 +13615,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Category");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Category), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -13954,7 +13954,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessContainer");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProcessContainer), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14207,7 +14207,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: Process");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(Process), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14468,7 +14468,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessItem");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProcessItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -14720,7 +14720,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: SemanticInformationItem");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(SemanticInformationItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15071,7 +15071,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: InformationOwnerInfo");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(InformationOwnerInfo), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15422,7 +15422,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageSummary");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UsageSummary), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -15816,7 +15816,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: UsageMonitorItem");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(UsageMonitorItem), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16483,7 +16483,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RequestResourceUsageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RequestResourceUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -16693,7 +16693,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<RequestResourceUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -16948,7 +16948,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: RequestResourceUsage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(RequestResourceUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17550,7 +17550,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessorUsageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProcessorUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -17760,7 +17760,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<ProcessorUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -18015,7 +18015,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: ProcessorUsage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(ProcessorUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18439,7 +18439,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageTransactionUsageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StorageTransactionUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -18649,7 +18649,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageTransactionUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -18904,7 +18904,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageTransactionUsage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StorageTransactionUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19308,7 +19308,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageUsageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StorageUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -19518,7 +19518,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<StorageUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -19773,7 +19773,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: StorageUsage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(StorageUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20144,7 +20144,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NetworkUsageCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(NetworkUsageCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -20354,7 +20354,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<NetworkUsage>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -20609,7 +20609,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: NetworkUsage");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(NetworkUsage), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21013,7 +21013,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: TimeRange");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(TimeRange), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21360,7 +21360,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetailsCollection");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(HTTPActivityDetailsCollection), null, owner);
 					if(master == null && initiateIfMissing)
 					{
@@ -21570,7 +21570,7 @@ InformationInput.AuthenticatedDeviceID
 				{
 					string dummyItemLocation = ObjectStorage.GetRelativeLocationFromID<HTTPActivityDetails>("dummy");
 					string nonOwnerDirectoryLocation = StorageSupport.GetParentDirectoryTarget(dummyItemLocation);
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					string ownerDirectoryLocation = StorageSupport.GetOwnerContentLocation(owner, nonOwnerDirectoryLocation);
 					return ownerDirectoryLocation;
 				}
@@ -21825,7 +21825,7 @@ InformationInput.AuthenticatedDeviceID
 					if(iObject.IsIndependentMaster == false)
 						throw new NotSupportedException("Cannot retrieve master for non-master type: HTTPActivityDetails");
 					initiated = false;
-					VirtualOwner owner = VirtualOwner.FigureOwner(this);
+					var owner = VirtualOwner.FigureOwner(this);
 					var master = StorageSupport.RetrieveInformation(RelativeLocation, typeof(HTTPActivityDetails), null, owner);
 					if(master == null && initiateIfMissing)
 					{

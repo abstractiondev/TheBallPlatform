@@ -49,7 +49,7 @@ namespace TheBall.CORE
             var authenticationID = informationOutput.AuthenticatedDeviceID;
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
-            VirtualOwner owner = VirtualOwner.FigureOwner(informationOutput);
+            var owner = VirtualOwner.FigureOwner(informationOutput);
             return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
 

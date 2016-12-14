@@ -11,6 +11,11 @@ namespace TheBall.CORE
             return HttpUtility.UrlEncode(emailAddress.ToLower());
         }
 
+        public static string GetEmailAddressFromID(string emailID)
+        {
+            return HttpUtility.UrlDecode(emailID.ToLower());
+        }
+
         AdditionalFormatContent[] IAdditionalFormatProvider.GetAdditionalContentToStore(string masterBlobETag)
         {
             return this.GetFormattedContentToStore(masterBlobETag, AdditionalFormatSupport.WebUIFormatExtensions);
