@@ -99,6 +99,8 @@ namespace OperationRunnerTool
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllGroups -remoteExecute:false -p:TemplateName:cpanel
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllGroups -remoteExecute:true -p:TemplateName:cpanel
 
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllAccounts -remoteExecute:false -p:TemplateName:cpanel
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllAccounts -remoteExecute:true -p:TemplateName:cpanel
 
 #endif
 

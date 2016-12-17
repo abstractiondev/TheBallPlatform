@@ -961,6 +961,15 @@
     <StatusItem name="UpdateTemplateForAllGroups_CallUpdateOwnerTemplates" displayName="MethodExecuteType: CallUpdateOwnerTemplates" description="Call UpdateContainerOwnerTemplates for each">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="UpdateTemplateForAllAccounts_TemplateName" displayName="VariableType: TemplateName" description="Template name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateTemplateForAllAccounts_AccountLocations" displayName="TargetDefinitionType: AccountLocations" description="All account locations">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateTemplateForAllAccounts_CallUpdateOwnerTemplates" displayName="MethodExecuteType: CallUpdateOwnerTemplates" description="Call UpdateContainerOwnerTemplates for each">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="UpdateContainerOwnerTemplates_OwnerRootLocation" displayName="VariableType: OwnerRootLocation" description="Owner root location">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1834,6 +1843,11 @@
       <ItemRef itemName="UpdateTemplateForAllGroups_TemplateName" />
       <ItemRef itemName="UpdateTemplateForAllGroups_GroupLocations" />
       <ItemRef itemName="UpdateTemplateForAllGroups_CallUpdateOwnerTemplates" />
+    </Group>
+    <Group name="UpdateTemplateForAllAccounts">
+      <ItemRef itemName="UpdateTemplateForAllAccounts_TemplateName" />
+      <ItemRef itemName="UpdateTemplateForAllAccounts_AccountLocations" />
+      <ItemRef itemName="UpdateTemplateForAllAccounts_CallUpdateOwnerTemplates" />
     </Group>
     <Group name="UpdateContainerOwnerTemplates">
       <ItemRef itemName="UpdateContainerOwnerTemplates_OwnerRootLocation" />

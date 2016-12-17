@@ -1057,6 +1057,23 @@ using System.Threading.Tasks;
 				 await UpdateTemplateForAllGroupsImplementation.ExecuteMethod_CallUpdateOwnerTemplatesAsync(parameters.TemplateName, GroupLocations);		
 				}
 				}
+				public class UpdateTemplateForAllAccountsParameters 
+		{
+				public string TemplateName ;
+				}
+		
+		public class UpdateTemplateForAllAccounts 
+		{
+				private static void PrepareParameters(UpdateTemplateForAllAccountsParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateTemplateForAllAccountsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] AccountLocations =  await UpdateTemplateForAllAccountsImplementation.GetTarget_AccountLocationsAsync();	
+				 await UpdateTemplateForAllAccountsImplementation.ExecuteMethod_CallUpdateOwnerTemplatesAsync(parameters.TemplateName, AccountLocations);		
+				}
+				}
 
 		    public class UpdateContainerOwnerTemplatesParameters 
 		{

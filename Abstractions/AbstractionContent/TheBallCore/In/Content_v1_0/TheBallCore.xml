@@ -1854,6 +1854,23 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="UpdateTemplateForAllAccounts">
+        <OperationSpec>
+          <Description>Update given template for all accounts</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="TemplateName" dataType="string" designDesc="Template name" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="string[]" name="AccountLocations" designDesc="All account locations" asyncSupportMode="AsyncOnly" state="implemented" />
+            <MethodExecute name="CallUpdateOwnerTemplates" designDesc="Call UpdateContainerOwnerTemplates for each" state="implemented" asyncSupportMode="AsyncOnly">
+              <Parameter name="TemplateName"/>
+              <Target name="AccountLocations"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="UpdateContainerOwnerTemplates">
         <OperationSpec>
           <Description>Update container owner templates from system template location</Description>
