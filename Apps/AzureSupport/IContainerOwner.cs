@@ -25,6 +25,10 @@ namespace TheBall.CORE
             return thisOwner.ContainerName == containerOwner.ContainerName && thisOwner.LocationPrefix == containerOwner.LocationPrefix;
         }
 
+        public static string GetOwnerContentLocation(this IContainerOwner owner, string location)
+        {
+            return StorageSupport.GetOwnerContentLocation(owner, location);
+        }
     }
 
 }

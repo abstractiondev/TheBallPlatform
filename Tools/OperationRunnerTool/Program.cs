@@ -22,7 +22,7 @@ namespace OperationRunnerTool
 
         private static string getConfigOption(string optionPrefix, string[] args, bool required = true)
         {
-            var optionPrefixPart = $"-{optionPrefix}:";
+            var optionPrefixPart = $"-{optionPrefix.ToLower()}:";
             var configOption =
                 args.FirstOrDefault(arg => arg.ToLower().StartsWith(optionPrefixPart))?.Substring(optionPrefixPart.Length);
             if(configOption == null && required)
@@ -44,6 +44,8 @@ namespace OperationRunnerTool
             var configRoot = getConfigOption("cr", args);
             var instanceName = getConfigOption("i", args);
             var ownerInfo = getConfigOption("owner", args, false)?.Replace("_", "/");
+            var remoteExecute = getConfigOption("remoteExecute", args, false);
+            var useWorker = remoteExecute != null && Boolean.Parse(remoteExecute);
             var operationOwner = ownerInfo != null ? VirtualOwner.FigureOwner(ownerInfo) : SystemSupport.SystemOwner;
             var operationName = getConfigOption("op", args);
             var operationParameters = getOperationParameters(args).Select(parValuePair =>
@@ -77,7 +79,10 @@ namespace OperationRunnerTool
                 FormValues = formValues
             };
 
-            await OperationSupport.ExecuteHttpOperationAsync(httpOperationData);
+            if (useWorker)
+                await OperationSupport.QueueHttpOperationAsync(httpOperationData);
+            else
+                await OperationSupport.ExecuteHttpOperationAsync(httpOperationData);
         }
     }
 
@@ -87,6 +92,9 @@ namespace OperationRunnerTool
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:cc6db374-b530-485e-bb08-b9003725a7f5,AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,Role:Initiator
 
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateContainerOwnerTemplates -p:OwnerRootLocation:grp/cc6db374-b530-485e-bb08-b9003725a7f5,TemplateName:cpanel
+
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateContainerOwnerTemplates -remoteExecute:true -p:OwnerRootLocation:acc/2856ef1c-af21-488b-8ed4-0bb72f152e0a,TemplateName:cpanel
 
 #endif
 

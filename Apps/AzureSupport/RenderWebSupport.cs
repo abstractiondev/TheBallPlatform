@@ -954,11 +954,10 @@ namespace TheBall
 
         public static async Task RefreshGroupTemplateA(string groupID, string templateName)
         {
-            string currContainerName = StorageSupport.CurrActiveContainer.Name;
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/group/";
             string acctTemplateLocationTarget = "grp/" + groupID + "/" + templateName;
             string sysLocationSource = syscontentRoot + templateName;
-            await SyncTemplatesToSiteA(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
+            await SyncTemplatesToSiteA(sysLocationSource, acctTemplateLocationTarget, false);
         }
 
         public static async Task RefreshAccountTemplateA(string acctID, string templateName)
@@ -967,7 +966,7 @@ namespace TheBall
             string syscontentRoot = SystemSupport.SystemOwnerRoot + "/account/";
             string acctTemplateLocationTarget = "acc/" + acctID + "/" + templateName;
             string sysLocationSource = syscontentRoot + templateName;
-            await SyncTemplatesToSiteA(currContainerName, sysLocationSource, currContainerName, acctTemplateLocationTarget, false);
+            await SyncTemplatesToSiteA(sysLocationSource, acctTemplateLocationTarget, false);
         }
 
 
@@ -978,9 +977,9 @@ namespace TheBall
             //WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
         }
 
-        public static async Task SyncTemplatesToSiteA(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool renderWhileSync)
+        public static async Task SyncTemplatesToSiteA(string sourcePathRoot, string targetPathRoot, bool renderWhileSync)
         {
-            await WorkerSupport.WebContentSyncA(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : null);
+            await WorkerSupport.WebContentSyncA(sourcePathRoot, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : null);
         }
 
         public static Task<bool> CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)

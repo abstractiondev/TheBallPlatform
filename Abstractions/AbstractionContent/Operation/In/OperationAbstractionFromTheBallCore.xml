@@ -1410,6 +1410,43 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="UpdateContainerOwnerTemplates">
+      <OperationSpec>
+        <Description>Update container owner templates from system template location</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="OwnerRootLocation" dataType="string" designDesc="Owner root location" state="implemented" />
+        <Parameter name="TemplateName" dataType="string" designDesc="Template name to update" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="TargetOwner" dataType="IContainerOwner" designDesc="Target owner" state="implemented">
+            <Parameter name="OwnerRootLocation" />
+          </TargetDefinition>
+          <MethodExecute name="ValidateTargetIsAccountOrGroup" asyncSupportMode="AsyncOnly" designDesc="Validate the owner is either account or group" state="implemented">
+            <Target name="TargetOwner" />
+          </MethodExecute>
+          <MethodExecute name="ValidateTemplateName" designDesc="Validate template name is valid, not containing dot, not empty" state="implemented">
+            <Parameter name="TemplateName" />
+          </MethodExecute>
+          <TargetDefinition name="SystemTemplateSource" dataType="string" designDesc="System template source based on target owner type" state="implemented">
+            <Target name="TargetOwner" />
+          </TargetDefinition>
+          <TargetDefinition name="TemplateSourceLocation" dataType="string" designDesc="Template source location from system template location" state="implemented">
+            <Parameter name="TemplateName" />
+            <Target name="SystemTemplateSource" />
+          </TargetDefinition>
+          <TargetDefinition name="TemplateTargetLocation" dataType="string" designDesc="Template target location on target owner storage" state="implemented">
+            <Parameter name="TemplateName" />
+            <Target name="TargetOwner" />
+          </TargetDefinition>
+          <MethodExecute name="SyncTemplateContent" asyncSupportMode="AsyncOnly" designDesc="Sync template content from source to target" state="implemented">
+            <Target name="TemplateSourceLocation" />
+            <Target name="TemplateTargetLocation" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="SetOwnerWebRedirect">
       <OperationSpec>
         <Description>

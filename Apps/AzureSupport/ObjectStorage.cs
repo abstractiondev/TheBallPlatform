@@ -44,6 +44,12 @@ namespace TheBall
             return result;
         }
 
+
+        public static async Task<T> RetrieveFromSystemOwner<T>(string contentName, string eTag = null, bool requireExisting = false)
+        {
+            return await RetrieveFromOwnerContentA<T>(SystemSupport.SystemOwner, contentName, eTag, requireExisting);
+        }
+
         public static async Task<T> RetrieveFromOwnerContentA<T>(IContainerOwner containerOwner, string contentName, string eTag = null, bool requireExisting = false)
         {
             string namespaceName = typeof(T).Namespace;

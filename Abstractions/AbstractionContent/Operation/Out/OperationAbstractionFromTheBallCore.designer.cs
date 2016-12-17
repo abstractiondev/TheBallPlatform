@@ -1040,6 +1040,29 @@ using System.Threading.Tasks;
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixRelativeLocationsOfInformationObjects(GroupAsOwner);		
 				}
 				}
+				public class UpdateContainerOwnerTemplatesParameters 
+		{
+				public string OwnerRootLocation ;
+				public string TemplateName ;
+				}
+		
+		public class UpdateContainerOwnerTemplates 
+		{
+				private static void PrepareParameters(UpdateContainerOwnerTemplatesParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateContainerOwnerTemplatesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					IContainerOwner TargetOwner = UpdateContainerOwnerTemplatesImplementation.GetTarget_TargetOwner(parameters.OwnerRootLocation);	
+				 await UpdateContainerOwnerTemplatesImplementation.ExecuteMethod_ValidateTargetIsAccountOrGroupAsync(TargetOwner);		
+				UpdateContainerOwnerTemplatesImplementation.ExecuteMethod_ValidateTemplateName(parameters.TemplateName);		
+				string SystemTemplateSource = UpdateContainerOwnerTemplatesImplementation.GetTarget_SystemTemplateSource(TargetOwner);	
+				string TemplateSourceLocation = UpdateContainerOwnerTemplatesImplementation.GetTarget_TemplateSourceLocation(parameters.TemplateName, SystemTemplateSource);	
+				string TemplateTargetLocation = UpdateContainerOwnerTemplatesImplementation.GetTarget_TemplateTargetLocation(parameters.TemplateName, TargetOwner);	
+				 await UpdateContainerOwnerTemplatesImplementation.ExecuteMethod_SyncTemplateContentAsync(TemplateSourceLocation, TemplateTargetLocation);		
+				}
+				}
 				public class SetOwnerWebRedirectParameters 
 		{
 				public IContainerOwner Owner ;

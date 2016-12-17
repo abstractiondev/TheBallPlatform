@@ -49,12 +49,12 @@ namespace TheBall.CORE
 
         public static bool IsAccountContainer(this IContainerOwner owner)
         {
-            return owner.ContainerName == "acc";
+            return owner.ContainerName == "acc" && owner.LocationPrefix.Length == StorageSupport.GuidLength;
         }
 
         public static bool IsGroupContainer(this IContainerOwner owner)
         {
-            return owner.ContainerName == "grp" || owner.ContainerName == "dev";
+            return (owner.ContainerName == "grp" || owner.ContainerName == "dev") && owner.LocationPrefix.Length == StorageSupport.GuidLength;
         }
 
         public static void ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)

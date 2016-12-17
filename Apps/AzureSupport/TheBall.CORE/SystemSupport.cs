@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace TheBall.CORE
@@ -16,6 +17,13 @@ namespace TheBall.CORE
         public static string[] FilterAwayReservedFolders(string[] directories)
         {
             return directories.Where(dir => ReservedDomainNames.Any(resDom => dir.Contains(resDom) == false)).ToArray();
+        }
+
+        public static bool IsValidTemplateName(string templateName)
+        {
+            var isValid = String.IsNullOrWhiteSpace(templateName) == false &&
+                          templateName.All(chr => chr != '\\' && chr != '/' && chr != '.');
+            return isValid;
         }
     }
 }

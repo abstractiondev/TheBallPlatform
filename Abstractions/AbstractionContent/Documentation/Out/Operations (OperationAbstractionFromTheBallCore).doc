@@ -5106,6 +5106,77 @@ div.WordSection1
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Perform unlink
 		</div>
+		</p><h1>UpdateContainerOwnerTemplates (OwnerRootLocation, TemplateName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update container owner templates from system template location
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		OwnerRootLocation
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Owner root location
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TemplateName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Template name to update
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: TargetOwner ( OwnerRootLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Target owner
+		</div>
+		</p><h2>Method Call: ValidateTargetIsAccountOrGroup ( TargetOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate the owner is either account or group
+		</div>
+		</p><h2>Method Call: ValidateTemplateName ( TemplateName )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate template name is valid, not containing dot, not empty
+		</div>
+		</p><h2>Target Definition: SystemTemplateSource ( TargetOwner )</h2>
+		<p>		<div class="MsoNormal" >
+		System template source based on target owner type
+		</div>
+		</p><h2>Target Definition: TemplateSourceLocation ( SystemTemplateSource, TemplateName )</h2>
+		<p>		<div class="MsoNormal" >
+		Template source location from system template location
+		</div>
+		</p><h2>Target Definition: TemplateTargetLocation ( TargetOwner, TemplateName )</h2>
+		<p>		<div class="MsoNormal" >
+		Template target location on target owner storage
+		</div>
+		</p><h2>Method Call: SyncTemplateContent ( TemplateSourceLocation, TemplateTargetLocation )</h2>
+		<p>		<div class="MsoNormal" >
+		Sync template content from source to target
+		</div>
 		</p><h1>UpdateOwnerDomainObjectsInSQLiteStorage (Owner, SemanticDomain)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

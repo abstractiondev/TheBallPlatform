@@ -10,7 +10,7 @@ using TheBall.Interface.INT;
 
 namespace TheBall.CORE.Storage
 {
-    public class BlobStorage
+    public static class BlobStorage
     {
         const string InterfaceDataPrefixFolder = "TheBall.Interface/InterfaceData";
         const string ShareDataPrefixFolder = "TheBall.Interface/ShareInfo";
@@ -80,6 +80,13 @@ namespace TheBall.CORE.Storage
             return path;
         }
 
+        public static string CombinePathForOwner(this IContainerOwner owner, params string[] pathComponents)
+        {
+            var path = CombinePath(pathComponents);
+            var ownerPath = owner.GetOwnerContentLocation(path);
+            return ownerPath;
+        }
+
         public static async Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
         {
             await
@@ -118,6 +125,11 @@ namespace TheBall.CORE.Storage
         public static async Task<BlobStorageItem[]> GetOwnerBlobsA(string rootFolder)
         {
             return await GetBlobItemsA(InformationContext.CurrentOwner, rootFolder);
+        }
+
+        public static async Task<BlobStorageItem[]> GetAbsoluteLocationBlobsA(string rootFolder)
+        {
+            return await StorageSupport.GetBlobItemsA(null, rootFolder, true);
         }
 
         public static async Task<T> GetBlobJsonContentA<T>(string name) where T : class

@@ -1445,9 +1445,12 @@ namespace TheBall
 
 
         public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
-            bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false)
+            bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false, bool allowNoOwner = false)
         {
-            string searchRoot = CurrActiveContainer.Name + "/" + owner.ContainerName + "/" + owner.LocationPrefix + "/" + prefix;
+            if(owner == null && !allowNoOwner)
+                throw new ArgumentNullException("owner", "Owner can be null only if specified with flag");
+            var usedPrefix = owner != null ? GetOwnerContentLocation(owner, prefix) : prefix;
+            string searchRoot = CurrActiveContainer.Name + "/" + usedPrefix;
             return await CurrBlobClient.ListBlobsSegmentedAsync(searchRoot, useFlatBlobListing, withMetadata ? BlobListingDetails.Metadata : BlobListingDetails.None, null, continuationToken, null, null);
         }
 
@@ -1583,19 +1586,27 @@ namespace TheBall
                 blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
         }
 
-        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation)
+        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
         {
-            BlobContinuationToken continuationToken = null;
             List<BlobStorageItem> storageItems = new List<BlobStorageItem>();
+            var cloudBlockBlobs = await GetBlobsWithMetadataA(owner, directoryLocation, allowNoOwner);
+            var storageItemsToAdd = cloudBlockBlobs.Select(getBlobStorageItem);
+            storageItems.AddRange(storageItemsToAdd);
+            return storageItems.ToArray();
+        }
+
+        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
+        {
+            BlobContinuationToken continuationToken;
+            List<CloudBlockBlob> cloudBlockBlobs = new List<CloudBlockBlob>();
             do
             {
-                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, null, true);
-                var storageItemsToAdd = blobListItems.Results.Cast<CloudBlockBlob>()
-                    .Select(getBlobStorageItem);
-                storageItems.AddRange(storageItemsToAdd);
+                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, null, true, allowNoOwner);
+                var cloudBlobsToAdd = blobListItems.Results.Cast<CloudBlockBlob>();
+                cloudBlockBlobs.AddRange(cloudBlobsToAdd);
                 continuationToken = blobListItems.ContinuationToken;
             } while (continuationToken != null);
-            return storageItems.ToArray();
+            return cloudBlockBlobs.ToArray();
         }
 
 
