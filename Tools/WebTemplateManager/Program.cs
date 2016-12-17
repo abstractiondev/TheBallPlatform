@@ -7,6 +7,7 @@ using System.Net;
 using System.Security;
 using System.Text;
 using AaltoGlobalImpact.OIP;
+using AzureSupport;
 using Nito.AsyncEx;
 using SecuritySupport;
 using TheBall;
@@ -41,7 +42,8 @@ namespace WebTemplateManager
 
                 if (arguments.Length != 6 || arguments[1].Length != 4)
                 {
-                    Console.WriteLine("Usage: WebTemplateManager.exe <instanceName> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <storageAccountName> <storageAccountKey>");
+                    Console.WriteLine(
+                        "Usage: WebTemplateManager.exe <instanceName> <-pub name/-pri name/-sys name> grp<groupID>/acc<acctID>/sys<templatename> <storageAccountName> <storageAccountKey>");
                     return;
                 }
                 //Debugger.Launch();
@@ -50,23 +52,23 @@ namespace WebTemplateManager
                 ValidateContainerName(instanceName);
                 string pubPriPrefixWithDash = arguments[1];
                 string templateName = arguments[2];
-                if(String.IsNullOrWhiteSpace(templateName))
+                if (String.IsNullOrWhiteSpace(templateName))
                     throw new ArgumentException("Template name must be given");
                 string storageAccountName = arguments[4];
                 string storageAccountKey = arguments[5];
                 string grpacctIDorTemplateName = arguments[3];
-                if(pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri" && pubPriPrefixWithDash != "-sys")
+                if (pubPriPrefixWithDash != "-pub" && pubPriPrefixWithDash != "-pri" && pubPriPrefixWithDash != "-sys")
                     throw new ArgumentException("-pub or -pri misspelled or missing");
                 string pubPriPrefix = pubPriPrefixWithDash.Substring(1);
 
                 bool debugMode = false;
-                RuntimeConfiguration.InitializeForCustomTool(new InfraSharedConfig(), 
+                RuntimeConfiguration.InitializeForCustomTool(new InfraSharedConfig(),
                     new SecureConfig
                     {
                         AzureAccountName = storageAccountName,
                         AzureStorageKey = storageAccountKey
-                    }, 
-                    new InstanceConfig(), 
+                    },
+                    new InstanceConfig(),
                     instanceName);
                 InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
 
@@ -89,7 +91,7 @@ namespace WebTemplateManager
                         throw new NotSupportedException("Other templates than account or group are not supported");
                     isAccount = sysTemplateOwner == "account";
                 }
-                
+
 
                 //string connStr = String.Format("DefaultEndpointsProtocol=http;AccountName=theball;AccountKey={0}",
                 //                               args[0]);
@@ -100,34 +102,41 @@ namespace WebTemplateManager
                     directory = directory + "\\";
                 string[] allFiles =
                     Directory.GetFiles(directory, "*", SearchOption.AllDirectories)
-                             .Select(str => str.Substring(directory.Length))
-                             .ToArray();
+                        .Select(str => str.Substring(directory.Length))
+                        .ToArray();
                 if (pubPriPrefix == "pub" && templateName == "legacy")
                 {
                     throw new NotSupportedException();
-                    /*
-                    FileSystemSupport.UploadTemplateContentA(allFiles, owner,
-                                                            RenderWebSupport.DefaultPublicWwwTemplateLocation, true,
-                                                            Preprocessor, ContentFilterer, InformationTypeResolver);
-                    RenderWebSupport.RenderWebTemplate(owner.LocationPrefix, true, "AaltoGlobalImpact.OIP.Blog",
-                                                       "AaltoGlobalImpact.OIP.Activity");
-                     * */
                 }
-                else
-                {
-                    string templateLocation = isSystem ? sysTemplateOwner + "/" + templateName : templateName;
+                string templateLocation = isSystem ? sysTemplateOwner + "/" + templateName : templateName;
 
-                    await FileSystemSupport.UploadTemplateContentA(allFiles, owner, templateLocation, true);
-                    if (isSystem)
+                await FileSystemSupport.UploadTemplateContentA(allFiles, owner, templateLocation, true);
+                if (isSystem)
+                {
+                    var operationName = "TheBall.CORE." + (isAccount
+                        ? nameof(UpdateTemplateForAllAccounts)
+                        : nameof(UpdateTemplateForAllGroups));
+
+                    var formValues = new Dictionary<string, string>()
                     {
-                        if (isAccount)
-                            await RenderWebSupport.RefreshAllAccountTemplatesA(templateName);
-                        else
-                            await RenderWebSupport.RefreshAllGroupTemplatesA(templateName);
-                    }
+                        {"TemplateName", templateName}
+                    };
+
+                    var httpOperationData = new HttpOperationData()
+                    {
+                        OwnerRootLocation = owner.GetOwnerPrefix(),
+                        OperationName = operationName,
+                        FormValues = formValues
+                    };
+
+                    bool useWorker = true;
+                    if (useWorker)
+                        await OperationSupport.QueueHttpOperationAsync(httpOperationData);
+                    else
+                        await OperationSupport.ExecuteHttpOperationAsync(httpOperationData);
                 }
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine("EXCEPTION: " + exception.ToString());
             }
