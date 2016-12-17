@@ -1040,7 +1040,25 @@ using System.Threading.Tasks;
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixRelativeLocationsOfInformationObjects(GroupAsOwner);		
 				}
 				}
-				public class UpdateContainerOwnerTemplatesParameters 
+				public class UpdateTemplateForAllGroupsParameters 
+		{
+				public string TemplateName ;
+				}
+		
+		public class UpdateTemplateForAllGroups 
+		{
+				private static void PrepareParameters(UpdateTemplateForAllGroupsParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateTemplateForAllGroupsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string[] GroupLocations =  await UpdateTemplateForAllGroupsImplementation.GetTarget_GroupLocationsAsync();	
+				 await UpdateTemplateForAllGroupsImplementation.ExecuteMethod_CallUpdateOwnerTemplatesAsync(parameters.TemplateName, GroupLocations);		
+				}
+				}
+
+		    public class UpdateContainerOwnerTemplatesParameters 
 		{
 				public string OwnerRootLocation ;
 				public string TemplateName ;

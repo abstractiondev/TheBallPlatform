@@ -5764,6 +5764,53 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateTemplateForAllGroups (TemplateName)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update given template for all groups</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>TemplateName</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Template name</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupLocations" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>All group locations</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: CallUpdateOwnerTemplates ( GroupLocations, TemplateName )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call UpdateContainerOwnerTemplates for each</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UpdateUsageMonitoringItems (Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

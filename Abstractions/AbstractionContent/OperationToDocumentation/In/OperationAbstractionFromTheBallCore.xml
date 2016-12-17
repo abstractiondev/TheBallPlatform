@@ -1410,6 +1410,23 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="UpdateTemplateForAllGroups">
+      <OperationSpec>
+        <Description>Update given template for all groups</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="TemplateName" dataType="string" designDesc="Template name" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="GroupLocations" asyncSupportMode="AsyncOnly" dataType="string[]" designDesc="All group locations" state="implemented" />
+          <MethodExecute name="CallUpdateOwnerTemplates" asyncSupportMode="AsyncOnly" designDesc="Call UpdateContainerOwnerTemplates for each" state="implemented">
+            <Parameter name="TemplateName" />
+            <Target name="GroupLocations" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="UpdateContainerOwnerTemplates">
       <OperationSpec>
         <Description>Update container owner templates from system template location</Description>

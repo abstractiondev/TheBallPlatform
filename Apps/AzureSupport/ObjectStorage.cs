@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AzureSupport.TheBall.CORE;
 using TheBall.CORE;
+using TheBall.CORE.Storage;
 
 namespace TheBall
 {
@@ -28,6 +30,14 @@ namespace TheBall
             return result;
         }
 
+        public static async Task<string[]> ListOwnerObjectIDs<T>(IContainerOwner containerOwner)
+        {
+            var typePrefix = getTypePrefix(typeof (T));
+            var blobItems = await BlobStorage.GetBlobItemsA(containerOwner, typePrefix + "/", item => item.FileName.Contains(".") == false);
+            var ids = blobItems.Select(item => item.FileName).ToArray();
+            return ids;
+        }
+
         public static string GetRelativeLocationFromID<T>(string id)
         {
             string namespaceName = typeof (T).Namespace;
@@ -50,14 +60,21 @@ namespace TheBall
             return await RetrieveFromOwnerContentA<T>(SystemSupport.SystemOwner, contentName, eTag, requireExisting);
         }
 
+        private static string getTypePrefix(Type objectType)
+        {
+            string namespaceName = objectType.Namespace;
+            string className = objectType.Name;
+            var typePrefix = $"{namespaceName}/{className}";
+            return typePrefix;
+        }
+
         public static async Task<T> RetrieveFromOwnerContentA<T>(IContainerOwner containerOwner, string contentName, string eTag = null, bool requireExisting = false)
         {
-            string namespaceName = typeof(T).Namespace;
-            string className = typeof(T).Name;
-            string locationPath = $"{namespaceName}/{className}/{contentName}";
+            var typePrefix = getTypePrefix(typeof (T));
+            string locationPath = $"{typePrefix}/{contentName}";
             var result = await RetrieveObjectA<T>(locationPath, containerOwner, eTag);
             if (result == null && requireExisting)
-                throw new InvalidDataException($"{className} missing or changed");
+                throw new InvalidDataException($"{typePrefix} missing or changed");
             return result;
         }
 

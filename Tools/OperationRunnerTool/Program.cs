@@ -96,6 +96,10 @@ namespace OperationRunnerTool
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateContainerOwnerTemplates -remoteExecute:true -p:OwnerRootLocation:acc/2856ef1c-af21-488b-8ed4-0bb72f152e0a,TemplateName:cpanel
 
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllGroups -remoteExecute:false -p:TemplateName:cpanel
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllGroups -remoteExecute:true -p:TemplateName:cpanel
+
+
 #endif
 
 }

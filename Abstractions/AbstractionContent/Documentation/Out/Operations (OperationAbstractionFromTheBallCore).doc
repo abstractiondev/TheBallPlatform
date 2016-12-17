@@ -5256,6 +5256,40 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Perform actual syncing
 		</div>
+		</p><h1>UpdateTemplateForAllGroups (TemplateName)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update given template for all groups
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		TemplateName
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Template name
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: GroupLocations</h2>
+		<p>		<div class="MsoNormal" >
+		All group locations
+		</div>
+		</p><h2>Method Call: CallUpdateOwnerTemplates ( GroupLocations, TemplateName )</h2>
+		<p>		<div class="MsoNormal" >
+		Call UpdateContainerOwnerTemplates for each
+		</div>
 		</p><h1>UpdateUsageMonitoringItems (Owner, MonitoringItemTimeSpanInMinutes, MonitoringIntervalInMinutes)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

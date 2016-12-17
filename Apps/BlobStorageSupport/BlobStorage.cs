@@ -68,9 +68,11 @@ namespace TheBall.CORE.Storage
             await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
         }
 
-        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner containerOwner, string directoryLocation)
+        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner containerOwner, string directoryLocation, Func<BlobStorageItem, bool> filteringPredicate = null)
         {
             var blobItems = await StorageSupport.GetBlobItemsA(containerOwner, directoryLocation);
+            if (filteringPredicate != null)
+                blobItems = blobItems.Where(filteringPredicate).ToArray();
             return blobItems;
         }
 

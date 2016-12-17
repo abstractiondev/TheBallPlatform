@@ -952,6 +952,15 @@
     <StatusItem name="InitiateImportedGroupWithUnchangedID_FixRelativeLocationsOfInformationObjects" displayName="MethodExecuteType: FixRelativeLocationsOfInformationObjects" description="Fix relative locations of objects">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="UpdateTemplateForAllGroups_TemplateName" displayName="VariableType: TemplateName" description="Template name">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateTemplateForAllGroups_GroupLocations" displayName="TargetDefinitionType: GroupLocations" description="All group locations">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateTemplateForAllGroups_CallUpdateOwnerTemplates" displayName="MethodExecuteType: CallUpdateOwnerTemplates" description="Call UpdateContainerOwnerTemplates for each">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="UpdateContainerOwnerTemplates_OwnerRootLocation" displayName="VariableType: OwnerRootLocation" description="Owner root location">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -1820,6 +1829,11 @@
       <ItemRef itemName="InitiateImportedGroupWithUnchangedID_SetGroupInitiatorAccess" />
       <ItemRef itemName="InitiateImportedGroupWithUnchangedID_FixContentTypesAndMetadataOfBlobs" />
       <ItemRef itemName="InitiateImportedGroupWithUnchangedID_FixRelativeLocationsOfInformationObjects" />
+    </Group>
+    <Group name="UpdateTemplateForAllGroups">
+      <ItemRef itemName="UpdateTemplateForAllGroups_TemplateName" />
+      <ItemRef itemName="UpdateTemplateForAllGroups_GroupLocations" />
+      <ItemRef itemName="UpdateTemplateForAllGroups_CallUpdateOwnerTemplates" />
     </Group>
     <Group name="UpdateContainerOwnerTemplates">
       <ItemRef itemName="UpdateContainerOwnerTemplates_OwnerRootLocation" />
