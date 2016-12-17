@@ -266,7 +266,7 @@ namespace TheBall
             { "RemoveCollaboratorFromGroup", new Tuple<Type, ParameterManipulator>(typeof(RemoveMemberFromGroup), null)},
             { "InviteMemberToGroupAndPlatform", new Tuple<Type, ParameterManipulator>(typeof(InviteNewMemberToPlatformAndGroup), null)},
             { "InviteMemberToGroup", new Tuple<Type, ParameterManipulator>(typeof(InviteMemberToGroup), null)},
-            { "CreateGroupWithTemplates", new Tuple<Type, ParameterManipulator>(typeof(CreateGroupWithTemplates), null)},
+            //{ "CreateGroupWithTemplates", new Tuple<Type, ParameterManipulator>(typeof(CreateGroupWithTemplates), null)},
             { "InitiateAccountMergeFromEmail", new Tuple<Type, ParameterManipulator>(typeof(InitiateAccountMergeFromEmail), null)},
             { "UnregisterEmailAddress", new Tuple<Type, ParameterManipulator>(typeof(UnregisterEmailAddress), null)},
             { "BeginAccountEmailAddressRegistration", new Tuple<Type, ParameterManipulator>(typeof(BeginAccountEmailAddressRegistration), null)},

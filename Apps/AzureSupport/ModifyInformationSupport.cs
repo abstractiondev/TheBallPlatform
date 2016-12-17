@@ -460,7 +460,9 @@ namespace TheBall
 
                 case "CreateGroupWithTemplates":
                 {
-                    var isAccount = containerOwner.IsAccountContainer();
+                    throw new NotImplementedException("Not anymore implemented in proper way");
+                    /*
+                        var isAccount = containerOwner.IsAccountContainer();
                     if (!isAccount == null)
                         throw new NotSupportedException("Creating a group is only supported by account");
                     var accountID = containerOwner.LocationPrefix;
@@ -471,7 +473,8 @@ namespace TheBall
                         RedirectUrlAfterCreation = form["RedirectUrlAfterCreation"],
                         TemplateNameList = form["TemplateNameList"]
                     };
-                    CreateGroupWithTemplates.Execute(parameters);
+                    //CreateGroupWithTemplates.Execute(parameters);
+                    */
                     break;
                 }
                 case "InitiateAccountMergeFromEmail":

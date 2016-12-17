@@ -941,6 +941,7 @@ namespace TheBall
             return relativeLocation;
         }
 
+        [Obsolete("Should have async alternative", true)]
         public static void RefreshGroupTemplate(string groupID, string templateName)
         {
             string currContainerName = StorageSupport.CurrActiveContainer.Name;
@@ -970,25 +971,26 @@ namespace TheBall
         }
 
 
+        [Obsolete("Should use async version", true)]
         public static void SyncTemplatesToSite(string sourceContainerName, string sourcePathRoot,
             string targetContainerName, string targetPathRoot, bool renderWhileSync)
         {
-            WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+            //WorkerSupport.WebContentSync(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
         }
 
         public static async Task SyncTemplatesToSiteA(string sourceContainerName, string sourcePathRoot, string targetContainerName, string targetPathRoot, bool renderWhileSync)
         {
-            await WorkerSupport.WebContentSyncA(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : (WorkerSupport.PerformCustomOperation)RenderWebSupport.CopyAsIsSyncHandler);
+            await WorkerSupport.WebContentSyncA(sourceContainerName, sourcePathRoot, targetContainerName, targetPathRoot, renderWhileSync ? (WorkerSupport.PerformCustomOperation)RenderWebSupport.RenderingSyncHandler : null);
         }
 
-        public static bool CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        public static Task<bool> CopyAsIsSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
         {
-            return false;
+            return null;
         }
 
-        public static bool RenderingSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
+        public static Task<bool> RenderingSyncHandler(CloudBlob source, CloudBlob target, WorkerSupport.SyncOperationType operationtype)
         {
-            return false;
+            return null;
         }
 
         public static async Task RefreshAllGroupTemplatesA(string templateName)

@@ -1040,36 +1040,6 @@ using System.Threading.Tasks;
 				InitiateImportedGroupWithUnchangedIDImplementation.ExecuteMethod_FixRelativeLocationsOfInformationObjects(GroupAsOwner);		
 				}
 				}
-				public class CreateGroupWithTemplatesParameters 
-		{
-				public string GroupName ;
-				public string AccountID ;
-				public string TemplateNameList ;
-				public string GroupDefaultRedirect ;
-				public string RedirectUrlAfterCreation ;
-				}
-		
-		public class CreateGroupWithTemplates 
-		{
-				private static void PrepareParameters(CreateGroupWithTemplatesParameters parameters)
-		{
-					}
-				public static void Execute(CreateGroupWithTemplatesParameters parameters)
-		{
-						PrepareParameters(parameters);
-					string ExecuteCreateGroupOutput = CreateGroupWithTemplatesImplementation.ExecuteMethod_ExecuteCreateGroup(parameters.GroupName, parameters.AccountID);		
-				CreateGroupWithTemplatesImplementation.ExecuteMethod_CopyGroupTemplates(parameters.TemplateNameList, ExecuteCreateGroupOutput);		
-				IContainerOwner GroupAsOwner = CreateGroupWithTemplatesImplementation.GetTarget_GroupAsOwner(ExecuteCreateGroupOutput);	
-				
-		{ // Local block to allow local naming
-			SetOwnerWebRedirectParameters operationParameters = CreateGroupWithTemplatesImplementation.SetDefaultRedirect_GetParameters(parameters.GroupDefaultRedirect, GroupAsOwner);
-			SetOwnerWebRedirect.Execute(operationParameters);
-									
-		} // Local block closing
-				CreateGroupWithTemplatesImplementation.ExecuteMethod_InitializeGroupWithDefaultObjects(GroupAsOwner);		
-				CreateGroupWithTemplatesImplementation.ExecuteMethod_RedirectToGivenUrl(parameters.RedirectUrlAfterCreation, ExecuteCreateGroupOutput);		
-				}
-				}
 				public class SetOwnerWebRedirectParameters 
 		{
 				public IContainerOwner Owner ;

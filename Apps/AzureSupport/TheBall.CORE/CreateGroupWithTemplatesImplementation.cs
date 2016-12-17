@@ -1,3 +1,4 @@
+using System;
 using System.Web;
 using OIP = AaltoGlobalImpact.OIP;
 using AaltoGlobalImpact.OIP;
@@ -18,6 +19,7 @@ namespace TheBall.CORE
             return result.GroupID;
         }
 
+        [Obsolete("Should have async alternative", true)]
         public static void ExecuteMethod_CopyGroupTemplates(string templateNameList, string executeCreateGroupOutput)
         {
             string[] templates = templateNameList.Split(',');

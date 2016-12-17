@@ -1837,7 +1837,7 @@
           </SequentialExecution>
         </Execution>
       </Operation>
-      
+      <!--
       <Operation name="CreateGroupWithTemplates">
         <OperationSpec>
           <Description>Create group with templates</Description>
@@ -1877,6 +1877,7 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      -->
       <Operation name="SetOwnerWebRedirect">
         <OperationSpec>
           <Description>
