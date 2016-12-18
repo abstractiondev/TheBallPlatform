@@ -306,16 +306,31 @@ namespace WebInterface
         private async Task HandleGroupRequest(HttpContext context, string requestPath)
         {
             var request = context.Request;
-            var loginGroupRoot = await request.RequireAndRetrieveGroupAccessRole(requestPath);
-            InformationContext.AuthenticateContextOwner(loginGroupRoot);
-            InformationContext.Current.CurrentGroupRole = loginGroupRoot.Role;
+            var groupMembership = await request.RequireAndRetrieveGroupAccessRole(requestPath);
+            var groupOwner = VirtualOwner.FigureOwner("grp/" + groupMembership.Group);
+            InformationContext.AuthenticateContextOwner(groupOwner);
+            InformationContext.Current.CurrentGroupRole = groupMembership.Role;
             var contentPath = request.GetOwnerContentPath(requestPath);
-            await HandleOwnerRequest(loginGroupRoot, context, contentPath, loginGroupRoot.Role);
+            await HandleOwnerRequest(groupOwner, context, contentPath, groupMembership.Role);
         }
 
         private async Task HandlePersonalRequest(HttpContext context, string requestPath)
         {
             var domainName = context.Request.Url.Host;
+            GenericPrincipal principal = (GenericPrincipal)context.User;
+            TheBallIdentity identity = (TheBallIdentity)principal.Identity;
+            var accountID = identity.AccountID;
+            if (accountID == null)
+                accountID = await createMissingAccount(context, identity);
+            var accountOwner = VirtualOwner.FigureOwner("acc/" + accountID);
+            InformationContext.AuthenticateContextOwner(accountOwner);
+            var request = context.Request;
+            var contentPath = request.GetOwnerContentPath(requestPath);
+            await HandleOwnerRequest(accountOwner, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
+        }
+
+        private static async Task<string> createMissingAccount(HttpContext context, TheBallIdentity identity)
+        {
             string loginUrl = WebSupport.GetLoginUrl(context);
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(Login.GetLoginIDFromLoginURL(loginUrl));
             if (login == null)
@@ -334,8 +349,6 @@ namespace WebInterface
                 }
                 else // Login info without account/login data
                 {
-                    GenericPrincipal principal = (GenericPrincipal)context.User;
-                    TheBallIdentity identity = (TheBallIdentity)principal.Identity;
                     string emailAddress = identity.EmailAddress;
                     var ensuredAccountResult = await EnsureAccount.ExecuteAsync(new EnsureAccountParameters
                     {
@@ -359,13 +372,10 @@ namespace WebInterface
                     }
                 }
             }
-            if(login == null)
+            if (login == null)
                 throw new SecurityException("Unknown login: " + loginUrl);
             var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(login.Account);
-            InformationContext.AuthenticateContextOwner(account);
-            var request = context.Request;
-            var contentPath = request.GetOwnerContentPath(requestPath);
-            await HandleOwnerRequest(account, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
+            return account.ID;
         }
 
         private async Task HandleOwnerRequest(IContainerOwner containerOwner, HttpContext context, string contentPath, string role)
@@ -630,53 +640,25 @@ namespace WebInterface
 
         private static async Task SetCurrentAccountFromLogin(HttpContext context)
         {
+            // Technically could use identity-level data, but want to ensure that the login is still valid and not to due old cookie 
+            // (in case of login/account revocation on purpose)
+            //var tbIdentify = (TheBallIdentity) context.User.Identity;
             var loginUrl = context.User.Identity.Name;
             string loginID = Login.GetLoginIDFromLoginURL(loginUrl);
-            var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
-            if (login != null)
-            {
-                var accountID = login.Account;
-                var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountID);
-                string accountEmailID = account.Emails.FirstOrDefault();
-                var email =
-                    await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, accountEmailID);
-                var emailAddress = email.EmailAddress;
-                var accountName = emailAddress;
-                InformationContext.Current.Account = new CoreAccountData(accountID,
-                    accountName, emailAddress);
-            }
+            var login = await ObjectStorage.RetrieveFromSystemOwner<Login>(loginID);
+            if(login == null)
+                throw new SecurityException("Expected login not found");
+            var accountID = login.Account;
+            var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemSupport.SystemOwner, accountID);
+            string accountEmailID = account.Emails.FirstOrDefault();
+            var email =
+                await ObjectStorage.RetrieveFromOwnerContentA<Email>(SystemSupport.SystemOwner, accountEmailID);
+            var emailAddress = email.EmailAddress;
+            var accountName = emailAddress;
+            InformationContext.Current.Account = new CoreAccountData(accountID,
+                accountName, emailAddress);
         }
 
-
-        private static async Task SetCurrentAccountFromLoginxx(HttpContext context)
-        {
-            var loginUrl = context.User.Identity.Name;
-            string loginID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            TBRLoginRoot loginRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginRoot>(loginID);
-            if (loginRoot != null)
-            {
-                var currAccount = loginRoot.Account;
-                var accountContainer = await ObjectStorage.RetrieveFromOwnerContentA<AccountContainer>(currAccount, "default");
-                string accountName;
-                string accountID = currAccount.ID;
-                string accountEmail = currAccount.Emails.CollectionContent.Select(tbEm => tbEm.EmailAddress).FirstOrDefault();
-                if (accountEmail == null)
-                    accountEmail = "";
-                if (accountContainer?.AccountModule?.Profile != null)
-                {
-                    accountName = string.Format("{0} {1}",
-                        accountContainer.AccountModule.Profile.FirstName,
-                        accountContainer.AccountModule.Profile.LastName);
-                }
-                else
-                {
-                    accountName = accountEmail;
-                }
-                accountName = accountName.Trim();
-                InformationContext.Current.Account = new CoreAccountData(accountID,
-                    accountName, accountEmail);
-            }
-        }
 
         private static void SQLiteSyncOwnerData(IContainerOwner containerOwner)
         {

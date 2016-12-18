@@ -36,17 +36,20 @@ namespace WebInterface
         }
 
 
-        public static async Task<TBRLoginGroupRoot> RequireAndRetrieveGroupAccessRole(this HttpRequest request, string requestPath = null)
+        public static async Task<GroupMembership> RequireAndRetrieveGroupAccessRole(this HttpRequest request, string requestPath = null)
         {
             var context = request.RequestContext;
             string groupID = request.GetGroupID(requestPath);
-            string loginUrl = WebSupport.GetLoginUrl(request.RequestContext.HttpContext.User);
-            string loginRootID = TBLoginInfo.GetLoginIDFromLoginURL(loginUrl);
-            string loginGroupID = TBRLoginGroupRoot.GetLoginGroupID(groupID, loginRootID);
-            TBRLoginGroupRoot loginGroupRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRLoginGroupRoot>(loginGroupID);
-            if (loginGroupRoot == null)
+            var userPrincipal = request.RequestContext.HttpContext.User;
+            var tbIdentity = userPrincipal.Identity as TheBallIdentity;
+            string accountID = tbIdentity?.AccountID;
+            if(accountID == null)
+                throw new SecurityException("No AccountID known for group access");
+            var groupMembershipID = GroupMembership.GetIDFromAccountAndGroup(accountID, groupID);
+            var groupMembership = await ObjectStorage.RetrieveFromSystemOwner<GroupMembership>(groupMembershipID);
+            if (groupMembership == null)
                 throw new SecurityException("No access to requested group");
-            return loginGroupRoot;
+            return groupMembership;
         }
 
         public static bool IsGroupRequest(this HttpRequest request, string requestPath = null)

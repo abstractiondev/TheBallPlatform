@@ -120,6 +120,9 @@ namespace OperationRunnerTool
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateGroupMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/cc6db374-b530-485e-bb08-b9003725a7f5 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Test name 1\"}"
 
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:members.ikwondo.com -op:TheBall.CORE.CreateGroup -p:GroupID:f6a9652b-4065-404e-9749-01d40ba5f26a
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:members.ikwondo.com -owner:grp/f6a9652b-4065-404e-9749-01d40ba5f26a -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Platform Admin\"}"
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:members.ikwondo.com -op:TheBall.CORE.SetGroupMembership -remoteExecute:true -p:GroupID:f6a9652b-4065-404e-9749-01d40ba5f26a,AccountID:4cb27608-79fc-4ae5-9428-e45a0f2326e6,Role:Initiator
 
 #endif
 

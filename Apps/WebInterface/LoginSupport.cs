@@ -22,7 +22,7 @@ namespace WebInterface
             switch (operationName)
             {
                 case "TheBall.Login.LoginOperation":
-                    await performLogin(request, response);
+                    await performLogin(context, request, response);
                     break;
                 case "TheBall.Login.SendEmailConfirmationCode":
                     await performConfirmCodeSend(request, response);
@@ -127,7 +127,7 @@ namespace WebInterface
             return passwordHash;
         }
 
-        private static async Task performLogin(HttpRequest request, HttpResponse response)
+        private static async Task performLogin(HttpContext context, HttpRequest request, HttpResponse response)
         {
             var loginInfo = JSONSupport.GetObjectFromStream<LoginInfo>(request.GetBufferedInputStream());
 
@@ -138,10 +138,11 @@ namespace WebInterface
             var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemSupport.SystemOwner, loginID);
             var salt = login.PasswordSalt;
+            var accountID = login.Account;
             bool validLogin = BCrypt.Net.BCrypt.Verify(password, login.PasswordHash);
             if (validLogin)
             {
-                AuthenticationSupport.SetAuthenticationCookie(response, loginUrl, emailAddress);
+                AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID);
             } else
                 throw new SecurityException("Invalid login or password");
         }

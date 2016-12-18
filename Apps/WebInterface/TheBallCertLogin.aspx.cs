@@ -15,7 +15,7 @@ namespace WebInterface
         protected void Page_Load(object sender, EventArgs e)
         {
             string userName = getUserNameFromCertificate(this.Request);
-            AuthenticationSupport.SetAuthenticationCookie(Response, userName, null);
+            AuthenticationSupport.SetAuthenticationCookie(Response, userName, null, null);
             //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
             //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
             string redirectUrl = Request.Params["ReturnUrl"];
