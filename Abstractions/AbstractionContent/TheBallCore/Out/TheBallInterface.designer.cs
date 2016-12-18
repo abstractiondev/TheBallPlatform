@@ -156,6 +156,56 @@ namespace INT {
 				public string LinkingType { get; set; }
 			}
 
+			[DataContract]
+			public partial class AccountMembershipData
+			{
+				[DataMember]
+				public AccountMembershipItem[] Memberships { get; set; }
+			}
+
+			[DataContract]
+			public partial class AccountDetails
+			{
+				[DataMember]
+				public string EmailAddress { get; set; }
+			}
+
+			[DataContract]
+			public partial class AccountMembershipItem
+			{
+				[DataMember]
+				public string GroupID { get; set; }
+				[DataMember]
+				public string Role { get; set; }
+				[DataMember]
+				public GroupDetails Details { get; set; }
+			}
+
+			[DataContract]
+			public partial class GroupMembershipData
+			{
+				[DataMember]
+				public GroupMembershipItem[] Memberships { get; set; }
+			}
+
+			[DataContract]
+			public partial class GroupDetails
+			{
+				[DataMember]
+				public string GroupName { get; set; }
+			}
+
+			[DataContract]
+			public partial class GroupMembershipItem
+			{
+				[DataMember]
+				public string AccountID { get; set; }
+				[DataMember]
+				public string Role { get; set; }
+				[DataMember]
+				public AccountDetails Details { get; set; }
+			}
+
  } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)

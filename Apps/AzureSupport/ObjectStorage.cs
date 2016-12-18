@@ -83,6 +83,55 @@ namespace TheBall
             return await RetrieveFromOwnerContentA<T>(InformationContext.CurrentOwner, contentName, eTag, requireExisting);
         }
 
+
+        public static async Task StoreInterfaceObject(object dataObject, string objectName = null,
+            bool isInterfaceData = false)
+        {
+            await StoreInterfaceObject(null, dataObject, objectName, isInterfaceData);
+        }
+
+        public static async Task StoreInterfaceObject(IContainerOwner owner, object dataObject, string objectName = null,
+            bool isInterfaceData = false)
+        {
+            if (isInterfaceData && objectName == null)
+                throw new ArgumentException("ObjectName must be given if isInterfaceData is true", nameof(objectName));
+            var objectType = dataObject.GetType();
+            if (owner == null)
+                owner = InformationContext.CurrentOwner;
+            var ownerPrefixedWithExtension = getOwnerPrefixedNameWithExtension(owner, objectName, isInterfaceData, objectType);
+            await BlobStorage.StoreBlobJsonContentA(ownerPrefixedWithExtension, dataObject);
+        }
+
+
+        public static async Task<T> GetInterfaceObject<T>(string objectName = null, bool isInterfaceData = false) where T : class
+        {
+            return await GetInterfaceObject<T>(null, objectName, isInterfaceData);
+        }
+
+        public static async Task<T> GetInterfaceObject<T>(IContainerOwner owner, string objectName = null, bool isInterfaceData = false) where T : class
+        {
+            if(isInterfaceData && objectName == null)
+                throw new ArgumentException("ObjectName must be given if isInterfaceData is true", nameof(objectName));
+            var objectType = typeof (T);
+            if (objectName == null)
+                objectName = typeof (T).Name;
+            if (owner == null)
+                owner = InformationContext.CurrentOwner;
+            var ownerPrefixedWithExtension = getOwnerPrefixedNameWithExtension(owner, objectName, isInterfaceData, objectType);
+            var data = await BlobStorage.GetBlobJsonContentA<T>(ownerPrefixedWithExtension);
+            return data;
+        }
+
+        private static string getOwnerPrefixedNameWithExtension(IContainerOwner owner, string objectName,
+            bool isInterfaceData, Type objectType) 
+        {
+            string namePart = isInterfaceData
+                ? "TheBall.Interface/InterfaceData/" + objectName
+                : getTypePrefix(objectType) + "/" + objectName;
+            var ownerPrefixedWithExtension = StorageSupport.GetOwnerContentLocation(owner, namePart) + ".json";
+            return ownerPrefixedWithExtension;
+        }
+
         public static async Task<T> RetrieveObjectA<T>(string relativeLocation, IContainerOwner owner = null, string eTag = null)
         {
             var result = (T) await StorageSupport.RetrieveInformationA(relativeLocation, typeof (T), eTag, owner);

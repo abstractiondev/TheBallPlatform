@@ -4563,6 +4563,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store objects
 		</div>
+		</p><h2>Operation Call: UpdateAccountStatuses ( AccountID, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Call update account membership statuses
+		</div>
 		</p><h1>SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -5105,6 +5109,69 @@ div.WordSection1
 		</p><h2>Method Call: ExecuteUnlinkEmailAddress ( AccountContainerBeforeGroupRemoval, EmailAddressID, AccountID )</h2>
 		<p>		<div class="MsoNormal" style="color:blue;font-weight:bold;font-style:italic" >
 		Perform unlink
+		</div>
+		</p><h1>UpdateAccountMembershipStatuses (AccountID, GroupID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Optional Group ID to update the details
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: Memberships ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Group memberships of an account
+		</div>
+		</p><h2>Target Definition: AccountMembershipData ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Account membership data to update
+		</div>
+		</p><h2>Method Call: UpdateMembershipData ( AccountMembershipData, Memberships, GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Update membership data based on core memberships - add group details for missing and update if GroupID is given
+		</div>
+		</p><h2>Method Call: StoreObject ( AccountMembershipData )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
 		</div>
 		</p><h1>UpdateContainerOwnerTemplates (OwnerRootLocation, TemplateName)</h1>
 		<h2>Specifications</h2>

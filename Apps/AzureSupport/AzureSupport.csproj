@@ -243,6 +243,7 @@
     <Compile Include="TheBall.CORE\RemoveGroupMembershipImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoveLoginImplementation.cs" />
     <Compile Include="TheBall.CORE\SetGroupMembershipImplementation.cs" />
+    <Compile Include="TheBall.CORE\UpdateAccountMembershipStatusesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateContainerOwnerTemplatesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateTemplateForAllAccountsImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateTemplateForAllGroupsImplementation.cs" />

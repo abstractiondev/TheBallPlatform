@@ -657,6 +657,43 @@
               <Target name="Group"/>
               <Target name="Account"/>
             </MethodExecute>
+            <OperationExecute name="UpdateAccountStatuses" targetOperationName="UpdateAccountMembershipStatuses" designDesc="Call update account membership statuses" 
+                              asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="AccountID"/>
+              <Parameter name="GroupID"/>
+            </OperationExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateAccountMembershipStatuses">
+        <OperationSpec>
+          <Description>Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented"/>
+          <Parameter name="GroupID" dataType="string" designDesc="Optional Group ID to update the details" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Account" dataType="Account" designDesc="Account object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="Memberships" dataType="GroupMembership[]" designDesc="Group memberships of an account" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+            </TargetDefinition>
+            <TargetDefinition name="AccountMembershipData" dataType="TheBall.Interface.INT.AccountMembershipData" designDesc="Account membership data to update" asyncSupportMode="AsyncOnly"
+                              state="implemented">
+              <Target name="Account"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateMembershipData" designDesc="Update membership data based on core memberships - add group details for missing and update if GroupID is given" 
+                           asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="GroupID"/>
+              <Target name="AccountMembershipData"/>
+              <Target name="Memberships"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="AccountMembershipData"/>
+            </MethodExecute>
           </SequentialExecution>
         </Execution>
       </Operation>

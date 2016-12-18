@@ -239,4 +239,100 @@ using System.Runtime.Serialization;
 
 			
 			}
+			[DataContract]
+			public partial class AccountMembershipData 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<AccountMembershipItem> Memberships= new List<AccountMembershipItem>();
+
+			
+			}
+			[DataContract]
+			public partial class AccountDetails 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string EmailAddress;
+
+			
+			}
+			[DataContract]
+			public partial class AccountMembershipItem 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string GroupID;
+
+			[DataMember]
+			public string Role;
+
+			[DataMember]
+			public GroupDetails Details;
+
+			
+			}
+			[DataContract]
+			public partial class GroupMembershipData 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<GroupMembershipItem> Memberships= new List<GroupMembershipItem>();
+
+			
+			}
+			[DataContract]
+			public partial class GroupDetails 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string GroupName;
+
+			
+			}
+			[DataContract]
+			public partial class GroupMembershipItem 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string AccountID;
+
+			[DataMember]
+			public string Role;
+
+			[DataMember]
+			public AccountDetails Details;
+
+			
+			}
  } 

@@ -212,6 +212,33 @@ using System.Threading.Tasks;
 				SetGroupMembershipImplementation.ExecuteMethod_SetMembershipToGroup(GroupMembership, Group);		
 				SetGroupMembershipImplementation.ExecuteMethod_SetMembershipToAccount(GroupMembership, Account);		
 				 await SetGroupMembershipImplementation.ExecuteMethod_StoreObjectsAsync(GroupMembership, Group, Account);		
+				
+		{ // Local block to allow local naming
+			UpdateAccountMembershipStatusesParameters operationParameters = SetGroupMembershipImplementation.UpdateAccountStatuses_GetParameters(parameters.AccountID, parameters.GroupID);
+			 await UpdateAccountMembershipStatuses.ExecuteAsync(operationParameters);
+									
+		} // Local block closing
+				}
+				}
+				public class UpdateAccountMembershipStatusesParameters 
+		{
+				public string AccountID ;
+				public string GroupID ;
+				}
+		
+		public class UpdateAccountMembershipStatuses 
+		{
+				private static void PrepareParameters(UpdateAccountMembershipStatusesParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateAccountMembershipStatusesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await UpdateAccountMembershipStatusesImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				GroupMembership[] Memberships =  await UpdateAccountMembershipStatusesImplementation.GetTarget_MembershipsAsync(Account);	
+				TheBall.Interface.INT.AccountMembershipData AccountMembershipData =  await UpdateAccountMembershipStatusesImplementation.GetTarget_AccountMembershipDataAsync(Account);	
+				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_UpdateMembershipDataAsync(parameters.GroupID, AccountMembershipData, Memberships);		
+				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(AccountMembershipData);		
 				}
 				}
 				public class RemoveGroupMembershipParameters 
@@ -1074,8 +1101,7 @@ using System.Threading.Tasks;
 				 await UpdateTemplateForAllAccountsImplementation.ExecuteMethod_CallUpdateOwnerTemplatesAsync(parameters.TemplateName, AccountLocations);		
 				}
 				}
-
-		    public class UpdateContainerOwnerTemplatesParameters 
+				public class UpdateContainerOwnerTemplatesParameters 
 		{
 				public string OwnerRootLocation ;
 				public string TemplateName ;

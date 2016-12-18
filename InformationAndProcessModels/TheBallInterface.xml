@@ -82,6 +82,41 @@
             <InterfaceItem name="LinkingType" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
+        <InterfaceObject name="AccountMembershipData" designDesc="Account membership data">
+          <InterfaceItems>
+            <ObjectInstance name="Memberships" interfaceObjectName="AccountMembershipItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="AccountDetails" designDesc="Account generic everywhere available details">
+          <InterfaceItems>
+            <!-- For now we only support single main email address per account -->
+            <InterfaceItem name="EmailAddress" logicalDataType="Text_Short" isCollection="false"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="AccountMembershipItem" designDesc="Account's group membership data">
+          <InterfaceItems>
+            <InterfaceItem name="GroupID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Role" logicalDataType="Text_Short"/>
+            <ObjectInstance name="Details" interfaceObjectName="GroupDetails"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="GroupMembershipData" designDesc="Group membership data">
+          <InterfaceItems>
+            <ObjectInstance name="Memberships" interfaceObjectName="GroupMembershipItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="GroupDetails" designDesc="Group generic everywhere available details">
+          <InterfaceItems>
+            <InterfaceItem name="GroupName" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="GroupMembershipItem" designDesc="Group's account members' data">
+          <InterfaceItems>
+            <InterfaceItem name="AccountID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Role" logicalDataType="Text_Short"/>
+            <ObjectInstance name="Details" interfaceObjectName="AccountDetails"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <!--
         <InterfaceObject name="GenericObject" designDesc="Generic UI object">
           <InterfaceItems>

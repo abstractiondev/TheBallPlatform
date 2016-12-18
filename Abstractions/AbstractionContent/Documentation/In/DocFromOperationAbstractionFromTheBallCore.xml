@@ -4957,6 +4957,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Operation Call: UpdateAccountStatuses ( AccountID, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call update account membership statuses</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
@@ -5560,6 +5567,85 @@
               <Paragraph>
                 <Text styleRef="color:blue;font-weight:bold;font-style:italic">
                   <TextContent>Perform unlink</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateAccountMembershipStatuses (AccountID, GroupID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Account ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Optional Group ID to update the details</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Account ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Memberships ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group memberships of an account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountMembershipData ( Account )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Account membership data to update</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateMembershipData ( AccountMembershipData, Memberships, GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update membership data based on core memberships - add group details for missing and update if GroupID is given</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( AccountMembershipData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

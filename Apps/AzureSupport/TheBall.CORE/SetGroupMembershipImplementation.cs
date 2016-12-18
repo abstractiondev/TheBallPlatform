@@ -59,5 +59,14 @@ namespace TheBall.CORE
                 Task.WhenAll(groupMembership.StoreInformationAsync(), @group.StoreInformationAsync(),
                     account.StoreInformationAsync());
         }
+
+        public static UpdateAccountMembershipStatusesParameters UpdateAccountStatuses_GetParameters(string accountId, string groupId)
+        {
+            return new UpdateAccountMembershipStatusesParameters
+            {
+                AccountID = accountId,
+                GroupID = groupId
+            };
+        }
     }
 }
