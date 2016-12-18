@@ -57,6 +57,11 @@ namespace TheBall.CORE
             return (owner.ContainerName == "grp" || owner.ContainerName == "dev") && owner.LocationPrefix.Length == StorageSupport.GuidLength;
         }
 
+        public static bool IsSystemOwner(this IContainerOwner owner)
+        {
+            return owner.IsSameOwner(SystemSupport.SystemOwner);
+        }
+
         public static void ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";

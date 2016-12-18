@@ -692,6 +692,7 @@
               <Target name="Memberships"/>
             </MethodExecute>
             <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
               <Target name="AccountMembershipData"/>
             </MethodExecute>
           </SequentialExecution>

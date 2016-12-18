@@ -5169,7 +5169,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Update membership data based on core memberships - add group details for missing and update if GroupID is given
 		</div>
-		</p><h2>Method Call: StoreObject ( AccountMembershipData )</h2>
+		</p><h2>Method Call: StoreObject ( Account, AccountMembershipData )</h2>
 		<p>		<div class="MsoNormal" >
 		Store object
 		</div>

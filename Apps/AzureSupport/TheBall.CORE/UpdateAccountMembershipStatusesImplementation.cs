@@ -25,7 +25,7 @@ namespace TheBall.CORE
 
         public static async Task<AccountMembershipData> GetTarget_AccountMembershipDataAsync(Account account)
         {
-            var membershipData = await ObjectStorage.GetInterfaceObject<AccountMembershipData>();
+            var membershipData = await ObjectStorage.GetInterfaceObject<AccountMembershipData>(account);
             if (membershipData == null)
             {
                 membershipData = new AccountMembershipData();
@@ -55,9 +55,9 @@ namespace TheBall.CORE
             accountMembershipData.Memberships = currentMembershipData;
         }
 
-        public static async Task ExecuteMethod_StoreObjectAsync(AccountMembershipData accountMembershipData)
+        public static async Task ExecuteMethod_StoreObjectAsync(Account account, AccountMembershipData accountMembershipData)
         {
-            await ObjectStorage.StoreInterfaceObject(accountMembershipData);
+            await ObjectStorage.StoreInterfaceObject(account, accountMembershipData);
         }
 
     }

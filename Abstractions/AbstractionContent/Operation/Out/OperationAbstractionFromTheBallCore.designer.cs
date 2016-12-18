@@ -238,7 +238,7 @@ using System.Threading.Tasks;
 				GroupMembership[] Memberships =  await UpdateAccountMembershipStatusesImplementation.GetTarget_MembershipsAsync(Account);	
 				TheBall.Interface.INT.AccountMembershipData AccountMembershipData =  await UpdateAccountMembershipStatusesImplementation.GetTarget_AccountMembershipDataAsync(Account);	
 				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_UpdateMembershipDataAsync(parameters.GroupID, AccountMembershipData, Memberships);		
-				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(AccountMembershipData);		
+				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(Account, AccountMembershipData);		
 				}
 				}
 				public class RemoveGroupMembershipParameters 

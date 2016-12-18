@@ -96,6 +96,8 @@ namespace TheBall
             if (isInterfaceData && objectName == null)
                 throw new ArgumentException("ObjectName must be given if isInterfaceData is true", nameof(objectName));
             var objectType = dataObject.GetType();
+            if (objectName == null)
+                objectName = objectType.Name;
             if (owner == null)
                 owner = InformationContext.CurrentOwner;
             var ownerPrefixedWithExtension = getOwnerPrefixedNameWithExtension(owner, objectName, isInterfaceData, objectType);
@@ -114,7 +116,7 @@ namespace TheBall
                 throw new ArgumentException("ObjectName must be given if isInterfaceData is true", nameof(objectName));
             var objectType = typeof (T);
             if (objectName == null)
-                objectName = typeof (T).Name;
+                objectName = objectType.Name;
             if (owner == null)
                 owner = InformationContext.CurrentOwner;
             var ownerPrefixedWithExtension = getOwnerPrefixedNameWithExtension(owner, objectName, isInterfaceData, objectType);
@@ -127,7 +129,7 @@ namespace TheBall
         {
             string namePart = isInterfaceData
                 ? "TheBall.Interface/InterfaceData/" + objectName
-                : getTypePrefix(objectType) + "/" + objectName;
+                : getTypePrefix(objectType).Replace("TheBall.Interface.INT", "TheBall.Interface") + "/" + objectName;
             var ownerPrefixedWithExtension = StorageSupport.GetOwnerContentLocation(owner, namePart) + ".json";
             return ownerPrefixedWithExtension;
         }

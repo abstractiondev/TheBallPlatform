@@ -5642,7 +5642,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: StoreObject ( AccountMembershipData )" level="2">
+            <Header text="Method Call: StoreObject ( Account, AccountMembershipData )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Store object</TextContent>

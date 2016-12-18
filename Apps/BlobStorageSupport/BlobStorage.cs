@@ -55,7 +55,7 @@ namespace TheBall.CORE.Storage
             string ownerPrefix = owner.ContainerName + "/" + owner.LocationPrefix + "/";
             if (blobAddress.StartsWith("grp/") || blobAddress.StartsWith("acc/") || blobAddress.StartsWith("sys/"))
             {
-                if (blobAddress.StartsWith(ownerPrefix))
+                if (blobAddress.StartsWith(ownerPrefix) || owner.IsSystemOwner())
                     return blobAddress;
                 throw new SecurityException("Invalid reference to blob: " + blobAddress + " by owner prefix: " + owner.LocationPrefix);
             }
