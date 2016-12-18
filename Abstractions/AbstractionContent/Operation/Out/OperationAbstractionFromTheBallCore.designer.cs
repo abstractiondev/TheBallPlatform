@@ -218,6 +218,12 @@ using System.Threading.Tasks;
 			 await UpdateAccountMembershipStatuses.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
+				
+		{ // Local block to allow local naming
+			UpdateGroupMembershipStatusesParameters operationParameters = SetGroupMembershipImplementation.UpdateGroupStatuses_GetParameters(parameters.GroupID, parameters.AccountID);
+			 await UpdateGroupMembershipStatuses.ExecuteAsync(operationParameters);
+									
+		} // Local block closing
 				}
 				}
 				public class UpdateAccountMembershipStatusesParameters 
@@ -241,7 +247,29 @@ using System.Threading.Tasks;
 				 await UpdateAccountMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(Account, AccountMembershipData);		
 				}
 				}
-				public class RemoveGroupMembershipParameters 
+				public class UpdateGroupMembershipStatusesParameters 
+		{
+				public string GroupID ;
+				public string AccountID ;
+				}
+		
+		public class UpdateGroupMembershipStatuses 
+		{
+				private static void PrepareParameters(UpdateGroupMembershipStatusesParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(UpdateGroupMembershipStatusesParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Group Group =  await UpdateGroupMembershipStatusesImplementation.GetTarget_GroupAsync(parameters.GroupID);	
+				GroupMembership[] Memberships =  await UpdateGroupMembershipStatusesImplementation.GetTarget_MembershipsAsync(Group);	
+				TheBall.Interface.INT.GroupMembershipData GroupMembershipData =  await UpdateGroupMembershipStatusesImplementation.GetTarget_GroupMembershipDataAsync(Group);	
+				 await UpdateGroupMembershipStatusesImplementation.ExecuteMethod_UpdateMembershipDataAsync(parameters.AccountID, GroupMembershipData, Memberships);		
+				 await UpdateGroupMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(Group, GroupMembershipData);		
+				}
+				}
+
+		    public class RemoveGroupMembershipParameters 
 		{
 				public string GroupID ;
 				public string AccountID ;

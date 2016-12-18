@@ -4567,6 +4567,10 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Call update account membership statuses
 		</div>
+		</p><h2>Operation Call: UpdateGroupStatuses ( GroupID, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Call update group membership statuses
+		</div>
 		</p><h1>SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
@@ -5113,7 +5117,7 @@ div.WordSection1
 		</p><h1>UpdateAccountMembershipStatuses (AccountID, GroupID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
-		Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details
+		Update account's membership statuses without updating all group details, only adding what's missing - and specific group ID to update the details
 		</div>
 		</p><h2>Parameters</h2>
 		<p><table border="1">
@@ -5243,6 +5247,69 @@ div.WordSection1
 		</p><h2>Method Call: SyncTemplateContent ( TemplateSourceLocation, TemplateTargetLocation )</h2>
 		<p>		<div class="MsoNormal" >
 		Sync template content from source to target
+		</div>
+		</p><h1>UpdateGroupMembershipStatuses (GroupID, AccountID)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update group's membership statuses without updating all account details, only adding what's missing - and specific account ID to update the details
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Group ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Optional Account ID to update the details
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Group ( GroupID )</h2>
+		<p>		<div class="MsoNormal" >
+		Group object
+		</div>
+		</p><h2>Target Definition: Memberships ( Group )</h2>
+		<p>		<div class="MsoNormal" >
+		Group memberships of a group
+		</div>
+		</p><h2>Target Definition: GroupMembershipData ( Group )</h2>
+		<p>		<div class="MsoNormal" >
+		Group membership data to update
+		</div>
+		</p><h2>Method Call: UpdateMembershipData ( GroupMembershipData, Memberships, AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Update membership data based on core memberships - add account details for missing and update if AccountID is given
+		</div>
+		</p><h2>Method Call: StoreObject ( Group, GroupMembershipData )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
 		</div>
 		</p><h1>UpdateOwnerDomainObjectsInSQLiteStorage (Owner, SemanticDomain)</h1>
 		<h2>Specifications</h2>

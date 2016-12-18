@@ -103,6 +103,7 @@ namespace OperationRunnerTool
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateTemplateForAllAccounts -remoteExecute:true -p:TemplateName:cpanel
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateAccountMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateGroupMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
 
 
 #endif

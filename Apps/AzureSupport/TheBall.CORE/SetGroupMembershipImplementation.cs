@@ -68,5 +68,14 @@ namespace TheBall.CORE
                 GroupID = groupId
             };
         }
+
+        public static UpdateGroupMembershipStatusesParameters UpdateGroupStatuses_GetParameters(string groupID, string accountID)
+        {
+            return new UpdateGroupMembershipStatusesParameters
+            {
+                GroupID = groupID,
+                AccountID = accountID
+            };
+        }
     }
 }

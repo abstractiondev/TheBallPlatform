@@ -4964,6 +4964,13 @@
                 </Text>
               </Paragraph>
             </Header>
+            <Header text="Operation Call: UpdateGroupStatuses ( GroupID, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Call update group membership statuses</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
           </Header>
           <Header text="SetInformationInputValidationAndActiveStatus (Owner, InformationInputID, IsValidAndActive)" level="1">
             <Header text="Specifications" level="2">
@@ -5575,7 +5582,7 @@
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details</TextContent>
+                  <TextContent>Update account's membership statuses without updating all group details, only adding what's missing - and specific group ID to update the details</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -5739,6 +5746,85 @@
               <Paragraph>
                 <Text>
                   <TextContent>Sync template content from source to target</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateGroupMembershipStatuses (GroupID, AccountID)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update group's membership statuses without updating all account details, only adding what's missing - and specific account ID to update the details</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Group ID</TextContent>
+                      </ColumnData>
+                    </Row>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>AccountID</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>string</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Optional Account ID to update the details</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Group ( GroupID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group object</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Memberships ( Group )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group memberships of a group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: GroupMembershipData ( Group )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Group membership data to update</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateMembershipData ( GroupMembershipData, Memberships, AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update membership data based on core memberships - add account details for missing and update if AccountID is given</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObject ( Group, GroupMembershipData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store object</TextContent>
                 </Text>
               </Paragraph>
             </Header>

@@ -662,12 +662,17 @@
               <Parameter name="AccountID"/>
               <Parameter name="GroupID"/>
             </OperationExecute>
+            <OperationExecute name="UpdateGroupStatuses" targetOperationName="UpdateGroupMembershipStatuses" designDesc="Call update group membership statuses"
+                              asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="GroupID"/>
+              <Parameter name="AccountID"/>
+            </OperationExecute>
           </SequentialExecution>
         </Execution>
       </Operation>
       <Operation name="UpdateAccountMembershipStatuses">
         <OperationSpec>
-          <Description>Update account's membership statuses without updating group details, only adding what's missing - and specific group ID to update the details</Description>
+          <Description>Update account's membership statuses without updating all group details, only adding what's missing - and specific group ID to update the details</Description>
         </OperationSpec>
         <Parameters>
           <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented"/>
@@ -694,6 +699,39 @@
             <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
               <Target name="Account"/>
               <Target name="AccountMembershipData"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateGroupMembershipStatuses">
+        <OperationSpec>
+          <Description>Update group's membership statuses without updating all account details, only adding what's missing - and specific account ID to update the details</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="GroupID" dataType="string" designDesc="Group ID" state="implemented"/>
+          <Parameter name="AccountID" dataType="string" designDesc="Optional Account ID to update the details" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Group" dataType="Group" designDesc="Group object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="GroupID"/>
+            </TargetDefinition>
+            <TargetDefinition name="Memberships" dataType="GroupMembership[]" designDesc="Group memberships of a group" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Group"/>
+            </TargetDefinition>
+            <TargetDefinition name="GroupMembershipData" dataType="TheBall.Interface.INT.GroupMembershipData" designDesc="Group membership data to update" asyncSupportMode="AsyncOnly"
+                              state="implemented">
+              <Target name="Group"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdateMembershipData" designDesc="Update membership data based on core memberships - add account details for missing and update if AccountID is given"
+                           asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="AccountID"/>
+              <Target name="GroupMembershipData"/>
+              <Target name="Memberships"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Group"/>
+              <Target name="GroupMembershipData"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
