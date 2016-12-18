@@ -1742,6 +1742,67 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SaveGroupDetails (GroupDetails)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save group details data - refresh membership details on group members</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>GroupDetails</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.GroupDetails</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Details object</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Group" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current group</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SaveGroupDetails ( Group, GroupDetails )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save group details over existing</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CurrentMemberships ( Group )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Current group memberships</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdateDetailsChangeToMembers ( Group, CurrentMemberships )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update membership states to members (run as System)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SaveInterfaceJSON (SaveDataInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

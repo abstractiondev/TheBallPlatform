@@ -593,6 +593,25 @@ using System.Threading.Tasks;
 				 await SaveInterfaceJSONImplementation.ExecuteMethod_StoreJSONDataAsync(JSONDataFileLocation, DataObject);		
 				}
 				}
+				public class SaveGroupDetailsParameters 
+		{
+				public INT.GroupDetails GroupDetails ;
+				}
+		
+		public class SaveGroupDetails 
+		{
+				private static void PrepareParameters(SaveGroupDetailsParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SaveGroupDetailsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					TheBall.CORE.Group Group =  await SaveGroupDetailsImplementation.GetTarget_GroupAsync();	
+				 await SaveGroupDetailsImplementation.ExecuteMethod_SaveGroupDetailsAsync(parameters.GroupDetails, Group);		
+				TheBall.CORE.GroupMembership[] CurrentMemberships =  await SaveGroupDetailsImplementation.GetTarget_CurrentMembershipsAsync(Group);	
+				 await SaveGroupDetailsImplementation.ExecuteMethod_UpdateDetailsChangeToMembersAsync(Group, CurrentMemberships);		
+				}
+				}
 				public class FetchURLAsGroupContentParameters 
 		{
 				public string GroupID ;

@@ -1676,6 +1676,48 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Create queue entry to item with content of invoker account within
 		</div>
+		</p><h1>SaveGroupDetails (GroupDetails)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Save group details data - refresh membership details on group members
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		GroupDetails
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.GroupDetails
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Details object
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Group</h2>
+		<p>		<div class="MsoNormal" >
+		Current group
+		</div>
+		</p><h2>Method Call: SaveGroupDetails ( Group, GroupDetails )</h2>
+		<p>		<div class="MsoNormal" >
+		Save group details over existing
+		</div>
+		</p><h2>Target Definition: CurrentMemberships ( Group )</h2>
+		<p>		<div class="MsoNormal" >
+		Current group memberships
+		</div>
+		</p><h2>Method Call: UpdateDetailsChangeToMembers ( Group, CurrentMemberships )</h2>
+		<p>		<div class="MsoNormal" >
+		Update membership states to members (run as System)
+		</div>
 		</p><h1>SaveInterfaceJSON (SaveDataInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

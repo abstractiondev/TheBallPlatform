@@ -268,8 +268,7 @@ using System.Threading.Tasks;
 				 await UpdateGroupMembershipStatusesImplementation.ExecuteMethod_StoreObjectAsync(Group, GroupMembershipData);		
 				}
 				}
-
-		    public class RemoveGroupMembershipParameters 
+				public class RemoveGroupMembershipParameters 
 		{
 				public string GroupID ;
 				public string AccountID ;

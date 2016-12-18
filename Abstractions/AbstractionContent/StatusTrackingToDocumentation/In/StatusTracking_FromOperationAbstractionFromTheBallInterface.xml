@@ -499,6 +499,21 @@
     <StatusItem name="SaveInterfaceJSON_StoreJSONData" displayName="MethodExecuteType: StoreJSONData" description="Save data JSON to location as serialized">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
+    <StatusItem name="SaveGroupDetails_GroupDetails" displayName="VariableType: GroupDetails" description="Details object">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveGroupDetails_Group" displayName="TargetDefinitionType: Group" description="Current group">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveGroupDetails_SaveGroupDetails" displayName="MethodExecuteType: SaveGroupDetails" description="Save group details over existing">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveGroupDetails_CurrentMemberships" displayName="TargetDefinitionType: CurrentMemberships" description="Current group memberships">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SaveGroupDetails_UpdateDetailsChangeToMembers" displayName="MethodExecuteType: UpdateDetailsChangeToMembers" description="Update membership states to members (run as System)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="FetchURLAsGroupContent_GroupID" displayName="VariableType: GroupID" description="Group ID to fetch data as for">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -743,6 +758,13 @@
       <ItemRef itemName="SaveInterfaceJSON_DataObject" />
       <ItemRef itemName="SaveInterfaceJSON_JSONDataFileLocation" />
       <ItemRef itemName="SaveInterfaceJSON_StoreJSONData" />
+    </Group>
+    <Group name="SaveGroupDetails">
+      <ItemRef itemName="SaveGroupDetails_GroupDetails" />
+      <ItemRef itemName="SaveGroupDetails_Group" />
+      <ItemRef itemName="SaveGroupDetails_SaveGroupDetails" />
+      <ItemRef itemName="SaveGroupDetails_CurrentMemberships" />
+      <ItemRef itemName="SaveGroupDetails_UpdateDetailsChangeToMembers" />
     </Group>
     <Group name="FetchURLAsGroupContent">
       <ItemRef itemName="FetchURLAsGroupContent_GroupID" />

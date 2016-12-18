@@ -780,6 +780,30 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="SaveGroupDetails">
+      <OperationSpec>
+        <Description>Save group details data - refresh membership details on group members</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="GroupDetails" dataType="INT.GroupDetails" designDesc="Details object" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="Group" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Group" designDesc="Current group" state="implemented" />
+          <MethodExecute name="SaveGroupDetails" asyncSupportMode="AsyncOnly" designDesc="Save group details over existing" state="implemented">
+            <Parameter name="GroupDetails" />
+            <Target name="Group" />
+          </MethodExecute>
+          <TargetDefinition name="CurrentMemberships" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.GroupMembership[]" designDesc="Current group memberships" state="implemented">
+            <Target name="Group" />
+          </TargetDefinition>
+          <MethodExecute name="UpdateDetailsChangeToMembers" asyncSupportMode="AsyncOnly" designDesc="Update membership states to members (run as System)" state="implemented">
+            <Target name="Group" />
+            <Target name="CurrentMemberships" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="FetchURLAsGroupContent">
       <OperationSpec>
         <Description>Fetch URL data as group BinaryFile/MediaContent</Description>

@@ -30,13 +30,25 @@ namespace OperationRunnerTool
             return configOption;
         }
 
-        private static string[] getOperationParameters(string[] args)
+        private static string[] getOperationParameterValuePairs(string[] args)
         {
             var paramOption = getConfigOption("p", args, false);
             if(paramOption == null)
                 return new string[0];
             var parameterValuePairs = paramOption.Split(',').Select(str => str.Trim()).ToArray();
             return parameterValuePairs;
+        }
+
+        private static byte[] getOperationParameterObjectAsContentBytes(string[] args)
+        {
+            var paramOption = getConfigOption("p", args, false);
+            if (paramOption == null)
+                return null;
+            var jsonCandidateContent = paramOption.Trim();
+            if (!jsonCandidateContent.StartsWith("{") || !jsonCandidateContent.EndsWith("}"))
+                return null;
+            var byteResult = Encoding.UTF8.GetBytes(jsonCandidateContent);
+            return byteResult;
         }
 
         static async void MainAsync(string[] args)
@@ -48,7 +60,7 @@ namespace OperationRunnerTool
             var useWorker = remoteExecute != null && Boolean.Parse(remoteExecute);
             var operationOwner = ownerInfo != null ? VirtualOwner.FigureOwner(ownerInfo) : SystemSupport.SystemOwner;
             var operationName = getConfigOption("op", args);
-            var operationParameters = getOperationParameters(args).Select(parValuePair =>
+            var nameValueParameters = getOperationParameterValuePairs(args).Select(parValuePair =>
             {
                 var splitPair = parValuePair.Split(':');
                 if(splitPair.Length < 2)
@@ -61,8 +73,9 @@ namespace OperationRunnerTool
                     Value = parValue
                 };
             }).ToArray();
+            var jsonParameters = getOperationParameterObjectAsContentBytes(args);
 
-            var formValues = operationParameters.ToDictionary(item => item.Name, item => item.Value);
+            var formValues = nameValueParameters.ToDictionary(item => item.Name, item => item.Value);
 
             var infraConfigPath = Path.Combine(configRoot, "InfraShared", "InfraConfig.json");
             //var secureConfigPath = Path.Combine(configRoot, instanceName, "SecureConfig.json");
@@ -76,7 +89,8 @@ namespace OperationRunnerTool
             {
                 OwnerRootLocation = operationOwner.GetOwnerPrefix(),
                 OperationName = operationName,
-                FormValues = formValues
+                FormValues = formValues,
+                RequestContent = jsonParameters
             };
 
             if (useWorker)
@@ -104,6 +118,7 @@ namespace OperationRunnerTool
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateAccountMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateGroupMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/cc6db374-b530-485e-bb08-b9003725a7f5 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Test name 1\"}"
 
 
 #endif
