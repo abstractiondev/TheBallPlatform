@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
   <StatusItems scopeName="TheBall.Interface">
+    <StatusItem name="SendEmail_EmailInfo" displayName="VariableType: EmailInfo" description="Email content in one object to be sent">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SendEmail_ValidateThatEmailSendingIsAllowed" displayName="MethodExecuteType: ValidateThatEmailSendingIsAllowed" description="Validate that email sending is allowed from given owner (group or account vs option)">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SendEmail_EmailAddresses" displayName="TargetDefinitionType: EmailAddresses" description="Email addresses of given account IDs">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SendEmail_Attachments" displayName="TargetDefinitionType: Attachments" description="Gather attachments from InterfaceData">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="SendEmail_SendEmails" displayName="MethodExecuteType: SendEmails" description="Send email(s) to recipient(s) with message and optional attachments">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
     <StatusItem name="ExecuteRemoteCalledConnectionOperation_InputStream" displayName="VariableType: InputStream" description="Input stream for parameter serialization">
       <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
     </StatusItem>
@@ -534,6 +549,13 @@
     </StatusItem>
   </StatusItems>
   <Groups>
+    <Group name="SendEmail">
+      <ItemRef itemName="SendEmail_EmailInfo" />
+      <ItemRef itemName="SendEmail_ValidateThatEmailSendingIsAllowed" />
+      <ItemRef itemName="SendEmail_EmailAddresses" />
+      <ItemRef itemName="SendEmail_Attachments" />
+      <ItemRef itemName="SendEmail_SendEmails" />
+    </Group>
     <Group name="ExecuteRemoteCalledConnectionOperation">
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_InputStream" />
       <ItemRef itemName="ExecuteRemoteCalledConnectionOperation_OutputStream" />

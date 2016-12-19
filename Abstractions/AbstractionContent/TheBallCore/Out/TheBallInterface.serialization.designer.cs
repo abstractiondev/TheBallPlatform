@@ -187,6 +187,34 @@ namespace INT {
 				public AccountDetails Details { get; set; }
 			}
 
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class EmailPackage
+			{
+				[DataMember]
+				public string[] RecipientAccountIDs { get; set; }
+				[DataMember]
+				public string Subject { get; set; }
+				[DataMember]
+				public string BodyText { get; set; }
+				[DataMember]
+				public string BodyHtml { get; set; }
+				[DataMember]
+				public EmailAttachment[] Attachments { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface.INT")]
+			public partial class EmailAttachment
+			{
+				[DataMember]
+				public string FileName { get; set; }
+				[DataMember]
+				public string InterfaceDataName { get; set; }
+				[DataMember]
+				public string TextDataContent { get; set; }
+				[DataMember]
+				public string Base64Content { get; set; }
+			}
+
  }             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Interface")] 
 			[Serializable]
 			public partial class InterfaceOperation 

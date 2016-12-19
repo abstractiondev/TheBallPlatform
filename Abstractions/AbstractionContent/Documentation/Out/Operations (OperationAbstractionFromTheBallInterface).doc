@@ -1760,6 +1760,48 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Save data JSON to location as serialized
 		</div>
+		</p><h1>SendEmail (EmailInfo)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Send email with optional attachments
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		EmailInfo
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.EmailPackage
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Email content in one object to be sent
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Method Call: ValidateThatEmailSendingIsAllowed</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that email sending is allowed from given owner (group or account vs option)
+		</div>
+		</p><h2>Target Definition: EmailAddresses ( EmailInfo.RecipientAccountIDs )</h2>
+		<p>		<div class="MsoNormal" >
+		Email addresses of given account IDs
+		</div>
+		</p><h2>Target Definition: Attachments ( EmailInfo.Attachments )</h2>
+		<p>		<div class="MsoNormal" >
+		Gather attachments from InterfaceData
+		</div>
+		</p><h2>Method Call: SendEmails ( EmailAddresses, Attachments, EmailInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Send email(s) to recipient(s) with message and optional attachments
+		</div>
 		</p><h1>SetCategoryLinkingForConnection</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

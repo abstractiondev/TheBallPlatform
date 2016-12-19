@@ -1,6 +1,30 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Interface">
+    <Operation name="SendEmail">
+      <OperationSpec>
+        <Description>Send email with optional attachments</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="EmailInfo" dataType="INT.EmailPackage" designDesc="Email content in one object to be sent" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <MethodExecute name="ValidateThatEmailSendingIsAllowed" designDesc="Validate that email sending is allowed from given owner (group or account vs option)" state="implemented" />
+          <TargetDefinition name="EmailAddresses" asyncSupportMode="AsyncOnly" dataType="string[]" designDesc="Email addresses of given account IDs" state="implemented">
+            <Parameter name="EmailInfo.RecipientAccountIDs" />
+          </TargetDefinition>
+          <TargetDefinition name="Attachments" asyncSupportMode="AsyncOnly" dataType="TheBall.EmailSupport.FileAttachment[]" designDesc="Gather attachments from InterfaceData" state="implemented">
+            <Parameter name="EmailInfo.Attachments" />
+          </TargetDefinition>
+          <MethodExecute name="SendEmails" asyncSupportMode="AsyncOnly" designDesc="Send email(s) to recipient(s) with message and optional attachments" state="implemented">
+            <Parameter name="EmailInfo" />
+            <Target name="EmailAddresses" />
+            <Target name="Attachments" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ExecuteRemoteCalledConnectionOperation">
       <OperationSpec>
         <Description>

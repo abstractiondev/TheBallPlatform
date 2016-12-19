@@ -335,4 +335,53 @@ using System.Runtime.Serialization;
 
 			
 			}
+			[DataContract]
+			public partial class EmailPackage 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public List<string> RecipientAccountIDs= new List<string>();
+
+			[DataMember]
+			public string Subject;
+
+			[DataMember]
+			public string BodyText;
+
+			[DataMember]
+			public string BodyHtml;
+
+			[DataMember]
+			public List<EmailAttachment> Attachments= new List<EmailAttachment>();
+
+			
+			}
+			[DataContract]
+			public partial class EmailAttachment 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string FileName;
+
+			[DataMember]
+			public string InterfaceDataName;
+
+			[DataMember]
+			public string TextDataContent;
+
+			[DataMember]
+			public string Base64Content;
+
+			
+			}
  } 

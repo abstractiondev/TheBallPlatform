@@ -117,6 +117,23 @@
             <ObjectInstance name="Details" interfaceObjectName="AccountDetails"/>
           </InterfaceItems>
         </InterfaceObject>
+        <InterfaceObject name="EmailPackage" designDesc="Email package to send">
+          <InterfaceItems>
+            <InterfaceItem name="RecipientAccountIDs" logicalDataType="Text_Short" isCollection="true" />
+            <InterfaceItem name="Subject" logicalDataType="Text_Short"/>
+            <InterfaceItem name="BodyText" logicalDataType="Text_Long"/>
+            <InterfaceItem name="BodyHtml" logicalDataType="Text_Long"/>
+            <ObjectInstance name="Attachments" interfaceObjectName="EmailAttachment" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="EmailAttachment" designDesc="Email attachment object">
+          <InterfaceItems>
+            <InterfaceItem name="FileName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="InterfaceDataName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="TextDataContent" logicalDataType="Text_Long"/>
+            <InterfaceItem name="Base64Content" logicalDataType="Text_Long"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <!--
         <InterfaceObject name="GenericObject" designDesc="Generic UI object">
           <InterfaceItems>
@@ -261,7 +278,30 @@
       </InformationObject>
     </InformationModel>
     <Operations>
-      
+      <Operation name="SendEmail">
+        <OperationSpec>
+          <Description>Send email with optional attachments</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="EmailInfo" dataType="INT.EmailPackage" designDesc="Email content in one object to be sent" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="ValidateThatEmailSendingIsAllowed" designDesc="Validate that email sending is allowed from given owner (group or account vs option)" state="implemented" />
+            <TargetDefinition name="EmailAddresses" dataType="string[]" designDesc="Email addresses of given account IDs" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="EmailInfo.RecipientAccountIDs"/>
+            </TargetDefinition>
+            <TargetDefinition name="Attachments" dataType="TheBall.EmailSupport.FileAttachment[]" designDesc="Gather attachments from InterfaceData" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="EmailInfo.Attachments"/>
+            </TargetDefinition>
+            <MethodExecute name="SendEmails" designDesc="Send email(s) to recipient(s) with message and optional attachments" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="EmailInfo"/>
+              <Target name="EmailAddresses"/>
+              <Target name="Attachments"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="ExecuteRemoteCalledConnectionOperation">
         <OperationSpec>
           <Description>

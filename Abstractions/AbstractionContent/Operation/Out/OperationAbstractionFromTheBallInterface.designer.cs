@@ -8,6 +8,25 @@ using System.IO;
 using System.Threading.Tasks;
 
 		namespace TheBall.Interface { 
+				public class SendEmailParameters 
+		{
+				public INT.EmailPackage EmailInfo ;
+				}
+		
+		public class SendEmail 
+		{
+				private static void PrepareParameters(SendEmailParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SendEmailParameters parameters)
+		{
+						PrepareParameters(parameters);
+					SendEmailImplementation.ExecuteMethod_ValidateThatEmailSendingIsAllowed();		
+				string[] EmailAddresses =  await SendEmailImplementation.GetTarget_EmailAddressesAsync(parameters.EmailInfo.RecipientAccountIDs);	
+				TheBall.EmailSupport.FileAttachment[] Attachments =  await SendEmailImplementation.GetTarget_AttachmentsAsync(parameters.EmailInfo.Attachments);	
+				 await SendEmailImplementation.ExecuteMethod_SendEmailsAsync(parameters.EmailInfo, EmailAddresses, Attachments);		
+				}
+				}
 				public class ExecuteRemoteCalledConnectionOperationParameters 
 		{
 				public System.IO.Stream InputStream ;

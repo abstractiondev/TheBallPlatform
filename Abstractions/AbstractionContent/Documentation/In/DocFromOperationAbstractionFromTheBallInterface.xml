@@ -1864,6 +1864,67 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SendEmail (EmailInfo)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Send email with optional attachments</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>EmailInfo</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.EmailPackage</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Email content in one object to be sent</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateThatEmailSendingIsAllowed" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that email sending is allowed from given owner (group or account vs option)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: EmailAddresses ( EmailInfo.RecipientAccountIDs )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Email addresses of given account IDs</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Attachments ( EmailInfo.Attachments )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Gather attachments from InterfaceData</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SendEmails ( EmailAddresses, Attachments, EmailInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Send email(s) to recipient(s) with message and optional attachments</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="SetCategoryLinkingForConnection" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
