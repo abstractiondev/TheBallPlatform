@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
@@ -55,6 +56,14 @@ namespace TheBall
             if (operationName.StartsWith("TheBall.Payments"))
             {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
+            }
+            if (operationName.StartsWith("TheBall.CORE"))
+            {
+                var owner = VirtualOwner.FigureOwner(ownerPrefix);
+                var isAdminOwner = owner.IsGroupContainer() &&
+                                   owner.GetIDFromLocationPrefix() == InstanceConfig.Current.AdminGroupID;
+                if(!isAdminOwner)
+                    throw new SecurityException("TheBall.CORE operations are only allowed from admin group");
             }
             var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
             {
