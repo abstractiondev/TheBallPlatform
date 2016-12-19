@@ -42,8 +42,8 @@ namespace TheBall.CORE.InstanceSupport
         public string[] RestrictedEmailAddresses;
         public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
         public bool SkipReferrerValidation = true;
-
-
+        public bool AllowEmailSendFromGroup;
+        public bool AllowEmailSendFromAccount;
 
         public string AdminGroupID;
         public string AllowDirectServingRegexp;

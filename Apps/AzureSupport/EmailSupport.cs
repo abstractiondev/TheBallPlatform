@@ -9,9 +9,11 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.SimpleEmail;
 using Amazon.SimpleEmail.Model;
+using AzureSupport;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Microsoft.WindowsAzure.Storage.Blob;
+using MimeKit;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 
@@ -19,6 +21,48 @@ namespace TheBall
 {
     public static class EmailSupport
     {
+        public class FileAttachment
+        {
+            public string FileName;
+            public byte[] Data;
+        }
+        private static BodyBuilder GetMessageBodyBuilder(string htmlBody, string textBody, FileAttachment[] attachments = null)
+        {
+            var body = new BodyBuilder
+            {
+                HtmlBody = htmlBody,
+                TextBody = textBody
+            };
+            if (attachments != null)
+            {
+                foreach (var attachment in attachments)
+                {
+                    var fileName = attachment.FileName;
+                    var data = attachment.Data;
+                    var mimeType = StorageSupport.GetMimeType(fileName);
+                    var contentType = ContentType.Parse(mimeType);
+                    body.Attachments.Add(fileName, data, contentType);
+                }
+            }
+            return body;
+        }
+
+
+        public static async Task<bool> SendEmailAsync(string from, string to, string subject, string text,
+            string html, FileAttachment[] attachments)
+        {
+            try
+            {
+                var request = createEmailRequestWithAttachments(from, to, subject, text, html, attachments);
+                var ses = createEmailClient();
+                var response = await ses.SendRawEmailAsync(request);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public static async Task<Boolean> SendEmailAsync(String From, String To, String Subject, String Text = null, String HTML = null, String emailReplyTo = null, String returnPath = null)
         {
@@ -92,6 +136,23 @@ namespace TheBall
             return ses;
         }
 
+        private static SendRawEmailRequest createEmailRequestWithAttachments(string from, string to, string subject,
+            string text, string html, FileAttachment[] attachments)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("", from));
+            message.To.Add(new MailboxAddress("", to));
+            message.Subject = subject;
+            var bodyBuilder = GetMessageBodyBuilder(html, text, attachments);
+            message.Body = bodyBuilder.ToMessageBody();
+
+            var messageStream = new MemoryStream();
+            message.WriteTo(messageStream);
+
+            var sendRequest = new SendRawEmailRequest(new RawMessage(messageStream));
+            return sendRequest;
+        }
+
         private static SendEmailRequest createEmailRequest(string From, string To, string Subject, string Text,
             string HTML, string emailReplyTo, string returnPath)
         {
@@ -112,7 +173,6 @@ namespace TheBall
             subject.Data = Subject;
 
             Body body = new Body();
-
 
             if (HTML != null)
             {
