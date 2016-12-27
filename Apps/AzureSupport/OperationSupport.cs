@@ -11,6 +11,7 @@ using AaltoGlobalImpact.OIP;
 using AzureSupport;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 using TheBall.Interface;
 
 namespace TheBall

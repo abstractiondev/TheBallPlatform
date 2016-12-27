@@ -89,7 +89,30 @@ using System.Threading.Tasks;
 				 await CancelAccountPlanImplementation.ExecuteMethod_StoreObjectsAsync(CustomerAccount);		
 				}
 				}
-				public class ActivateAccountPlanParameters 
+				public class PurchaseProductParameters 
+		{
+				public INT.PaymentToken PaymentToken ;
+				}
+		
+		public class PurchaseProduct 
+		{
+				private static void PrepareParameters(PurchaseProductParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(PurchaseProductParameters parameters)
+		{
+						PrepareParameters(parameters);
+					string AccountID = PurchaseProductImplementation.GetTarget_AccountID();	
+				CustomerAccount CustomerAccount =  await PurchaseProductImplementation.GetTarget_CustomerAccountAsync(AccountID);	
+				string StripeCustomerID = PurchaseProductImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
+				string ProductName = PurchaseProductImplementation.GetTarget_ProductName(parameters.PaymentToken);	
+				double ProductPrice = PurchaseProductImplementation.GetTarget_ProductPrice(parameters.PaymentToken);	
+				 await PurchaseProductImplementation.ExecuteMethod_ValidateStripeProductAndPriceAsync(ProductName, ProductPrice);		
+				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, ProductName);		
+				}
+				}
+
+		    public class ActivateAccountPlanParameters 
 		{
 				public INT.PaymentToken PaymentToken ;
 				}

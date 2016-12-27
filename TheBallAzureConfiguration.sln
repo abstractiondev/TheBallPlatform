@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "AzureConfiguration", "Apps\AzureConfiguration\AzureConfiguration.ccproj", "{889E9FC0-7FAE-492B-96F9-D4472670613E}"
 EndProject
@@ -22,7 +22,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureRoleSupport", "Apps\Az
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWebConsole", "Apps\TheBallWebConsole\TheBallWebConsole.csproj", "{4F8CA93C-D355-46A0-93EF-081FE56E2398}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
+		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

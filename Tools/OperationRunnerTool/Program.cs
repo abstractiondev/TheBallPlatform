@@ -102,9 +102,9 @@ namespace OperationRunnerTool
 
 #if examples
 
-    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.CreateGroup
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.CreateGroup -p:GroupID:ab4487b1-d9ad-4de9-a361-3929a8884b51
 
-    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:cc6db374-b530-485e-bb08-b9003725a7f5,AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,Role:Initiator
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:ab4487b1-d9ad-4de9-a361-3929a8884b51,AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,Role:Collaborator
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateContainerOwnerTemplates -p:OwnerRootLocation:grp/cc6db374-b530-485e-bb08-b9003725a7f5,TemplateName:cpanel
 
@@ -118,7 +118,7 @@ namespace OperationRunnerTool
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateAccountMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -op:TheBall.CORE.UpdateGroupMembershipStatuses -remoteExecute:false -p:AccountID:2856ef1c-af21-488b-8ed4-0bb72f152e0a,GroupID:cc6db374-b530-485e-bb08-b9003725a7f5
-    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/cc6db374-b530-485e-bb08-b9003725a7f5 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Test name 1\"}"
+    -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/ab4487b1-d9ad-4de9-a361-3929a8884b51 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Test Belt Promo\"}"
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:members.ikwondo.com -op:TheBall.CORE.CreateGroup -p:GroupID:f6a9652b-4065-404e-9749-01d40ba5f26a
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:members.ikwondo.com -owner:grp/f6a9652b-4065-404e-9749-01d40ba5f26a -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Platform Admin\"}"

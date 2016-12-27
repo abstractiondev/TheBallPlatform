@@ -38,6 +38,8 @@ namespace INT {
 				[DataMember]
 				public string currentproduct { get; set; }
 				[DataMember]
+				public double expectedprice { get; set; }
+				[DataMember]
 				public string email { get; set; }
 				[DataMember]
 				public BillingAddress card { get; set; }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using AzureSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TheBall.CORE.Storage;
 using TheBall.Interface.INT;
 
 namespace PlatformCoreTests

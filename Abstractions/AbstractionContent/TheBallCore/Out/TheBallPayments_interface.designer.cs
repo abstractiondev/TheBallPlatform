@@ -63,6 +63,9 @@ using System.Runtime.Serialization;
 			public string currentproduct;
 
 			[DataMember]
+			public double expectedprice;
+
+			[DataMember]
 			public string email;
 
 			[DataMember]

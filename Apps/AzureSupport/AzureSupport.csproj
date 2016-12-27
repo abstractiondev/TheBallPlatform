@@ -455,6 +455,7 @@
     <Compile Include="TheBall.Payments\FetchCustomersFromStripeImplementation.cs" />
     <Compile Include="TheBall.Payments\GetAccountFromStripeCustomerImplementation.cs" />
     <Compile Include="TheBall.Payments\GrantPaidAccessToGroupImplementation.cs" />
+    <Compile Include="TheBall.Payments\PurchaseProductImplementation.cs" />
     <Compile Include="TheBall.Payments\SyncEffectivePlanAccessesToAccount.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlan.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlanCollection.cs" />
@@ -462,6 +463,7 @@
     <Compile Include="TheBall.Payments\ProcessStripeWebhookImplementation.cs" />
     <Compile Include="TheBall.Payments\RevokePaidAccessFromGroupImplementation.cs" />
     <Compile Include="TheBall.Payments\ValidatePlanContainingGroupsImplementation.cs" />
+    <Compile Include="TypeSupport.cs" />
     <Compile Include="WebsiteThumbnailImage.cs" />
     <Compile Include="WebSupport.cs" />
     <Compile Include="WorkerSupport.cs" />

@@ -97,6 +97,40 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="PurchaseProduct">
+      <OperationSpec>
+        <Description>Purchase and pay product for account</Description>
+      </OperationSpec>
+      <Parameters>
+        <Parameter name="PaymentToken" dataType="INT.PaymentToken" designDesc="Payment token info" state="implemented" />
+      </Parameters>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+          <TargetDefinition name="CustomerAccount" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account" state="implemented">
+            <Target name="AccountID" />
+          </TargetDefinition>
+          <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
+            <Target name="CustomerAccount" />
+          </TargetDefinition>
+          <TargetDefinition name="ProductName" dataType="string" designDesc="Product name from the payment token" state="implemented">
+            <Parameter name="PaymentToken" />
+          </TargetDefinition>
+          <TargetDefinition name="ProductPrice" dataType="double" designDesc="Product price from the payment token" state="implemented">
+            <Parameter name="PaymentToken" />
+          </TargetDefinition>
+          <MethodExecute name="ValidateStripeProductAndPrice" asyncSupportMode="AsyncOnly" designDesc="Validate product info from Stripe" state="implemented">
+            <Target name="ProductName" />
+            <Target name="ProductPrice" />
+          </MethodExecute>
+          <MethodExecute name="ProcessPayment" asyncSupportMode="AsyncOnly" designDesc="Process payment to Stripe" state="implemented">
+            <Parameter name="PaymentToken" />
+            <Target name="StripeCustomerID" />
+            <Target name="ProductName" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="ActivateAccountPlan">
       <OperationSpec>
         <Description>Activate and pay account named plan</Description>

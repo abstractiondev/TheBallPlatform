@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -19,19 +18,8 @@ using TheBall.Index;
 using JsonReader = JsonFx.Json.JsonReader;
 using JsonWriter = JsonFx.Json.JsonWriter;
 
-namespace AzureSupport
+namespace TheBall.CORE.Storage
 {
-    public static class TypeSupport
-    {
-        public static Type GetTypeByName(string fullName)
-        {
-            // TODO: Reflect proper loading based on fulltype, right now fetching from this
-            Assembly currAsm = Assembly.GetExecutingAssembly();
-            Type type = currAsm.GetType(fullName);
-            return type;
-        }
-    }
-
     public static class JSONSupport
     {
         public static ExpandoObject GetJsonFromStream(TextReader input)

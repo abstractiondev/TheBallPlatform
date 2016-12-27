@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using AzureSupport;
+using TheBall.CORE.Storage;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {

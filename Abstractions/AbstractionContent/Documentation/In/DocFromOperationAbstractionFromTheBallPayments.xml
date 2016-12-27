@@ -707,6 +707,88 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="PurchaseProduct (PaymentToken)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Purchase and pay product for account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>PaymentToken</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.PaymentToken</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Payment token info</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: AccountID" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Active account ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: CustomerAccount ( AccountID )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Customer account</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: StripeCustomerID ( CustomerAccount )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Stripe customer ID</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProductName ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Product name from the payment token</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: ProductPrice ( PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Product price from the payment token</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate product info from Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, ProductName, PaymentToken )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Process payment to Stripe</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="RevokePaidAccessFromGroup (GroupID, AccountID)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

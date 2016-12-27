@@ -22,6 +22,7 @@
           <InterfaceItems>
             <InterfaceItem name="id" logicalDataType="Text_Short"/>
             <InterfaceItem name="currentproduct" logicalDataType="Text_Short"/>
+            <InterfaceItem name="expectedprice" logicalDataType="Number"/>
             <InterfaceItem name="email" logicalDataType="Text_Short"/>
             <ObjectInstance name="card" interfaceObjectName="BillingAddress"/>
           </InterfaceItems>
@@ -183,6 +184,45 @@
             <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="CustomerAccount"/>
             </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="PurchaseProduct">
+        <OperationSpec>
+          <Description>Purchase and pay product for account</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="PaymentToken" dataType="INT.PaymentToken" designDesc="Payment token info" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
+            <TargetDefinition name="CustomerAccount" dataType="CustomerAccount" designDesc="Customer account" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
+              <Target name="CustomerAccount"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProductName" dataType="string" designDesc="Product name from the payment token" state="implemented">
+              <Parameter name="PaymentToken"/>
+            </TargetDefinition>
+            <TargetDefinition name="ProductPrice" dataType="double" designDesc="Product price from the payment token" state="implemented">
+              <Parameter name="PaymentToken"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateStripeProductAndPrice" designDesc="Validate product info from Stripe" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="ProductName"/>
+              <Target name="ProductPrice"/>
+            </MethodExecute>
+            <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented" asyncSupportMode="AsyncOnly">
+              <Parameter name="PaymentToken"/>
+              <Target name="StripeCustomerID"/>
+              <Target name="ProductName"/>
+            </MethodExecute>
+            <!--
+            <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="CustomerAccount"/>
+            </MethodExecute>
+            -->
           </SequentialExecution>
         </Execution>
       </Operation>

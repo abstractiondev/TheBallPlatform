@@ -708,6 +708,60 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Process Stripe event
 		</div>
+		</p><h1>PurchaseProduct (PaymentToken)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Purchase and pay product for account
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		PaymentToken
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.PaymentToken
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Payment token info
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: AccountID</h2>
+		<p>		<div class="MsoNormal" >
+		Active account ID
+		</div>
+		</p><h2>Target Definition: CustomerAccount ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Customer account
+		</div>
+		</p><h2>Target Definition: StripeCustomerID ( CustomerAccount )</h2>
+		<p>		<div class="MsoNormal" >
+		Stripe customer ID
+		</div>
+		</p><h2>Target Definition: ProductName ( PaymentToken )</h2>
+		<p>		<div class="MsoNormal" >
+		Product name from the payment token
+		</div>
+		</p><h2>Target Definition: ProductPrice ( PaymentToken )</h2>
+		<p>		<div class="MsoNormal" >
+		Product price from the payment token
+		</div>
+		</p><h2>Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate product info from Stripe
+		</div>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, ProductName, PaymentToken )</h2>
+		<p>		<div class="MsoNormal" >
+		Process payment to Stripe
+		</div>
 		</p><h1>RevokePaidAccessFromGroup (GroupID, AccountID)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
