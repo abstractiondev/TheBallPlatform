@@ -1597,11 +1597,11 @@ namespace TheBall
 
         public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
         {
-            BlobContinuationToken continuationToken;
+            BlobContinuationToken continuationToken = null;
             List<CloudBlockBlob> cloudBlockBlobs = new List<CloudBlockBlob>();
             do
             {
-                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, null, true, allowNoOwner);
+                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, continuationToken, true, allowNoOwner);
                 var cloudBlobsToAdd = blobListItems.Results.Cast<CloudBlockBlob>();
                 cloudBlockBlobs.AddRange(cloudBlobsToAdd);
                 continuationToken = blobListItems.ContinuationToken;

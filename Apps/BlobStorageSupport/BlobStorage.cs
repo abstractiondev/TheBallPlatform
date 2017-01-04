@@ -61,10 +61,10 @@ namespace TheBall.CORE.Storage
             return ownerPrefix + blobAddress;
         }
 
-        public static async Task UploadCurrentOwnerBlobTextAsync(string metadataFullPath, string jsonData)
+        public static async Task UploadCurrentOwnerBlobTextAsync(string name, string textData)
         {
             var owner = InformationContext.CurrentOwner;
-            await StorageSupport.UploadOwnerBlobTextAsync(owner, metadataFullPath, jsonData);
+            await StorageSupport.UploadOwnerBlobTextAsync(owner, name, textData);
         }
 
         public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner containerOwner, string directoryLocation, Func<BlobStorageItem, bool> filteringPredicate = null)

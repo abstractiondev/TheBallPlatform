@@ -1,90 +1,214 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace TheBall.CORE.Storage
 {
     public static class JSONSupport
     {
-        public static T GetObjectFromData<T>(byte[] blobData)
+        public static T GetObjectFromData<T>(byte[] data)
         {
-            throw new System.NotImplementedException();
+            using (var memStream = new MemoryStream(data))
+            {
+                return GetObjectFromStream<T>(memStream);
+            }
         }
 
-        public static object SerializeToJSONData(object dataObject)
+        public static T GetObjectFromStream<T>(Stream stream)
         {
-            throw new System.NotImplementedException();
+            T result = (T)GetObjectFromStream(stream, typeof(T));
+            return result;
+        }
+
+        public static object GetObjectFromStream(Stream stream, Type objectType)
+        {
+            var serializer = new JsonSerializer();
+            using (var streamReader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var result = serializer.Deserialize(streamReader, objectType);
+                return result;
+            }
+            //DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectType);
+            //return serializer.ReadObject(stream);
+        }
+
+        public static void SerializeToJSONStream(object obj, Stream stream)
+        {
+            var serializer = new JsonSerializer();
+            using (var streamWriter = new StreamWriter(stream, Encoding.UTF8))
+            {
+                serializer.Serialize(streamWriter, obj);
+            }
+        }
+
+
+        public static byte[] SerializeToJSONData(object obj)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                SerializeToJSONStream(obj, memoryStream);
+                return memoryStream.ToArray();
+            }
         }
     }
 
     public interface IContainerOwner
     {
-        string ContainerName { get; set; }
-        string LocationPrefix { get; set; }
+        string ContainerName { get; }
+        string LocationPrefix { get; }
     }
 
     public static class Extensions
     {
+        public static bool IsNoOwner(this IContainerOwner owner)
+        {
+            return owner.ContainerName == null && owner.LocationPrefix == null;
+        }
         public static bool IsSystemOwner(this IContainerOwner owner)
         {
-            return owner.ContainerName == "sys" && owner.LocationPrefix == "AAA";
+            return false;
         }
 
         public static string GetOwnerContentLocation(this IContainerOwner owner, string path)
         {
-            return owner.ContainerName + "/" + owner.LocationPrefix + "/" + path;
+            if(!owner.IsNoOwner())
+                throw new NotSupportedException("Only NoOwner supported");
+            return path;
         }
     }
 
     public class InformationContext
     {
-        public static IContainerOwner CurrentOwner { get; set; }
+        public class NoOwner : IContainerOwner
+        {
+            public string ContainerName => null;
+            public string LocationPrefix => null;
+        }
+        private static IContainerOwner currentOwner = new NoOwner();
+        public static IContainerOwner CurrentOwner => currentOwner;
+    }
+
+    public static class StorageExt
+    {
+        public static BlobStorageItem ToBlobStorageItem(this ICloudBlob blob)
+        {
+            return new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
+                blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
+        }
     }
 
     public static class StorageSupport
     {
-        public static async Task<BlobStorageItem> GetBlobStorageItem(string sourceFullPath, IContainerOwner owner)
+        internal static CloudBlobClient CloudClient;
+        internal static CloudStorageAccount CloudAccount;
+        internal static CloudBlobContainer CloudContainer;
+        public static void InitializeStorage(string storageConnectionString, string containerName)
         {
-            throw new System.NotImplementedException();
+            CloudAccount = CloudStorageAccount.Parse(storageConnectionString);
+            CloudClient = CloudAccount.CreateCloudBlobClient();
+            CloudContainer = CloudClient.GetContainerReference(containerName);
         }
 
-        public static Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner containerOwner, string directoryLocation)
+        public static async Task<BlobStorageItem> GetBlobStorageItem(string name, IContainerOwner owner)
         {
-            throw new System.NotImplementedException();
+            var fullPath = owner.CombinePathForOwner(name);
+            var blob = await CloudContainer.GetBlobReferenceFromServerAsync(fullPath);
+            return blob.ToBlobStorageItem();
         }
 
-        public static Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner currentOwner, string name, object data)
+        public static async Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
         {
-            throw new System.NotImplementedException();
+            List<BlobStorageItem> storageItems = new List<BlobStorageItem>();
+            var cloudBlockBlobs = await GetBlobsWithMetadataA(owner, directoryLocation, allowNoOwner);
+            var storageItemsToAddLQ = cloudBlockBlobs.Select(blob => blob.ToBlobStorageItem());
+            storageItems.AddRange(storageItemsToAddLQ);
+            return storageItems.ToArray();
         }
 
-        internal static Task<BlobStorageItem[]> GetBlobItemsA(IContainerOwner owner, string rootFolder, bool v)
+        public static async Task<BlobStorageItem> UploadOwnerBlobBinaryA(IContainerOwner currentOwner, string name, byte[] data)
         {
-            throw new NotImplementedException();
+            var fullName = currentOwner.CombinePathForOwner(name);
+            var rootContainer = CloudClient.GetRootContainerReference();
+            var blob = (CloudBlockBlob) rootContainer.GetBlobReference(fullName);
+            await blob.UploadFromByteArrayAsync(data, 0, data.Length);
+            return blob.ToBlobStorageItem();
         }
 
         public static async Task<string[]> ListOwnerFoldersA(string rootFolder)
         {
-            throw new NotImplementedException();
+            var owner = InformationContext.CurrentOwner;
+            var fullPath = owner.CombinePathForOwner(rootFolder);
+            BlobContinuationToken continuationToken = null;
+            var result = new List<string>();
+            do
+            {
+                var listingResult =
+                    await
+                        CloudContainer.ListBlobsSegmentedAsync(fullPath, true, BlobListingDetails.None, null,
+                            continuationToken, null, null);
+                continuationToken = listingResult.ContinuationToken;
+                var foldersLQ = listingResult.Results.Where(item => item is CloudBlobDirectory).Cast<CloudBlobDirectory>().Select(item => item.Prefix);
+                result.AddRange(foldersLQ);
+            } while (continuationToken != null);
+            return result.ToArray();
         }
 
-        public static Task<byte[]> DownloadBlobByteArrayAsync(string name, bool returnNullIfMissing, IContainerOwner owner)
+        public static async Task<byte[]> DownloadBlobByteArrayAsync(string name, bool returnNullIfMissing, IContainerOwner owner)
         {
-            throw new NotImplementedException();
+            var fullPath = owner.CombinePathForOwner(name);
+            var blob = CloudContainer.GetBlockBlobReference(fullPath);
+            using (var memStream = new MemoryStream())
+            {
+                await blob.DownloadToStreamAsync(memStream);
+                return memStream.ToArray();
+            }
         }
 
         public static Task CopyBlobBetweenOwnersA(IContainerOwner sourceOwner, string sourceItemName, IContainerOwner targetOwner, string targetItemName)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("No multiple owners supported");
         }
 
-        public static Task DeleteBlobAsync(string name)
+        public static async Task DeleteBlobAsync(string name)
         {
-            throw new NotImplementedException();
+            var owner = InformationContext.CurrentOwner;
+            var fullName = owner.CombinePathForOwner(name);
+            var blob = CloudContainer.GetBlockBlobReference(fullName);
+            await blob.DeleteIfExistsAsync();
         }
 
-        public static Task UploadOwnerBlobTextAsync(IContainerOwner owner, string metadataFullPath, string jsonData)
+        public static async Task UploadOwnerBlobTextAsync(IContainerOwner owner, string name, string textData)
         {
-            throw new NotImplementedException();
+            var fullPath = owner.CombinePathForOwner(name);
+            var blob = CloudContainer.GetBlockBlobReference(fullPath);
+            await blob.UploadTextAsync(textData);
         }
+
+        #region AzureSpecific
+        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
+        {
+            var fullPath = owner.CombinePathForOwner(directoryLocation);
+            BlobContinuationToken continuationToken = null;
+            List<CloudBlockBlob> cloudBlockBlobs = new List<CloudBlockBlob>();
+            do
+            {
+                var blobListItems =
+                    await
+                        CloudClient.ListBlobsSegmentedAsync(fullPath, true, BlobListingDetails.Metadata, null, continuationToken, null, null);
+                var cloudBlobsToAdd = blobListItems.Results.Cast<CloudBlockBlob>();
+                cloudBlockBlobs.AddRange(cloudBlobsToAdd);
+                continuationToken = blobListItems.ContinuationToken;
+            } while (continuationToken != null);
+            return cloudBlockBlobs.ToArray();
+        }
+
+        #endregion
     }
 }
