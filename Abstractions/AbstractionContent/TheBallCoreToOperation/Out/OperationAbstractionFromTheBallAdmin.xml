@@ -16,5 +16,18 @@
         </SequentialExecution>
       </Execution>
     </Operation>
+    <Operation name="UpdateUsersData">
+      <OperationSpec>
+        <Description>Update users data object</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="UsersData" asyncSupportMode="AsyncOnly" dataType="INT.UsersData" designDesc="Users data retrieved from TheBall.CORE structures" state="implemented" />
+          <MethodExecute name="StoreInterfaceObject" asyncSupportMode="AsyncOnly" designDesc="Store users data" state="implemented">
+            <Target name="UsersData" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
   </Operations>
 </OperationAbstraction>

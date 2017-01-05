@@ -111,8 +111,7 @@ using System.Threading.Tasks;
 				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, ProductName);		
 				}
 				}
-
-		    public class ActivateAccountPlanParameters 
+				public class ActivateAccountPlanParameters 
 		{
 				public INT.PaymentToken PaymentToken ;
 				}

@@ -126,7 +126,7 @@
       <Link>PersonalWeb.Diosphere\OperationAbstractionFromPersonalWebDiosphere.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallAdmin.designer.cs">
-      <Link>Abstractions\OperationAbstractionFromTheBallAdmin.designer.cs</Link>
+      <Link>TheBall.Admin\OperationAbstractionFromTheBallAdmin.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallCore.designer.cs">
       <Link>TheBall.CORE\OperationAbstractionFromTheBallCore.designer.cs</Link>
@@ -153,7 +153,7 @@
       <Link>PersonalWeb.Diosphere\PersonalWebDiosphere.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallAdmin.designer.cs">
-      <Link>Abstractions\TheBallAdmin.designer.cs</Link>
+      <Link>TheBall.Admin\TheBallAdmin.designer.cs</Link>
     </Compile>
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\TheBallCore.designer.cs">
       <Link>Abstractions\TheBallCore.designer.cs</Link>
@@ -178,6 +178,7 @@
     <Compile Include="AaltoGlobalImpact.OIP\SetCategoryContentRankingImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\SetGroupAsDefaultForAccountImplementation.cs" />
     <Compile Include="AaltoGlobalImpact.OIP\UpdateConnectionThisSideCategoriesImplementation.cs" />
+    <Compile Include="TheBall.Admin\UpdateUsersDataImplementation.cs" />
     <Compile Include="FileShareSupport.cs" />
     <Compile Include="HttpOperationData.cs" />
     <Compile Include="HttpRequestSerializer.cs" />

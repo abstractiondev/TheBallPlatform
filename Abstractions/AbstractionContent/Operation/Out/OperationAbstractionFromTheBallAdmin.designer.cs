@@ -24,4 +24,14 @@ using System.Threading.Tasks;
 					FixGroupMastersAndCollectionsImplementation.ExecuteMethod_FixMastersAndCollections(parameters.GroupID);		
 				}
 				}
-		 } 
+		
+		public class UpdateUsersData 
+		{
+				public static async Task ExecuteAsync()
+		{
+						
+					INT.UsersData UsersData =  await UpdateUsersDataImplementation.GetTarget_UsersDataAsync();	
+				 await UpdateUsersDataImplementation.ExecuteMethod_StoreInterfaceObjectAsync(UsersData);		
+				}
+				}
+		} 

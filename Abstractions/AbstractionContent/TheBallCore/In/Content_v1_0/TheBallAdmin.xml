@@ -4,6 +4,21 @@
 -->
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Admin">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="UsersData" designDesc="Account summary for admin monitoring">
+          <InterfaceItems>
+            <ObjectInstance name="AccountInfos" interfaceObjectName="AccountInfo" isCollection="true" />
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="AccountInfo" designDesc="Account info object">
+          <InterfaceItems>
+            <InterfaceItem name="AccountID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="EmailAddress" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel />
     <Operations>
       <Operation name="FixGroupMastersAndCollections">
@@ -17,6 +32,19 @@
           <SequentialExecution>
             <MethodExecute name="FixMastersAndCollections" designDesc="Fix masters and collections" state="implemented">
               <Parameter name="GroupID"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="UpdateUsersData">
+        <OperationSpec>
+          <Description>Update users data object</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="UsersData" dataType="INT.UsersData" designDesc="Users data retrieved from TheBall.CORE structures" asyncSupportMode="AsyncOnly" state="implemented" />
+            <MethodExecute name="StoreInterfaceObject" designDesc="Store users data" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="UsersData"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>

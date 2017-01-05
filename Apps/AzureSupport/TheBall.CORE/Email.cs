@@ -8,11 +8,15 @@ namespace TheBall.CORE
     {
         public static string GetIDFromEmailAddress(string emailAddress)
         {
+            if (emailAddress == null)
+                return null;
             return HttpUtility.UrlEncode(emailAddress.ToLower());
         }
 
         public static string GetEmailAddressFromID(string emailID)
         {
+            if (emailID == null)
+                return null;
             return HttpUtility.UrlDecode(emailID.ToLower());
         }
 

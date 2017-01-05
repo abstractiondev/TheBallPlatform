@@ -31,7 +31,23 @@ using TheBall.CORE;
 
 
 namespace INT { 
-		 } 		public static class DomainInformationSupport
+					[DataContract]
+			public partial class UsersData
+			{
+				[DataMember]
+				public AccountInfo[] AccountInfos { get; set; }
+			}
+
+			[DataContract]
+			public partial class AccountInfo
+			{
+				[DataMember]
+				public string AccountID { get; set; }
+				[DataMember]
+				public string EmailAddress { get; set; }
+			}
+
+ } 		public static class DomainInformationSupport
 		{
             public static void EnsureMasterCollections(IContainerOwner owner)
             {

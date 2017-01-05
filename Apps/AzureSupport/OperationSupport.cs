@@ -58,13 +58,13 @@ namespace TheBall
             {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
             }
-            if (operationName.StartsWith("TheBall.CORE"))
+            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin"))
             {
                 var owner = VirtualOwner.FigureOwner(ownerPrefix);
                 var isAdminOwner = owner.IsGroupContainer() &&
                                    owner.GetIDFromLocationPrefix() == InstanceConfig.Current.AdminGroupID;
                 if(!isAdminOwner)
-                    throw new SecurityException("TheBall.CORE operations are only allowed from admin group");
+                    throw new SecurityException("TheBall.CORE or TheBall.Admin operations are only allowed from admin group");
             }
             var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
             {

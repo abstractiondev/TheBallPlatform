@@ -258,6 +258,19 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Fix masters and collections
 		</div>
+		</p><h1>UpdateUsersData</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update users data object
+		</div>
+		</p><h2>Target Definition: UsersData</h2>
+		<p>		<div class="MsoNormal" >
+		Users data retrieved from TheBall.CORE structures
+		</div>
+		</p><h2>Method Call: StoreInterfaceObject ( UsersData )</h2>
+		<p>		<div class="MsoNormal" >
+		Store users data
+		</div>
 		</p></div>
 
 </body>
