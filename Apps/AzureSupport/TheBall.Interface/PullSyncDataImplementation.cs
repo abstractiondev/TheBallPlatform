@@ -54,7 +54,7 @@ namespace TheBall.Interface
             var shareInfo = JSONSupport.GetObjectFromData<ShareInfo>(metadataContent);
             var interfaceDataItemPath = BlobStorage.CombinePath("TheBall.Interface", "InterfaceData", shareInfo.ItemName);
             var blobItem = await BlobStorage.GetBlobStorageItemA(interfaceDataItemPath, owner);
-            if (blobItem.ContentMD5 != shareInfo.ContentMD5)
+            if (blobItem?.ContentMD5 != shareInfo.ContentMD5)
                 return null;
             return blobItem;
         }

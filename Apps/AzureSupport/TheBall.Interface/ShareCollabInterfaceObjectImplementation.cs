@@ -25,6 +25,8 @@ namespace TheBall.Interface
         public static async Task<ShareInfo> GetTarget_MetadataObjectAsync(string fileName, string sourceFullPath)
         {
             var blob = await BlobStorage.GetBlobStorageItemA(sourceFullPath);
+            if (blob == null)
+                return null;
             var result = new ShareInfo
             {
                 ItemName = fileName,
@@ -37,8 +39,11 @@ namespace TheBall.Interface
 
         public static async Task ExecuteMethod_StoreShareMetadataAsync(string metadataFullPath, ShareInfo metadataObject)
         {
-            var jsonData = JSONSupport.SerializeToJSONString(metadataObject);
-            await BlobStorage.UploadCurrentOwnerBlobTextAsync(metadataFullPath, jsonData);
+            if (metadataObject != null)
+            {
+                var jsonData = JSONSupport.SerializeToJSONString(metadataObject);
+                await BlobStorage.UploadCurrentOwnerBlobTextAsync(metadataFullPath, jsonData);
+            }
         }
 
         public static IContainerOwner GetTarget_CollaborationTarget(ShareCollabParams collabParams)

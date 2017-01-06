@@ -1859,7 +1859,16 @@ namespace TheBall
             if (owner == null)
                 owner = InformationContext.CurrentOwner;
             var blob = GetOwnerBlobReference(owner, sourceFullPath);
-            await blob.FetchAttributesAsync();
+            try
+            {
+                await blob.FetchAttributesAsync();
+            }
+            catch (StorageException stEx)
+            {
+                if (stEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.NotFound)
+                    return null;
+                throw;
+            }
             var storageItem = new BlobStorageItem(blob.Name, blob.Properties.ContentMD5, blob.Properties.Length,
                 blob.Properties.LastModified.GetValueOrDefault().UtcDateTime);
             return storageItem;
