@@ -146,10 +146,18 @@ namespace WebInterface
                 var jwtToken = new JwtSecurityToken(authTokens.Item2);
                 if (jwtToken.ValidTo < limitTimestamp)
                     throw new SecurityException("Token expired");
-                string myUserID = jwtToken.Claims.First(claim => claim.Type == "openid_id").Value;
+                var openidClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "openid_id");
+                var subClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "sub");
                 string myEmail = jwtToken.Claims.First(claim => claim.Type == "email").Value;
                 bool emailVerified =
                     Boolean.Parse(jwtToken.Claims.First(claim => claim.Type == "email_verified").Value);
+                string myUserID = openidClaim?.Value;
+                if (myUserID == null && subClaim != null)
+                    myUserID = $"https://www.google.com/{subClaim.Value}";
+                if (myUserID == null && emailVerified && !String.IsNullOrEmpty(myEmail))
+                    myUserID = ($"https://www.google.com/email_{HttpUtility.UrlEncode(myEmail)}");
+                if (myUserID == null)
+                    throw new SecurityException("Error authenticating user based on Google login");
                 userName = myUserID;
                 emailAddress = emailVerified ? myEmail : null;
             }
@@ -447,7 +455,7 @@ namespace WebInterface
             {
                 { "response_type", "code" },
                 { "client_id", client_id },
-                { "scope", "openid email" },
+                { "scope", "email openid profile" },
                 // { "prompt", "select_account"},
                 { "openid.realm", "https://" + req.Url.DnsSafeHost + (req.Url.IsDefaultPort ? "" : ":" + req.Url.Port) + "/" },
                 { "redirect_uri", returnUrl.GetLeftPart(UriPartial.Path) },
