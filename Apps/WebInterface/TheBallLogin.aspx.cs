@@ -455,7 +455,7 @@ namespace WebInterface
             {
                 { "response_type", "code" },
                 { "client_id", client_id },
-                { "scope", "email openid profile" },
+                { "scope", "email openid" },
                 // { "prompt", "select_account"},
                 { "openid.realm", "https://" + req.Url.DnsSafeHost + (req.Url.IsDefaultPort ? "" : ":" + req.Url.Port) + "/" },
                 { "redirect_uri", returnUrl.GetLeftPart(UriPartial.Path) },
