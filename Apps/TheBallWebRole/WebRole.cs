@@ -25,11 +25,11 @@ namespace TheBallWebRole
         const string TheBallWebConsoleName = "TheBallWebConsole.exe";
         protected override string AppPackageContainerName => "tb-instancesites";
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("TempSites").RootPath;
-        protected override AppTypeInfo[] ValidAppTypes => new []
+        protected override AppTypeInfo[] ValidAppTypes => new AppTypeInfo[]
         {
-            new AppTypeInfo("Dev", "DevConsole.zip", Path.Combine(AppRootFolder, "Dev", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
-            new AppTypeInfo("Test", "TestConsole.zip", Path.Combine(AppRootFolder, "Test", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Test.config")),
-            new AppTypeInfo("Prod", "ProdConsole.zip", Path.Combine(AppRootFolder, "Prod", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Prod.config")), 
+            //new AppTypeInfo("Dev", "DevConsole.zip", Path.Combine(AppRootFolder, "Dev", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
+            //new AppTypeInfo("Test", "TestConsole.zip", Path.Combine(AppRootFolder, "Test", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Test.config")),
+            //new AppTypeInfo("Prod", "ProdConsole.zip", Path.Combine(AppRootFolder, "Prod", TheBallWebConsoleName), Path.Combine(AppRootFolder, "Prod.config")), 
         };
 
         public override bool OnStart()

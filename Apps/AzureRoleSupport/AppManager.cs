@@ -3,11 +3,21 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
     public class AppManager
     {
+        //[DllImport("kernel32.dll")]
+        //static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        const int SW_HIDE = 0;
+        const int SW_SHOW = 5;
+
         private readonly string _appConsolePath;
         public readonly string _appConfigPath;
 
@@ -31,6 +41,8 @@ namespace TheBall.Infra.AzureRoleSupport
             };
             ClientProcess = new Process {StartInfo = startInfo};
             ClientProcess.Start();
+            var clientWnd = ClientProcess.MainWindowHandle;
+            ShowWindow(clientWnd, SW_SHOW);
         }
 
         internal async Task ShutdownAppConsole()
