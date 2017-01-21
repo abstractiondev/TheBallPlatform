@@ -25,7 +25,7 @@ namespace TheBall.Infra.AzureRoleSupport.Tests
                 var workerConsoleFullPath = Path.Combine(workerConsoleFullDir, "TheBallWorkerConsole.exe");
                 AppManager workerManager = new AppManager(workerConsoleFullPath, null);
                 await workerManager.StartAppConsole(true);
-                var result = await workerManager.ShutdownAppConsole();
+                var result = await workerManager.ShutdownAppConsole(true);
                 Assert.AreEqual(0, result);
             }
         }

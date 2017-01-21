@@ -54,7 +54,7 @@ namespace TheBall.Infra.AzureRoleSupport
             }
         }
 
-        public async Task<int> ShutdownAppConsole()
+        public async Task<int> ShutdownAppConsole(bool throwOnFail = false)
         {
             PipeServer.DisposeLocalCopyOfClientHandle();
             try
@@ -74,8 +74,10 @@ namespace TheBall.Infra.AzureRoleSupport
                 PipeServer = null;
                 return exitCode;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                if (throwOnFail)
+                    throw;
                 return -1;
             }
 
