@@ -36,14 +36,22 @@ namespace TheBall.Infra.AzureRoleSupport
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
             string appConfigPart = isTestMode ? "-test" : _appConfigPath;
             string args = $"{appConfigPart} {clientPipeHandler}";
-            var startInfo = new ProcessStartInfo(_appConsolePath, args)
+            try
             {
-                UseShellExecute = false
-            };
-            ClientProcess = new Process {StartInfo = startInfo};
-            ClientProcess.Start();
-            var clientWnd = ClientProcess.MainWindowHandle;
-            ShowWindow(clientWnd, SW_SHOW);
+                var startInfo = new ProcessStartInfo(_appConsolePath, args)
+                {
+                    UseShellExecute = false
+                };
+                ClientProcess = new Process {StartInfo = startInfo};
+                ClientProcess.Start();
+                var clientWnd = ClientProcess.MainWindowHandle;
+                ShowWindow(clientWnd, SW_SHOW);
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException($"Error starting app console from path: {_appConsolePath}", ex);                
+            }
         }
 
         public async Task<int> ShutdownAppConsole()
