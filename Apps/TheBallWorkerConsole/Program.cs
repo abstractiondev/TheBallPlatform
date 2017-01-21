@@ -41,7 +41,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 File.WriteAllText(errorFile, exception.ToString());
                 Console.WriteLine("Top Exception Handler: ");
                 Console.WriteLine(exception.ToString());
-                return -1;
+                return -2;
             }
             return 0;
         }
