@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +9,10 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage.File;
+using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Nito.AsyncEx;
+using TheBall.CORE.Storage;
 using TheBall.Infra.TheBallWebConsole;
 
 namespace TheBall.Infra.TheBallWebConsole
@@ -48,6 +51,9 @@ namespace TheBall.Infra.TheBallWebConsole
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
 
+            storageConceptTest();
+            return;
+
             var workerConfigFullPath = args.Length > 0 ? args[0] : null;
             if (workerConfigFullPath == null)
                 throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
@@ -59,6 +65,17 @@ namespace TheBall.Infra.TheBallWebConsole
                 : null;
             var webManager = await WebManager.Create(pipeStream, workerConfigFullPath);
             await webManager.RunUpdateLoop();
+        }
+
+        private static void storageConceptTest()
+        {
+            
+            StorageSupport.InitializeFileStorage("https://tbdevops.file.core.windows.net", "?sv=");
+            var cloudFileClient = StorageSupport.CloudFileClient;
+            var deployShare = cloudFileClient.ListShares("deploy").First();
+            var rootDirectory = deployShare.GetRootDirectoryReference();
+            var filesAndDirs =
+                rootDirectory.ListFilesAndDirectories(new FileRequestOptions() {LocationMode = LocationMode.PrimaryOnly});
         }
     }
 }
