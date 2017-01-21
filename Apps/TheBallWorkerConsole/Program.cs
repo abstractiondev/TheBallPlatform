@@ -30,7 +30,6 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         static int Main(string[] args)
         {
-            Debugger.Launch();
             try
             {
                 AsyncContext.Run(() => MainAsync(args));
