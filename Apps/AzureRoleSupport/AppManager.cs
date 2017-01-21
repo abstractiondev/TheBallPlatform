@@ -30,11 +30,12 @@ namespace TheBall.Infra.AzureRoleSupport
         private Process ClientProcess;
         private AnonymousPipeServerStream PipeServer = null;
 
-        internal async Task StartAppConsole()
+        public async Task StartAppConsole(bool isTestMode = false)
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            string args = $@"{_appConfigPath} {clientPipeHandler}";
+            string appConfigPart = isTestMode ? "-test" : _appConfigPath;
+            string args = $"{appConfigPart} {clientPipeHandler}";
             var startInfo = new ProcessStartInfo(_appConsolePath, args)
             {
                 UseShellExecute = false
@@ -45,7 +46,7 @@ namespace TheBall.Infra.AzureRoleSupport
             ShowWindow(clientWnd, SW_SHOW);
         }
 
-        internal async Task ShutdownAppConsole()
+        public async Task<int> ShutdownAppConsole()
         {
             PipeServer.DisposeLocalCopyOfClientHandle();
             try
@@ -57,16 +58,17 @@ namespace TheBall.Infra.AzureRoleSupport
                     PipeServer.WaitForPipeDrain();
                 }
                 ClientProcess.WaitForExit();
+                var exitCode = ClientProcess.ExitCode;
                 ClientProcess.Close();
                 ClientProcess = null;
 
                 PipeServer.Dispose();
                 PipeServer = null;
-
+                return exitCode;
             }
             catch (Exception)
             {
-                
+                return -1;
             }
 
         }

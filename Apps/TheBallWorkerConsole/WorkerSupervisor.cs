@@ -20,6 +20,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         private readonly string ConfigRootFolder;
         private readonly Stream HostPollingStream;
         private readonly WorkerConsoleConfig WorkerConfig;
+        private bool IsTestMode = false;
         internal TelemetryClient AppInsightsClient { get; private set; }
 
         private WorkerSupervisor(Stream hostPollingStream, WorkerConsoleConfig workerConfig, string configRootFolder)
@@ -29,13 +30,26 @@ namespace TheBall.Infra.TheBallWorkerConsole
             ConfigRootFolder = configRootFolder;
         }
 
-        internal static async Task<WorkerSupervisor> Create(Stream hostPollingStream, string workerConfigFullPath)
+        private WorkerSupervisor(Stream hostPollingStream)
         {
-            var workerConfig = await WorkerConsoleConfig.GetConfig(workerConfigFullPath);
-            string configRootFolder = Path.GetDirectoryName(workerConfigFullPath);
+            HostPollingStream = hostPollingStream;
+            IsTestMode = true;
+        }
 
-            var supervisor = new WorkerSupervisor(hostPollingStream, workerConfig, configRootFolder);
-            await supervisor.InitializeRuntime();
+        internal static async Task<WorkerSupervisor> Create(Stream hostPollingStream, string workerConfigFullPath, bool isTestMode)
+        {
+            WorkerSupervisor supervisor;
+            if (isTestMode)
+            {
+                supervisor = new WorkerSupervisor(hostPollingStream);
+            }
+            else
+            {
+                var workerConfig = await WorkerConsoleConfig.GetConfig(workerConfigFullPath);
+                string configRootFolder = Path.GetDirectoryName(workerConfigFullPath);
+                supervisor = new WorkerSupervisor(hostPollingStream, workerConfig, configRootFolder);
+                await supervisor.InitializeRuntime();
+            }
             return supervisor;
         }
 
@@ -48,6 +62,25 @@ namespace TheBall.Infra.TheBallWorkerConsole
             AppInsightsClient = new TelemetryClient();
             RuntimeSupport.ExceptionReportHandler =
                 (exception, properties) => AppInsightsClient.TrackException(exception, properties);
+        }
+
+        internal async Task WaitHandleExitCommand(int timeoutSeconds)
+        {
+            var pipeStream = HostPollingStream;
+            var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
+            bool keepWorkerRunning = true;
+            var pipeMessageAwaitable = reader?.ReadToEndAsync();
+            while (keepWorkerRunning)
+            {
+                List<Task> awaitList = new List<Task>();
+                awaitList.Add(pipeMessageAwaitable);
+                awaitList.Add(Task.Delay(timeoutSeconds * 1000));
+                await Task.WhenAny(awaitList);
+                if (pipeMessageAwaitable.IsCompleted)
+                    keepWorkerRunning = false;
+                else
+                    throw new InvalidOperationException($"Test cancel not happened within {timeoutSeconds} second timeout");
+            }
         }
 
         internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)

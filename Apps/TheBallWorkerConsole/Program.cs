@@ -28,8 +28,9 @@ namespace TheBall.Infra.TheBallWorkerConsole
         }
 
 
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
+            Debugger.Launch();
             try
             {
                 AsyncContext.Run(() => MainAsync(args));
@@ -38,8 +39,11 @@ namespace TheBall.Infra.TheBallWorkerConsole
             {
                 var errorFile = Path.Combine(AssemblyDirectory, "ConsoleErrorLog.txt");
                 File.WriteAllText(errorFile, exception.ToString());
-                throw;
+                Console.WriteLine("Top Exception Handler: ");
+                Console.WriteLine(exception.ToString());
+                return -1;
             }
+            return 0;
         }
 
         static async void MainAsync(string[] args)
@@ -48,13 +52,13 @@ namespace TheBall.Infra.TheBallWorkerConsole
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
 
-            ensureXDrive();
             var workerConfigFullPath = args.Length > 0 ? args[0] : null;
             if (workerConfigFullPath == null)
                 throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
 
             var clientHandle = args.Length > 1 && args[1] != "0" ? args[1] : null;
-
+            bool isTestMode = workerConfigFullPath == "-test";
+            ensureXDrive();
             string dedicatedToOwner = args.Length > 2 ? args[2] : null;
             string dedicatedToInstance;
             string dedicatedToOwnerPrefix;
@@ -63,14 +67,17 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
-            var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath);
+            var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath,isTestMode);
             try
             {
-                await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
+                if (isTestMode)
+                    await supervisor.WaitHandleExitCommand(10);
+                else
+                    await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
             }
             catch (Exception ex)
             {
-                supervisor.AppInsightsClient.TrackException(ex);
+                supervisor.AppInsightsClient?.TrackException(ex);
                 throw;
             }
         }
