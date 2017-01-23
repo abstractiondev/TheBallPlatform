@@ -95,6 +95,8 @@ namespace TheBall.Infra.AppUpdater
         {
             var updateConfig = await FetchConfiguration();
             var myConfig = updateConfig.PackageData.SingleOrDefault(config => config.Name == ComponentName);
+            if(myConfig == null)
+                throw new InvalidDataException($"Configuration not found for component: {ComponentName}");
             bool isDifferent = myConfig.BuildNumber != CurrentBuildNumber ||
                                myConfig.MaturityLevel != CurrentMaturityLevel;
             return isDifferent ? myConfig : null;

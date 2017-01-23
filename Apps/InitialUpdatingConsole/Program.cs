@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Microsoft.Azure;
@@ -83,7 +84,8 @@ namespace TheBall.Infra.InitialUpdatingConsole
         {
             if (autoUpdate)
             {
-                string componentName = Assembly.GetEntryAssembly().GetName().Name;
+                var processFullFilename = Process.GetCurrentProcess().MainModule.FileName;
+                string componentName = Path.GetFileNameWithoutExtension(processFullFilename);
                 string workingRootFolder = AssemblyDirectory;
                 string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
                 string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");

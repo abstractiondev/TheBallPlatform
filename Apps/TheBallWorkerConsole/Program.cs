@@ -120,8 +120,6 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
             if(workerConfigFullPath == null && isTestMode == false)
                 throw new NotSupportedException("Either WorkerConfigFullPath or isTestMode must be given");
-            if(workerConfigFullPath != null && !isTestMode)
-                throw new NotSupportedException("WorkerConfigFullPath must not be given together with isTestMode");
 
             ensureXDrive();
             string dedicatedToInstance;
@@ -131,7 +129,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
-            var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath,isTestMode);
+            var supervisor = await WorkerSupervisor.Create(pipeStream, workerConfigFullPath, isTestMode);
             try
             {
                 if (isTestMode)

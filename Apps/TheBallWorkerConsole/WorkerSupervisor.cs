@@ -239,7 +239,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     while (keepRunning)
                     {
                         Console.WriteLine("Polling..." + DateTime.Now.ToLongTimeString());
-                        await throttlingSemaphore.WaitAsync(cancellationToken);
+                        try
+                        {
+                            await throttlingSemaphore.WaitAsync(cancellationToken);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            
+                        }
                         keepRunning = !cancellationToken.IsCancellationRequested;
                         if (keepRunning)
                         {
@@ -255,7 +262,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
                             }
                         }
                         throttlingSemaphore.Release();
-                        await Task.Delay(1000, cancellationToken);
+                        try
+                        {
+                            await Task.Delay(1000, cancellationToken);
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            
+                        }
                         keepRunning = !cancellationToken.IsCancellationRequested;
                     }
                     return null;
