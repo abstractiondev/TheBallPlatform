@@ -40,14 +40,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 //Debugger.Launch();
                 bool isTestMode = false;
                 string dedicatedToOwner = null;
-                string workerConfigFullPath = null;
+                string applicationConfigFullPath = null;
                 bool autoUpdate = false;
                 string clientHandle = null;
                 var optionSet = new OptionSet()
                 {
                     {
-                        "wc|workerConfig=", "Worker config full path",
-                        wc => workerConfigFullPath = wc
+                        "ac|applicationConfig=", "Application config full path",
+                        ac => applicationConfigFullPath = ac
                     },
                     {
                         "au|autoupdate", "Auto update worker",
@@ -68,7 +68,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 };
                 var options = optionSet.Parse(args);
                 bool hasExtraOptions = options.Count > 0;
-                bool isMissingMandatory = workerConfigFullPath == null && !isTestMode;
+                bool isMissingMandatory = applicationConfigFullPath == null && !isTestMode;
                 bool hasIdentifiedOptions = optionSet.Count > 0;
                 if (hasExtraOptions || isMissingMandatory)
                 {
@@ -78,7 +78,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     optionSet.WriteOptionDescriptions(Console.Out);
                     return -1;
                 }
-                AsyncContext.Run(() => MainAsync(clientHandle, workerConfigFullPath, dedicatedToOwner, isTestMode, autoUpdate));
+                AsyncContext.Run(() => MainAsync(clientHandle, applicationConfigFullPath, dedicatedToOwner, isTestMode, autoUpdate));
             }
             catch (Exception exception)
             {

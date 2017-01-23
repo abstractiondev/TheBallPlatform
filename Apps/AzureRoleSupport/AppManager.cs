@@ -34,7 +34,7 @@ namespace TheBall.Infra.AzureRoleSupport
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
-            string appConfigPart = isTestMode ? "-test" : $"--wc \"{_appConfigPath}\"";
+            string appConfigPart = isTestMode ? "-test" : $"--ac \"{_appConfigPath}\"";
             string args = $"{appConfigPart} --ch {clientPipeHandler}";
             try
             {
