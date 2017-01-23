@@ -148,7 +148,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         private static void parseDedicatedParts(string dedicatedToOwner, out string dedicatedToInstance, out string dedicatedToOwnerPrefix)
         {
-            if (dedicatedToOwner != null)
+            if (String.IsNullOrEmpty(dedicatedToOwner) == false)
             {
                 var split = dedicatedToOwner.Split('_');
                 dedicatedToInstance = split[0];
