@@ -37,6 +37,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             try
             {
+                //Debugger.Launch();
                 bool isTestMode = false;
                 string dedicatedToOwner = null;
                 string workerConfigFullPath = null;
