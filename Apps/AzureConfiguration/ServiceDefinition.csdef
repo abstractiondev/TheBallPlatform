@@ -21,6 +21,9 @@
       <Import moduleName="RemoteForwarder" />
     </Imports>
     <ConfigurationSettings>
+      <Setting name="ConfigAccountName"/>
+      <Setting name="ConfigShareName"/>
+      <Setting name="ConfigSASToken"/>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
       <Setting name="InfraToolsRootFolder" />
@@ -94,6 +97,9 @@
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
     </LocalResources>
     <ConfigurationSettings>
+      <Setting name="ConfigAccountName"/>
+      <Setting name="ConfigShareName"/>
+      <Setting name="ConfigSASToken"/>
       <Setting name="CoreFileShareAccountName" />
       <Setting name="CoreFileShareAccountKey" />
       <Setting name="InfraToolsRootFolder" />

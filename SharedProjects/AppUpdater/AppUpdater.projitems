@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>1f05b685-1b9e-4413-ae6d-5301c7608654</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TheBall.Infra.AppUpdater</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AccessInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AppUpdateManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpdateConfig.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UpdateConfigItem.cs" />
+  </ItemGroup>
+</Project>

@@ -8,14 +8,19 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using NDesk.Options;
 using Microsoft.Azure;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
+using TheBall.Infra.AppUpdater;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {
     class Program
     {
+        public static AppUpdateManager UpdateManager;
+        private static int ExitCode = 0;
+
         public static string AssemblyDirectory
         {
             get
@@ -32,7 +37,47 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             try
             {
-                AsyncContext.Run(() => MainAsync(args));
+                bool isTestMode = false;
+                string dedicatedToOwner = null;
+                string workerConfigFullPath = null;
+                bool autoUpdate = false;
+                string clientHandle = null;
+                var optionSet = new OptionSet()
+                {
+                    {
+                        "wc|workerConfig=", "Worker config full path",
+                        wc => workerConfigFullPath = wc
+                    },
+                    {
+                        "au|autoupdate", "Auto update worker",
+                        au => autoUpdate = au != null
+                    },
+                    {
+                        "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
+                        ch => clientHandle = ch
+                    },
+                    {
+                        "t|test", "Test handle communication and update, but don't activate the real worker process",
+                        t => isTestMode = t != null
+                    },
+                    {
+                        "o|owner=", "Dedicated to owner",
+                        owner => dedicatedToOwner = owner
+                    }
+                };
+                var options = optionSet.Parse(args);
+                bool hasExtraOptions = options.Count > 0;
+                bool isMissingMandatory = workerConfigFullPath == null && !isTestMode;
+                bool hasIdentifiedOptions = optionSet.Count > 0;
+                if (hasExtraOptions || isMissingMandatory)
+                {
+                    Console.WriteLine("Usage: TheBallWorkerConsole.exe");
+                    Console.WriteLine();
+                    Console.WriteLine("Options:");
+                    optionSet.WriteOptionDescriptions(Console.Out);
+                    return -1;
+                }
+                AsyncContext.Run(() => MainAsync(clientHandle, workerConfigFullPath, dedicatedToOwner, isTestMode, autoUpdate));
             }
             catch (Exception exception)
             {
@@ -42,23 +87,42 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 Console.WriteLine(exception.ToString());
                 return -2;
             }
-            return 0;
+            return ExitCode;
         }
 
-        static async void MainAsync(string[] args)
+        static async void MainAsync(string clientHandle, string workerConfigFullPath, string dedicatedToOwner, bool isTestMode, bool autoUpdate)
         {
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
 
-            var workerConfigFullPath = args.Length > 0 ? args[0] : null;
-            if (workerConfigFullPath == null)
-                throw new ArgumentNullException(nameof(args), "Config full path cannot be null (first  argument)");
+            if (autoUpdate)
+            {
+                string componentName = "TheBallWorkerConsole";
+                string workingRootFolder = AssemblyDirectory;
+                string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
+                string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
+                string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, new AccessInfo
+                {
+                    AccountName = accountName,
+                    ShareName = shareName,
+                    SASToken = sasToken
+                });
+                bool needsRestart = await UpdateManager.CheckAndProcessUpdate();
+                if (needsRestart)
+                {
+                    ExitCode = 2;
+                    return;
+                }
+            }
 
-            var clientHandle = args.Length > 1 && args[1] != "0" ? args[1] : null;
-            bool isTestMode = workerConfigFullPath == "-test";
+            if(workerConfigFullPath == null && isTestMode == false)
+                throw new NotSupportedException("Either WorkerConfigFullPath or isTestMode must be given");
+            if(workerConfigFullPath != null && !isTestMode)
+                throw new NotSupportedException("WorkerConfigFullPath must not be given together with isTestMode");
+
             ensureXDrive();
-            string dedicatedToOwner = args.Length > 2 ? args[2] : null;
             string dedicatedToInstance;
             string dedicatedToOwnerPrefix;
             parseDedicatedParts(dedicatedToOwner, out dedicatedToInstance, out dedicatedToOwnerPrefix);
