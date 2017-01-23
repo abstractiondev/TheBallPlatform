@@ -190,10 +190,6 @@
       <Project>{0fa0909c-d860-466f-8bc6-ffe440edde5c}</Project>
       <Name>AzureRoleSupport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InitialUpdatingConsole\InitialUpdatingConsole.csproj">
-      <Project>{572a5924-71fc-4a54-ba2d-a50a3c122423}</Project>
-      <Name>InitialUpdatingConsole</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WebServerManager\WebServerManager.csproj">
       <Project>{977cbddf-a160-4224-a15a-824074a6f915}</Project>
       <Name>WebServerManager</Name>
