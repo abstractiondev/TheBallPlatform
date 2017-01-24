@@ -83,7 +83,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             }
         }
 
-        internal async Task RunWorkerLoop(string dedicatedToInstance = null, string dedicatedToOwnerPrefix = null)
+        internal async Task RunWorkerLoop(Task autoUpdateTask, string dedicatedToInstance, string dedicatedToOwnerPrefix)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -123,12 +123,15 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
                         awaitList.Add(pipeMessageAwaitable);
+                    if (autoUpdateTask != null)
+                        awaitList.Add(autoUpdateTask);
                     awaitList.AddRange(pollingTaskItems.Select(item => item.Task));
                     awaitList.AddRange(executingOperations);
                     await Task.WhenAny(awaitList);
 
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
-                    if (!isCanceling)
+                    bool isUpdating = autoUpdateTask != null && autoUpdateTask.IsCompleted;
+                    if (!isCanceling && !isUpdating)
                     {
                         var completedPollingTaskItems = pollingTaskItems
                             .Where(item => item.Task.IsCompleted).ToArray();
@@ -140,19 +143,24 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         pollingTaskItems = refreshPollingTasks(pollingTaskItems,
                             completedPollingTaskItems.Select(item => item.Task).ToArray());
                     }
-                    else
+                    else // isCanceling or isUpdating
                     {
+                        // Cancel all polling
                         foreach (var taskItem in pollingTaskItems)
                             taskItem.CancellationTokenSource.Cancel();
 
-                        await Task.WhenAll(awaitList);
-                        var completedPollingTaskItems =
-                            pollingTaskItems.Where(item => !item.Task.IsCanceled).ToArray();
+                        // Remove uninteresting waits
+                        awaitList.Remove(pipeMessageAwaitable);
+                        awaitList.Remove(autoUpdateTask);
 
-                        await releaseLocks(completedPollingTaskItems);
+                        await Task.WhenAll(awaitList);
+                        var lockObtainedPollingTaskItems =
+                            pollingTaskItems.Where(item => getLockItemFromTask(item.Task) != null).ToArray();
+
+                        await releaseLocks(lockObtainedPollingTaskItems);
 
                         // Cancel & allow processing of all lock-obtained and thus completed
-                        var pipeMessage = pipeMessageAwaitable.Result;
+                        var pipeMessage = pipeMessageAwaitable?.Result;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.WriteAllText(shutdownLogPath,
                             "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());

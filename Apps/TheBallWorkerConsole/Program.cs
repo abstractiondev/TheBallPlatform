@@ -135,7 +135,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 if (isTestMode)
                     await supervisor.WaitHandleExitCommand(10);
                 else
-                    await supervisor.RunWorkerLoop(dedicatedToInstance, dedicatedToOwnerPrefix);
+                    await supervisor.RunWorkerLoop(autoUpdate && false ? Task.Delay(60000) : null, dedicatedToInstance, dedicatedToOwnerPrefix);
             }
             catch (Exception ex)
             {
@@ -161,7 +161,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         private static void ensureXDrive()
         {
-            bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("X"));
+            bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("x"));
             if (!hasDriveX)
             {
                 var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
