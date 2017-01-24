@@ -153,7 +153,7 @@ namespace TheBall.Infra.WebServerManager
                 X509Certificate2 foundCert = null;
                 foreach (var cert in store.Certificates)
                 {
-                    if (cert?.SubjectName?.Name?.Contains(certDomainName) == true)
+                    if (cert?.SubjectName?.Name?.Contains(certDomainName) == true && cert?.Verify() == true)
                     {
                         foundCert = cert;
                         break;
@@ -206,19 +206,14 @@ namespace TheBall.Infra.WebServerManager
             }
         }
 
-        [Obsolete("Separate site creation from its deployment", true)]
-        public static void UpdateSiteWithDeploy(bool needsContentUpdating, string tempSitePath, string fullLivePath, string hostAndSiteName)
+        public static void DeployAppPackageContent(string appPackageZip, string appLiveFolder, string appName)
         {
-            var site = CreateOrRetrieveCCSWebSite(fullLivePath, hostAndSiteName);
-            if (needsContentUpdating)
+            using (var depObject = DeploymentManager.CreateObject(DeploymentWellKnownProvider.Package, appPackageZip))
             {
-                using (var depObj = DeploymentManager.CreateObject(DeploymentWellKnownProvider.DirPath, tempSitePath))
-                {
-                    depObj.SyncTo(DeploymentWellKnownProvider.DirPath, fullLivePath, new DeploymentBaseOptions(),
-                        new DeploymentSyncOptions());
-                }
+                depObject.SyncParameters.Single(item => item.Name == "IIS Web Application Name").Value = appName;
+                depObject.SyncTo(DeploymentWellKnownProvider.Auto, appLiveFolder, new DeploymentBaseOptions(),
+                    new DeploymentSyncOptions());
             }
         }
-
     }
 }

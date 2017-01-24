@@ -49,6 +49,7 @@ namespace TheBall.Infra.TheBallWebConsole
                 bool autoUpdate = false;
                 string clientHandle = null;
                 string tempSiteRootDir = null;
+                string appSiteRootDir = null;
                 var optionSet = new OptionSet()
                 {
                     {
@@ -74,11 +75,17 @@ namespace TheBall.Infra.TheBallWebConsole
                     {
                         "tempsiterootdir=", "TempSite root dir location for preparing site update packages",
                         tsrd => tempSiteRootDir = tsrd
+                    },
+                    {
+                        "appsiterootdir=", "AppSite root dir location for deploying site update packages",
+                        asrd => appSiteRootDir = asrd
                     }
                 };
                 var options = optionSet.Parse(args);
                 bool hasExtraOptions = options.Count > 0;
-                bool isMissingMandatory = (String.IsNullOrEmpty(applicationConfigFullPath) || String.IsNullOrEmpty(tempSiteRootDir)) && !isTestMode;
+                bool isMissingMandatory = (String.IsNullOrEmpty(applicationConfigFullPath) 
+                    || String.IsNullOrEmpty(tempSiteRootDir) || String.IsNullOrEmpty(appSiteRootDir)
+                    ) && !isTestMode;
                 bool hasIdentifiedOptions = optionSet.Count > 0;
                 if (hasExtraOptions || isMissingMandatory)
                 {
@@ -110,7 +117,7 @@ namespace TheBall.Infra.TheBallWebConsole
                     }
 
                 }
-                AsyncContext.Run(() => MainAsync(clientHandle, applicationConfigFullPath, isTestMode, updateAccessInfo, tempSiteRootDir));
+                AsyncContext.Run(() => MainAsync(clientHandle, applicationConfigFullPath, isTestMode, updateAccessInfo, tempSiteRootDir, appSiteRootDir));
             }
             catch (Exception exception)
             {
@@ -123,7 +130,8 @@ namespace TheBall.Infra.TheBallWebConsole
             return ExitCode;
         }
 
-        static async void MainAsync(string clientHandle, string applicationConfigFullPath, bool isTestMode, AccessInfo updateAccessInfo, string tempSiteRootDir)
+        static async void MainAsync(string clientHandle, string applicationConfigFullPath, bool isTestMode, AccessInfo updateAccessInfo, 
+            string tempSiteRootDir, string appSiteRootDir)
         {
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 500;
@@ -155,7 +163,7 @@ namespace TheBall.Infra.TheBallWebConsole
             var pipeStream = clientHandle != null
                 ? new AnonymousPipeClientStream(PipeDirection.In, clientHandle)
                 : null;
-            var webManager = await WebManager.Create(pipeStream, applicationConfigFullPath, isTestMode);
+            var webManager = await WebManager.Create(pipeStream, applicationConfigFullPath, isTestMode, tempSiteRootDir, appSiteRootDir);
             try
             {
                 if (isTestMode)
@@ -167,7 +175,7 @@ namespace TheBall.Infra.TheBallWebConsole
                         new ChangeMonitoredItem(@"X:\Configs\WebConsole.json"),
                         UpdateManager.GetUpdateConfigChangeMonitoredItem(),
                     }) : null;
-                    await webManager.RunUpdateLoop(changeDetector?.MonitorItemsAsync(UpdatePollingIntervalMs), tempSiteRootDir);
+                    await webManager.RunUpdateLoop(changeDetector?.MonitorItemsAsync(UpdatePollingIntervalMs));
                 }
             }
             catch (Exception ex)

@@ -14,6 +14,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Infra.AppUpdater;
+using TheBall.Infra.WebServerManager;
 
 namespace TheBall.Infra.TheBallWebConsole
 {
@@ -23,14 +24,19 @@ namespace TheBall.Infra.TheBallWebConsole
         private readonly Stream HostPollingStream;
         private readonly WebConsoleConfig WebConfig;
         private bool IsTestMode = false;
+        private readonly string TempSiteRootDir;
+        private readonly string AppSiteRootDir;
         internal TelemetryClient AppInsightsClient { get; private set; }
 
 
-        private WebManager(Stream hostPollingStream, WebConsoleConfig webConfig, string configRootFolder)
+        private WebManager(Stream hostPollingStream, WebConsoleConfig webConfig, string configRootFolder,
+            string tempSiteRootDir, string appSiteRootDir)
         {
             HostPollingStream = hostPollingStream;
             WebConfig = webConfig;
             ConfigRootFolder = configRootFolder;
+            TempSiteRootDir = tempSiteRootDir;
+            AppSiteRootDir = appSiteRootDir;
         }
 
         private WebManager(Stream hostPollingStream)
@@ -39,7 +45,8 @@ namespace TheBall.Infra.TheBallWebConsole
             IsTestMode = true;
         }
 
-        internal static async Task<WebManager> Create(Stream hostPollingStream, string configFileFullPath, bool isTestMode)
+        internal static async Task<WebManager> Create(Stream hostPollingStream, string configFileFullPath, bool isTestMode,
+            string tempSiteRootDir, string appSiteRootDir)
         {
             WebManager webManager;
             if (isTestMode)
@@ -51,7 +58,7 @@ namespace TheBall.Infra.TheBallWebConsole
                 var webConsoleConfig = await WebConsoleConfig.GetConfig(configFileFullPath);
                 string configRootFolder = Path.GetDirectoryName(configFileFullPath);
 
-                webManager = new WebManager(hostPollingStream, webConsoleConfig, configRootFolder);
+                webManager = new WebManager(hostPollingStream, webConsoleConfig, configRootFolder, tempSiteRootDir, appSiteRootDir);
                 await webManager.InitializeRuntime();
             }
             return webManager;
@@ -88,29 +95,7 @@ namespace TheBall.Infra.TheBallWebConsole
         }
 
 
-        private void InitStuff()
-        {
-            var storageAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-            var storageAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
-            var StorageAccount = new CloudStorageAccount(new StorageCredentials(storageAccountName, storageAccountKey), true);
-
-            var BlobClient = StorageAccount.CreateCloudBlobClient();
-            var SiteContainerName = "";
-            var InstanceSiteContainer = BlobClient.GetContainerReference(SiteContainerName);
-
-            string hostsFileContents =
-@"127.0.0.1 dev
-127.0.0.1   test
-127.0.0.1   prod
-127.0.0.1   websites
-";
-            var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
-            File.WriteAllText(hostsFilePath, hostsFileContents);
-
-
-        }
-
-        internal async Task RunUpdateLoop(Task autoUpdateTask, string tempSiteRootDir)
+        internal async Task RunUpdateLoop(Task autoUpdateTask)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -128,7 +113,7 @@ namespace TheBall.Infra.TheBallWebConsole
 
                 var updateManagerTasks = WebConfig.PackageData.Select(async pkg =>
                 {
-                    var appRoot = Path.Combine(tempSiteRootDir, pkg.MaturityLevel);
+                    var appRoot = Path.Combine(TempSiteRootDir, pkg.MaturityLevel);
                     if (!Directory.Exists(appRoot))
                         Directory.CreateDirectory(appRoot);
                     var updateManager = await AppUpdateManager.Initialize(pkg.Name, appRoot, pkg.AccessInfo);
@@ -142,6 +127,13 @@ namespace TheBall.Infra.TheBallWebConsole
                     // Perform updates if required
                     var updatingTasks = updateManagers.Select(performUpdateIfRequired).ToArray();
                     await Task.WhenAll(updatingTasks);
+
+                    var anyUpdatingDone =
+                        updateManagers.Select(item => item.Item2).ToArray();
+                        //updatingTasks
+                        //.Where(task => task.Result != null)
+                        //.Select(task => task.Result).ToArray();
+                    Array.ForEach(anyUpdatingDone, updateIISSite);
 
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
@@ -181,15 +173,31 @@ namespace TheBall.Infra.TheBallWebConsole
             }
         }
 
-        private static async Task performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
+        private void updateIISSite(UpdateConfigItem configItem)
+        {
+            var tbMaturitySiteName = configItem.MaturityLevel;
+            var sourcePackageZip = Path.Combine(TempSiteRootDir, tbMaturitySiteName, "WebInterface.zip");
+            var appSitePath = Path.Combine(AppSiteRootDir, tbMaturitySiteName);
+            if (!Directory.Exists(appSitePath))
+                Directory.CreateDirectory(appSitePath);
+            IISSupport.CreateIISApplicationSiteIfMissing(tbMaturitySiteName, appSitePath);
+            IISSupport.DeployAppPackageContent(sourcePackageZip, appSitePath, tbMaturitySiteName);
+        }
+
+        private static async Task<UpdateConfigItem> performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
         {
             var updateManager = inputTuple.Item1;
             var currConfig = inputTuple.Item2;
             bool rerunRequired;
+            bool anyUpdatingDone = false;
             do
             {
                 rerunRequired = await updateManager.CheckAndProcessUpdate(currConfig);
+                anyUpdatingDone |= rerunRequired;
             } while (rerunRequired);
+            if(anyUpdatingDone)
+                Console.WriteLine("Updated: " + currConfig.MaturityLevel);
+            return anyUpdatingDone ? currConfig : null;
         }
     }
 }

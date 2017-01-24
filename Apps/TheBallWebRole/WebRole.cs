@@ -29,7 +29,7 @@ namespace TheBallWebRole
         protected override string AppConfigPath => @"X:\Configs\WebConsole.json";
 
         protected override string RoleSpecificManagerArgs
-            => $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath}";
+            => $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}";
 
         public override bool OnStart()
         {
