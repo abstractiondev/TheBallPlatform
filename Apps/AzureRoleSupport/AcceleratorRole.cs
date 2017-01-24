@@ -105,8 +105,11 @@ namespace TheBall.Infra.AzureRoleSupport
                 await appManager.ShutdownAppConsole(true);
                 execCounter++;
             }
-            if(appManager.LatestExitCode < 0)
+            if (appManager.LatestExitCode < 0)
                 throw new InvalidOperationException($"AppManager update failed with exit code: {appManager.LatestExitCode}");
+            bool updated = execCounter > 1;
+            if (updated)
+                Trace.TraceInformation("Role console succesfully updated");
         }
 
         private async Task ensureUpdatedConsole()
@@ -157,26 +160,35 @@ namespace TheBall.Infra.AzureRoleSupport
             {
                 Trace.TraceInformation("Working");
                 AppManager currManager = new AppManager(TargetConsolePath, AppConfigPath);
-                bool updateNeeded = false;
+                bool clientExited = false;
                 EventHandler setUpdateNeeded = (sender, args) =>
                 {
-                    Trace.TraceInformation("Client exited - update need assumed");
-                    updateNeeded = true;
+                    Trace.TraceInformation("Client exited - possibly due to updating need");
+                    clientExited = true;
                 };
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    Trace.TraceInformation("Polling...");
                     if (!currManager.IsRunning)
                     {
+                        bool initialStartup = currManager.LatestExitCode == null;
                         Trace.TraceInformation("Not running");
+                        bool updateNeeded = clientExited && currManager.LatestExitCode >= 0;
                         if (updateNeeded)
                         {
                             Trace.TraceInformation("Updating");
                             await runUpdater(currManager);
-                            updateNeeded = false;
+                            clientExited = false;
                         }
-                        Trace.TraceInformation("Starting");
-                        await currManager.StartAppConsole(false, true, setUpdateNeeded);
+                        if (initialStartup || updateNeeded)
+                        {
+                            Trace.TraceInformation("Starting");
+                            await currManager.StartAppConsole(false, true, setUpdateNeeded);
+                        }
+                        else
+                        {
+                            await currManager.ShutdownAppConsole(true);
+                            throw new InvalidOperationException($"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
+                        }
                     }
                     try
                     {
@@ -195,10 +207,5 @@ namespace TheBall.Infra.AzureRoleSupport
                 throw;
             }
         }
-
-        private async Task PollAndUpdateStartAppIfNeeded()
-        {
-        }
-
     }
 }

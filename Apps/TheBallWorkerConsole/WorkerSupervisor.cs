@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
@@ -145,6 +146,8 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     }
                     else // isCanceling or isUpdating
                     {
+                        //if(isUpdating)
+                        //    Debugger.Launch();
                         // Cancel all polling
                         foreach (var taskItem in pollingTaskItems)
                             taskItem.CancellationTokenSource.Cancel();
@@ -160,7 +163,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         await releaseLocks(lockObtainedPollingTaskItems);
 
                         // Cancel & allow processing of all lock-obtained and thus completed
-                        var pipeMessage = pipeMessageAwaitable?.Result;
+                        var pipeMessage = isCanceling ? pipeMessageAwaitable?.Result : null;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.WriteAllText(shutdownLogPath,
                             "Quitting for message (UTC): " + pipeMessage ?? "Updating" + " " + DateTime.UtcNow.ToString());
