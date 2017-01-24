@@ -39,6 +39,7 @@ namespace TheBall.Infra.AzureRoleSupport
 
         const string InitialUpdatingConsoleName = "InitialUpdatingConsole.exe";
 
+        protected abstract string RoleSpecificManagerArgs { get; }
         protected abstract string AppConfigPath { get; }
         protected abstract string AppRootFolder { get; }
         protected abstract string ComponentName { get; }
@@ -71,6 +72,14 @@ namespace TheBall.Infra.AzureRoleSupport
 
         public override bool OnStart()
         {
+            // For information on handling configuration changes
+            // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
+
+            // Set the maximum number of concurrent connections
+            ServicePointManager.UseNagleAlgorithm = false;
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 100;
+
             ensureUpdatedConsole().Wait();
 
             string appInsightsKeyPath = Path.Combine(InfraToolsDir, @"AppInsightsKey.txt");
@@ -79,20 +88,8 @@ namespace TheBall.Infra.AzureRoleSupport
                 var appInsightsKey = File.ReadAllText(appInsightsKeyPath);
                 TelemetryConfiguration.Active.InstrumentationKey = appInsightsKey;
             }
-
-            // Set the maximum number of concurrent connections
-            ServicePointManager.UseNagleAlgorithm = false;
-            ServicePointManager.Expect100Continue = false;
-            ServicePointManager.DefaultConnectionLimit = 100;
-
-
-            // For information on handling configuration changes
-            // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-
             bool result = base.OnStart();
-
             Trace.TraceInformation("TheBallRole has been started");
-
             return result;
         }
 
@@ -118,8 +115,8 @@ namespace TheBall.Infra.AzureRoleSupport
             {
                 File.Copy(SourceConsolePath, TargetConsolePath);
             }
-            //var appManager = new AppManager(TargetConsolePath, AppConfigPath);
-            //await runUpdater(appManager);
+            var appManager = new AppManager(TargetConsolePath, AppConfigPath);
+            await runUpdater(appManager);
         }
 
         public override void OnStop()
@@ -162,7 +159,7 @@ namespace TheBall.Infra.AzureRoleSupport
                         if (initialStartup || updateNeeded)
                         {
                             Trace.TraceInformation("Starting");
-                            await currManager.StartAppConsole(false, true, setUpdateNeeded);
+                            await currManager.StartAppConsole(false, true, setUpdateNeeded, RoleSpecificManagerArgs);
                         }
                         else
                         {

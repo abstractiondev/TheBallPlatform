@@ -13,27 +13,10 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using TheBall.CORE.InstanceSupport;
-using TheBall.CORE.Storage;
+using TheBall.Infra.AppUpdater;
 
 namespace TheBall.Infra.TheBallWebConsole
 {
-    public class WebConsoleConfig
-    {
-        public int PollingIntervalSeconds { get; set; }
-
-        public static async Task<WebConsoleConfig> GetConfig(string fullPathToConfig)
-        {
-            if(fullPathToConfig == null)
-                throw new ArgumentNullException(nameof(fullPathToConfig));
-            using (var fileStream = File.OpenRead(fullPathToConfig))
-            {
-                var data = new byte[fileStream.Length];
-                await fileStream.ReadAsync(data, 0, data.Length);
-                return JSONSupport.GetObjectFromData<WebConsoleConfig>(data);
-            }
-        }
-
-    }
     public class WebManager
     {
         private readonly string ConfigRootFolder;
@@ -127,7 +110,7 @@ namespace TheBall.Infra.TheBallWebConsole
 
         }
 
-        internal async Task RunUpdateLoop(Task autoUpdateTask)
+        internal async Task RunUpdateLoop(Task autoUpdateTask, string tempSiteRootDir)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -142,19 +125,35 @@ namespace TheBall.Infra.TheBallWebConsole
 
                 var pipeMessageAwaitable = reader?.ReadToEndAsync();
                 bool keepConsoleRunning = true;
+
+                var updateManagerTasks = WebConfig.PackageData.Select(async pkg =>
+                {
+                    var appRoot = Path.Combine(tempSiteRootDir, pkg.MaturityLevel);
+                    if (!Directory.Exists(appRoot))
+                        Directory.CreateDirectory(appRoot);
+                    var updateManager = await AppUpdateManager.Initialize(pkg.Name, appRoot, pkg.AccessInfo);
+                    return new Tuple<AppUpdateManager, UpdateConfigItem>(updateManager, pkg);
+                }).ToArray();
+                await Task.WhenAll(updateManagerTasks);
+                var updateManagers = updateManagerTasks.Select(task => task.Result).ToArray();
+
                 while (keepConsoleRunning)
                 {
+                    // Perform updates if required
+                    var updatingTasks = updateManagers.Select(performUpdateIfRequired).ToArray();
+                    await Task.WhenAll(updatingTasks);
+
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
                         awaitList.Add(pipeMessageAwaitable);
                     if (autoUpdateTask != null)
                         awaitList.Add(autoUpdateTask);
 
+                    // Poll for delay until check updates againb
                     var pollingDelay = Task.Delay(pollingIntervalSeconds*1000);
                     awaitList.Add(pollingDelay);
-
-                    // Do polling actions here
                     await Task.WhenAny(awaitList);
+
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
                     bool isUpdating = autoUpdateTask != null && autoUpdateTask.IsCompleted;
                     if (isUpdating || isCanceling)
@@ -180,6 +179,17 @@ namespace TheBall.Infra.TheBallWebConsole
                     pipeStream.Dispose();
                 }
             }
+        }
+
+        private static async Task performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
+        {
+            var updateManager = inputTuple.Item1;
+            var currConfig = inputTuple.Item2;
+            bool rerunRequired;
+            do
+            {
+                rerunRequired = await updateManager.CheckAndProcessUpdate(currConfig);
+            } while (rerunRequired);
         }
     }
 }

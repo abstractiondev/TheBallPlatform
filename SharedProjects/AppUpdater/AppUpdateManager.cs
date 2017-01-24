@@ -17,14 +17,16 @@ namespace TheBall.Infra.AppUpdater
         const string MainConfigFileName = "UpdateConfig.json";
         public static async Task<AppUpdateManager>  Initialize(string componentName, string appRootFolder, AccessInfo accessInfo)
         {
-            var updateManager = new AppUpdateManager();
-            updateManager.AccessInfo = accessInfo;
-            updateManager.AppRootFolder = appRootFolder;
-            updateManager.UpdateWorkFolder = Path.Combine(appRootFolder, UpdateSubfolderName);
-            updateManager.ComponentName = componentName;
-            updateManager.UpdateConfigFileClient = getCloudFileClient(accessInfo.AccountName, accessInfo.SASToken);
-            updateManager.UpdateFileName = $"{componentName}.zip"; ;
-            updateManager.UpdateStatusFile = Path.Combine(appRootFolder, "AutoUpdateStatus.json");
+            var updateManager = new AppUpdateManager
+            {
+                AccessInfo = accessInfo,
+                AppRootFolder = appRootFolder,
+                UpdateWorkFolder = Path.Combine(appRootFolder, UpdateSubfolderName),
+                ComponentName = componentName,
+                UpdateConfigFileClient = getCloudFileClient(accessInfo.AccountName, accessInfo.SASToken),
+                UpdateFileName = $"{componentName}.zip",
+                UpdateStatusFile = Path.Combine(appRootFolder, "AutoUpdateStatus.json"),
+            };
             updateManager.CurrentStatus = await updateManager.GetCurrentUpdateStatus();
             return updateManager;
         }
@@ -98,15 +100,20 @@ namespace TheBall.Infra.AppUpdater
             return updateConfig;
         }
 
-        public async Task<UpdateConfigItem> PollUpdate()
+        public async Task<UpdateConfigItem> PollAndCompareConfig(UpdateConfigItem currConfigItem = null)
         {
-            var updateConfig = await FetchConfiguration();
-            var myConfig = updateConfig.PackageData.SingleOrDefault(config => config.Name == ComponentName);
-            if(myConfig == null)
-                throw new InvalidDataException($"Configuration not found for component: {ComponentName}");
-            bool isDifferent = myConfig.BuildNumber != CurrentBuildNumber ||
-                               myConfig.MaturityLevel != CurrentMaturityLevel;
-            return isDifferent ? myConfig : null;
+            if (currConfigItem == null)
+            {
+                var updateConfig = await FetchConfiguration();
+                var packageData = updateConfig.PackageData;
+                var matchingConfig = packageData.SingleOrDefault(config => config.Name == ComponentName);
+                if (matchingConfig == null)
+                    throw new InvalidDataException($"Configuration not found for component: {ComponentName}");
+                currConfigItem = matchingConfig;
+            }
+            bool isDifferent = currConfigItem.BuildNumber != CurrentBuildNumber ||
+                               currConfigItem.MaturityLevel != CurrentMaturityLevel;
+            return isDifferent ? currConfigItem : null;
         }
 
         public UpdatingStatus GetUpdateInProgress()
@@ -189,7 +196,7 @@ namespace TheBall.Infra.AppUpdater
             Array.ForEach(filesToDelete, File.Delete);
         }
 
-        public async Task<bool> CheckAndProcessUpdate()
+        public async Task<bool> CheckAndProcessUpdate(UpdateConfigItem currConfigItem = null)
         {
             bool needsRestart = false;
             var updatingStatus = GetUpdateInProgress();
@@ -208,7 +215,7 @@ namespace TheBall.Infra.AppUpdater
             }
             else // UpToDate
             {
-                var config = await PollUpdate();
+                var config = await PollAndCompareConfig(currConfigItem);
                 if (config != null)
                 {
                     await FetchUpdate(config);
