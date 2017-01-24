@@ -109,6 +109,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebServerManager\WebServerManager.csproj">
+      <Project>{977cbddf-a160-4224-a15a-824074a6f915}</Project>
+      <Name>WebServerManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\BlobStorageSupport\BlobStorageSupport.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\AppUpdater\AppUpdater.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\InstanceSupport\InstanceSupport.projitems" Label="Shared" />
