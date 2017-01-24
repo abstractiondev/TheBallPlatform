@@ -14,6 +14,7 @@ namespace TheBall.Infra.AppUpdater
     public class AppUpdateManager
     {
         const string UpdateSubfolderName = "tbupdates";
+        const string MainConfigFileName = "UpdateConfig.json";
         public static async Task<AppUpdateManager>  Initialize(string componentName, string appRootFolder, AccessInfo accessInfo)
         {
             var updateManager = new AppUpdateManager();
@@ -65,6 +66,12 @@ namespace TheBall.Infra.AppUpdater
             return fileRef;
         }
 
+        private CloudFileShare getMainConfigShare()
+        {
+            var share = UpdateConfigFileClient.GetShareReference(AccessInfo.ShareName);
+            return share;
+        }
+
         public async Task<UpdateConfigItem> GetCurrentUpdateStatus()
         {
             if (!File.Exists(UpdateStatusFile))
@@ -80,7 +87,7 @@ namespace TheBall.Infra.AppUpdater
 
         public async Task<UpdateConfig> FetchConfiguration()
         {
-            var configFile = getFileRef(UpdateConfigFileClient, AccessInfo.ShareName, "UpdateConfig.json");
+            var configFile = getFileRef(UpdateConfigFileClient, AccessInfo.ShareName, MainConfigFileName);
             byte[] updateConfigData;
             using (var stream = new MemoryStream())
             {
@@ -210,6 +217,12 @@ namespace TheBall.Infra.AppUpdater
                 }
             }
             return needsRestart;
+        }
+
+        public ChangeMonitoredItem GetUpdateConfigChangeMonitoredItem()
+        {
+            var share = getMainConfigShare();
+            return new ChangeMonitoredItem(MainConfigFileName, share);
         }
     }
 }

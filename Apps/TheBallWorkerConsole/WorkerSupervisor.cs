@@ -163,7 +163,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         var pipeMessage = pipeMessageAwaitable?.Result;
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.WriteAllText(shutdownLogPath,
-                            "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
+                            "Quitting for message (UTC): " + pipeMessage ?? "Updating" + " " + DateTime.UtcNow.ToString());
                         keepWorkerRunning = false;
                     }
                 }

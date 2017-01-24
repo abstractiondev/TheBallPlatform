@@ -12,12 +12,14 @@ using NDesk.Options;
 using Microsoft.Azure;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 using TheBall.Infra.AppUpdater;
 
 namespace TheBall.Infra.TheBallWorkerConsole
 {
     class Program
     {
+        const int UpdatePollingIntervalMs = 20000;
         public static AppUpdateManager UpdateManager;
         private static int ExitCode = 0;
 
@@ -41,6 +43,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 bool isTestMode = false;
                 string dedicatedToOwner = null;
                 string applicationConfigFullPath = null;
+                string updateAccessInfoFile = null;
                 bool autoUpdate = false;
                 string clientHandle = null;
                 var optionSet = new OptionSet()
@@ -54,6 +57,10 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         au => autoUpdate = au != null
                     },
                     {
+                        "upacc|updateAccessFile=", "Update access info file",
+                        upacc => updateAccessInfoFile = upacc
+                    },
+                    {
                         "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
                         ch => clientHandle = ch
                     },
@@ -64,7 +71,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     {
                         "o|owner=", "Dedicated to owner",
                         owner => dedicatedToOwner = owner
-                    }
+                    },
                 };
                 var options = optionSet.Parse(args);
                 bool hasExtraOptions = options.Count > 0;
@@ -78,7 +85,29 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     optionSet.WriteOptionDescriptions(Console.Out);
                     return -1;
                 }
-                AsyncContext.Run(() => MainAsync(clientHandle, applicationConfigFullPath, dedicatedToOwner, isTestMode, autoUpdate));
+                AccessInfo updateAccessInfo = null;
+                if (autoUpdate)
+                {
+                    if (String.IsNullOrEmpty(updateAccessInfoFile))
+                    {
+                        string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
+                        string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
+                        string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                        updateAccessInfo = new AccessInfo
+                        {
+                            AccountName = accountName,
+                            ShareName = shareName,
+                            SASToken = sasToken
+                        };
+                    }
+                    else
+                    {
+                        var fileContent = File.ReadAllBytes(updateAccessInfoFile);
+                        updateAccessInfo = JSONSupport.GetObjectFromData<AccessInfo>(fileContent);
+                    }
+
+                }
+                AsyncContext.Run(() => MainAsync(clientHandle, applicationConfigFullPath, dedicatedToOwner, isTestMode, updateAccessInfo));
             }
             catch (Exception exception)
             {
@@ -91,30 +120,27 @@ namespace TheBall.Infra.TheBallWorkerConsole
             return ExitCode;
         }
 
-        static async void MainAsync(string clientHandle, string workerConfigFullPath, string dedicatedToOwner, bool isTestMode, bool autoUpdate)
+        static async void MainAsync(string clientHandle, string workerConfigFullPath, string dedicatedToOwner, bool isTestMode, AccessInfo updateAccessInfo)
         {
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
 
+            bool autoUpdate = updateAccessInfo != null;
+            bool isDebugging = Debugger.IsAttached;
             if (autoUpdate)
             {
                 string componentName = "TheBallWorkerConsole";
                 string workingRootFolder = AssemblyDirectory;
-                string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
-                UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, new AccessInfo
+                UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, updateAccessInfo);
+                if (!isDebugging)
                 {
-                    AccountName = accountName,
-                    ShareName = shareName,
-                    SASToken = sasToken
-                });
-                bool needsRestart = await UpdateManager.CheckAndProcessUpdate();
-                if (needsRestart)
-                {
-                    ExitCode = 2;
-                    return;
+                    bool needsRestart = await UpdateManager.CheckAndProcessUpdate();
+                    if (needsRestart)
+                    {
+                        ExitCode = 2;
+                        return;
+                    }
                 }
             }
 
@@ -135,7 +161,14 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 if (isTestMode)
                     await supervisor.WaitHandleExitCommand(10);
                 else
-                    await supervisor.RunWorkerLoop(autoUpdate && false ? Task.Delay(60000) : null, dedicatedToInstance, dedicatedToOwnerPrefix);
+                {
+                    var changeDetector = autoUpdate ? ChangeDetector.Create(new[]
+                    {
+                        new ChangeMonitoredItem(@"X:\Configs\WorkerConsole.json"), 
+                        UpdateManager.GetUpdateConfigChangeMonitoredItem(), 
+                    }) : null;
+                    await supervisor.RunWorkerLoop(changeDetector?.MonitorItemsAsync(UpdatePollingIntervalMs), dedicatedToInstance, dedicatedToOwnerPrefix);
+                }
             }
             catch (Exception ex)
             {

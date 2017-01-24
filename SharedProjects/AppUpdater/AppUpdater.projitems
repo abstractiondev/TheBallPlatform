@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AccessInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AppUpdateManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ChangeDetector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpdateConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UpdateConfigItem.cs" />
   </ItemGroup>
