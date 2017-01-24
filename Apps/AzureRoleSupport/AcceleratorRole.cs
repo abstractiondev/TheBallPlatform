@@ -114,15 +114,12 @@ namespace TheBall.Infra.AzureRoleSupport
 
         private async Task ensureUpdatedConsole()
         {
-            if (RoleType == AzureRoleType.WorkerRole)
+            if (!File.Exists(TargetConsolePath))
             {
-                if (!File.Exists(TargetConsolePath))
-                {
-                    File.Copy(SourceConsolePath, TargetConsolePath);
-                }
-                //var appManager = new AppManager(TargetConsolePath, AppConfigPath);
-                //await runUpdater(appManager);
+                File.Copy(SourceConsolePath, TargetConsolePath);
             }
+            //var appManager = new AppManager(TargetConsolePath, AppConfigPath);
+            //await runUpdater(appManager);
         }
 
         public override void OnStop()
@@ -139,23 +136,6 @@ namespace TheBall.Infra.AzureRoleSupport
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
-            if (RoleType == AzureRoleType.WebRole)
-            {
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    // TODO Polling update and launching
-                    // Poll or exit on cancel
-                    try
-                    {
-                        await Task.Delay(30000, cancellationToken);
-                    }
-                    catch (TaskCanceledException) // Expected
-                    {
-
-                    }
-                }
-                return;
-            }
             try
             {
                 Trace.TraceInformation("Working");

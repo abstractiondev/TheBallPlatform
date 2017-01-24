@@ -23,6 +23,8 @@ namespace TheBall.Infra.TheBallWorkerConsole
         public static AppUpdateManager UpdateManager;
         private static int ExitCode = 0;
 
+        const string ComponentName = "TheBallWorkerConsole";
+
         public static string AssemblyDirectory
         {
             get
@@ -79,7 +81,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 bool hasIdentifiedOptions = optionSet.Count > 0;
                 if (hasExtraOptions || isMissingMandatory)
                 {
-                    Console.WriteLine("Usage: TheBallWorkerConsole.exe");
+                    Console.WriteLine($"Usage: {ComponentName}.exe");
                     Console.WriteLine();
                     Console.WriteLine("Options:");
                     optionSet.WriteOptionDescriptions(Console.Out);
@@ -130,7 +132,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             bool isDebugging = Debugger.IsAttached;
             if (autoUpdate)
             {
-                string componentName = "TheBallWorkerConsole";
+                string componentName = ComponentName;
                 string workingRootFolder = AssemblyDirectory;
                 UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, updateAccessInfo);
                 if (!isDebugging)

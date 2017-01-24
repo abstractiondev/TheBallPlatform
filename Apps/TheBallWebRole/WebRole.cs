@@ -38,7 +38,7 @@ namespace TheBallWebRole
 127.0.0.1   prod
 127.0.0.1   websites
 ";
-                var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hostsx");
+                var hostsFilePath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
                 File.WriteAllText(hostsFilePath, hostsFileContents);
             }
             return base.OnStart();

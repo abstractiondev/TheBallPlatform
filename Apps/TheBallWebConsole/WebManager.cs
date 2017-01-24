@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
+using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 
 namespace TheBall.Infra.TheBallWebConsole
 {
@@ -18,15 +23,14 @@ namespace TheBall.Infra.TheBallWebConsole
 
         public static async Task<WebConsoleConfig> GetConfig(string fullPathToConfig)
         {
-            return new WebConsoleConfig { PollingIntervalSeconds = 30};
-#if notyet
+            if(fullPathToConfig == null)
+                throw new ArgumentNullException(nameof(fullPathToConfig));
             using (var fileStream = File.OpenRead(fullPathToConfig))
-            using (StreamReader reader = new StreamReader(fileStream))
             {
-                var data = await reader.ReadToEndAsync();
-                return JSONSupport.GetObjectFromString<WebConsoleConfig>(data);
+                var data = new byte[fileStream.Length];
+                await fileStream.ReadAsync(data, 0, data.Length);
+                return JSONSupport.GetObjectFromData<WebConsoleConfig>(data);
             }
-#endif
         }
 
     }
@@ -35,6 +39,9 @@ namespace TheBall.Infra.TheBallWebConsole
         private readonly string ConfigRootFolder;
         private readonly Stream HostPollingStream;
         private readonly WebConsoleConfig WebConfig;
+        private bool IsTestMode = false;
+        internal TelemetryClient AppInsightsClient { get; private set; }
+
 
         private WebManager(Stream hostPollingStream, WebConsoleConfig webConfig, string configRootFolder)
         {
@@ -43,14 +50,60 @@ namespace TheBall.Infra.TheBallWebConsole
             ConfigRootFolder = configRootFolder;
         }
 
-        internal static async Task<WebManager> Create(Stream hostPollingStream, string workerConfigFullPath)
+        private WebManager(Stream hostPollingStream)
         {
-            var webConsoleConfig = await WebConsoleConfig.GetConfig(workerConfigFullPath);
-            string configRootFolder = Path.GetDirectoryName(workerConfigFullPath);
+            HostPollingStream = hostPollingStream;
+            IsTestMode = true;
+        }
 
-            var webManager = new WebManager(hostPollingStream, webConsoleConfig, configRootFolder);
+        internal static async Task<WebManager> Create(Stream hostPollingStream, string configFileFullPath, bool isTestMode)
+        {
+            WebManager webManager;
+            if (isTestMode)
+            {
+                webManager = new WebManager(hostPollingStream);
+            }
+            else
+            {
+                var webConsoleConfig = await WebConsoleConfig.GetConfig(configFileFullPath);
+                string configRootFolder = Path.GetDirectoryName(configFileFullPath);
+
+                webManager = new WebManager(hostPollingStream, webConsoleConfig, configRootFolder);
+                await webManager.InitializeRuntime();
+            }
             return webManager;
         }
+
+        private async Task InitializeRuntime()
+        {
+            var infraConfigFullPath = Path.Combine(ConfigRootFolder, "InfraShared", "InfraConfig.json");
+            await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigFullPath);
+            TelemetryConfiguration.Active.InstrumentationKey =
+                InfraSharedConfig.Current.AppInsightInstrumentationKey;
+            AppInsightsClient = new TelemetryClient();
+            RuntimeSupport.ExceptionReportHandler =
+                (exception, properties) => AppInsightsClient.TrackException(exception, properties);
+        }
+
+        internal async Task WaitHandleExitCommand(int timeoutSeconds)
+        {
+            var pipeStream = HostPollingStream;
+            var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
+            bool keepWorkerRunning = true;
+            var pipeMessageAwaitable = reader?.ReadToEndAsync();
+            while (keepWorkerRunning)
+            {
+                List<Task> awaitList = new List<Task>();
+                awaitList.Add(pipeMessageAwaitable);
+                awaitList.Add(Task.Delay(timeoutSeconds * 1000));
+                await Task.WhenAny(awaitList);
+                if (pipeMessageAwaitable.IsCompleted)
+                    keepWorkerRunning = false;
+                else
+                    throw new InvalidOperationException($"Test cancel not happened within {timeoutSeconds} second timeout");
+            }
+        }
+
 
         private void InitStuff()
         {
@@ -74,7 +127,7 @@ namespace TheBall.Infra.TheBallWebConsole
 
         }
 
-        internal async Task RunUpdateLoop()
+        internal async Task RunUpdateLoop(Task autoUpdateTask)
         {
             var pipeStream = HostPollingStream;
             var reader = pipeStream != null ? new StreamReader(pipeStream) : null;
@@ -88,27 +141,36 @@ namespace TheBall.Infra.TheBallWebConsole
                 File.WriteAllText(startupLogPath, startupMessage);
 
                 var pipeMessageAwaitable = reader?.ReadToEndAsync();
-
-                while (true)
+                bool keepConsoleRunning = true;
+                while (keepConsoleRunning)
                 {
-                    var pollingDelay = Task.Delay(pollingIntervalSeconds*1000);
-                    
-                    // Do polling actions here
+                    List<Task> awaitList = new List<Task>();
+                    if (pipeMessageAwaitable != null)
+                        awaitList.Add(pipeMessageAwaitable);
+                    if (autoUpdateTask != null)
+                        awaitList.Add(autoUpdateTask);
 
-                    var awaits = pipeMessageAwaitable != null
-                        ? new[] {pipeMessageAwaitable, pollingDelay}
-                        : new[] {pollingDelay};
-                    await Task.WhenAny(awaits);
+                    var pollingDelay = Task.Delay(pollingIntervalSeconds*1000);
+                    awaitList.Add(pollingDelay);
+
+                    // Do polling actions here
+                    await Task.WhenAny(awaitList);
                     bool isCanceling = pipeMessageAwaitable != null && pipeMessageAwaitable.IsCompleted;
-                    if (isCanceling)
+                    bool isUpdating = autoUpdateTask != null && autoUpdateTask.IsCompleted;
+                    if (isUpdating || isCanceling)
                     {
-                        var pipeMessage = pipeMessageAwaitable.Result;
+                        var pipeMessage = isCanceling ? pipeMessageAwaitable.Result : "Updating";
                         var shutdownLogPath = Path.Combine(Program.AssemblyDirectory, "ConsoleShutdownLog.txt");
                         File.AppendAllText(shutdownLogPath,
                             "Quitting for message (UTC): " + pipeMessage + " " + DateTime.UtcNow.ToString());
                         break;
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ex.ReportException();
+                throw;
             }
             finally
             {
