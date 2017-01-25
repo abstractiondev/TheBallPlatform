@@ -216,11 +216,20 @@ namespace TheBall.Infra.TheBallWebConsole
         private void updateIISBindings(WebConsoleConfig webConfig)
         {
             var instanceBindings = WebConfig.InstanceBindings.SelectMany(ib =>
-                ib.Instances.Select(instanceHostName => new BindingSetting
+                ib.Instances.SelectMany(instanceHostName => new BindingSetting[]
                 {
-                    Protocol = Protocol.Https,
-                    AppName = ib.MaturityLevel,
-                    HostName = instanceHostName
+                    new BindingSetting
+                    {
+                        Protocol = Protocol.Http,
+                        AppName = ib.MaturityLevel,
+                        HostName = instanceHostName
+                    },
+                    new BindingSetting
+                    {
+                        Protocol = Protocol.Https,
+                        AppName = ib.MaturityLevel,
+                        HostName = instanceHostName
+                    }
                 })).ToArray();
             var wwwSiteBindings = WebConfig.WwwSiteHostNames.Select(hostName =>
                 new BindingSetting
