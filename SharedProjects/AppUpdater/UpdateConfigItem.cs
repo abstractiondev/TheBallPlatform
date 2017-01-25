@@ -1,3 +1,5 @@
+using System;
+
 namespace TheBall.Infra.AppUpdater
 {
     public enum UpdatingStatus
@@ -15,6 +17,7 @@ namespace TheBall.Infra.AppUpdater
         public string BuildNumber;
         public string Commit;
         public UpdatingStatus UpdatingStatus;
+        public DateTime LatestUpdateOperationDone { get; set; }
 
         private string _UpdateDirName;
         public string UpdateDirName

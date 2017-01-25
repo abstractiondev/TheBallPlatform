@@ -103,6 +103,7 @@
     <Compile Include="MaturityBindingItem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteDeploymentInfo.cs" />
     <Compile Include="StorageSupport.cs" />
     <Compile Include="WebConsoleConfig.cs" />
     <Compile Include="WebManager.cs" />

@@ -130,6 +130,7 @@ namespace TheBall.Infra.AppUpdater
 
         private void saveCurrentStatus()
         {
+            CurrentStatus.LatestUpdateOperationDone = DateTime.UtcNow;
             var data = JSONSupport.SerializeToJSONData(CurrentStatus);
             File.WriteAllBytes(UpdateStatusFile, data);
         }

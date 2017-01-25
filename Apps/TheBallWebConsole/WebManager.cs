@@ -13,6 +13,7 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 using TheBall.Infra.AppUpdater;
 using TheBall.Infra.WebServerManager;
 
@@ -125,18 +126,15 @@ namespace TheBall.Infra.TheBallWebConsole
                 while (keepConsoleRunning)
                 {
                     // Perform updates if required
-                    var updatingTasks = updateManagers.Select(performUpdateIfRequired).ToArray();
-                    await Task.WhenAll(updatingTasks);
+                    var updateCheckTasks = updateManagers.Select(performUpdateIfRequired).ToArray();
+                    await Task.WhenAll(updateCheckTasks);
 
-                    var anyUpdatingDone =
-                        updateManagers.Select(item => item.Item2).ToArray();
-                        //updatingTasks
-                        //.Where(task => task.Result != null)
-                        //.Select(task => task.Result).ToArray();
+                    var updateManagedItems =
+                        updateCheckTasks.Select(task => task.Result).ToArray();
 
                     ensureIISSites(WebConfig);
 
-                    Array.ForEach(anyUpdatingDone, updateIISSite);
+                    Array.ForEach(updateManagedItems, updateIISSite);
 
                     updateIISBindings(WebConfig);
 
@@ -187,14 +185,32 @@ namespace TheBall.Infra.TheBallWebConsole
                 IISSupport.CreateIISApplicationSiteIfMissing(appName, appSitePath);
             });
         }
-        private void updateIISSite(UpdateConfigItem configItem)
+        private void updateIISSite(Tuple<UpdateConfigItem, DateTime> configItemLastModifiedTuple)
         {
+            var configItem = configItemLastModifiedTuple.Item1;
+            var lastPerformedUpdateOperation = configItemLastModifiedTuple.Item2;
             var appName = configItem.MaturityLevel;
             var sourcePackageZip = Path.Combine(TempSiteRootDir, appName, "WebInterface.zip");
             var appSitePath = Path.Combine(AppSiteRootDir, appName);
             if (!Directory.Exists(appSitePath))
                 Directory.CreateDirectory(appSitePath);
+            var deployInfoFile = Path.Combine(appSitePath, "AutoDeployInfo.json");
+
+            if (File.Exists(deployInfoFile))
+            {
+                var deployData = File.ReadAllBytes(deployInfoFile);
+                var deployInfo = JSONSupport.GetObjectFromData<SiteDeploymentInfo>(deployData);
+                if (deployInfo.DeploymentTime > lastPerformedUpdateOperation)
+                    return;
+            }
             IISSupport.DeployAppPackageContent(sourcePackageZip, appSitePath, appName);
+            
+            var currDeployInfo = new SiteDeploymentInfo
+            {
+                DeploymentTime = DateTime.UtcNow
+            };
+            var data = JSONSupport.SerializeToJSONData(currDeployInfo);
+            File.WriteAllBytes(deployInfoFile, data);
         }
 
         private void updateIISBindings(WebConsoleConfig webConfig)
@@ -218,7 +234,7 @@ namespace TheBall.Infra.TheBallWebConsole
             IISSupport.SetAppBindings(appNames, bindingSettings);
         }
 
-        private static async Task<UpdateConfigItem> performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
+        private static async Task<Tuple<UpdateConfigItem, DateTime>> performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
         {
             var updateManager = inputTuple.Item1;
             var currConfig = inputTuple.Item2;
@@ -231,7 +247,8 @@ namespace TheBall.Infra.TheBallWebConsole
             } while (rerunRequired);
             if(anyUpdatingDone)
                 Console.WriteLine("Updated: " + currConfig.MaturityLevel);
-            return anyUpdatingDone ? currConfig : null;
+            var lastModified = updateManager.CurrentStatus.LatestUpdateOperationDone;
+            return new Tuple<UpdateConfigItem, DateTime>(currConfig, lastModified);
         }
     }
 }
