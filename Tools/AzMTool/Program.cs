@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.WindowsAzure;
+using Microsoft.Azure;
 
 namespace AzMTool
 {
@@ -15,6 +15,7 @@ namespace AzMTool
     {
         static void Main(string[] args)
         {
+            return;
             var token = GetAuthorizationHeader();
             var subscriptionId = ConfigurationManager.AppSettings["subscriptionId"];
             //var credential = new TokenCloudCredentials(
