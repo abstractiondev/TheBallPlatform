@@ -133,7 +133,12 @@ namespace TheBall.Infra.TheBallWebConsole
                         //updatingTasks
                         //.Where(task => task.Result != null)
                         //.Select(task => task.Result).ToArray();
+
+                    ensureIISSites(WebConfig);
+
                     Array.ForEach(anyUpdatingDone, updateIISSite);
+
+                    updateIISBindings(WebConfig);
 
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
@@ -173,15 +178,44 @@ namespace TheBall.Infra.TheBallWebConsole
             }
         }
 
+        private void ensureIISSites(WebConsoleConfig webConfig)
+        {
+            var appNames = WebConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
+            Array.ForEach(appNames, appName =>
+            {
+                var appSitePath = Path.Combine(AppSiteRootDir, appName);
+                IISSupport.CreateIISApplicationSiteIfMissing(appName, appSitePath);
+            });
+        }
         private void updateIISSite(UpdateConfigItem configItem)
         {
-            var tbMaturitySiteName = configItem.MaturityLevel;
-            var sourcePackageZip = Path.Combine(TempSiteRootDir, tbMaturitySiteName, "WebInterface.zip");
-            var appSitePath = Path.Combine(AppSiteRootDir, tbMaturitySiteName);
+            var appName = configItem.MaturityLevel;
+            var sourcePackageZip = Path.Combine(TempSiteRootDir, appName, "WebInterface.zip");
+            var appSitePath = Path.Combine(AppSiteRootDir, appName);
             if (!Directory.Exists(appSitePath))
                 Directory.CreateDirectory(appSitePath);
-            IISSupport.CreateIISApplicationSiteIfMissing(tbMaturitySiteName, appSitePath);
-            IISSupport.DeployAppPackageContent(sourcePackageZip, appSitePath, tbMaturitySiteName);
+            IISSupport.DeployAppPackageContent(sourcePackageZip, appSitePath, appName);
+        }
+
+        private void updateIISBindings(WebConsoleConfig webConfig)
+        {
+            var instanceBindings = WebConfig.InstanceBindings.SelectMany(ib =>
+                ib.Instances.Select(instanceHostName => new BindingSetting
+                {
+                    Protocol = Protocol.Https,
+                    AppName = ib.MaturityLevel,
+                    HostName = instanceHostName
+                })).ToArray();
+            var wwwSiteBindings = WebConfig.WwwSiteHostNames.Select(hostName =>
+                new BindingSetting
+                {
+                    AppName = WebConfig.WwwSitesMaturityLevel,
+                    HostName = hostName,
+                    Protocol = Protocol.Http
+                }).ToArray();
+            var bindingSettings = instanceBindings.Concat(wwwSiteBindings).ToArray();
+            var appNames = WebConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
+            IISSupport.SetAppBindings(appNames, bindingSettings);
         }
 
         private static async Task<UpdateConfigItem> performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
