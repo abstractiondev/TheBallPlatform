@@ -22,6 +22,57 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="UpdateInfraDataInterfaceObjects" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update infra data to interface objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MainConfigShare" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Cloud file share reference</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UpdateConfig ( MainConfigShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Platform infra update config</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: WebConsoleConfig ( MainConfigShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Platform infra web console config</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeploymentShare ( UpdateConfig )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Deployment source file share reference</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeploymentPackages ( DeploymentShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Deployment packages from deploy list</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( UpdateConfig, WebConsoleConfig, DeploymentPackages )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store interface objects</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
         </Content>
       </Document>
     </Documents>

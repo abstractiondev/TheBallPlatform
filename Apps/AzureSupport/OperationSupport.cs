@@ -58,7 +58,7 @@ namespace TheBall
             {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
             }
-            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin"))
+            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin") || operationName.StartsWith("TheBall.Infrastructure"))
             {
                 var owner = VirtualOwner.FigureOwner(ownerPrefix);
                 var isAdminOwner = owner.IsGroupContainer() &&

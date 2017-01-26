@@ -1,7 +1,34 @@
 <?xml version="1.0"?>
 <StatusTrackingAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/StatusTracking_v1_0.xsd">
-  <StatusItems scopeName="TheBall.Infrastructure" />
+  <StatusItems scopeName="TheBall.Infrastructure">
+    <StatusItem name="UpdateInfraDataInterfaceObjects_MainConfigShare" displayName="TargetDefinitionType: MainConfigShare" description="Cloud file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_UpdateConfig" displayName="TargetDefinitionType: UpdateConfig" description="Platform infra update config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_WebConsoleConfig" displayName="TargetDefinitionType: WebConsoleConfig" description="Platform infra web console config">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_DeploymentShare" displayName="TargetDefinitionType: DeploymentShare" description="Deployment source file share reference">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_DeploymentPackages" displayName="TargetDefinitionType: DeploymentPackages" description="Deployment packages from deploy list">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+    <StatusItem name="UpdateInfraDataInterfaceObjects_StoreObjects" displayName="MethodExecuteType: StoreObjects" description="Store interface objects">
+      <StatusValue trafficLightIndicator="green" indicatorDisplayText="Implemented" indicatorValue="1" />
+    </StatusItem>
+  </StatusItems>
   <Groups>
+    <Group name="UpdateInfraDataInterfaceObjects">
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_MainConfigShare" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_UpdateConfig" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_WebConsoleConfig" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_DeploymentShare" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_DeploymentPackages" />
+      <ItemRef itemName="UpdateInfraDataInterfaceObjects_StoreObjects" />
+    </Group>
     <Group name="CreateCloudDrive" />
     <Group name="MountCloudDrive" />
   </Groups>

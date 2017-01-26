@@ -254,6 +254,7 @@
     <Compile Include="TheBall.CORE\UpdateGroupMembershipStatusesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateTemplateForAllAccountsImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateTemplateForAllGroupsImplementation.cs" />
+    <Compile Include="TheBall.Infrastructure\UpdateInfraDataInterfaceObjectsImplementation.cs" />
     <Compile Include="TheBall.Interface\DeleteInterfaceJSONImplementation.cs" />
     <Compile Include="TheBall.Interface\InterfaceOperation.cs" />
     <Compile Include="TheBall.CORE\JoinAccountToGroupImplementation.cs" />

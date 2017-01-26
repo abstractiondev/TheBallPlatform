@@ -238,6 +238,35 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Mount cloud drive
 		</div>
+		</p><h1>UpdateInfraDataInterfaceObjects</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update infra data to interface objects
+		</div>
+		</p><h2>Target Definition: MainConfigShare</h2>
+		<p>		<div class="MsoNormal" >
+		Cloud file share reference
+		</div>
+		</p><h2>Target Definition: UpdateConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra update config
+		</div>
+		</p><h2>Target Definition: WebConsoleConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra web console config
+		</div>
+		</p><h2>Target Definition: DeploymentShare ( UpdateConfig )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment source file share reference
+		</div>
+		</p><h2>Target Definition: DeploymentPackages ( DeploymentShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment packages from deploy list
+		</div>
+		</p><h2>Method Call: StoreObjects ( UpdateConfig, WebConsoleConfig, DeploymentPackages )</h2>
+		<p>		<div class="MsoNormal" >
+		Store interface objects
+		</div>
 		</p></div>
 
 </body>

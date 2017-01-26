@@ -4,8 +4,80 @@
 -->
 <TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
   <InstanceOfTheBall semanticDomainName="TheBall.Infrastructure">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="UpdateConfig" designDesc="Update config structure, used by platforms settings">
+          <InterfaceItems>
+            <ObjectInstance name="PackageData" interfaceObjectName="UpdateConfigItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="UpdateConfigItem" designDesc="Update config item">
+          <InterfaceItems>
+            <ObjectInstance name="AccessInfo" interfaceObjectName="AccessInfo" />
+            <InterfaceItem name="Name" logicalDataType="Text_Short" />
+            <InterfaceItem name="MaturityLevel" logicalDataType="Text_Short" />
+            <InterfaceItem name="BuildNumber" logicalDataType="Text_Short" />
+            <InterfaceItem name="Commit" logicalDataType="Text_Short" />
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="AccessInfo" designDesc="AccessInfo">
+          <InterfaceItems>
+            <InterfaceItem name="AccountName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="ShareName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="SASToken" logicalDataType="Text_Short"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="WebConsoleConfig" designDesc="WebConsoleConfig from platform settings">
+          <InterfaceItems>
+            <InterfaceItem name="PollingIntervalSeconds" logicalDataType="Number"/>
+            <ObjectInstance name="PackageData" interfaceObjectName="UpdateConfigItem" isCollection="true"/>
+            <ObjectInstance name="InstanceBindings" interfaceObjectName="MaturityBindingItem" isCollection="true"/>
+            <InterfaceItem name="WwwSitesMaturityLevel" logicalDataType="Text_Short"/>
+            <InterfaceItem name="WwwSiteHostNames" logicalDataType="Text_Short" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="MaturityBindingItem" designDesc="Instance binding item">
+          <InterfaceItems>
+            <InterfaceItem name="MaturityLevel" logicalDataType="Text_Short"/>
+            <InterfaceItem name="Instances" logicalDataType="Text_Short" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="DeploymentPackages" designDesc="Deployment source packages">
+          <InterfaceItems>
+            <ObjectInstance name="PackageData" interfaceObjectName="UpdateConfigItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
     <InformationModel />
     <Operations>
+      <Operation name="UpdateInfraDataInterfaceObjects">
+        <OperationSpec>
+          <Description>Update infra data to interface objects</Description>
+        </OperationSpec>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="MainConfigShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Cloud file share reference" state="implemented" />
+            <TargetDefinition name="UpdateConfig" dataType="INT.UpdateConfig" designDesc="Platform infra update config" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="MainConfigShare"/>
+            </TargetDefinition>
+            <TargetDefinition name="WebConsoleConfig" dataType="INT.WebConsoleConfig" designDesc="Platform infra web console config" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="MainConfigShare"/>
+            </TargetDefinition>
+            <TargetDefinition name="DeploymentShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Deployment source file share reference" state="implemented">
+              <Target name="UpdateConfig"/>
+            </TargetDefinition>
+            <TargetDefinition name="DeploymentPackages" dataType="INT.DeploymentPackages" designDesc="Deployment packages from deploy list" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="DeploymentShare"/>                          
+            </TargetDefinition>
+            <MethodExecute name="StoreObjects" designDesc="Store interface objects" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="UpdateConfig"/>
+              <Target name="WebConsoleConfig"/>
+              <Target name="DeploymentPackages"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="CreateCloudDrive">
         <OperationSpec>
           <Description>Create cloud drive</Description>

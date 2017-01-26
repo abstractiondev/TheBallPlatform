@@ -17,6 +17,7 @@ using AzureSupport;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.File;
 using Microsoft.WindowsAzure.Storage.RetryPolicies;
 using Microsoft.WindowsAzure.Storage.Shared.Protocol;
 using TheBall.CORE;
@@ -67,6 +68,15 @@ namespace TheBall
             using (var memStream = new MemoryStream())
             {
                 blob.DownloadToStream(memStream);
+                return memStream.ToArray();
+            }
+        }
+
+        public static async Task<byte[]> DownloadByteArrayAsync(this CloudFile file)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                await file.DownloadToStreamAsync(memStream);
                 return memStream.ToArray();
             }
         }

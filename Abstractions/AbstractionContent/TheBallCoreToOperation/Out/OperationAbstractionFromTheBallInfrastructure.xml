@@ -1,6 +1,33 @@
 <?xml version="1.0"?>
 <OperationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
   <Operations codeNamespace="TheBall.Infrastructure">
+    <Operation name="UpdateInfraDataInterfaceObjects">
+      <OperationSpec>
+        <Description>Update infra data to interface objects</Description>
+      </OperationSpec>
+      <Execution>
+        <SequentialExecution>
+          <TargetDefinition name="MainConfigShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Cloud file share reference" state="implemented" />
+          <TargetDefinition name="UpdateConfig" asyncSupportMode="AsyncOnly" dataType="INT.UpdateConfig" designDesc="Platform infra update config" state="implemented">
+            <Target name="MainConfigShare" />
+          </TargetDefinition>
+          <TargetDefinition name="WebConsoleConfig" asyncSupportMode="AsyncOnly" dataType="INT.WebConsoleConfig" designDesc="Platform infra web console config" state="implemented">
+            <Target name="MainConfigShare" />
+          </TargetDefinition>
+          <TargetDefinition name="DeploymentShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Deployment source file share reference" state="implemented">
+            <Target name="UpdateConfig" />
+          </TargetDefinition>
+          <TargetDefinition name="DeploymentPackages" asyncSupportMode="AsyncOnly" dataType="INT.DeploymentPackages" designDesc="Deployment packages from deploy list" state="implemented">
+            <Target name="DeploymentShare" />
+          </TargetDefinition>
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store interface objects" state="implemented">
+            <Target name="UpdateConfig" />
+            <Target name="WebConsoleConfig" />
+            <Target name="DeploymentPackages" />
+          </MethodExecute>
+        </SequentialExecution>
+      </Execution>
+    </Operation>
     <Operation name="CreateCloudDrive">
       <OperationSpec>
         <Description>Create cloud drive</Description>
