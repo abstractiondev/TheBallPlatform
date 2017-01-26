@@ -22,6 +22,95 @@
               </Paragraph>
             </Header>
           </Header>
+          <Header text="SetRuntimeVersions (RuntimeVersionData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Sets runtime versions; to the runtime configs that the platform then updates itself to</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>RuntimeVersionData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.UpdateConfig</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Runtime version data; only component versions are relevant</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: MainConfigShare" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Cloud file share reference</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UpdateConfig ( MainConfigShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Platform infra update config</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeploymentShare ( UpdateConfig )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Deployment source file share reference</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: DeploymentPackages ( DeploymentShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Deployment packages from deploy list</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: ValidateRequestedVersionsAgainstDeploymentPackages ( DeploymentPackages, RuntimeVersionData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Validate that requested versions are found in deployment packages</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: WebConsoleConfig ( MainConfigShare )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Platform infra web console config</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: UpdatePlatformConfigurations ( UpdateConfig, WebConsoleConfig, RuntimeVersionData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Update version fields of platform configurations</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SaveConfiguration ( MainConfigShare, UpdateConfig, WebConsoleConfig )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Save updated configuration file(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
           <Header text="UpdateInfraDataInterfaceObjects" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>

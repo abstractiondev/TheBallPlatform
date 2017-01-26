@@ -78,6 +78,45 @@
           </SequentialExecution>
         </Execution>
       </Operation>
+      <Operation name="SetRuntimeVersions">
+        <OperationSpec>
+          <Description>Sets runtime versions; to the runtime configs that the platform then updates itself to</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="RuntimeVersionData" dataType="INT.UpdateConfig" designDesc="Runtime version data; only component versions are relevant" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="MainConfigShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Cloud file share reference" state="implemented" />
+            <TargetDefinition name="UpdateConfig" dataType="INT.UpdateConfig" designDesc="Platform infra update config" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="MainConfigShare"/>
+            </TargetDefinition>
+            <TargetDefinition name="DeploymentShare" dataType="Microsoft.WindowsAzure.Storage.File.CloudFileShare" designDesc="Deployment source file share reference" state="implemented">
+              <Target name="UpdateConfig"/>
+            </TargetDefinition>
+            <TargetDefinition name="DeploymentPackages" dataType="INT.DeploymentPackages" designDesc="Deployment packages from deploy list" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="DeploymentShare"/>
+            </TargetDefinition>
+            <MethodExecute name="ValidateRequestedVersionsAgainstDeploymentPackages" designDesc="Validate that requested versions are found in deployment packages" state="implemented">
+              <Parameter name="RuntimeVersionData"/>
+              <Target name="DeploymentPackages"/>
+            </MethodExecute>
+            <TargetDefinition name="WebConsoleConfig" dataType="INT.WebConsoleConfig" designDesc="Platform infra web console config" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="MainConfigShare"/>
+            </TargetDefinition>
+            <MethodExecute name="UpdatePlatformConfigurations" designDesc="Update version fields of platform configurations" state="implemented">
+              <Parameter name="RuntimeVersionData"/>
+              <Target name="UpdateConfig"/>
+              <Target name="WebConsoleConfig"/>
+            </MethodExecute>
+            <MethodExecute name="SaveConfiguration" designDesc="Save updated configuration file(s)" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="MainConfigShare"/>
+              <Target name="UpdateConfig"/>
+              <Target name="WebConsoleConfig"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
       <Operation name="CreateCloudDrive">
         <OperationSpec>
           <Description>Create cloud drive</Description>

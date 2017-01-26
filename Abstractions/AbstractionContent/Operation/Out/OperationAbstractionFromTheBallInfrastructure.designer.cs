@@ -22,6 +22,29 @@ using System.Threading.Tasks;
 				 await UpdateInfraDataInterfaceObjectsImplementation.ExecuteMethod_StoreObjectsAsync(UpdateConfig, WebConsoleConfig, DeploymentPackages);		
 				}
 				}
+				public class SetRuntimeVersionsParameters 
+		{
+				public INT.UpdateConfig RuntimeVersionData ;
+				}
+		
+		public class SetRuntimeVersions 
+		{
+				private static void PrepareParameters(SetRuntimeVersionsParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetRuntimeVersionsParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Microsoft.WindowsAzure.Storage.File.CloudFileShare MainConfigShare = SetRuntimeVersionsImplementation.GetTarget_MainConfigShare();	
+				INT.UpdateConfig UpdateConfig =  await SetRuntimeVersionsImplementation.GetTarget_UpdateConfigAsync(MainConfigShare);	
+				Microsoft.WindowsAzure.Storage.File.CloudFileShare DeploymentShare = SetRuntimeVersionsImplementation.GetTarget_DeploymentShare(UpdateConfig);	
+				INT.DeploymentPackages DeploymentPackages =  await SetRuntimeVersionsImplementation.GetTarget_DeploymentPackagesAsync(DeploymentShare);	
+				SetRuntimeVersionsImplementation.ExecuteMethod_ValidateRequestedVersionsAgainstDeploymentPackages(parameters.RuntimeVersionData, DeploymentPackages);		
+				INT.WebConsoleConfig WebConsoleConfig =  await SetRuntimeVersionsImplementation.GetTarget_WebConsoleConfigAsync(MainConfigShare);	
+				SetRuntimeVersionsImplementation.ExecuteMethod_UpdatePlatformConfigurations(parameters.RuntimeVersionData, UpdateConfig, WebConsoleConfig);		
+				 await SetRuntimeVersionsImplementation.ExecuteMethod_SaveConfigurationAsync(MainConfigShare, UpdateConfig, WebConsoleConfig);		
+				}
+				}
 
 		    public class CreateCloudDrive 
 		{
