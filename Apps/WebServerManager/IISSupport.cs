@@ -24,8 +24,35 @@ namespace TheBall.Infra.WebServerManager
         public string HostName { get; set; }
         public Protocol Protocol { get; set; }
     }
+
+    internal class OptionFixerItem<T>
+    {
+        public Func<T, bool> NeedFix;
+        public Action<T> FixAction;
+    }
+
     public static class IISSupport
     {
+        private static OptionFixerItem<ApplicationPool>[] AppPoolFixers = new OptionFixerItem<ApplicationPool>[]
+        {
+            new OptionFixerItem<ApplicationPool>()
+            {
+                NeedFix = appPool => appPool.AutoStart == false,
+                FixAction = appPool => appPool.AutoStart = true,
+            },
+            new OptionFixerItem<ApplicationPool>()
+            {
+                NeedFix = appPool => appPool.StartMode != StartMode.AlwaysRunning,
+                FixAction = appPool => appPool.StartMode = StartMode.AlwaysRunning,
+            },
+            new OptionFixerItem<ApplicationPool>()
+            {
+                NeedFix = appPool => appPool.ProcessModel.IdleTimeout != TimeSpan.Zero,
+                FixAction = appPool => appPool.ProcessModel.IdleTimeout = TimeSpan.Zero,
+            },
+
+        };
+
         public static void CreateIISApplicationSiteIfMissing(string appSiteName, string appSiteFolder)
         {
             if (appSiteFolder == null)
@@ -311,6 +338,26 @@ namespace TheBall.Infra.WebServerManager
                 depObject.SyncTo(DeploymentWellKnownProvider.Auto, appLiveFolder, new DeploymentBaseOptions(),
                     new DeploymentSyncOptions());
             }
+        }
+
+        public static void SetImmediateFirstResponseOptions(string appName)
+        {
+            using (var iisManager = new ServerManager())
+            {
+                var appPool = iisManager.ApplicationPools[appName];
+                bool anyChanges = false;
+                anyChanges |= fixAppPool(appPool);
+                if(anyChanges)
+                    iisManager.CommitChanges();
+            }
+        }
+
+
+        static bool fixAppPool(ApplicationPool appPool)
+        {
+            var fixesRequired = AppPoolFixers.Where(fixer => fixer.NeedFix(appPool)).ToArray();
+            Array.ForEach(fixesRequired, fixer => fixer.FixAction(appPool));
+            return fixesRequired.Length > 0;
         }
     }
 }

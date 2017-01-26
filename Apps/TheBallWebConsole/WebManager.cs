@@ -137,6 +137,7 @@ namespace TheBall.Infra.TheBallWebConsole
                     Array.ForEach(updateManagedItems, updateIISSite);
 
                     updateIISBindings(WebConfig);
+                    setImmediateFirstResponseOptions(WebConfig);
 
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
@@ -241,6 +242,16 @@ namespace TheBall.Infra.TheBallWebConsole
             var bindingSettings = instanceBindings.Concat(wwwSiteBindings).ToArray();
             var appNames = WebConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
             IISSupport.SetAppBindings(appNames, bindingSettings);
+        }
+
+        private void setImmediateFirstResponseOptions(WebConsoleConfig webConfig)
+        {
+            var appNames = WebConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
+            Array.ForEach(appNames, appName =>
+            {
+                var appSitePath = Path.Combine(AppSiteRootDir, appName);
+                IISSupport.SetImmediateFirstResponseOptions(appName);
+            });
         }
 
         private static async Task<Tuple<UpdateConfigItem, DateTime>> performUpdateIfRequired(Tuple<AppUpdateManager, UpdateConfigItem> inputTuple)
