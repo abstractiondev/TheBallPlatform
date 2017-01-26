@@ -36,8 +36,9 @@ namespace TheBallWebRole
             if (!RoleEnvironment.IsEmulated)
             {
                 string hostsFileContents =
-    @"127.0.0.1 dev
+@"127.0.0.1 dev
 127.0.0.1   test
+127.0.0.1   beta
 127.0.0.1   prod
 127.0.0.1   websites
 ";
