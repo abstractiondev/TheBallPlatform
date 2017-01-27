@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -138,6 +140,7 @@ namespace TheBall.Infra.TheBallWebConsole
 
                     updateIISBindings(WebConfig);
                     setImmediateFirstResponseOptions(WebConfig);
+                    await awakeSitesWithHttpRequest(WebConfig);
 
                     List<Task> awaitList = new List<Task>();
                     if (pipeMessageAwaitable != null)
@@ -177,9 +180,33 @@ namespace TheBall.Infra.TheBallWebConsole
             }
         }
 
+        private async Task awakeSitesWithHttpRequest(WebConsoleConfig webConfig)
+        {
+            var appNames = webConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var tasks = appNames.Select(async appName =>
+                {
+                    var requestUrl = $"http://{appName}/TheBallLogin.aspx";
+                    Stopwatch watch = Stopwatch.StartNew();
+                    var response = await httpClient.GetAsync(requestUrl);
+                    watch.Stop();
+                    return new
+                    {
+                        appName,
+                        response.StatusCode,
+                        watch.ElapsedMilliseconds
+                    };
+                }).ToArray();
+                await Task.WhenAll(tasks);
+                var pollResults = tasks.Select(task => task.Result).ToArray();
+                var failedResults = pollResults.Where(result => result.StatusCode != HttpStatusCode.OK).ToArray();
+            }
+        }
+
         private void ensureIISSites(WebConsoleConfig webConfig)
         {
-            var appNames = WebConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
+            var appNames = webConfig.InstanceBindings.Select(item => item.MaturityLevel).ToArray();
             Array.ForEach(appNames, appName =>
             {
                 var appSitePath = Path.Combine(AppSiteRootDir, appName);
