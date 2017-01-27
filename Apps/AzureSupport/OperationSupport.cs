@@ -52,7 +52,7 @@ namespace TheBall
             return operationData;
         }
 
-        public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
+        public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath, string maturityLevel)
         {
             if (operationName.StartsWith("TheBall.Payments"))
             {
@@ -84,7 +84,8 @@ namespace TheBall
                 OwnerRootLocation = ownerPrefix,
                 OperationRequestPath = operationRequestPath,
                 QueryParameters = queryParameters,
-                RequestContent = requestContent
+                RequestContent = requestContent,
+                MaturityLevel = maturityLevel
             };
             return operationData;
         }

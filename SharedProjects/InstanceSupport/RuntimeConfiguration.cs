@@ -18,11 +18,14 @@ namespace TheBall.CORE.InstanceSupport
         internal static string ConfigRootPath;
         public readonly SecureConfig SecureConfig;
         public readonly InstanceConfig InstanceConfig;
+        public readonly string FixedMaturityLevel;
 
-        private RuntimeConfiguration(SecureConfig secureConfig, InstanceConfig instanceConfig)
+        private RuntimeConfiguration(SecureConfig secureConfig, InstanceConfig instanceConfig,
+            string fixedMaturityLevel = null)
         {
             SecureConfig = secureConfig;
             InstanceConfig = instanceConfig;
+            FixedMaturityLevel = fixedMaturityLevel;
         }
 
         public static async Task InitializeRuntimeConfigs(string infraConfigFullPath)
@@ -88,12 +91,13 @@ namespace TheBall.CORE.InstanceSupport
             return result;
         }
 
-        public static void InitializeForCustomTool(InfraSharedConfig infraSharedConfig, SecureConfig secureConfig, InstanceConfig instanceConfig, string instanceName)
+        public static void InitializeForCustomTool(InfraSharedConfig infraSharedConfig, SecureConfig secureConfig, InstanceConfig instanceConfig, 
+            string instanceName, string maturityLevel)
         {
             if (InfraConfig != null)
                 throw new InvalidOperationException("InfraConfig already initialized");
             InfraConfig = infraSharedConfig;
-            RuntimeConfiguration config = new RuntimeConfiguration(secureConfig, instanceConfig);
+            RuntimeConfiguration config = new RuntimeConfiguration(secureConfig, instanceConfig, maturityLevel);
             RuntimeConfigurationsDict.AddOrUpdate(instanceName, config, (s, configuration) => config);
         }
     }

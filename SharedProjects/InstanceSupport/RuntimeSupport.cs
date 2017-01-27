@@ -11,5 +11,10 @@ namespace TheBall.CORE.InstanceSupport
         public static ExceptionReportFunc ExceptionReportHandler;
 
         public static void ReportException(this Exception exception, Dictionary<string, string> properties = null) => ExceptionReportHandler?.Invoke(exception, properties);
+
+        public static string FigureMaturityLevelFromUrl(string pathAndQuery)
+        {
+            return "dev";
+        }
     }
 }

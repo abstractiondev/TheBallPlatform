@@ -30,15 +30,6 @@ namespace WebTemplateManager
                 ServicePointManager.UseNagleAlgorithm = false;
                 ServicePointManager.DefaultConnectionLimit = 500;
                 ServicePointManager.Expect100Continue = false;
-                /*
-                Console.WriteLine("Running test EKE...");
-                TheBallEKE.TestExecution();
-                Console.WriteLine("Running test EKE complete.");
-                //return;
-                //SecurityNegotiationManager.EchoClient().Wait();
-                SecurityNegotiationManager.EchoClient();
-                Console.ReadLine(); // Enter to exit
-                //return;*/
 
                 if (arguments.Length != 6 || arguments[1].Length != 4)
                 {
@@ -69,7 +60,7 @@ namespace WebTemplateManager
                         AzureStorageKey = storageAccountKey
                     },
                     new InstanceConfig(),
-                    instanceName);
+                    instanceName, "dev");
                 InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
 
                 IContainerOwner owner;

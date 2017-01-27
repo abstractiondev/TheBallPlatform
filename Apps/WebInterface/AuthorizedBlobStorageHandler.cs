@@ -574,9 +574,10 @@ namespace WebInterface
             }
             operationName = operationType.FullName;
             var request = context.Request;
+            var maturityLevel = RuntimeSupport.FigureMaturityLevelFromUrl(request.Url.PathAndQuery);
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
-                String.Empty);
+                String.Empty, maturityLevel);
             string operationID = await OperationSupport.QueueHttpOperationAsync(operationData);
             //OperationSupport.ExecuteHttpOperation(operationData);
             //string operationID = "0";
