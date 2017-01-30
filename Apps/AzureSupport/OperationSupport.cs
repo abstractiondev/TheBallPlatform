@@ -85,7 +85,7 @@ namespace TheBall
                 OperationRequestPath = operationRequestPath,
                 QueryParameters = queryParameters,
                 RequestContent = requestContent,
-                MaturityLevel = maturityLevel
+                EnvironmentName = maturityLevel
             };
             return operationData;
         }

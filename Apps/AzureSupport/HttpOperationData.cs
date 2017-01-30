@@ -19,6 +19,6 @@ namespace AzureSupport
         [ProtoMember(6)] public byte[] RequestContent;
         [ProtoMember(7)] public string ExecutorAccountID;
         [ProtoMember(8)] public string OwnerRootLocation;
-        [ProtoMember(9)] public string MaturityLevel;
+        [ProtoMember(9)] public string EnvironmentName;
     }
 }
