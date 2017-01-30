@@ -48,6 +48,8 @@ namespace WebInterface
         /// </summary>
         #region IHttpHandler Members
 
+        private Dictionary<Tuple<string, string>, byte[]> InstanceEnvironmentConfigDict = new Dictionary<Tuple<string, string>, byte[]>();
+
         public override bool IsReusable
         {
             // Return false in case your Managed Handler cannot be reused for another request.
@@ -574,10 +576,10 @@ namespace WebInterface
             }
             operationName = operationType.FullName;
             var request = context.Request;
-            var maturityLevel = RuntimeSupport.FigureMaturityLevelFromUrl(request.Url.PathAndQuery);
+            var environmentName = RuntimeSupport.FigureEnvironmentNameFromUrl(request.Url.PathAndQuery);
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
-                String.Empty, maturityLevel);
+                String.Empty, environmentName);
             string operationID = await OperationSupport.QueueHttpOperationAsync(operationData);
             //OperationSupport.ExecuteHttpOperation(operationData);
             //string operationID = "0";
@@ -731,13 +733,19 @@ namespace WebInterface
             bool isGetRequest = request.RequestType == "GET";
             var contentPath = request.GetOwnerContentPath();
             if (isGetRequest)
-                await HandleAboutGetRequest(context, request, request.Path);
+            {
+                if (request.Path.EndsWith("ClientConfig.json"))
+                    await HandleConfigGetRequest(context, request);
+                else
+                    await HandleAboutGetRequest(context, request, request.Path);
+            }
             else
             {
                 bool isUrlOperationRequest = contentPath.StartsWith("op/");
                 if (isUrlOperationRequest)
                 {
-                    await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
+                    throw new NotSupportedException("Anonymous URL operations are not supported");
+                    //await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
                 }
                 else
                 {
@@ -749,6 +757,31 @@ namespace WebInterface
                     }
                 }
             }
+        }
+
+        private async Task HandleConfigGetRequest(HttpContext context, HttpRequest request)
+        {
+            var environmentName = request.Params["env"];
+            var dictKey = new Tuple<string, string>(InformationContext.Current.InstanceName, environmentName);
+            byte[] configContent = null;
+            if (InstanceEnvironmentConfigDict.ContainsKey(dictKey))
+                configContent = InstanceEnvironmentConfigDict[dictKey];
+            else
+            {
+                var environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
+                {
+                    dynamic dItem = item;
+                    return dItem.name == environmentName;
+                });
+                if (environmentConfig != null)
+                {
+                    configContent = JSONSupport.SerializeToJSONData(environmentConfig);
+                }
+                InstanceEnvironmentConfigDict.Add(dictKey, configContent);
+            }
+            if(configContent != null)
+                context.Response.BinaryWrite(configContent);
+            context.Response.ContentType = "application/json";
         }
 
         private async Task HandleAboutGetRequest(HttpContext context, HttpRequest request, string contentPath)

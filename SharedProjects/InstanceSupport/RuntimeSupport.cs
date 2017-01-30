@@ -12,7 +12,7 @@ namespace TheBall.CORE.InstanceSupport
 
         public static void ReportException(this Exception exception, Dictionary<string, string> properties = null) => ExceptionReportHandler?.Invoke(exception, properties);
 
-        public static string FigureMaturityLevelFromUrl(string pathAndQuery)
+        public static string FigureEnvironmentNameFromUrl(string pathAndQuery)
         {
             return "dev";
         }
