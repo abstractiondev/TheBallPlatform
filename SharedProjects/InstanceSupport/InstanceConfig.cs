@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure;
 
 namespace TheBall.CORE.InstanceSupport
 {
+
     public class InstanceConfig
     {
         public ExpandoObject[] environments;

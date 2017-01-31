@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -48,7 +49,9 @@ namespace WebInterface
         /// </summary>
         #region IHttpHandler Members
 
-        private Dictionary<Tuple<string, string>, byte[]> InstanceEnvironmentConfigDict = new Dictionary<Tuple<string, string>, byte[]>();
+        private static ConcurrentDictionary<Tuple<string, string>, byte[]> InstanceEnvironmentConfigDict = new ConcurrentDictionary<Tuple<string, string>, byte[]>();
+        private static ConcurrentDictionary<string, Tuple<Regex, string>[]> EnvironmentPatternsDict =
+            new ConcurrentDictionary<string, Tuple<Regex, string>[]>();
 
         public override bool IsReusable
         {
@@ -576,7 +579,20 @@ namespace WebInterface
             }
             operationName = operationType.FullName;
             var request = context.Request;
-            var environmentName = RuntimeSupport.FigureEnvironmentNameFromUrl(request.Url.PathAndQuery);
+            var patternItems = EnvironmentPatternsDict.GetOrAdd(InformationContext.Current.InstanceName, instanceName =>
+            {
+                var environments = InstanceConfig.Current.environments;
+                var result = environments.Select(expObj =>
+                {
+                    dynamic dyn = expObj;
+                    string urlPattern = dyn.urlPattern;
+                    var regex = new Regex(urlPattern, RegexOptions.Compiled);
+                    return new Tuple<Regex, string>(regex, dyn.name);
+                }).ToArray();
+                return result;
+            });
+            var pathAndQuery = request.Url.PathAndQuery;
+            var environmentName = patternItems.FirstOrDefault(item => item.Item1.IsMatch(pathAndQuery))?.Item2;
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
                 String.Empty, environmentName);
@@ -763,22 +779,20 @@ namespace WebInterface
         {
             var environmentName = request.Params["env"];
             var dictKey = new Tuple<string, string>(InformationContext.Current.InstanceName, environmentName);
-            byte[] configContent = null;
-            if (InstanceEnvironmentConfigDict.ContainsKey(dictKey))
-                configContent = InstanceEnvironmentConfigDict[dictKey];
-            else
+            byte[] configContent = InstanceEnvironmentConfigDict.GetOrAdd(dictKey, key =>
             {
                 var environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
                 {
                     dynamic dItem = item;
                     return dItem.name == environmentName;
                 });
+                byte[] data = null;
                 if (environmentConfig != null)
                 {
-                    configContent = JSONSupport.SerializeToJSONData(environmentConfig);
+                    data = JSONSupport.SerializeToJSONData(environmentConfig);
                 }
-                InstanceEnvironmentConfigDict.Add(dictKey, configContent);
-            }
+                return data;
+            });
             if(configContent != null)
                 context.Response.BinaryWrite(configContent);
             context.Response.ContentType = "application/json";
