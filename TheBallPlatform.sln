@@ -51,12 +51,16 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperationRunnerTool", "Tools\OperationRunnerTool\OperationRunnerTool.csproj", "{48F2FCE5-F134-4827-8772-8DE737FD1951}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProjects\AppUpdater\AppUpdater.shproj", "{1F05B685-1B9E-4413-AE6D-5301C7608654}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
 		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{33f04eb2-55de-4539-8e67-152a6057f100}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
 		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+		SharedProjects\AppUpdater\AppUpdater.projitems*{c5d4d065-d884-4590-a3f5-bb2566c0a890}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -204,5 +208,6 @@ Global
 		{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0} = {85C8A69D-C362-4E72-A24D-04ED771CFA7F}
 		{7EE65749-80A3-42A1-A16E-A32EFE7C8633} = {C4897F31-5833-49AA-B9DC-703FC5D8C0E1}
 		{48F2FCE5-F134-4827-8772-8DE737FD1951} = {89AD2678-AAC2-4108-B018-B6EC19A4A042}
+		{1F05B685-1B9E-4413-AE6D-5301C7608654} = {85C8A69D-C362-4E72-A24D-04ED771CFA7F}
 	EndGlobalSection
 EndGlobal

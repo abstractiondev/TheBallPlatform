@@ -3,6 +3,9 @@
   <Role name="TheBallWorkerRole">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="ConfigAccountName" value=""/>
+      <Setting name="ConfigShareName" value=""/>
+      <Setting name="ConfigSASToken" value=""/>
       <Setting name="CoreFileShareAccountName" value="" />
       <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="InfraToolsRootFolder" value="" />
@@ -20,6 +23,9 @@
   <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="ConfigAccountName" value=""/>
+      <Setting name="ConfigShareName" value=""/>
+      <Setting name="ConfigSASToken" value=""/>
       <Setting name="CoreFileShareAccountName" value="" />
       <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="InfraToolsRootFolder" value="" />

@@ -52,13 +52,13 @@ namespace TheBall
             return operationData;
         }
 
-        public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath)
+        public static HttpOperationData GetHttpOperationDataFromRequest(this HttpRequest request, string executorAccountID, string ownerPrefix, string operationName, string operationRequestPath, string environmentName)
         {
             if (operationName.StartsWith("TheBall.Payments"))
             {
                 ownerPrefix = "grp/" + InstanceConfig.Current.PaymentsGroupID;
             }
-            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin"))
+            if (operationName.StartsWith("TheBall.CORE") || operationName.StartsWith("TheBall.Admin") || operationName.StartsWith("TheBall.Infrastructure"))
             {
                 var owner = VirtualOwner.FigureOwner(ownerPrefix);
                 var isAdminOwner = owner.IsGroupContainer() &&
@@ -84,7 +84,8 @@ namespace TheBall
                 OwnerRootLocation = ownerPrefix,
                 OperationRequestPath = operationRequestPath,
                 QueryParameters = queryParameters,
-                RequestContent = requestContent
+                RequestContent = requestContent,
+                EnvironmentName = environmentName
             };
             return operationData;
         }

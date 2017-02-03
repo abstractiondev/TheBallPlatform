@@ -269,6 +269,8 @@ namespace TheBall
             get { return _account; }
         }
 
+        public string EnvironmentName => LogicalOperationContext?.HttpParameters.EnvironmentName;
+
         internal readonly Stack<IContainerOwner> OwnerStack;
         public IContainerOwner Owner => OwnerStack.Peek();
 

@@ -22,15 +22,10 @@ namespace TheBallWorkerRole
 {
     public class WorkerRole : AcceleratorRole
     {
-        const string TheBallWorkerConsoleName = "TheBallWorkerConsole.exe";
-        protected override string AppPackageContainerName => "tb-instanceworkers";
+        protected override string ComponentName => "TheBallWorkerConsole";
+        protected override AzureRoleType RoleType => AzureRoleType.WorkerRole;
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
-        protected override AppTypeInfo[] ValidAppTypes => new AppTypeInfo[]
-        {
-            new AppTypeInfo("Dev", "DevConsole.zip", Path.Combine(AppRootFolder, "Dev", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Dev.config")),
-            //new AppTypeInfo("Test", "TestConsole.zip", Path.Combine(AppRootFolder, "Test", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Test.config")),
-            //new AppTypeInfo("Prod", "ProdConsole.zip", Path.Combine(AppRootFolder, "Prod", TheBallWorkerConsoleName), Path.Combine(AppRootFolder, "Prod.config")),
-        };
-
+        protected override string AppConfigPath => @"X:\Configs\WorkerConsole.json";
+        protected override string RoleSpecificManagerArgs => null;
     }
 }

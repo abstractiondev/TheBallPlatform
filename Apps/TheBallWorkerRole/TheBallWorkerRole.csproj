@@ -124,6 +124,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <Content Include="InitialUpdatingConsole.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="WorkerStartupTasks.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -147,5 +150,8 @@
     create warnings when detecting version missmatches among references.
     -->
     <AutoUnifyAssemblyReferences>false</AutoUnifyAssemblyReferences>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>copy /Y "$(ProjectDir)..\InitialUpdatingConsole\bin\$(ConfigurationName)\InitialUpdatingConsole.exe" "$(ProjectDir)"</PreBuildEvent>
   </PropertyGroup>
 </Project>

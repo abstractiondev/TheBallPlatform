@@ -122,6 +122,7 @@
     <Compile Include="SerializationTests.cs" />
     <Compile Include="TaskContextTests.cs" />
     <Compile Include="TestSupport.cs" />
+    <Compile Include="TheBall.Infrastructure\UpdateInfraDataInterfaceObjectsImplementationTests.cs" />
     <Compile Include="TheBallCORETests.cs" />
     <Compile Include="HttpRequestSerializeTests.cs" />
   </ItemGroup>

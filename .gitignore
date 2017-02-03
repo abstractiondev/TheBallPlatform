@@ -49,3 +49,5 @@ build/**
 **/.idea/deployment.xml
 Apps/AzureConfiguration/ecf/*
 Apps/WebInterface/webdeploy/**
+Apps/TheBallWebRole/InitialUpdatingConsole.exe
+Apps/TheBallWorkerRole/InitialUpdatingConsole.exe

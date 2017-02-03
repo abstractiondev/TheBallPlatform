@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,11 @@ using Microsoft.WindowsAzure;
 
 namespace TheBall.CORE.InstanceSupport
 {
+
     public class InstanceConfig
     {
+        public ExpandoObject[] environments;
+
         public class OverrideReplacement
         {
             public string[][] Overrides;
