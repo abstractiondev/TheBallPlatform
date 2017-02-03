@@ -12,7 +12,7 @@ namespace TheBall.CORE.InstanceSupport
 
     public class InstanceConfig
     {
-        public ExpandoObject[] environments;
+        public ExpandoObject[] environments = new ExpandoObject[0];
 
         public class OverrideReplacement
         {
