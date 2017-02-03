@@ -26,5 +26,6 @@ namespace TheBallWorkerRole
         protected override AzureRoleType RoleType => AzureRoleType.WorkerRole;
         protected override string AppRootFolder => RoleEnvironment.GetLocalResource("WorkerFolder").RootPath;
         protected override string AppConfigPath => @"X:\Configs\WorkerConsole.json";
+        protected override string RoleSpecificManagerArgs => null;
     }
 }

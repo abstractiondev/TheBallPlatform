@@ -238,6 +238,93 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Mount cloud drive
 		</div>
+		</p><h1>SetRuntimeVersions (RuntimeVersionData)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Sets runtime versions; to the runtime configs that the platform then updates itself to
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		RuntimeVersionData
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.UpdateConfig
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Runtime version data; only component versions are relevant
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: MainConfigShare</h2>
+		<p>		<div class="MsoNormal" >
+		Cloud file share reference
+		</div>
+		</p><h2>Target Definition: UpdateConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra update config
+		</div>
+		</p><h2>Target Definition: DeploymentShare ( UpdateConfig )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment source file share reference
+		</div>
+		</p><h2>Target Definition: DeploymentPackages ( DeploymentShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment packages from deploy list
+		</div>
+		</p><h2>Method Call: ValidateRequestedVersionsAgainstDeploymentPackages ( DeploymentPackages, RuntimeVersionData )</h2>
+		<p>		<div class="MsoNormal" >
+		Validate that requested versions are found in deployment packages
+		</div>
+		</p><h2>Target Definition: WebConsoleConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra web console config
+		</div>
+		</p><h2>Method Call: UpdatePlatformConfigurations ( UpdateConfig, WebConsoleConfig, RuntimeVersionData )</h2>
+		<p>		<div class="MsoNormal" >
+		Update version fields of platform configurations
+		</div>
+		</p><h2>Method Call: SaveConfiguration ( MainConfigShare, UpdateConfig, WebConsoleConfig )</h2>
+		<p>		<div class="MsoNormal" >
+		Save updated configuration file(s)
+		</div>
+		</p><h1>UpdateInfraDataInterfaceObjects</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Update infra data to interface objects
+		</div>
+		</p><h2>Target Definition: MainConfigShare</h2>
+		<p>		<div class="MsoNormal" >
+		Cloud file share reference
+		</div>
+		</p><h2>Target Definition: UpdateConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra update config
+		</div>
+		</p><h2>Target Definition: WebConsoleConfig ( MainConfigShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Platform infra web console config
+		</div>
+		</p><h2>Target Definition: DeploymentShare ( UpdateConfig )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment source file share reference
+		</div>
+		</p><h2>Target Definition: DeploymentPackages ( DeploymentShare )</h2>
+		<p>		<div class="MsoNormal" >
+		Deployment packages from deploy list
+		</div>
+		</p><h2>Method Call: StoreObjects ( UpdateConfig, WebConsoleConfig, DeploymentPackages )</h2>
+		<p>		<div class="MsoNormal" >
+		Store interface objects
+		</div>
 		</p></div>
 
 </body>

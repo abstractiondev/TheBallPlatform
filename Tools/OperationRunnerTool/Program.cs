@@ -126,6 +126,7 @@ namespace OperationRunnerTool
 
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/62e85ac7-b314-433f-87e6-1559078bc741 -op:TheBall.Admin.UpdateUsersData -remoteExecute:true
 
+    -cr:X:\Configs -i:members.ikwondo.com -owner:grp/f6a9652b-4065-404e-9749-01d40ba5f26a -op:TheBall.Infrastructure.UpdateInfraDataInterfaceObjects
     
 #endif
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -47,6 +48,10 @@ namespace WebInterface
         /// see the following link: http://go.microsoft.com/?linkid=8101007
         /// </summary>
         #region IHttpHandler Members
+
+        private static ConcurrentDictionary<Tuple<string, string>, byte[]> InstanceEnvironmentConfigDict = new ConcurrentDictionary<Tuple<string, string>, byte[]>();
+        private static ConcurrentDictionary<string, Tuple<Regex, string>[]> EnvironmentPatternsDict =
+            new ConcurrentDictionary<string, Tuple<Regex, string>[]>();
 
         public override bool IsReusable
         {
@@ -574,9 +579,23 @@ namespace WebInterface
             }
             operationName = operationType.FullName;
             var request = context.Request;
+            var patternItems = EnvironmentPatternsDict.GetOrAdd(InformationContext.Current.InstanceName, instanceName =>
+            {
+                var environments = InstanceConfig.Current.environments;
+                var result = environments.Select(expObj =>
+                {
+                    dynamic dyn = expObj;
+                    string urlPattern = dyn.urlPattern;
+                    var regex = new Regex(urlPattern, RegexOptions.Compiled);
+                    return new Tuple<Regex, string>(regex, dyn.name);
+                }).ToArray();
+                return result;
+            });
+            var pathAndQuery = request.Url.PathAndQuery;
+            var environmentName = patternItems.FirstOrDefault(item => item.Item1.IsMatch(pathAndQuery))?.Item2;
             var operationData = OperationSupport.GetHttpOperationDataFromRequest(request,
                 InformationContext.CurrentAccount.AccountID, containerOwner.GetOwnerPrefix(), operationName,
-                String.Empty);
+                String.Empty, environmentName);
             string operationID = await OperationSupport.QueueHttpOperationAsync(operationData);
             //OperationSupport.ExecuteHttpOperation(operationData);
             //string operationID = "0";
@@ -730,13 +749,19 @@ namespace WebInterface
             bool isGetRequest = request.RequestType == "GET";
             var contentPath = request.GetOwnerContentPath();
             if (isGetRequest)
-                await HandleAboutGetRequest(context, request, request.Path);
+            {
+                if (request.Path.EndsWith("ClientConfig.json"))
+                    await HandleConfigGetRequest(context, request);
+                else
+                    await HandleAboutGetRequest(context, request, request.Path);
+            }
             else
             {
                 bool isUrlOperationRequest = contentPath.StartsWith("op/");
                 if (isUrlOperationRequest)
                 {
-                    await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
+                    throw new NotSupportedException("Anonymous URL operations are not supported");
+                    //await HandleOwnerOperationRequestWithUrlPath(SystemSupport.SystemOwner, context, contentPath);
                 }
                 else
                 {
@@ -748,6 +773,29 @@ namespace WebInterface
                     }
                 }
             }
+        }
+
+        private async Task HandleConfigGetRequest(HttpContext context, HttpRequest request)
+        {
+            var environmentName = request.Params["env"];
+            var dictKey = new Tuple<string, string>(InformationContext.Current.InstanceName, environmentName);
+            byte[] configContent = InstanceEnvironmentConfigDict.GetOrAdd(dictKey, key =>
+            {
+                var environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
+                {
+                    dynamic dItem = item;
+                    return dItem.name == environmentName;
+                });
+                byte[] data = null;
+                if (environmentConfig != null)
+                {
+                    data = JSONSupport.SerializeToJSONData(environmentConfig);
+                }
+                return data;
+            });
+            if(configContent != null)
+                context.Response.BinaryWrite(configContent);
+            context.Response.ContentType = "application/json";
         }
 
         private async Task HandleAboutGetRequest(HttpContext context, HttpRequest request, string contentPath)

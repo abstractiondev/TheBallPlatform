@@ -17,12 +17,12 @@ namespace TheBall.Infra.AppUpdater
 
         public readonly string FilePath;
         public readonly CloudFileShare CloudShare;
-        public DateTime LastChangedUTC;
+        public DateTime LastChangedUtc;
     }
 
     public class ChangeDetector
     {
-        private CancellationTokenSource CancellationSource;
+        private CancellationTokenSource _cancellationSource;
         public ChangeMonitoredItem[] ItemsToMonitor { get; private set; }
         public static ChangeDetector Create(ChangeMonitoredItem[] itemsToMonitor)
         {
@@ -32,21 +32,21 @@ namespace TheBall.Infra.AppUpdater
 
         private async Task<ChangeMonitoredItem> pollAndUpdateItem(ChangeMonitoredItem item)
         {
-            DateTime lastModifiedUTCTime;
+            DateTime lastModifiedUtcTime;
             var cloudShare = item.CloudShare;
             if (cloudShare != null)
             {
                 var cloudFile = cloudShare.GetRootDirectoryReference().GetFileReference(item.FilePath);
                 await cloudFile.FetchAttributesAsync();
-                lastModifiedUTCTime = cloudFile.Properties.LastModified.GetValueOrDefault().UtcDateTime;
+                lastModifiedUtcTime = cloudFile.Properties.LastModified.GetValueOrDefault().UtcDateTime;
             }
             else // Filesystem poll
             {
-                lastModifiedUTCTime = File.GetLastWriteTimeUtc(item.FilePath);
+                lastModifiedUtcTime = File.GetLastWriteTimeUtc(item.FilePath);
             }
-            if (lastModifiedUTCTime != item.LastChangedUTC)
+            if (lastModifiedUtcTime != item.LastChangedUtc)
             {
-                item.LastChangedUTC = lastModifiedUTCTime;
+                item.LastChangedUtc = lastModifiedUtcTime;
                 return item;
             }
             return null;
@@ -62,17 +62,17 @@ namespace TheBall.Infra.AppUpdater
 
         public void StopMonitoring()
         {
-            if(CancellationSource == null)
+            if(_cancellationSource == null)
                 throw new InvalidOperationException("MonitorItemsAsync not running");
-            CancellationSource.Cancel();
-            CancellationSource = null;
+            _cancellationSource.Cancel();
+            _cancellationSource = null;
         }
         public async Task<ChangeMonitoredItem[]> MonitorItemsAsync(int pollingIntervalMs)
         {
-            if(CancellationSource != null)
+            if(_cancellationSource != null)
                 throw new InvalidOperationException("MonitorItemsAsync already running");
-            CancellationSource = new CancellationTokenSource();
-            var cancellationToken = CancellationSource.Token;
+            _cancellationSource = new CancellationTokenSource();
+            var cancellationToken = _cancellationSource.Token;
             var initialChanged = await pollAndUpdateItems();
             while (!cancellationToken.IsCancellationRequested)
             {

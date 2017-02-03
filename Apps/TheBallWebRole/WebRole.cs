@@ -25,16 +25,20 @@ namespace TheBallWebRole
         protected override string ComponentName => "TheBallWebConsole";
         protected override AzureRoleType RoleType => AzureRoleType.WebRole;
 
-        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("TempSites").RootPath;
+        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("Execution").RootPath;
         protected override string AppConfigPath => @"X:\Configs\WebConsole.json";
+
+        protected override string RoleSpecificManagerArgs
+            => $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}";
 
         public override bool OnStart()
         {
             if (!RoleEnvironment.IsEmulated)
             {
                 string hostsFileContents =
-    @"127.0.0.1 dev
+@"127.0.0.1 dev
 127.0.0.1   test
+127.0.0.1   beta
 127.0.0.1   prod
 127.0.0.1   websites
 ";

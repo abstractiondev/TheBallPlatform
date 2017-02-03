@@ -40,13 +40,14 @@ namespace TheBall.Infra.AzureRoleSupport
 
         private Task RunOnExitTask;
 
-        public async Task StartAppConsole(bool isTestMode, bool autoUpdate, EventHandler onClientExitHandler = null)
+        public async Task StartAppConsole(bool isTestMode, bool autoUpdate, EventHandler onClientExitHandler = null, string additionalManagerArgs = null)
         {
             PipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
             var clientPipeHandler = PipeServer.GetClientHandleAsString();
             string appConfigPart = isTestMode ? "-test" : $"--ac \"{_appConfigPath}\"";
             string autoUpdatePart = autoUpdate ? " --au" : "";
-            string args = $"{appConfigPart} --ch {clientPipeHandler}{autoUpdatePart}";
+            string additionalPart = !String.IsNullOrEmpty(additionalManagerArgs) ? " " + additionalManagerArgs : "";
+            string args = $"{appConfigPart} --ch {clientPipeHandler}{autoUpdatePart}{additionalPart}";
             try
             {
                 var startInfo = new ProcessStartInfo(_appConsolePath, args)
