@@ -37,6 +37,29 @@ namespace TheBall.Infra.AzureRoleSupport
 
     public abstract class AcceleratorRole : RoleEntryPoint
     {
+        public static RoleAppInfo GetWebConsoleAppInfo()
+        {
+            return new RoleAppInfo()
+            {
+                ComponentName = "TheBallWebConsole",
+                AppConfigPath = @"X:\Configs\WebConsole.json",
+                RoleSpecificManagerArgs = $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}",
+                AppRootFolder = RoleEnvironment.GetLocalResource("Execution").RootPath,
+                AppType = RoleAppType.WebConsole
+            };
+        }
+        public static RoleAppInfo GetWorkerConsoleAppInfo()
+        {
+            return new RoleAppInfo()
+            {
+                ComponentName = "TheBallWorkerConsole",
+                AppConfigPath = @"X:\Configs\WorkerConsole.json",
+                RoleSpecificManagerArgs = null,
+                AppRootFolder = RoleEnvironment.GetLocalResource("WorkerFolder").RootPath,
+                AppType = RoleAppType.WorkerConsole
+            };
+        }
+
         public static string AssemblyDirectory
         {
             get
@@ -139,78 +162,90 @@ namespace TheBall.Infra.AzureRoleSupport
             Trace.TraceInformation("TheBallRole has stopped");
         }
 
+        public class AppManagerInfo
+        {
+            public AppManager AppManager { get; }
+            public string ManagerArgs { get; }
+            public RoleAppInfo AppInfo { get; }
+
+            public AppManagerInfo(AppManager appManager, string managerArgs, RoleAppInfo appInfo)
+            {
+                AppManager = appManager;
+                ManagerArgs = managerArgs;
+                AppInfo = appInfo;
+            }
+        }
+
         private async Task RunAsync(CancellationToken cancellationToken)
         {
-            RoleAppInfo erroringApp = null;
             try
             {
                 Trace.TraceInformation("Working");
                 var managers =
-                    RoleApplications.Select(appInfo => new
-                        {
-                            AppManager = new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath), 
-                            ManagerArgs = appInfo.RoleSpecificManagerArgs,
-                            AppInfo = appInfo
-                        })
+                    RoleApplications.Select(appInfo => new AppManagerInfo(new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath), appInfo.RoleSpecificManagerArgs, appInfo))
                         .ToArray();
-                var currManagerPack = managers.Single();
-                var currManager = currManagerPack.AppManager;
-                bool clientExited = false;
-                EventHandler setUpdateNeeded = (sender, args) =>
-                {
-                    Trace.TraceInformation("Client exited - possibly due to updating need");
-                    clientExited = true;
-                };
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    try
-                    {
-                        if (!currManager.IsRunning)
-                        {
-                            bool initialStartup = currManager.LatestExitCode == null;
-                            Trace.TraceInformation("Not running");
-                            bool updateNeeded = clientExited && currManager.LatestExitCode >= 0;
-                            if (updateNeeded)
-                            {
-                                Trace.TraceInformation("Updating");
-                                await runUpdater(currManager);
-                                clientExited = false;
-                            }
-                            if (initialStartup || updateNeeded)
-                            {
-                                Trace.TraceInformation("Starting");
-                                await currManager.StartAppConsole(false, true, setUpdateNeeded,
-                                    currManagerPack.ManagerArgs);
-                            }
-                            else
-                            {
-                                await currManager.ShutdownAppConsole(true);
-                                throw new InvalidOperationException(
-                                    $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
-                            }
-                        }
-                        try
-                        {
-                            await Task.Delay(1000, cancellationToken);
-                        }
-                        catch (TaskCanceledException) // Expected
-                        {
-
-                        }
-                    }
-                    catch
-                    {
-                        erroringApp = currManagerPack.AppInfo;
-                    }
-                }
-                await currManager.ShutdownAppConsole(true);
+                var managerTasks = managers.Select(manager => executeManager(manager, cancellationToken)).ToArray();
+                await Task.WhenAll(managerTasks);
             }
             catch (Exception exception)
             {
-                if(erroringApp != null)
-                    File.WriteAllText(Path.Combine(erroringApp.AppRootFolder, "RunError.txt"), exception.ToString());
                 throw;
             }
+        }
+
+        private async Task executeManager(AppManagerInfo currManagerPack, CancellationToken cancellationToken)
+        {
+            var currManager = currManagerPack.AppManager;
+            bool clientExited = false;
+            EventHandler setUpdateNeeded = (sender, args) =>
+            {
+                Trace.TraceInformation("Client exited - possibly due to updating need");
+                clientExited = true;
+            };
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    if (!currManager.IsRunning)
+                    {
+                        bool initialStartup = currManager.LatestExitCode == null;
+                        Trace.TraceInformation("Not running");
+                        bool updateNeeded = clientExited && currManager.LatestExitCode >= 0;
+                        if (updateNeeded)
+                        {
+                            Trace.TraceInformation("Updating");
+                            await runUpdater(currManager);
+                            clientExited = false;
+                        }
+                        if (initialStartup || updateNeeded)
+                        {
+                            Trace.TraceInformation("Starting");
+                            await currManager.StartAppConsole(false, true, setUpdateNeeded,
+                                currManagerPack.ManagerArgs);
+                        }
+                        else
+                        {
+                            await currManager.ShutdownAppConsole(true);
+                            throw new InvalidOperationException(
+                                $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
+                        }
+                    }
+                    try
+                    {
+                        await Task.Delay(1000, cancellationToken);
+                    }
+                    catch (TaskCanceledException) // Expected
+                    {
+                    }
+                }
+                catch (Exception exception)
+                {
+                    var erroringApp = currManagerPack.AppInfo;
+                    File.WriteAllText(Path.Combine(erroringApp.AppRootFolder, "RunError.txt"), exception.ToString());
+                    throw;
+                }
+            }
+            await currManager.ShutdownAppConsole(true);
         }
     }
 }

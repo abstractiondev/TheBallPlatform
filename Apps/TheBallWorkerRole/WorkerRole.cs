@@ -24,19 +24,8 @@ namespace TheBallWorkerRole
     {
         protected override RoleAppInfo[] RoleApplications { get; } = new[]
         {
-            GetWorkerConsoleAppInfo()
+            AcceleratorRole.GetWorkerConsoleAppInfo()
         };
 
-        public static RoleAppInfo GetWorkerConsoleAppInfo()
-        {
-            return new RoleAppInfo()
-                {
-                    ComponentName = "TheBallWorkerConsole",
-                    AppConfigPath = @"X:\Configs\WorkerConsole.json",
-                    RoleSpecificManagerArgs = null,
-                    AppRootFolder = RoleEnvironment.GetLocalResource("WorkerFolder").RootPath,
-                    AppType = RoleAppType.WorkerConsole
-                };
-        }
     }
 }

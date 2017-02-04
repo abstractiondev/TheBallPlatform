@@ -22,20 +22,16 @@ namespace TheBallWebRole
 {
     public class WebRole : AcceleratorRole
     {
-        public static RoleAppInfo GetWebConsoleAppInfo()
-        {
-            return new RoleAppInfo()
+        private static bool IsHybridWebRole { get; } = CloudConfigurationManager.GetSetting("IsHybridWebRole") ==
+                                                bool.TrueString;
+
+        protected override RoleAppInfo[] RoleApplications { get; } = IsHybridWebRole ?
+            new []
             {
-                ComponentName = "TheBallWebConsole",
-                AppConfigPath = @"X:\Configs\WebConsole.json",
-                RoleSpecificManagerArgs = $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}",
-                AppRootFolder = RoleEnvironment.GetLocalResource("Execution").RootPath,
-                AppType = RoleAppType.WebConsole
-            };
-        }
-
-
-        protected override RoleAppInfo[] RoleApplications { get; } = new[]
+                GetWebConsoleAppInfo(),
+                GetWorkerConsoleAppInfo()
+            }
+            : new[]
         {
             GetWebConsoleAppInfo(),
         };
