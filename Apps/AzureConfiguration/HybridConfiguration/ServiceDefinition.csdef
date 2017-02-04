@@ -52,9 +52,6 @@
       <!-- unused, just there so instance discovery works -->
       <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
     </Endpoints>
-    <Imports>
-      <Import moduleName="RemoteAccess" />
-    </Imports>
     <LocalResources>
       <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="2500" />
       <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="2500" />
