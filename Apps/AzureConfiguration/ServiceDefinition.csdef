@@ -91,11 +91,11 @@
       <Import moduleName="RemoteAccess" />
     </Imports>
     <LocalResources>
-      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="2500" />
-      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="2500" />
-      <LocalStorage name="Execution" cleanOnRoleRecycle="false" sizeInMB="2500" />
+      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="Execution" cleanOnRoleRecycle="false" sizeInMB="500" />
       <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
-      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="2500" />
+      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="500" />
     </LocalResources>
     <ConfigurationSettings>
       <Setting name="IsHybridWebRole" />
