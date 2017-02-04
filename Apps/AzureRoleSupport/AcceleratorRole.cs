@@ -17,10 +17,21 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
-    public enum AzureRoleType
+    public enum RoleAppType
     {
-        WorkerRole,
-        WebRole
+        WorkerConsole,
+        WebConsole
+    }
+
+    public class RoleAppInfo
+    {
+        public string RoleSpecificManagerArgs;
+        public string AppConfigPath;
+        public string AppRootFolder;
+        public string ComponentName;
+        public RoleAppType AppType;
+
+        public string TargetConsolePath => Path.Combine(AppRootFolder, ComponentName + ".exe");
     }
 
 
@@ -39,11 +50,8 @@ namespace TheBall.Infra.AzureRoleSupport
 
         const string InitialUpdatingConsoleName = "InitialUpdatingConsole.exe";
 
-        protected abstract string RoleSpecificManagerArgs { get; }
-        protected abstract string AppConfigPath { get; }
-        protected abstract string AppRootFolder { get; }
-        protected abstract string ComponentName { get; }
-        protected abstract AzureRoleType RoleType { get; }
+        protected abstract RoleAppInfo[] RoleApplications { get; }
+
         protected string InfraToolsDir => CloudConfigurationManager.GetSetting("InfraToolsRootFolder");
 
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
@@ -53,7 +61,6 @@ namespace TheBall.Infra.AzureRoleSupport
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
 
         private string SourceConsolePath => Path.Combine(AssemblyDirectory, InitialUpdatingConsoleName);
-        private string TargetConsolePath => Path.Combine(AppRootFolder, ComponentName + ".exe");
 
         public override void Run()
         {
@@ -80,7 +87,8 @@ namespace TheBall.Infra.AzureRoleSupport
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 100;
 
-            ensureUpdatedConsole().Wait();
+            var updatingTasks = RoleApplications.Select(ensureUpdatedConsole).ToArray();
+            Task.WaitAll(updatingTasks);
 
             string appInsightsKeyPath = Path.Combine(InfraToolsDir, @"AppInsightsKey.txt");
             if (File.Exists(appInsightsKeyPath))
@@ -109,13 +117,13 @@ namespace TheBall.Infra.AzureRoleSupport
                 Trace.TraceInformation("Role console succesfully updated");
         }
 
-        private async Task ensureUpdatedConsole()
+        private async Task ensureUpdatedConsole(RoleAppInfo appInfo)
         {
-            if (!File.Exists(TargetConsolePath))
+            if (!File.Exists(appInfo.TargetConsolePath))
             {
-                File.Copy(SourceConsolePath, TargetConsolePath);
+                File.Copy(SourceConsolePath, appInfo.TargetConsolePath);
             }
-            var appManager = new AppManager(TargetConsolePath, AppConfigPath);
+            var appManager = new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath);
             await runUpdater(appManager);
         }
 
@@ -133,10 +141,20 @@ namespace TheBall.Infra.AzureRoleSupport
 
         private async Task RunAsync(CancellationToken cancellationToken)
         {
+            RoleAppInfo erroringApp = null;
             try
             {
                 Trace.TraceInformation("Working");
-                AppManager currManager = new AppManager(TargetConsolePath, AppConfigPath);
+                var managers =
+                    RoleApplications.Select(appInfo => new
+                        {
+                            AppManager = new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath), 
+                            ManagerArgs = appInfo.RoleSpecificManagerArgs,
+                            AppInfo = appInfo
+                        })
+                        .ToArray();
+                var currManagerPack = managers.Single();
+                var currManager = currManagerPack.AppManager;
                 bool clientExited = false;
                 EventHandler setUpdateNeeded = (sender, args) =>
                 {
@@ -145,42 +163,52 @@ namespace TheBall.Infra.AzureRoleSupport
                 };
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    if (!currManager.IsRunning)
-                    {
-                        bool initialStartup = currManager.LatestExitCode == null;
-                        Trace.TraceInformation("Not running");
-                        bool updateNeeded = clientExited && currManager.LatestExitCode >= 0;
-                        if (updateNeeded)
-                        {
-                            Trace.TraceInformation("Updating");
-                            await runUpdater(currManager);
-                            clientExited = false;
-                        }
-                        if (initialStartup || updateNeeded)
-                        {
-                            Trace.TraceInformation("Starting");
-                            await currManager.StartAppConsole(false, true, setUpdateNeeded, RoleSpecificManagerArgs);
-                        }
-                        else
-                        {
-                            await currManager.ShutdownAppConsole(true);
-                            throw new InvalidOperationException($"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
-                        }
-                    }
                     try
                     {
-                        await Task.Delay(1000, cancellationToken);
+                        if (!currManager.IsRunning)
+                        {
+                            bool initialStartup = currManager.LatestExitCode == null;
+                            Trace.TraceInformation("Not running");
+                            bool updateNeeded = clientExited && currManager.LatestExitCode >= 0;
+                            if (updateNeeded)
+                            {
+                                Trace.TraceInformation("Updating");
+                                await runUpdater(currManager);
+                                clientExited = false;
+                            }
+                            if (initialStartup || updateNeeded)
+                            {
+                                Trace.TraceInformation("Starting");
+                                await currManager.StartAppConsole(false, true, setUpdateNeeded,
+                                    currManagerPack.ManagerArgs);
+                            }
+                            else
+                            {
+                                await currManager.ShutdownAppConsole(true);
+                                throw new InvalidOperationException(
+                                    $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
+                            }
+                        }
+                        try
+                        {
+                            await Task.Delay(1000, cancellationToken);
+                        }
+                        catch (TaskCanceledException) // Expected
+                        {
+
+                        }
                     }
-                    catch (TaskCanceledException) // Expected
+                    catch
                     {
-                        
+                        erroringApp = currManagerPack.AppInfo;
                     }
                 }
                 await currManager.ShutdownAppConsole(true);
             }
             catch (Exception exception)
             {
-                File.WriteAllText(Path.Combine(AppRootFolder, "RunError.txt"), exception.ToString());
+                if(erroringApp != null)
+                    File.WriteAllText(Path.Combine(erroringApp.AppRootFolder, "RunError.txt"), exception.ToString());
                 throw;
             }
         }
