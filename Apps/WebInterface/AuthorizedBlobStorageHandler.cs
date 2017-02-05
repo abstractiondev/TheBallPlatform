@@ -890,8 +890,16 @@ namespace WebInterface
                 if (scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound||
                     scEx.RequestInformation.HttpStatusCode == (int)HttpStatusCode.BadRequest)
                 {
-                    response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
-                    response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                    if (blob.Name.EndsWith(".json") &&
+                        scEx.RequestInformation.HttpStatusCode == (int) HttpStatusCode.NotFound)
+                    {
+                        response.StatusCode = (int) HttpStatusCode.NoContent;
+                    }
+                    else
+                    {
+                        response.Write("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
+                        response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                    }
                 }
                 else
                 {
