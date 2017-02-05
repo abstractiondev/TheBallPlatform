@@ -49,7 +49,7 @@ namespace WebInterface
         /// </summary>
         #region IHttpHandler Members
 
-        private static ConcurrentDictionary<Tuple<string, string>, byte[]> InstanceEnvironmentConfigDict = new ConcurrentDictionary<Tuple<string, string>, byte[]>();
+        private static ConcurrentDictionary<Tuple<string, string>, byte[]> InstanceEnvironmentClientConfigDict = new ConcurrentDictionary<Tuple<string, string>, byte[]>();
         private static ConcurrentDictionary<string, Tuple<Regex, string>[]> EnvironmentPatternsDict =
             new ConcurrentDictionary<string, Tuple<Regex, string>[]>();
 
@@ -779,17 +779,18 @@ namespace WebInterface
         {
             var environmentName = request.Params["env"];
             var dictKey = new Tuple<string, string>(InformationContext.Current.InstanceName, environmentName);
-            byte[] configContent = InstanceEnvironmentConfigDict.GetOrAdd(dictKey, key =>
+            byte[] configContent = InstanceEnvironmentClientConfigDict.GetOrAdd(dictKey, key =>
             {
-                var environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
+                dynamic environmentConfig = InstanceConfig.Current.environments.FirstOrDefault(item =>
                 {
                     dynamic dItem = item;
                     return dItem.name == environmentName;
                 });
                 byte[] data = null;
-                if (environmentConfig != null)
+                var clientConfig = environmentConfig?.clientConfig;
+                if (clientConfig != null)
                 {
-                    data = JSONSupport.SerializeToJSONData(environmentConfig);
+                    data = JSONSupport.SerializeToJSONData(clientConfig);
                 }
                 return data;
             });
