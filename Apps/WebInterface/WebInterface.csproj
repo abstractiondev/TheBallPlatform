@@ -272,6 +272,7 @@
     <Compile Include="Site.master.designer.cs">
       <DependentUpon>Site.master</DependentUpon>
     </Compile>
+    <Compile Include="NotFoundJSONDependencyFilter.cs" />
     <Compile Include="TheBallCertLogin.aspx.cs">
       <DependentUpon>TheBallCertLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
