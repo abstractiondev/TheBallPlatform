@@ -44,7 +44,7 @@ namespace TheBall.CORE.InstanceSupport
         public string GroupDefaultRedirect;
         public string[] PlatformDefaultGroupIDList;
         public string[] RestrictedEmailAddresses;
-        public string[] PaymentTestEmails = new string[] { "kalle.launiala@protonit.net"};
+        public string[] PaymentTestEmails = new string[] {};
         public bool HasEmailAddressRestriction => RestrictedEmailAddresses != null && RestrictedEmailAddresses.Length > 0;
         public bool SkipReferrerValidation = true;
         public bool AllowEmailSendFromGroup;

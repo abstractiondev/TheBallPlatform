@@ -32,6 +32,7 @@ namespace TheBall.Payments
             {
                 customerAccount = new CustomerAccount {ID = accountId};
                 customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
+                customerAccount.IsTestAccount = isTestMode;
                 StripeCustomerService stripeCustomerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
                 var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
                 {
