@@ -32,9 +32,7 @@ namespace TheBall.Payments
             {
                 customerAccount = new CustomerAccount {ID = accountId};
                 customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
-                StripeCustomerService stripeCustomerService = new StripeCustomerService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+                StripeCustomerService stripeCustomerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
                 var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
                 {
                     Email = accountEmail
@@ -47,9 +45,7 @@ namespace TheBall.Payments
 
         public static async Task ExecuteMethod_UpdateStripeCustomerDataAsync(PaymentToken paymentToken, CustomerAccount customerAccount, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             var customer = await customerService.GetAsync(customerAccount.StripeID);
             if (!customer.Metadata.ContainsKey("business_type"))
                 customer.Metadata.Add("business_type", "B2C");
@@ -75,9 +71,7 @@ namespace TheBall.Payments
 
         public static async Task ExecuteMethod_ValidateStripePlanNameAsync(string planName, bool isTestMode)
         {
-            var planService = new StripePlanService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            var planService = new StripePlanService(StripeSupport.GetStripeApiKey(isTestMode));
             var stripePlan = await planService.GetAsync(planName);
             if (stripePlan == null)
                 throw new InvalidDataException("Stripe plan not found: " + planName);
@@ -85,9 +79,7 @@ namespace TheBall.Payments
 
         public static async Task<StripeSubscription[]> GetTarget_CustomersActiveSubscriptionsAsync(string stripeCustomerID, bool isTestMode)
         {
-            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
             var stripeList = await subscriptionService.ListAsync(stripeCustomerID);
             return stripeList.ToArray();
         }
@@ -99,9 +91,7 @@ namespace TheBall.Payments
             if (noExistingSubscription)
             {
                 var customerID = stripeCustomerId;
-                var subscriptionService = new StripeSubscriptionService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+                var subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                 var cardInfo = paymentToken.card;
                 var subscription = await subscriptionService.CreateAsync(customerID, planName);
             }
@@ -109,9 +99,7 @@ namespace TheBall.Payments
             {
                 if (existingSubscription.CancelAtPeriodEnd)
                 {
-                    var subService = new StripeSubscriptionService(isTestMode
-                        ? SecureConfig.Current.StripeTestSecretKey
-                        : SecureConfig.Current.StripeLiveSecretKey);
+                    var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
                         subService.UpdateAsync(stripeCustomerId, existingSubscription.Id,
                             new StripeSubscriptionUpdateOptions

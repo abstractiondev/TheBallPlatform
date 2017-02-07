@@ -24,9 +24,7 @@ namespace TheBall.Payments
             {
                 if (eventId == null)
                     return null;
-                StripeEventService service = new StripeEventService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+                StripeEventService service = new StripeEventService(StripeSupport.GetStripeApiKey(isTestMode));
                 return service.Get(eventId);
             }
             catch

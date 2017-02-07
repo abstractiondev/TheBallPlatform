@@ -45,9 +45,7 @@ namespace TheBall.Payments
 
         public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             StripeCustomer stripeCustomer = await customerService.GetAsync(account.StripeID);
             if (stripeCustomer == null)
                 return new PlanStatus[0];

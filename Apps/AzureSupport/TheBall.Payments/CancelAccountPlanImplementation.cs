@@ -39,15 +39,11 @@ namespace TheBall.Payments
 
         public static async Task ExecuteMethod_RemoveCustomerPaymentSourceAsync(string stripeCustomerID, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             var customer = await customerService.GetAsync(stripeCustomerID);
             if(customer.DefaultSourceId != null)
             {
-                StripeCardService cardService = new StripeCardService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+                StripeCardService cardService = new StripeCardService(StripeSupport.GetStripeApiKey(isTestMode));
                 await cardService.DeleteAsync(stripeCustomerID, customer.DefaultSourceId);
             }
         }
@@ -59,9 +55,7 @@ namespace TheBall.Payments
 
         public static async Task<StripeSubscription[]> GetTarget_CustomersActiveSubscriptionsAsync(string stripeCustomerID, bool isTestMode)
         {
-            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(isTestMode
-                ? SecureConfig.Current.StripeTestSecretKey
-                : SecureConfig.Current.StripeLiveSecretKey);
+            StripeSubscriptionService subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
             var stripeList = await subscriptionService.ListAsync(stripeCustomerID);
             return stripeList.ToArray();
         }
@@ -74,9 +68,7 @@ namespace TheBall.Payments
             {
                 if (existingSubscription.CancelAtPeriodEnd)
                 {
-                    var subService = new StripeSubscriptionService(isTestMode
-                        ? SecureConfig.Current.StripeTestSecretKey
-                        : SecureConfig.Current.StripeLiveSecretKey);
+                    var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
                         subService.CancelAsync(stripeCustomerId, existingSubscription.Id, true);
                 }

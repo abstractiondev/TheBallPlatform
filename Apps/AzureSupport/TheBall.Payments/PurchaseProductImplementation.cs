@@ -53,17 +53,13 @@ namespace TheBall.Payments
             string cardId = paymentToken.id;
             if (cardId == null)
             {
-                var customerService = new StripeCustomerService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+                var customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
                 var customer = await customerService.GetAsync(stripeCustomerId);
                 cardId = customer.DefaultSourceId;
             }
             if(cardId == null)
                 throw new InvalidOperationException("No default payment method set");
-            var chargeService = new StripeChargeService(isTestMode
-                    ? SecureConfig.Current.StripeTestSecretKey
-                    : SecureConfig.Current.StripeLiveSecretKey);
+            var chargeService = new StripeChargeService(StripeSupport.GetStripeApiKey(isTestMode));
             var charge = await chargeService.CreateAsync(new StripeChargeCreateOptions
             {
                 Amount = (int) (paymentToken.expectedprice * 100),
