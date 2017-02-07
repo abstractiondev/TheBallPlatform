@@ -38,6 +38,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProject
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "InstanceSupport", "SharedProjects\InstanceSupport\InstanceSupport.shproj", "{3E4EA4B4-8B6D-4422-BC92-2D291E967AA0}"
 EndProject
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "HybridConfiguration", "Apps\AzureConfiguration\HybridConfiguration\HybridConfiguration.ccproj", "{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
@@ -88,6 +90,10 @@ Global
 		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{572A5924-71FC-4A54-BA2D-A50A3C122423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119E303D-FC24-4465-BEFC-9A30CC1ABF3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

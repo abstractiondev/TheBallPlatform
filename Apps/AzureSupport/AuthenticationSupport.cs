@@ -24,6 +24,7 @@ namespace TheBall
     {
         private const string AuthCookieName = "TheBall_AUTH";
         private const string EmailCookieName = "TheBall_EMAIL";
+        private const string AccountIDCookieName = "TheBall_ACCOUNT";
         private const string AuthStrSeparator = ">TheBall<";
         private const int TimeoutSeconds = 1800;
         //private const int TimeoutSeconds = 10;
@@ -33,20 +34,32 @@ namespace TheBall
                 emailAddress = "";
             string cookieValue = DateTime.UtcNow.Ticks + AuthStrSeparator + validUserName + AuthStrSeparator + accountID + AuthStrSeparator + emailAddress;
             string authString = EncryptionSupport.EncryptStringToBase64(cookieValue);
-            if(response.Cookies[AuthCookieName] != null)
-                response.Cookies.Remove(AuthCookieName);
-            if(response.Cookies[EmailCookieName] != null)
-                response.Cookies.Remove(EmailCookieName);
-            HttpCookie cookie = new HttpCookie(AuthCookieName, authString);
-            // Session limit from browser
-            //cookie.Expires = DateTime.UtcNow.AddSeconds(TimeoutSeconds); 
-            cookie.HttpOnly = false;
-            cookie.Secure = true;
-            HttpContext.Current.Response.Cookies.Add(cookie);
-            HttpCookie emailCookie = new HttpCookie(EmailCookieName, emailAddress);
-            emailCookie.HttpOnly = false;
-            emailCookie.Secure = true;
-            HttpContext.Current.Response.Cookies.Add(emailCookie);
+
+
+            setResponseCookie(response, new HttpCookie(AuthCookieName, authString)
+            {
+                HttpOnly = true,
+                Secure = true
+            });
+
+            setResponseCookie(response, new HttpCookie(EmailCookieName, emailAddress)
+            {
+                HttpOnly = false,
+                Secure = true
+            });
+
+            setResponseCookie(response, new HttpCookie(AccountIDCookieName, accountID)
+            {
+                HttpOnly = false,
+                Secure = true
+            });
+        }
+
+        private static void setResponseCookie(HttpResponse response, HttpCookie cookie)
+        {
+            if(response.Cookies[cookie.Name] != null)
+                response.Cookies.Remove(cookie.Name);
+            response.Cookies.Add(cookie);
         }
 
         public static void SetUserAuthentication(HttpContext context, string userName, string emailAddress,

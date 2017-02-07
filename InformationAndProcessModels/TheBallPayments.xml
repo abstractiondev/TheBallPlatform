@@ -24,6 +24,7 @@
             <InterfaceItem name="currentproduct" logicalDataType="Text_Short"/>
             <InterfaceItem name="expectedprice" logicalDataType="Number"/>
             <InterfaceItem name="email" logicalDataType="Text_Short"/>
+            <InterfaceItem name="isTestMode" logicalDataType="TrueOrFalse_Boolean"/>
             <ObjectInstance name="card" interfaceObjectName="BillingAddress"/>
           </InterfaceItems>
         </InterfaceObject>
@@ -84,6 +85,7 @@
       <InformationObject name="CustomerAccount" designDesc="Payment identified customer, ID based on account">
         <InformationItems>
           <InformationItem name="StripeID" logicalDataType="Text_Short"/>
+          <InformationItem name="IsTestAccount" logicalDataType="TrueOrFalse_Boolean"/>
           <InformationItem name="EmailAddress" logicalDataType="Text_Short"/>
           <InformationItem name="Description" logicalDataType="Text_Short"/>
           <InformationItem name="ActivePlans" logicalDataType="ObjectLink" objectLinkTargetType="SubscriptionPlanStatus" isCollection="true"/>
@@ -97,12 +99,14 @@
         </OperationSpec>
         <Parameters>
           <Parameter name="StripeCustomerID" dataType="string" designDesc="Stripe Customer ID" state="implemented"/>
+          <Parameter name="IsTestAccount" dataType="bool" designDesc="Is Stripe test account" state="implemented"/>
         </Parameters>
         <Execution>
           <SequentialExecution>
             <TargetDefinition name="AllCustomerAccounts" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" />
             <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Stripe customer ID based account" state="implemented">
               <Parameter name="StripeCustomerID"/>
+              <Parameter name="IsTestAccount"/>
               <Target name="AllCustomerAccounts"/>
             </TargetDefinition>
           </SequentialExecution>
@@ -124,11 +128,16 @@
             <TargetDefinition name="EventID" dataType="string" designDesc="Stripe event id" state="implemented">
               <Parameter name="JSONObject"/>
             </TargetDefinition>
+            <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Stripe test mode status" state="implemented">
+              <Parameter name="JSONObject"/>
+            </TargetDefinition>
             <TargetDefinition name="EventData" dataType="Stripe.StripeEvent" designDesc="Stripe event object" state="implemented">
               <Target name="EventID"/>
+              <Target name="IsTestMode"/>
             </TargetDefinition>
             <MethodExecute name="ProcessStripeEvent" designDesc="Process Stripe event" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="EventData"/>
+              <Target name="IsTestMode"/>
             </MethodExecute>
           </SequentialExecution>
         </Execution>
@@ -167,17 +176,23 @@
             <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
               <Target name="CustomerAccount"/>
             </TargetDefinition>
+            <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
+              <Target name="CustomerAccount"/>
+            </TargetDefinition>
             <MethodExecute name="RemoveCustomerPaymentSource" designDesc="Remove current card from Stripe customer" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
             </MethodExecute>
             <TargetDefinition name="PlanName" dataType="string" designDesc="Plan name from the payment token" state="implemented">
               <Parameter name="CancelParameters"/>
             </TargetDefinition>
             <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
             </TargetDefinition>
             <MethodExecute name="CancelSubscriptionAtPeriodEnd" designDesc="Cancel current subscription at period end" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
               <Target name="PlanName"/>
               <Target name="CustomersActiveSubscriptions"/>
             </MethodExecute>
@@ -203,6 +218,9 @@
             <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
               <Target name="CustomerAccount"/>
             </TargetDefinition>
+            <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
+              <Target name="CustomerAccount"/>
+            </TargetDefinition>
             <TargetDefinition name="ProductName" dataType="string" designDesc="Product name from the payment token" state="implemented">
               <Parameter name="PaymentToken"/>
             </TargetDefinition>
@@ -212,10 +230,12 @@
             <MethodExecute name="ValidateStripeProductAndPrice" designDesc="Validate product info from Stripe" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="ProductName"/>
               <Target name="ProductPrice"/>
+              <Target name="IsTestMode"/>
             </MethodExecute>
             <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PaymentToken"/>
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
               <Target name="ProductName"/>
             </MethodExecute>
             <!--
@@ -239,12 +259,24 @@
               <Parameter name="PaymentToken"/>
             </MethodExecute>
             <TargetDefinition name="AccountID" dataType="string" designDesc="Active account ID" state="implemented" />
-            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing" state="implemented" asyncSupportMode="AsyncOnly">
+            <TargetDefinition name="IsTokenTestMode" dataType="bool" designDesc="Is Token test mode token" state="implemented">
+              <Parameter name="PaymentToken"/>
+            </TargetDefinition>
+            <TargetDefinition name="IsTestAccount" dataType="bool" designDesc="Retrieve account IsTestMode status, validated from list" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Validate account and token matching testmode, return if agree, throw exception if not" state="implemented">
+              <Target name="IsTokenTestMode"/>
+              <Target name="IsTestAccount"/>
+            </TargetDefinition>
+            <TargetDefinition dataType="CustomerAccount" name="CustomerAccount" designDesc="Customer account object based accountID. Created if missing. Validate that it matches istestmode" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="AccountID"/>
+              <Target name="IsTestMode"/>
             </TargetDefinition>
             <MethodExecute name="UpdateStripeCustomerData" designDesc="Update Stripe customer data from payment info" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PaymentToken"/>
               <Target name="CustomerAccount"/>
+              <Target name="IsTestMode"/>
             </MethodExecute>
             <TargetDefinition name="StripeCustomerID" dataType="string" designDesc="Stripe customer ID" state="implemented">
               <Target name="CustomerAccount"/>
@@ -254,13 +286,16 @@
             </TargetDefinition>
             <MethodExecute name="ValidateStripePlanName" designDesc="Validate plan name from Stripe" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="PlanName"/>
+              <Target name="IsTestMode"/>
             </MethodExecute>
             <TargetDefinition name="CustomersActiveSubscriptions" dataType="Stripe.StripeSubscription[]" designDesc="Active Stripe subscriptions of customer" state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
             </TargetDefinition>
             <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe, if lacking with current plan/subscription" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="PaymentToken"/>
               <Target name="StripeCustomerID"/>
+              <Target name="IsTestMode"/>
               <Target name="PlanName"/>
               <Target name="CustomersActiveSubscriptions"/>
             </MethodExecute>
@@ -368,11 +403,15 @@
             <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Customer account" state="implemented" asyncSupportMode="AsyncOnly">
               <Parameter name="AccountID"/>
             </TargetDefinition>
+            <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
+              <Target name="Account"/>
+            </TargetDefinition>
             <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
               <Target name="Account"/>
             </TargetDefinition>
             <TargetDefinition name="ActivePlanStatusesFromStripe" dataType="INT.PlanStatus[]" designDesc="Plan statuses of account - fetched from Stripe." state="implemented" asyncSupportMode="AsyncOnly">
               <Target name="Account"/>
+              <Target name="IsTestMode"/>
             </TargetDefinition>
             <TargetDefinition name="ActivePlansFromStripe" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans - based on Stripe accounts." state="implemented">
               <Target name="ActivePlanStatusesFromStripe"/>

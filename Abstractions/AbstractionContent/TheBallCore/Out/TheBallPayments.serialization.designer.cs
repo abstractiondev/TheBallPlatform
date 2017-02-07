@@ -42,6 +42,8 @@ namespace INT {
 				[DataMember]
 				public string email { get; set; }
 				[DataMember]
+				public bool isTestMode { get; set; }
+				[DataMember]
 				public BillingAddress card { get; set; }
 			}
 
@@ -557,6 +559,9 @@ namespace INT {
 			[DataMember] 
 			public string StripeID { get; set; }
 			private string _unmodified_StripeID;
+			[DataMember] 
+			public bool IsTestAccount { get; set; }
+			private bool _unmodified_IsTestAccount;
 			[DataMember] 
 			public string EmailAddress { get; set; }
 			private string _unmodified_EmailAddress;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="WA-GUEST-OS-4.26_201511-02" schemaVersion="2015-04.2.6">
+  <Role name="TheBallWebRole">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="IsHybridWebRole" value="" />
+      <Setting name="ConfigAccountName" value=""/>
+      <Setting name="ConfigShareName" value=""/>
+      <Setting name="ConfigSASToken" value=""/>
+      <Setting name="CoreFileShareAccountName" value="" />
+      <Setting name="CoreFileShareAccountKey" value="" />
+      <Setting name="InfraToolsRootFolder" value="" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+  <NetworkConfiguration>
+    <VirtualNetworkSite name="AzureVNet"/>
+    <AddressAssignments>
+      <InstanceAddress roleName="TheBallWebRole">
+        <Subnets>
+          <Subnet name="default"/>
+        </Subnets>
+      </InstanceAddress>
+    </AddressAssignments>
+  </NetworkConfiguration>
+</ServiceConfiguration>

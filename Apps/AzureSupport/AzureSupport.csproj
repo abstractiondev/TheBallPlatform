@@ -459,6 +459,7 @@
     <Compile Include="TheBall.Payments\GetAccountFromStripeCustomerImplementation.cs" />
     <Compile Include="TheBall.Payments\GrantPaidAccessToGroupImplementation.cs" />
     <Compile Include="TheBall.Payments\PurchaseProductImplementation.cs" />
+    <Compile Include="TheBall.Payments\StripeSupport.cs" />
     <Compile Include="TheBall.Payments\SyncEffectivePlanAccessesToAccount.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlan.cs" />
     <Compile Include="TheBall.Payments\GroupSubscriptionPlanCollection.cs" />

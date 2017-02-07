@@ -69,6 +69,9 @@ using System.Runtime.Serialization;
 			public string email;
 
 			[DataMember]
+			public bool isTestMode;
+
+			[DataMember]
 			public BillingAddress card;
 
 			

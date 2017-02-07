@@ -17,15 +17,49 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
-    public enum AzureRoleType
+    public enum RoleAppType
     {
-        WorkerRole,
-        WebRole
+        WorkerConsole,
+        WebConsole
+    }
+
+    public class RoleAppInfo
+    {
+        public string RoleSpecificManagerArgs;
+        public string AppConfigPath;
+        public string AppRootFolder;
+        public string ComponentName;
+        public RoleAppType AppType;
+
+        public string TargetConsolePath => Path.Combine(AppRootFolder, ComponentName + ".exe");
     }
 
 
     public abstract class AcceleratorRole : RoleEntryPoint
     {
+        public static RoleAppInfo GetWebConsoleAppInfo()
+        {
+            return new RoleAppInfo()
+            {
+                ComponentName = "TheBallWebConsole",
+                AppConfigPath = @"X:\Configs\WebConsole.json",
+                RoleSpecificManagerArgs = $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}",
+                AppRootFolder = RoleEnvironment.GetLocalResource("Execution").RootPath,
+                AppType = RoleAppType.WebConsole
+            };
+        }
+        public static RoleAppInfo GetWorkerConsoleAppInfo()
+        {
+            return new RoleAppInfo()
+            {
+                ComponentName = "TheBallWorkerConsole",
+                AppConfigPath = @"X:\Configs\WorkerConsole.json",
+                RoleSpecificManagerArgs = null,
+                AppRootFolder = RoleEnvironment.GetLocalResource("WorkerFolder").RootPath,
+                AppType = RoleAppType.WorkerConsole
+            };
+        }
+
         public static string AssemblyDirectory
         {
             get
@@ -39,11 +73,8 @@ namespace TheBall.Infra.AzureRoleSupport
 
         const string InitialUpdatingConsoleName = "InitialUpdatingConsole.exe";
 
-        protected abstract string RoleSpecificManagerArgs { get; }
-        protected abstract string AppConfigPath { get; }
-        protected abstract string AppRootFolder { get; }
-        protected abstract string ComponentName { get; }
-        protected abstract AzureRoleType RoleType { get; }
+        protected abstract RoleAppInfo[] RoleApplications { get; }
+
         protected string InfraToolsDir => CloudConfigurationManager.GetSetting("InfraToolsRootFolder");
 
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
@@ -53,7 +84,6 @@ namespace TheBall.Infra.AzureRoleSupport
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
 
         private string SourceConsolePath => Path.Combine(AssemblyDirectory, InitialUpdatingConsoleName);
-        private string TargetConsolePath => Path.Combine(AppRootFolder, ComponentName + ".exe");
 
         public override void Run()
         {
@@ -80,7 +110,8 @@ namespace TheBall.Infra.AzureRoleSupport
             ServicePointManager.Expect100Continue = false;
             ServicePointManager.DefaultConnectionLimit = 100;
 
-            ensureUpdatedConsole().Wait();
+            var updatingTasks = RoleApplications.Select(ensureUpdatedConsole).ToArray();
+            Task.WaitAll(updatingTasks);
 
             string appInsightsKeyPath = Path.Combine(InfraToolsDir, @"AppInsightsKey.txt");
             if (File.Exists(appInsightsKeyPath))
@@ -109,13 +140,13 @@ namespace TheBall.Infra.AzureRoleSupport
                 Trace.TraceInformation("Role console succesfully updated");
         }
 
-        private async Task ensureUpdatedConsole()
+        private async Task ensureUpdatedConsole(RoleAppInfo appInfo)
         {
-            if (!File.Exists(TargetConsolePath))
+            if (!File.Exists(appInfo.TargetConsolePath))
             {
-                File.Copy(SourceConsolePath, TargetConsolePath);
+                File.Copy(SourceConsolePath, appInfo.TargetConsolePath);
             }
-            var appManager = new AppManager(TargetConsolePath, AppConfigPath);
+            var appManager = new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath);
             await runUpdater(appManager);
         }
 
@@ -131,19 +162,49 @@ namespace TheBall.Infra.AzureRoleSupport
             Trace.TraceInformation("TheBallRole has stopped");
         }
 
+        public class AppManagerInfo
+        {
+            public AppManager AppManager { get; }
+            public string ManagerArgs { get; }
+            public RoleAppInfo AppInfo { get; }
+
+            public AppManagerInfo(AppManager appManager, string managerArgs, RoleAppInfo appInfo)
+            {
+                AppManager = appManager;
+                ManagerArgs = managerArgs;
+                AppInfo = appInfo;
+            }
+        }
+
         private async Task RunAsync(CancellationToken cancellationToken)
         {
             try
             {
                 Trace.TraceInformation("Working");
-                AppManager currManager = new AppManager(TargetConsolePath, AppConfigPath);
-                bool clientExited = false;
-                EventHandler setUpdateNeeded = (sender, args) =>
-                {
-                    Trace.TraceInformation("Client exited - possibly due to updating need");
-                    clientExited = true;
-                };
-                while (!cancellationToken.IsCancellationRequested)
+                var managers =
+                    RoleApplications.Select(appInfo => new AppManagerInfo(new AppManager(appInfo.TargetConsolePath, appInfo.AppConfigPath), appInfo.RoleSpecificManagerArgs, appInfo))
+                        .ToArray();
+                var managerTasks = managers.Select(manager => executeManager(manager, cancellationToken)).ToArray();
+                await Task.WhenAll(managerTasks);
+            }
+            catch (Exception exception)
+            {
+                throw;
+            }
+        }
+
+        private async Task executeManager(AppManagerInfo currManagerPack, CancellationToken cancellationToken)
+        {
+            var currManager = currManagerPack.AppManager;
+            bool clientExited = false;
+            EventHandler setUpdateNeeded = (sender, args) =>
+            {
+                Trace.TraceInformation("Client exited - possibly due to updating need");
+                clientExited = true;
+            };
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
                 {
                     if (!currManager.IsRunning)
                     {
@@ -159,12 +220,14 @@ namespace TheBall.Infra.AzureRoleSupport
                         if (initialStartup || updateNeeded)
                         {
                             Trace.TraceInformation("Starting");
-                            await currManager.StartAppConsole(false, true, setUpdateNeeded, RoleSpecificManagerArgs);
+                            await currManager.StartAppConsole(false, true, setUpdateNeeded,
+                                currManagerPack.ManagerArgs);
                         }
                         else
                         {
                             await currManager.ShutdownAppConsole(true);
-                            throw new InvalidOperationException($"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
+                            throw new InvalidOperationException(
+                                $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
                         }
                     }
                     try
@@ -173,16 +236,16 @@ namespace TheBall.Infra.AzureRoleSupport
                     }
                     catch (TaskCanceledException) // Expected
                     {
-                        
                     }
                 }
-                await currManager.ShutdownAppConsole(true);
+                catch (Exception exception)
+                {
+                    var erroringApp = currManagerPack.AppInfo;
+                    File.WriteAllText(Path.Combine(erroringApp.AppRootFolder, "RunError.txt"), exception.ToString());
+                    throw;
+                }
             }
-            catch (Exception exception)
-            {
-                File.WriteAllText(Path.Combine(AppRootFolder, "RunError.txt"), exception.ToString());
-                throw;
-            }
+            await currManager.ShutdownAppConsole(true);
         }
     }
 }

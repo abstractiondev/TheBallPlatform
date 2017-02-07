@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="AzureConfiguration" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
+  <WebRole name="TheBallWebRole" vmsize="Standard_A1_v2">
+    <Startup>
+      <Task commandLine="WebStartupTasks.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="CoreFileShareAccountName">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountName']/@value" />
+          </Variable>
+          <Variable name="CoreFileShareAccountKey">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='CoreFileShareAccountKey']/@value" />
+          </Variable>
+          <Variable name="InfraToolsRootFolder">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='InfraToolsRootFolder']/@value" />
+          </Variable>
+        </Environment>
+      </Task>
+      <Task commandLine="IISInitTasks.cmd" executionContext="elevated" taskType="simple">
+        <!--
+        <Environment>
+          <Variable name="IISCertAccountName">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountName']/@value" />
+          </Variable>
+          <Variable name="IISCertAccountPassword">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/ConfigurationSettings/ConfigurationSetting[@name='IISCertAccountPassword']/@value" />
+          </Variable>
+        </Environment>
+          -->
+      </Task>
+      <Task commandLine="AIBootstrap.cmd" executionContext="elevated" taskType="simple">
+        <Environment>
+          <Variable name="EMULATED">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
+    <Runtime executionContext="elevated" />
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="HttpIn" endpointName="HttpIn" hostHeader="localhost" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="HttpIn" protocol="http" port="80" localPort="80" />
+      <InputEndpoint name="HttpsIn" protocol="http" port="443" localPort="443" />
+      <!--
+      <InputEndpoint name="HttpsIn" protocol="https" port="443" localPort="443" certificate="HTTPS" />
+      -->
+      <!-- unused, just there so instance discovery works -->
+      <InternalEndpoint name="UnusedInternal" protocol="http" port="88" />
+    </Endpoints>
+    <LocalResources>
+      <LocalStorage name="Sites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="TempSites" cleanOnRoleRecycle="false" sizeInMB="1000" />
+      <LocalStorage name="Execution" cleanOnRoleRecycle="false" sizeInMB="500" />
+      <LocalStorage name="Config" cleanOnRoleRecycle="true" sizeInMB="10" />
+      <LocalStorage name="WorkerFolder" cleanOnRoleRecycle="false" sizeInMB="500" />
+    </LocalResources>
+    <ConfigurationSettings>
+      <Setting name="IsHybridWebRole" />
+      <Setting name="ConfigAccountName"/>
+      <Setting name="ConfigShareName"/>
+      <Setting name="ConfigSASToken"/>
+      <Setting name="CoreFileShareAccountName" />
+      <Setting name="CoreFileShareAccountKey" />
+      <Setting name="InfraToolsRootFolder" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="HTTPS" storeLocation="LocalMachine" storeName="My" />
+    </Certificates>
+  </WebRole>
+</ServiceDefinition>

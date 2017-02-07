@@ -127,7 +127,9 @@ namespace OperationRunnerTool
     -cr:D:\UserData\Kalle\work\abs\home.theball.me_infrashare\Configs -i:home.theball.me -owner:grp/62e85ac7-b314-433f-87e6-1559078bc741 -op:TheBall.Admin.UpdateUsersData -remoteExecute:true
 
     -cr:X:\Configs -i:members.ikwondo.com -owner:grp/f6a9652b-4065-404e-9749-01d40ba5f26a -op:TheBall.Infrastructure.UpdateInfraDataInterfaceObjects
-    
+
+    -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.CreateGroup -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14
+    -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14,AccountID:1021da4a-17f5-4c3a-8082-497c8b62b76a,Role:Initiator
 #endif
 
 }

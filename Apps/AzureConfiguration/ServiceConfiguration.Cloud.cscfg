@@ -10,19 +10,14 @@
       <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="InfraToolsRootFolder" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="" />
     </ConfigurationSettings>
     <Certificates>
-      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>  
   <Role name="TheBallWebRole">
     <Instances count="2" />
     <ConfigurationSettings>
+      <Setting name="IsHybridWebRole" value="false" />
       <Setting name="ConfigAccountName" value=""/>
       <Setting name="ConfigShareName" value=""/>
       <Setting name="ConfigSASToken" value=""/>
@@ -30,14 +25,24 @@
       <Setting name="CoreFileShareAccountKey" value="" />
       <Setting name="InfraToolsRootFolder" value="" />
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="" />
-      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="" />
     </ConfigurationSettings>
     <Certificates>
       <Certificate name="HTTPS" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
-      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="0000000000000000000000000000000000000000" thumbprintAlgorithm="sha1" />
     </Certificates>
   </Role>
+  <NetworkConfiguration>
+    <VirtualNetworkSite name="AzureVNet"/>
+    <AddressAssignments>
+      <InstanceAddress roleName="TheBallWorkerRole">
+        <Subnets>
+          <Subnet name="default"/>
+        </Subnets>
+      </InstanceAddress>
+      <InstanceAddress roleName="TheBallWebRole">
+        <Subnets>
+          <Subnet name="default"/>
+        </Subnets>
+      </InstanceAddress>
+    </AddressAssignments>
+  </NetworkConfiguration>
 </ServiceConfiguration>

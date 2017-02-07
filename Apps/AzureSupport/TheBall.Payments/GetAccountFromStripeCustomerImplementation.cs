@@ -11,9 +11,9 @@ namespace TheBall.Payments
             return masterCollection.CollectionContent.ToArray();
         }
 
-        public static CustomerAccount GetTarget_Account(string stripeCustomerID, CustomerAccount[] allCustomerAccounts)
+        public static CustomerAccount GetTarget_Account(string stripeCustomerID, bool isTestAccount, CustomerAccount[] allCustomerAccounts)
         {
-            return allCustomerAccounts.FirstOrDefault(acc => acc.StripeID == stripeCustomerID);
+            return allCustomerAccounts.FirstOrDefault(acc => acc.StripeID == stripeCustomerID && acc.IsTestAccount == isTestAccount);
         }
 
         public static GetAccountFromStripeCustomerReturnValue Get_ReturnValue(CustomerAccount account)

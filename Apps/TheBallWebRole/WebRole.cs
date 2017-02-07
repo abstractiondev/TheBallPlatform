@@ -22,14 +22,19 @@ namespace TheBallWebRole
 {
     public class WebRole : AcceleratorRole
     {
-        protected override string ComponentName => "TheBallWebConsole";
-        protected override AzureRoleType RoleType => AzureRoleType.WebRole;
+        private static bool IsHybridWebRole { get; } = CloudConfigurationManager.GetSetting("IsHybridWebRole") ==
+                                                bool.TrueString;
 
-        protected override string AppRootFolder => RoleEnvironment.GetLocalResource("Execution").RootPath;
-        protected override string AppConfigPath => @"X:\Configs\WebConsole.json";
-
-        protected override string RoleSpecificManagerArgs
-            => $"--tempsiterootdir {RoleEnvironment.GetLocalResource("TempSites").RootPath} --appsiterootdir {RoleEnvironment.GetLocalResource("Sites").RootPath}";
+        protected override RoleAppInfo[] RoleApplications { get; } = IsHybridWebRole ?
+            new []
+            {
+                GetWebConsoleAppInfo(),
+                GetWorkerConsoleAppInfo()
+            }
+            : new[]
+        {
+            GetWebConsoleAppInfo(),
+        };
 
         public override bool OnStart()
         {

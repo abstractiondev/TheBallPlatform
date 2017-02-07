@@ -62,6 +62,8 @@ namespace TheBall.Infra.WebServerManager
             var existingSite = sites[appSiteName];
             if (existingSite != null)
             {
+                if (existingSite.State == ObjectState.Stopped)
+                    existingSite.Start();
                 return;
             }
             var appPools = iisManager.ApplicationPools;
@@ -251,8 +253,9 @@ namespace TheBall.Infra.WebServerManager
             }
             if (certificateHash != null && (existingBinding.CertificateHash == null || (certificateHash.SequenceEqual(existingBinding.CertificateHash) == false)))
             {
-                existingBinding.CertificateHash = certificateHash;
-                existingBinding.CertificateStoreName = StoreName.My.ToString();
+                existingBinding.Delete();
+                //existingBinding.CertificateHash = certificateHash;
+                //existingBinding.CertificateStoreName = StoreName.My.ToString();
                 isChanged = true;
             }
             return isChanged;
