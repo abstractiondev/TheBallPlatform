@@ -42,30 +42,39 @@ namespace TheBall.Payments
             return paymentToken.expectedprice;
         }
 
-        public static async Task ExecuteMethod_ValidateStripeProductAndPriceAsync(string productName, double productPrice)
+        public static async Task ExecuteMethod_ValidateStripeProductAndPriceAsync(string productName, double productPrice, bool isTestMode)
         {
             //Stripe  customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
 
         }
 
-        public static async Task ExecuteMethod_ProcessPaymentAsync(PaymentToken paymentToken, string stripeCustomerId, string productName)
+        public static async Task ExecuteMethod_ProcessPaymentAsync(PaymentToken paymentToken, string stripeCustomerId, bool isTestMode, string productName)
         {
             string cardId = paymentToken.id;
             if (cardId == null)
             {
-                var customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
+                var customerService = new StripeCustomerService(isTestMode
+                    ? SecureConfig.Current.StripeTestSecretKey
+                    : SecureConfig.Current.StripeLiveSecretKey);
                 var customer = await customerService.GetAsync(stripeCustomerId);
                 cardId = customer.DefaultSourceId;
             }
             if(cardId == null)
                 throw new InvalidOperationException("No default payment method set");
-            var chargeService = new StripeChargeService(SecureConfig.Current.StripeSecretKey);
+            var chargeService = new StripeChargeService(isTestMode
+                    ? SecureConfig.Current.StripeTestSecretKey
+                    : SecureConfig.Current.StripeLiveSecretKey);
             var charge = await chargeService.CreateAsync(new StripeChargeCreateOptions
             {
                 Amount = (int) (paymentToken.expectedprice * 100),
                 CustomerId = stripeCustomerId,
                 Description = paymentToken.currentproduct
             });
+        }
+
+        public static bool GetTarget_IsTestMode(CustomerAccount customerAccount)
+        {
+            return customerAccount.IsTestAccount;
         }
     }
 }

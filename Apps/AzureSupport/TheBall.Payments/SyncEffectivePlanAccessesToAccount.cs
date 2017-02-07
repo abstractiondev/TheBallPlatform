@@ -43,9 +43,11 @@ namespace TheBall.Payments
             return plans;
         }
 
-        public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account)
+        public static async Task<PlanStatus[]> GetTarget_ActivePlanStatusesFromStripeAsync(CustomerAccount account, bool isTestMode)
         {
-            StripeCustomerService customerService = new StripeCustomerService(SecureConfig.Current.StripeSecretKey);
+            StripeCustomerService customerService = new StripeCustomerService(isTestMode
+                ? SecureConfig.Current.StripeTestSecretKey
+                : SecureConfig.Current.StripeLiveSecretKey);
             StripeCustomer stripeCustomer = await customerService.GetAsync(account.StripeID);
             if (stripeCustomer == null)
                 return new PlanStatus[0];
@@ -183,5 +185,9 @@ namespace TheBall.Payments
             }
         }
 
+        public static bool GetTarget_IsTestMode(CustomerAccount account)
+        {
+            return account.IsTestAccount;
+        }
     }
 }

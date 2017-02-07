@@ -127,6 +127,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.DefaultConnectionLimit = 500;
             ServicePointManager.Expect100Continue = false;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
             bool autoUpdate = updateAccessInfo != null;
             bool isDebugging = Debugger.IsAttached;

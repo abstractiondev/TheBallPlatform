@@ -169,6 +169,7 @@ namespace SQLite.TheBall.Payments {
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.IsTestAccount = serializedObject.IsTestAccount;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -248,6 +249,7 @@ namespace SQLite.TheBall.Payments {
 		            var existingObject = CustomerAccountTable.Single(item => item.ID == updateData.ObjectID);
 					existingObject.ETag = updateData.ETag;
 		            existingObject.StripeID = serializedObject.StripeID;
+		            existingObject.IsTestAccount = serializedObject.IsTestAccount;
 		            existingObject.EmailAddress = serializedObject.EmailAddress;
 		            existingObject.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -324,6 +326,7 @@ namespace SQLite.TheBall.Payments {
                              ContentStorage.GetContentAsString(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.IsTestAccount = serializedObject.IsTestAccount;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -401,6 +404,7 @@ namespace SQLite.TheBall.Payments {
                             await ContentStorage.GetContentAsStringAsync(currentFullStoragePath));
                     var objectToAdd = new CustomerAccount {ID = insertData.ObjectID, ETag = insertData.ETag};
 		            objectToAdd.StripeID = serializedObject.StripeID;
+		            objectToAdd.IsTestAccount = serializedObject.IsTestAccount;
 		            objectToAdd.EmailAddress = serializedObject.EmailAddress;
 		            objectToAdd.Description = serializedObject.Description;
                     if (serializedObject.ActivePlans != null)
@@ -773,6 +777,7 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
 [ETag] TEXT NOT NULL
 , 
 [StripeID] TEXT NOT NULL, 
+[IsTestAccount] INTEGER NOT NULL, 
 [EmailAddress] TEXT NOT NULL, 
 [Description] TEXT NOT NULL
 )";
@@ -783,6 +788,11 @@ CREATE TABLE IF NOT EXISTS [CustomerAccount](
         [ScaffoldColumn(true)]
 		public string StripeID { get; set; }
 		// private string _unmodified_StripeID;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public bool IsTestAccount { get; set; }
+		// private bool _unmodified_IsTestAccount;
 
 		[Column]
         [ScaffoldColumn(true)]
