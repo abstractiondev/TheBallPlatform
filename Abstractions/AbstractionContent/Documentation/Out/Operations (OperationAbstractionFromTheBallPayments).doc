@@ -745,7 +745,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Process Stripe event
 		</div>
-		</p><h1>PurchaseProduct (PaymentToken)</h1>
+		</p><h1>PurchaseProduct (PurchaseInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Purchase and pay product for account
@@ -756,17 +756,17 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		PaymentToken
+		PurchaseInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		INT.PaymentToken
+		INT.ProductPurchaseInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Payment token info
+		Product purchase info
 		</div>
 				</td>
 				</tr>
@@ -787,19 +787,23 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Is Stripe in test mode
 		</div>
-		</p><h2>Target Definition: ProductName ( PaymentToken )</h2>
+		</p><h2>Target Definition: ProductName ( PurchaseInfo )</h2>
 		<p>		<div class="MsoNormal" >
-		Product name from the payment token
+		Product name from the purchase info
 		</div>
-		</p><h2>Target Definition: ProductPrice ( PaymentToken )</h2>
+		</p><h2>Target Definition: ProductPrice ( PurchaseInfo )</h2>
 		<p>		<div class="MsoNormal" >
-		Product price from the payment token
+		Product price from the purchase info
+		</div>
+		</p><h2>Target Definition: Currency ( PurchaseInfo )</h2>
+		<p>		<div class="MsoNormal" >
+		Product currency from the purchase info
 		</div>
 		</p><h2>Method Call: ValidateStripeProductAndPrice ( ProductName, ProductPrice, IsTestMode )</h2>
 		<p>		<div class="MsoNormal" >
 		Validate product info from Stripe
 		</div>
-		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, PaymentToken )</h2>
+		</p><h2>Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency, PurchaseInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Process payment to Stripe
 		</div>

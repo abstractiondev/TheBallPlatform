@@ -31,6 +31,19 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
+			public partial class ProductPurchaseInfo
+			{
+				[DataMember]
+				public string currentproduct { get; set; }
+				[DataMember]
+				public double expectedprice { get; set; }
+				[DataMember]
+				public string currency { get; set; }
+				[DataMember]
+				public bool isTestMode { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
 			public partial class PaymentToken
 			{
 				[DataMember]
@@ -39,6 +52,8 @@ namespace INT {
 				public string currentproduct { get; set; }
 				[DataMember]
 				public double expectedprice { get; set; }
+				[DataMember]
+				public string currency { get; set; }
 				[DataMember]
 				public string email { get; set; }
 				[DataMember]

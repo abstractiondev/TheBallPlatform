@@ -48,6 +48,29 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
+			public partial class ProductPurchaseInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public string currentproduct;
+
+			[DataMember]
+			public double expectedprice;
+
+			[DataMember]
+			public string currency;
+
+			[DataMember]
+			public bool isTestMode;
+
+			
+			}
+			[DataContract]
 			public partial class PaymentToken 
 			{
 				[DataMember]
@@ -64,6 +87,9 @@ using System.Runtime.Serialization;
 
 			[DataMember]
 			public double expectedprice;
+
+			[DataMember]
+			public string currency;
 
 			[DataMember]
 			public string email;

@@ -1,6 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using TheBall.CORE.InstanceSupport;
+using TheBall.CORE.Storage;
 
 namespace TheBall.Payments
 {
@@ -11,6 +18,23 @@ namespace TheBall.Payments
             return isTestMode
                 ? SecureConfig.Current.StripeTestSecretKey
                 : SecureConfig.Current.StripeLiveSecretKey;
+        }
+
+        private const string ProductAPIUrl = "https://api.stripe.com/v1/products";
+        public static async Task<ProductJson.RootObject> GetProducts(bool isTestMode)
+        {
+            var userName = GetStripeApiKey(isTestMode);
+            string passWord = "";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(Encoding.UTF8.GetBytes($"{userName}:{passWord}")));
+                var response = await httpClient.GetAsync(ProductAPIUrl);
+                HttpContent responseContent = response.Content;
+                var data = await responseContent.ReadAsByteArrayAsync();
+                var productJson = JSONSupport.GetObjectFromData<ProductJson.RootObject>(data);
+                return productJson;
+            }
         }
 
 
@@ -83,6 +107,13 @@ namespace TheBall.Payments
             }
 
 
+        }
+
+        public static string GetStripeCurrency(string currency)
+        {
+            if (currency.ToLower() == "usd")
+                return "usd";
+            return "eur";
         }
     }
 }
