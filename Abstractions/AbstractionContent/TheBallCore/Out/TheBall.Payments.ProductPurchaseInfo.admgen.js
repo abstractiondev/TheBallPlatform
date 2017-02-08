@@ -1,22 +1,16 @@
  
 
-var PaymentToken {
-	id: string;
+var ProductPurchaseInfo {
 	currentproduct: string;
 	expectedprice: number;
 	currency: string;
-	email: string;
 	isTestMode: boolean;
-	card: BillingAddress;
 
     constructor() {
-					this.id = ko.observable(this.id);
-			this.currentproduct = ko.observable(this.currentproduct);
+					this.currentproduct = ko.observable(this.currentproduct);
 			this.expectedprice = ko.observable(this.expectedprice);
 			this.currency = ko.observable(this.currency);
-			this.email = ko.observable(this.email);
 			this.isTestMode = ko.observable(this.isTestMode);
-			this.card = ko.observable(this.card);
     }
 }
 

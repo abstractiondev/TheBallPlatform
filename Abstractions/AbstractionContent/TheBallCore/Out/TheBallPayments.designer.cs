@@ -50,6 +50,19 @@ namespace INT {
 			}
 
 			[DataContract]
+			public partial class ProductPurchaseInfo
+			{
+				[DataMember]
+				public string currentproduct { get; set; }
+				[DataMember]
+				public double expectedprice { get; set; }
+				[DataMember]
+				public string currency { get; set; }
+				[DataMember]
+				public bool isTestMode { get; set; }
+			}
+
+			[DataContract]
 			public partial class PaymentToken
 			{
 				[DataMember]
@@ -58,6 +71,8 @@ namespace INT {
 				public string currentproduct { get; set; }
 				[DataMember]
 				public double expectedprice { get; set; }
+				[DataMember]
+				public string currency { get; set; }
 				[DataMember]
 				public string email { get; set; }
 				[DataMember]

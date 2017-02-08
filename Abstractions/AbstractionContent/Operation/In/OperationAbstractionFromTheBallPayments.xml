@@ -115,7 +115,7 @@
         <Description>Purchase and pay product for account</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="PaymentToken" dataType="INT.PaymentToken" designDesc="Payment token info" state="implemented" />
+        <Parameter name="PurchaseInfo" dataType="INT.ProductPurchaseInfo" designDesc="Product purchase info" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -129,11 +129,14 @@
           <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
             <Target name="CustomerAccount" />
           </TargetDefinition>
-          <TargetDefinition name="ProductName" dataType="string" designDesc="Product name from the payment token" state="implemented">
-            <Parameter name="PaymentToken" />
+          <TargetDefinition name="ProductName" dataType="string" designDesc="Product name from the purchase info" state="implemented">
+            <Parameter name="PurchaseInfo" />
           </TargetDefinition>
-          <TargetDefinition name="ProductPrice" dataType="double" designDesc="Product price from the payment token" state="implemented">
-            <Parameter name="PaymentToken" />
+          <TargetDefinition name="ProductPrice" dataType="double" designDesc="Product price from the purchase info" state="implemented">
+            <Parameter name="PurchaseInfo" />
+          </TargetDefinition>
+          <TargetDefinition name="Currency" dataType="string" designDesc="Product currency from the purchase info" state="implemented">
+            <Parameter name="PurchaseInfo" />
           </TargetDefinition>
           <MethodExecute name="ValidateStripeProductAndPrice" asyncSupportMode="AsyncOnly" designDesc="Validate product info from Stripe" state="implemented">
             <Target name="ProductName" />
@@ -141,10 +144,12 @@
             <Target name="IsTestMode" />
           </MethodExecute>
           <MethodExecute name="ProcessPayment" asyncSupportMode="AsyncOnly" designDesc="Process payment to Stripe" state="implemented">
-            <Parameter name="PaymentToken" />
+            <Parameter name="PurchaseInfo" />
             <Target name="StripeCustomerID" />
             <Target name="IsTestMode" />
             <Target name="ProductName" />
+            <Target name="ProductPrice" />
+            <Target name="Currency" />
           </MethodExecute>
         </SequentialExecution>
       </Execution>

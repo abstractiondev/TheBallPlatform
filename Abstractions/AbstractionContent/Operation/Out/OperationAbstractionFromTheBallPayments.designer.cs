@@ -94,7 +94,7 @@ using System.Threading.Tasks;
 				}
 				public class PurchaseProductParameters 
 		{
-				public INT.PaymentToken PaymentToken ;
+				public INT.ProductPurchaseInfo PurchaseInfo ;
 				}
 		
 		public class PurchaseProduct 
@@ -109,10 +109,11 @@ using System.Threading.Tasks;
 				CustomerAccount CustomerAccount =  await PurchaseProductImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				string StripeCustomerID = PurchaseProductImplementation.GetTarget_StripeCustomerID(CustomerAccount);	
 				bool IsTestMode = PurchaseProductImplementation.GetTarget_IsTestMode(CustomerAccount);	
-				string ProductName = PurchaseProductImplementation.GetTarget_ProductName(parameters.PaymentToken);	
-				double ProductPrice = PurchaseProductImplementation.GetTarget_ProductPrice(parameters.PaymentToken);	
+				string ProductName = PurchaseProductImplementation.GetTarget_ProductName(parameters.PurchaseInfo);	
+				double ProductPrice = PurchaseProductImplementation.GetTarget_ProductPrice(parameters.PurchaseInfo);	
+				string Currency = PurchaseProductImplementation.GetTarget_Currency(parameters.PurchaseInfo);	
 				 await PurchaseProductImplementation.ExecuteMethod_ValidateStripeProductAndPriceAsync(ProductName, ProductPrice, IsTestMode);		
-				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PaymentToken, StripeCustomerID, IsTestMode, ProductName);		
+				 await PurchaseProductImplementation.ExecuteMethod_ProcessPaymentAsync(parameters.PurchaseInfo, StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency);		
 				}
 				}
 				public class ActivateAccountPlanParameters 

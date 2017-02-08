@@ -753,7 +753,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="PurchaseProduct (PaymentToken)" level="1">
+          <Header text="PurchaseProduct (PurchaseInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -772,13 +772,13 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>PaymentToken</TextContent>
+                        <TextContent>PurchaseInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>INT.PaymentToken</TextContent>
+                        <TextContent>INT.ProductPurchaseInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Payment token info</TextContent>
+                        <TextContent>Product purchase info</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
@@ -813,17 +813,24 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ProductName ( PaymentToken )" level="2">
+            <Header text="Target Definition: ProductName ( PurchaseInfo )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Product name from the payment token</TextContent>
+                  <TextContent>Product name from the purchase info</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: ProductPrice ( PaymentToken )" level="2">
+            <Header text="Target Definition: ProductPrice ( PurchaseInfo )" level="2">
               <Paragraph>
                 <Text>
-                  <TextContent>Product price from the payment token</TextContent>
+                  <TextContent>Product price from the purchase info</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: Currency ( PurchaseInfo )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Product currency from the purchase info</TextContent>
                 </Text>
               </Paragraph>
             </Header>
@@ -834,7 +841,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, PaymentToken )" level="2">
+            <Header text="Method Call: ProcessPayment ( StripeCustomerID, IsTestMode, ProductName, ProductPrice, Currency, PurchaseInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Process payment to Stripe</TextContent>
