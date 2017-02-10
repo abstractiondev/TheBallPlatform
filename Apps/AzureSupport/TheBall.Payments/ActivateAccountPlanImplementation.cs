@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -135,7 +137,23 @@ namespace TheBall.Payments
                 var emailAddress = Email.GetEmailAddressFromID(emailId);
                 return InstanceConfig.Current.PaymentTestEmails.Contains(emailAddress);
             });
-            return anyEmailInTestList;
+            bool isTestAccount = false;
+            var paymentTestMetaAttrName = InstanceConfig.Current.PaymentTestClientMetaAttribute;
+            if (!String.IsNullOrEmpty(paymentTestMetaAttrName))
+            {
+                var metadataExpando = account.GetClientMetadataObject();
+                if (metadataExpando != null)
+                {
+                    var metaDict = (IDictionary<string, object>)metadataExpando;
+                    object resultObj;
+                    if(metaDict.TryGetValue(paymentTestMetaAttrName, out resultObj))
+                    {
+                        isTestAccount = (bool) resultObj;
+                    }
+                }
+
+            }
+            return anyEmailInTestList || isTestAccount;
         }
 
         public static bool GetTarget_IsTokenTestMode(PaymentToken paymentToken)

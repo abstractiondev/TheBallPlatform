@@ -1,6 +1,8 @@
 using System;
+using System.Dynamic;
 using System.Text;
 using AaltoGlobalImpact.OIP;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
@@ -39,6 +41,14 @@ namespace TheBall.CORE
                 base64ServerMetadata = Convert.ToBase64String(jsonData);
             }
             return base64ServerMetadata;
+        }
+
+        public ExpandoObject GetClientMetadataObject()
+        {
+            if (String.IsNullOrEmpty(ClientMetadataJSON))
+                return null;
+            var expando = JSONSupport.GetExpandoObject(ClientMetadataJSON);
+            return expando;
         }
     }
 }
