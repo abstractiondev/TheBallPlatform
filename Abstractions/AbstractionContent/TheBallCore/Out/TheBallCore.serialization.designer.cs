@@ -38,8 +38,10 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
-			public partial class JSONDataContainer
+			public partial class AccountMetadata
 			{
+				[DataMember]
+				public string AccountID { get; set; }
 				[DataMember]
 				public System.Dynamic.ExpandoObject Data { get; set; }
 			}

@@ -4401,7 +4401,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store object
 		</div>
-		</p><h1>SetAccountClientMetadata (AccountID, DataContainer)</h1>
+		</p><h1>SetAccountClientMetadata (MetadataInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Set account client side metadata
@@ -4412,43 +4412,26 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		AccountID
+		MetadataInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		INT.AccountMetadata
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Account ID
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		DataContainer
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		INT.JSONDataContainer
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Data container
+		Account metadata
 		</div>
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: Account ( AccountID )</h2>
+		</p><h2>Target Definition: Account ( MetadataInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Account object
 		</div>
-		</p><h2>Target Definition: MetadataAsJSONString ( DataContainer )</h2>
+		</p><h2>Target Definition: MetadataAsJSONString ( MetadataInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Metadata serialized as JSON string
 		</div>
@@ -4460,7 +4443,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store object
 		</div>
-		</p><h1>SetAccountServerMetadata (AccountID, DataContainer)</h1>
+		</p><h1>SetAccountServerMetadata (MetadataInfo)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >
 		Set account client side metadata
@@ -4471,43 +4454,26 @@ div.WordSection1
 				<tr>
 				<td>
 				<div class="MsoNormal" >
-		AccountID
+		MetadataInfo
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		string
+		INT.AccountMetadata
 		</div>
 				</td>
 				<td>
 				<div class="MsoNormal" >
-		Account ID
-		</div>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<div class="MsoNormal" >
-		DataContainer
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		INT.JSONDataContainer
-		</div>
-				</td>
-				<td>
-				<div class="MsoNormal" >
-		Data container
+		Account metadata
 		</div>
 				</td>
 				</tr>
 		</table>
-		</p><h2>Target Definition: Account ( AccountID )</h2>
+		</p><h2>Target Definition: Account ( MetadataInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Account object
 		</div>
-		</p><h2>Target Definition: MetadataAsJSONString ( DataContainer )</h2>
+		</p><h2>Target Definition: MetadataAsJSONString ( MetadataInfo )</h2>
 		<p>		<div class="MsoNormal" >
 		Metadata serialized as JSON string
 		</div>

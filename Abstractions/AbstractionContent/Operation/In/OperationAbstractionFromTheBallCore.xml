@@ -146,16 +146,15 @@
         <Description>Set account client side metadata</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
-        <Parameter name="DataContainer" dataType="INT.JSONDataContainer" designDesc="Data container" state="implemented" />
+        <Parameter name="MetadataInfo" dataType="INT.AccountMetadata" designDesc="Account metadata" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
-            <Parameter name="AccountID" />
+            <Parameter name="MetadataInfo" />
           </TargetDefinition>
           <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
-            <Parameter name="DataContainer" />
+            <Parameter name="MetadataInfo" />
           </TargetDefinition>
           <MethodExecute name="SetAccountClientMetadata" designDesc="Set metadata" state="implemented">
             <Target name="Account" />
@@ -172,16 +171,15 @@
         <Description>Set account client side metadata</Description>
       </OperationSpec>
       <Parameters>
-        <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented" />
-        <Parameter name="DataContainer" dataType="INT.JSONDataContainer" designDesc="Data container" state="implemented" />
+        <Parameter name="MetadataInfo" dataType="INT.AccountMetadata" designDesc="Account metadata" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="Account" asyncSupportMode="AsyncOnly" dataType="Account" designDesc="Account object" state="implemented">
-            <Parameter name="AccountID" />
+            <Parameter name="MetadataInfo" />
           </TargetDefinition>
           <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
-            <Parameter name="DataContainer" />
+            <Parameter name="MetadataInfo" />
           </TargetDefinition>
           <MethodExecute name="SetAccountServerMetadata" designDesc="Set metadata" state="implemented">
             <Target name="Account" />

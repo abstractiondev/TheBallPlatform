@@ -135,8 +135,7 @@ using System.Threading.Tasks;
 				}
 				public class SetAccountClientMetadataParameters 
 		{
-				public string AccountID ;
-				public INT.JSONDataContainer DataContainer ;
+				public INT.AccountMetadata MetadataInfo ;
 				}
 		
 		public class SetAccountClientMetadata 
@@ -147,17 +146,15 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(SetAccountClientMetadataParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Account Account =  await SetAccountClientMetadataImplementation.GetTarget_AccountAsync(parameters.AccountID);	
-				string MetadataAsJSONString = SetAccountClientMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.DataContainer);	
+					Account Account =  await SetAccountClientMetadataImplementation.GetTarget_AccountAsync(parameters.MetadataInfo);	
+				string MetadataAsJSONString = SetAccountClientMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.MetadataInfo);	
 				SetAccountClientMetadataImplementation.ExecuteMethod_SetAccountClientMetadata(Account, MetadataAsJSONString);		
 				 await SetAccountClientMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
 				}
 				}
-
-		    public class SetAccountServerMetadataParameters 
+				public class SetAccountServerMetadataParameters 
 		{
-				public string AccountID ;
-				public INT.JSONDataContainer DataContainer ;
+				public INT.AccountMetadata MetadataInfo ;
 				}
 		
 		public class SetAccountServerMetadata 
@@ -168,14 +165,13 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(SetAccountServerMetadataParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Account Account =  await SetAccountServerMetadataImplementation.GetTarget_AccountAsync(parameters.AccountID);	
-				string MetadataAsJSONString = SetAccountServerMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.DataContainer);	
+					Account Account =  await SetAccountServerMetadataImplementation.GetTarget_AccountAsync(parameters.MetadataInfo);	
+				string MetadataAsJSONString = SetAccountServerMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.MetadataInfo);	
 				SetAccountServerMetadataImplementation.ExecuteMethod_SetAccountServerMetadata(Account, MetadataAsJSONString);		
 				 await SetAccountServerMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
 				}
 				}
-
-		    public class CreateAccountParameters 
+				public class CreateAccountParameters 
 		{
 				public string AccountID ;
 				public string LoginUrl ;

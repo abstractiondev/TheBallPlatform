@@ -6,15 +6,15 @@ namespace TheBall.CORE
 {
     public class SetAccountClientMetadataImplementation
     {
-        public static async Task<Account> GetTarget_AccountAsync(string accountID)
+        public static async Task<Account> GetTarget_AccountAsync(AccountMetadata metadataInfo)
         {
-            var account = await ObjectStorage.RetrieveFromSystemOwner<Account>(accountID);
+            var account = await ObjectStorage.RetrieveFromSystemOwner<Account>(metadataInfo.AccountID);
             return account;
         }
 
-        public static string GetTarget_MetadataAsJSONString(JSONDataContainer dataContainer)
+        public static string GetTarget_MetadataAsJSONString(AccountMetadata metadataInfo)
         {
-            var dataString = JSONSupport.SerializeToJSONString(dataContainer.Data);
+            var dataString = JSONSupport.SerializeToJSONString(metadataInfo.Data);
             return dataString;
         }
 

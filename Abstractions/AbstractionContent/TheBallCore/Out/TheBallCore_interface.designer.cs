@@ -62,13 +62,16 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
-			public partial class JSONDataContainer 
+			public partial class AccountMetadata 
 			{
 				[DataMember]
 				public string ID { get; set; }
 
 			    [IgnoreDataMember]
                 public string ETag { get; set; }
+
+			[DataMember]
+			public string AccountID;
 
 			[DataMember]
 			public System.Dynamic.ExpandoObject Data;

@@ -57,8 +57,10 @@ namespace INT {
 			}
 
 			[DataContract]
-			public partial class JSONDataContainer
+			public partial class AccountMetadata
 			{
+				[DataMember]
+				public string AccountID { get; set; }
 				[DataMember]
 				public System.Dynamic.ExpandoObject Data { get; set; }
 			}

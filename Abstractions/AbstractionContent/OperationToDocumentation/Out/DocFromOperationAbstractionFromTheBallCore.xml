@@ -4776,7 +4776,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="SetAccountClientMetadata (AccountID, DataContainer)" level="1">
+          <Header text="SetAccountClientMetadata (MetadataInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -4795,38 +4795,27 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>AccountID</TextContent>
+                        <TextContent>MetadataInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>string</TextContent>
+                        <TextContent>INT.AccountMetadata</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Account ID</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>DataContainer</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>INT.JSONDataContainer</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Data container</TextContent>
+                        <TextContent>Account metadata</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: Account ( AccountID )" level="2">
+            <Header text="Target Definition: Account ( MetadataInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Account object</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: MetadataAsJSONString ( DataContainer )" level="2">
+            <Header text="Target Definition: MetadataAsJSONString ( MetadataInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Metadata serialized as JSON string</TextContent>
@@ -4848,7 +4837,7 @@
               </Paragraph>
             </Header>
           </Header>
-          <Header text="SetAccountServerMetadata (AccountID, DataContainer)" level="1">
+          <Header text="SetAccountServerMetadata (MetadataInfo)" level="1">
             <Header text="Specifications" level="2">
               <Paragraph>
                 <Text>
@@ -4867,38 +4856,27 @@
                   <Rows>
                     <Row>
                       <ColumnData>
-                        <TextContent>AccountID</TextContent>
+                        <TextContent>MetadataInfo</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>string</TextContent>
+                        <TextContent>INT.AccountMetadata</TextContent>
                       </ColumnData>
                       <ColumnData>
-                        <TextContent>Account ID</TextContent>
-                      </ColumnData>
-                    </Row>
-                    <Row>
-                      <ColumnData>
-                        <TextContent>DataContainer</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>INT.JSONDataContainer</TextContent>
-                      </ColumnData>
-                      <ColumnData>
-                        <TextContent>Data container</TextContent>
+                        <TextContent>Account metadata</TextContent>
                       </ColumnData>
                     </Row>
                   </Rows>
                 </Table>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: Account ( AccountID )" level="2">
+            <Header text="Target Definition: Account ( MetadataInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Account object</TextContent>
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Target Definition: MetadataAsJSONString ( DataContainer )" level="2">
+            <Header text="Target Definition: MetadataAsJSONString ( MetadataInfo )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Metadata serialized as JSON string</TextContent>
