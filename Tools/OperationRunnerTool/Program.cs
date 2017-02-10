@@ -131,7 +131,7 @@ namespace OperationRunnerTool
     -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.CreateGroup -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14
     -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14,AccountID:1021da4a-17f5-4c3a-8082-497c8b62b76a,Role:Initiator
 
-    -cr:X:\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p: -p:"{GroupName: \"Test Belt Promo\"}"
+    -cr:X:\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p:"{AccountID: \"4cae6185-8dc5-4a50-8756-28c5a5103b8a\", Data: { foo: \"bar\" }}"
     
 #endif
 

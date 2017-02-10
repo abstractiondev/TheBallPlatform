@@ -77,17 +77,19 @@ namespace TheBall
                 Secure = true
             });
 
+
+            string clientMetadataJSONString = null;
             if (!String.IsNullOrEmpty(base64ClientMetadata))
             {
                 var clientMetadataJSONData = Convert.FromBase64String(base64ClientMetadata);
-                var clientMetadataJSONString = Encoding.UTF8.GetString(clientMetadataJSONData);
-                setResponseCookie(response, new HttpCookie(ClientMetadataCookieName, clientMetadataJSONString)
-                {
-                  HttpOnly = false,
-                  Secure = true
-                });
+                clientMetadataJSONString = Encoding.UTF8.GetString(clientMetadataJSONData);
 
             }
+            setResponseCookie(response, new HttpCookie(ClientMetadataCookieName, clientMetadataJSONString)
+            {
+                HttpOnly = false,
+                Secure = true
+            });
         }
 
         private static void setResponseCookie(HttpResponse response, HttpCookie cookie)
