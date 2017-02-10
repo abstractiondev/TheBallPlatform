@@ -133,7 +133,49 @@ using System.Threading.Tasks;
 		{
 				public Account EnsuredAccount ;
 				}
-				public class CreateAccountParameters 
+				public class SetAccountClientMetadataParameters 
+		{
+				public string AccountID ;
+				public INT.JSONDataContainer DataContainer ;
+				}
+		
+		public class SetAccountClientMetadata 
+		{
+				private static void PrepareParameters(SetAccountClientMetadataParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetAccountClientMetadataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await SetAccountClientMetadataImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				string MetadataAsJSONString = SetAccountClientMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.DataContainer);	
+				SetAccountClientMetadataImplementation.ExecuteMethod_SetAccountClientMetadata(Account, MetadataAsJSONString);		
+				 await SetAccountClientMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
+				}
+
+		    public class SetAccountServerMetadataParameters 
+		{
+				public string AccountID ;
+				public INT.JSONDataContainer DataContainer ;
+				}
+		
+		public class SetAccountServerMetadata 
+		{
+				private static void PrepareParameters(SetAccountServerMetadataParameters parameters)
+		{
+					}
+				public static async Task ExecuteAsync(SetAccountServerMetadataParameters parameters)
+		{
+						PrepareParameters(parameters);
+					Account Account =  await SetAccountServerMetadataImplementation.GetTarget_AccountAsync(parameters.AccountID);	
+				string MetadataAsJSONString = SetAccountServerMetadataImplementation.GetTarget_MetadataAsJSONString(parameters.DataContainer);	
+				SetAccountServerMetadataImplementation.ExecuteMethod_SetAccountServerMetadata(Account, MetadataAsJSONString);		
+				 await SetAccountServerMetadataImplementation.ExecuteMethod_StoreObjectAsync(Account);		
+				}
+				}
+
+		    public class CreateAccountParameters 
 		{
 				public string AccountID ;
 				public string LoginUrl ;

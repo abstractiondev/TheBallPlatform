@@ -249,6 +249,8 @@
     <Compile Include="TheBall.CORE\RemoveEmailImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoveGroupMembershipImplementation.cs" />
     <Compile Include="TheBall.CORE\RemoveLoginImplementation.cs" />
+    <Compile Include="TheBall.CORE\SetAccountClientMetadataImplementation.cs" />
+    <Compile Include="TheBall.CORE\SetAccountServerMetadataImplementation.cs" />
     <Compile Include="TheBall.CORE\SetGroupMembershipImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateAccountMembershipStatusesImplementation.cs" />
     <Compile Include="TheBall.CORE\UpdateContainerOwnerTemplatesImplementation.cs" />

@@ -326,8 +326,8 @@ namespace WebInterface
             GenericPrincipal principal = (GenericPrincipal)context.User;
             TheBallIdentity identity = (TheBallIdentity)principal.Identity;
             var accountID = identity.AccountID;
-            if (accountID == null)
-                accountID = await createMissingAccount(context, identity);
+            if (String.IsNullOrEmpty(accountID))
+                accountID = await createOrReconnectMissingAccount(context, identity);
             var accountOwner = VirtualOwner.FigureOwner("acc/" + accountID);
             InformationContext.AuthenticateContextOwner(accountOwner);
             var request = context.Request;
@@ -335,9 +335,10 @@ namespace WebInterface
             await HandleOwnerRequest(accountOwner, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
-        private static async Task<string> createMissingAccount(HttpContext context, TheBallIdentity identity)
+        private static async Task<string> createOrReconnectMissingAccount(HttpContext context, TheBallIdentity identity)
         {
             string loginUrl = WebSupport.GetLoginUrl(context);
+            string emailAddress = identity.EmailAddress;
             var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(Login.GetLoginIDFromLoginURL(loginUrl));
             if (login == null)
             {
@@ -355,7 +356,6 @@ namespace WebInterface
                 }
                 else // Login info without account/login data
                 {
-                    string emailAddress = identity.EmailAddress;
                     var ensuredAccountResult = await EnsureAccount.ExecuteAsync(new EnsureAccountParameters
                     {
                         EmailAddress = emailAddress,
@@ -363,24 +363,27 @@ namespace WebInterface
                     });
                     var ensuredAccount = ensuredAccountResult.EnsuredAccount;
                     var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
-                    var accountID = ensuredAccount.ID;
+                    var ensuredAccountID = ensuredAccount.ID;
                     login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(loginID);
                     if (login == null)
                     {
                         var ensuredLoginResult = await EnsureLogin.ExecuteAsync(new EnsureLoginParameters
                         {
-                            AccountID = accountID,
+                            AccountID = ensuredAccountID,
                             LoginURL = loginUrl
                         });
                         login = ensuredLoginResult.EnsuredLogin;
-                        login.Account = accountID;
+                        login.Account = ensuredAccountID;
                         await login.StoreInformationAsync();
                     }
                 }
             }
             if (login == null)
                 throw new SecurityException("Unknown login: " + loginUrl);
+            var accountID = login.Account;
             var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(login.Account);
+            string base64ClientMetadata = account.GetClientMetadataAsBase64();
+            AuthenticationSupport.SetUserAuthentication(context, loginUrl, emailAddress, accountID, base64ClientMetadata);
             return account.ID;
         }
 

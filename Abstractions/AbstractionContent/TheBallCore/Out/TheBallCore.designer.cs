@@ -57,6 +57,13 @@ namespace INT {
 			}
 
 			[DataContract]
+			public partial class JSONDataContainer
+			{
+				[DataMember]
+				public System.Dynamic.ExpandoObject Data { get; set; }
+			}
+
+			[DataContract]
 			public partial class DeviceOperationData
 			{
 				[DataMember]
@@ -1165,6 +1172,20 @@ namespace INT {
 					if(customDemo != null)
 						return customDemo;
 					var result = new Account();
+					result.ServerMetadataJSON = @"Account.ServerMetadataJSON
+Account.ServerMetadataJSON
+Account.ServerMetadataJSON
+Account.ServerMetadataJSON
+Account.ServerMetadataJSON
+";
+
+					result.ClientMetadataJSON = @"Account.ClientMetadataJSON
+Account.ClientMetadataJSON
+Account.ClientMetadataJSON
+Account.ClientMetadataJSON
+Account.ClientMetadataJSON
+";
+
 				
 					return result;
 				}
@@ -1232,6 +1253,12 @@ namespace INT {
 						case "GroupMemberships":
 							throw new NotImplementedException("Parsing collection types is not implemented for item collections");
 							break;
+						case "ServerMetadataJSON":
+							ServerMetadataJSON = value;
+							break;
+						case "ClientMetadataJSON":
+							ClientMetadataJSON = value;
+							break;
 						default:
 							throw new InvalidDataException("Primitive parseable data type property not found: " + propertyName);
 					}
@@ -1242,6 +1269,12 @@ namespace INT {
 			public List< string > Logins = new List< string >();
 			[DataMember] [ProtoMember(3)]
 			public List< string > GroupMemberships = new List< string >();
+			[DataMember] [ProtoMember(4)]
+			public string ServerMetadataJSON { get; set; }
+			private string _unmodified_ServerMetadataJSON;
+			[DataMember] [ProtoMember(5)]
+			public string ClientMetadataJSON { get; set; }
+			private string _unmodified_ClientMetadataJSON;
 			
 			}
 			[DataContract] [ProtoContract]

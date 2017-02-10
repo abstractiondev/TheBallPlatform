@@ -4401,6 +4401,124 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		Store object
 		</div>
+		</p><h1>SetAccountClientMetadata (AccountID, DataContainer)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Set account client side metadata
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DataContainer
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.JSONDataContainer
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data container
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: MetadataAsJSONString ( DataContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Metadata serialized as JSON string
+		</div>
+		</p><h2>Method Call: SetAccountClientMetadata ( Account, MetadataAsJSONString )</h2>
+		<p>		<div class="MsoNormal" >
+		Set metadata
+		</div>
+		</p><h2>Method Call: StoreObject ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
+		</p><h1>SetAccountServerMetadata (AccountID, DataContainer)</h1>
+		<h2>Specifications</h2>
+		<p>		<div class="MsoNormal" >
+		Set account client side metadata
+		</div>
+		</p><h2>Parameters</h2>
+		<p><table border="1">
+				<tr><th><div class=MsoNormal>Parameter</div></th><th><div class=MsoNormal>DataType</div></th><th><div class=MsoNormal>Description</div></th></tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		AccountID
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		string
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Account ID
+		</div>
+				</td>
+				</tr>
+				<tr>
+				<td>
+				<div class="MsoNormal" >
+		DataContainer
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		INT.JSONDataContainer
+		</div>
+				</td>
+				<td>
+				<div class="MsoNormal" >
+		Data container
+		</div>
+				</td>
+				</tr>
+		</table>
+		</p><h2>Target Definition: Account ( AccountID )</h2>
+		<p>		<div class="MsoNormal" >
+		Account object
+		</div>
+		</p><h2>Target Definition: MetadataAsJSONString ( DataContainer )</h2>
+		<p>		<div class="MsoNormal" >
+		Metadata serialized as JSON string
+		</div>
+		</p><h2>Method Call: SetAccountServerMetadata ( Account, MetadataAsJSONString )</h2>
+		<p>		<div class="MsoNormal" >
+		Set metadata
+		</div>
+		</p><h2>Method Call: StoreObject ( Account )</h2>
+		<p>		<div class="MsoNormal" >
+		Store object
+		</div>
 		</p><h1>SetDeviceMembershipValidationAndActiveStatus (Owner, DeviceMembershipID, IsValidAndActive)</h1>
 		<h2>Specifications</h2>
 		<p>		<div class="MsoNormal" >

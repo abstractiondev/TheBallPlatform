@@ -283,6 +283,8 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
+		            existingObject.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
+		            existingObject.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
 		            break;
 		        } 
 		        case "Group":
@@ -981,6 +983,8 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
+		            existingObject.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
+		            existingObject.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
 		            break;
 		        } 
 		        case "Group":
@@ -1675,6 +1679,8 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
+		            objectToAdd.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
+		            objectToAdd.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
 					AccountTable.InsertOnSubmit(objectToAdd);
                     break;
                 }
@@ -2360,6 +2366,8 @@ namespace SQLite.TheBall.CORE {
                             });
                     }
 
+		            objectToAdd.ServerMetadataJSON = serializedObject.ServerMetadataJSON;
+		            objectToAdd.ClientMetadataJSON = serializedObject.ClientMetadataJSON;
 					AccountTable.InsertOnSubmit(objectToAdd);
                     break;
                 }
@@ -4381,7 +4389,9 @@ CREATE TABLE IF NOT EXISTS [Email](
 CREATE TABLE IF NOT EXISTS [Account](
 [ID] TEXT NOT NULL PRIMARY KEY, 
 [ETag] TEXT NOT NULL
-
+, 
+[ServerMetadataJSON] TEXT NOT NULL, 
+[ClientMetadataJSON] TEXT NOT NULL
 )";
         }
 
@@ -4406,9 +4416,23 @@ CREATE TABLE IF NOT EXISTS [Account](
 			set { _GroupMemberships.Assign(value); }
 		}
 
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string ServerMetadataJSON { get; set; }
+		// private string _unmodified_ServerMetadataJSON;
+
+		[Column]
+        [ScaffoldColumn(true)]
+		public string ClientMetadataJSON { get; set; }
+		// private string _unmodified_ClientMetadataJSON;
         public void PrepareForStoring(bool isInitialInsert)
         {
 		
+			if(ServerMetadataJSON == null)
+				ServerMetadataJSON = string.Empty;
+			if(ClientMetadataJSON == null)
+				ClientMetadataJSON = string.Empty;
 		}
 	}
     [Table(Name = "Group")]

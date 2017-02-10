@@ -38,6 +38,13 @@ namespace INT {
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
+			public partial class JSONDataContainer
+			{
+				[DataMember]
+				public System.Dynamic.ExpandoObject Data { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE.INT")]
 			public partial class DeviceOperationData
 			{
 				[DataMember]
@@ -329,6 +336,12 @@ namespace INT {
 			public List< string > Logins = new List< string >();
 			[DataMember] [ProtoMember(3)]
 			public List< string > GroupMemberships = new List< string >();
+			[DataMember] [ProtoMember(4)]
+			public string ServerMetadataJSON { get; set; }
+			private string _unmodified_ServerMetadataJSON;
+			[DataMember] [ProtoMember(5)]
+			public string ClientMetadataJSON { get; set; }
+			private string _unmodified_ClientMetadataJSON;
 			
 			}
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.CORE")] [ProtoContract]

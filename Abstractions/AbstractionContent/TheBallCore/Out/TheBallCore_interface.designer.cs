@@ -62,6 +62,20 @@ using System.Runtime.Serialization;
 			
 			}
 			[DataContract]
+			public partial class JSONDataContainer 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public System.Dynamic.ExpandoObject Data;
+
+			
+			}
+			[DataContract]
 			public partial class DeviceOperationData 
 			{
 				[DataMember]

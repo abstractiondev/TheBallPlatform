@@ -170,7 +170,7 @@ namespace WebInterface
             else
                 throw new NotSupportedException("Provider not supported: " + provider);
             validateEmailAndExitForRestricted(emailAddress);
-            AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress, null);
+            AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, userName, emailAddress);
             Response.Redirect(redirectUrl, true);
             return redirectUrl;
         }
@@ -235,7 +235,7 @@ namespace WebInterface
                     //                                                                 DateTime.Now.AddDays(10),
                     //                                                                 true, "user custom data");
 
-                    AuthenticationSupport.SetAuthenticationCookie(Response, userName, emailAddress, null);
+                    AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, userName, emailAddress);
                     //FormsAuthentication.RedirectFromLoginPage(response.ClaimedIdentifier, false);
                     //string redirectUrl = FormsAuthentication.GetRedirectUrl(userName, true);
                     string redirectUrl = Request.Params["ReturnUrl"];
@@ -351,7 +351,7 @@ namespace WebInterface
                     throw new SecurityException("Invalid URL for UserID");
                 //string queryWithoutPrefix = query.Substring(secureProtocolPrefix.Length);
                 string wilmaUserID = query + "/" + wilmaLoginName;
-                AuthenticationSupport.SetAuthenticationCookie(Response, wilmaUserID, null, null);
+                AuthenticationSupport.SetAuthenticationCookieFromUserName(Response, wilmaUserID, null);
                 string redirectUrl = Request.Params["ReturnUrl"];
                 if (redirectUrl == null)
                     redirectUrl = FormsAuthentication.DefaultUrl;

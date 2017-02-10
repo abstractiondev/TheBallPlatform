@@ -23,6 +23,11 @@
             <InterfaceItem name="Success" logicalDataType="TrueOrFalse_Boolean"/>
           </InterfaceItems>
         </InterfaceObject>
+        <InterfaceObject name="JSONDataContainer" designDesc="Custom JSON data container">
+          <InterfaceItems>
+            <ObjectInstance name="Data" interfaceObjectName="System.Dynamic.ExpandoObject" isCollection="false"/>
+          </InterfaceItems>
+        </InterfaceObject>
         <InterfaceObject name="DeviceOperationData" designDesc="Device operation data for device-connection related remote operations">
           <InterfaceItems>
             <InterfaceItem name="OperationRequestString" logicalDataType="Text_Short"/>
@@ -71,6 +76,8 @@
           <InformationItem name="Logins" logicalDataType="ObjectLink" objectLinkTargetType="Login" isCollection="true" fieldOrderNumber="2"/>
           <InformationItem name="GroupMemberships" logicalDataType="ObjectLink" isCollection="true" 
                            objectLinkTargetType="GroupMembership" fieldOrderNumber="3"/>
+          <InformationItem name="ServerMetadataJSON" logicalDataType="Text_Long" fieldOrderNumber="4" />
+          <InformationItem name="ClientMetadataJSON" logicalDataType="Text_Long" fieldOrderNumber="5"/>
         </InformationItems>
       </InformationObject>
       <InformationObject name="Group" designDesc="Core level group" serializationType="ProtoBuf">
@@ -553,6 +560,58 @@
           <ReturnValue dataType="Account" name="EnsuredAccount" designDesc="Ensured account, with given email ensured and connected to it" state="implemented" />
           <Target name="ResultingAccount"/>
         </OperationReturnValues>
+      </Operation>
+      <Operation name="SetAccountClientMetadata">
+        <OperationSpec>
+          <Description>Set account client side metadata</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented"/>
+          <Parameter name="DataContainer" dataType="INT.JSONDataContainer" designDesc="Data container" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Account" dataType="Account" designDesc="Account object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
+              <Parameter name="DataContainer"/>
+            </TargetDefinition>
+            <MethodExecute name="SetAccountClientMetadata" designDesc="Set metadata" state="implemented">
+              <Target name="Account"/>
+              <Target name="MetadataAsJSONString"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="SetAccountServerMetadata">
+        <OperationSpec>
+          <Description>Set account client side metadata</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="AccountID" dataType="string" designDesc="Account ID" state="implemented"/>
+          <Parameter name="DataContainer" dataType="INT.JSONDataContainer" designDesc="Data container" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="Account" dataType="Account" designDesc="Account object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Parameter name="AccountID"/>
+            </TargetDefinition>
+            <TargetDefinition name="MetadataAsJSONString" dataType="string" designDesc="Metadata serialized as JSON string" state="implemented">
+              <Parameter name="DataContainer"/>
+            </TargetDefinition>
+            <MethodExecute name="SetAccountServerMetadata" designDesc="Set metadata" state="implemented">
+              <Target name="Account"/>
+              <Target name="MetadataAsJSONString"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObject" designDesc="Store object" asyncSupportMode="AsyncOnly" state="implemented">
+              <Target name="Account"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
       </Operation>
       <Operation name="CreateAccount">
         <OperationSpec>
