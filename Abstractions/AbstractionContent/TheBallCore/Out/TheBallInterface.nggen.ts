@@ -1,6 +1,71 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class TheBallInterfaceService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async SendEmail(param:EmailPackage) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.SendEmail", param);
+		return result;
+	}
+
+	async SetCategoryLinkingForConnection() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.SetCategoryLinkingForConnection");
+		return result;
+	}
+
+	async ExecuteLegacyHttpPostRequest() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.ExecuteLegacyHttpPostRequest");
+		return result;
+	}
+
+	async CreateReceivingConnectionStructures(param:ConnectionCommunicationData) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.CreateReceivingConnectionStructures", param);
+		return result;
+	}
+
+	async ShareCollabInterfaceObject(param:ShareCollabParams) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.ShareCollabInterfaceObject", param);
+		return result;
+	}
+
+	async PushSyncNotification(param:CollaborationPartner) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.PushSyncNotification", param);
+		return result;
+	}
+
+	async PullSyncData(param:CollaborationPartner) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.PullSyncData", param);
+		return result;
+	}
+
+	async UpdateSharedDataSummaryData(param:CollaborationPartner) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.UpdateSharedDataSummaryData", param);
+		return result;
+	}
+
+	async DeleteInterfaceJSON(param:InterfaceJSONData) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.DeleteInterfaceJSON", param);
+		return result;
+	}
+
+	async SaveInterfaceJSON(param:InterfaceJSONData) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.SaveInterfaceJSON", param);
+		return result;
+	}
+
+	async SaveGroupDetails(param:GroupDetails) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Interface.SaveGroupDetails", param);
+		return result;
+	}
+}
+
 export class ShareCollabParams {
 	public Partner: CollaborationPartner;
 	public FileName: string;

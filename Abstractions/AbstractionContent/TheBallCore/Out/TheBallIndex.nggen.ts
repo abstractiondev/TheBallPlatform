@@ -1,6 +1,21 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class TheBallIndexService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async PerformUserQuery() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Index.PerformUserQuery");
+		return result;
+	}
+}
+
 export class UserQuery {
 	public QueryString: string;
 	public DefaultFieldName: string;

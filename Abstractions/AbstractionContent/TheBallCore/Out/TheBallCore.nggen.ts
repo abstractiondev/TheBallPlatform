@@ -1,6 +1,26 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class TheBallCOREService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async SetAccountClientMetadata(param:AccountMetadata) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.CORE.SetAccountClientMetadata", param);
+		return result;
+	}
+
+	async SetAccountServerMetadata(param:AccountMetadata) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.CORE.SetAccountServerMetadata", param);
+		return result;
+	}
+}
+
 export class LoginInfo {
 	public EmailAddress: string;
 	public Password: string;

@@ -1,6 +1,41 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class ProBrozOnlineTrainingService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async SyncPlansAndPaymentOptionsFromStripe() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("ProBroz.OnlineTraining.SyncPlansAndPaymentOptionsFromStripe");
+		return result;
+	}
+
+	async GetOrInitiateDefaultGym() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("ProBroz.OnlineTraining.GetOrInitiateDefaultGym");
+		return result;
+	}
+
+	async CreateMember(param:Member) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("ProBroz.OnlineTraining.CreateMember", param);
+		return result;
+	}
+
+	async SaveMember(param:Member) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("ProBroz.OnlineTraining.SaveMember", param);
+		return result;
+	}
+
+	async DeleteMember(param:Member) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("ProBroz.OnlineTraining.DeleteMember", param);
+		return result;
+	}
+}
+
 export class Member {
 	public ID: string;
 	public ETag: string;

@@ -1,6 +1,36 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class TheBallInfrastructureService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async UpdateInfraDataInterfaceObjects() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Infrastructure.UpdateInfraDataInterfaceObjects");
+		return result;
+	}
+
+	async SetRuntimeVersions(param:UpdateConfig) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Infrastructure.SetRuntimeVersions", param);
+		return result;
+	}
+
+	async CreateCloudDrive() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Infrastructure.CreateCloudDrive");
+		return result;
+	}
+
+	async MountCloudDrive() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Infrastructure.MountCloudDrive");
+		return result;
+	}
+}
+
 export class UpdateConfig {
 	public PackageData: UpdateConfigItem[];
 	public constructor(init?:Partial<UpdateConfig>) {

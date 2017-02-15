@@ -1,6 +1,51 @@
  
 
 
+import {Injectable} from "@angular/core";
+import {TheBallService} from "./theball.service";
+
+@Injectable()
+export class TheBallPaymentsService {
+
+	constructor(private tbService:TheBallService) {
+	}
+
+	async ProcessStripeWebhook(param:StripeWebhookData) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.ProcessStripeWebhook", param);
+		return result;
+	}
+
+	async CancelAccountPlan(param:CancelSubscriptionParams) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.CancelAccountPlan", param);
+		return result;
+	}
+
+	async PurchaseProduct(param:ProductPurchaseInfo) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.PurchaseProduct", param);
+		return result;
+	}
+
+	async ActivateAccountPlan(param:PaymentToken) : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.ActivateAccountPlan", param);
+		return result;
+	}
+
+	async ActivateAndPayGroupSubscriptionPlan() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.ActivateAndPayGroupSubscriptionPlan");
+		return result;
+	}
+
+	async CancelGroupSubscriptionPlan() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.CancelGroupSubscriptionPlan");
+		return result;
+	}
+
+	async ProcessPayment() : Promise<any> {
+		let result = await this.tbService.ExecuteOperation("TheBall.Payments.ProcessPayment");
+		return result;
+	}
+}
+
 export class CancelSubscriptionParams {
 	public PlanName: string;
 	public constructor(init?:Partial<CancelSubscriptionParams>) {
