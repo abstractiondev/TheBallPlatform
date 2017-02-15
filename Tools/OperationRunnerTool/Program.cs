@@ -134,6 +134,23 @@ namespace OperationRunnerTool
     -cr:X:\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p:"{AccountID: \"4cae6185-8dc5-4a50-8756-28c5a5103b8a\",  Data: { isTestAccount: true }}"
     -cr:X:\Configs -i:members.ikwondo.com -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:true -p:"{AccountID: \"4cb27608-79fc-4ae5-9428-e45a0f2326e6\", Data: { isTestAccount: true }}"
     
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.CreateGroup -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:e1ba5a1d-5360-48ef-816e-825239720b2b,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:f114202a-5572-487a-a584-e12611538f72,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0,AccountID:4c6ec5f7-061f-456e-8a54-771b9b6bd031,Role:Initiator
+
+    -cr:P:\Configs -i:dev.agens.fi -owner:grp/41bec5c5-5692-4e08-8153-6145b5f251c0 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Agens Www\"}"
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.CreateGroup -p:GroupID:fdd25427-7159-4764-99c6-968265b63027
+
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:e1ba5a1d-5360-48ef-816e-825239720b2b,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:f114202a-5572-487a-a584-e12611538f72,Role:Collaborator
+    -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.SetGroupMembership -p:GroupID:fdd25427-7159-4764-99c6-968265b63027,AccountID:4c6ec5f7-061f-456e-8a54-771b9b6bd031,Role:Initiator
+
+    -cr:P:\Configs -i:dev.agens.fi -owner:grp/fdd25427-7159-4764-99c6-968265b63027 -op:TheBall.Interface.SaveGroupDetails -remoteExecute:false -p:"{GroupName: \"Withsnet\"}"
+
+
 #endif
 
 }

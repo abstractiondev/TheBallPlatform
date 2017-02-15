@@ -7,8 +7,7 @@
         <Generator name="DataContractSerializationCSharpClassGenerator_v1_0"/>
         <Generator name="SQLiteCSharpClassGenerator_v1_0"/>
         <Generator name="InterfaceModelCSharpClassGenerator_v1_0"/>
-        <Generator name="KBObservableModelJSGenerator_v1_0"/>
-        <Generator name="KBDustTemplateViewGenerator_v1_0"/>
+        <Generator name="NgTypeScriptClassGenerator_v1_0"/>
       </Abstraction>
       <Abstraction name="OperationABS">
         <Generator name="CSharpCode_v1_0"/>
