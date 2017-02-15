@@ -21,7 +21,7 @@ export class CollaborationPartner {
 
 export class InterfaceJSONData {
 	public Name: string;
-	public Data: System.Dynamic.ExpandoObject;
+	public Data: any;
 	public constructor(init?:Partial<InterfaceJSONData>) {
 		Object.assign(this, init);
 	}

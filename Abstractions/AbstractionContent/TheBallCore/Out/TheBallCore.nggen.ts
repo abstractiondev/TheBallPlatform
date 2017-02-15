@@ -29,7 +29,7 @@ export class LoginRegistrationResult {
 
 export class AccountMetadata {
 	public AccountID: string;
-	public Data: System.Dynamic.ExpandoObject;
+	public Data: any;
 	public constructor(init?:Partial<AccountMetadata>) {
 		Object.assign(this, init);
 	}
