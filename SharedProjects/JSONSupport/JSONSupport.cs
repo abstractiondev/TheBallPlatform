@@ -76,13 +76,21 @@ namespace TheBall.CORE.Storage
 
         public static byte[] SerializeToJSONData(object obj)
         {
-            var serializer = new JsonSerializer();
             using(var memoryStream = new MemoryStream())
-            using(var streamWriter = new StreamWriter(memoryStream, Encoding.UTF8))
             {
-                serializer.Serialize(streamWriter, obj);
+                SerializeToJSONStream(obj, memoryStream);
                 return memoryStream.ToArray();
             }
         }
+
+        public static void SerializeToJSONStream(object obj, Stream outputStream)
+        {
+            var serializer = new JsonSerializer();
+            using (var streamWriter = new StreamWriter(outputStream, Encoding.UTF8))
+            {
+                serializer.Serialize(streamWriter, obj);
+            }
+        }
+
     }
 }

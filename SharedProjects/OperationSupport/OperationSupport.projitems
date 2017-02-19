@@ -10,5 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)HttpOperationData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LinqExt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LogicalOperationContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OperationSupport.cs" />
   </ItemGroup>
 </Project>

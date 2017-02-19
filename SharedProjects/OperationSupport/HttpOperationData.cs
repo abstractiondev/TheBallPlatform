@@ -6,7 +6,7 @@ using FileName=System.String;
 using ParamName=System.String;
 using String=System.String;
 
-namespace AzureSupport
+namespace TheBall.CORE
 {
     [ProtoContract]
     public class HttpOperationData
