@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureRoleSupport", "Apps\Az
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWebConsole", "Apps\TheBallWebConsole\TheBallWebConsole.csproj", "{4F8CA93C-D355-46A0-93EF-081FE56E2398}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "SharedProjects\BlobStorageSupport\BlobStorageSupport.shproj", "{7EE65749-80A3-42A1-A16E-A32EFE7C8633}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureRoleSupportTests", "Apps\AzureRoleSupportTests\AzureRoleSupportTests.csproj", "{FB0C8FA4-F2EC-4DEF-B1BE-F705397A3372}"
 EndProject
@@ -44,11 +44,11 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{3e4ea4b4-8b6d-4422-bc92-2d291e967aa0}*SharedItemsImports = 13
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
 		SharedProjects\AppUpdater\AppUpdater.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
 		SharedProjects\InstanceSupport\InstanceSupport.projitems*{4f8ca93c-d355-46a0-93ef-081fe56e2398}*SharedItemsImports = 4
 		SharedProjects\AppUpdater\AppUpdater.projitems*{572a5924-71fc-4a54-ba2d-a50a3c122423}*SharedItemsImports = 4
-		Apps\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
+		SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems*{7ee65749-80a3-42a1-a16e-a32efe7c8633}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
