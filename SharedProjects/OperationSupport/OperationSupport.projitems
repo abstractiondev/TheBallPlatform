@@ -9,5 +9,6 @@
     <Import_RootNamespace>OperationSupport</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)HttpOperationData.cs" />
   </ItemGroup>
 </Project>
