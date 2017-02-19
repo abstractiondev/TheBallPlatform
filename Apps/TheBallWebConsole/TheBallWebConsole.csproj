@@ -133,7 +133,7 @@
       <Name>WebServerManager</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\BlobStorageSupport\BlobStorageSupport.projitems" Label="Shared" />
+  <Import Project="..\..\SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\AppUpdater\AppUpdater.projitems" Label="Shared" />
   <Import Project="..\..\SharedProjects\InstanceSupport\InstanceSupport.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
