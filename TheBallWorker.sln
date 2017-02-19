@@ -27,6 +27,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BlobStorageSupport", "Apps\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "AppUpdater", "SharedProjects\AppUpdater\AppUpdater.shproj", "{1F05B685-1B9E-4413-AE6D-5301C7608654}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDevWorker", "Apps\TheBallDevWorker\TheBallDevWorker.csproj", "{918EE1C8-289D-4939-BCFE-F90D0061CCEF}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedProjects\AppUpdater\AppUpdater.projitems*{1f05b685-1b9e-4413-ae6d-5301c7608654}*SharedItemsImports = 13
@@ -129,6 +131,18 @@ Global
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.ActiveCfg = Release|x86
 		{4834257C-F8D3-42BE-8C22-DCD19F5DFCFA}.Release|x86.Build.0 = Release|x86
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Debug|x86.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|x86.ActiveCfg = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.NuGetDebug|x86.Build.0 = Debug|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|x86.ActiveCfg = Release|Any CPU
+		{918EE1C8-289D-4939-BCFE-F90D0061CCEF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
