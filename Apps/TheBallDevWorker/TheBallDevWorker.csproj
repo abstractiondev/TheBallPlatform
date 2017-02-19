@@ -51,6 +51,10 @@
       <HintPath>..\..\packages\NDesk.Options.0.2.1\lib\NDesk.Options.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Nito.AsyncEx, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nito.AsyncEx.4.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
       <Private>True</Private>
@@ -81,6 +85,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\..\SharedProjects\BlobStorageSupport\BlobStorageSupport.projitems" Label="Shared" />
+  <Import Project="..\..\SharedProjects\OperationSupport\OperationSupport.projitems" Label="Shared" />
+  <Import Project="..\..\SharedProjects\JSONSupport\JSONSupport.projitems" Label="Shared" />
+  <Import Project="..\..\SharedProjects\FileStorageSupport\FileStorageSupport.projitems" Label="Shared" />
+  <Import Project="..\..\SharedProjects\InformationContext\InformationContext.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
