@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NDesk.Options;
 using Nito.AsyncEx;
+using TheBall.CORE;
 
 namespace TheBallDevWorker
 {
@@ -35,18 +36,32 @@ namespace TheBallDevWorker
             try
             {
                 //Debugger.Launch();
-                bool isTestMode = false;
-                string dedicatedToOwner = null;
                 string applicationConfigFullPath = null;
-                string updateAccessInfoFile = null;
-                bool autoUpdate = false;
-                string clientHandle = null;
+                string monitorFolder = null;
                 var optionSet = new OptionSet()
                 {
+                    {
+                        "ac|applicationConfig=", "Application config full path",
+                        ac => applicationConfigFullPath = ac
+                    },
+                    {
+                        "m|monitorFolder=", "Monitor folder full path",
+                        m => monitorFolder = m
+                    }
+
                 };
                 var options = optionSet.Parse(args);
                 bool hasExtraOptions = options.Count > 0;
-                AsyncContext.Run(() => MainAsync());
+                bool isMissingMandatory = applicationConfigFullPath == null && monitorFolder == null;
+                if (hasExtraOptions || isMissingMandatory)
+                {
+                    Console.WriteLine($"Usage: {ComponentName}.exe");
+                    Console.WriteLine();
+                    Console.WriteLine("Options:");
+                    optionSet.WriteOptionDescriptions(Console.Out);
+                    return -1;
+                }
+                AsyncContext.Run(() => MainAsync(applicationConfigFullPath:applicationConfigFullPath, monitorFolder:monitorFolder));
             }
             catch (Exception exception)
             {
@@ -59,9 +74,68 @@ namespace TheBallDevWorker
             return ExitCode;
         }
 
-        static async Task MainAsync()
+        static async Task MainAsync(string applicationConfigFullPath, string monitorFolder)
         {
-            
+            while (true)
+            {
+                await WhenFileAvailable(monitorFolder);
+                var files = Directory.GetFiles(monitorFolder)
+                    .Where(file => file.EndsWith(".data"))
+                    .OrderBy(file => file)
+                    .ToArray();
+                try
+                {
+                    foreach (var file in files)
+                    {
+                        Console.WriteLine("Found: " + Path.GetFileName(file));
+                        HttpOperationData operationData;
+                        using (var fileStream = File.OpenRead(file))
+                        {
+                            operationData = fileStream.DeserializeProtobuf<HttpOperationData>();
+                        }
+                        Console.WriteLine($"Operation: {operationData.OperationName}");
+                        var baseName = Path.GetFileNameWithoutExtension(file);
+                        var folder = Path.GetDirectoryName(file);
+                        File.Delete(file);
+                        var jsonFile = Path.Combine(folder, baseName + ".json");
+                        if (File.Exists(jsonFile))
+                            File.Delete(jsonFile);
+                    }
+                    await Task.Delay(1000);
+                }
+                catch (Exception ex)
+                {
+                    await Task.Delay(100);
+                }
+            }
+        }
+
+
+        public static Task WhenFileAvailable(string folderPath)
+        {
+            if(!Directory.Exists(folderPath))
+                throw new ArgumentException($"Folderpath missing: {folderPath}", nameof(folderPath));
+
+            if (Directory.GetFiles(folderPath).Length > 0)
+                return Task.FromResult(true);
+
+            var tcs = new TaskCompletionSource<bool>();
+            FileSystemWatcher watcher = new FileSystemWatcher(folderPath);
+            FileSystemEventHandler changeHandler = null;
+            changeHandler = (s, e) =>
+            {
+                tcs.TrySetResult(true);
+                watcher.Created -= changeHandler;
+                watcher.Dispose();
+            };
+
+            watcher.Created += changeHandler;
+            watcher.EnableRaisingEvents = true;
+
+            if (Directory.GetFiles(folderPath).Length > 0)
+                return Task.FromResult(true);
+
+            return tcs.Task;
         }
 
     }
