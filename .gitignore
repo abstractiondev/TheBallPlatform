@@ -52,3 +52,5 @@ Apps/WebInterface/webdeploy/**
 Apps/TheBallWebRole/InitialUpdatingConsole.exe
 Apps/TheBallWorkerRole/InitialUpdatingConsole.exe
 Apps/AzureConfiguration/HybridConfiguration/ServiceConfiguration.Local.cscfg
+!Abstractions/npmpub/package.json
+Abstractions/npmpub/**
