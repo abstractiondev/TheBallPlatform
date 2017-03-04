@@ -1,0 +1,22 @@
+{
+  "name": "@theball/appgen",
+  "version": "1.0.2",
+  "description": "The Ball AppGenerator",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abstractiondev/TheBallPlatform.git"
+  },
+  "keywords": [
+    "TheBall"
+  ],
+  "author": "The Ball <company@protonit.net> (https://github.com/abstractiondev)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abstractiondev/TheBallPlatform/issues"
+  },
+  "homepage": "https://github.com/abstractiondev/TheBallPlatform#readme"
+}
