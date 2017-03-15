@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -536,7 +535,7 @@ using System.Threading.Tasks;
 				public static void Execute(CreateAdditionalMediaFormatsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Bitmap BitmapData = CreateAdditionalMediaFormatsImplementation.GetTarget_BitmapData(parameters.MasterRelativeLocation);	
+					System.Drawing.Bitmap BitmapData = CreateAdditionalMediaFormatsImplementation.GetTarget_BitmapData(parameters.MasterRelativeLocation);	
 				object VideoData = CreateAdditionalMediaFormatsImplementation.GetTarget_VideoData(parameters.MasterRelativeLocation);	
 				CreateAdditionalMediaFormatsImplementation.ExecuteMethod_CreateImageMediaFormats(parameters.MasterRelativeLocation, BitmapData);		
 				CreateAdditionalMediaFormatsImplementation.ExecuteMethod_CreateVideoMediaFormats(parameters.MasterRelativeLocation, VideoData);		

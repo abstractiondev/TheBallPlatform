@@ -661,7 +661,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="BitmapData" dataType="Bitmap" designDesc="Bitmap image if existing" state="designApproved">
+          <TargetDefinition name="BitmapData" dataType="System.Drawing.Bitmap" designDesc="Bitmap image if existing" state="designApproved">
             <Parameter name="MasterRelativeLocation" />
           </TargetDefinition>
           <TargetDefinition name="VideoData" dataType="object" designDesc="Videodata" state="designApproved">
