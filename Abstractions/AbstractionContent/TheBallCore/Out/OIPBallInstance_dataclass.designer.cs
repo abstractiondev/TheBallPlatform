@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -50,7 +46,7 @@ namespace INT {
 			}
 
  } 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBSystem 
 			{
 				public TBSystem() 
@@ -91,7 +87,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class WebPublishInfo 
 			{
 				public WebPublishInfo() 
@@ -136,7 +132,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class PublicationPackageCollection 
 			{
 				public PublicationPackageCollection() 
@@ -181,7 +177,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class PublicationPackage 
 			{
 				public PublicationPackage() 
@@ -222,7 +218,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBRLoginRoot 
 			{
 				public TBRLoginRoot() 
@@ -263,7 +259,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBRAccountRoot 
 			{
 				public TBRAccountRoot() 
@@ -302,7 +298,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBRGroupRoot 
 			{
 				public TBRGroupRoot() 
@@ -341,7 +337,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBRLoginGroupRoot 
 			{
 				public TBRLoginGroupRoot() 
@@ -382,7 +378,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBREmailRoot 
 			{
 				public TBREmailRoot() 
@@ -421,7 +417,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBAccount 
 			{
 				public TBAccount() 
@@ -464,7 +460,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBAccountCollaborationGroup 
 			{
 				public TBAccountCollaborationGroup() 
@@ -507,7 +503,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBAccountCollaborationGroupCollection 
 			{
 				public TBAccountCollaborationGroupCollection() 
@@ -552,7 +548,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBLoginInfo 
 			{
 				public TBLoginInfo() 
@@ -591,7 +587,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBLoginInfoCollection 
 			{
 				public TBLoginInfoCollection() 
@@ -636,7 +632,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBEmail 
 			{
 				public TBEmail() 
@@ -677,7 +673,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBEmailCollection 
 			{
 				public TBEmailCollection() 
@@ -722,7 +718,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBCollaboratorRole 
 			{
 				public TBCollaboratorRole() 
@@ -765,7 +761,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBCollaboratorRoleCollection 
 			{
 				public TBCollaboratorRoleCollection() 
@@ -810,7 +806,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBCollaboratingGroup 
 			{
 				public TBCollaboratingGroup() 
@@ -851,7 +847,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBEmailValidation 
 			{
 				public TBEmailValidation() 
@@ -906,7 +902,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBMergeAccountConfirmation 
 			{
 				public TBMergeAccountConfirmation() 
@@ -947,7 +943,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBGroupJoinConfirmation 
 			{
 				public TBGroupJoinConfirmation() 
@@ -988,7 +984,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBDeviceJoinConfirmation 
 			{
 				public TBDeviceJoinConfirmation() 
@@ -1031,7 +1027,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBInformationInputConfirmation 
 			{
 				public TBInformationInputConfirmation() 
@@ -1074,7 +1070,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBInformationOutputConfirmation 
 			{
 				public TBInformationOutputConfirmation() 
@@ -1117,7 +1113,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LoginProvider 
 			{
 				public LoginProvider() 
@@ -1164,7 +1160,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LoginProviderCollection 
 			{
 				public LoginProviderCollection() 
@@ -1209,7 +1205,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TBPRegisterEmail 
 			{
 				public TBPRegisterEmail() 
@@ -1248,7 +1244,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountSummary 
 			{
 				public AccountSummary() 
@@ -1287,7 +1283,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountContainer 
 			{
 				public AccountContainer() 
@@ -1328,7 +1324,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountModule 
 			{
 				public AccountModule() 
@@ -1373,7 +1369,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LocationContainer 
 			{
 				public LocationContainer() 
@@ -1412,7 +1408,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddressAndLocationCollection 
 			{
 				public AddressAndLocationCollection() 
@@ -1457,7 +1453,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddressAndLocation 
 			{
 				public AddressAndLocation() 
@@ -1500,7 +1496,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StreetAddress 
 			{
 				public StreetAddress() 
@@ -1545,7 +1541,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountProfile 
 			{
 				public AccountProfile() 
@@ -1596,7 +1592,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountSecurity 
 			{
 				public AccountSecurity() 
@@ -1637,7 +1633,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AccountRoles 
 			{
 				public AccountRoles() 
@@ -1680,7 +1676,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class PersonalInfoVisibility 
 			{
 				public PersonalInfoVisibility() 
@@ -1719,7 +1715,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ReferenceToInformation 
 			{
 				public ReferenceToInformation() 
@@ -1760,7 +1756,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ReferenceCollection 
 			{
 				public ReferenceCollection() 
@@ -1805,7 +1801,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class NodeSummaryContainer 
 			{
 				public NodeSummaryContainer() 
@@ -1856,7 +1852,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class RenderedNodeCollection 
 			{
 				public RenderedNodeCollection() 
@@ -1901,7 +1897,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class RenderedNode 
 			{
 				public RenderedNode() 
@@ -1972,7 +1968,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ShortTextCollection 
 			{
 				public ShortTextCollection() 
@@ -2017,7 +2013,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ShortTextObject 
 			{
 				public ShortTextObject() 
@@ -2056,7 +2052,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LongTextCollection 
 			{
 				public LongTextCollection() 
@@ -2101,7 +2097,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LongTextObject 
 			{
 				public LongTextObject() 
@@ -2140,7 +2136,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapMarker 
 			{
 				public MapMarker() 
@@ -2191,7 +2187,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapMarkerCollection 
 			{
 				public MapMarkerCollection() 
@@ -2236,7 +2232,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ModeratorCollection 
 			{
 				public ModeratorCollection() 
@@ -2281,7 +2277,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Moderator 
 			{
 				public Moderator() 
@@ -2322,7 +2318,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CollaboratorCollection 
 			{
 				public CollaboratorCollection() 
@@ -2367,7 +2363,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Collaborator 
 			{
 				public Collaborator() 
@@ -2414,7 +2410,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupSummaryContainer 
 			{
 				public GroupSummaryContainer() 
@@ -2459,7 +2455,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupContainer 
 			{
 				public GroupContainer() 
@@ -2506,7 +2502,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupIndex 
 			{
 				public GroupIndex() 
@@ -2551,7 +2547,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddAddressAndLocationInfo 
 			{
 				public AddAddressAndLocationInfo() 
@@ -2590,7 +2586,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddImageInfo 
 			{
 				public AddImageInfo() 
@@ -2629,7 +2625,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddImageGroupInfo 
 			{
 				public AddImageGroupInfo() 
@@ -2668,7 +2664,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddEmailAddressInfo 
 			{
 				public AddEmailAddressInfo() 
@@ -2707,7 +2703,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CreateGroupInfo 
 			{
 				public CreateGroupInfo() 
@@ -2746,7 +2742,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddActivityInfo 
 			{
 				public AddActivityInfo() 
@@ -2785,7 +2781,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddBlogPostInfo 
 			{
 				public AddBlogPostInfo() 
@@ -2824,7 +2820,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AddCategoryInfo 
 			{
 				public AddCategoryInfo() 
@@ -2863,7 +2859,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupCollection 
 			{
 				public GroupCollection() 
@@ -2908,7 +2904,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Group 
 			{
 				public Group() 
@@ -2965,7 +2961,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Introduction 
 			{
 				public Introduction() 
@@ -3006,7 +3002,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ContentCategoryRankCollection 
 			{
 				public ContentCategoryRankCollection() 
@@ -3051,7 +3047,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ContentCategoryRank 
 			{
 				public ContentCategoryRank() 
@@ -3098,7 +3094,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LinkToContentCollection 
 			{
 				public LinkToContentCollection() 
@@ -3143,7 +3139,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LinkToContent 
 			{
 				public LinkToContent() 
@@ -3196,7 +3192,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class EmbeddedContentCollection 
 			{
 				public EmbeddedContentCollection() 
@@ -3241,7 +3237,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class EmbeddedContent 
 			{
 				public EmbeddedContent() 
@@ -3292,7 +3288,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DynamicContentGroupCollection 
 			{
 				public DynamicContentGroupCollection() 
@@ -3337,7 +3333,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DynamicContentGroup 
 			{
 				public DynamicContentGroup() 
@@ -3384,7 +3380,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DynamicContentCollection 
 			{
 				public DynamicContentCollection() 
@@ -3429,7 +3425,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DynamicContent 
 			{
 				public DynamicContent() 
@@ -3490,7 +3486,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AttachedToObjectCollection 
 			{
 				public AttachedToObjectCollection() 
@@ -3535,7 +3531,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AttachedToObject 
 			{
 				public AttachedToObject() 
@@ -3584,7 +3580,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CommentCollection 
 			{
 				public CommentCollection() 
@@ -3629,7 +3625,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Comment 
 			{
 				public Comment() 
@@ -3690,7 +3686,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class SelectionCollection 
 			{
 				public SelectionCollection() 
@@ -3735,7 +3731,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Selection 
 			{
 				public Selection() 
@@ -3786,7 +3782,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TextContentCollection 
 			{
 				public TextContentCollection() 
@@ -3831,7 +3827,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TextContent 
 			{
 				public TextContent() 
@@ -3896,7 +3892,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Map 
 			{
 				public Map() 
@@ -3935,7 +3931,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapCollection 
 			{
 				public MapCollection() 
@@ -3980,7 +3976,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapResult 
 			{
 				public MapResult() 
@@ -4019,7 +4015,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapResultCollection 
 			{
 				public MapResultCollection() 
@@ -4064,7 +4060,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MapResultsCollection 
 			{
 				public MapResultsCollection() 
@@ -4107,7 +4103,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Video 
 			{
 				public Video() 
@@ -4150,7 +4146,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ImageCollection 
 			{
 				public ImageCollection() 
@@ -4195,7 +4191,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Image 
 			{
 				public Image() 
@@ -4246,7 +4242,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class BinaryFileCollection 
 			{
 				public BinaryFileCollection() 
@@ -4291,7 +4287,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class BinaryFile 
 			{
 				public BinaryFile() 
@@ -4338,7 +4334,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MediaContent 
 			{
 				public MediaContent() 
@@ -4375,7 +4371,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Longitude 
 			{
 				public Longitude() 
@@ -4414,7 +4410,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Latitude 
 			{
 				public Latitude() 
@@ -4453,7 +4449,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Location 
 			{
 				public Location() 
@@ -4496,7 +4492,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class LocationCollection 
 			{
 				public LocationCollection() 
@@ -4541,7 +4537,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Date 
 			{
 				public Date() 
@@ -4586,7 +4582,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CategoryContainer 
 			{
 				public CategoryContainer() 
@@ -4625,7 +4621,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Category 
 			{
 				public Category() 
@@ -4676,7 +4672,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CategoryCollection 
 			{
 				public CategoryCollection() 
@@ -4721,7 +4717,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class UpdateWebContentOperation 
 			{
 				public UpdateWebContentOperation() 
@@ -4770,7 +4766,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class UpdateWebContentHandlerItem 
 			{
 				public UpdateWebContentHandlerItem() 
@@ -4811,7 +4807,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class UpdateWebContentHandlerCollection 
 			{
 				public UpdateWebContentHandlerCollection() 

@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -222,7 +218,7 @@ namespace INT {
 			}
 
  } 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InterfaceOperation 
 			{
 				public InterfaceOperation() 
@@ -277,7 +273,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ConnectionCollection 
 			{
 				public ConnectionCollection() 
@@ -322,7 +318,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Connection 
 			{
 				public Connection() 
@@ -391,7 +387,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TransferPackage 
 			{
 				public TransferPackage() 
@@ -438,7 +434,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CategoryLink 
 			{
 				public CategoryLink() 
@@ -481,7 +477,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Category 
 			{
 				public Category() 
@@ -530,7 +526,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StatusSummary 
 			{
 				public StatusSummary() 
@@ -575,7 +571,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationChangeItem 
 			{
 				public InformationChangeItem() 
@@ -618,7 +614,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class OperationExecutionItem 
 			{
 				public OperationExecutionItem() 
@@ -671,7 +667,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GenericObjectCollection 
 			{
 				public GenericObjectCollection() 
@@ -716,7 +712,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GenericCollectionableObject 
 			{
 				public GenericCollectionableObject() 
@@ -755,7 +751,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GenericObject 
 			{
 				public GenericObject() 
@@ -798,7 +794,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GenericValue 
 			{
 				public GenericValue() 

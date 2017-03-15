@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -88,7 +84,7 @@ namespace INT {
 			}
 
  } 			[DataContract] [ProtoContract]
-			[Serializable]
+			//[Serializable]
 			public partial class Login 
 			{
 				public Login() 
@@ -133,7 +129,7 @@ namespace INT {
 			
 			}
 			[DataContract] [ProtoContract]
-			[Serializable]
+			//[Serializable]
 			public partial class Email 
 			{
 				public Email() 
@@ -180,7 +176,7 @@ namespace INT {
 			
 			}
 			[DataContract] [ProtoContract]
-			[Serializable]
+			//[Serializable]
 			public partial class Account 
 			{
 				public Account() 
@@ -227,7 +223,7 @@ namespace INT {
 			
 			}
 			[DataContract] [ProtoContract]
-			[Serializable]
+			//[Serializable]
 			public partial class Group 
 			{
 				public Group() 
@@ -266,7 +262,7 @@ namespace INT {
 			
 			}
 			[DataContract] [ProtoContract]
-			[Serializable]
+			//[Serializable]
 			public partial class GroupMembership 
 			{
 				public GroupMembership() 
@@ -309,7 +305,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ContentPackageCollection 
 			{
 				public ContentPackageCollection() 
@@ -354,7 +350,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ContentPackage 
 			{
 				public ContentPackage() 
@@ -401,7 +397,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationInputCollection 
 			{
 				public InformationInputCollection() 
@@ -446,7 +442,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationInput 
 			{
 				public InformationInput() 
@@ -493,7 +489,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationOutputCollection 
 			{
 				public InformationOutputCollection() 
@@ -538,7 +534,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationOutput 
 			{
 				public InformationOutput() 
@@ -587,7 +583,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AuthenticatedAsActiveDeviceCollection 
 			{
 				public AuthenticatedAsActiveDeviceCollection() 
@@ -632,7 +628,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class AuthenticatedAsActiveDevice 
 			{
 				public AuthenticatedAsActiveDevice() 
@@ -683,7 +679,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DeviceMembershipCollection 
 			{
 				public DeviceMembershipCollection() 
@@ -728,7 +724,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class DeviceMembership 
 			{
 				public DeviceMembership() 
@@ -773,7 +769,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceFiscalExportSummary 
 			{
 				public InvoiceFiscalExportSummary() 
@@ -816,7 +812,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceSummaryContainer 
 			{
 				public InvoiceSummaryContainer() 
@@ -861,7 +857,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceCollection 
 			{
 				public InvoiceCollection() 
@@ -906,7 +902,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Invoice 
 			{
 				public Invoice() 
@@ -963,7 +959,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceDetails 
 			{
 				public InvoiceDetails() 
@@ -1012,7 +1008,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceUserCollection 
 			{
 				public InvoiceUserCollection() 
@@ -1057,7 +1053,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceUser 
 			{
 				public InvoiceUser() 
@@ -1108,7 +1104,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceRowGroupCollection 
 			{
 				public InvoiceRowGroupCollection() 
@@ -1153,7 +1149,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceEventDetailGroupCollection 
 			{
 				public InvoiceEventDetailGroupCollection() 
@@ -1198,7 +1194,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceRowGroup 
 			{
 				public InvoiceRowGroup() 
@@ -1245,7 +1241,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceEventDetailGroup 
 			{
 				public InvoiceEventDetailGroup() 
@@ -1286,7 +1282,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceEventDetailCollection 
 			{
 				public InvoiceEventDetailCollection() 
@@ -1331,7 +1327,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceRowCollection 
 			{
 				public InvoiceRowCollection() 
@@ -1376,7 +1372,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceEventDetail 
 			{
 				public InvoiceEventDetail() 
@@ -1433,7 +1429,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InvoiceRow 
 			{
 				public InvoiceRow() 
@@ -1484,7 +1480,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CategoryCollection 
 			{
 				public CategoryCollection() 
@@ -1529,7 +1525,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Category 
 			{
 				public Category() 
@@ -1568,7 +1564,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ProcessContainer 
 			{
 				public ProcessContainer() 
@@ -1607,7 +1603,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Process 
 			{
 				public Process() 
@@ -1652,7 +1648,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ProcessItem 
 			{
 				public ProcessItem() 
@@ -1693,7 +1689,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class SemanticInformationItem 
 			{
 				public SemanticInformationItem() 
@@ -1734,7 +1730,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class InformationOwnerInfo 
 			{
 				public InformationOwnerInfo() 
@@ -1775,7 +1771,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class UsageSummary 
 			{
 				public UsageSummary() 
@@ -1816,7 +1812,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class UsageMonitorItem 
 			{
 				public UsageMonitorItem() 
@@ -1867,7 +1863,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class RequestResourceUsageCollection 
 			{
 				public RequestResourceUsageCollection() 
@@ -1912,7 +1908,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class RequestResourceUsage 
 			{
 				public RequestResourceUsage() 
@@ -1959,7 +1955,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ProcessorUsageCollection 
 			{
 				public ProcessorUsageCollection() 
@@ -2004,7 +2000,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class ProcessorUsage 
 			{
 				public ProcessorUsage() 
@@ -2051,7 +2047,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StorageTransactionUsageCollection 
 			{
 				public StorageTransactionUsageCollection() 
@@ -2096,7 +2092,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StorageTransactionUsage 
 			{
 				public StorageTransactionUsage() 
@@ -2139,7 +2135,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StorageUsageCollection 
 			{
 				public StorageUsageCollection() 
@@ -2184,7 +2180,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class StorageUsage 
 			{
 				public StorageUsage() 
@@ -2229,7 +2225,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class NetworkUsageCollection 
 			{
 				public NetworkUsageCollection() 
@@ -2274,7 +2270,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class NetworkUsage 
 			{
 				public NetworkUsage() 
@@ -2317,7 +2313,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TimeRange 
 			{
 				public TimeRange() 
@@ -2358,7 +2354,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class HTTPActivityDetailsCollection 
 			{
 				public HTTPActivityDetailsCollection() 
@@ -2403,7 +2399,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class HTTPActivityDetails 
 			{
 				public HTTPActivityDetails() 

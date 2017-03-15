@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -39,7 +35,7 @@ namespace INT {
 			}
 
  } 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class IndexingRequest 
 			{
 				public IndexingRequest() 
@@ -80,7 +76,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class QueryRequest 
 			{
 				public QueryRequest() 
@@ -133,7 +129,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class QueryResultItem 
 			{
 				public QueryResultItem() 

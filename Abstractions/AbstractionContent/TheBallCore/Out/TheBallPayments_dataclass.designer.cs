@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -114,7 +110,7 @@ namespace INT {
 			}
 
  } 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupSubscriptionPlanCollection 
 			{
 				public GroupSubscriptionPlanCollection() 
@@ -159,7 +155,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class GroupSubscriptionPlan 
 			{
 				public GroupSubscriptionPlan() 
@@ -202,7 +198,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class SubscriptionPlanStatus 
 			{
 				public SubscriptionPlanStatus() 
@@ -243,7 +239,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CustomerAccountCollection 
 			{
 				public CustomerAccountCollection() 
@@ -288,7 +284,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class CustomerAccount 
 			{
 				public CustomerAccount() 

@@ -11,11 +11,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Xml;
 using System.Linq;
-#if !DEVEMU
 using System.Runtime.Serialization;
-using ProtoBuf;
-#endif
-
 
 namespace INT { 
 					[DataContract]
@@ -56,7 +52,7 @@ namespace INT {
 			}
 
  } 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MemberCollection 
 			{
 				public MemberCollection() 
@@ -101,7 +97,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Member 
 			{
 				public Member() 
@@ -168,7 +164,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MembershipPlanCollection 
 			{
 				public MembershipPlanCollection() 
@@ -213,7 +209,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class MembershipPlan 
 			{
 				public MembershipPlan() 
@@ -258,7 +254,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class PaymentOptionCollection 
 			{
 				public PaymentOptionCollection() 
@@ -303,7 +299,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class PaymentOption 
 			{
 				public PaymentOption() 
@@ -346,7 +342,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class SubscriptionCollection 
 			{
 				public SubscriptionCollection() 
@@ -391,7 +387,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class Subscription 
 			{
 				public Subscription() 
@@ -438,7 +434,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TenantGymCollection 
 			{
 				public TenantGymCollection() 
@@ -483,7 +479,7 @@ namespace INT {
 			
 			}
 			[DataContract] 
-			[Serializable]
+			//[Serializable]
 			public partial class TenantGym 
 			{
 				public TenantGym() 
