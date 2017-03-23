@@ -75,6 +75,8 @@ namespace TheBall.Infra.AzureRoleSupport
 
         protected abstract RoleAppInfo[] RoleApplications { get; }
 
+        protected bool IsMultiRole => RoleApplications.Length > 1;
+
         protected string InfraToolsDir => CloudConfigurationManager.GetSetting("InfraToolsRootFolder");
 
         //private const string PathTo7Zip = @"d:\bin\7z.exe";
@@ -225,9 +227,22 @@ namespace TheBall.Infra.AzureRoleSupport
                         }
                         else
                         {
-                            await currManager.ShutdownAppConsole(true);
-                            throw new InvalidOperationException(
-                                $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}");
+                            var unhandledExistMessage =
+                                $"Unhandled exit of client with exit code: {currManager.LatestExitCode.GetValueOrDefault(Int32.MinValue)}";
+                            if (!IsMultiRole)
+                            {
+                                await currManager.ShutdownAppConsole(true);
+                                throw new InvalidOperationException(unhandledExistMessage);
+                            }
+                            // Graceful restart as other roles are still running OK
+                            var errfileFullPath = Path.Combine(currManagerPack.AppInfo.AppRootFolder,
+                                "MultiroleRestartingError.txt");
+                            var errorMessage =
+                                $"{DateTime.UtcNow.ToString("u")}: {unhandledExistMessage}{Environment.NewLine}";
+                            File.AppendAllText(errfileFullPath, errorMessage);
+                            await currManager.ShutdownAppConsole(false);
+                            clientExited = false;
+                            await currManager.StartAppConsole(false, true, setUpdateNeeded, currManagerPack.ManagerArgs);
                         }
                     }
                     try
