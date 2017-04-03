@@ -35,6 +35,7 @@
             <InterfaceItem name="email" logicalDataType="Text_Short"/>
             <InterfaceItem name="isTestMode" logicalDataType="TrueOrFalse_Boolean"/>
             <ObjectInstance name="card" interfaceObjectName="BillingAddress"/>
+            <InterfaceItem name="couponId" logicalDataType="Text_Short"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="BillingAddress" designDesc="Stripe billing address relevant fields">

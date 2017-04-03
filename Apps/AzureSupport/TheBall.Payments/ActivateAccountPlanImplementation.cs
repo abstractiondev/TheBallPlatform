@@ -91,12 +91,16 @@ namespace TheBall.Payments
         {
             var existingSubscription = customersActiveSubscriptions.FirstOrDefault(sub => sub.StripePlan.Id == planName);
             bool noExistingSubscription = existingSubscription == null || existingSubscription.Status == "canceled";
+            var couponId = paymentToken.couponId;
             if (noExistingSubscription)
             {
                 var customerID = stripeCustomerId;
                 var subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                 var cardInfo = paymentToken.card;
-                var subscription = await subscriptionService.CreateAsync(customerID, planName);
+                var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions()
+                {
+                    CouponId = couponId
+                });
             }
             else
             {
@@ -107,7 +111,8 @@ namespace TheBall.Payments
                         subService.UpdateAsync(stripeCustomerId, existingSubscription.Id,
                             new StripeSubscriptionUpdateOptions
                             {
-                                PlanId = existingSubscription.StripePlan.Id
+                                PlanId = existingSubscription.StripePlan.Id,
+                                CouponId = couponId
                             });
                 }
             }

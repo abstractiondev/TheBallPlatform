@@ -60,6 +60,8 @@ namespace INT {
 				public bool isTestMode { get; set; }
 				[DataMember]
 				public BillingAddress card { get; set; }
+				[DataMember]
+				public string couponId { get; set; }
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Payments.INT")]
