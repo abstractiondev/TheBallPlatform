@@ -50,13 +50,14 @@ namespace TheBall.Payments
         {
             StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             var customer = await customerService.GetAsync(customerAccount.StripeID);
-            if (!customer.Metadata.ContainsKey("business_type"))
-                customer.Metadata.Add("business_type", "B2C");
+            var metadata = customer.Metadata ?? new Dictionary<string, string>();
+            if (!metadata.ContainsKey("business_type"))
+                metadata.Add("business_type", "B2C");
             var cardInfo = paymentToken.card;
             var tokenId = paymentToken.id;
             await customerService.UpdateAsync(customer.Id, new StripeCustomerUpdateOptions
             {
-                Metadata = customer.Metadata,
+                Metadata = metadata,
                 Description = paymentToken.card.name,
                 SourceToken = tokenId,
             });
