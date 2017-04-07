@@ -260,6 +260,7 @@
     <Compile Include="AuthorizedRouteHandler.cs" />
     <Compile Include="CacheSupport.cs" />
     <Compile Include="ExtRequest.cs" />
+    <Compile Include="FacebookClient2017.cs" />
     <Compile Include="FileUploadHandler.cs" />
     <Compile Include="InformationContextManagerModule.cs" />
     <Compile Include="LoginSupport.cs" />
