@@ -132,7 +132,7 @@ namespace OperationRunnerTool
     -cr:X:\Configs -i:business.theball.me -op:TheBall.CORE.SetGroupMembership -p:GroupID:9230bfbe-cbae-4da3-8140-5782b7824c14,AccountID:1021da4a-17f5-4c3a-8082-497c8b62b76a,Role:Initiator
 
     -cr:X:\Configs -i:home.theball.me -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:false -p:"{AccountID: \"4cae6185-8dc5-4a50-8756-28c5a5103b8a\",  Data: { isTestAccount: true }}"
-    -cr:X:\Configs -i:members.ikwondo.com -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:true -p:"{AccountID: \"4cb27608-79fc-4ae5-9428-e45a0f2326e6\", Data: { isTestAccount: true }}"
+    -cr:X:\Configs -i:members.ikwondo.com -op:TheBall.CORE.SetAccountClientMetadata -remoteExecute:true -p:"{AccountID: \"a2e4f1bd-5c87-4ef7-a9f2-9fd6f73e8097\", Data: { isTestAccount: true }}"
     
     -cr:P:\Configs -i:dev.agens.fi -op:TheBall.CORE.CreateGroup -p:GroupID:41bec5c5-5692-4e08-8153-6145b5f251c0
 

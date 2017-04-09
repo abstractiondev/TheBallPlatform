@@ -100,12 +100,16 @@ namespace TheBall.Payments
                 var cardInfo = paymentToken.card;
                 var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions()
                 {
-                    CouponId = couponId
+                    CouponId = couponId,
+
                 });
             }
             else
             {
-                if (existingSubscription.CancelAtPeriodEnd)
+                bool isCancelAtPeriodOrDifferentCoupon = existingSubscription.CancelAtPeriodEnd ||
+                                                         existingSubscription?.StripeDiscount?.StripeCoupon?.Id !=
+                                                         couponId;
+                if (isCancelAtPeriodOrDifferentCoupon)
                 {
                     var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
