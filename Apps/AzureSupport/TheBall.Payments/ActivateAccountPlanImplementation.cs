@@ -170,8 +170,12 @@ namespace TheBall.Payments
         public static bool GetTarget_IsTestMode(bool isTokenTestMode, bool isTestAccount)
         {
             bool valuesMatch = isTokenTestMode == isTestAccount;
-            if(!valuesMatch)
-                throw new InvalidOperationException("Payment token mode does not match account mode");
+            if (!valuesMatch)
+            {
+                var tokenMode = isTokenTestMode ? "test" : "live";
+                var accountMode = isTestAccount ? "test" : "live";
+                throw new InvalidOperationException($"Payment token mode ({tokenMode}) does not match account mode ({accountMode})");
+            }
             return isTokenTestMode;
         }
     }
