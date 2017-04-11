@@ -50,7 +50,7 @@ namespace TheBall.Payments
             if (stripeCustomer == null)
                 return new PlanStatus[0];
             var stripeSubs =
-                stripeCustomer.StripeSubscriptionList.Data
+                stripeCustomer.Subscriptions.Data
                     .Select(stripeSub => new {Plan = stripeSub.StripePlan, Subscription = stripeSub})
                     .ToArray();
             var plans = stripeSubs.Select(stripeSub => new PlanStatus()

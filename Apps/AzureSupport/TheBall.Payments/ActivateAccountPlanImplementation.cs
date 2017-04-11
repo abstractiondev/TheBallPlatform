@@ -93,6 +93,7 @@ namespace TheBall.Payments
             var existingSubscription = customersActiveSubscriptions.FirstOrDefault(sub => sub.StripePlan.Id == planName);
             bool noExistingSubscription = existingSubscription == null || existingSubscription.Status == "canceled";
             var couponId = paymentToken.couponId;
+            var hasNewCoupon = couponId != null;
             if (noExistingSubscription)
             {
                 var customerID = stripeCustomerId;
@@ -101,7 +102,6 @@ namespace TheBall.Payments
                 var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions()
                 {
                     CouponId = couponId,
-
                 });
             }
             else
@@ -109,16 +109,22 @@ namespace TheBall.Payments
                 bool isCancelAtPeriodOrDifferentCoupon = existingSubscription.CancelAtPeriodEnd ||
                                                          existingSubscription?.StripeDiscount?.StripeCoupon?.Id !=
                                                          couponId;
+                var hasExistingCoupon = existingSubscription?.StripeDiscount?.StripeCoupon != null;
                 if (isCancelAtPeriodOrDifferentCoupon)
                 {
                     var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
-                        subService.UpdateAsync(stripeCustomerId, existingSubscription.Id,
+                        subService.UpdateAsync(existingSubscription.Id,
                             new StripeSubscriptionUpdateOptions
                             {
                                 PlanId = existingSubscription.StripePlan.Id,
-                                CouponId = couponId
+                                CouponId = couponId,
                             });
+                    if (hasExistingCoupon && !hasNewCoupon)
+                    {
+                        var discountService = new StripeDiscountService(StripeSupport.GetStripeApiKey(isTestMode));
+                        await discountService.DeleteSubscriptionDiscountAsync(existingSubscription.Id);
+                    }
                 }
             }
         }
