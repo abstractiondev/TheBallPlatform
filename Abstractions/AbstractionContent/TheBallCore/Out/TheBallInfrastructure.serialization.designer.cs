@@ -32,6 +32,19 @@ namespace INT {
 				public string BuildNumber { get; set; }
 				[DataMember]
 				public string Commit { get; set; }
+				[DataMember]
+				public StatusInfo Status { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Infrastructure.INT")]
+			public partial class StatusInfo
+			{
+				[DataMember]
+				public double TestResult { get; set; }
+				[DataMember]
+				public DateTime TestedAt { get; set; }
+				[DataMember]
+				public DateTime InstalledAt { get; set; }
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Infrastructure.INT")]
@@ -58,6 +71,30 @@ namespace INT {
 				public string WwwSitesMaturityLevel { get; set; }
 				[DataMember]
 				public string[] WwwSiteHostNames { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Infrastructure.INT")]
+			public partial class BaseUIConfigSet
+			{
+				[DataMember]
+				public UpdateConfigItem AboutConfig { get; set; }
+				[DataMember]
+				public UpdateConfigItem AccountConfig { get; set; }
+				[DataMember]
+				public UpdateConfigItem GroupConfig { get; set; }
+				[DataMember]
+				public StatusInfo StatusSummary { get; set; }
+			}
+
+            [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Infrastructure.INT")]
+			public partial class InstanceUIConfig
+			{
+				[DataMember]
+				public BaseUIConfigSet DesiredConfig { get; set; }
+				[DataMember]
+				public BaseUIConfigSet ConfigInTesting { get; set; }
+				[DataMember]
+				public BaseUIConfigSet EffectiveConfig { get; set; }
 			}
 
             [DataContract(Namespace = "http://schemas.datacontract.org/2004/07/TheBall.Infrastructure.INT")]

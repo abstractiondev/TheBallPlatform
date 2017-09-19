@@ -18,6 +18,14 @@
             <InterfaceItem name="MaturityLevel" logicalDataType="Text_Short" />
             <InterfaceItem name="BuildNumber" logicalDataType="Text_Short" />
             <InterfaceItem name="Commit" logicalDataType="Text_Short" />
+            <ObjectInstance name="Status" interfaceObjectName="StatusInfo"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="StatusInfo" designDesc="Status info of update(d) items">
+          <InterfaceItems>
+            <InterfaceItem name="TestResult" logicalDataType="Number"/>
+            <InterfaceItem name="TestedAt" logicalDataType="Time_DateTime"/>
+            <InterfaceItem name="InstalledAt" logicalDataType="Time_DateTime"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="AccessInfo" designDesc="AccessInfo">
@@ -34,6 +42,21 @@
             <ObjectInstance name="InstanceBindings" interfaceObjectName="MaturityBindingItem" isCollection="true"/>
             <InterfaceItem name="WwwSitesMaturityLevel" logicalDataType="Text_Short"/>
             <InterfaceItem name="WwwSiteHostNames" logicalDataType="Text_Short" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="BaseUIConfigSet" designDesc="Base UI config set">
+          <InterfaceItems>
+            <ObjectInstance name="AboutConfig" interfaceObjectName="UpdateConfigItem" />
+            <ObjectInstance name="AccountConfig" interfaceObjectName="UpdateConfigItem" />
+            <ObjectInstance name="GroupConfig" interfaceObjectName="UpdateConfigItem" />
+            <ObjectInstance name="StatusSummary" interfaceObjectName="StatusInfo"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="InstanceUIConfig" designDesc="Instance UI config set">
+          <InterfaceItems>
+            <ObjectInstance name="DesiredConfig" interfaceObjectName="BaseUIConfigSet"/>
+            <ObjectInstance name="ConfigInTesting" interfaceObjectName="BaseUIConfigSet"/>
+            <ObjectInstance name="EffectiveConfig" interfaceObjectName="BaseUIConfigSet"/>
           </InterfaceItems>
         </InterfaceObject>
         <InterfaceObject name="MaturityBindingItem" designDesc="Instance binding item">

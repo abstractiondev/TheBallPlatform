@@ -45,7 +45,18 @@ export class UpdateConfigItem {
 	public MaturityLevel: string;
 	public BuildNumber: string;
 	public Commit: string;
+	public Status: StatusInfo;
 	public constructor(init?:Partial<UpdateConfigItem>) {
+		Object.assign(this, init);
+	}
+}
+
+
+export class StatusInfo {
+	public TestResult: number;
+	public TestedAt: Date;
+	public InstalledAt: Date;
+	public constructor(init?:Partial<StatusInfo>) {
 		Object.assign(this, init);
 	}
 }
@@ -68,6 +79,27 @@ export class WebConsoleConfig {
 	public WwwSitesMaturityLevel: string;
 	public WwwSiteHostNames: string[];
 	public constructor(init?:Partial<WebConsoleConfig>) {
+		Object.assign(this, init);
+	}
+}
+
+
+export class BaseUIConfigSet {
+	public AboutConfig: UpdateConfigItem;
+	public AccountConfig: UpdateConfigItem;
+	public GroupConfig: UpdateConfigItem;
+	public StatusSummary: StatusInfo;
+	public constructor(init?:Partial<BaseUIConfigSet>) {
+		Object.assign(this, init);
+	}
+}
+
+
+export class InstanceUIConfig {
+	public DesiredConfig: BaseUIConfigSet;
+	public ConfigInTesting: BaseUIConfigSet;
+	public EffectiveConfig: BaseUIConfigSet;
+	public constructor(init?:Partial<InstanceUIConfig>) {
 		Object.assign(this, init);
 	}
 }
