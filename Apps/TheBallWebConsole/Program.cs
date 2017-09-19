@@ -79,6 +79,10 @@ namespace TheBall.Infra.TheBallWebConsole
                     {
                         "appsiterootdir=", "AppSite root dir location for deploying site update packages",
                         asrd => appSiteRootDir = asrd
+                    },
+                    {
+                        "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
+                        env => UseEnvironmentVariablesAsConfig = env != null
                     }
                 };
                 var options = optionSet.Parse(args);
@@ -100,9 +104,9 @@ namespace TheBall.Infra.TheBallWebConsole
                 {
                     if (String.IsNullOrEmpty(updateAccessInfoFile))
                     {
-                        string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                        string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                        string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                        string accountName = GetConfig("ConfigAccountName");
+                        string shareName = GetConfig("ConfigShareName");
+                        string sasToken = GetConfig("ConfigSASToken");
                         updateAccessInfo = new AccessInfo
                         {
                             AccountName = accountName,
@@ -190,8 +194,8 @@ namespace TheBall.Infra.TheBallWebConsole
             bool hasDriveX = DriveInfo.GetDrives().Any(item => item.Name.ToLower().StartsWith("x"));
             if (!hasDriveX)
             {
-                var infraAccountName = CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-                var infraAccountKey = CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+                var infraAccountName = GetConfig("CoreFileShareAccountName");
+                var infraAccountKey = GetConfig("CoreFileShareAccountKey");
                 bool isCloud = infraAccountName != null && infraAccountKey != null;
                 if (isCloud)
                 {
@@ -204,6 +208,17 @@ namespace TheBall.Infra.TheBallWebConsole
                 }
             }
         }
+
+        private static string GetConfig(string configItem)
+        {
+            string configValue = UseEnvironmentVariablesAsConfig
+                ? Environment.GetEnvironmentVariable(configItem)
+                : CloudConfigurationManager.GetSetting(configItem);
+            return configValue;
+        }
+
+        public static bool UseEnvironmentVariablesAsConfig { get; set; }
+
 
     }
 }

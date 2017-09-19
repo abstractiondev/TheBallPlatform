@@ -52,6 +52,10 @@ namespace TheBall.Infra.InitialUpdatingConsole
                     {
                         "t|test", "Test handle communication and update, but don't activate the real application process",
                         t => isTestMode = t != null
+                    },
+                    {
+                        "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
+                        env => UseEnvironmentVariablesAsConfig = env != null
                     }
                 };
                 var options = optionSet.Parse(args);
@@ -79,17 +83,16 @@ namespace TheBall.Infra.InitialUpdatingConsole
             return ExitCode;
         }
 
-        static async void MainAsync(string clientHandle, string applicationConfigFullPath, 
-            bool isTestMode, bool autoUpdate)
+        static async void MainAsync(string clientHandle, string applicationConfigFullPath, bool isTestMode, bool autoUpdate)
         {
             if (autoUpdate)
             {
                 var processFullFilename = Process.GetCurrentProcess().MainModule.FileName;
                 string componentName = Path.GetFileNameWithoutExtension(processFullFilename);
                 string workingRootFolder = AssemblyDirectory;
-                string accountName = CloudConfigurationManager.GetSetting("ConfigAccountName");
-                string shareName = CloudConfigurationManager.GetSetting("ConfigShareName");
-                string sasToken = CloudConfigurationManager.GetSetting("ConfigSASToken");
+                string accountName = GetConfig("ConfigAccountName");
+                string shareName = GetConfig("ConfigShareName");
+                string sasToken = GetConfig("ConfigSASToken");
                 UpdateManager = await AppUpdateManager.Initialize(componentName, workingRootFolder, new AccessInfo
                 {
                     AccountName = accountName,
@@ -104,5 +107,15 @@ namespace TheBall.Infra.InitialUpdatingConsole
             }
 
         }
+
+        private static string GetConfig(string configItem)
+        {
+            string configValue = UseEnvironmentVariablesAsConfig
+                ? Environment.GetEnvironmentVariable(configItem)
+                : CloudConfigurationManager.GetSetting(configItem);
+            return configValue;
+        }
+
+        public static bool UseEnvironmentVariablesAsConfig { get; set; }
     }
 }
