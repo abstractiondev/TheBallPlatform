@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceleratorRole.cs" />
+    <Compile Include="AppRoleManager.cs" />
     <Compile Include="AppTypeInfo.cs" />
     <Compile Include="Ext\TaskExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,7 +24,7 @@ namespace TheBallWorkerRole
     {
         protected override RoleAppInfo[] RoleApplications { get; } = new[]
         {
-            AcceleratorRole.GetWorkerConsoleAppInfo()
+            TheBall.Infra.AzureRoleSupport.AppRoleManager.GetWorkerConsoleAppInfo(RoleEnvironment.GetLocalResource("WorkerFolder").RootPath)
         };
 
     }

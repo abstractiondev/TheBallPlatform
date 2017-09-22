@@ -28,12 +28,11 @@ namespace TheBallWebRole
         protected override RoleAppInfo[] RoleApplications { get; } = IsHybridWebRole ?
             new []
             {
-                GetWebConsoleAppInfo(),
-                GetWorkerConsoleAppInfo()
+                AppRoleManager.GetWebConsoleAppInfo(RoleEnvironment.GetLocalResource("Execution").RootPath, RoleEnvironment.GetLocalResource("TempSites").RootPath, RoleEnvironment.GetLocalResource("Sites").RootPath), AppRoleManager.GetWorkerConsoleAppInfo(RoleEnvironment.GetLocalResource("WorkerFolder").RootPath)
             }
             : new[]
         {
-            GetWebConsoleAppInfo(),
+            AppRoleManager.GetWebConsoleAppInfo(RoleEnvironment.GetLocalResource("Execution").RootPath, RoleEnvironment.GetLocalResource("TempSites").RootPath, RoleEnvironment.GetLocalResource("Sites").RootPath),
         };
 
         public override bool OnStart()
