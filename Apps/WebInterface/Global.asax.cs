@@ -73,7 +73,7 @@ namespace WebInterface
 
             string initedPath = ensureXDrive();
 
-            var infraDriveRoot = initedPath ?? Environment.GetEnvironmentVariable("TBCoreFolder");
+            var infraDriveRoot = initedPath ?? Environment.GetEnvironmentVariable("TBCoreFolder") ?? @"X:\";
 
              /*
              var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
