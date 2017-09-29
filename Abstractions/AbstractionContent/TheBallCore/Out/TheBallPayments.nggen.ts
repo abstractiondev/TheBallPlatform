@@ -83,6 +83,7 @@ export class PaymentToken {
 	public email: string;
 	public isTestMode: boolean;
 	public card: BillingAddress;
+	public couponId: string;
 	public constructor(init?:Partial<PaymentToken>) {
 		Object.assign(this, init);
 	}

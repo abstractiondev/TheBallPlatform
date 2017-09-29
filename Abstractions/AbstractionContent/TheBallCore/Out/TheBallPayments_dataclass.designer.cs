@@ -62,6 +62,8 @@ namespace INT {
 				public bool isTestMode { get; set; }
 				[DataMember]
 				public BillingAddress card { get; set; }
+				[DataMember]
+				public string couponId { get; set; }
 			}
 
 			[DataContract]

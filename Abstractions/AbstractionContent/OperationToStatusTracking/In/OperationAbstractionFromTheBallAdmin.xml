@@ -10,7 +10,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="FixMastersAndCollections" designDesc="Fix masters and collections" state="implemented">
+          <MethodExecute name="FixMastersAndCollections" asyncSupportMode="AsyncOnly" designDesc="Fix masters and collections" state="implemented">
             <Parameter name="GroupID" />
           </MethodExecute>
         </SequentialExecution>

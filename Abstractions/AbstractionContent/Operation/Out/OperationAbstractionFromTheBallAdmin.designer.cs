@@ -17,10 +17,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FixGroupMastersAndCollectionsParameters parameters)
 		{
 					}
-				public static void Execute(FixGroupMastersAndCollectionsParameters parameters)
+				public static async Task ExecuteAsync(FixGroupMastersAndCollectionsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					FixGroupMastersAndCollectionsImplementation.ExecuteMethod_FixMastersAndCollections(parameters.GroupID);		
+					 await FixGroupMastersAndCollectionsImplementation.ExecuteMethod_FixMastersAndCollectionsAsync(parameters.GroupID);		
 				}
 				}
 		

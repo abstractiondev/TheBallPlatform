@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using SecuritySupport;
 
 namespace TheBall.CORE
@@ -56,9 +57,9 @@ namespace TheBall.CORE
             authenticatedAsActiveDevice.IsValidatedAndActive = true;
         }
 
-        public static void ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        public static async Task ExecuteMethod_StoreObjectAsync(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
-            authenticatedAsActiveDevice.StoreInformation();
+            await authenticatedAsActiveDevice.StoreInformationAsync();
         }
     }
 }

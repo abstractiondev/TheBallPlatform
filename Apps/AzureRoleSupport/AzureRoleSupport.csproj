@@ -94,9 +94,8 @@
       <HintPath>..\..\packages\WindowsAzure.Storage.6.2.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Nito.AsyncEx, Version=4.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nito.AsyncEx.4.0.1\lib\net45\Nito.AsyncEx.dll</HintPath>
@@ -126,10 +125,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceleratorRole.cs" />
+    <Compile Include="AppRoleManager.cs" />
     <Compile Include="AppTypeInfo.cs" />
     <Compile Include="Ext\TaskExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppManager.cs" />
+    <Compile Include="RoleAppInfo.cs" />
+    <Compile Include="RoleAppType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

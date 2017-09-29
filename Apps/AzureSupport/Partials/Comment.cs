@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web;
-using LuceneSupport;
+//using LuceneSupport;
 using TheBall;
 using TheBall.Index;
 

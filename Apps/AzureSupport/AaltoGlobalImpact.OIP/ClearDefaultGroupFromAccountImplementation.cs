@@ -1,12 +1,14 @@
+using System.Threading.Tasks;
 using TheBall;
+using TheBall.CORE.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {
     public class ClearDefaultGroupFromAccountImplementation
     {
-        public static AccountContainer GetTarget_AccountContainer()
+        public static async Task<AccountContainer> GetTarget_AccountContainerAsync()
         {
-            return ObjectStorage.RetrieveFromOwnerContent<AccountContainer>(InformationContext.CurrentOwner, "default");
+            return await ObjectStorage.RetrieveFromOwnerContentA<AccountContainer>(InformationContext.CurrentOwner, "default");
         }
 
         public static string GetTarget_RedirectFromFolderBlobName()
@@ -20,15 +22,15 @@ namespace AaltoGlobalImpact.OIP
             accountContainer.AccountModule.Profile.IsSimplifiedAccount = false;
         }
 
-        public static void ExecuteMethod_StoreObject(AccountContainer accountContainer)
+        public static async Task ExecuteMethod_StoreObjectAsync(AccountContainer accountContainer)
         {
-            accountContainer.StoreInformation(InformationContext.CurrentOwner);
+            await accountContainer.StoreInformationAsync(InformationContext.CurrentOwner);
         }
 
-        public static void ExecuteMethod_RemoveAccountRedirectFile(string redirectFromFolderBlobName)
+        public static async Task ExecuteMethod_RemoveAccountRedirectFileAsync(string redirectFromFolderBlobName)
         {
             var redirectBlob = StorageSupport.GetOwnerBlobReference(redirectFromFolderBlobName);
-            redirectBlob.DeleteBlob();
+            await BlobStorage.DeleteBlobA(redirectBlob.Name);
         }
     }
 }

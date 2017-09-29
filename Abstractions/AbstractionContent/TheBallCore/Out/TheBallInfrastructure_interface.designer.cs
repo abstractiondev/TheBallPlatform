@@ -51,6 +51,29 @@ using System.Runtime.Serialization;
 			[DataMember]
 			public string Commit;
 
+			[DataMember]
+			public StatusInfo Status;
+
+			
+			}
+			[DataContract]
+			public partial class StatusInfo 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public double TestResult;
+
+			[DataMember]
+			public DateTime TestedAt;
+
+			[DataMember]
+			public DateTime InstalledAt;
+
 			
 			}
 			[DataContract]
@@ -96,6 +119,49 @@ using System.Runtime.Serialization;
 
 			[DataMember]
 			public List<string> WwwSiteHostNames= new List<string>();
+
+			
+			}
+			[DataContract]
+			public partial class BaseUIConfigSet 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public UpdateConfigItem AboutConfig;
+
+			[DataMember]
+			public UpdateConfigItem AccountConfig;
+
+			[DataMember]
+			public UpdateConfigItem GroupConfig;
+
+			[DataMember]
+			public StatusInfo StatusSummary;
+
+			
+			}
+			[DataContract]
+			public partial class InstanceUIConfig 
+			{
+				[DataMember]
+				public string ID { get; set; }
+
+			    [IgnoreDataMember]
+                public string ETag { get; set; }
+
+			[DataMember]
+			public BaseUIConfigSet DesiredConfig;
+
+			[DataMember]
+			public BaseUIConfigSet ConfigInTesting;
+
+			[DataMember]
+			public BaseUIConfigSet EffectiveConfig;
 
 			
 			}

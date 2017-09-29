@@ -1,5 +1,5 @@
 ﻿using System;
-using LuceneSupport;
+//using LuceneSupport;
 using TheBall.Index;
 
 namespace AaltoGlobalImpact.OIP

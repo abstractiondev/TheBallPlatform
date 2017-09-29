@@ -1,5 +1,6 @@
 using System;
 using System.Security;
+using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
 using Stripe;
@@ -49,7 +50,7 @@ namespace TheBall.Payments
                 Card = new StripeCreditCardOptions {  TokenId = paymentToken.id}
             });
             customerAccount.ActivePlans.Add(paymentToken.currentproduct);
-            HttpContext.Current.Response.Write("{}");
+            //HttpContext.Current.Response.Write("{}");
         }
 
         public static void ExecuteMethod_ValidateMatchingEmail(PaymentToken paymentToken)
@@ -58,7 +59,7 @@ namespace TheBall.Payments
                 throw new SecurityException("Account email and payment email mismatch");
         }
 
-        public static CustomerAccount GetTarget_CustomerAccount()
+        public static async Task<CustomerAccount> GetTarget_CustomerAccountAsync()
         {
             string accountID = InformationContext.CurrentAccount.AccountID;
             string accountEmail = InformationContext.CurrentAccount.AccountEmail;
@@ -68,19 +69,19 @@ namespace TheBall.Payments
             var ownerID = owner.GetIDFromLocationPrefix();
             if(ownerID != InstanceConfig.Current.PaymentsGroupID)
                 throw new SecurityException("Not supported payment owner ID: " + ownerID);
-            CustomerAccount customerAccount = ObjectStorage.RetrieveFromOwnerContent<CustomerAccount>(owner, accountID);
+            CustomerAccount customerAccount = await ObjectStorage.RetrieveFromOwnerContentA<CustomerAccount>(owner, accountID);
             if (customerAccount == null)
             {
                 customerAccount = new CustomerAccount();
                 customerAccount.ID = accountID;
                 customerAccount.SetLocationAsOwnerContent(owner, customerAccount.ID);
                 StripeCustomerService stripeCustomerService = new StripeCustomerService();
-                var stripeCustomer = stripeCustomerService.Create(new StripeCustomerCreateOptions
+                var stripeCustomer = await stripeCustomerService.CreateAsync(new StripeCustomerCreateOptions
                 {
                     Email = accountEmail
                 });
                 customerAccount.StripeID = stripeCustomer.Id;
-                customerAccount.StoreInformation();
+                await customerAccount.StoreInformationAsync();
             }
             return customerAccount;
         }

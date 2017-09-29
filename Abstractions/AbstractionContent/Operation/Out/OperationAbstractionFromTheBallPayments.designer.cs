@@ -267,12 +267,12 @@ using System.Threading.Tasks;
 		
 		public class ProcessPayment 
 		{
-				public static void Execute()
+				public static async Task ExecuteAsync()
 		{
 						
 					INT.PaymentToken PaymentToken = ProcessPaymentImplementation.GetTarget_PaymentToken();	
 				ProcessPaymentImplementation.ExecuteMethod_ValidateMatchingEmail(PaymentToken);		
-				CustomerAccount CustomerAccount = ProcessPaymentImplementation.GetTarget_CustomerAccount();	
+				CustomerAccount CustomerAccount =  await ProcessPaymentImplementation.GetTarget_CustomerAccountAsync();	
 				ProcessPaymentImplementation.ExecuteMethod_ProcessPayment(PaymentToken, CustomerAccount);		
 				}
 				}
@@ -286,14 +286,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FetchCustomersFromStripeParameters parameters)
 		{
 					}
-				public static void Execute(FetchCustomersFromStripeParameters parameters)
+				public static async Task ExecuteAsync(FetchCustomersFromStripeParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner Owner = FetchCustomersFromStripeImplementation.GetTarget_Owner(parameters.GroupID);	
 				Stripe.StripeCustomer[] StripeCustomers = FetchCustomersFromStripeImplementation.GetTarget_StripeCustomers();	
-				CustomerAccountCollection CurrentCustomers = FetchCustomersFromStripeImplementation.GetTarget_CurrentCustomers(Owner);	
+				CustomerAccountCollection CurrentCustomers =  await FetchCustomersFromStripeImplementation.GetTarget_CurrentCustomersAsync(Owner);	
 				CustomerAccount[] NewCustomersToCreate = FetchCustomersFromStripeImplementation.GetTarget_NewCustomersToCreate(Owner, StripeCustomers, CurrentCustomers);	
-				FetchCustomersFromStripeImplementation.ExecuteMethod_StoreObjects(Owner, NewCustomersToCreate);		
+				 await FetchCustomersFromStripeImplementation.ExecuteMethod_StoreObjectsAsync(Owner, NewCustomersToCreate);		
 				}
 				}
 				public class AssociatePaymentToGroupParameters 

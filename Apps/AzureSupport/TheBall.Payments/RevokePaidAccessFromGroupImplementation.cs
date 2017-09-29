@@ -1,3 +1,4 @@
+using System;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.Payments
@@ -6,11 +7,7 @@ namespace TheBall.Payments
     {
         public static void ExecuteMethod_RemoveAccountFromGroup(string groupId, string accountId)
         {
-            RemoveMemberFromGroup.Execute(new RemoveMemberFromGroupParameters
-            {
-                AccountID = accountId,
-                GroupID = groupId
-            });
+            throw new NotImplementedException();
         }
     }
 }

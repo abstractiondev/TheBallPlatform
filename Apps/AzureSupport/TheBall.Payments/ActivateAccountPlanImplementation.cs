@@ -50,13 +50,14 @@ namespace TheBall.Payments
         {
             StripeCustomerService customerService = new StripeCustomerService(StripeSupport.GetStripeApiKey(isTestMode));
             var customer = await customerService.GetAsync(customerAccount.StripeID);
-            if (!customer.Metadata.ContainsKey("business_type"))
-                customer.Metadata.Add("business_type", "B2C");
+            var metadata = customer.Metadata ?? new Dictionary<string, string>();
+            if (!metadata.ContainsKey("business_type"))
+                metadata.Add("business_type", "B2C");
             var cardInfo = paymentToken.card;
             var tokenId = paymentToken.id;
             await customerService.UpdateAsync(customer.Id, new StripeCustomerUpdateOptions
             {
-                Metadata = customer.Metadata,
+                Metadata = metadata,
                 Description = paymentToken.card.name,
                 SourceToken = tokenId,
             });
@@ -91,24 +92,39 @@ namespace TheBall.Payments
         {
             var existingSubscription = customersActiveSubscriptions.FirstOrDefault(sub => sub.StripePlan.Id == planName);
             bool noExistingSubscription = existingSubscription == null || existingSubscription.Status == "canceled";
+            var couponId = paymentToken.couponId;
+            var hasNewCoupon = couponId != null;
             if (noExistingSubscription)
             {
                 var customerID = stripeCustomerId;
                 var subscriptionService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                 var cardInfo = paymentToken.card;
-                var subscription = await subscriptionService.CreateAsync(customerID, planName);
+                var subscription = await subscriptionService.CreateAsync(customerID, planName, new StripeSubscriptionCreateOptions()
+                {
+                    CouponId = couponId,
+                });
             }
             else
             {
-                if (existingSubscription.CancelAtPeriodEnd)
+                bool isCancelAtPeriodOrDifferentCoupon = existingSubscription.CancelAtPeriodEnd ||
+                                                         existingSubscription?.StripeDiscount?.StripeCoupon?.Id !=
+                                                         couponId;
+                var hasExistingCoupon = existingSubscription?.StripeDiscount?.StripeCoupon != null;
+                if (isCancelAtPeriodOrDifferentCoupon)
                 {
                     var subService = new StripeSubscriptionService(StripeSupport.GetStripeApiKey(isTestMode));
                     await
-                        subService.UpdateAsync(stripeCustomerId, existingSubscription.Id,
+                        subService.UpdateAsync(existingSubscription.Id,
                             new StripeSubscriptionUpdateOptions
                             {
-                                PlanId = existingSubscription.StripePlan.Id
+                                PlanId = existingSubscription.StripePlan.Id,
+                                CouponId = couponId,
                             });
+                    if (hasExistingCoupon && !hasNewCoupon)
+                    {
+                        var discountService = new StripeDiscountService(StripeSupport.GetStripeApiKey(isTestMode));
+                        await discountService.DeleteSubscriptionDiscountAsync(existingSubscription.Id);
+                    }
                 }
             }
         }
@@ -164,8 +180,12 @@ namespace TheBall.Payments
         public static bool GetTarget_IsTestMode(bool isTokenTestMode, bool isTestAccount)
         {
             bool valuesMatch = isTokenTestMode == isTestAccount;
-            if(!valuesMatch)
-                throw new InvalidOperationException("Payment token mode does not match account mode");
+            if (!valuesMatch)
+            {
+                var tokenMode = isTokenTestMode ? "test" : "live";
+                var accountMode = isTestAccount ? "test" : "live";
+                throw new InvalidOperationException($"Payment token mode ({tokenMode}) does not match account mode ({accountMode})");
+            }
             return isTokenTestMode;
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
@@ -37,14 +38,14 @@ namespace TheBall.CORE
             return emailValidation;
         }
 
-        public static void ExecuteMethod_StoreObject(TBEmailValidation emailValidation)
+        public static async Task ExecuteMethod_StoreObjectAsync(TBEmailValidation emailValidation)
         {
-            emailValidation.StoreInformation();
+            await emailValidation.StoreInformationAsync();
         }
 
-        public static void ExecuteMethod_SendEmailConfirmation(InformationInput informationInput, TBEmailValidation emailValidation, string[] ownerEmailAddresses)
+        public static async Task ExecuteMethod_SendEmailConfirmationAsync(InformationInput informationInput, TBEmailValidation emailValidation, string[] ownerEmailAddresses)
         {
-            EmailSupport.SendInputJoinEmail(emailValidation, informationInput, ownerEmailAddresses);
+            await EmailSupport.SendInputJoinEmail(emailValidation, informationInput, ownerEmailAddresses);
         }
     }
 }

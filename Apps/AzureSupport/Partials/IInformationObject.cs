@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
@@ -35,12 +36,12 @@ namespace TheBall.CORE
         void PostDeleteExecute(IContainerOwner owner);
         void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
         string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
-        void SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
+        Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);
         void ReplaceObjectInTree(IInformationObject replacingObject);
         Dictionary<string, List<IInformationObject>> CollectMasterObjects(Predicate<IInformationObject> filterOnFalse = null);
         void CollectMasterObjectsFromTree(Dictionary<string, List<IInformationObject>> result, Predicate<IInformationObject> filterOnFalse = null);
-        IInformationObject RetrieveMaster(bool initiateIfMissing);
-        IInformationObject RetrieveMaster(bool initiateIfMissing, out bool initiated);
+        Task<IInformationObject> RetrieveMasterAsync(bool initiateIfMissing);
+        //Task<IInformationObject> RetrieveMasterAsync(bool initiateIfMissing, out bool initiated);
         bool IsInstanceTreeModified { get; }
         void SetInstanceTreeValuesAsUnmodified();
         void UpdateMasterValueTreeFromOtherInstance(IInformationObject sourceInstance);
@@ -55,25 +56,22 @@ namespace TheBall.CORE
 
     public static class ExtIInformationObject
     {
-        public static string ObtainLockOnObject(this IInformationObject informationObject)
+        public static async Task<string> ObtainLockOnObject(this IInformationObject informationObject)
         {
             string lockLocation = informationObject.RelativeLocation + ".lock";
-            string lockEtag;
-            bool obtainLock = StorageSupport.AcquireLogicalLockByCreatingBlob(lockLocation, out lockEtag);
-            if (obtainLock)
-                return lockEtag;
-            return null;
+            string lockEtag = await StorageSupport.AcquireLogicalLockByCreatingBlobAsync(lockLocation);
+            return lockEtag;
         }
 
-        public static void ReleaseLockOnObject(this IInformationObject informationObject, string lockEtag, bool ignoreLockReleaseError = false)
+        public static async Task ReleaseLockOnObjectAsync(this IInformationObject informationObject, string lockEtag, bool ignoreLockReleaseError = false)
         {
             string lockLocation = informationObject.RelativeLocation + ".lock";
-            bool releaseLockSucceeded = StorageSupport.ReleaseLogicalLockByDeletingBlob(lockLocation, lockEtag);
+            bool releaseLockSucceeded = await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockLocation, lockEtag);
             if(releaseLockSucceeded == false && ignoreLockReleaseError == false)
                 throw new InvalidDataException("Lock release failed: " + lockLocation);
         }
         
-        public static void SetObjectContent(this IInformationObject rootObject, string containerID,
+        public static async Task SetObjectContent(this IInformationObject rootObject, string containerID,
                                             string containedField, string[] objectIDList)
         {
             List<IInformationObject> containerList = new List<IInformationObject>();
@@ -124,8 +122,7 @@ namespace TheBall.CORE
                         {
                             if (contentEnum.Any(item => item.ID == contentObjectID))
                                 continue;
-                            IInformationObject contentObject =
-                                StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
+                            IInformationObject contentObject = await ObjectStorage.RetrieveFromDefaultLocationA(contentDomain, contentTypeName, contentObjectID,
                                                                                             owner);
                             if (contentObject == null)
                                 continue;
@@ -137,8 +134,7 @@ namespace TheBall.CORE
                         if(objectIDList.Length > 1)
                             throw new InvalidDataException("Object link name " + containedField + " of type " + contentTypeName + " does not allow multiple values");
                         string contentObjectID = objectIDList[0];
-                        IInformationObject contentObject =
-                            StorageSupport.RetrieveInformationObjectFromDefaultLocation(contentDomain, contentTypeName, contentObjectID,
+                        IInformationObject contentObject = await ObjectStorage.RetrieveFromDefaultLocationA(contentDomain, contentTypeName, contentObjectID,
                                                                                         owner);
                         prop.SetValue(iObj, contentObject, null);
                     }

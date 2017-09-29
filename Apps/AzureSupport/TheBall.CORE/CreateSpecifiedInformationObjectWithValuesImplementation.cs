@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Security;
 using System.Web;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace TheBall.CORE
 {
@@ -30,10 +31,10 @@ namespace TheBall.CORE
 
         public static void ExecuteMethod_StoreInitialObject(IInformationObject createdObject)
         {
-            createdObject.StoreInformation(InformationContext.CurrentOwner);
+            //createdObject.StoreInformation(InformationContext.CurrentOwner);
         }
 
-        public static SetObjectTreeValuesParameters SetObjectValues_GetParameters(NameValueCollection httpFormData, HttpFileCollection httpFileData, IInformationObject createdObject)
+        public static SetObjectTreeValuesParameters SetObjectValues_GetParameters(NameValueCollection httpFormData, IFormFileCollection httpFileData, IInformationObject createdObject)
         {
             return new SetObjectTreeValuesParameters
                 {
@@ -42,7 +43,6 @@ namespace TheBall.CORE
                     HttpFileData = httpFileData
                 };
         }
-
         public static CreateSpecifiedInformationObjectWithValuesReturnValue Get_ReturnValue(IInformationObject createdObject)
         {
             return new CreateSpecifiedInformationObjectWithValuesReturnValue {CreatedObjectResult = createdObject};

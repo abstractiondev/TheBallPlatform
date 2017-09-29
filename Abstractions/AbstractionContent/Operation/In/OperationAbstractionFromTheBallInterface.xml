@@ -40,7 +40,7 @@
           <TargetDefinition name="ConnectionCommunicationData" dataType="INT.ConnectionCommunicationData" designDesc="Connection communicating data obtained from DeviceContext" state="implemented">
             <Parameter name="InputStream" />
           </TargetDefinition>
-          <MethodExecute name="PerformOperation" designDesc="Perform operation based on communication data request" state="implemented">
+          <MethodExecute name="PerformOperation" asyncSupportMode="AsyncOnly" designDesc="Perform operation based on communication data request" state="implemented">
             <Target name="ConnectionCommunicationData" />
           </MethodExecute>
           <MethodExecute name="SerializeCommunicationDataToOutput" designDesc="Serialize communication data to output" state="implemented">
@@ -62,7 +62,7 @@
           <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <OperationExecute name="CallSyncConnectionContentToDeviceToSend" targetOperationName="SyncConnectionContentToDeviceToSend" designDesc="Call sync content to device" state="implemented">
+          <OperationExecute name="CallSyncConnectionContentToDeviceToSend" asyncSupportMode="AsyncOnly" targetOperationName="SyncConnectionContentToDeviceToSend" designDesc="Call sync content to device" state="implemented">
             <Target name="Connection" />
           </OperationExecute>
           <MethodExecute name="CallDeviceSyncToSendContent" designDesc="Call device sync to copy content" state="implemented">
@@ -110,10 +110,10 @@
           <TargetDefinition name="PackageContentListingProcessID" dataType="string" designDesc="Process ID for listing  package contents" state="implemented">
             <Parameter name="Connection" />
           </TargetDefinition>
-          <MethodExecute name="ExecuteContentListingProcess" designDesc="Process execution to list package content items" state="implemented">
+          <MethodExecute name="ExecuteContentListingProcess" asyncSupportMode="AsyncOnly" designDesc="Process execution to list package content items" state="implemented">
             <Target name="PackageContentListingProcessID" />
           </MethodExecute>
-          <TargetDefinition name="PackageContentListingProcess" dataType="TheBall.CORE.Process" designDesc="Process for listing  package contents" state="implemented">
+          <TargetDefinition name="PackageContentListingProcess" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process for listing  package contents" state="implemented">
             <Target name="PackageContentListingProcessID" />
           </TargetDefinition>
           <TargetDefinition name="ContentListingResult" dataType="TheBall.CORE.INT.ContentItemLocationWithMD5[]" designDesc="Content listing result" state="implemented">
@@ -138,7 +138,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection object" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
           <TargetDefinition name="PackageContentListingOperationName" dataType="string" designDesc="Operation name for package listing operation" state="implemented">
@@ -156,7 +156,7 @@
             <Target name="Connection" />
             <Target name="TransferPackage" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Stores objects" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Stores objects" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
           <MethodExecute name="PackageTransferPackageContent" designDesc="Package contents for transfer package" state="implemented">
@@ -164,7 +164,7 @@
             <Target name="DynamicPackageListingOperationOutput" />
             <ReturnValue name="OutputContentName" dataType="string[]" designDesc="Output content blob names" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="SendTransferPackageContent" designDesc="Send package contents through connection" state="implemented">
+          <MethodExecute name="SendTransferPackageContent" asyncSupportMode="AsyncOnly" designDesc="Send package contents through connection" state="implemented">
             <Target name="Connection" />
             <Target name="TransferPackage" />
             <Target name="PackageTransferPackageContentOutput" />
@@ -172,7 +172,7 @@
           <MethodExecute name="SetTransferPackageAsProcessed" designDesc="Set transfer package as prosessed state" state="implemented">
             <Target name="TransferPackage" />
           </MethodExecute>
-          <MethodExecute name="StoreObjectComplete" designDesc="Stores connection with processed transferpackage" state="implemented">
+          <MethodExecute name="StoreObjectComplete" asyncSupportMode="AsyncOnly" designDesc="Stores connection with processed transferpackage" state="implemented">
             <Target name="Connection" />
             <Target name="TransferPackage" />
           </MethodExecute>
@@ -405,20 +405,20 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection object" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <MethodExecute name="CallDeleteOnOtherEndAndDeleteOtherEndDevice" designDesc="Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless" state="implemented">
+          <MethodExecute name="CallDeleteOnOtherEndAndDeleteOtherEndDevice" asyncSupportMode="AsyncOnly" designDesc="Call delete on other end - if this is active party. Otherwise delete device associated with this connection. Ignore failure regardless" state="implemented">
             <Parameter name="IsLaunchedByRemoteDelete" />
             <Target name="Connection" />
           </MethodExecute>
-          <MethodExecute name="DeleteConnectionIntermediateContent" designDesc="Delete connection's intermediate content, including transfer connect" state="implemented">
+          <MethodExecute name="DeleteConnectionIntermediateContent" asyncSupportMode="AsyncOnly" designDesc="Delete connection's intermediate content, including transfer connect" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
-          <MethodExecute name="DeleteConnectionProcesses" designDesc="Delete connection attached processes" state="implemented">
+          <MethodExecute name="DeleteConnectionProcesses" asyncSupportMode="AsyncOnly" designDesc="Delete connection attached processes" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
-          <MethodExecute name="DeleteConnectionObject" designDesc="Delete the actual connection object" state="implemented">
+          <MethodExecute name="DeleteConnectionObject" asyncSupportMode="AsyncOnly" designDesc="Delete the actual connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
         </SequentialExecution>
@@ -446,10 +446,10 @@
             <Parameter name="TargetGroupID" />
             <Target name="Connection" />
           </TargetDefinition>
-          <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">
+          <MethodExecute name="StoreConnection" asyncSupportMode="AsyncOnly" designDesc="Store connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
-          <MethodExecute name="NegotiateDeviceConnection" designDesc="Negotiate device connection" state="implemented">
+          <MethodExecute name="NegotiateDeviceConnection" asyncSupportMode="AsyncOnly" designDesc="Negotiate device connection" state="implemented">
             <Target name="DeviceForConnection" />
           </MethodExecute>
         </SequentialExecution>
@@ -467,10 +467,10 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection object" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <MethodExecute name="PerformProcessExecution" designDesc="Execute the defined process" state="implemented">
+          <MethodExecute name="PerformProcessExecution" asyncSupportMode="AsyncOnly" designDesc="Execute the defined process" state="implemented">
             <Parameter name="ConnectionProcessToExecute" />
             <Target name="Connection" />
           </MethodExecute>
@@ -488,13 +488,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object for finalization" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection object for finalization" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
           <TargetDefinition name="ConnectionCommunicationData" dataType="INT.ConnectionCommunicationData" designDesc="Connection finalizing data model (UI/JSON serializable)" state="implemented">
             <Target name="Connection" />
           </TargetDefinition>
-          <MethodExecute name="CallDeviceServiceForFinalizing" designDesc="Call device based service for finalizing" state="implemented">
+          <MethodExecute name="CallDeviceServiceForFinalizing" asyncSupportMode="AsyncOnly" designDesc="Call device based service for finalizing" state="implemented">
             <Target name="Connection" />
             <Target name="ConnectionCommunicationData" />
           </MethodExecute>
@@ -502,10 +502,10 @@
             <Target name="Connection" />
             <Target name="ConnectionCommunicationData" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
-          <OperationExecute name="CallCreateConnectionStructures" targetOperationName="CreateConnectionStructures" designDesc="Create connection structures" state="implemented">
+          <OperationExecute name="CallCreateConnectionStructures" asyncSupportMode="AsyncOnly" targetOperationName="CreateConnectionStructures" designDesc="Create connection structures" state="implemented">
             <Target name="Connection" />
           </OperationExecute>
         </SequentialExecution>
@@ -522,16 +522,16 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="This side connection entry" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="This side connection entry" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <TargetDefinition name="ProcessToListPackageContents" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented">
+          <TargetDefinition name="ProcessToListPackageContents" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process to list package contents" state="implemented">
             <Target name="Connection" />
           </TargetDefinition>
-          <TargetDefinition name="ProcessToProcessReceivedData" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented">
+          <TargetDefinition name="ProcessToProcessReceivedData" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process to process received data" state="implemented">
             <Target name="Connection" />
           </TargetDefinition>
-          <TargetDefinition name="ProcessToUpdateThisSideCategories" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented">
+          <TargetDefinition name="ProcessToUpdateThisSideCategories" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process to update this side categories" state="implemented">
             <Target name="Connection" />
           </TargetDefinition>
           <MethodExecute name="SetConnectionProcesses" designDesc="Set connection processes" state="implemented">
@@ -540,7 +540,7 @@
             <Target name="ProcessToProcessReceivedData" />
             <Target name="ProcessToUpdateThisSideCategories" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
         </SequentialExecution>
@@ -561,13 +561,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="ThisSideConnection" dataType="Connection" designDesc="This side connection entry" state="implemented">
+          <TargetDefinition name="ThisSideConnection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="This side connection entry" state="implemented">
             <Parameter name="ConnectionCommunicationData" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store objects" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
             <Target name="ThisSideConnection" />
           </MethodExecute>
-          <OperationExecute name="CallCreateConnectionStructures" targetOperationName="CreateConnectionStructures" designDesc="Call operation to create connection structures" state="implemented">
+          <OperationExecute name="CallCreateConnectionStructures" asyncSupportMode="AsyncOnly" targetOperationName="CreateConnectionStructures" designDesc="Call operation to create connection structures" state="implemented">
             <Target name="ThisSideConnection" />
           </OperationExecute>
         </SequentialExecution>
@@ -589,7 +589,7 @@
             <Parameter name="Description" />
             <Parameter name="OtherSideConnectionID" />
           </TargetDefinition>
-          <MethodExecute name="StoreConnection" designDesc="Store connection object" state="implemented">
+          <MethodExecute name="StoreConnection" asyncSupportMode="AsyncOnly" designDesc="Store connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
         </SequentialExecution>
@@ -608,13 +608,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="ExecuteProcessToUpdateThisSideCategories" designDesc="Execute process to update this side categories" state="implemented">
+          <MethodExecute name="ExecuteProcessToUpdateThisSideCategories" asyncSupportMode="AsyncOnly" designDesc="Execute process to update this side categories" state="implemented">
             <Parameter name="ConnectionID" />
           </MethodExecute>
-          <TargetDefinition name="Connection" dataType="TheBall.Interface.Connection" designDesc="Connecton that contains this categories" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="TheBall.Interface.Connection" designDesc="Connecton that contains this categories" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
-          <MethodExecute name="SyncCategoriesWithOtherSideCategories" designDesc="Get other side categories" state="implemented">
+          <MethodExecute name="SyncCategoriesWithOtherSideCategories" asyncSupportMode="AsyncOnly" designDesc="Get other side categories" state="implemented">
             <Target name="Connection" />
             <ReturnValue name="OtherSideCategories" dataType="Category[]" designDesc="Other side categories" state="implemented" />
           </MethodExecute>
@@ -622,7 +622,7 @@
             <Target name="Connection" />
             <Target name="SyncCategoriesWithOtherSideCategoriesOutput" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store connection object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store connection object" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
         </SequentialExecution>
@@ -842,11 +842,11 @@
           <TargetDefinition name="Owner" dataType="TheBall.CORE.IContainerOwner" designDesc="GroupID as owner" state="implemented">
             <Parameter name="GroupID" />
           </TargetDefinition>
-          <TargetDefinition name="BinaryFile" dataType="AaltoGlobalImpact.OIP.BinaryFile" designDesc="Binary file to attach the mediacontent to" state="implemented">
+          <TargetDefinition name="BinaryFile" asyncSupportMode="AsyncOnly" dataType="AaltoGlobalImpact.OIP.BinaryFile" designDesc="Binary file to attach the mediacontent to" state="implemented">
             <Parameter name="FileName" />
             <Target name="Owner" />
           </TargetDefinition>
-          <MethodExecute name="FetchDataAndAttachToFile" designDesc="Fetch data from URL and attach to file" state="implemented">
+          <MethodExecute name="FetchDataAndAttachToFile" asyncSupportMode="AsyncOnly" designDesc="Fetch data from URL and attach to file" state="implemented">
             <Parameter name="DataURL" />
             <Target name="BinaryFile" />
           </MethodExecute>

@@ -57,7 +57,7 @@ namespace TheBall.Index
         {
             string queueName = GetQueryRequestQueueName(indexName);
             QueueSupport.MessageObject<string>[] results;
-            QueueSupport.GetMessagesFromQueue(queueName, out results);
+            QueueSupport.GetMessagesFromQueue(queueName);
             return results;
         }
 
@@ -65,7 +65,7 @@ namespace TheBall.Index
         {
             string queueName = GetIndexRequestQueueName(indexName);
             QueueSupport.MessageObject<string>[] results;
-            QueueSupport.GetMessagesFromQueue(queueName, out results);
+            QueueSupport.GetMessagesFromQueue(queueName);
             return results;
         }
 

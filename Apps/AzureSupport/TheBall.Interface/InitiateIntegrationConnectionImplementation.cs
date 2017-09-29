@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -31,12 +32,12 @@ namespace TheBall.Interface
             return operResult.CreatedAuthenticatedAsActiveDevice;
         }
 
-        public static void ExecuteMethod_StoreConnection(Connection connection)
+        public static async Task ExecuteMethod_StoreConnectionAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
-        public static void ExecuteMethod_NegotiateDeviceConnection(AuthenticatedAsActiveDevice deviceForConnection)
+        public static async Task ExecuteMethod_NegotiateDeviceConnectionAsync(AuthenticatedAsActiveDevice deviceForConnection)
         {
             PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters parameters =
                 new PerformNegotiationAndValidateAuthenticationAsActiveDeviceParameters
@@ -44,7 +45,7 @@ namespace TheBall.Interface
                         AuthenticatedAsActiveDeviceID = deviceForConnection.ID,
                         Owner = Owner
                     };
-            PerformNegotiationAndValidateAuthenticationAsActiveDevice.Execute(parameters);
+            await PerformNegotiationAndValidateAuthenticationAsActiveDevice.ExecuteAsync(parameters);
         }
 
     }

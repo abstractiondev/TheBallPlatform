@@ -1,17 +1,18 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
 {
     public class BeginAccountEmailAddressRegistrationImplementation
     {
-        public static void ExecuteMethod_ValidateUnexistingEmail(string emailAddress)
+        public static async Task ExecuteMethod_ValidateUnexistingEmailAsync(string emailAddress)
         {
             if(String.IsNullOrWhiteSpace(emailAddress))
                 throw new InvalidDataException("Email address is required");
             string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            TBREmailRoot emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             if (emailRoot != null)
                 throw new InvalidDataException("Email address '" + emailAddress + "' is already registered to the system.");
         }
@@ -26,9 +27,9 @@ namespace TheBall.CORE
             return emailValidation;
         }
 
-        public static void ExecuteMethod_StoreObject(TBEmailValidation emailValidation)
+        public static async Task ExecuteMethod_StoreObjectAsync(TBEmailValidation emailValidation)
         {
-            emailValidation.StoreInformation();
+            await emailValidation.StoreInformationAsync();
         }
 
         public static void ExecuteMethod_SendEmailConfirmation(TBEmailValidation emailValidation)

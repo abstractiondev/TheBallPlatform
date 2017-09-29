@@ -402,7 +402,7 @@
           <MethodExecute name="ValidateMatchingEmail" designDesc="Validate that account active email matches payment token email" state="implemented">
             <Target name="PaymentToken" />
           </MethodExecute>
-          <TargetDefinition name="CustomerAccount" dataType="CustomerAccount" designDesc="Customer account object based on active account ID. Created if missing" state="implemented" />
+          <TargetDefinition name="CustomerAccount" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account object based on active account ID. Created if missing" state="implemented" />
           <MethodExecute name="ProcessPayment" designDesc="Process payment to Stripe" state="implemented">
             <Target name="PaymentToken" />
             <Target name="CustomerAccount" />
@@ -423,7 +423,7 @@
             <Parameter name="GroupID" />
           </TargetDefinition>
           <TargetDefinition name="StripeCustomers" dataType="Stripe.StripeCustomer[]" designDesc="Stripe customers from service call" state="implemented" />
-          <TargetDefinition name="CurrentCustomers" dataType="CustomerAccountCollection" designDesc="Current customer collection" state="implemented">
+          <TargetDefinition name="CurrentCustomers" asyncSupportMode="AsyncOnly" dataType="CustomerAccountCollection" designDesc="Current customer collection" state="implemented">
             <Target name="Owner" />
           </TargetDefinition>
           <TargetDefinition name="NewCustomersToCreate" dataType="CustomerAccount[]" designDesc="New customers to create" state="implemented">
@@ -431,7 +431,7 @@
             <Target name="StripeCustomers" />
             <Target name="CurrentCustomers" />
           </TargetDefinition>
-          <MethodExecute name="StoreObjects" designDesc="Store new customers" state="implemented">
+          <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store new customers" state="implemented">
             <Target name="Owner" />
             <Target name="NewCustomersToCreate" />
           </MethodExecute>

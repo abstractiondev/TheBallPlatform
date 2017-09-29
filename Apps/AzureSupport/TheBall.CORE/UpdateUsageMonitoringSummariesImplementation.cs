@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.CORE
 {
     public class UpdateUsageMonitoringSummariesImplementation
     {
-        public static UsageMonitorItem[] GetTarget_SourceItems(IContainerOwner owner, int amountOfDays)
+        public static async Task<UsageMonitorItem[]> GetTarget_SourceItems(IContainerOwner owner, int amountOfDays)
         {
             string filterPrefix = "TheBall.CORE/UsageMonitorItem/";
             DateTime today = DateTime.UtcNow.Date;
@@ -16,10 +17,10 @@ namespace TheBall.CORE
             for (DateTime fromDate = today.AddDays(-amountOfDays); fromDate <= today; fromDate = fromDate.AddDays(1))
             {
                 string dateStr = fromDate.ToString("yyyyMMdd");
-                var dayBlobs = owner.ListBlobsWithPrefix(filterPrefix + dateStr).Cast<CloudBlockBlob>().ToArray();
+                var dayBlobs = (await owner.ListBlobsWithPrefixAsync(filterPrefix + dateStr)).Cast<CloudBlockBlob>().ToArray();
                 foreach (var blob in dayBlobs)
                 {
-                    UsageMonitorItem item = (UsageMonitorItem) StorageSupport.RetrieveInformation(blob.Name, type);
+                    UsageMonitorItem item = (UsageMonitorItem) await StorageSupport.RetrieveInformationA(blob.Name, type);
                     result.Add(item);
                 }
             }

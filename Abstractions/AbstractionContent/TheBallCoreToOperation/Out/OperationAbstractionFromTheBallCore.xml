@@ -606,8 +606,8 @@
             <Parameter name="ExecutingOperationName" />
             <Parameter name="InitialArguments" />
           </TargetDefinition>
-          <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
-          <MethodExecute name="AddProcessObjectToContainerAndStoreBoth" designDesc="Add process object to container and store both" state="implemented">
+          <TargetDefinition name="OwnerProcessContainer" asyncSupportMode="AsyncOnly" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+          <MethodExecute name="AddProcessObjectToContainerAndStoreBoth" asyncSupportMode="AsyncOnly" designDesc="Add process object to container and store both" state="implemented">
             <Target name="OwnerProcessContainer" />
             <Target name="Process" />
           </MethodExecute>
@@ -629,11 +629,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Process" dataType="Process" designDesc="Process to delete" state="implemented">
+          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="Process" designDesc="Process to delete" state="implemented">
             <Parameter name="ProcessID" />
           </TargetDefinition>
-          <TargetDefinition name="OwnerProcessContainer" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
-          <MethodExecute name="ObtainLockRemoveFromContainerAndDeleteProcess" designDesc="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container." state="implemented">
+          <TargetDefinition name="OwnerProcessContainer" asyncSupportMode="AsyncOnly" dataType="ProcessContainer" designDesc="Process container that contains all processes" state="implemented" />
+          <MethodExecute name="ObtainLockRemoveFromContainerAndDeleteProcess" asyncSupportMode="AsyncOnly" designDesc="Remove process from container and delete process. NOTE! Obtain lock before delete process proceeding. If process is null already, remove ID if it's available in container." state="implemented">
             <Parameter name="ProcessID" />
             <Target name="Process" />
             <Target name="OwnerProcessContainer" />
@@ -650,13 +650,13 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Process" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
+          <TargetDefinition name="Process" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.Process" designDesc="Process object of execution" state="implemented">
             <Parameter name="ProcessID" />
           </TargetDefinition>
           <TargetDefinition name="ProcessLockLocation" dataType="string" designDesc="Process lock file location" state="implemented">
             <Target name="Process" />
           </TargetDefinition>
-          <MethodExecute name="ExecuteAndStoreProcessWithLock" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
+          <MethodExecute name="ExecuteAndStoreProcessWithLock" asyncSupportMode="AsyncOnly" designDesc="Execute process after obtaining lock, release lock afterwards - store process object if execution was performed. Don't do anything if lock was already there." state="implemented">
             <Target name="ProcessLockLocation" />
             <Target name="Process" />
           </MethodExecute>
@@ -670,7 +670,7 @@
       <Parameters>
         <Parameter name="RootObject" dataType="IInformationObject" designDesc="Root object whose values (and tree) to set" state="implemented" />
         <Parameter name="HttpFormData" dataType="NameValueCollection" designDesc="HTTP POST data. Unprocessed and unfiltered." state="implemented" />
-        <Parameter name="HttpFileData" dataType="System.Web.HttpFileCollection" designDesc="Http File data" state="implemented" />
+        <Parameter name="HttpFileData" dataType="Microsoft.AspNetCore.Http.IFormFileCollection" designDesc="Http File data" state="implemented" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -711,7 +711,7 @@
             <Parameter name="RootObject" />
             <Target name="BinaryContentFiles" />
           </MethodExecute>
-          <MethodExecute name="StoreCompleteObject" designDesc="Stores the created object - with all set values." state="designApproved">
+          <MethodExecute name="StoreCompleteObject" asyncSupportMode="AsyncOnly" designDesc="Stores the created object - with all set values." state="designApproved">
             <Parameter name="RootObject" />
           </MethodExecute>
         </SequentialExecution>
@@ -726,7 +726,7 @@
         <Parameter name="ObjectDomainName" dataType="string" designDesc="Object domain" state="designApproved" />
         <Parameter name="ObjectName" dataType="string" designDesc="Object name" state="designApproved" />
         <Parameter name="HttpFormData" dataType="NameValueCollection" designDesc="Http POST data. Unprocessed and unfiltered." state="implemented" />
-        <Parameter name="HttpFileData" dataType="System.Web.HttpFileCollection" designDesc="Http File data" state="designApproved" />
+        <Parameter name="HttpFileData" dataType="Microsoft.AspNetCore.Http.IFormFileCollection" designDesc="Http File data" state="designApproved" />
       </Parameters>
       <Execution>
         <SequentialExecution>
@@ -741,7 +741,7 @@
           <MethodExecute name="StoreInitialObject" designDesc="Stores the object first time - with set values." state="designApproved">
             <Target name="CreatedObject" />
           </MethodExecute>
-          <OperationExecute name="SetObjectValues" targetOperationName="SetObjectTreeValues" designDesc="Set object values and let the set operation to store the object." state="implemented">
+          <OperationExecute name="SetObjectValues" asyncSupportMode="AsyncOnly" targetOperationName="SetObjectTreeValues" designDesc="Set object values and let the set operation to store the object." state="implemented">
             <Parameter name="HttpFormData" />
             <Parameter name="HttpFileData" />
             <Target name="CreatedObject" />
@@ -964,7 +964,7 @@
             <Target name="SharedSecretData" />
             <Target name="SharedSecretPayload" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="AuthenticatedAsActiveDevice" />
           </MethodExecute>
         </SequentialExecution>
@@ -1019,7 +1019,7 @@
             <Parameter name="LocalContentURL" />
             <Parameter name="AuthenticatedDeviceID" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="CreatedInformationOutput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1042,7 +1042,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
+          <TargetDefinition name="InformationOutput" asyncSupportMode="AsyncOnly" dataType="InformationOutput" designDesc="Information output of which to set the status" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationOutputID" />
           </TargetDefinition>
@@ -1050,7 +1050,7 @@
             <Parameter name="IsValidAndActive" />
             <Target name="InformationOutput" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store modified object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store modified object" state="implemented">
             <Target name="InformationOutput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1126,7 +1126,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationOutput" dataType="InformationOutput" designDesc="Information output to push the data to" state="implemented">
+          <TargetDefinition name="InformationOutput" asyncSupportMode="AsyncOnly" dataType="InformationOutput" designDesc="Information output to push the data to" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationOutputID" />
           </TargetDefinition>
@@ -1144,10 +1144,10 @@
             <Parameter name="LocalContentName" />
             <Target name="InformationOutput" />
           </TargetDefinition>
-          <TargetDefinition name="AuthenticatedAsActiveDevice" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
+          <TargetDefinition name="AuthenticatedAsActiveDevice" asyncSupportMode="AsyncOnly" dataType="AuthenticatedAsActiveDevice" designDesc="Authenticated as device info (if available)" state="implemented">
             <Target name="InformationOutput" />
           </TargetDefinition>
-          <MethodExecute name="PushToInformationOutput" designDesc="Push information to output" state="implemented">
+          <MethodExecute name="PushToInformationOutput" asyncSupportMode="AsyncOnly" designDesc="Push information to output" state="implemented">
             <Parameter name="Owner" />
             <Target name="InformationOutput" />
             <Target name="DestinationURL" />
@@ -1180,7 +1180,7 @@
             <Parameter name="LocalContentName" />
             <Parameter name="AuthenticatedDeviceID" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="CreatedInformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1203,7 +1203,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input of which to set the status" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input of which to set the status" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
@@ -1211,7 +1211,7 @@
             <Parameter name="IsValidAndActive" />
             <Target name="InformationInput" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store created object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store created object" state="implemented">
             <Target name="InformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1229,11 +1229,11 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="InformationInput" dataType="InformationInput" designDesc="Information input to delete" state="implemented">
+          <TargetDefinition name="InformationInput" asyncSupportMode="AsyncOnly" dataType="InformationInput" designDesc="Information input to delete" state="implemented">
             <Parameter name="Owner" />
             <Parameter name="InformationInputID" />
           </TargetDefinition>
-          <MethodExecute name="DeleteInformationInput" designDesc="Delete information input record" state="implemented">
+          <MethodExecute name="DeleteInformationInput" asyncSupportMode="AsyncOnly" designDesc="Delete information input record" state="implemented">
             <Target name="InformationInput" />
           </MethodExecute>
         </SequentialExecution>
@@ -1262,10 +1262,10 @@
             <Parameter name="InformationInput" />
             <Target name="OwnerEmailAddresses" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store email validation object" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store email validation object" state="implemented">
             <Target name="EmailValidation" />
           </MethodExecute>
-          <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for joining the devices" state="implemented">
+          <MethodExecute name="SendEmailConfirmation" asyncSupportMode="AsyncOnly" designDesc="Create and send email confirmation for joining the devices" state="implemented">
             <Parameter name="InformationInput" />
             <Target name="EmailValidation" />
             <Target name="OwnerEmailAddresses" />
@@ -1403,7 +1403,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="ValidateUnexistingEmail" designDesc="Validate that the email to add is not already registered" state="implemented">
+          <MethodExecute name="ValidateUnexistingEmail" asyncSupportMode="AsyncOnly" designDesc="Validate that the email to add is not already registered" state="implemented">
             <Parameter name="EmailAddress" />
           </MethodExecute>
           <TargetDefinition name="EmailValidation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object prepared ready to stored and to be sent" state="implemented">
@@ -1411,7 +1411,7 @@
             <Parameter name="EmailAddress" />
             <Parameter name="RedirectUrlAfterValidation" />
           </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store processed objects" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store processed objects" state="implemented">
             <Target name="EmailValidation" />
           </MethodExecute>
           <MethodExecute name="SendEmailConfirmation" designDesc="Create and send email confirmation for validating the email" state="implemented">
@@ -2010,161 +2010,6 @@
         <ReturnValue name="DeletedItems" dataType="INT.ContentItemLocationWithMD5[]" designDesc="Deleted items" state="implemented" />
         <Target name="CallPrepareTargetAndListItemsToCopyOutput" />
       </OperationReturnValues>
-    </Operation>
-    <Operation name="MergeAccountsDestructively">
-      <OperationSpec>
-        <Description>
-            Merges two accounts into one and destroys the leftover. Parameters state these as "PrimaryAccountToStay" and "AccountToMergeAndDestroy"
-          </Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="PrimaryAccountToStayID" dataType="string" designDesc="Primary account that is going to stay after the merge" state="implemented" />
-        <Parameter name="AccountToBeMergedAndDestroyedID" dataType="string" designDesc="Account to be merged and destroyed" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <TargetDefinition name="PrimaryAccountToStay" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Primary account root" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </TargetDefinition>
-          <TargetDefinition name="AccountToBeMerged" dataType="AaltoGlobalImpact.OIP.TBRAccountRoot" designDesc="Account to be merged" state="implemented">
-            <Parameter name="AccountToBeMergedAndDestroyedID" />
-          </TargetDefinition>
-          <TargetDefinition name="GroupAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="GroupInitiatorAccessToBeTransfered" dataType="AaltoGlobalImpact.OIP.TBAccountCollaborationGroup[]" designDesc="Group access from account, that's being merged - not initiator roles" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="EmailAddressesToBeMerged" dataType="AaltoGlobalImpact.OIP.TBEmail[]" designDesc="Email addresses from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <TargetDefinition name="LoginAccessToBeMerged" dataType="AaltoGlobalImpact.OIP.TBLoginInfo[]" designDesc="Login information from access to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateAccountToBeMerged" designDesc="Validate account to be merged not to contain groups or emails (for the time being)" state="implemented">
-            <Target name="GroupAccessToBeMerged" />
-            <Target name="GroupInitiatorAccessToBeTransfered" />
-            <Target name="EmailAddressesToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveAccountToBeMergedFromAllGroups" designDesc="Remove account to be merged from all of its groups" state="implemented">
-            <Target name="AccountToBeMerged" />
-            <Target name="GroupAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveEmailAddressesFromAccountToBeMerged" designDesc="Remove all email addresses from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="RemoveLoginsFromAccountToBeMerged" designDesc="Remove all login accounts from account to be merged" state="implemented">
-            <Target name="AccountToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="AddLoginsToPrimaryAccount" designDesc="Add logins to new primary account" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="LoginAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="AddEmailAddressesToPrimaryAccount" designDesc="Add email addresses to new primary account" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="EmailAddressesToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="StorePrimaryAccount" designDesc="Store primary account object" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-          </MethodExecute>
-          <MethodExecute name="CallRefreshAccountRootToReferences" designDesc="Fix account root of primary account" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </MethodExecute>
-          <MethodExecute name="AddPrimaryAccountToAllGroupsWhereItsMissing" designDesc="All primary account to all groups where its missing" state="implemented">
-            <Target name="PrimaryAccountToStay" />
-            <Target name="GroupAccessToBeMerged" />
-          </MethodExecute>
-          <MethodExecute name="TransferGroupInitiatorRights" designDesc="Transfer group initiator rights" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-            <Parameter name="AccountToBeMergedAndDestroyedID" />
-            <Target name="GroupInitiatorAccessToBeTransfered" />
-          </MethodExecute>
-          <MethodExecute name="UpdateAccountGroupLogins" designDesc="Refresh account group relations" state="implemented">
-            <Parameter name="PrimaryAccountToStayID" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="TransferGroupInitiator">
-      <OperationSpec>
-        <Description>Change group initiator from one account to another</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="GroupID" dataType="string" designDesc="Group ID whose initiatorship is to be transfered" state="implemented" />
-        <Parameter name="OldInitiatorAccountID" dataType="string" designDesc="Old initiator account ID" state="implemented" />
-        <Parameter name="NewInitiatorAccountID" dataType="string" designDesc="New initiator account ID" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="AddNewInitiatorToGroup" designDesc="Add new initiator to group" state="implemented">
-            <Parameter name="GroupID" />
-            <Parameter name="NewInitiatorAccountID" />
-          </MethodExecute>
-          <MethodExecute name="RemoveOldInitiatorFromGroup" designDesc="Remove old initiator from group" state="implemented">
-            <Parameter name="GroupID" />
-            <Parameter name="OldInitiatorAccountID" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="InitiateAccountMergeFromEmail">
-      <OperationSpec>
-        <Description>Initiate account merger from email re-registration.</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="EmailAddress" dataType="string" designDesc="Email address that the merge is based on" state="implemented" />
-        <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID that is submitting the email" state="implemented" />
-        <Parameter name="RedirectUrlAfterValidation" dataType="string" designDesc="Redirect url after email validation" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <MethodExecute name="ValidateExistingEmail" designDesc="Validate that the email to add is already registered" state="implemented">
-            <Parameter name="EmailAddress" />
-          </MethodExecute>
-          <TargetDefinition name="AccountToMergeToID" dataType="string" designDesc="Original account to be merged to" state="implemented">
-            <Parameter name="EmailAddress" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateAccountNotTheSame" designDesc="Validate that the account initiating the merge is not the same as the target" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Target name="AccountToMergeToID" />
-          </MethodExecute>
-          <TargetDefinition name="MergeAccountEmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Initiate merge account if current account ID and account to merge to ID are different" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Parameter name="EmailAddress" />
-            <Parameter name="RedirectUrlAfterValidation" />
-            <Target name="AccountToMergeToID" />
-          </TargetDefinition>
-          <MethodExecute name="StoreObject" designDesc="Store object" state="implemented">
-            <Target name="MergeAccountEmailConfirmation" />
-          </MethodExecute>
-          <MethodExecute name="SendConfirmationEmail" designDesc="Send confirmation email" state="implemented">
-            <Target name="MergeAccountEmailConfirmation" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
-    </Operation>
-    <Operation name="ConfirmAccountMergeFromEmail">
-      <OperationSpec>
-        <Description>Confirms account merge from email confirmation</Description>
-      </OperationSpec>
-      <Parameters>
-        <Parameter name="CurrentAccountID" dataType="string" designDesc="Current account ID" state="implemented" />
-        <Parameter name="EmailConfirmation" dataType="AaltoGlobalImpact.OIP.TBEmailValidation" designDesc="Email validation object" state="implemented" />
-      </Parameters>
-      <Execution>
-        <SequentialExecution>
-          <TargetDefinition name="MergeAccountConfirmation" dataType="AaltoGlobalImpact.OIP.TBMergeAccountConfirmation" designDesc="Merge account confirmation" state="implemented">
-            <Parameter name="EmailConfirmation" />
-          </TargetDefinition>
-          <MethodExecute name="ValidateCurrentAccountAsMergingActor" designDesc="Validate that current account ID is indeed the account to be merged owner" state="implemented">
-            <Parameter name="CurrentAccountID" />
-            <Target name="MergeAccountConfirmation" />
-          </MethodExecute>
-          <MethodExecute name="PerformAccountMerge" designDesc="Perform account merge with source and target IDs" state="implemented">
-            <Target name="MergeAccountConfirmation" />
-          </MethodExecute>
-        </SequentialExecution>
-      </Execution>
     </Operation>
     <Operation name="GetOwnerSemanticDomains">
       <OperationSpec>

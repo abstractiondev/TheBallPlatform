@@ -17,7 +17,7 @@ namespace TheBall.Interface
             {
                 // TODO: Fetch owner specific initializing with dependency injection
                 var finalizingActions = getOwnerFinalizingActions();
-                InformationContext.InitializeToLogicalContext(executionOwner, instanceName, finalizingActions);
+                InformationContext.InitializeToLogicalContext(null, executionOwner, instanceName, finalizingActions);
                 foreach (var operationID in operationIDs)
                 {
                     try
@@ -40,7 +40,7 @@ namespace TheBall.Interface
                 {
                     await StorageSupport.DeleteBlobsAsync(operationQueueItems);
                     var lockFullName = lockBlobFullPath;
-                    await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockFullName);
+                    await StorageSupport.ReleaseLogicalLockByDeletingBlobAsync(lockFullName, null);
                 });
             }
             finally

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
@@ -10,15 +11,18 @@ namespace TheBall.CORE
 {
     public static partial class OwnerInitializer
     {
-        public static void InitializeAndConnectMastersAndCollections(this IContainerOwner owner)
+        public static async Task InitializeAndConnectMastersAndCollections(this IContainerOwner owner)
         {
             Type myType = typeof(OwnerInitializer);
             var myMethods = myType.GetMethods(BindingFlags.Static | BindingFlags.NonPublic);
+            var initTasks = new List<Task>();
             foreach (var myMethod in myMethods.Where(method => method.Name.StartsWith("DOMAININIT_")))
             {
-                myMethod.Invoke(null, new object[] { owner });
+                var task = (Task) myMethod.Invoke(null, new object[] { owner });
+                initTasks.Add(task);
             }
-            owner.ReconnectMastersAndCollectionsForOwner();
+            await Task.WhenAll(initTasks);
+            await owner.ReconnectMastersAndCollectionsForOwner();
         }
     }
 
@@ -62,7 +66,7 @@ namespace TheBall.CORE
             return owner.IsSameOwner(SystemSupport.SystemOwner);
         }
 
-        public static void ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)
+        public static async Task ReconnectMastersAndCollectionsForOwner(this IContainerOwner owner)
         {
             //string myLocalAccountID = "0c560c69-c3a7-4363-b125-ba1660d21cf4";
             //string acctLoc = "acc/" + myLocalAccountID + "/";
