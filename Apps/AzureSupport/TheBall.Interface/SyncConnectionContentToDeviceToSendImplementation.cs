@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.INT;
@@ -14,14 +15,14 @@ namespace TheBall.Interface
             return connection.ProcessIDToListPackageContents;
         }
 
-        public static void ExecuteMethod_ExecuteContentListingProcess(string packageContentListingProcessId)
+        public static async Task ExecuteMethod_ExecuteContentListingProcessAsync(string packageContentListingProcessId)
         {
-            ExecuteProcess.Execute(new ExecuteProcessParameters {ProcessID = packageContentListingProcessId});
+            await ExecuteProcess.ExecuteAsync(new ExecuteProcessParameters {ProcessID = packageContentListingProcessId});
         }
 
-        public static Process GetTarget_PackageContentListingProcess(string packageContentListingProcessId)
+        public static async Task<Process> GetTarget_PackageContentListingProcessAsync(string packageContentListingProcessId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Process>(InformationContext.CurrentOwner, packageContentListingProcessId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Process>(InformationContext.CurrentOwner, packageContentListingProcessId);
         }
 
         public static ContentItemLocationWithMD5[] GetTarget_ContentListingResult(Process packageContentListingProcess)

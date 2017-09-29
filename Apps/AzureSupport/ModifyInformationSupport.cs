@@ -7,20 +7,23 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Threading.Tasks;
 using System.Web;
 using PersonalWeb.Diosphere;
 using TheBall.Admin;
 using TheBall.CORE;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
+using Group = TheBall.CORE.Group;
 
 namespace TheBall
 {
     public static class ModifyInformationSupport
     {
-        public static object ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, HttpFileCollection fileContent)
+        public static async Task<object> ExecuteOwnerWebPOST(IContainerOwner containerOwner, NameValueCollection form, IFormFileCollection fileContent)
         {
             bool isCancelButton = form["btnCancel"] != null;
             if (isCancelButton)
@@ -29,14 +32,14 @@ namespace TheBall
             string operationName = form["ExecuteOperation"];
             if (operationName != null)
             {
-                var operationResult = executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
+                var operationResult = await executeOperationWithFormValues(containerOwner, operationName, form, fileContent);
                 return operationResult;
             }
 
             string adminOperationName = form["ExecuteAdminOperation"];
             if (adminOperationName != null)
             {
-                var adminResult = executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
+                var adminResult = await executeAdminOperationWithFormValues(containerOwner, adminOperationName, form, fileContent);
                 return adminResult;
             }
 
@@ -55,15 +58,15 @@ namespace TheBall
                 var verifyOwner = VirtualOwner.FigureOwner(relativeLocation);
                 if (verifyOwner.IsSameOwner(containerOwner) == false)
                     throw new SecurityException("Mismatch in ownership of data submission");
-                IInformationObject rootObject = StorageSupport.RetrieveInformation(relativeLocation, oldETag,
-                                                                                   containerOwner);
+                IInformationObject rootObject = null;// StorageSupport.RetrieveInformation(relativeLocation, oldETag,
+                                                                                   //containerOwner);
                 if (oldETag != rootObject?.ETag)
                 {
                     throw new InvalidDataException("Information under editing was modified during display and save");
                 }
                 // TODO: Proprely validate against only the object under the editing was changed (or its tree below)
 
-                SetObjectTreeValues.Execute(new SetObjectTreeValuesParameters
+                await SetObjectTreeValues.ExecuteAsync(new SetObjectTreeValuesParameters
                     {
                         RootObject = rootObject,
                         HttpFormData = filteredForm,
@@ -73,7 +76,7 @@ namespace TheBall
             return null;
         }
 
-        private static object executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        private static async Task<object> executeAdminOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, IFormFileCollection fileContent)
         {
             var filterFields = new string[] { "ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD" };
             string adminGroupID = InstanceConfig.Current.AdminGroupID;
@@ -83,7 +86,7 @@ namespace TheBall
             {
                 case "FixAllGroupsMastersAndCollections":
                     {
-                        var allGroupIDs = TBRGroupRoot.GetAllGroupIDs();
+                        var allGroupIDs = Group.GetAllGroupIDs();
                         foreach (var groupID in allGroupIDs)
                         {
                             Debug.WriteLine("Fixing group: " + groupID);
@@ -92,7 +95,7 @@ namespace TheBall
                             {
                                 GroupID = groupID
                             };
-                            FixGroupMastersAndCollections.Execute(parameters);
+                            await FixGroupMastersAndCollections.ExecuteAsync(parameters);
                         }
                         break;
                     }
@@ -103,7 +106,7 @@ namespace TheBall
                             {
                                 GroupID = form["GroupID"]
                             };
-                        FixGroupMastersAndCollections.Execute(parameters);
+                        await FixGroupMastersAndCollections.ExecuteAsync(parameters);
                         break;
                     }
                 default:
@@ -118,7 +121,7 @@ namespace TheBall
                 throw new InvalidOperationException(errorMessage);
         }
 
-        private static object executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, HttpFileCollection fileContent)
+        private static async Task<object> executeOperationWithFormValues(IContainerOwner containerOwner, string operationName, NameValueCollection form, IFormFileCollection fileContent)
         {
             var filterFields = new string[] {"ExecuteOperation", "ObjectDomainName", "ObjectName", "ObjectID", "NORELOAD"};
             switch (operationName)
@@ -128,7 +131,7 @@ namespace TheBall
                     if(containerOwner.IsGroupContainer() == false)
                         throw new NotSupportedException("CreateOrUpdateCustomUI is only supported for groups");
                     var groupID = containerOwner.LocationPrefix;
-                    FetchURLAsGroupContent.Execute(new FetchURLAsGroupContentParameters
+                    await FetchURLAsGroupContent.ExecuteAsync(new FetchURLAsGroupContentParameters
                     {
                         DataURL = form["DataURL"],
                         FileName = form["FileName"],
@@ -152,12 +155,12 @@ namespace TheBall
                     {
                         GroupID = form["GroupID"]
                     };
-                    SetGroupAsDefaultForAccount.Execute(parameters);
+                    await SetGroupAsDefaultForAccount.ExecuteAsync(parameters);
                     break;
                 }
                 case "ClearDefaultGroupFromAccount":
                 {
-                    ClearDefaultGroupFromAccount.Execute();
+                    await ClearDefaultGroupFromAccount.ExecuteAsync();
                     break;
                 }
 
@@ -167,7 +170,7 @@ namespace TheBall
                             {
                                 ConnectionID = form["ConnectionID"]
                             };
-                        PublishCollaborationContentOverConnection.Execute(parameters);
+                        await PublishCollaborationContentOverConnection.ExecuteAsync(parameters);
                         break;
                     }
                 case "FinalizeConnectionAfterGroupAuthorization":
@@ -176,7 +179,7 @@ namespace TheBall
                             {
                                 ConnectionID = form["ConnectionID"]
                             };
-                        FinalizeConnectionAfterGroupAuthorization.Execute(parameters);
+                        await FinalizeConnectionAfterGroupAuthorization.ExecuteAsync(parameters);
                         break;
                     }
                 case "DeleteConnection":
@@ -186,7 +189,7 @@ namespace TheBall
                                 ConnectionID = form["ConnectionID"],
                                 IsLaunchedByRemoteDelete = false
                             };
-                        DeleteConnectionWithStructures.Execute(parameters);
+                        await DeleteConnectionWithStructures.ExecuteAsync(parameters);
                         break;
                     }
                 case "SynchronizeConnectionCategories":
@@ -195,13 +198,13 @@ namespace TheBall
                         {
                             ConnectionID = form["ConnectionID"]
                         };
-                        SynchronizeConnectionCategories.Execute(parameters);
+                        await SynchronizeConnectionCategories.ExecuteAsync(parameters);
                         break;
                     }
 
                 case "UpdateConnectionThisSideCategories":
                     {
-                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                        await ExecuteConnectionProcess.ExecuteAsync(new ExecuteConnectionProcessParameters
                             {
                                 ConnectionID = form["ConnectionID"],
                                 ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
@@ -216,7 +219,7 @@ namespace TheBall
                                 TargetBallHostName = form["TargetBallHostName"],
                                 TargetGroupID = form["TargetGroupID"]
                             };
-                        InitiateIntegrationConnection.Execute(parameters);
+                        await InitiateIntegrationConnection.ExecuteAsync(parameters);
                         break;
                     }
                 case "DeleteCustomUI":
@@ -235,14 +238,14 @@ namespace TheBall
                     {
                         if(containerOwner.IsGroupContainer() == false)
                             throw new NotSupportedException("CreateOrUpdateCustomUI is only supported for groups");
-                        var customUIContent = fileContent["CustomUIContents"];
+                        object customUIContent = null; //fileContent["CustomUIContents"];
                         if(customUIContent == null)
                             throw new ArgumentException("CustomUIContent field is required to contain the zip contents of custom UI.");
                         CreateOrUpdateCustomUIParameters parameters = new CreateOrUpdateCustomUIParameters
                             {
                                 CustomUIName = form["CustomUIName"],
                                 Owner = containerOwner,
-                                ZipArchiveStream = customUIContent.InputStream,
+                                ZipArchiveStream = null //customUIContent.InputStream,
                             };
                         CreateOrUpdateCustomUI.Execute(parameters);
                         break;
@@ -255,6 +258,7 @@ namespace TheBall
                         {
                             NameValueCollection values = new NameValueCollection();
                             values.Add("Title", categoryName);
+                            /*
                             CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
                                 {
                                     ObjectDomainName = "AaltoGlobalImpact.OIP",
@@ -263,6 +267,7 @@ namespace TheBall
                                     Owner = containerOwner
                                 };
                             CreateSpecifiedInformationObjectWithValues.Execute(parameters);
+                            */
                         }
                         break;
                     }
@@ -312,12 +317,12 @@ namespace TheBall
                                 LocalContentURL = form["LocalContentURL"],
                                 OutputDescription = form["OutputDescription"]
                             };
-                        var createdInformationOutput = CreateInformationOutput.Execute(parameters);
+                        var createdInformationOutput = await CreateInformationOutput.ExecuteAsync(parameters);
                         var owningAccount = containerOwner as TBAccount;
                         TBCollaboratingGroup owningGroup = null;
                         if (owningAccount == null)
                         {
-                            TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation <TBRGroupRoot>(containerOwner.LocationPrefix);
+                            TBRGroupRoot groupRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRGroupRoot>(containerOwner.LocationPrefix);
                             owningGroup = groupRoot.Group;
                         }
                         CreateAndSendEmailValidationForInformationOutputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationOutputConfirmationParameters
@@ -347,7 +352,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 InformationOutputID = form["InformationOutputID"]
                             };
-                        PushToInformationOutput.Execute(parameters);
+                        await PushToInformationOutput.ExecuteAsync(parameters);
                         break;
                     }
                 case "DeleteInformationInput":
@@ -357,7 +362,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 InformationInputID = form["InformationInputID"]
                             };
-                        DeleteInformationInput.Execute(parameters);
+                        await DeleteInformationInput.ExecuteAsync(parameters);
                         break;
                     }
                 case "FetchInputInformation":
@@ -398,7 +403,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 AuthenticatedAsActiveDeviceID = form["AuthenticatedAsActiveDeviceID"],
                             };
-                        PerformNegotiationAndValidateAuthenticationAsActiveDevice.Execute(parameters);
+                        await PerformNegotiationAndValidateAuthenticationAsActiveDevice.ExecuteAsync(parameters);
                         break;
                     }
                 case "CreateAuthenticatedAsActiveDevice":
@@ -415,84 +420,6 @@ namespace TheBall
                         CreateAuthenticatedAsActiveDevice.Execute(parameters);
                         break;
                     }
-                case "RemoveCollaboratorFromGroup":
-                    {
-                        if (containerOwner.IsGroupContainer() == false)
-                            throw new InvalidOperationException("Collaborator removal is only supported in group context");
-                        if(!TBCollaboratorRole.HasModeratorRights(InformationContext.Current.CurrentGroupRole))
-                            throw new SecurityException("Collaborator removal is only doable by moderators/initiators");
-                        string accountID = form["AccountID"];
-                        RemoveMemberFromGroupParameters parameters = new RemoveMemberFromGroupParameters
-                            {
-                                AccountID = accountID,
-                                GroupID = containerOwner.LocationPrefix
-                            };
-                        RemoveMemberFromGroup.Execute(parameters);
-                        break;
-                    }
-
-                case "InviteMemberToGroupAndPlatform":
-                {
-                    if(containerOwner.IsGroupContainer() == false)
-                        throw new InvalidOperationException("Group invitation is only supported in group context");
-                    string emailAddress = form["emailAddress"];
-                    string groupID = containerOwner.LocationPrefix;
-                    InviteNewMemberToPlatformAndGroup.Execute(new InviteNewMemberToPlatformAndGroupParameters
-                    {
-                        GroupID = groupID,
-                        MemberEmailAddress = emailAddress
-                    });
-                    break;
-                }
-                case "InviteMemberToGroup":
-                    {
-                        if (containerOwner.IsGroupContainer() == false)
-                            throw new InvalidOperationException("Group invitation is only supported in group context");
-                        string emailAddress = form["EmailAddress"];
-                        string emailRootID = TBREmailRoot.GetIDFromEmailAddress(emailAddress);
-                        TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
-                        if(emailRoot == null)
-                            throw new NotSupportedException("Email used for group invitation is not yet registered to the system");
-                        string groupID = containerOwner.LocationPrefix;
-                        InviteMemberToGroup.Execute(new InviteMemberToGroupParameters { GroupID = groupID, MemberEmailAddress = emailAddress });
-                        break;
-                    }
-
-                case "CreateGroupWithTemplates":
-                {
-                    throw new NotImplementedException("Not anymore implemented in proper way");
-                    /*
-                        var isAccount = containerOwner.IsAccountContainer();
-                    if (!isAccount == null)
-                        throw new NotSupportedException("Creating a group is only supported by account");
-                    var accountID = containerOwner.LocationPrefix;
-                    CreateGroupWithTemplatesParameters parameters = new CreateGroupWithTemplatesParameters
-                    {
-                        AccountID = accountID,
-                        GroupName = form["GroupName"],
-                        RedirectUrlAfterCreation = form["RedirectUrlAfterCreation"],
-                        TemplateNameList = form["TemplateNameList"]
-                    };
-                    //CreateGroupWithTemplates.Execute(parameters);
-                    */
-                    break;
-                }
-                case "InitiateAccountMergeFromEmail":
-                {
-                    var isAccount = containerOwner.IsAccountContainer();
-                    if (!isAccount)
-                        throw new NotSupportedException(
-                            "Email address based account merge is only supported for accounts");
-                    var accountID = containerOwner.LocationPrefix;
-                    InitiateAccountMergeFromEmailParameters parameters = new InitiateAccountMergeFromEmailParameters
-                    {
-                        CurrentAccountID = accountID,
-                        RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
-                        EmailAddress = form["EmailAddress"],
-                    };
-                    InitiateAccountMergeFromEmail.Execute(parameters);
-                    break;
-                }
                 case "UnregisterEmailAddress":
                     {
                         var isAccount = containerOwner.IsAccountContainer();
@@ -532,13 +459,13 @@ namespace TheBall
                                 AuthenticatedDeviceID = form["AuthenticatedDeviceID"],
                                 Owner = containerOwner
                             };
-                        var createdInformationInput = CreateInformationInput.Execute(parameters);
+                        var createdInformationInput = await CreateInformationInput.ExecuteAsync(parameters);
                         var owningAccount = containerOwner as TBAccount;
                         TBCollaboratingGroup owningGroup = null;
                         if (owningAccount == null)
                         {
                             TBRGroupRoot groupRoot =
-                                ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(containerOwner.LocationPrefix);
+                                await ObjectStorage.RetrieveFromDefaultLocationA<TBRGroupRoot>(containerOwner.LocationPrefix);
                             owningGroup = groupRoot.Group;
                         }
                         CreateAndSendEmailValidationForInformationInputConfirmationParameters emailParameters = new CreateAndSendEmailValidationForInformationInputConfirmationParameters
@@ -547,11 +474,11 @@ namespace TheBall
                                 OwningGroup = owningGroup,
                                 InformationInput = createdInformationInput.InformationInput,
                             };
-                        CreateAndSendEmailValidationForInformationInputConfirmation.Execute(emailParameters);
+                        await CreateAndSendEmailValidationForInformationInputConfirmation.ExecuteAsync(emailParameters);
                         break;
                     }
                 case "CreateSpecifiedInformationObjectWithValues":
-                    {
+                    {/*
                         CreateSpecifiedInformationObjectWithValuesParameters parameters = new CreateSpecifiedInformationObjectWithValuesParameters
                             {
                                 Owner = containerOwner,
@@ -561,8 +488,9 @@ namespace TheBall
                                 HttpFileData = fileContent,
                             };
                         var result = CreateSpecifiedInformationObjectWithValues.Execute(parameters);
-                        return result.CreatedObjectResult;
+                        return result.CreatedObjectResult;*/
                     }
+                    break;
                 case "DeleteSpecifiedInformationObject":
                     {
                         DeleteSpecifiedInformationObjectParameters parameters = new DeleteSpecifiedInformationObjectParameters

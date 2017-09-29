@@ -3,8 +3,10 @@ using System.Net;
 using System.Security;
 using System.Security.Principal;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using TheBall.CORE;
 
 namespace TheBall
@@ -31,16 +33,16 @@ namespace TheBall
         private const int TimeoutSeconds = 1800;
         //private const int TimeoutSeconds = 10;
 
-        public static void SetAuthenticationCookieFromUserName(HttpResponse response, string validUserName,
+        public static async Task SetAuthenticationCookieFromUserName(HttpResponse response, string validUserName,
             string emailAddress)
         {
             var loginID = Login.GetLoginIDFromLoginURL(validUserName);
-            var login = ObjectStorage.RetrieveFromOwnerContent<Login>(SystemOwner.CurrentSystem, loginID);
+            var login = await ObjectStorage.RetrieveFromOwnerContentA<Login>(SystemOwner.CurrentSystem, loginID);
             var accountID = login?.Account;
             string base64ClientMetadata = null;
             if (accountID != null)
             {
-                var account = ObjectStorage.RetrieveFromOwnerContent<Account>(SystemOwner.CurrentSystem, accountID);
+                var account = await ObjectStorage.RetrieveFromOwnerContentA<Account>(SystemOwner.CurrentSystem, accountID);
                 base64ClientMetadata = account?.GetClientMetadataAsBase64();
             }
             SetAuthenticationCookie(response, validUserName, emailAddress, accountID, base64ClientMetadata);
@@ -59,23 +61,9 @@ namespace TheBall
                 base64ClientMetadata);
             string authString = EncryptionSupport.EncryptStringToBase64(cookieValue);
 
-            setResponseCookie(response, new HttpCookie(AuthCookieName, authString)
-            {
-                HttpOnly = true,
-                Secure = true
-            });
-
-            setResponseCookie(response, new HttpCookie(EmailCookieName, emailAddress)
-            {
-                HttpOnly = false,
-                Secure = true
-            });
-
-            setResponseCookie(response, new HttpCookie(AccountIDCookieName, accountID)
-            {
-                HttpOnly = false,
-                Secure = true
-            });
+            setResponseCookie(response, AuthCookieName, authString, true);
+            setResponseCookie(response, EmailCookieName, emailAddress, false);
+            setResponseCookie(response, AccountIDCookieName, accountID, false);
 
 
             string clientMetadataJSONString = null;
@@ -85,18 +73,13 @@ namespace TheBall
                 clientMetadataJSONString = Encoding.UTF8.GetString(clientMetadataJSONData);
 
             }
-            setResponseCookie(response, new HttpCookie(ClientMetadataCookieName, clientMetadataJSONString)
-            {
-                HttpOnly = false,
-                Secure = true
-            });
+            setResponseCookie(response, ClientMetadataCookieName, clientMetadataJSONString, true);
         }
 
-        private static void setResponseCookie(HttpResponse response, HttpCookie cookie)
+        private static void setResponseCookie(HttpResponse response, string cookieName, string cookieValue, bool httpOnly, DateTimeOffset? expires = null)
         {
-            if(response.Cookies[cookie.Name] != null)
-                response.Cookies.Remove(cookie.Name);
-            response.Cookies.Add(cookie);
+            response.Cookies.Delete(cookieName);
+            response.Cookies.Append(cookieName, cookieValue, new CookieOptions { HttpOnly = httpOnly, Secure = true, Expires = expires });
         }
 
         public static void SetUserAuthentication(HttpContext context, string userName, string emailAddress,
@@ -108,13 +91,13 @@ namespace TheBall
 
         public static void SetUserFromCookieIfExists(HttpContext context)
         {
-            var request = HttpContext.Current.Request;
+            var request = context.Request;
             var encCookie = request.Cookies[AuthCookieName];
             if (encCookie != null)
             {
                 try
                 {
-                    string cookieValue = EncryptionSupport.DecryptStringFromBase64(encCookie.Value);
+                    string cookieValue = EncryptionSupport.DecryptStringFromBase64(encCookie);
                     var valueSplit = cookieValue.Split(new[] {AuthStrSeparator}, StringSplitOptions.None);
                     long ticks = long.Parse(valueSplit[0]);
                     DateTime cookieTime = new DateTime(ticks);
@@ -136,9 +119,7 @@ namespace TheBall
 
         public static void ClearAuthenticationCookie(HttpResponse response)
         {
-            HttpCookie cookie = new HttpCookie(AuthCookieName);
-            cookie.Expires = DateTime.Today.AddDays(-1);
-            setResponseCookie(response, cookie);
+            setResponseCookie(response, AuthCookieName, "", true, expires:DateTime.Today.AddDays(-1));
         }
     }
 }

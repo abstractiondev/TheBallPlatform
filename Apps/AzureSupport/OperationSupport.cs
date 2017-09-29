@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.CORE.Storage;
@@ -66,15 +67,14 @@ namespace TheBall
                 if(!isAdminOwner)
                     throw new SecurityException("TheBall.CORE or TheBall.Admin operations are only allowed from admin group");
             }
-            var fileCollection = request.Files.AllKeys.ToDictionary(key => key, key =>
+            var fileCollection = request.Form.Files.ToDictionary(item => item.FileName, item =>
             {
-                var file = request.Files[key];
-                return new Tuple<string, byte[]>(file.FileName, file.InputStream.ToBytes());
+                var file = request.Form.Files[item.Name];
+                return new Tuple<string, byte[]>(file.FileName, file.OpenReadStream().ToBytes());
             });
-            Dictionary<string, string> formValues = request.Form.AllKeys.ToDictionary(key => key, key => request.Form[key]);
-            Dictionary<string, string> queryParameters = request.Params.AllKeys.ToDictionary(key => key,
-                key => request.Params[key]);
-            byte[] requestContent = request.InputStream.ToBytes();
+            Dictionary<string, string> formValues = request.Form.ToDictionary(item => item.Key, item => (string) item.Value);
+            Dictionary<string, string> queryParameters = request.Query.ToDictionary(item => item.Key, item => (string) item.Value);
+            byte[] requestContent = request.Body.ToBytes();
             HttpOperationData operationData = new HttpOperationData
             {
                 OperationName = operationName,
@@ -261,7 +261,7 @@ namespace TheBall
             { "InitiateIntegrationConnection", new Tuple<Type, ParameterManipulator>(typeof(InitiateIntegrationConnection), null)},
             { "DeleteCustomUI", new Tuple<Type, ParameterManipulator>(typeof(DeleteCustomUI), null)},
             { "CreateOrUpdateCustomUI", new Tuple<Type, ParameterManipulator>(typeof(CreateOrUpdateCustomUI), null)},
-            { "AddCategories", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
+            //{ "AddCategories", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
             { "PublishGroupToWww", new Tuple<Type, ParameterManipulator>(typeof(PublishGroupToWww), null)},
             { "UpdateUsageMonitoringItems", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
             { "ProcessAllResourceUsagesToOwnerCollections", new Tuple<Type, ParameterManipulator>(typeof(ProcessAllResourceUsagesToOwnerCollections), null)},
@@ -274,15 +274,12 @@ namespace TheBall
             { "DeleteAuthenticatedAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(DeleteAuthenticatedAsActiveDevice), null)},
             { "PerformNegotiationAndValidateAuthenticationAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(PerformNegotiationAndValidateAuthenticationAsActiveDevice), null)},
             { "CreateAuthenticatedAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(CreateAuthenticatedAsActiveDevice), null)},
-            { "RemoveCollaboratorFromGroup", new Tuple<Type, ParameterManipulator>(typeof(RemoveMemberFromGroup), null)},
-            { "InviteMemberToGroupAndPlatform", new Tuple<Type, ParameterManipulator>(typeof(InviteNewMemberToPlatformAndGroup), null)},
-            { "InviteMemberToGroup", new Tuple<Type, ParameterManipulator>(typeof(InviteMemberToGroup), null)},
             //{ "CreateGroupWithTemplates", new Tuple<Type, ParameterManipulator>(typeof(CreateGroupWithTemplates), null)},
-            { "InitiateAccountMergeFromEmail", new Tuple<Type, ParameterManipulator>(typeof(InitiateAccountMergeFromEmail), null)},
+            //{ "InitiateAccountMergeFromEmail", new Tuple<Type, ParameterManipulator>(typeof(InitiateAccountMergeFromEmail), null)},
             { "UnregisterEmailAddress", new Tuple<Type, ParameterManipulator>(typeof(UnregisterEmailAddress), null)},
             { "BeginAccountEmailAddressRegistration", new Tuple<Type, ParameterManipulator>(typeof(BeginAccountEmailAddressRegistration), null)},
             { "CreateInformationInput", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
-            { "CreateSpecifiedInformationObjectWithValues", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
+            //{ "CreateSpecifiedInformationObjectWithValues", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},
             { "DeleteSpecifiedInformationObject", new Tuple<Type, ParameterManipulator>(typeof(DeleteSpecifiedInformationObject), null)},
             // { "", typeof(object)},
         };

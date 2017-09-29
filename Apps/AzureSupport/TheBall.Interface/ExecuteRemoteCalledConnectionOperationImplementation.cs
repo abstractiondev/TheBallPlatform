@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using AzureSupport;
 using TheBall.CORE.Storage;
 using TheBall.Interface.INT;
@@ -14,13 +15,13 @@ namespace TheBall.Interface
             return JSONSupport.GetObjectFromStream<ConnectionCommunicationData>(inputStream);
         }
 
-        public static void ExecuteMethod_PerformOperation(ConnectionCommunicationData connectionCommunicationData)
+        public static async Task ExecuteMethod_PerformOperationAsync(ConnectionCommunicationData connectionCommunicationData)
         {
             switch (connectionCommunicationData.ProcessRequest)
             {
                 case "PROCESSPUSHEDCONTENT":
                     {
-                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                        await ExecuteConnectionProcess.ExecuteAsync(new ExecuteConnectionProcessParameters
                             {
                                 ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
                                 ConnectionProcessToExecute = "ProcessReceived"
@@ -29,12 +30,12 @@ namespace TheBall.Interface
                     }
                 case "SYNCCATEGORIES":
                     {
-                        ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+                        await ExecuteConnectionProcess.ExecuteAsync(new ExecuteConnectionProcessParameters
                             {
                                 ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
                                 ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"
                             });
-                        Connection thisSideConnection = ObjectStorage.RetrieveFromOwnerContent<Connection>(InformationContext.CurrentOwner,
+                        Connection thisSideConnection = await ObjectStorage.RetrieveFromOwnerContentA<Connection>(InformationContext.CurrentOwner,
                                                                                             connectionCommunicationData.ReceivingSideConnectionID);
                         thisSideConnection.OtherSideCategories.Clear();
                         thisSideConnection.OtherSideCategories.AddRange(connectionCommunicationData.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()));
@@ -45,24 +46,24 @@ namespace TheBall.Interface
                                 TargetCategoryID = catLinkItem.TargetCategoryID,
                                 LinkingType = catLinkItem.LinkingType
                             }));
-                        thisSideConnection.StoreInformation();
+                        await thisSideConnection.StoreInformationAsync();
                         connectionCommunicationData.CategoryCollectionData = thisSideConnection.ThisSideCategories.Select(CategoryInfo.FromCategory).ToArray();
                         break;
                     }
                 case "FINALIZECONNECTION":
-                    var output = CreateReceivingConnection.Execute(new CreateReceivingConnectionParameters
+                    var output = await CreateReceivingConnection.ExecuteAsync(new CreateReceivingConnectionParameters
                         {
                             Description = connectionCommunicationData.ProcessParametersString,
                             OtherSideConnectionID = connectionCommunicationData.ActiveSideConnectionID
                         });
                     connectionCommunicationData.ReceivingSideConnectionID = output.ConnectionID;
-                    CreateReceivingConnectionStructures.Execute(new CreateReceivingConnectionStructuresParameters
+                    await CreateReceivingConnectionStructures.ExecuteAsync(new CreateReceivingConnectionStructuresParameters
                         {
                             ConnectionCommunicationData = connectionCommunicationData
                         });
                     break;
                 case "DELETEREMOTECONNECTION":
-                    DeleteConnectionWithStructures.Execute(new DeleteConnectionWithStructuresParameters
+                    await DeleteConnectionWithStructures.ExecuteAsync(new DeleteConnectionWithStructuresParameters
                         {
                             ConnectionID = connectionCommunicationData.ReceivingSideConnectionID,
                             IsLaunchedByRemoteDelete = true

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using TheBall.CORE;
 
 namespace TheBall.Interface
@@ -9,12 +10,12 @@ namespace TheBall.Interface
         {
             get { return InformationContext.CurrentOwner; }
         }
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionId);
         }
 
-        public static void ExecuteMethod_PerformProcessExecution(string connectionProcessToExecute, Connection connection)
+        public static async Task ExecuteMethod_PerformProcessExecutionAsync(string connectionProcessToExecute, Connection connection)
         {
             string processID;
             switch (connectionProcessToExecute)
@@ -28,7 +29,7 @@ namespace TheBall.Interface
                 default:
                     throw new NotImplementedException("Connection process execution not implemented for: " + connectionProcessToExecute);
             }
-            ExecuteProcess.Execute(new ExecuteProcessParameters
+            await ExecuteProcess.ExecuteAsync(new ExecuteProcessParameters
             {
                 ProcessID = processID
             });

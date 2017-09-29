@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using TheBall.CORE;
 using TheBall.Interface.INT;
 
@@ -10,18 +11,18 @@ namespace TheBall.Interface
         {
             get { return InformationContext.CurrentOwner; }
         }
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionId);
         }
 
-        public static void ExecuteMethod_CallDeleteOnOtherEndAndDeleteOtherEndDevice(bool isLaunchedByRemoteDelete, Connection connection)
+        public static async Task ExecuteMethod_CallDeleteOnOtherEndAndDeleteOtherEndDeviceAsync(bool isLaunchedByRemoteDelete, Connection connection)
         {
             if (isLaunchedByRemoteDelete == false)
             {
                 try
                 {
-                    var result = DeviceSupport
+                    var result = await DeviceSupport
                         .ExecuteRemoteOperation<ConnectionCommunicationData>(
                             connection.DeviceID,
                             "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", new ConnectionCommunicationData
@@ -44,7 +45,7 @@ namespace TheBall.Interface
             }
         }
 
-        public static void ExecuteMethod_DeleteConnectionIntermediateContent(Connection connection)
+        public static async Task ExecuteMethod_DeleteConnectionIntermediateContentAsync(Connection connection)
         {
             string targetLocation;
             if (connection.IsActiveParty)
@@ -59,28 +60,28 @@ namespace TheBall.Interface
                     targetLocation = null;
             }
             if (targetLocation != null)
-                StorageSupport.DeleteBlobsFromOwnerTarget(InformationContext.CurrentOwner, targetLocation);
+                await StorageSupport.DeleteBlobsFromOwnerTargetA(InformationContext.CurrentOwner, targetLocation);
         }
 
-        public static void ExecuteMethod_DeleteConnectionProcesses(Connection connection)
+        public static async Task ExecuteMethod_DeleteConnectionProcessesAsync(Connection connection)
         {
-            DeleteProcess.Execute(new DeleteProcessParameters
+            await DeleteProcess.ExecuteAsync(new DeleteProcessParameters
                 {
                     ProcessID = connection.ProcessIDToUpdateThisSideCategories
                 });
-            DeleteProcess.Execute(new DeleteProcessParameters
+            await DeleteProcess.ExecuteAsync(new DeleteProcessParameters
                 {
                     ProcessID = connection.ProcessIDToListPackageContents
                 });
-            DeleteProcess.Execute(new DeleteProcessParameters
+            await DeleteProcess.ExecuteAsync(new DeleteProcessParameters
                 {
                     ProcessID = connection.ProcessIDToProcessReceived
                 });
         }
 
-        public static void ExecuteMethod_DeleteConnectionObject(Connection connection)
+        public static async Task ExecuteMethod_DeleteConnectionObjectAsync(Connection connection)
         {
-            connection.DeleteInformationObject(Owner);
+            await connection.DeleteInformationObjectAsync(Owner);
         }
     }
 }

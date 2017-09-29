@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -17,24 +16,6 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace TheBall.Infra.AzureRoleSupport
 {
-    public enum RoleAppType
-    {
-        WorkerConsole,
-        WebConsole
-    }
-
-    public class RoleAppInfo
-    {
-        public string RoleSpecificManagerArgs;
-        public string AppConfigPath;
-        public string AppRootFolder;
-        public string ComponentName;
-        public RoleAppType AppType;
-
-        public string TargetConsolePath => Path.Combine(AppRootFolder, ComponentName + ".exe");
-    }
-
-
     public abstract class AcceleratorRole : RoleEntryPoint
     {
         //private const string PathTo7Zip = @"d:\bin\7z.exe";

@@ -1,10 +1,12 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class SetInformationInputValidationAndActiveStatusImplementation
     {
-        public static InformationInput GetTarget_InformationInput(IContainerOwner owner, string informationInputId)
+        public static async Task<InformationInput> GetTarget_InformationInputAsync(IContainerOwner owner, string informationInputId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<InformationInput>(informationInputId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<InformationInput>(informationInputId, owner);
         }
 
         public static void ExecuteMethod_SetInputValidAndActiveValue(bool isValidAndActive, InformationInput informationInput)
@@ -12,9 +14,9 @@ namespace TheBall.CORE
             informationInput.IsValidatedAndActive = isValidAndActive;
         }
 
-        public static void ExecuteMethod_StoreObject(InformationInput informationInput)
+        public static async Task ExecuteMethod_StoreObjectAsync(InformationInput informationInput)
         {
-            informationInput.StoreInformation();
+            await informationInput.StoreInformationAsync();
         }
     }
 }

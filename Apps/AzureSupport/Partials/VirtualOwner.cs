@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Threading.Tasks;
 using TheBall;
 using TheBall.CORE;
 
@@ -9,10 +10,10 @@ namespace TheBall.CORE
     public interface IInformationCollection
     {
         string GetItemDirectory();
-        void RefreshContent();
+        Task RefreshContentAsync();
         bool IsMasterCollection { get; }
         string GetMasterLocation();
-        IInformationCollection GetMasterInstance();
+        Task<IInformationCollection> GetMasterInstanceAsync();
     }
 
     public class VirtualOwner : IContainerOwner

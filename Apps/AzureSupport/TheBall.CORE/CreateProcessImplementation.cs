@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TheBall.CORE
 {
@@ -16,9 +17,9 @@ namespace TheBall.CORE
             return process;
         }
 
-        public static ProcessContainer GetTarget_OwnerProcessContainer()
+        public static async Task<ProcessContainer> GetTarget_OwnerProcessContainerAsync()
         {
-            var processContainer = ObjectStorage.RetrieveFromOwnerContent<ProcessContainer>(InformationContext.CurrentOwner, "default");
+            var processContainer = await ObjectStorage.RetrieveFromOwnerContentA<ProcessContainer>(InformationContext.CurrentOwner, "default");
             if (processContainer == null)
             {
                 processContainer = new ProcessContainer();
@@ -27,13 +28,13 @@ namespace TheBall.CORE
             return processContainer;
         }
 
-        public static void ExecuteMethod_AddProcessObjectToContainerAndStoreBoth(ProcessContainer ownerProcessContainer, Process process)
+        public static async Task ExecuteMethod_AddProcessObjectToContainerAndStoreBothAsync(ProcessContainer ownerProcessContainer, Process process)
         {
             if(ownerProcessContainer.ProcessIDs == null)
                 ownerProcessContainer.ProcessIDs = new List<string>();
             ownerProcessContainer.ProcessIDs.Add(process.ID);
-            ownerProcessContainer.StoreInformation();
-            process.StoreInformation();
+            await ownerProcessContainer.StoreInformationAsync();
+            await process.StoreInformationAsync();
         }
 
         public static CreateProcessReturnValue Get_ReturnValue(Process process)

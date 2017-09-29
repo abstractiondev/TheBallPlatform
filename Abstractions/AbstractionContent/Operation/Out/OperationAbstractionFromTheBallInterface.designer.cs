@@ -37,11 +37,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExecuteRemoteCalledConnectionOperationParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteRemoteCalledConnectionOperationParameters parameters)
+				public static async Task ExecuteAsync(ExecuteRemoteCalledConnectionOperationParameters parameters)
 		{
 						PrepareParameters(parameters);
 					INT.ConnectionCommunicationData ConnectionCommunicationData = ExecuteRemoteCalledConnectionOperationImplementation.GetTarget_ConnectionCommunicationData(parameters.InputStream);	
-				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_PerformOperation(ConnectionCommunicationData);		
+				 await ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_PerformOperationAsync(ConnectionCommunicationData);		
 				ExecuteRemoteCalledConnectionOperationImplementation.ExecuteMethod_SerializeCommunicationDataToOutput(parameters.OutputStream, ConnectionCommunicationData);		
 				}
 				}
@@ -55,14 +55,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PublishCollaborationContentOverConnectionParameters parameters)
 		{
 					}
-				public static void Execute(PublishCollaborationContentOverConnectionParameters parameters)
+				public static async Task ExecuteAsync(PublishCollaborationContentOverConnectionParameters parameters)
 		{
 						PrepareParameters(parameters);
 					Connection Connection = PublishCollaborationContentOverConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
 				
 		{ // Local block to allow local naming
 			SyncConnectionContentToDeviceToSendParameters operationParameters = PublishCollaborationContentOverConnectionImplementation.CallSyncConnectionContentToDeviceToSend_GetParameters(Connection);
-			SyncConnectionContentToDeviceToSend.Execute(operationParameters);
+			 await SyncConnectionContentToDeviceToSend.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				bool CallDeviceSyncToSendContentOutput = PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallDeviceSyncToSendContent(Connection);		
@@ -91,12 +91,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SyncConnectionContentToDeviceToSendParameters parameters)
 		{
 					}
-				public static void Execute(SyncConnectionContentToDeviceToSendParameters parameters)
+				public static async Task ExecuteAsync(SyncConnectionContentToDeviceToSendParameters parameters)
 		{
 						PrepareParameters(parameters);
 					string PackageContentListingProcessID = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessID(parameters.Connection);	
-				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_ExecuteContentListingProcess(PackageContentListingProcessID);		
-				TheBall.CORE.Process PackageContentListingProcess = SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcess(PackageContentListingProcessID);	
+				 await SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_ExecuteContentListingProcessAsync(PackageContentListingProcessID);		
+				TheBall.CORE.Process PackageContentListingProcess =  await SyncConnectionContentToDeviceToSendImplementation.GetTarget_PackageContentListingProcessAsync(PackageContentListingProcessID);	
 				TheBall.CORE.INT.ContentItemLocationWithMD5[] ContentListingResult = SyncConnectionContentToDeviceToSendImplementation.GetTarget_ContentListingResult(PackageContentListingProcess);	
 				string SyncTargetRootFolder = SyncConnectionContentToDeviceToSendImplementation.GetTarget_SyncTargetRootFolder(parameters.Connection);	
 				SyncConnectionContentToDeviceToSendImplementation.ExecuteMethod_CopyContentsToSyncRoot(ContentListingResult, SyncTargetRootFolder);		
@@ -112,19 +112,19 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(PackageAndPushCollaborationContentParameters parameters)
 		{
 					}
-				public static void Execute(PackageAndPushCollaborationContentParameters parameters)
+				public static async Task ExecuteAsync(PackageAndPushCollaborationContentParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = PackageAndPushCollaborationContentImplementation.GetTarget_Connection(parameters.ConnectionID);	
+					Connection Connection =  await PackageAndPushCollaborationContentImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
 				string PackageContentListingOperationName = PackageAndPushCollaborationContentImplementation.GetTarget_PackageContentListingOperationName(Connection);	
 				string[] DynamicPackageListingOperationOutput = PackageAndPushCollaborationContentImplementation.ExecuteMethod_DynamicPackageListingOperation(parameters.ConnectionID, PackageContentListingOperationName);		
 				TransferPackage TransferPackage = PackageAndPushCollaborationContentImplementation.GetTarget_TransferPackage(parameters.ConnectionID);	
 				PackageAndPushCollaborationContentImplementation.ExecuteMethod_AddTransferPackageToConnection(Connection, TransferPackage);		
-				PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObject(Connection);		
+				 await PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				string[] PackageTransferPackageContentOutput = PackageAndPushCollaborationContentImplementation.ExecuteMethod_PackageTransferPackageContent(TransferPackage, DynamicPackageListingOperationOutput);		
-				PackageAndPushCollaborationContentImplementation.ExecuteMethod_SendTransferPackageContent(Connection, TransferPackage, PackageTransferPackageContentOutput);		
+				 await PackageAndPushCollaborationContentImplementation.ExecuteMethod_SendTransferPackageContentAsync(Connection, TransferPackage, PackageTransferPackageContentOutput);		
 				PackageAndPushCollaborationContentImplementation.ExecuteMethod_SetTransferPackageAsProcessed(TransferPackage);		
-				PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObjectComplete(Connection, TransferPackage);		
+				 await PackageAndPushCollaborationContentImplementation.ExecuteMethod_StoreObjectCompleteAsync(Connection, TransferPackage);		
 				}
 				}
 				public class CreateInterfaceOperationForExecutionParameters 
@@ -312,14 +312,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(DeleteConnectionWithStructuresParameters parameters)
 		{
 					}
-				public static void Execute(DeleteConnectionWithStructuresParameters parameters)
+				public static async Task ExecuteAsync(DeleteConnectionWithStructuresParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = DeleteConnectionWithStructuresImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				DeleteConnectionWithStructuresImplementation.ExecuteMethod_CallDeleteOnOtherEndAndDeleteOtherEndDevice(parameters.IsLaunchedByRemoteDelete, Connection);		
-				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionIntermediateContent(Connection);		
-				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionProcesses(Connection);		
-				DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionObject(Connection);		
+					Connection Connection =  await DeleteConnectionWithStructuresImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
+				 await DeleteConnectionWithStructuresImplementation.ExecuteMethod_CallDeleteOnOtherEndAndDeleteOtherEndDeviceAsync(parameters.IsLaunchedByRemoteDelete, Connection);		
+				 await DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionIntermediateContentAsync(Connection);		
+				 await DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionProcessesAsync(Connection);		
+				 await DeleteConnectionWithStructuresImplementation.ExecuteMethod_DeleteConnectionObjectAsync(Connection);		
 				}
 				}
 				public class InitiateIntegrationConnectionParameters 
@@ -334,13 +334,13 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(InitiateIntegrationConnectionParameters parameters)
 		{
 					}
-				public static void Execute(InitiateIntegrationConnectionParameters parameters)
+				public static async Task ExecuteAsync(InitiateIntegrationConnectionParameters parameters)
 		{
 						PrepareParameters(parameters);
 					Connection Connection = InitiateIntegrationConnectionImplementation.GetTarget_Connection(parameters.Description);	
 				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
-				InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
-				InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnection(DeviceForConnection);		
+				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnectionAsync(Connection);		
+				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnectionAsync(DeviceForConnection);		
 				}
 				}
 				public class ExecuteConnectionProcessParameters 
@@ -354,11 +354,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ExecuteConnectionProcessParameters parameters)
 		{
 					}
-				public static void Execute(ExecuteConnectionProcessParameters parameters)
+				public static async Task ExecuteAsync(ExecuteConnectionProcessParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = ExecuteConnectionProcessImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				ExecuteConnectionProcessImplementation.ExecuteMethod_PerformProcessExecution(parameters.ConnectionProcessToExecute, Connection);		
+					Connection Connection =  await ExecuteConnectionProcessImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
+				 await ExecuteConnectionProcessImplementation.ExecuteMethod_PerformProcessExecutionAsync(parameters.ConnectionProcessToExecute, Connection);		
 				}
 				}
 				public class FinalizeConnectionAfterGroupAuthorizationParameters 
@@ -371,18 +371,18 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FinalizeConnectionAfterGroupAuthorizationParameters parameters)
 		{
 					}
-				public static void Execute(FinalizeConnectionAfterGroupAuthorizationParameters parameters)
+				public static async Task ExecuteAsync(FinalizeConnectionAfterGroupAuthorizationParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_Connection(parameters.ConnectionID);	
+					Connection Connection =  await FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
 				INT.ConnectionCommunicationData ConnectionCommunicationData = FinalizeConnectionAfterGroupAuthorizationImplementation.GetTarget_ConnectionCommunicationData(Connection);	
-				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_CallDeviceServiceForFinalizing(Connection, ConnectionCommunicationData);		
+				 await FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_CallDeviceServiceForFinalizingAsync(Connection, ConnectionCommunicationData);		
 				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_UpdateConnectionWithCommunicationData(Connection, ConnectionCommunicationData);		
-				FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_StoreObject(Connection);		
+				 await FinalizeConnectionAfterGroupAuthorizationImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				
 		{ // Local block to allow local naming
 			CreateConnectionStructuresParameters operationParameters = FinalizeConnectionAfterGroupAuthorizationImplementation.CallCreateConnectionStructures_GetParameters(Connection);
-			var operationReturnValue = CreateConnectionStructures.Execute(operationParameters);
+			var operationReturnValue =  await CreateConnectionStructures.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				}
@@ -397,15 +397,15 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateConnectionStructuresParameters parameters)
 		{
 					}
-				public static CreateConnectionStructuresReturnValue Execute(CreateConnectionStructuresParameters parameters)
+				public static async Task<CreateConnectionStructuresReturnValue> ExecuteAsync(CreateConnectionStructuresParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = CreateConnectionStructuresImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				TheBall.CORE.Process ProcessToListPackageContents = CreateConnectionStructuresImplementation.GetTarget_ProcessToListPackageContents(Connection);	
-				TheBall.CORE.Process ProcessToProcessReceivedData = CreateConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedData(Connection);	
-				TheBall.CORE.Process ProcessToUpdateThisSideCategories = CreateConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategories(Connection);	
+					Connection Connection =  await CreateConnectionStructuresImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
+				TheBall.CORE.Process ProcessToListPackageContents =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToListPackageContentsAsync(Connection);	
+				TheBall.CORE.Process ProcessToProcessReceivedData =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToProcessReceivedDataAsync(Connection);	
+				TheBall.CORE.Process ProcessToUpdateThisSideCategories =  await CreateConnectionStructuresImplementation.GetTarget_ProcessToUpdateThisSideCategoriesAsync(Connection);	
 				CreateConnectionStructuresImplementation.ExecuteMethod_SetConnectionProcesses(Connection, ProcessToListPackageContents, ProcessToProcessReceivedData, ProcessToUpdateThisSideCategories);		
-				CreateConnectionStructuresImplementation.ExecuteMethod_StoreObject(Connection);		
+				 await CreateConnectionStructuresImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				CreateConnectionStructuresReturnValue returnValue = CreateConnectionStructuresImplementation.Get_ReturnValue(Connection);
 		return returnValue;
 				}
@@ -424,15 +424,15 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateReceivingConnectionStructuresParameters parameters)
 		{
 					}
-				public static void Execute(CreateReceivingConnectionStructuresParameters parameters)
+				public static async Task ExecuteAsync(CreateReceivingConnectionStructuresParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection ThisSideConnection = CreateReceivingConnectionStructuresImplementation.GetTarget_ThisSideConnection(parameters.ConnectionCommunicationData);	
-				CreateReceivingConnectionStructuresImplementation.ExecuteMethod_StoreObject(ThisSideConnection);		
+					Connection ThisSideConnection =  await CreateReceivingConnectionStructuresImplementation.GetTarget_ThisSideConnectionAsync(parameters.ConnectionCommunicationData);	
+				 await CreateReceivingConnectionStructuresImplementation.ExecuteMethod_StoreObjectAsync(ThisSideConnection);		
 				
 		{ // Local block to allow local naming
 			CreateConnectionStructuresParameters operationParameters = CreateReceivingConnectionStructuresImplementation.CallCreateConnectionStructures_GetParameters(ThisSideConnection);
-			var operationReturnValue = CreateConnectionStructures.Execute(operationParameters);
+			var operationReturnValue =  await CreateConnectionStructures.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
 				}
@@ -448,11 +448,11 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(CreateReceivingConnectionParameters parameters)
 		{
 					}
-				public static CreateReceivingConnectionReturnValue Execute(CreateReceivingConnectionParameters parameters)
+				public static async Task<CreateReceivingConnectionReturnValue> ExecuteAsync(CreateReceivingConnectionParameters parameters)
 		{
 						PrepareParameters(parameters);
 					Connection Connection = CreateReceivingConnectionImplementation.GetTarget_Connection(parameters.Description, parameters.OtherSideConnectionID);	
-				CreateReceivingConnectionImplementation.ExecuteMethod_StoreConnection(Connection);		
+				 await CreateReceivingConnectionImplementation.ExecuteMethod_StoreConnectionAsync(Connection);		
 				CreateReceivingConnectionReturnValue returnValue = CreateReceivingConnectionImplementation.Get_ReturnValue(Connection);
 		return returnValue;
 				}
@@ -471,14 +471,14 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(SynchronizeConnectionCategoriesParameters parameters)
 		{
 					}
-				public static void Execute(SynchronizeConnectionCategoriesParameters parameters)
+				public static async Task ExecuteAsync(SynchronizeConnectionCategoriesParameters parameters)
 		{
 						PrepareParameters(parameters);
-					SynchronizeConnectionCategoriesImplementation.ExecuteMethod_ExecuteProcessToUpdateThisSideCategories(parameters.ConnectionID);		
-				TheBall.Interface.Connection Connection = SynchronizeConnectionCategoriesImplementation.GetTarget_Connection(parameters.ConnectionID);	
-				Category[] SyncCategoriesWithOtherSideCategoriesOutput = SynchronizeConnectionCategoriesImplementation.ExecuteMethod_SyncCategoriesWithOtherSideCategories(Connection);		
+					 await SynchronizeConnectionCategoriesImplementation.ExecuteMethod_ExecuteProcessToUpdateThisSideCategoriesAsync(parameters.ConnectionID);		
+				TheBall.Interface.Connection Connection =  await SynchronizeConnectionCategoriesImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
+				Category[] SyncCategoriesWithOtherSideCategoriesOutput =  await SynchronizeConnectionCategoriesImplementation.ExecuteMethod_SyncCategoriesWithOtherSideCategoriesAsync(Connection);		
 				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_UpdateOtherSideCategories(Connection, SyncCategoriesWithOtherSideCategoriesOutput);		
-				SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObject(Connection);		
+				 await SynchronizeConnectionCategoriesImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				}
 				}
 				public class ShareCollabInterfaceObjectParameters 
@@ -642,12 +642,12 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(FetchURLAsGroupContentParameters parameters)
 		{
 					}
-				public static void Execute(FetchURLAsGroupContentParameters parameters)
+				public static async Task ExecuteAsync(FetchURLAsGroupContentParameters parameters)
 		{
 						PrepareParameters(parameters);
 					TheBall.CORE.IContainerOwner Owner = FetchURLAsGroupContentImplementation.GetTarget_Owner(parameters.GroupID);	
-				AaltoGlobalImpact.OIP.BinaryFile BinaryFile = FetchURLAsGroupContentImplementation.GetTarget_BinaryFile(parameters.FileName, Owner);	
-				FetchURLAsGroupContentImplementation.ExecuteMethod_FetchDataAndAttachToFile(parameters.DataURL, BinaryFile);		
+				AaltoGlobalImpact.OIP.BinaryFile BinaryFile =  await FetchURLAsGroupContentImplementation.GetTarget_BinaryFileAsync(parameters.FileName, Owner);	
+				 await FetchURLAsGroupContentImplementation.ExecuteMethod_FetchDataAndAttachToFileAsync(parameters.DataURL, BinaryFile);		
 				}
 				}
 		 } 

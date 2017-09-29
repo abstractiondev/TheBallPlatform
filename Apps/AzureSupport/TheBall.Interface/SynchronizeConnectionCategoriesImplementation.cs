@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using TheBall.CORE;
 using TheBall.Interface.INT;
 
@@ -10,12 +11,12 @@ namespace TheBall.Interface
         {
             get { return InformationContext.CurrentOwner; }
         }
-        public static Connection GetTarget_Connection(string connectionId)
+        public static async Task<Connection> GetTarget_ConnectionAsync(string connectionId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<Connection>(Owner, connectionId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<Connection>(Owner, connectionId);
         }
 
-        public static Category[] ExecuteMethod_SyncCategoriesWithOtherSideCategories(Connection connection)
+        public static async Task<Category[]> ExecuteMethod_SyncCategoriesWithOtherSideCategoriesAsync(Connection connection)
         {
             ConnectionCommunicationData connectionData = new ConnectionCommunicationData
                 {
@@ -30,7 +31,7 @@ namespace TheBall.Interface
                             LinkingType = catLink.LinkingType
                         }).ToArray()
                 };
-            var result = DeviceSupport.ExecuteRemoteOperation<ConnectionCommunicationData>(connection.DeviceID,
+            var result = await DeviceSupport.ExecuteRemoteOperation<ConnectionCommunicationData>(connection.DeviceID,
                                                                                            "TheBall.Interface.ExecuteRemoteCalledConnectionOperation", connectionData);
             return result.CategoryCollectionData.Select(catInfo => catInfo.ToCategory()).ToArray();
         }
@@ -54,14 +55,14 @@ namespace TheBall.Interface
             connection.OtherSideCategories.AddRange(getOtherSideCategoriesOutput);
         }
 
-        public static void ExecuteMethod_StoreObject(Connection connection)
+        public static async Task ExecuteMethod_StoreObjectAsync(Connection connection)
         {
-            connection.StoreInformation();
+            await connection.StoreInformationAsync();
         }
 
-        public static void ExecuteMethod_ExecuteProcessToUpdateThisSideCategories(string connectionID)
+        public static async Task ExecuteMethod_ExecuteProcessToUpdateThisSideCategoriesAsync(string connectionID)
         {
-            ExecuteConnectionProcess.Execute(new ExecuteConnectionProcessParameters
+            await ExecuteConnectionProcess.ExecuteAsync(new ExecuteConnectionProcessParameters
                 {
                     ConnectionID = connectionID,
                     ConnectionProcessToExecute = "UpdateConnectionThisSideCategories"

@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using LuceneSupport;
+using System.Threading.Tasks;
+//using LuceneSupport;
 using TheBall.CORE;
 
 namespace TheBall.Index
 {
     public class IndexInformationImplementation
     {
-        public static IndexingRequest GetTarget_IndexingRequest(IContainerOwner owner, string indexingRequestId)
+        public static async Task<IndexingRequest> GetTarget_IndexingRequestAsync(IContainerOwner owner, string indexingRequestId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<IndexingRequest>(owner, indexingRequestId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<IndexingRequest>(owner, indexingRequestId);
         }
 
         public static string GetTarget_LuceneIndexFolder(IContainerOwner owner, string indexName, string indexStorageRootPath)
@@ -57,9 +58,9 @@ namespace TheBall.Index
             */
         }
 
-        public static void ExecuteMethod_DeleteIndexingRequest(IndexingRequest indexingRequest)
+        public static async Task ExecuteMethod_DeleteIndexingRequestAsync(IndexingRequest indexingRequest)
         {
-            indexingRequest.DeleteInformationObject();
+            await indexingRequest.DeleteInformationObjectAsync();
         }
 
     }

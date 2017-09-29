@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebInterface</RootNamespace>
     <AssemblyName>WebInterface</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <UseIISExpress>false</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -29,6 +29,7 @@
     </NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
     <ApplicationInsightsResourceId>/subscriptions/34c49516-d527-45d9-86ce-64a5e3de3440/resourcegroups/WebInterface/providers/microsoft.insights/components/WebInterface</ApplicationInsightsResourceId>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace TheBall.CORE
 {
@@ -104,7 +106,7 @@ namespace TheBall.CORE
             return idToInject + "_" + str;
         }
 
-        public static Dictionary<string, MediaFileData> GetTarget_BinaryContentFiles(IInformationObject rootObject, NameValueCollection httpFormData, HttpFileCollection httpFileData)
+        public static Dictionary<string, MediaFileData> GetTarget_BinaryContentFiles(IInformationObject rootObject, NameValueCollection httpFormData, IFormFileCollection httpFileData)
         {
             if (httpFileData == null)
                 return new Dictionary<string, MediaFileData>();
@@ -115,15 +117,15 @@ namespace TheBall.CORE
             {
                 if (key.StartsWith("File_"))
                 {
-                    HttpPostedFile httpFile = null;
-                    if (httpFileData.AllKeys.Contains(key))
-                        httpFile = httpFileData[key];
+                    IFormFile httpFile = null;
+                    httpFile = httpFileData[key];
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
                     resultDict.Add(dictKey, httpFile != null ? new MediaFileData { HttpFile = httpFile} : null);
                 }
             }
-            foreach (var key in httpFileData.AllKeys)
+            foreach (var file in httpFileData)
             {
+                var key = file.Name;
                 if (key.StartsWith("File_"))
                 {
                     string dictKey = prefixWithIDIfMissing(key, "File_", objectID);
@@ -194,9 +196,9 @@ namespace TheBall.CORE
             }
         }
 
-        public static void ExecuteMethod_StoreCompleteObject(IInformationObject rootObject)
+        public static async Task ExecuteMethod_StoreCompleteObjectAsync(IInformationObject rootObject)
         {
-            rootObject.StoreInformation(InformationContext.CurrentOwner, true);
+            await rootObject.StoreInformationAsync(InformationContext.CurrentOwner, true);
         }
 
         private static void initializeChainObjects(IInformationObject createdObject, string objectProp)

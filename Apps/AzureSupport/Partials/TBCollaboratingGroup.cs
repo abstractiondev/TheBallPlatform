@@ -22,19 +22,7 @@ namespace AaltoGlobalImpact.OIP
 
         public void JoinToGroup(string emailAddress, string joinAsRole)
         {
-            if (this.Roles.CollectionContent.Find(member => member.Email.EmailAddress == emailAddress) != null)
-                return;
-            TBAccount account = TBAccount.GetAccountFromEmail(emailAddress);
-            TBEmail email = account.GetAccountEmail(emailAddress);
-            var groupRole = new TBCollaboratorRole()
-                                {
-                                    Email = email,
-                                    Role = joinAsRole,
-                                    RoleStatus = TBCollaboratorRole.RoleStatusMemberValue,
-                                };
-            //account.JoinGroup(this, groupRole);
-            //account.StoreAndPropagate();
-            this.Roles.CollectionContent.Add(groupRole);
+            throw new NotSupportedException();
         }
 
         //public bool InviteToGroup(string invitedEmailAddress, string invitedAsRole)
@@ -115,13 +103,7 @@ namespace AaltoGlobalImpact.OIP
 
         public void DestroyGroup(TBCollaboratorRole actionInitiator)
         {
-            string role = InformationContext.Current.CurrentGroupRole;
-            if (TBCollaboratorRole.HasInitiatorRights(role) == false)
-            {
-                return;
-            }
-            //LeaveGroup(actionInitiator, lastPersonLeaving: true);
-            StorageSupport.DeleteEntireOwner(this);
+            throw new NotSupportedException();
         }
     }
 }

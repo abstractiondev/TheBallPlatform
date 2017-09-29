@@ -50,5 +50,10 @@ namespace TheBall.CORE
             var expando = JSONSupport.GetExpandoObject(ClientMetadataJSON);
             return expando;
         }
+
+        public static string[] GetAllAccountIDs()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

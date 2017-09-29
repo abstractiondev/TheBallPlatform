@@ -2,6 +2,7 @@
 using System.Security.Principal;
 using System.Text;
 using System.Web;
+using Microsoft.AspNetCore.Http;
 using TheBall;
 using TheBall.CORE.InstanceSupport;
 
@@ -13,9 +14,9 @@ namespace AzureSupport
         {
             var response = context.Response;
             response.StatusCode = statusCode;
-            response.Flush();
-            response.SuppressContent = true;
-            context.ApplicationInstance.CompleteRequest();
+            //response.Flush();
+            //response.SuppressContent = true;
+            //context.ApplicationInstance.CompleteRequest();
         }
 
         public static string GetLoginUrl(IPrincipal identityPrincipal)
