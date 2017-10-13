@@ -28,8 +28,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
-
-
+using TheBall.CORE.Storage;
 
 namespace INT { 
 					[DataContract]
@@ -193,8 +192,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/MemberCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -242,18 +241,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/MemberCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -678,8 +683,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/Member/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -727,18 +732,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/Member/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1061,8 +1072,8 @@ Member.FederationLicense
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/MembershipPlanCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1110,18 +1121,24 @@ Member.FederationLicense
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/MembershipPlanCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1546,8 +1563,8 @@ Member.FederationLicense
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/MembershipPlan/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1595,18 +1612,24 @@ Member.FederationLicense
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/MembershipPlan/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1845,8 +1868,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/PaymentOptionCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1894,18 +1917,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/PaymentOptionCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2330,8 +2359,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/PaymentOption/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -2379,18 +2408,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/PaymentOption/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2691,8 +2726,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/SubscriptionCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -2740,18 +2775,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/SubscriptionCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3176,8 +3217,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/Subscription/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -3225,18 +3266,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/Subscription/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3555,8 +3602,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/TenantGymCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -3604,18 +3651,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/TenantGymCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4040,8 +4093,8 @@ MembershipPlan.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "ProBroz.OnlineTraining/TenantGym/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -4089,18 +4142,24 @@ MembershipPlan.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "ProBroz.OnlineTraining/TenantGym/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 

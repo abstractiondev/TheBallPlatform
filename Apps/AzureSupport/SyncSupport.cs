@@ -1,23 +1,25 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall.CORE;
 using TheBall.CORE.INT;
+using TheBall.CORE.Storage;
 
 namespace TheBall
 {
     public static class SyncSupport
     {
 
-        public static void SynchronizeSourceListToTargetFolder(string syncSourceRootFolder, ContentItemLocationWithMD5[] sourceContentList, string syncTargetRootFolder, 
+        public static async Task SynchronizeSourceListToTargetFolder(string syncSourceRootFolder, ContentItemLocationWithMD5[] sourceContentList, string syncTargetRootFolder, 
             CopySourceToTargetMethod copySourceToTarget = null, DeleteObsoleteTargetMethod deleteObsoleteTarget = null)
         {
             if (copySourceToTarget == null)
-                copySourceToTarget = CopySourceToTarget;
+                copySourceToTarget = CopySourceToTargetAsync;
             if (deleteObsoleteTarget == null)
-                deleteObsoleteTarget = DeleteObsoleteTarget;
+                deleteObsoleteTarget = DeleteObsoleteTargetAsync;
 
             if (String.IsNullOrEmpty(syncSourceRootFolder) || syncSourceRootFolder == "/")
                 syncSourceRootFolder = RelativeRootFolderValue;
@@ -26,15 +28,15 @@ namespace TheBall
                 syncSourceRootFolder += "/";
             }
 
-            var blobListing = InformationContext.CurrentOwner.GetOwnerBlobListing(syncTargetRootFolder, true);
+            var blobListing = await BlobStorage.GetOwnerBlobsA(syncTargetRootFolder);
             string fullTargetRootPath = StorageSupport.GetOwnerContentLocation(InformationContext.CurrentOwner, syncTargetRootFolder);
             int fullTargetRootPathLength = fullTargetRootPath.Length;
-            ContentItemLocationWithMD5[] targetContents = (from CloudBlockBlob blob in blobListing
+            ContentItemLocationWithMD5[] targetContents = (from blob in blobListing
                                                            let relativeName = blob.Name.Substring(fullTargetRootPathLength)
                                                            select new ContentItemLocationWithMD5
                                                            {
                                                                ContentLocation = relativeName,
-                                                               ContentMD5 = blob.Properties.ContentMD5
+                                                               ContentMD5 = blob.ContentMD5
                                                            }).OrderBy(item => item.ContentLocation).ToArray();
             var sourceContents = sourceContentList.OrderBy(item => item.ContentLocation).ToArray();
             foreach (var sourceContent in sourceContents)
@@ -97,28 +99,28 @@ namespace TheBall
 
                 // at this stage we have either both set (that's copy) or just target set (that's delete)
                 if (currSourceBlobLocation != null && currTargetBlobLocation != null)
-                    copySourceToTarget(currSourceBlobLocation, currTargetBlobLocation);
+                    await copySourceToTarget(currSourceBlobLocation, currTargetBlobLocation);
                 else if (currTargetBlobLocation != null)
-                    deleteObsoleteTarget(currTargetBlobLocation);
+                    await deleteObsoleteTarget(currTargetBlobLocation);
 
             }
         }
 
-        public delegate void DeleteObsoleteTargetMethod(string currTargetBlobLocation);
+        public delegate Task DeleteObsoleteTargetMethod(string currTargetBlobLocation);
 
-        public delegate void CopySourceToTargetMethod(string currSourceBlobLocation, string currTargetBlobLocation);
+        public delegate Task CopySourceToTargetMethod(string currSourceBlobLocation, string currTargetBlobLocation);
 
-        public static void DeleteObsoleteTarget(string currTargetBlobLocation)
+        public static async Task DeleteObsoleteTargetAsync(string currTargetBlobLocation)
         {
             CloudBlockBlob blob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currTargetBlobLocation);
-            blob.DeleteBlob();
+            await blob.DeleteAsync();
         }
 
-        public static void CopySourceToTarget(string currSourceBlobLocation, string currTargetBlobLocation)
+        public static async Task CopySourceToTargetAsync(string currSourceBlobLocation, string currTargetBlobLocation)
         {
             CloudBlockBlob targetBlob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currTargetBlobLocation);
             CloudBlockBlob sourceblob = (CloudBlockBlob)StorageSupport.GetOwnerBlobReference(InformationContext.CurrentOwner, currSourceBlobLocation);
-            targetBlob.StartCopy(sourceblob);
+            await targetBlob.StartCopyAsync(sourceblob);
         }
 
         public const string RelativeRootFolderValue = "";

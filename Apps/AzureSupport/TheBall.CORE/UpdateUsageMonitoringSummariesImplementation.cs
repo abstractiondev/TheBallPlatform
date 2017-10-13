@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
     public class UpdateUsageMonitoringSummariesImplementation
     {
-        public static async Task<UsageMonitorItem[]> GetTarget_SourceItems(IContainerOwner owner, int amountOfDays)
+        public static async Task<UsageMonitorItem[]> GetTarget_SourceItemsAsync(IContainerOwner owner, int amountOfDays)
         {
             string filterPrefix = "TheBall.CORE/UsageMonitorItem/";
             DateTime today = DateTime.UtcNow.Date;
@@ -17,7 +18,7 @@ namespace TheBall.CORE
             for (DateTime fromDate = today.AddDays(-amountOfDays); fromDate <= today; fromDate = fromDate.AddDays(1))
             {
                 string dateStr = fromDate.ToString("yyyyMMdd");
-                var dayBlobs = (await owner.ListBlobsWithPrefixAsync(filterPrefix + dateStr)).Cast<CloudBlockBlob>().ToArray();
+                var dayBlobs = await BlobStorage.GetBlobItemsA(owner, filterPrefix + dateStr);
                 foreach (var blob in dayBlobs)
                 {
                     UsageMonitorItem item = (UsageMonitorItem) await StorageSupport.RetrieveInformationA(blob.Name, type);
@@ -27,7 +28,7 @@ namespace TheBall.CORE
             return result.ToArray();
         }
 
-        public static void ExecuteMethod_CreateUsageMonitoringSummaries(IContainerOwner owner, int amountOfDays, UsageMonitorItem[] sourceItems)
+        public static async Task ExecuteMethod_CreateUsageMonitoringSummariesAsync(IContainerOwner owner, int amountOfDays, UsageMonitorItem[] sourceItems)
         {
             var groupedByDay =
                 sourceItems.OrderBy(item => item.RelativeLocation)
@@ -71,7 +72,7 @@ namespace TheBall.CORE
                 dailyHourlySummary.SummaryMonitoringItem.AggregateValuesFrom(currDaysData);
                 string prefixName = startTime.ToString("yyyyMMdd");
                 dailyHourlySummary.SetLocationAsOwnerContent(owner, prefixName + "_Hourly");
-                dailyHourlySummary.StoreInformation(null, true);
+                await dailyHourlySummary.StoreInformationAsync(null, true);
                 string detailedSummaryName = "Detailed (5 min) Summary of " + dayList.Key.ToShortDateString();
                 UsageSummary dailyDetailedSummary = new UsageSummary
                     {
@@ -80,7 +81,7 @@ namespace TheBall.CORE
                     };
                 dailyDetailedSummary.SummaryMonitoringItem.AggregateValuesFrom(currDaysData);
                 dailyDetailedSummary.SetLocationAsOwnerContent(owner, prefixName + "_Detailed");
-                dailyDetailedSummary.StoreInformation(null, true);
+                await dailyDetailedSummary.StoreInformationAsync(null, true);
 
                 // Weekly summary
                 if (startTime >=
@@ -95,8 +96,8 @@ namespace TheBall.CORE
                 }
             }
 
-            lastWeekHourlySummary.StoreInformation(null, true);
-            lastMonthDailySummary.StoreInformation(null, true);
+            await lastWeekHourlySummary.StoreInformationAsync(null, true);
+            await lastMonthDailySummary.StoreInformationAsync(null, true);
         }
     }
 }

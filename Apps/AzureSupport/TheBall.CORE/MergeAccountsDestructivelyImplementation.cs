@@ -5,6 +5,7 @@ using AaltoGlobalImpact.OIP;
 
 namespace TheBall.CORE
 {
+#if never
     public class MergeAccountsDestructivelyImplementation
     {
         public static TBRAccountRoot GetTarget_PrimaryAccountToStay(string primaryAccountToStayId)
@@ -172,4 +173,5 @@ namespace TheBall.CORE
                 throw new NotSupportedException("Account merge not supported for account that is member of any groups or contains email addresses of its own");
         }
     }
+#endif
 }

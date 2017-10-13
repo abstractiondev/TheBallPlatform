@@ -5,6 +5,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.Storage;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -40,8 +41,8 @@ namespace AaltoGlobalImpact.OIP
                 {
                     string extension = Path.GetExtension(contentLocation);
                     string fullLocationWithoutExtension = contentLocation.Substring(0, contentLocation.Length - extension.Length);
-                    var mediaContentBlobs = InformationContext.CurrentOwner.GetOwnerBlobListing(fullLocationWithoutExtension, true);
-                    foreach (CloudBlockBlob mediaContentBlob in mediaContentBlobs)
+                    var mediaContentBlobs = await BlobStorage.GetBlobItemsA(InformationContext.CurrentOwner, fullLocationWithoutExtension);
+                    foreach (var mediaContentBlob in mediaContentBlobs)
                     {
                         SemanticInformationItem semanticItemForLocation = new SemanticInformationItem
                         {
@@ -51,7 +52,7 @@ namespace AaltoGlobalImpact.OIP
                         SemanticInformationItem semanticItemForMD5 = new SemanticInformationItem
                         {
                             ItemFullType = "ContentMD5",
-                            ItemValue = mediaContentBlob.Properties.ContentMD5
+                            ItemValue = mediaContentBlob.ContentMD5
                         };
                         ProcessItem processItem = new ProcessItem();
                         processItem.Outputs.Add(semanticItemForLocation);

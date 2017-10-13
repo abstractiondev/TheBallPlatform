@@ -24,5 +24,6 @@ namespace TheBall.CORE.Storage
             Length = length;
             LastModified = lastModified;
         }
+        
     }
 }

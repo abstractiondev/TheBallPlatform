@@ -102,10 +102,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(ClearAdditionalMediaFormatsParameters parameters)
 		{
 					}
-				public static void Execute(ClearAdditionalMediaFormatsParameters parameters)
+				public static async Task ExecuteAsync(ClearAdditionalMediaFormatsParameters parameters)
 		{
 						PrepareParameters(parameters);
-					ClearAdditionalMediaFormatsImplementation.ExecuteMethod_ClearImageMediaFormats(parameters.MasterRelativeLocation);		
+					 await ClearAdditionalMediaFormatsImplementation.ExecuteMethod_ClearImageMediaFormatsAsync(parameters.MasterRelativeLocation);		
 				}
 				}
 				public class UpdatePublicationInfoParameters 

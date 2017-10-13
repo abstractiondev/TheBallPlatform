@@ -28,8 +28,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using ProtoBuf;
 using TheBall;
 using TheBall.CORE;
-
-
+using TheBall.CORE.Storage;
 
 namespace INT { 
 					[DataContract]
@@ -243,8 +242,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Login/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -292,18 +291,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Login/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -618,8 +623,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Email/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -667,18 +672,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Email/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1001,8 +1012,8 @@ namespace INT {
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Account/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1050,18 +1061,24 @@ namespace INT {
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Account/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1309,8 +1326,8 @@ Account.ClientMetadataJSON
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Group/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1358,18 +1375,24 @@ Account.ClientMetadataJSON
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Group/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1581,8 +1604,8 @@ Account.ClientMetadataJSON
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/GroupMembership/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1630,18 +1653,24 @@ Account.ClientMetadataJSON
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/GroupMembership/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -1942,8 +1971,8 @@ Account.ClientMetadataJSON
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ContentPackageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -1991,18 +2020,24 @@ Account.ClientMetadataJSON
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2427,8 +2462,8 @@ Account.ClientMetadataJSON
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ContentPackage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -2476,18 +2511,24 @@ Account.ClientMetadataJSON
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ContentPackage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -2819,8 +2860,8 @@ ContentPackage.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InformationInputCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -2868,18 +2909,24 @@ ContentPackage.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInputCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3304,8 +3351,8 @@ ContentPackage.Description
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InformationInput/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -3353,18 +3400,24 @@ ContentPackage.Description
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationInput/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -3696,8 +3749,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InformationOutputCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -3745,18 +3798,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutputCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4181,8 +4240,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InformationOutput/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -4230,18 +4289,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOutput/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -4580,8 +4645,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -4629,18 +4694,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDeviceCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -5065,8 +5136,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/AuthenticatedAsActiveDevice/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -5114,18 +5185,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/AuthenticatedAsActiveDevice/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -5471,8 +5548,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/DeviceMembershipCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -5520,18 +5597,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembershipCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -5956,8 +6039,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/DeviceMembership/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -6005,18 +6088,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/DeviceMembership/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -6326,8 +6415,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceFiscalExportSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -6375,18 +6464,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceFiscalExportSummary/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -6731,8 +6826,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceSummaryContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -6780,18 +6875,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceSummaryContainer/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -7284,8 +7385,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -7333,18 +7434,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -7769,8 +7876,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Invoice/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -7818,18 +7925,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Invoice/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -8300,8 +8413,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceDetails/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -8349,18 +8462,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceDetails/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -8701,8 +8820,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceUserCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -8750,18 +8869,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUserCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -9168,8 +9293,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceUser/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -9217,18 +9342,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceUser/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -9667,8 +9798,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceRowGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -9716,18 +9847,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroupCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -10134,8 +10271,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceEventDetailGroupCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -10183,18 +10320,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroupCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -10601,8 +10744,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceRowGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -10650,18 +10793,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowGroup/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -11033,8 +11182,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceEventDetailGroup/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -11082,18 +11231,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailGroup/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -11429,8 +11584,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceEventDetailCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -11478,18 +11633,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetailCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -11896,8 +12057,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceRowCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -11945,18 +12106,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRowCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -12363,8 +12530,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceEventDetail/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -12412,18 +12579,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceEventDetail/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -12808,8 +12981,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InvoiceRow/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -12857,18 +13030,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InvoiceRow/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -13221,8 +13400,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/CategoryCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -13270,18 +13449,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/CategoryCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -13688,8 +13873,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Category/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -13737,18 +13922,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Category/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -14029,8 +14220,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ProcessContainer/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -14078,18 +14269,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessContainer/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -14283,8 +14480,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/Process/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -14332,18 +14529,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/Process/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -14545,8 +14748,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ProcessItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -14594,18 +14797,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessItem/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -14798,8 +15007,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/SemanticInformationItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -14847,18 +15056,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/SemanticInformationItem/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -15151,8 +15366,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/InformationOwnerInfo/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -15200,18 +15415,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/InformationOwnerInfo/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -15504,8 +15725,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/UsageSummary/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -15553,18 +15774,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageSummary/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -15900,8 +16127,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/UsageMonitorItem/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -15949,18 +16176,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/UsageMonitorItem/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -16569,8 +16802,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/RequestResourceUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -16618,18 +16851,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -17036,8 +17275,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/RequestResourceUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -17085,18 +17324,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/RequestResourceUsage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -17640,8 +17885,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ProcessorUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -17689,18 +17934,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -18107,8 +18358,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/ProcessorUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -18156,18 +18407,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/ProcessorUsage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -18533,8 +18790,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/StorageTransactionUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -18582,18 +18839,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -19000,8 +19263,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/StorageTransactionUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -19049,18 +19312,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageTransactionUsage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -19406,8 +19675,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/StorageUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -19455,18 +19724,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -19873,8 +20148,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/StorageUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -19922,18 +20197,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/StorageUsage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -20246,8 +20527,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/NetworkUsageCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -20295,18 +20576,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsageCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -20713,8 +21000,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/NetworkUsage/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -20762,18 +21049,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/NetworkUsage/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -21119,8 +21412,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/TimeRange/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -21168,18 +21461,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/TimeRange/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -21468,8 +21767,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/HTTPActivityDetailsCollection/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -21517,18 +21816,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetailsCollection/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 
@@ -21935,8 +22240,8 @@ InformationInput.AuthenticatedDeviceID
 					//string contentTypeName = ""; // SemanticDomainName + "." + Name
 					string contentTypeName = "TheBall.CORE/HTTPActivityDetails/";
 					List<IInformationObject> informationObjects = new List<IInformationObject>();
-					var blobListing = StorageSupport.GetContentBlobListing(owner, contentType: contentTypeName);
-					foreach(CloudBlockBlob blob in blobListing)
+					var blobListing = await BlobStorage.GetBlobItemsA(owner, contentTypeName);
+					foreach(var blob in blobListing)
 					{
 						if (blob.GetBlobInformationType() != StorageSupport.InformationType_InformationObjectValue)
 							continue;
@@ -21984,18 +22289,24 @@ InformationInput.AuthenticatedDeviceID
                     RelativeLocation = StorageSupport.GetOwnerContentLocation(containerOwner, "TheBall.CORE/HTTPActivityDetails/" + contentName);
                 }
 
-				partial void DoPostStoringExecute(IContainerOwner owner);
+				partial void DoPostStoringExecute(IContainerOwner owner, ref Task task);
 
-				public void PostStoringExecute(IContainerOwner owner)
+				public async Task PostStoringExecute(IContainerOwner owner)
 				{
-					DoPostStoringExecute(owner);
+					Task postTask = null;
+					DoPostStoringExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
-				partial void DoPostDeleteExecute(IContainerOwner owner);
+				partial void DoPostDeleteExecute(IContainerOwner owner, ref Task task);
 
-				public void PostDeleteExecute(IContainerOwner owner)
+				public async Task PostDeleteExecute(IContainerOwner owner)
 				{
-					DoPostDeleteExecute(owner);
+					Task postTask = null;
+					DoPostDeleteExecute(owner, ref postTask);
+					if(postTask != null)
+						await postTask;
 				}
 
 

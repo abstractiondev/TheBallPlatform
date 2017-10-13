@@ -32,8 +32,8 @@ namespace TheBall.CORE
         string GeneratedByProcessID { get; set; }
         bool IsIndependentMaster { get; }
         void SetValuesToObjects(NameValueCollection form);
-        void PostStoringExecute(IContainerOwner owner);
-        void PostDeleteExecute(IContainerOwner owner);
+        Task PostStoringExecute(IContainerOwner owner);
+        Task PostDeleteExecute(IContainerOwner owner);
         void SetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
         string GetLocationRelativeToContentRoot(string referenceLocation, string sourceName);
         Task SetMediaContent(IContainerOwner containerOwner, string contentObjectID, object mediaContent);

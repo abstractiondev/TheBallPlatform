@@ -276,7 +276,7 @@ namespace TheBall
             { "CreateAuthenticatedAsActiveDevice", new Tuple<Type, ParameterManipulator>(typeof(CreateAuthenticatedAsActiveDevice), null)},
             //{ "CreateGroupWithTemplates", new Tuple<Type, ParameterManipulator>(typeof(CreateGroupWithTemplates), null)},
             //{ "InitiateAccountMergeFromEmail", new Tuple<Type, ParameterManipulator>(typeof(InitiateAccountMergeFromEmail), null)},
-            { "UnregisterEmailAddress", new Tuple<Type, ParameterManipulator>(typeof(UnregisterEmailAddress), null)},
+            //{ "UnregisterEmailAddress", new Tuple<Type, ParameterManipulator>(typeof(UnregisterEmailAddress), null)},
             { "BeginAccountEmailAddressRegistration", new Tuple<Type, ParameterManipulator>(typeof(BeginAccountEmailAddressRegistration), null)},
             { "CreateInformationInput", new Tuple<Type, ParameterManipulator>(typeof(object), null)},
             //{ "CreateSpecifiedInformationObjectWithValues", new Tuple<Type, ParameterManipulator>(typeof(CreateSpecifiedInformationObjectWithValues), null)},

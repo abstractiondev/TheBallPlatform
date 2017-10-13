@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AaltoGlobalImpact.OIP;
 using TheBall;
 using TheBall.CORE;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
@@ -73,16 +74,21 @@ namespace TheBall.CORE
 
             string ownerLocation = owner.ContainerName + "/" + owner.LocationPrefix + "/";
 
-            var informationObjects = StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("TheBall.CORE/RequestResourceUsage") == false, 
+            /*
+            var informationObjects = BlobStorage.
+                StorageSupport.CurrActiveContainer.GetInformationObjects(ownerLocation, name => name.Contains("TheBall.CORE/RequestResourceUsage") == false, 
                                                                                               nonMaster =>
                                                                                               nonMaster.
                                                                                                   IsIndependentMaster ==
                                                                                               false && (nonMaster is TBEmailValidation == false)).ToArray();
+                                                                                              */
+            throw new NotImplementedException();
+            IInformationObject[] informationObjects = null;
             foreach (var iObj in informationObjects)
             {
                 try
                 {
-                    iObj.ReconnectMastersAndCollections(true);
+                    await iObj.ReconnectMastersAndCollectionsAsync(true);
                 }
                 catch (Exception ex)
                 {

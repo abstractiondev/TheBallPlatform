@@ -1,14 +1,16 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class ProcessAllResourceUsagesToOwnerCollectionsImplementation
     {
-        public static void ExecuteMethod_ExecuteBatchProcessor(int processBatchSize)
+        public static async Task ExecuteMethod_ExecuteBatchProcessorAsync(int processBatchSize)
         {
             bool continueProcessing;
             do
             {
                 var processResult =
-                    ProcessBatchOfResourceUsagesToOwnerCollections.Execute(new ProcessBatchOfResourceUsagesToOwnerCollectionsParameters
+                    await ProcessBatchOfResourceUsagesToOwnerCollections.ExecuteAsync(new ProcessBatchOfResourceUsagesToOwnerCollectionsParameters
                         {
                             ProcessBatchSize = processBatchSize,
                             ProcessIfLess = false

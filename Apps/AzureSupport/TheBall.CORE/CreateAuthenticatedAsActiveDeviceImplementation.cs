@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class CreateAuthenticatedAsActiveDeviceImplementation
@@ -27,9 +29,9 @@ namespace TheBall.CORE
             return activeDevice;
         }
 
-        public static void ExecuteMethod_StoreObject(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        public static async Task ExecuteMethod_StoreObjectAsync(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
-            authenticatedAsActiveDevice.StoreInformation();
+            await authenticatedAsActiveDevice.StoreInformationAsync();
         }
 
         public static CreateAuthenticatedAsActiveDeviceReturnValue Get_ReturnValue(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

@@ -1,13 +1,17 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using TheBall.CORE.Storage;
 
 namespace TheBall.CORE
 {
     public class ExportOwnerContentToZipImplementation
     {
-        public static string[] GetTarget_IncludedFolders(IContainerOwner owner, string packageRootFolder)
+        public static async Task<string[]> GetTarget_IncludedFoldersAsync(IContainerOwner owner, string packageRootFolder)
         {
-            string[] directories = StorageSupport.GetLogicalDirectories(owner, packageRootFolder);
+            var folders = await BlobStorage.GetOwnerFoldersA(packageRootFolder);
+            var directories = folders.Select(item => item.FolderName).ToArray();
             directories = SystemSupport.FilterAwayReservedFolders(directories);
             return directories;
         }

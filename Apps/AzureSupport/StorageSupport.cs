@@ -126,6 +126,17 @@ namespace TheBall
             //return blob.Attributes.Metadata[InformationTypeKey];
         }
 
+        public static string GetBlobInformationType(this BlobStorageItem blob)
+        {
+            //FetchMetadataIfMissing(blob);
+            if (Path.HasExtension(blob.Name) && !blob.Name.EndsWith(".pending"))
+                return InformationType_GenericContentValue;
+            if (blob.Name.Contains("/AaltoGlobalImpact.OIP/MediaContent/"))
+                return InformationType_GenericContentValue;
+            return InformationType_InformationObjectValue;
+            //return blob.Attributes.Metadata[InformationTypeKey];
+        }
+
         public static string GetBlobInformationObjectType(this CloudBlockBlob blob)
         {
             return InformationObjectSupport.GetInformationObjectType(blob.Name);
@@ -1218,7 +1229,6 @@ namespace TheBall
             return result.ToArray();
         }
 
-
         public static async Task<BlobResultSegment> ListBlobsWithPrefixAsync(this IContainerOwner owner, string prefix, 
             bool useFlatBlobListing = true, BlobContinuationToken continuationToken = null, bool withMetadata = false, bool allowNoOwner = false)
         {
@@ -1327,25 +1337,18 @@ namespace TheBall
             return storageItems.ToArray();
         }
 
-        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string directoryLocation, bool allowNoOwner = false)
+        public static async Task<CloudBlockBlob[]> GetBlobsWithMetadataA(IContainerOwner owner, string prefix, bool allowNoOwner = false)
         {
             BlobContinuationToken continuationToken = null;
             List<CloudBlockBlob> cloudBlockBlobs = new List<CloudBlockBlob>();
             do
             {
-                var blobListItems = await ListBlobsWithPrefixAsync(owner, directoryLocation, true, continuationToken, true, allowNoOwner);
+                var blobListItems = await ListBlobsWithPrefixAsync(owner, prefix, true, continuationToken, true, allowNoOwner);
                 var cloudBlobsToAdd = blobListItems.Results.Cast<CloudBlockBlob>();
                 cloudBlockBlobs.AddRange(cloudBlobsToAdd);
                 continuationToken = blobListItems.ContinuationToken;
             } while (continuationToken != null);
             return cloudBlockBlobs.ToArray();
-        }
-
-
-        public static IEnumerable<IListBlobItem> GetOwnerBlobListing(this IContainerOwner owner, string directoryLocation, bool withMetaData = false)
-        {
-            string storageListingPrefix = GetOwnerContentLocation(owner, directoryLocation);
-            return StorageSupport.CurrActiveContainer.GetBlobListing(storageListingPrefix, withMetaData);
         }
 
         public static void FixCurrentOwnerLocation(this IInformationObject informationObject)
@@ -1354,27 +1357,6 @@ namespace TheBall
             string strippedLocation = RemoveOwnerPrefixIfExists(relativeLocation);
             string fixedLocation = GetOwnerContentLocation(InformationContext.CurrentOwner, strippedLocation);
             informationObject.RelativeLocation = fixedLocation;
-        }
-
-        public static IEnumerable<IListBlobItem> GetBlobListing(this CloudBlobContainer container, string directoryLocation, bool withMetaData = false)
-        {
-            string storageListingPrefix = container.Name + "/" + directoryLocation;
-            InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobs(storageListingPrefix, true, withMetaData ? BlobListingDetails.Metadata : BlobListingDetails.None);
-        }
-
-        public static IEnumerable<CloudBlockBlob> GetFilteredBlobListing(this CloudBlobContainer container, string directoryLocation, Predicate<CloudBlockBlob> filterIfFalse)
-        {
-            var blobListing = container.GetBlobListing(directoryLocation, true);
-            return blobListing.Cast<CloudBlockBlob>().Where(blob => filterIfFalse(blob));
-        }
-
-        public static IEnumerable<IListBlobItem> GetContentBlobListing(IContainerOwner owner, string contentType)
-        {
-            string contentListingPrefix = GetOwnerContentLocation(owner, contentType);
-            string storageListingPrefix = CurrActiveContainer.Name + "/" + contentListingPrefix;
-            InformationContext.AddStorageTransactionToCurrent();
-            return CurrBlobClient.ListBlobs(storageListingPrefix, true, BlobListingDetails.Metadata);
         }
 
         public static async Task<string> AcquireLogicalLockByCreatingBlobAsync(string lockLocation)

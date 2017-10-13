@@ -59,17 +59,17 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection object" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection object" state="implemented">
             <Parameter name="ConnectionID" />
           </TargetDefinition>
           <OperationExecute name="CallSyncConnectionContentToDeviceToSend" asyncSupportMode="AsyncOnly" targetOperationName="SyncConnectionContentToDeviceToSend" designDesc="Call sync content to device" state="implemented">
             <Target name="Connection" />
           </OperationExecute>
-          <MethodExecute name="CallDeviceSyncToSendContent" designDesc="Call device sync to copy content" state="implemented">
+          <MethodExecute name="CallDeviceSyncToSendContent" asyncSupportMode="AsyncOnly" designDesc="Call device sync to copy content" state="implemented">
             <Target name="Connection" />
             <ReturnValue name="WasAnythingCopiedOrDeleted" dataType="bool" designDesc="Was anything copied in the sync operation" state="implemented" />
           </MethodExecute>
-          <MethodExecute name="CallOtherSideProcessingForCopiedContent" designDesc="Call other side to process copied content" state="implemented">
+          <MethodExecute name="CallOtherSideProcessingForCopiedContent" asyncSupportMode="AsyncOnly" designDesc="Call other side to process copied content" state="implemented">
             <Target name="Connection" />
             <Target name="CallDeviceSyncToSendContentOutput" />
           </MethodExecute>
@@ -83,14 +83,14 @@
       <Execution>
         <SequentialExecution>
           <TargetDefinition name="CategoryLinkingParameters" dataType="INT.CategoryLinkParameters" designDesc="Deserialized operation parameters" state="implemented" />
-          <TargetDefinition name="Connection" dataType="Connection" designDesc="Connection to set the linking info to" state="implemented">
+          <TargetDefinition name="Connection" asyncSupportMode="AsyncOnly" dataType="Connection" designDesc="Connection to set the linking info to" state="implemented">
             <Target name="CategoryLinkingParameters" />
           </TargetDefinition>
           <MethodExecute name="SetConnectionLinkingData" designDesc="Set connection linking data" state="implemented">
             <Target name="Connection" />
             <Target name="CategoryLinkingParameters" />
           </MethodExecute>
-          <MethodExecute name="StoreObject" designDesc="Store objects" state="implemented">
+          <MethodExecute name="StoreObject" asyncSupportMode="AsyncOnly" designDesc="Store objects" state="implemented">
             <Target name="Connection" />
           </MethodExecute>
         </SequentialExecution>
@@ -440,7 +440,7 @@
           <TargetDefinition name="Connection" dataType="Connection" designDesc="Creates connection" state="implemented">
             <Parameter name="Description" />
           </TargetDefinition>
-          <TargetDefinition name="DeviceForConnection" dataType="TheBall.CORE.AuthenticatedAsActiveDevice" designDesc="Device for the connection" state="implemented">
+          <TargetDefinition name="DeviceForConnection" asyncSupportMode="AsyncOnly" dataType="TheBall.CORE.AuthenticatedAsActiveDevice" designDesc="Device for the connection" state="implemented">
             <Parameter name="Description" />
             <Parameter name="TargetBallHostName" />
             <Parameter name="TargetGroupID" />

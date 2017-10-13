@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace TheBall.CORE
 {
     public class CreateDeviceMembershipImplementation
@@ -11,9 +13,9 @@ namespace TheBall.CORE
             return deviceMembership;
         }
 
-        public static void ExecuteMethod_StoreObject(DeviceMembership createdDeviceMembership)
+        public static async Task ExecuteMethod_StoreObjectAsync(DeviceMembership createdDeviceMembership)
         {
-            createdDeviceMembership.StoreInformation();
+            await createdDeviceMembership.StoreInformationAsync();
         }
 
         public static CreateDeviceMembershipReturnValue Get_ReturnValue(DeviceMembership createdDeviceMembership)

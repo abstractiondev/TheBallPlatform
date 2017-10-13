@@ -100,7 +100,7 @@ namespace AaltoGlobalImpact.OIP
 
         public async Task UpdateAdditionalMediaFormats()
         {
-            RemoveAdditionalMediaFormats();
+            await RemoveAdditionalMediaFormats();
             await CreateAdditionalMediaFormats();
         }
 
@@ -110,16 +110,16 @@ namespace AaltoGlobalImpact.OIP
                 await OIP.CreateAdditionalMediaFormats.ExecuteAsync(new CreateAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
-        public void RemoveAdditionalMediaFormats()
+        public async Task RemoveAdditionalMediaFormats()
         {
-            ClearAdditionalMediaFormats.Execute(new ClearAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
+            await ClearAdditionalMediaFormats.ExecuteAsync(new ClearAdditionalMediaFormatsParameters { MasterRelativeLocation = RelativeLocation });
         }
 
         public async Task ClearCurrentContent(IContainerOwner containerOwner)
         {
             CloudBlockBlob blob = StorageSupport.CurrActiveContainer.GetBlob(RelativeLocation, containerOwner);
             await blob.DeleteAsync();
-            RemoveAdditionalMediaFormats();
+            await RemoveAdditionalMediaFormats();
         }
 
         public async Task<string> GetMD5FromStorage()

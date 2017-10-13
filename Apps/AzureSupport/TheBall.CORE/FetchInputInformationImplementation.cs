@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SecuritySupport;
 
@@ -10,9 +11,9 @@ namespace TheBall.CORE
 {
     public class FetchInputInformationImplementation
     {
-        public static InformationInput GetTarget_InformationInput(IContainerOwner owner, string informationInputId)
+        public static async Task<InformationInput> GetTarget_InformationInputAsync(IContainerOwner owner, string informationInputId)
         {
-            return ObjectStorage.RetrieveFromDefaultLocation<InformationInput>(informationInputId, owner);
+            return await ObjectStorage.RetrieveFromDefaultLocationA<InformationInput>(informationInputId, owner);
         }
 
         public static void ExecuteMethod_VerifyValidInput(InformationInput informationInput)
@@ -35,7 +36,7 @@ namespace TheBall.CORE
             return informationInput.LocalContentName;
         }
 
-        public static void ExecuteMethod_FetchInputToStorage(IContainerOwner owner, string queryParameters, InformationInput informationInput, string inputFetchLocation, string inputFetchName, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
+        public static async Task ExecuteMethod_FetchInputToStorageAsync(IContainerOwner owner, string queryParameters, InformationInput informationInput, string inputFetchLocation, string inputFetchName, AuthenticatedAsActiveDevice authenticatedAsActiveDevice)
         {
                 string url = string.IsNullOrEmpty(queryParameters)
                                  ? informationInput.LocationURL
@@ -47,7 +48,7 @@ namespace TheBall.CORE
                 var stream = response.GetResponseStream();
                 var targetBlob = StorageSupport.CurrActiveContainer.GetBlob(inputFetchLocation + "/" + inputFetchName,
                                                                             owner);
-                targetBlob.UploadFromStream(stream);
+                await targetBlob.UploadFromStreamAsync(stream);
             }
             else
             {
@@ -74,17 +75,17 @@ namespace TheBall.CORE
                 aes.FeedbackSize = SymmetricSupport.AES_FEEDBACK_SIZE;
                 var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
                 CryptoStream cryptoStream = new CryptoStream(respStream, decryptor, CryptoStreamMode.Read);
-                blob.UploadFromStream(cryptoStream);
+                await blob.UploadFromStreamAsync(cryptoStream);
             }
         }
 
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(InformationInput informationInput)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_AuthenticatedAsActiveDeviceAsync(InformationInput informationInput)
         {
             var authenticationID = informationInput.AuthenticatedDeviceID;
             if (string.IsNullOrEmpty(authenticationID))
                 return null;
             var owner = VirtualOwner.FigureOwner(informationInput);
-            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticationID);
+            return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticationID);
         }
     }
 }

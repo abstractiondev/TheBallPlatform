@@ -18,10 +18,10 @@ using System.Threading.Tasks;
 				private static void PrepareParameters(GetAccountFromStripeCustomerParameters parameters)
 		{
 					}
-				public static GetAccountFromStripeCustomerReturnValue Execute(GetAccountFromStripeCustomerParameters parameters)
+				public static async Task<GetAccountFromStripeCustomerReturnValue> ExecuteAsync(GetAccountFromStripeCustomerParameters parameters)
 		{
 						PrepareParameters(parameters);
-					CustomerAccount[] AllCustomerAccounts = GetAccountFromStripeCustomerImplementation.GetTarget_AllCustomerAccounts();	
+					CustomerAccount[] AllCustomerAccounts =  await GetAccountFromStripeCustomerImplementation.GetTarget_AllCustomerAccountsAsync();	
 				CustomerAccount Account = GetAccountFromStripeCustomerImplementation.GetTarget_Account(parameters.StripeCustomerID, parameters.IsTestAccount, AllCustomerAccounts);	
 				GetAccountFromStripeCustomerReturnValue returnValue = GetAccountFromStripeCustomerImplementation.Get_ReturnValue(Account);
 		return returnValue;
@@ -192,7 +192,7 @@ using System.Threading.Tasks;
 					INT.CancelSubscriptionParams CancelParams = CancelGroupSubscriptionPlanImplementation.GetTarget_CancelParams();	
 				string PlanName = CancelGroupSubscriptionPlanImplementation.GetTarget_PlanName(CancelParams);	
 				string AccountID = CancelGroupSubscriptionPlanImplementation.GetTarget_AccountID();	
-				CustomerAccount CustomerAccount = CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccount(AccountID);	
+				CustomerAccount CustomerAccount =  await CancelGroupSubscriptionPlanImplementation.GetTarget_CustomerAccountAsync(AccountID);	
 				CancelGroupSubscriptionPlanImplementation.ExecuteMethod_CancelSubscriptionPlan(PlanName, CustomerAccount);		
 				
 		{ // Local block to allow local naming
@@ -217,7 +217,7 @@ using System.Threading.Tasks;
 						PrepareParameters(parameters);
 					CustomerAccount Account =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_AccountAsync(parameters.AccountID);	
 				bool IsTestMode = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_IsTestMode(Account);	
-				GroupSubscriptionPlan[] CurrentPlansBeforeSync = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSync(Account);	
+				GroupSubscriptionPlan[] CurrentPlansBeforeSync =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_CurrentPlansBeforeSyncAsync(Account);	
 				INT.PlanStatus[] ActivePlanStatusesFromStripe =  await SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlanStatusesFromStripeAsync(Account, IsTestMode);	
 				GroupSubscriptionPlan[] ActivePlansFromStripe = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_ActivePlansFromStripe(ActivePlanStatusesFromStripe);	
 				string[] GroupsToHaveAccessTo = SyncEffectivePlanAccessesToAccountImplementation.GetTarget_GroupsToHaveAccessTo(ActivePlansFromStripe);	

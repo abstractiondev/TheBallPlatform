@@ -58,27 +58,27 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(PublishCollaborationContentOverConnectionParameters parameters)
 		{
 						PrepareParameters(parameters);
-					Connection Connection = PublishCollaborationContentOverConnectionImplementation.GetTarget_Connection(parameters.ConnectionID);	
+					Connection Connection =  await PublishCollaborationContentOverConnectionImplementation.GetTarget_ConnectionAsync(parameters.ConnectionID);	
 				
 		{ // Local block to allow local naming
 			SyncConnectionContentToDeviceToSendParameters operationParameters = PublishCollaborationContentOverConnectionImplementation.CallSyncConnectionContentToDeviceToSend_GetParameters(Connection);
 			 await SyncConnectionContentToDeviceToSend.ExecuteAsync(operationParameters);
 									
 		} // Local block closing
-				bool CallDeviceSyncToSendContentOutput = PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallDeviceSyncToSendContent(Connection);		
-				PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallOtherSideProcessingForCopiedContent(Connection, CallDeviceSyncToSendContentOutput);		
+				bool CallDeviceSyncToSendContentOutput =  await PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallDeviceSyncToSendContentAsync(Connection);		
+				 await PublishCollaborationContentOverConnectionImplementation.ExecuteMethod_CallOtherSideProcessingForCopiedContentAsync(Connection, CallDeviceSyncToSendContentOutput);		
 				}
 				}
 		
 		public class SetCategoryLinkingForConnection 
 		{
-				public static void Execute()
+				public static async Task ExecuteAsync()
 		{
 						
 					INT.CategoryLinkParameters CategoryLinkingParameters = SetCategoryLinkingForConnectionImplementation.GetTarget_CategoryLinkingParameters();	
-				Connection Connection = SetCategoryLinkingForConnectionImplementation.GetTarget_Connection(CategoryLinkingParameters);	
+				Connection Connection =  await SetCategoryLinkingForConnectionImplementation.GetTarget_ConnectionAsync(CategoryLinkingParameters);	
 				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_SetConnectionLinkingData(Connection, CategoryLinkingParameters);		
-				SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObject(Connection);		
+				 await SetCategoryLinkingForConnectionImplementation.ExecuteMethod_StoreObjectAsync(Connection);		
 				}
 				}
 				public class SyncConnectionContentToDeviceToSendParameters 
@@ -338,7 +338,7 @@ using System.Threading.Tasks;
 		{
 						PrepareParameters(parameters);
 					Connection Connection = InitiateIntegrationConnectionImplementation.GetTarget_Connection(parameters.Description);	
-				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection = InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnection(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
+				TheBall.CORE.AuthenticatedAsActiveDevice DeviceForConnection =  await InitiateIntegrationConnectionImplementation.GetTarget_DeviceForConnectionAsync(parameters.Description, parameters.TargetBallHostName, parameters.TargetGroupID, Connection);	
 				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_StoreConnectionAsync(Connection);		
 				 await InitiateIntegrationConnectionImplementation.ExecuteMethod_NegotiateDeviceConnectionAsync(DeviceForConnection);		
 				}

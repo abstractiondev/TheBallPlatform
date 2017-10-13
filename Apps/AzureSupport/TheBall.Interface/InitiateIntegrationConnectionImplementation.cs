@@ -18,7 +18,7 @@ namespace TheBall.Interface
             return connection;
         }
 
-        public static AuthenticatedAsActiveDevice GetTarget_DeviceForConnection(string description, string targetBallHostName, string targetGroupId, Connection connection)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_DeviceForConnectionAsync(string description, string targetBallHostName, string targetGroupId, Connection connection)
         {
             CreateAuthenticatedAsActiveDeviceParameters parameters = new CreateAuthenticatedAsActiveDeviceParameters
             {
@@ -27,7 +27,7 @@ namespace TheBall.Interface
                 TargetGroupID = targetGroupId,
                 Owner = Owner,
             };
-            var operResult = CreateAuthenticatedAsActiveDevice.Execute(parameters);
+            var operResult = await CreateAuthenticatedAsActiveDevice.ExecuteAsync(parameters);
             connection.DeviceID = operResult.CreatedAuthenticatedAsActiveDevice.ID;
             return operResult.CreatedAuthenticatedAsActiveDevice;
         }

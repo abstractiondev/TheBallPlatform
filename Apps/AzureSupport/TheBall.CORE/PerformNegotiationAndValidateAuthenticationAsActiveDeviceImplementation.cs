@@ -8,9 +8,9 @@ namespace TheBall.CORE
 {
     public class PerformNegotiationAndValidateAuthenticationAsActiveDeviceImplementation
     {
-        public static AuthenticatedAsActiveDevice GetTarget_AuthenticatedAsActiveDevice(IContainerOwner owner, string authenticatedAsActiveDeviceId)
+        public static async Task<AuthenticatedAsActiveDevice> GetTarget_AuthenticatedAsActiveDeviceAsync(IContainerOwner owner, string authenticatedAsActiveDeviceId)
         {
-            return ObjectStorage.RetrieveFromOwnerContent<AuthenticatedAsActiveDevice>(owner, authenticatedAsActiveDeviceId);
+            return await ObjectStorage.RetrieveFromOwnerContentA<AuthenticatedAsActiveDevice>(owner, authenticatedAsActiveDeviceId);
         }
 
         public static string GetTarget_RemoteBallSecretRequestUrl(AuthenticatedAsActiveDevice authenticatedAsActiveDevice)

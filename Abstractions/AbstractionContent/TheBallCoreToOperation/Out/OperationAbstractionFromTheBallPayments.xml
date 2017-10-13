@@ -11,7 +11,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <TargetDefinition name="AllCustomerAccounts" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" />
+          <TargetDefinition name="AllCustomerAccounts" asyncSupportMode="AsyncOnly" dataType="CustomerAccount[]" designDesc="All customer accounts" state="implemented" />
           <TargetDefinition name="Account" dataType="CustomerAccount" designDesc="Stripe customer ID based account" state="implemented">
             <Parameter name="StripeCustomerID" />
             <Parameter name="IsTestAccount" />
@@ -286,7 +286,7 @@
             <Target name="CancelParams" />
           </TargetDefinition>
           <TargetDefinition name="AccountID" dataType="string" designDesc="Account ID to grant access for" state="implemented" />
-          <TargetDefinition name="CustomerAccount" dataType="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
+          <TargetDefinition name="CustomerAccount" asyncSupportMode="AsyncOnly" dataType="CustomerAccount" designDesc="Customer account object based on account ID. Must be found" state="implemented">
             <Target name="AccountID" />
           </TargetDefinition>
           <MethodExecute name="CancelSubscriptionPlan" designDesc="Cancel subscription plan on Stripe" state="implemented">
@@ -314,7 +314,7 @@
           <TargetDefinition name="IsTestMode" dataType="bool" designDesc="Is Stripe in test mode" state="implemented">
             <Target name="Account" />
           </TargetDefinition>
-          <TargetDefinition name="CurrentPlansBeforeSync" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
+          <TargetDefinition name="CurrentPlansBeforeSync" asyncSupportMode="AsyncOnly" dataType="GroupSubscriptionPlan[]" designDesc="Group subscription plans before syncing" state="implemented">
             <Target name="Account" />
           </TargetDefinition>
           <TargetDefinition name="ActivePlanStatusesFromStripe" asyncSupportMode="AsyncOnly" dataType="INT.PlanStatus[]" designDesc="Plan statuses of account - fetched from Stripe." state="implemented">

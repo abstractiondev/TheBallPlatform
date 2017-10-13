@@ -6,10 +6,12 @@ using System.IO.Compression;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using AaltoGlobalImpact.OIP;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TheBall.CORE.Storage;
 using TheBall.Support.VirtualStorage;
 
 namespace TheBall.CORE
@@ -49,13 +51,13 @@ namespace TheBall.CORE
             public string ContentMD5 { get; set; }
         }
 
-        public static ContentSyncResponse GetTarget_SyncResponse(ContentSyncRequest syncRequest, IContainerOwner accountOwner, IContainerOwner[] groupOwners)
+        public static async Task<ContentSyncResponse> GetTarget_SyncResponseAsync(ContentSyncRequest syncRequest, IContainerOwner accountOwner, IContainerOwner[] groupOwners)
         {
             IContainerOwner[] owners = new IContainerOwner[groupOwners.Length + 1];
             owners[0] = accountOwner;
             groupOwners.CopyTo(owners, 1);
             var requestedFolders = syncRequest.RequestedFolders;
-            var currentData = getOwnerRequestedContentData(owners, requestedFolders);
+            var currentData = await getOwnerRequestedContentData(owners, requestedFolders);
             if (currentData.Count == 0)
                 return new ContentSyncResponse
                 {
@@ -171,21 +173,21 @@ namespace TheBall.CORE
             return syncResponse;
         }
 
-        private static List<BlobContent> getOwnerRequestedContentData(IContainerOwner[] owners, string[] requestedFolders)
+        private static async Task<List<BlobContent>> getOwnerRequestedContentData(IContainerOwner[] owners, string[] requestedFolders)
         {
             List<BlobContent> contentData = new List<BlobContent>();
             foreach (var owner in owners)
             {
                 foreach (var requestedFolder in requestedFolders)
                 {
-                    var ownerBlobs = owner.GetOwnerBlobListing(requestedFolder, true).Cast<CloudBlockBlob>();
+                    var ownerBlobs = await BlobStorage.GetBlobItemsA(owner, requestedFolder);
                     var contents = ownerBlobs.Select(blob => new BlobContent
                     {
                         Owner = owner,
                         FullName = blob.Name,
                         RelativeName = StorageSupport.RemoveOwnerPrefixIfExists(blob.Name),
-                        Length = blob.Properties.Length,
-                        ContentMD5 = blob.Properties.ContentMD5,
+                        Length = blob.Length,
+                        ContentMD5 = blob.ContentMD5,
                         Folder = requestedFolder
                     });
                     contentData.AddRange(contents);
@@ -194,17 +196,17 @@ namespace TheBall.CORE
             return contentData;
         }
 
-        public static void ExecuteMethod_WriteResponseToStream(Stream outputStream, ContentSyncResponse syncResponse)
+        public static async Task ExecuteMethod_WriteResponseToStreamAsync(Stream outputStream, ContentSyncResponse syncResponse)
         {
             /*
             using (GZipStream compressedStream = new GZipStream(outputStream, CompressionLevel.Fastest, true))
             {
                 writeResponseToStream(syncResponse, compressedStream);
             }*/
-            writeResponseToStream(syncResponse, outputStream);
+            await writeResponseToStream(syncResponse, outputStream);
         }
 
-        private static void writeResponseToStream(ContentSyncResponse syncResponse, Stream stream)
+        private static async Task writeResponseToStream(ContentSyncResponse syncResponse, Stream stream)
         {
             RemoteSyncSupport.PutSyncResponseToStream(stream, syncResponse);
             if (syncResponse.Contents == null)
@@ -223,7 +225,7 @@ namespace TheBall.CORE
                     var blobName = transferItem.FullNames[pick];
                     var blob = StorageSupport.CurrActiveContainer.GetBlockBlobReference(blobName);
                     outputTotal += transferItem.ContentLength;
-                    blob.DownloadToStream(stream);
+                    await blob.DownloadToStreamAsync(stream);
                 }
                 Debug.WriteLine("Wrote {0} bytes of {1}", transferItem.ContentLength, transferItem.ContentMD5);
             }

@@ -141,7 +141,7 @@ namespace TheBall
                 }
                 case "PersonalWeb.Diosphere.SaveRoomData":
                 {
-                    PersonalWeb.Diosphere.SaveRoomData.Execute(new SaveRoomDataParameters
+                    await PersonalWeb.Diosphere.SaveRoomData.ExecuteAsync(new SaveRoomDataParameters
                     {
                         JSONData = form["JSONData"],
                         RoomID = form["RoomID"]
@@ -231,7 +231,7 @@ namespace TheBall
                                 CustomUIName = form["CustomUIName"],
                                 Owner = containerOwner
                             };
-                        DeleteCustomUI.Execute(parameters);
+                        await DeleteCustomUI.ExecuteAsync(parameters);
                         break;
                     }
                 case "CreateOrUpdateCustomUI":
@@ -247,7 +247,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 ZipArchiveStream = null //customUIContent.InputStream,
                             };
-                        CreateOrUpdateCustomUI.Execute(parameters);
+                        await CreateOrUpdateCustomUI.ExecuteAsync(parameters);
                         break;
                     }
                 case "AddCategories":
@@ -277,7 +277,7 @@ namespace TheBall
                             {
                                 Owner = containerOwner
                             };
-                        PublishGroupToWww.Execute(parameters);
+                        await PublishGroupToWww.ExecuteAsync(parameters);
                         break;
                     }
                 case "UpdateUsageMonitoringItems":
@@ -294,7 +294,7 @@ namespace TheBall
                                 AmountOfDays = 31,
                                 Owner = containerOwner
                             };
-                        UpdateUsageMonitoringSummaries.Execute(summaryParameters);
+                        await UpdateUsageMonitoringSummaries.ExecuteAsync(summaryParameters);
                         break;
                     }
                 case "ProcessAllResourceUsagesToOwnerCollections":
@@ -303,7 +303,7 @@ namespace TheBall
                             {
                                 ProcessBatchSize = 500
                             };
-                        ProcessAllResourceUsagesToOwnerCollections.Execute(parameters);
+                        await ProcessAllResourceUsagesToOwnerCollections.ExecuteAsync(parameters);
                         break;
                     }
                 case "CreateInformationOutput":
@@ -341,7 +341,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 InformationOutputID = form["InformationOutputID"]
                             };
-                        DeleteInformationOutput.Execute(parameters);
+                        await DeleteInformationOutput.ExecuteAsync(parameters);
                         break;
                     }
                 
@@ -373,7 +373,7 @@ namespace TheBall
                                 InformationInputID = form["InformationInputID"],
                                 QueryParameters = form["QueryParameters"]
                             };
-                        FetchInputInformation.Execute(parameters);
+                        await FetchInputInformation.ExecuteAsync(parameters);
                         break;
                     }
                 case "DeleteDeviceMembership":
@@ -383,7 +383,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 DeviceMembershipID = form["DeviceMembershipID"]
                             };
-                        DeleteDeviceMembership.Execute(parameters);
+                        await DeleteDeviceMembership.ExecuteAsync(parameters);
                         break;
                     }
                 case "DeleteAuthenticatedAsActiveDevice":
@@ -393,7 +393,7 @@ namespace TheBall
                                 Owner = containerOwner,
                                 AuthenticatedAsActiveDeviceID = form["AuthenticatedAsActiveDeviceID"]
                             };
-                        DeleteAuthenticatedAsActiveDevice.Execute(parameters);
+                        await DeleteAuthenticatedAsActiveDevice.ExecuteAsync(parameters);
                         break;
                     }
                 case "PerformNegotiationAndValidateAuthenticationAsActiveDevice":
@@ -417,21 +417,7 @@ namespace TheBall
                                 TargetBallHostName = form["TargetBallHostName"],
                                 TargetGroupID = form["TargetGroupID"]
                             };
-                        CreateAuthenticatedAsActiveDevice.Execute(parameters);
-                        break;
-                    }
-                case "UnregisterEmailAddress":
-                    {
-                        var isAccount = containerOwner.IsAccountContainer();
-                        if (!isAccount)
-                            throw new NotSupportedException("Unregistering email address is only supported for accounts");
-                        var accountID = containerOwner.LocationPrefix;
-                        UnregisterEmailAddressParameters parameters = new UnregisterEmailAddressParameters
-                            {
-                                AccountID = accountID,
-                                EmailAddress = form["EmailAddress"],
-                            };
-                        UnregisterEmailAddress.Execute(parameters);
+                        await CreateAuthenticatedAsActiveDevice.ExecuteAsync(parameters);
                         break;
                     }
                 case "BeginAccountEmailAddressRegistration":
@@ -446,7 +432,7 @@ namespace TheBall
                                 RedirectUrlAfterValidation = form["RedirectUrlAfterValidation"],
                                 EmailAddress = form["EmailAddress"],
                             };
-                        BeginAccountEmailAddressRegistration.Execute(parameters);
+                        await BeginAccountEmailAddressRegistration.ExecuteAsync(parameters);
                         break;
                     }
                 case "CreateInformationInput":
@@ -500,7 +486,7 @@ namespace TheBall
                                 ObjectName = form["ObjectName"],
                                 ObjectID = form["ObjectID"],
                             };
-                        DeleteSpecifiedInformationObject.Execute(parameters);
+                        await DeleteSpecifiedInformationObject.ExecuteAsync(parameters);
                         break;
                     }
                 default:

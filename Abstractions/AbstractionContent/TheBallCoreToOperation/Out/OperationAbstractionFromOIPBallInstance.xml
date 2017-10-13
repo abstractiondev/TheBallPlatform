@@ -111,7 +111,7 @@
       </Parameters>
       <Execution>
         <SequentialExecution>
-          <MethodExecute name="ClearImageMediaFormats" designDesc="Clear various image media formats" state="underDesign">
+          <MethodExecute name="ClearImageMediaFormats" asyncSupportMode="AsyncOnly" designDesc="Clear various image media formats" state="underDesign">
             <Parameter name="MasterRelativeLocation" />
           </MethodExecute>
         </SequentialExecution>
