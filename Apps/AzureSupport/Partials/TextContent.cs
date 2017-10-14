@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 //using LuceneSupport;
 using TheBall.Index;
 
@@ -16,7 +17,7 @@ namespace AaltoGlobalImpact.OIP
             return this.GetFormatExtensions(AdditionalFormatSupport.WebUIFormatExtensions);
         }
 
-        void IBeforeStoreHandler.PerformBeforeStoreUpdate()
+        async Task IBeforeStoreHandler.PerformBeforeStoreUpdate()
         {
             /* Don't need to modify from default time */
             if (Published == default(DateTime))

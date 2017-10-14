@@ -147,7 +147,7 @@ namespace TheBall.Interface
                         iobj.RelativeLocation =
                             (string) getCollLocation.Invoke(null, new object[] {InformationContext.CurrentOwner});
                     }
-                    masterObject.RefreshContent();
+                    await masterObject.RefreshContentAsync();
                     await StorageSupport.StoreInformationAsync((IInformationObject) masterObject);
                 });
             }).ToArray();

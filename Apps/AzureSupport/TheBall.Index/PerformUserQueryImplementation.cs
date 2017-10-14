@@ -1,5 +1,7 @@
+using System;
 using System.Web;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using TheBall.CORE;
 using TheBall.CORE.Storage;
 using TheBall.Index.INT;
@@ -17,9 +19,10 @@ namespace TheBall.Index
 
         public static void ExecuteMethod_WriteContentToHttpResponse(QueryToken responseContentObject)
         {
-            var httpContext = HttpContext.Current;
+            HttpContext httpContext = null; // HttpContext.Current;
             var jsonString = JSONSupport.SerializeToJSONString(responseContentObject);
-            httpContext.Response.Write(jsonString);
+            throw new NotImplementedException();
+            httpContext.Response.WriteAsync(jsonString);
             httpContext.Response.ContentType = "application/json";
         }
 

@@ -142,8 +142,8 @@ namespace WebInterface
                 string[] parts = authorization.Split(':');
                 string trustID = parts[2];
                 ctx.User = new GenericPrincipal(new GenericIdentity(trustID), new string[] { "DeviceAES"});
-            } else
-                AuthenticationSupport.SetUserFromCookieIfExists(HttpContext.Current);
+            } //else
+                //AuthenticationSupport.SetUserFromCookieIfExists(HttpContext.Current);
         }
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)

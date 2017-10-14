@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Threading.Tasks;
 
 namespace AaltoGlobalImpact.OIP
 {
@@ -21,7 +22,7 @@ namespace AaltoGlobalImpact.OIP
 
     partial class Category : IBeforeStoreHandler
     {
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
             ValidateNonCircularParentLinks();
             if (Title == null)

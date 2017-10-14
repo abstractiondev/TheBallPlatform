@@ -107,13 +107,13 @@ namespace WebInterface
             if (String.IsNullOrEmpty(accountEmail) == false)
             {
                 string emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-                var emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+                var emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
                 if(emailRoot == null)
                     throw new SecurityException("No such email defined: " + accountEmail);
                 executionOwner = emailRoot.Account;
             } else if (String.IsNullOrEmpty(groupID) == false)
             {
-                TBRGroupRoot groupRoot = ObjectStorage.RetrieveFromDefaultLocation<TBRGroupRoot>(groupID);
+                TBRGroupRoot groupRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBRGroupRoot>(groupID);
                 if(groupRoot == null)
                     throw new SecurityException("No such groupID defined: " + groupID);
                 executionOwner = groupRoot.Group;
@@ -263,13 +263,13 @@ namespace WebInterface
         {
             try
             {
-                var result = CreateDeviceMembership.Execute(new CreateDeviceMembershipParameters
+                var result = await CreateDeviceMembership.ExecuteAsync(new CreateDeviceMembershipParameters
                     {
                         Owner = iCtx.Owner,
                         ActiveSymmetricAESKey = protocolParty.NegotiationResults[0],
                         DeviceDescription = remainingDetails
                     });
-                CreateAndSendEmailValidationForDeviceJoinConfirmation.Execute(new CreateAndSendEmailValidationForDeviceJoinConfirmationParameters
+                await CreateAndSendEmailValidationForDeviceJoinConfirmation.ExecuteAsync(new CreateAndSendEmailValidationForDeviceJoinConfirmationParameters
                     {
                         DeviceMembership = result.DeviceMembership,
                         OwningAccount = iCtx.Owner as TBAccount,

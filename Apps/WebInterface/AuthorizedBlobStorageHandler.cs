@@ -161,7 +161,7 @@ namespace WebInterface
                 throw new InvalidOperationException("Device request must be either group or account request");
             string ivStr = authTokens[1];
             string trustID = authTokens[2];
-            DeviceMembership deviceMembership = ObjectStorage.RetrieveFromOwnerContent<DeviceMembership>(deviceOwner, trustID);
+            DeviceMembership deviceMembership = await ObjectStorage.RetrieveFromOwnerContentA<DeviceMembership>(deviceOwner, trustID);
             if(deviceMembership == null)
                 throw new InvalidDataException("Device membership not found");
             if(deviceMembership.IsValidatedAndActive == false)
@@ -293,10 +293,10 @@ namespace WebInterface
                 throw new NotSupportedException("Device request type not supported: " + request.RequestType);
         }
 
-        private static TBAccount getDeviceAccount(string accountEmail)
+        private static async Task<TBAccount> getDeviceAccountAsync(string accountEmail)
         {
             var emailRootID = TBREmailRoot.GetIDFromEmailAddress(accountEmail);
-            TBREmailRoot emailRoot = ObjectStorage.RetrieveFromDefaultLocation<TBREmailRoot>(emailRootID);
+            TBREmailRoot emailRoot = await ObjectStorage.RetrieveFromDefaultLocationA<TBREmailRoot>(emailRootID);
             var ownerAccount = emailRoot.Account;
             return ownerAccount;
         }

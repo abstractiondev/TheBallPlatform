@@ -3,6 +3,7 @@ using System.Security;
 using System.Threading.Tasks;
 using System.Web;
 using AzureSupport;
+using Microsoft.AspNetCore.Http;
 using Stripe;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
@@ -15,7 +16,8 @@ namespace TheBall.Payments
     {
         public static PaymentToken GetTarget_PaymentToken()
         {
-            return JSONSupport.GetObjectFromStream<PaymentToken>(HttpContext.Current.Request.GetBufferedInputStream());
+            HttpContext current = null;
+            return JSONSupport.GetObjectFromStream<PaymentToken>(current.Request.Body);
         }
 
         public static void ExecuteMethod_ProcessPayment(PaymentToken paymentToken, CustomerAccount customerAccount)

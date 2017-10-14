@@ -9,14 +9,11 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using AaltoGlobalImpact.OIP;
-using JsonFx.Serialization;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using TheBall.Index;
-using JsonReader = JsonFx.Json.JsonReader;
-using JsonWriter = JsonFx.Json.JsonWriter;
 
 namespace TheBall.CORE.Storage
 {
@@ -24,13 +21,18 @@ namespace TheBall.CORE.Storage
     {
         public static ExpandoObject GetJsonFromStream(TextReader input)
         {
+            throw new NotImplementedException();
+            /*
             var reader = new JsonReader();
             dynamic jsonObject = reader.Read(input);
             return jsonObject;
+            */
         }
 
         public static ExpandoObject GetJsonFromStream(string input)
         {
+            throw new NotImplementedException();
+            /*
             var reader = new JsonReader();
             Stopwatch watch = new Stopwatch();
             watch.Start();
@@ -42,6 +44,7 @@ namespace TheBall.CORE.Storage
             watch.Stop();
             var elapsed2 = watch.ElapsedMilliseconds;
             return jsonObject;
+            */
         }
 
         public static T GetObjectFromData<T>(byte[] data)
@@ -85,11 +88,14 @@ namespace TheBall.CORE.Storage
 
         public static void SerializeToJSONStream(object obj, Stream outputStream)
         {
+            throw new NotImplementedException();
+            /*
             var writer = new JsonWriter();
             using (StreamWriter textWriter = new StreamWriter(outputStream))
             {
                 writer.Write(obj, textWriter);
             }
+            */
         }
 
         public static byte[] SerializeToJSONData(object obj)
@@ -108,6 +114,8 @@ namespace TheBall.CORE.Storage
 
         public static T GetObjectFromString<T>(string jsonString)
         {
+            throw new NotImplementedException();
+/*
             Stopwatch watch = new Stopwatch();
             watch.Start();
             var reader = new JsonReader();
@@ -115,6 +123,7 @@ namespace TheBall.CORE.Storage
             watch.Stop();
             var elapsed = watch.ElapsedMilliseconds;
             return result;
+            */
         }
 
         public static ExpandoObject GetExpandoObject(string jsonString)
@@ -127,13 +136,16 @@ namespace TheBall.CORE.Storage
 
         public static ExpandoObject GetExpandoObject(Stream stream)
         {
+            throw new NotImplementedException();
+            /*
             var serializer = new JsonSerializer();
             using (var streamReader = new StreamReader(stream, Encoding.UTF8))
                 using(var jsonTextReader = new JsonTextReader(streamReader))
             {
-                dynamic result = serializer.Deserialize<ExpandoObject>(jsonTextReader);
+                var result = serializer.Deserialize<ExpandoObject>(jsonTextReader);
                 return result;
             }
+            */
                 
         }
     }

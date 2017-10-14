@@ -27,13 +27,15 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AWSSDK.SimpleEmail" Version="3.3.3" />
-    <PackageReference Include="JsonFx" Version="2.0.1209.2802" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.0" />
     <PackageReference Include="MimeKitLite" Version="1.18.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="protobuf-net" Version="2.3.2" />
     <PackageReference Include="RestSharp" Version="105.2.3" />
     <PackageReference Include="SharpZipLib" Version="1.0.0-alpha2" />
     <PackageReference Include="Stripe.net" Version="10.4.0" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="8.4.0" />
   </ItemGroup>
   <ItemGroup>

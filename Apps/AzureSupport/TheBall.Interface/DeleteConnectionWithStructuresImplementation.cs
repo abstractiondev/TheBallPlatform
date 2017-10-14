@@ -32,7 +32,7 @@ namespace TheBall.Interface
                                     ProcessRequest = "DELETEREMOTECONNECTION"
                                 });
                     bool success = result.ReceivingSideConnectionID == null;
-                    DeleteAuthenticatedAsActiveDevice.Execute(new DeleteAuthenticatedAsActiveDeviceParameters
+                    await DeleteAuthenticatedAsActiveDevice.ExecuteAsync(new DeleteAuthenticatedAsActiveDeviceParameters
                         {
                             Owner = InformationContext.CurrentOwner,
                             AuthenticatedAsActiveDeviceID = connection.DeviceID

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Threading.Tasks;
 using TheBall;
 
 namespace AaltoGlobalImpact.OIP
 {
     partial class LinkToContent : IBeforeStoreHandler, IAdditionalFormatProvider
     {
-        public void PerformBeforeStoreUpdate()
+        public async Task PerformBeforeStoreUpdate()
         {
-            if (URL != null)
-                URL = URL.Trim();
+            URL = URL?.Trim();
             if (ImageData == null && string.IsNullOrEmpty(URL) == false)
             {
                 ImageData = new MediaContent();
@@ -27,7 +27,7 @@ namespace AaltoGlobalImpact.OIP
                         FileName = "AutoFetch.jpg",
                         FileContent = jpegData
                     };
-                this.SetMediaContent(InformationContext.CurrentOwner, ImageData.ID, mediaContent);
+                await this.SetMediaContent(InformationContext.CurrentOwner, ImageData.ID, mediaContent);
             }
             if (Published == default(DateTime))
                 Published = Published.ToUniversalTime();
