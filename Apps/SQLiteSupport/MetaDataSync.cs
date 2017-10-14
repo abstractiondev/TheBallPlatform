@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SQLite.TheBall.Payments;
 
 namespace SQLiteSupport
 {
+    public enum ChangeAction
+    {
+        Delete,
+        Insert,
+        Update,
+        None
+    }
     public static class MetaDataSync
     {
+
+
         /// <summary>
         /// Applies appropriate change actions to existing data
         /// </summary>

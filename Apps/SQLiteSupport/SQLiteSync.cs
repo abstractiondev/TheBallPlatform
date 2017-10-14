@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Linq;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SQLite.TheBall.Payments;
+using Microsoft.EntityFrameworkCore;
 
 namespace SQLiteSupport
 {
     public interface IStorageSyncableDataContext : IDisposable
     {
-        Table<InformationObjectMetaData> InformationObjectMetaDataTable { get; }
+        DbSet<InformationObjectMetaData> InformationObjectMetaDataTable { get; }
         void PerformUpdate(string storageRootPath, InformationObjectMetaData updateData);
         void PerformInsert(string storageRootPath, InformationObjectMetaData insertData);
         void PerformDelete(string storageRootPath, InformationObjectMetaData deleteData);
