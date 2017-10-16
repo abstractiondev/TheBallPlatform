@@ -14,7 +14,7 @@
     <RootNamespace>WebInterface</RootNamespace>
     <AssemblyName>WebInterface</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -347,7 +347,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>50430</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://home.theball.me/</IISUrl>
+          <IISUrl>http://localhost:50430/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
