@@ -42,20 +42,11 @@ namespace TheBall
             InstanceName = instanceName;
         }
 
-        public static DeviceMembership CurrentExecutingForDevice
-        {
-            get { return Current.ExecutingForDevice; }
-        }
+        public static DeviceMembership CurrentExecutingForDevice => Current.ExecutingForDevice;
 
-        public static IContainerOwner CurrentOwner
-        {
-            get { return Current.Owner; }
-        }
+        public static IContainerOwner CurrentOwner => Current.Owner;
 
-        public static IAccountInfo CurrentAccount
-        {
-            get { return Current.Account; }
-        }
+        public static IAccountInfo CurrentAccount => Current.Account;
 
         public static InformationContext InitializeToLogicalContext(HttpContext httpContext, IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null)
         {
