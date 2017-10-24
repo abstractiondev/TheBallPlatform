@@ -20,7 +20,8 @@ namespace WebCoreLayer.Controllers
             var i = 0;
             //var provider = "Facebook";
             var provider = "Google";
-            await ExternalLogin(provider, "/TheBallLogin.aspx");
+            //await ExternalLogin(provider, "/TheBallLogin.aspx");
+            await ExternalLogin(provider, "/auth/account/");
             return new string[] { "value1", "value2" };
         }
 
@@ -32,7 +33,7 @@ namespace WebCoreLayer.Controllers
         {
             var properties = new AuthenticationProperties
             {
-                RedirectUri = "Login/Callback"
+                RedirectUri = returnUrl
             };
 
             // Add returnUrl to properties -- if applicable

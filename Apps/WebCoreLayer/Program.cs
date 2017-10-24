@@ -18,13 +18,22 @@ namespace WebCoreLayer
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            var certPassword = Environment.GetEnvironmentVariable("TBCertificatePassword", EnvironmentVariableTarget.User);
+            var result = WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-            .UseKestrel(options =>
+                .UseKestrel(options =>
                 {
-                    options.Listen(IPAddress.Loopback, 5000);
+                    //options.Listen(IPAddress.Loopback, 5000);
+                    //options.UseHttps()
+                    options.Listen(IPAddress.Any, 443, listenOptions =>
+                    {
+                        listenOptions.UseHttps(@"X:\TheBallCerts\wildcard_theball.me.pfx", certPassword);
+                    });
                 })
                 .Build();
-    }
+            return result;
+        }
+}
 }
