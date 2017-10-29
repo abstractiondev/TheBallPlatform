@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebCoreLayer.Controllers
 {
     [Produces("application/json")]
-    [Route("Login")]
     public class LoginController : Controller
     {        
         // GET api/values
@@ -18,18 +17,12 @@ namespace WebCoreLayer.Controllers
         public async Task<string[]> Get()
         {
             var i = 0;
-            //var provider = "Facebook";
-            var provider = "Google";
-            //await ExternalLogin(provider, "/TheBallLogin.aspx");
-            await ExternalLogin(provider, "/auth/account/");
             return new string[] { "value1", "value2" };
         }
 
-
         [AllowAnonymous]
         [HttpGet]
-        [Route("Login/ExternalLogin")]
-        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
+        public async Task ExternalLogin(string provider, string returnUrl)
         {
             var properties = new AuthenticationProperties
             {
@@ -43,8 +36,6 @@ namespace WebCoreLayer.Controllers
             // The ASP.NET Core 1.1 version of this line was
             // await HttpContext.Authentication.ChallengeAsync(provider, properties);
             await HttpContext.ChallengeAsync(provider, properties);
-
-            return Accepted();
         }
     }
 }
