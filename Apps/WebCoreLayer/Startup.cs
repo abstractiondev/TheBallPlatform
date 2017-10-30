@@ -39,6 +39,8 @@ namespace WebCoreLayer
                 .AddCookie(cookieOptions =>
                 {
                     cookieOptions.Cookie.Name = "THEBALL_AUTH";
+                    cookieOptions.LoginPath = "/Login/Login";
+                    cookieOptions.LogoutPath = "/Login/Login";
                 })
                 .AddGoogle(googleOptions =>
                 {

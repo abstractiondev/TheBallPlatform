@@ -14,10 +14,10 @@ namespace WebCoreLayer.Controllers
     {        
         // GET api/values
         [HttpGet]
-        public async Task<string[]> Get()
+        public async Task<string[]> Login()
         {
             var i = 0;
-            return new string[] { "value1", "value2" };
+            return new string[] { "login", "here" };
         }
 
         [AllowAnonymous]
