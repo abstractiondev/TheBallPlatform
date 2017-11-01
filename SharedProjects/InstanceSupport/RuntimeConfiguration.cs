@@ -59,7 +59,7 @@ namespace TheBall.CORE.InstanceSupport
             var secureConfig = await deserialize<SecureConfig>(secureConfigFullPath);
             var instanceConfigFullPath = Path.Combine(ConfigRootPath, instanceName, "InstanceConfig.json");
             var instanceConfig = await deserialize<InstanceConfig>(instanceConfigFullPath);
-
+            instanceConfig.InstanceName = instanceName;
             var upToDateConfig = new RuntimeConfiguration(secureConfig, instanceConfig);
             RuntimeConfigurationsDict.AddOrUpdate(instanceName, upToDateConfig,
                 (s, configuration) => upToDateConfig);

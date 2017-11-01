@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TheBall;
+using TheBall.CORE.InstanceSupport;
 
 namespace WebCoreLayer.Controllers
 {
@@ -24,6 +26,8 @@ namespace WebCoreLayer.Controllers
         [HttpGet]
         public async Task ExternalLogin(string provider, string returnUrl)
         {
+            var instanceName = InstanceConfig.Current.InstanceName;
+            var instanceProvider = $"{instanceName}_{provider}";
             var properties = new AuthenticationProperties
             {
                 RedirectUri = returnUrl
@@ -35,7 +39,7 @@ namespace WebCoreLayer.Controllers
 
             // The ASP.NET Core 1.1 version of this line was
             // await HttpContext.Authentication.ChallengeAsync(provider, properties);
-            await HttpContext.ChallengeAsync(provider, properties);
+            await HttpContext.ChallengeAsync(instanceProvider, properties);
         }
     }
 }

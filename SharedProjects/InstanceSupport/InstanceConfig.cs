@@ -144,5 +144,6 @@ namespace TheBall.CORE.InstanceSupport
         }
 
         public static InstanceConfig Current => InformationContext.InstanceConfiguration.InstanceConfig;
+        public string InstanceName { get; set; }
     }
 }

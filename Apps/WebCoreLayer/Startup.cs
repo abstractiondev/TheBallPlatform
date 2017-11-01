@@ -4,7 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -33,36 +36,70 @@ namespace WebCoreLayer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            initializePlatform();
+            services.AddMvcCore();
+            var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(cookieOptions =>
                 {
                     cookieOptions.Cookie.Name = "THEBALL_AUTH";
                     cookieOptions.LoginPath = "/Login/Login";
                     cookieOptions.LogoutPath = "/Login/Login";
-                })
-                .AddGoogle(googleOptions =>
-                {
-                    var clientId = SecureConfig.Current.GoogleOAuthClientID;
-                    googleOptions.ClientId = clientId;
-                    var clientSecret = SecureConfig.Current.GoogleOAuthClientSecret;
-                    googleOptions.ClientSecret = clientSecret;
-                })
-                .AddFacebook(facebookOptions =>
-                {
-                    var clientId = SecureConfig.Current.FacebookOAuthClientID;
-                    facebookOptions.ClientId = clientId;
-                    var clientSecret = SecureConfig.Current.FacebookOAuthClientSecret;
-                    facebookOptions.ClientSecret = clientSecret;
+                    cookieOptions.Events.OnSigningIn += async context =>
+                    {
+                        var currPrincipal = context.Principal;
+                        var emailAddress = currPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+
+                        var loginUrl = Login.GetLoginUrlFromEmailAddress(emailAddress);
+                        var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
+                        var login = await ObjectStorage.RetrieveFromSystemOwner<Login>(loginID);
+                        var salt = login.PasswordSalt;
+                        var accountID = login.Account;
+                        /*
+                        var currPrincipal = context.Principal;
+                        var email = context.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+                        context.Principal = new GenericPrincipal(new TheBallIdentity(email, email email))
+                        {
+
+                        };*/
+
+                    };
                 });
+            foreach (var instanceName in InfraSharedConfig.Current.InstanceNames)
+            {
+                addAdditionalAuthentication(instanceName, authBuilder);
+            }
+        }
+
+        private void addAdditionalAuthentication(string instanceName, AuthenticationBuilder authBuilder)
+        {
+            var providerPrefix = instanceName;
+            var config = RuntimeConfiguration.GetConfiguration(instanceName);
+            var secureConfig = config.SecureConfig;
+
+            bool hasGoogle = !String.IsNullOrEmpty(secureConfig.GoogleOAuthClientID);
+            if(hasGoogle)
+                authBuilder.AddGoogle(providerPrefix + "_Google", googleOptions =>
+                    {
+                        var clientId = secureConfig.GoogleOAuthClientID;
+                        googleOptions.ClientId = clientId;
+                        var clientSecret = secureConfig.GoogleOAuthClientSecret;
+                        googleOptions.ClientSecret = clientSecret;
+                    });
+
+            bool hasFB = !String.IsNullOrEmpty(secureConfig.FacebookOAuthClientID);
+            if(hasFB) 
+                authBuilder.AddFacebook(providerPrefix + "_Facebook", facebookOptions =>
+                    {
+                        var clientId = secureConfig.FacebookOAuthClientID;
+                        facebookOptions.ClientId = clientId;
+                        var clientSecret = secureConfig.FacebookOAuthClientSecret;
+                        facebookOptions.ClientSecret = clientSecret;
+                    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            initializePlatform();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

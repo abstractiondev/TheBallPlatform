@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebCoreLayer.Controllers
@@ -8,10 +9,11 @@ namespace WebCoreLayer.Controllers
     public class AuthController : Controller
     {
         [HttpGet]
-        public async Task<string[]> Account()
+        public async Task Account()
         {
             var i = 0;
-            return new string[] { "value1", "value2" };
+            Response.StatusCode = 200;
+            await HttpContext.Response.WriteAsync("Tööt");
         }
     }
 }
