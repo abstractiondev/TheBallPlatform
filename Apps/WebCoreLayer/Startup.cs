@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace WebCoreLayer
         public void ConfigureServices(IServiceCollection services)
         {
             initializePlatform();
-            services.AddMvcCore();
+            services.AddMvcCore().AddAuthorization();
             var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(cookieOptions =>
                 {
@@ -47,13 +48,33 @@ namespace WebCoreLayer
                     cookieOptions.Events.OnSigningIn += async context =>
                     {
                         var currPrincipal = context.Principal;
-                        var emailAddress = currPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+                        var claimEmailValue = currPrincipal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
+                        if(claimEmailValue == null)
+                            throw new SecurityException("Email address from claim missing");
 
+                        var emailID = Email.GetIDFromEmailAddress(claimEmailValue);
+                        var email = await ObjectStorage.RetrieveFromSystemOwner<Email>(emailID);
+                        if(email == null)
+                            throw new SecurityException("Unknown email");
+                        var emailAddress = email.EmailAddress;
+                        var account = await ObjectStorage.RetrieveFromSystemOwner<Account>(email.Account);
+
+                        var roles = account?.GroupMemberships.ToArray() ?? new string[0];
+                        var claims = new List<Claim>();
+                        claims.Add(new Claim(ClaimTypes.Email.ToString(), emailAddress));
+                        claims.Add(new Claim(ClaimTypes.Sid.ToString(), account.ID));
+                        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role.ToString(), role)));
+                        ClaimsIdentity ci = new ClaimsIdentity(new TheBallIdentity(account.ID, emailAddress, account.ID), claims);
+                        var principal = new ClaimsPrincipal(ci);
+                        context.Principal = principal;
+                        /*
                         var loginUrl = Login.GetLoginUrlFromEmailAddress(emailAddress);
                         var loginID = Login.GetLoginIDFromLoginURL(loginUrl);
                         var login = await ObjectStorage.RetrieveFromSystemOwner<Login>(loginID);
+
                         var salt = login.PasswordSalt;
                         var accountID = login.Account;
+                        */
                         /*
                         var currPrincipal = context.Principal;
                         var email = context.Principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
@@ -111,6 +132,8 @@ namespace WebCoreLayer
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute("AuthAccount", "auth/account/{*path}", new { controller = "auth", action = "Account" });
+                routes.MapRoute("AuthGroup", "auth/grp/{groupId}/{*path}", new { controller = "auth", action = "Group" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
