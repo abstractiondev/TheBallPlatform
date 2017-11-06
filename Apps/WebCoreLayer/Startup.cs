@@ -40,7 +40,6 @@ namespace WebCoreLayer
         {
             initializePlatform();
             services.AddMvcCore().AddAuthorization();
-            //services.AddResponseCaching();
             services.AddDataProtection().PersistKeysToAzureBlobStorage(new Uri(InfraSharedConfig.Current.SecurityKeyBlobSAS));
             var authBuilder = services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(cookieOptions =>
@@ -134,7 +133,6 @@ namespace WebCoreLayer
             app.UseInformationContext();
             app.UseAuthentication();
             //app.UseStaticFiles();
-            //app.UseResponseCaching();
             app.UseMvc(routes =>
             {
                 routes.MapRoute("AuthAccount", "auth/account/{*path}", new { controller = "auth", action = "Account" });

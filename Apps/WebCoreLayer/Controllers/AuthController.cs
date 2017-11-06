@@ -400,7 +400,7 @@ namespace WebCoreLayer.Controllers
                     else
                         redirectToUrl = InstanceConfig.Current.GroupDefaultRedirect;
                 }
-                context.Response.Redirect(redirectToUrl, true);
+                context.Response.Redirect(redirectToUrl, false);
                 return;
             }
             if (contentPath.Contains("/MediaContent/"))
