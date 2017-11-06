@@ -17,7 +17,7 @@ namespace WebCoreLayer
         public async Task Invoke(HttpContext context)
         {
             InformationContext.InitializeToLogicalContext(null, SystemSupport.SystemOwner,
-                context.Request.Host.Host);
+                context.Request.Host.Host, null, true);
             await _next.Invoke(context);
             await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
         }

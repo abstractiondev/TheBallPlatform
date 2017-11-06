@@ -48,7 +48,8 @@ namespace TheBall
 
         public static IAccountInfo CurrentAccount => Current.Account;
 
-        public static InformationContext InitializeToLogicalContext(HttpContext httpContext, IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null)
+        public static InformationContext InitializeToLogicalContext(HttpContext httpContext, IContainerOwner contextRootOwner, string instanceName, FinalizingDependencyAction[] operationFinalizingActions = null,
+            bool isPreinitializedAsSystem = false)
         {
             if (httpContext != null)
                 throw new NotSupportedException("InitializeToLogicalContext not supported when HttpContext is available");
@@ -58,6 +59,7 @@ namespace TheBall
             var ctx = new InformationContext(contextRootOwner, instanceName);
             ctx.OperationFinalizingActions = operationFinalizingActions;
             CallContext.LogicalSetData(KEYNAME, ctx);
+            ctx.isPreInitializedAsSystem = isPreinitializedAsSystem;
             return ctx;
         }
 
