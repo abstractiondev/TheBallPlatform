@@ -72,7 +72,7 @@ namespace TheBall.CORE.InstanceSupport
                 var textContent = await stream.ReadToEndAsync();
                 var deserializeSettings = new JsonSerializerSettings()
                 {
-                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
+                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
                 };
                 T result = JsonConvert.DeserializeObject<T>(textContent, deserializeSettings);
                 return result;
