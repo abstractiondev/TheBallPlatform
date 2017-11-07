@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.VisualBasic.Devices;
+//using Microsoft.VisualBasic.Devices;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
 using TheBall.Interface;
@@ -188,9 +188,9 @@ namespace TheBall.Infra.TheBallWorkerConsole
 
         private int getAutoConfiguredWorkerCount()
         {
-            ComputerInfo computerInfo = new ComputerInfo();
-            var totalMemory = computerInfo.TotalPhysicalMemory;
+            //ComputerInfo computerInfo = new ComputerInfo();
             ulong gigaByte = 1024*1024 * 1024;
+            var totalMemory = 2 * gigaByte;  //computerInfo.TotalPhysicalMemory;
             if (totalMemory < gigaByte) // Extra Small in Azure
                 return 3;
             if (totalMemory < 2*gigaByte) // Small
@@ -214,7 +214,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                         var typedTask = (Task<LockInterfaceOperationsByOwnerReturnValue>) item.Task;
                         var lockItem = typedTask.Result;
                         var instanceName = item.InstancePollItem.InstanceHostName;
-                        InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instanceName);
+                        InformationContext.InitializeToLogicalContext(null, SystemOwner.CurrentSystem, instanceName, null, true);
                         var blobPath = lockItem.LockBlobFullPath;
                         var blob = StorageSupport.GetOwnerBlobReference(SystemOwner.CurrentSystem, blobPath);
                         return blob.DeleteIfExistsAsync();
@@ -243,7 +243,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             var cancellationToken = cancellationTokenSource.Token;
             Task result = Task.Run(async () =>
             {
-                InformationContext.InitializeToLogicalContext(SystemOwner.CurrentSystem, instancePollItem.InstanceHostName);
+                InformationContext.InitializeToLogicalContext(null, SystemOwner.CurrentSystem, instancePollItem.InstanceHostName, null, true);
                 try
                 {
                     bool keepRunning = !cancellationToken.IsCancellationRequested;

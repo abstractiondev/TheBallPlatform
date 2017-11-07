@@ -8,8 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using NDesk.Options;
-using Microsoft.Azure;
+using CommandLine.Options;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
 using TheBall.CORE.Storage;
@@ -51,32 +50,33 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 var optionSet = new OptionSet()
                 {
                     {
+                            
                         "ac|applicationConfig=", "Application config full path",
-                        ac => applicationConfigFullPath = ac
+                        (key, ac) => applicationConfigFullPath = ac
                     },
                     {
                         "au|autoupdate", "Auto update worker",
-                        au => autoUpdate = au != null
+                        (key, au) => autoUpdate = au != null
                     },
                     {
                         "upacc|updateAccessFile=", "Update access info file",
-                        upacc => updateAccessInfoFile = upacc
+                        (key, upacc) => updateAccessInfoFile = upacc
                     },
                     {
                         "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
-                        ch => clientHandle = ch
+                        (key, ch) => clientHandle = ch
                     },
                     {
                         "t|test", "Test handle communication and update, but don't activate the real worker process",
-                        t => isTestMode = t != null
+                        (key, t) => isTestMode = t != null
                     },
                     {
                         "o|owner=", "Dedicated to owner",
-                        owner => dedicatedToOwner = owner
+                        (key, owner) => dedicatedToOwner = owner
                     },
                     {
                         "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
-                        env => UseEnvironmentVariablesAsConfig = env != null
+                        (key, env) => UseEnvironmentVariablesAsConfig = env != null
                     }
                 };
                 var options = optionSet.Parse(args);
@@ -223,7 +223,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         {
             string configValue = UseEnvironmentVariablesAsConfig
                 ? Environment.GetEnvironmentVariable(configItem)
-                : CloudConfigurationManager.GetSetting(configItem);
+                : throw new NotSupportedException();
             return configValue;
         }
 
