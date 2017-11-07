@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
+    <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject>WebTemplateManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="Nito.AsyncEx">
@@ -10,5 +13,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Apps\AzureSupport\AzureSupport.csproj" />
     <ProjectReference Include="..\..\Apps\SecuritySupport\SecuritySupport.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
   </ItemGroup>
 </Project>

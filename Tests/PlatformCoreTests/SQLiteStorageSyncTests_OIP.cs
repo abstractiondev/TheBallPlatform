@@ -6,11 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLite.AaltoGlobalImpact.OIP;
+//using SQLite.AaltoGlobalImpact.OIP;
 using SQLiteSupport;
 
 namespace PlatformCoreTests
 {
+#if notported
     [TestClass]
     public class SQLiteStorageSyncTests_OIP
     {
@@ -104,4 +105,5 @@ namespace PlatformCoreTests
         }
 
     }
+#endif
 }

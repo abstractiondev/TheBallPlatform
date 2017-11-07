@@ -6,11 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLite.TheBall.Payments;
+//using SQLite.TheBall.Payments;
 using SQLiteSupport;
 
 namespace PlatformCoreTests
 {
+#if notported
     [TestClass]
     public class SQLiteStorageSyncTests
     {
@@ -106,4 +107,5 @@ namespace PlatformCoreTests
         }
 
     }
+#endif
 }

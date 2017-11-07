@@ -6,12 +6,13 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SQLiteSupport;
-using PAY=SQLite.TheBall.Payments;
-using TBC=SQLite.TheBall.CORE;
-using AGI=SQLite.AaltoGlobalImpact.OIP;
+//using PAY=SQLite.TheBall.Payments;
+//using TBC=SQLite.TheBall.CORE;
+//using AGI=SQLite.AaltoGlobalImpact.OIP;
 
 namespace PlatformCoreTests
 {
+#if notported
     [TestClass]
     public class SQLiteTests
     {
@@ -184,4 +185,5 @@ namespace PlatformCoreTests
         }
 
     }
+#endif
 }

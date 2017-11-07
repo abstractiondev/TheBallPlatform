@@ -1,8 +1,9 @@
 using System.Data.Linq;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SQLite.TheBall.Payments;
+//using SQLite.TheBall.Payments;
 using SQLiteSupport;
+using ChangeAction = SQLiteSupport.ChangeAction;
 
 namespace PlatformCoreTests
 {

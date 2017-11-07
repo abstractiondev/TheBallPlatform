@@ -11,13 +11,15 @@ using TheBall.CORE;
 
 namespace TheBall.Tests
 {
+#if notported
     [TestClass()]
     public class InformationContextTests
     {
         [TestMethod]
         public void CurrentCollidingLogicalCallContexts()
         {
-            var firstContext = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstinstance");
+
+            var firstContext = InformationContext.InitializeToLogicalContext(null, new VirtualOwner("tst", "tst"), "tstinstance", null, true);
             var task = Task.Run(async () =>
             {
                 var taskCtx = InformationContext.InitializeToLogicalContext(new VirtualOwner("tst", "tst"), "tstInstance");
@@ -85,4 +87,5 @@ namespace TheBall.Tests
             return InformationContext.Current;
         }
    }
+#endif
 }
