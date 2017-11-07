@@ -83,7 +83,7 @@ namespace OperationRunnerTool
 
             await RuntimeConfiguration.InitializeRuntimeConfigs(infraConfigPath);
 
-            var iCtx = InformationContext.InitializeToLogicalContext(operationOwner, instanceName);
+            var iCtx = InformationContext.InitializeToLogicalContext(null, operationOwner, instanceName, null, true);
 
             var httpOperationData = new HttpOperationData()
             {
