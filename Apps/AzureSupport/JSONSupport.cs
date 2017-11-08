@@ -19,32 +19,14 @@ namespace TheBall.CORE.Storage
 {
     public static class JSONSupport
     {
-        public static ExpandoObject GetJsonFromStream(TextReader input)
+        public static ExpandoObject GetJsonFromStream(Stream stream)
         {
-            throw new NotImplementedException();
-            /*
-            var reader = new JsonReader();
-            dynamic jsonObject = reader.Read(input);
-            return jsonObject;
-            */
+            return GetExpandoObject(stream);
         }
 
         public static ExpandoObject GetJsonFromStream(string input)
         {
-            throw new NotImplementedException();
-            /*
-            var reader = new JsonReader();
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            var strongType = reader.Read<NodeSummaryContainer>(input);
-            watch.Stop();
-            var elapsed1 = watch.ElapsedMilliseconds;
-            watch.Restart();
-            dynamic jsonObject = reader.Read(input);
-            watch.Stop();
-            var elapsed2 = watch.ElapsedMilliseconds;
-            return jsonObject;
-            */
+            return GetExpandoObject(input);
         }
 
         public static T GetObjectFromData<T>(byte[] data)
@@ -72,8 +54,6 @@ namespace TheBall.CORE.Storage
                 var result = serializer.Deserialize(jsonTextReader, objectType);
                 return result;
             }
-            //DataContractJsonSerializer serializer = new DataContractJsonSerializer(objectType);
-            //return serializer.ReadObject(stream);
         }
 
         public static T GetObjectFromStream<T>(Stream stream)
@@ -86,16 +66,15 @@ namespace TheBall.CORE.Storage
             return result;
         }
 
-        public static void SerializeToJSONStream(object obj, Stream outputStream)
+        public static void SerializeToJSONStream(object obj, Stream stream)
         {
-            throw new NotImplementedException();
-            /*
-            var writer = new JsonWriter();
-            using (StreamWriter textWriter = new StreamWriter(outputStream))
+            using (StreamWriter writer = new StreamWriter(stream))
+            using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
             {
-                writer.Write(obj, textWriter);
+                JsonSerializer ser = new JsonSerializer();
+                ser.Serialize(jsonWriter, obj);
+                jsonWriter.Flush();
             }
-            */
         }
 
         public static byte[] SerializeToJSONData(object obj)
@@ -114,16 +93,8 @@ namespace TheBall.CORE.Storage
 
         public static T GetObjectFromString<T>(string jsonString)
         {
-            throw new NotImplementedException();
-/*
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-            var reader = new JsonReader();
-            var result = reader.Read<T>(jsonString);
-            watch.Stop();
-            var elapsed = watch.ElapsedMilliseconds;
+            var result = JsonConvert.DeserializeObject<T>(jsonString);
             return result;
-            */
         }
 
         public static ExpandoObject GetExpandoObject(string jsonString)
@@ -136,17 +107,12 @@ namespace TheBall.CORE.Storage
 
         public static ExpandoObject GetExpandoObject(Stream stream)
         {
-            throw new NotImplementedException();
-            /*
-            var serializer = new JsonSerializer();
-            using (var streamReader = new StreamReader(stream, Encoding.UTF8))
-                using(var jsonTextReader = new JsonTextReader(streamReader))
+            using (StreamReader reader = new StreamReader(stream))
+            using (JsonTextReader jsonReader = new JsonTextReader(reader))
             {
-                var result = serializer.Deserialize<ExpandoObject>(jsonTextReader);
-                return result;
+                JsonSerializer ser = new JsonSerializer();
+                return ser.Deserialize<ExpandoObject>(jsonReader);
             }
-            */
-                
         }
     }
 }
