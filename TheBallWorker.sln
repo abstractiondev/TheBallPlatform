@@ -1,16 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBallWorkerConsole", "Apps\TheBallWorkerConsole\TheBallWorkerConsole.csproj", "{C5D4D065-D884-4590-A3F5-BB2566C0A890}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureSupport", "Apps\AzureSupport\AzureSupport.csproj", "{33F04EB2-55DE-4539-8E67-152A6057F100}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuceneSupport", "Apps\LuceneSupport\LuceneSupport.csproj", "{2B3C7CB7-D7F2-420A-8361-BE8FD12C2E30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteSupport", "Apps\SQLiteSupport\SQLiteSupport.csproj", "{4944D743-F381-471E-980B-54D8387F5478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQLiteSupport", "Apps\SQLiteSupport\SQLiteSupport.csproj", "{4944D743-F381-471E-980B-54D8387F5478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecuritySupport", "Apps\SecuritySupport\SecuritySupport.csproj", "{FE40FC1C-284E-4F91-B00F-5CCA71846208}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecuritySupport", "Apps\SecuritySupport\SecuritySupport.csproj", "{FE40FC1C-284E-4F91-B00F-5CCA71846208}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
@@ -130,10 +130,10 @@ Global
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|x86.Build.0 = Debug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.Build.0 = NuGetDebug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|x86.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|x86.ActiveCfg = Release|Any CPU
@@ -174,5 +174,8 @@ Global
 		{06F1C5EA-68AE-4A54-9EB9-26EEAEA96DD2} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
 		{612AD476-16DC-4294-8E0A-1BB5B39BA4D2} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
 		{B3A17477-0431-476E-8335-D45A2350A92B} = {4D0388B7-0C71-402D-B566-6BBD131F0799}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F67C2D2-0A9A-4C1F-9C69-A5368A1500F7}
 	EndGlobalSection
 EndGlobal

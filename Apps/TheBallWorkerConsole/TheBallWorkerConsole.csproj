@@ -3,6 +3,7 @@
     <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

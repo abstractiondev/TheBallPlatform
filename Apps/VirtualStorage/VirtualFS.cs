@@ -5,12 +5,11 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using PCLStorage;
 using ProtoBuf;
 
 namespace TheBall.Support.VirtualStorage
 {
-
+#if notworking
     [ProtoContract]
     [Obsolete("Replace with SQLiteFS until properly fixed", true)]
     public class VirtualFS
@@ -508,4 +507,5 @@ namespace TheBall.Support.VirtualStorage
         }
 
     }
+#endif
 }
