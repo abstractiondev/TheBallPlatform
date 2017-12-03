@@ -223,7 +223,7 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PreBuildEvent>copy /Y "$(ProjectDir)..\InitialUpdatingConsole\bin\$(ConfigurationName)\InitialUpdatingConsole.exe" "$(ProjectDir)"</PreBuildEvent>
+    <PreBuildEvent>copy /Y "$(ProjectDir)..\InitialUpdatingConsole\bin\$(ConfigurationName)\netcoreapp2.0\InitialUpdatingConsole.dll" "$(ProjectDir)"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

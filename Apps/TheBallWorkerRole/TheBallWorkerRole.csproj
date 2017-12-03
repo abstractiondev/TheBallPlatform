@@ -166,7 +166,7 @@
     <AutoUnifyAssemblyReferences>false</AutoUnifyAssemblyReferences>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>copy /Y "$(ProjectDir)..\InitialUpdatingConsole\bin\$(ConfigurationName)\InitialUpdatingConsole.exe" "$(ProjectDir)"</PreBuildEvent>
+    <PreBuildEvent>copy /Y "$(ProjectDir)..\InitialUpdatingConsole\bin\$(ConfigurationName)\netcoreapp2.0\InitialUpdatingConsole.dll" "$(ProjectDir)"</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
