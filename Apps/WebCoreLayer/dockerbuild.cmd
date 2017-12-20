@@ -1,5 +1,10 @@
+rmdir /s /q pub
 dotnet publish -f netcoreapp2.0 -o pub
-docker build -t theballweb .
-docker rm tbwebapp
-rem docker run -d -p 8080:443 --name tbwebapp theballweb
-docker run -p 8080:443 --name tbwebapp theballweb
+kubectl delete deployment tbweb
+docker rmi --force theballweb
+robocopy /MIR x:\Configs_DevTest Configs_DevTest_tmp
+robocopy /MIR x:\TheBallCerts TheBallCerts_tmp
+docker build -f Dockerfile_linux -t theballweb . 
+rmdir /s /q Configs_DevTest_tmp
+rmdir /s /q TheBallCerts_tmp
+

@@ -7,6 +7,7 @@ using System.Net;
 using System.Security;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -34,6 +36,7 @@ namespace WebCoreLayer
         }
 
         public IConfiguration Configuration { get; }
+        public static string PlatformCoreRootPath { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -130,7 +133,16 @@ namespace WebCoreLayer
                 app.UseDeveloperExceptionPage();
             }
 
+            var forwardedHeadersOptions = new ForwardedHeadersOptions()
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                RequireHeaderSymmetry = false
+            };
+            forwardedHeadersOptions.KnownProxies.Clear();
+            forwardedHeadersOptions.KnownNetworks.Clear();
             app.UseInformationContext();
+            app.UseForwardedHeaders(forwardedHeadersOptions);
+            app.UseHttpMethodOverride();
             app.UseAuthentication();
             //app.UseStaticFiles();
             app.UseMvc(routes =>
@@ -151,23 +163,38 @@ namespace WebCoreLayer
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
 
+            //Console.WriteLine("Waiting indefinitely an hour");
+            //Thread.Sleep(3600 * 1000);
+
             string initedPath = ensureXDrive();
 
             var infraDriveRoot = initedPath ?? Environment.GetEnvironmentVariable("TBCoreFolder") ?? @"X:\";
+            PlatformCoreRootPath = infraDriveRoot;
+            Console.WriteLine($"Initiated Root: {PlatformCoreRootPath}");
 
             /*
             var infraDriveRoot = DriveInfo.GetDrives().Any(drive => drive.Name.StartsWith("X"))
                 ? @"X:\"
                 : Environment.GetEnvironmentVariable("TBCoreFolder");
            */
-            string infraConfigFullPath = Path.Combine(infraDriveRoot, @"Configs\InfraShared\InfraConfig.json");
+            string infraConfigFullPath = Path.Combine(infraDriveRoot, "Configs", "InfraShared", "InfraConfig.json");
+            if (!File.Exists(infraConfigFullPath))
+            {
+                var rootEntries = Directory.GetFileSystemEntries(PlatformCoreRootPath);
+                Console.WriteLine($"Not found: {infraConfigFullPath} - found under {PlatformCoreRootPath}:");
+                foreach(var entry in rootEntries)
+                    Console.WriteLine(entry);
+                throw new FileNotFoundException(infraConfigFullPath);
+            }
             RuntimeConfiguration.UpdateInfraConfig(infraConfigFullPath).Wait();
 
             var instances = InfraSharedConfig.Current.InstanceNames;
             foreach (var instance in instances)
             {
+                Console.WriteLine($"Updating Instance Config: {instance}");
                 RuntimeConfiguration.UpdateInstanceConfig(instance).Wait();
             }
+            Console.WriteLine("Platform Initialization Done");
         }
 
 
@@ -177,11 +204,13 @@ namespace WebCoreLayer
             //bool hasDriveX = false;
             if (!hasDriveX)
             {
-                var infraAccountName = "";// CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
-                var infraAccountKey = ""; //CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
+                var infraAccountName = Environment.GetEnvironmentVariable("CoreFileShareAccountName");// CloudConfigurationManager.GetSetting("CoreFileShareAccountName");
+                var infraAccountKey = Environment.GetEnvironmentVariable("CoreFileShareAccountKey"); //CloudConfigurationManager.GetSetting("CoreFileShareAccountKey");
                 bool isCloud = infraAccountName != null && infraAccountKey != null;
                 if (isCloud)
                 {
+                    if (Directory.Exists("/X"))
+                        return "/X";
                     var netPath = Path.Combine(Environment.SystemDirectory, "net.exe");
                     //var args = $@"use X: \\{infraAccountName}.file.core.windows.net\tbcore /u:{infraAccountName} {infraAccountKey}";
                     string sharedLocation = $@"\\{infraAccountName}.file.core.windows.net\tbcore";

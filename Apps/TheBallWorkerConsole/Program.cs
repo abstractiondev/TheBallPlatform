@@ -8,7 +8,6 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using CommandLine.Options;
 using Nito.AsyncEx;
 using TheBall.CORE.InstanceSupport;
 using TheBall.CORE.Storage;
@@ -21,6 +20,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
         const int UpdatePollingIntervalMs = 20000;
         public static AppUpdateManager UpdateManager;
         private static int ExitCode = 0;
+        const string ApplicationConfigFullPath = @"X:\Configs\WorkerConsole.json";
 
         const string ComponentName = "TheBallWorkerConsole";
 
@@ -47,39 +47,45 @@ namespace TheBall.Infra.TheBallWorkerConsole
                 string updateAccessInfoFile = null;
                 bool autoUpdate = false;
                 string clientHandle = null;
-                var optionSet = new OptionSet()
+                /*
+            var optionSet = new OptionSet()
+            {
                 {
-                    {
-                            
-                        "ac|applicationConfig=", "Application config full path",
-                        (key, ac) => applicationConfigFullPath = ac
-                    },
-                    {
-                        "au|autoupdate", "Auto update worker",
-                        (key, au) => autoUpdate = au != null
-                    },
-                    {
-                        "upacc|updateAccessFile=", "Update access info file",
-                        (key, upacc) => updateAccessInfoFile = upacc
-                    },
-                    {
-                        "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
-                        (key, ch) => clientHandle = ch
-                    },
-                    {
-                        "t|test", "Test handle communication and update, but don't activate the real worker process",
-                        (key, t) => isTestMode = t != null
-                    },
-                    {
-                        "o|owner=", "Dedicated to owner",
-                        (key, owner) => dedicatedToOwner = owner
-                    },
-                    {
-                        "envcfg|useEnvConfig", "Use environment variables as config instead of default CloudConfigurationManager",
-                        (key, env) => UseEnvironmentVariablesAsConfig = env != null
-                    }
-                };
+
+                    "ac|applicationConfig=", "Application config full path",
+                    (key, ac) => applicationConfigFullPath = ac
+                },
+                {
+                    "o|owner=", "Dedicated to owner",
+                    (key, owner) => dedicatedToOwner = owner
+                },
+                {
+                    "au|autoupdate", "Auto update worker",
+                    (key, au) => autoUpdate = au != null
+                },
+                {
+                    "upacc|updateAccessFile=", "Update access info file",
+                    (key, upacc) => updateAccessInfoFile = upacc
+                },
+                {
+                    "ch|clientHandle=", "Client handle to poll for exit requests from launching process",
+                    (key, ch) => clientHandle = ch
+                },
+                {
+                    "t|test", "Test handle communication and update, but don't activate the real worker process",
+                    (key, t) => isTestMode = t != null
+                },
+                {
+                    "envcfg|useEnvConfig", //"Use environment variables as config instead of default CloudConfigurationManager",
+                    (key, env) => UseEnvironmentVariablesAsConfig = env != null
+                }
+            };
                 var options = optionSet.Parse(args);
+            */
+                applicationConfigFullPath = args.Length > 0 ? args[0] : Environment.GetEnvironmentVariable(nameof(ApplicationConfigFullPath)) ?? ApplicationConfigFullPath;
+                Console.WriteLine($"Using appconfig from: {applicationConfigFullPath}");
+                var options = args.ToList();
+                List<string> optionSet = new List<string>();
                 bool hasExtraOptions = options.Count > 0;
                 bool isMissingMandatory = applicationConfigFullPath == null && !isTestMode;
                 bool hasIdentifiedOptions = optionSet.Count > 0;
@@ -88,7 +94,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
                     Console.WriteLine($"Usage: {ComponentName}.exe");
                     Console.WriteLine();
                     Console.WriteLine("Options:");
-                    optionSet.WriteOptionDescriptions(Console.Out);
+                    //optionSet.WriteOptionDescriptions(Console.Out);
                     return -1;
                 }
                 AccessInfo updateAccessInfo = null;
@@ -154,7 +160,7 @@ namespace TheBall.Infra.TheBallWorkerConsole
             if(workerConfigFullPath == null && isTestMode == false)
                 throw new NotSupportedException("Either WorkerConfigFullPath or isTestMode must be given");
 
-            ensureXDrive();
+            //ensureXDrive();
             string dedicatedToInstance;
             string dedicatedToOwnerPrefix;
             parseDedicatedParts(dedicatedToOwner, out dedicatedToInstance, out dedicatedToOwnerPrefix);
