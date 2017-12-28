@@ -55,3 +55,5 @@ Apps/AzureConfiguration/HybridConfiguration/ServiceConfiguration.Local.cscfg
 !Abstractions/npmpub/package.json
 Abstractions/npmpub/**
 **/.kube/**/
+Apps/TheBallWorkerConsole/pub/**
+Apps/WebCoreLayer/pub/**
