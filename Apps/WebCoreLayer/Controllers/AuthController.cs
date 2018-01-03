@@ -53,8 +53,8 @@ namespace WebCoreLayer.Controllers
             //Response.StatusCode = 200;
             //await Response.WriteAsync($"Account (path: {path}): {Request.Path}");
             await HandlePersonalRequest(path ?? "");
-            string ifNoneMatch = Request.Headers["If-None-Match"];
-            Console.WriteLine($"Handled ({Response.StatusCode} etag {ifNoneMatch}): {Request.Path}");
+            //string ifNoneMatch = Request.Headers["If-None-Match"];
+            //Console.WriteLine($"Handled ({Response.StatusCode} etag {ifNoneMatch}): {Request.Path}");
         }
 
         [HttpGet]
@@ -470,6 +470,8 @@ namespace WebCoreLayer.Controllers
             string ifModifiedSince = request.Headers["If-Modified-Since"];
             if (ifNoneMatch != null)
             {
+                // Replace Nginx reverse-proxy messed up weakened etag marker
+                ifNoneMatch = ifNoneMatch.StartsWith("W/\"") ? ifNoneMatch.Substring(2) : ifNoneMatch;
                 if (ifNoneMatch == blob.Properties.ETag)
                 {
                     response.ContentLength = 0;
