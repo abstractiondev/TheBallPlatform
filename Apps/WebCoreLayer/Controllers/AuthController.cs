@@ -53,7 +53,8 @@ namespace WebCoreLayer.Controllers
             //Response.StatusCode = 200;
             //await Response.WriteAsync($"Account (path: {path}): {Request.Path}");
             await HandlePersonalRequest(path ?? "");
-            Console.WriteLine($"Handled ({Response.StatusCode}): {Request.Path}");
+            string ifNoneMatch = Request.Headers["If-None-Match"];
+            Console.WriteLine($"Handled ({Response.StatusCode} etag {ifNoneMatch}): {Request.Path}");
         }
 
         [HttpGet]
