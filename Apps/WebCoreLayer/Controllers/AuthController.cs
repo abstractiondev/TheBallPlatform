@@ -433,15 +433,15 @@ namespace WebCoreLayer.Controllers
                     }
                     else
                     {
-                        await response.WriteAsync("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
                         response.StatusCode = scEx.RequestInformation.HttpStatusCode;
+                        await response.WriteAsync("Blob not found or bad request: " + blob.Name + " (original path: " + request.Path + ")");
                     }
                 }
                 else
                 {
+                    response.StatusCode = (int)scEx.RequestInformation.HttpStatusCode;
                     await response.WriteAsync("Errorcode: " + scEx.RequestInformation.ExtendedErrorInformation.ErrorCode.ToString() + Environment.NewLine);
                     await response.WriteAsync(scEx.ToString());
-                    response.StatusCode = (int)scEx.RequestInformation.HttpStatusCode;
                 }
             }
             catch (Exception ex)
@@ -475,7 +475,7 @@ namespace WebCoreLayer.Controllers
                 if (ifNoneMatch == blob.Properties.ETag)
                 {
                     response.ContentLength = 0;
-                    response.StatusCode = 304;
+                    response.StatusCode = (int)HttpStatusCode.NotModified;
                     return;
                 }
             }
@@ -488,13 +488,14 @@ namespace WebCoreLayer.Controllers
                     if (blob.Properties.LastModified <= ifModifiedSinceValue)
                     {
                         response.ContentLength = 0;
-                        response.StatusCode = 304;
+                        response.StatusCode = (int) HttpStatusCode.NotModified;
                         return;
                     }
                 }
             }
             var fileName = blob.Name.Contains("/MediaContent/") ?
                 request.Path.ToString() : blob.Name;
+            response.StatusCode = (int) HttpStatusCode.OK;
             response.ContentType = StorageSupport.GetMimeType(fileName);
             headers.ETag = EntityTagHeaderValue.Parse(blob.Properties.ETag);
             headers.LastModified = blob.Properties.LastModified.GetValueOrDefault().UtcDateTime;
