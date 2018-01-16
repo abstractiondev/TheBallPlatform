@@ -28,8 +28,8 @@
     "Kestrel": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
-      "applicationUrl": "http://localhost:5000"
+      "launchUrl": "https://home.theball.me/ui/index.html",
+      "applicationUrl": "https://localhost:10443"
     }
   }
 }

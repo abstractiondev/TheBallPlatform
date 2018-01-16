@@ -149,6 +149,7 @@ namespace WebCoreLayer
             {
                 routes.MapRoute("AuthAccount", "auth/account/{*path}", new { controller = "auth", action = "Account" });
                 routes.MapRoute("AuthGroup", "auth/grp/{groupId}/{*path}", new { controller = "auth", action = "Group" });
+                routes.MapRoute("AnonUI", "ui/{*path}", new {controller = "ui", action = "UI"});
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

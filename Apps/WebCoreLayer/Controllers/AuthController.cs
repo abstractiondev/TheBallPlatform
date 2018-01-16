@@ -57,6 +57,7 @@ namespace WebCoreLayer.Controllers
             //Console.WriteLine($"Handled ({Response.StatusCode} etag {ifNoneMatch}): {Request.Path}");
         }
 
+
         [HttpGet]
         public async Task Group(string groupId, string path)
         {
@@ -64,7 +65,6 @@ namespace WebCoreLayer.Controllers
             //await Response.WriteAsync($"Group {groupId} (path: {path}): {Request.Path}");
             await HandleGroupRequest(groupId, path ?? "");
         }
-
 
         private async Task HandleGroupRequest(string groupId, string contentPath)
         {
@@ -373,10 +373,11 @@ namespace WebCoreLayer.Controllers
             throw new NotSupportedException("Old legacy update no longer supported");
         }
 
-        private async Task HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        public static async Task HandleOwnerGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             var request = context.Request;
-            if (String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false)
+            bool isAnonRequest = containerOwner == SystemSupport.AnonymousOwner;
+            if (String.IsNullOrEmpty(contentPath) == false && contentPath.EndsWith("/") == false && !isAnonRequest)
                 validateThatOwnerGetComesFromSameReferer(containerOwner, context.Request, contentPath);
             bool filesystemOverrideEnabled = InstanceConfig.Current.EnableFilesystemOverride;
             bool fileSystemHandled = await HandleFileSystemGetRequest(containerOwner, context, contentPath);
@@ -502,7 +503,7 @@ namespace WebCoreLayer.Controllers
             await blob.DownloadToStreamAsync(response.Body);
         }
 
-        private void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
+        private static void validateThatOwnerGetComesFromSameReferer(IContainerOwner containerOwner, HttpRequest request, string contentPath)
         {
             bool isGroupRequest = containerOwner.IsGroupContainer();
             string requestGroupID = isGroupRequest ? containerOwner.LocationPrefix : null;
@@ -577,12 +578,12 @@ namespace WebCoreLayer.Controllers
             }
         }
 
-        private async Task<bool> HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
+        private static async Task<bool> HandleFileSystemGetRequest(IContainerOwner containerOwner, HttpContext context, string contentPath)
         {
             var cfg = InstanceConfig.Current;
             if (!cfg.EnableFilesystemOverride)
                 return false;
-            var overrideContext = containerOwner?.ContainerName ?? "about";
+            var overrideContext = containerOwner?.ContainerName ?? "anon";
 
             InstanceConfig.OverrideReplacement replacements;
             if (!cfg.FileSystemOverrides.TryGetValue(overrideContext, out replacements))
@@ -624,9 +625,9 @@ namespace WebCoreLayer.Controllers
                 cacheControl.Private = true;
                 headers.CacheControl = cacheControl;
                 headers.LastModified = lastModified;
+                response.ContentType = StorageSupport.GetMimeType(fileName);
                 using (var fileStream = System.IO.File.OpenRead(fileName))
                     await fileStream.CopyToAsync(response.Body);
-                response.ContentType = StorageSupport.GetMimeType(fileName);
             }
             else
             {

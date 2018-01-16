@@ -24,6 +24,11 @@ namespace WebCoreLayer
         {
             var certPassword =
                 Environment.GetEnvironmentVariable("TBCertificatePassword");
+            var certPath = @"X:\TheBallCerts\wildcard_theball.me.pfx";
+            if (!File.Exists(certPath))
+                certPath = Path.Combine(Startup.PlatformCoreRootPath, "TheBallCerts", "wildcard_theball.me.pfx");
+            bool useHttps = !String.IsNullOrEmpty(certPassword) && File.Exists(certPath);
+            var port = useHttps ? 10443 : 80;
 
             var result = WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
@@ -39,7 +44,12 @@ namespace WebCoreLayer
                     {
                         listenOptions.UseHttps(certPath, certPassword);
                     });*/
-                    options.Listen(IPAddress.Any, 80);
+                    //options.Listen(IPAddress.Any, 80);
+                    options.Listen(IPAddress.Any, port, listenOptions =>
+                    {
+                        if (useHttps)
+                            listenOptions.UseHttps(certPath, certPassword);
+                    });
                 })
                 .Build();
             return result;
