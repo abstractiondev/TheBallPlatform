@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<DocumentationAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://tempuri.org/Operation_v1_0.xsd">
+  <Documentations>
+    <Documents>
+      <Document name="Operations (OperationAbstractionFromFootvoter)" title="Operations (OperationAbstractionFromFootvoter)">
+        <Content>
+          <Header text="DoVote (VoteData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Cancel account default plan at current period end</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>VoteData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.VoteData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Vote data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UserVotedSummary" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>User voting data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformVoting ( UserVotedSummary, VoteData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform voting with votedata applied to user voting data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( UserVotedSummary )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed object(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="GetCompanies (CompanySearchCriteria)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Get companies by seach terms</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>CompanySearchCriteria</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.CompanySearchCriteria</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Company search criteria</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: PerformSearch ( CompanySearchCriteria )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Perform search for companies based on criteria</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="SetCompanyFollow (FollowDataInput)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set company following data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>FollowDataInput</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.CompanyFollowData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>Company follow data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: FollowData" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Company follow data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetCompanyFollowData ( FollowData, FollowDataInput )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set company follow data from input</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( FollowData )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed object(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+          <Header text="UpdateUserProfile (ProfileData)" level="1">
+            <Header text="Specifications" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Updates user profile data</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Parameters" level="2">
+              <Paragraph>
+                <Table>
+                  <Columns>
+                    <Column name="Parameter" />
+                    <Column name="DataType" />
+                    <Column name="Description" />
+                  </Columns>
+                  <Rows>
+                    <Row>
+                      <ColumnData>
+                        <TextContent>ProfileData</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>INT.UserProfile</TextContent>
+                      </ColumnData>
+                      <ColumnData>
+                        <TextContent>User profile data</TextContent>
+                      </ColumnData>
+                    </Row>
+                  </Rows>
+                </Table>
+              </Paragraph>
+            </Header>
+            <Header text="Target Definition: UserProfile" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>User profile</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: SetUserProfileFields ( UserProfile )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Set user profile fields</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+            <Header text="Method Call: StoreObjects ( UserProfile )" level="2">
+              <Paragraph>
+                <Text>
+                  <TextContent>Store processed object(s)</TextContent>
+                </Text>
+              </Paragraph>
+            </Header>
+          </Header>
+        </Content>
+      </Document>
+    </Documents>
+  </Documentations>
+</DocumentationAbstraction>

@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\InformationAndProcessModels\Footvoter.xml">
+      <Link>TheBallCore\Footvoter.xml</Link>
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="..\..\InformationAndProcessModels\OIPBallInstance.xml">
       <Link>TheBallCore\OIPBallInstance.xml</Link>
       <SubType>Designer</SubType>

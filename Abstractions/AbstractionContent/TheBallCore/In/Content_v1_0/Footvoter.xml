@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TheBallCoreAbstraction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="TheBallCore_v1_0.xsd">
+  <InstanceOfTheBall semanticDomainName="Footvoter.Services">
+    <DigitalInterface>
+      <InterfaceModel>
+        <InterfaceObject name="UserProfile" designDesc="User profile data">
+          <InterfaceItems>
+            <InterfaceItem name="firstName" logicalDataType="Text_Short" />
+            <InterfaceItem name="lastName" logicalDataType="Text_Short"/>
+            <InterfaceItem name="description" logicalDataType="Text_Long"/>
+            <InterfaceItem name="dateOfBirth" logicalDataType="Time_Date"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="CompanyFollowData" designDesc="Company follow data">
+          <InterfaceItems>
+            <ObjectInstance name="FollowDataItems" interfaceObjectName="FollowDataItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="FollowDataItem" designDesc="Follow data item">
+          <InterfaceItems>
+            <InterfaceItem name="IDToFollow" logicalDataType="Text_Short"/>
+            <InterfaceItem name="FollowingLevel" logicalDataType="Number"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="VoteData" designDesc="Vote data">
+          <InterfaceItems>
+            <ObjectInstance name="Votes"  interfaceObjectName="VoteItem" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="VoteItem" designDesc="Independent vote item">
+          <InterfaceItems>
+            <InterfaceItem name="companyID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="voteValue" logicalDataType="TrueOrFalse_Boolean"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="VotedEntry" designDesc="Voted for ID entry">
+          <InterfaceItems>
+            <InterfaceItem name="VotedForID" logicalDataType="Text_Short"/>
+            <InterfaceItem name="VoteTime" logicalDataType="Time_DateTime"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="VotingSummary" designDesc="User voting summary">
+          <InterfaceItems>
+            <ObjectInstance name="VotedEntries" interfaceObjectName="VotedEntry" isCollection="true"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="CompanySearchCriteria" designDesc="Company search criteria">
+          <InterfaceItems>
+            <InterfaceItem name="namePart" logicalDataType="Text_Short"/>
+            <ObjectInstance name="gpsLocation" interfaceObjectName="GpsLocation"/>
+          </InterfaceItems>
+        </InterfaceObject>
+        <InterfaceObject name="GpsLocation" designDesc="Gps location">
+          <InterfaceItems>
+            <InterfaceItem name="latitude" logicalDataType="Number"/>
+            <InterfaceItem name="longitude" logicalDataType="Number"/>
+          </InterfaceItems>
+        </InterfaceObject>
+      </InterfaceModel>
+    </DigitalInterface>
+    <InformationModel>
+      <!--
+      <InformationObject name="Payment" designDesc="Payment object">
+        
+      </InformationObject>
+      -->
+      <InformationObject name="Company" designDesc="Company data" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="CompanyName" logicalDataType="Text_Short"/>
+          <InformationItem name="Details" logicalDataType="Text_Long"/>
+          <InformationItem name="Footprint" logicalDataType="Number_ExactDecimal"/>
+          <InformationItem name="Footpath" logicalDataType="Number_ExactDecimal" isCollection="true"/>
+        </InformationItems>
+      </InformationObject>
+      <InformationObject name="Vote" designDesc="Vote for single company" provideCreateMethod="false">
+        <InformationItems>
+          <InformationItem name="CompanyID" logicalDataType="Text_Short"/>
+          <InformationItem name="VoteValue" logicalDataType="TrueOrFalse_Boolean"/>
+          <InformationItem name="VoteTime" logicalDataType="Time_DateTime" />
+        </InformationItems>
+      </InformationObject>
+    </InformationModel>
+    <Operations>
+      <Operation name="UpdateUserProfile">
+        <OperationSpec>
+          <Description>Updates user profile data</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="ProfileData" dataType="INT.UserProfile" designDesc="User profile data" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition dataType="INT.UserProfile" name="UserProfile" designDesc="User profile" state="implemented" />
+            <MethodExecute name="SetUserProfileFields" designDesc="Set user profile fields" state="implemented">
+              <Target name="UserProfile"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
+              <Target name="UserProfile"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="DoVote">
+        <OperationSpec>
+          <Description>Cancel account default plan at current period end</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter dataType="INT.VoteData" name="VoteData" designDesc="Vote data" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="UserVotedSummary" dataType="INT.VotingSummary" designDesc="User voting data" state="implemented" />
+            <MethodExecute name="PerformVoting" designDesc="Perform voting with votedata applied to user voting data" state="implemented">
+              <Parameter name="VoteData"/>
+              <Target name="UserVotedSummary"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="UserVotedSummary"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="SetCompanyFollow">
+        <OperationSpec>
+          <Description>Set company following data</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="FollowDataInput" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented"/>
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <TargetDefinition name="FollowData" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented" />
+            <MethodExecute name="SetCompanyFollowData" designDesc="Set company follow data from input" state="implemented">
+              <Parameter name="FollowDataInput"/>
+              <Target name="FollowData"/>
+            </MethodExecute>
+            <MethodExecute name="StoreObjects" designDesc="Store processed object(s)" state="implemented" asyncSupportMode="AsyncOnly">
+              <Target name="FollowData"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+      <Operation name="GetCompanies">
+        <OperationSpec>
+          <Description>Get companies by seach terms</Description>
+        </OperationSpec>
+        <Parameters>
+          <Parameter name="CompanySearchCriteria" dataType="INT.CompanySearchCriteria" designDesc="Company search criteria" state="implemented"  />
+        </Parameters>
+        <Execution>
+          <SequentialExecution>
+            <MethodExecute name="PerformSearch" designDesc="Perform search for companies based on criteria" state="implemented" asyncSupportMode="AsyncOnly">
+              <Parameter name="CompanySearchCriteria"/>
+            </MethodExecute>
+          </SequentialExecution>
+        </Execution>
+      </Operation>
+    </Operations>
+    
+    <!--
+    <Subscriptions />
+    -->
+  </InstanceOfTheBall>
+</TheBallCoreAbstraction>

@@ -37,6 +37,11 @@ namespace WebCoreLayer.Controllers
         }
 
         [HttpGet]
+        public async Task ValidateToken(string provider, string token)
+        {
+        }
+
+        [HttpGet]
         public async Task Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

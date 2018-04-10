@@ -3,6 +3,7 @@
     <TargetFrameworks>netstandard2.0;net462</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromFootvoter.designer.cs" Link="Footvoter.Services\OperationAbstractionFromFootvoter.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOIPBallInstance.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromOIPBallInstance.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromOnlineTraining.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromOnlineTraining.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromPersonalWebDiosphere.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromPersonalWebDiosphere.designer.cs" />
@@ -12,6 +13,7 @@
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInfrastructure.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallInfrastructure.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallInterface.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallInterface.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\Operation\Out\OperationAbstractionFromTheBallPayments.designer.cs" Link="AaltoGlobalImpact.OIP\OperationAbstractionFromTheBallPayments.designer.cs" />
+    <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\Footvoter.designer.cs" Link="Footvoter.Services\Footvoter.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OIPBallInstance.designer.cs" Link="AaltoGlobalImpact.OIP\OIPBallInstance.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\OnlineTraining.designer.cs" Link="AaltoGlobalImpact.OIP\OnlineTraining.designer.cs" />
     <Compile Include="..\..\Abstractions\AbstractionContent\TheBallCore\Out\PersonalWebDiosphere.designer.cs" Link="AaltoGlobalImpact.OIP\PersonalWebDiosphere.designer.cs" />
