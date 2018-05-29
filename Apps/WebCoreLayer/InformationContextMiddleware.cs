@@ -25,7 +25,10 @@ namespace WebCoreLayer
             }
             catch (Exception ex)
             {
+                // TODO: Proper error management later on
                 var error = ex.ToString();
+                Console.WriteLine(error);
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync(error);
             }
             finally
