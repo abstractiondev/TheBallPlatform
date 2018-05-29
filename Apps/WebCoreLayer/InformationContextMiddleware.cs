@@ -18,8 +18,14 @@ namespace WebCoreLayer
         {
             InformationContext.InitializeToLogicalContext(null, SystemSupport.SystemOwner,
                 context.Request.Host.Host, null, true);
-            await _next.Invoke(context);
-            await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
+            try
+            {
+                await _next.Invoke(context);
+            }
+            finally
+            {
+                await InformationContext.ProcessAndClearCurrentIfAvailableAsync();
+            }
         }
 
     }
