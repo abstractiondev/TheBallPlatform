@@ -36,15 +36,41 @@ namespace WebCoreLayer.Controllers
             await HttpContext.ChallengeAsync(instanceProvider, properties);
         }
 
-        [HttpGet]
+        [HttpPost]
+        [AllowAnonymous]
         public async Task ValidateToken(string provider, string token)
         {
+            var result = await VerifyFacebookAccessToken(token);
         }
 
         [HttpGet]
         public async Task Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+
+        public class FacebookUserViewModel
+        {
+            public string id { get; set; }
+            public string first_name { get; set; }
+            public string last_name { get; set; }
+            public string username { get; set; }
+            public string email { get; set; }
+        }
+
+        public static async Task<FacebookUserViewModel> VerifyFacebookAccessToken(string accessToken)
+        {
+            FacebookUserViewModel fbUser = null;
+            var path = "https://graph.facebook.com/me?fields=email,access_token=" + accessToken;
+            var client = new HttpClient();
+            var uri = new Uri(path);
+            var response = await client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                fbUser = Newtonsoft.Json.JsonConvert.DeserializeObject<FacebookUserViewModel>(content);
+            }
+            return fbUser;
         }
     }
 }

@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -288,4 +289,47 @@ namespace INT {
 			private double _unmodified_Rank;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task PerformUserQuery() 
+		{
+			await ExecuteOperation("TheBall.Index.PerformUserQuery");
+		}
+		public static async Task<IndexingRequest> GetIndexingRequest(string id = null)
+		{
+			var result = await GetInformationObject<IndexingRequest>(id);
+			return result;
+		}
+		public static async Task<QueryRequest> GetQueryRequest(string id = null)
+		{
+			var result = await GetInformationObject<QueryRequest>(id);
+			return result;
+		}
+		public static async Task<QueryResultItem> GetQueryResultItem(string id = null)
+		{
+			var result = await GetInformationObject<QueryResultItem>(id);
+			return result;
+		}
+		public static async Task<INT.UserQuery> GetUserQuery(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.UserQuery>(id);
+			return result;
+		}
+		public static async Task<INT.QueryToken> GetQueryToken(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.QueryToken>(id);
+			return result;
+		}
+	}
+#endregion
  } 

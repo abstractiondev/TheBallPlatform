@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -1123,4 +1124,97 @@ namespace INT {
 			private string _unmodified_Country;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task SyncPlansAndPaymentOptionsFromStripe() 
+		{
+			await ExecuteOperation("ProBroz.OnlineTraining.SyncPlansAndPaymentOptionsFromStripe");
+		}
+
+		public static async Task GetOrInitiateDefaultGym() 
+		{
+			await ExecuteOperation("ProBroz.OnlineTraining.GetOrInitiateDefaultGym");
+		}
+
+		public static async Task CreateMember(INT.Member param) 
+		{
+			await ExecuteOperation("ProBroz.OnlineTraining.CreateMember", param);
+		}
+
+		public static async Task SaveMember(INT.Member param) 
+		{
+			await ExecuteOperation("ProBroz.OnlineTraining.SaveMember", param);
+		}
+
+		public static async Task DeleteMember(INT.Member param) 
+		{
+			await ExecuteOperation("ProBroz.OnlineTraining.DeleteMember", param);
+		}
+		public static async Task<MemberCollection> GetMemberCollection(string id = null)
+		{
+			var result = await GetInformationObject<MemberCollection>(id);
+			return result;
+		}
+		public static async Task<Member> GetMember(string id = null)
+		{
+			var result = await GetInformationObject<Member>(id);
+			return result;
+		}
+		public static async Task<MembershipPlanCollection> GetMembershipPlanCollection(string id = null)
+		{
+			var result = await GetInformationObject<MembershipPlanCollection>(id);
+			return result;
+		}
+		public static async Task<MembershipPlan> GetMembershipPlan(string id = null)
+		{
+			var result = await GetInformationObject<MembershipPlan>(id);
+			return result;
+		}
+		public static async Task<PaymentOptionCollection> GetPaymentOptionCollection(string id = null)
+		{
+			var result = await GetInformationObject<PaymentOptionCollection>(id);
+			return result;
+		}
+		public static async Task<PaymentOption> GetPaymentOption(string id = null)
+		{
+			var result = await GetInformationObject<PaymentOption>(id);
+			return result;
+		}
+		public static async Task<SubscriptionCollection> GetSubscriptionCollection(string id = null)
+		{
+			var result = await GetInformationObject<SubscriptionCollection>(id);
+			return result;
+		}
+		public static async Task<Subscription> GetSubscription(string id = null)
+		{
+			var result = await GetInformationObject<Subscription>(id);
+			return result;
+		}
+		public static async Task<TenantGymCollection> GetTenantGymCollection(string id = null)
+		{
+			var result = await GetInformationObject<TenantGymCollection>(id);
+			return result;
+		}
+		public static async Task<TenantGym> GetTenantGym(string id = null)
+		{
+			var result = await GetInformationObject<TenantGym>(id);
+			return result;
+		}
+		public static async Task<INT.Member> GetMember(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.Member>(id);
+			return result;
+		}
+	}
+#endregion
  } 

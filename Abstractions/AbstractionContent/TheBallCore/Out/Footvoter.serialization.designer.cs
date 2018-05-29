@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -257,4 +258,92 @@ namespace INT {
 			private DateTime _unmodified_VoteTime;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task UpdateUserProfile(INT.UserProfile param) 
+		{
+			await ExecuteOperation("Footvoter.Services.UpdateUserProfile", param);
+		}
+
+		public static async Task DoVote(INT.VoteData param) 
+		{
+			await ExecuteOperation("Footvoter.Services.DoVote", param);
+		}
+
+		public static async Task SetCompanyFollow(INT.CompanyFollowData param) 
+		{
+			await ExecuteOperation("Footvoter.Services.SetCompanyFollow", param);
+		}
+
+		public static async Task GetCompanies(INT.CompanySearchCriteria param) 
+		{
+			await ExecuteOperation("Footvoter.Services.GetCompanies", param);
+		}
+		public static async Task<Company> GetCompany(string id = null)
+		{
+			var result = await GetInformationObject<Company>(id);
+			return result;
+		}
+		public static async Task<Vote> GetVote(string id = null)
+		{
+			var result = await GetInformationObject<Vote>(id);
+			return result;
+		}
+		public static async Task<INT.UserProfile> GetUserProfile(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.UserProfile>(id);
+			return result;
+		}
+		public static async Task<INT.CompanyFollowData> GetCompanyFollowData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CompanyFollowData>(id);
+			return result;
+		}
+		public static async Task<INT.FollowDataItem> GetFollowDataItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.FollowDataItem>(id);
+			return result;
+		}
+		public static async Task<INT.VoteData> GetVoteData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.VoteData>(id);
+			return result;
+		}
+		public static async Task<INT.VoteItem> GetVoteItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.VoteItem>(id);
+			return result;
+		}
+		public static async Task<INT.VotedEntry> GetVotedEntry(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.VotedEntry>(id);
+			return result;
+		}
+		public static async Task<INT.VotingSummary> GetVotingSummary(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.VotingSummary>(id);
+			return result;
+		}
+		public static async Task<INT.CompanySearchCriteria> GetCompanySearchCriteria(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CompanySearchCriteria>(id);
+			return result;
+		}
+		public static async Task<INT.GpsLocation> GetGpsLocation(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.GpsLocation>(id);
+			return result;
+		}
+	}
+#endregion
  } 

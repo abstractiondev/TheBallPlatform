@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -1457,4 +1458,232 @@ namespace INT {
 			private string _unmodified_IndexingInfo;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task SendEmail(INT.EmailPackage param) 
+		{
+			await ExecuteOperation("TheBall.Interface.SendEmail", param);
+		}
+
+		public static async Task SetCategoryLinkingForConnection() 
+		{
+			await ExecuteOperation("TheBall.Interface.SetCategoryLinkingForConnection");
+		}
+
+		public static async Task ExecuteLegacyHttpPostRequest() 
+		{
+			await ExecuteOperation("TheBall.Interface.ExecuteLegacyHttpPostRequest");
+		}
+
+		public static async Task CreateReceivingConnectionStructures(INT.ConnectionCommunicationData param) 
+		{
+			await ExecuteOperation("TheBall.Interface.CreateReceivingConnectionStructures", param);
+		}
+
+		public static async Task ShareCollabInterfaceObject(INT.ShareCollabParams param) 
+		{
+			await ExecuteOperation("TheBall.Interface.ShareCollabInterfaceObject", param);
+		}
+
+		public static async Task PushSyncNotification(INT.CollaborationPartner param) 
+		{
+			await ExecuteOperation("TheBall.Interface.PushSyncNotification", param);
+		}
+
+		public static async Task PullSyncData(INT.CollaborationPartner param) 
+		{
+			await ExecuteOperation("TheBall.Interface.PullSyncData", param);
+		}
+
+		public static async Task UpdateSharedDataSummaryData(INT.CollaborationPartner param) 
+		{
+			await ExecuteOperation("TheBall.Interface.UpdateSharedDataSummaryData", param);
+		}
+
+		public static async Task DeleteInterfaceJSON(INT.InterfaceJSONData param) 
+		{
+			await ExecuteOperation("TheBall.Interface.DeleteInterfaceJSON", param);
+		}
+
+		public static async Task SaveInterfaceJSON(INT.InterfaceJSONData param) 
+		{
+			await ExecuteOperation("TheBall.Interface.SaveInterfaceJSON", param);
+		}
+
+		public static async Task SaveGroupDetails(INT.GroupDetails param) 
+		{
+			await ExecuteOperation("TheBall.Interface.SaveGroupDetails", param);
+		}
+		public static async Task<InterfaceOperation> GetInterfaceOperation(string id = null)
+		{
+			var result = await GetInformationObject<InterfaceOperation>(id);
+			return result;
+		}
+		public static async Task<ConnectionCollection> GetConnectionCollection(string id = null)
+		{
+			var result = await GetInformationObject<ConnectionCollection>(id);
+			return result;
+		}
+		public static async Task<Connection> GetConnection(string id = null)
+		{
+			var result = await GetInformationObject<Connection>(id);
+			return result;
+		}
+		public static async Task<TransferPackage> GetTransferPackage(string id = null)
+		{
+			var result = await GetInformationObject<TransferPackage>(id);
+			return result;
+		}
+		public static async Task<CategoryLink> GetCategoryLink(string id = null)
+		{
+			var result = await GetInformationObject<CategoryLink>(id);
+			return result;
+		}
+		public static async Task<Category> GetCategory(string id = null)
+		{
+			var result = await GetInformationObject<Category>(id);
+			return result;
+		}
+		public static async Task<StatusSummary> GetStatusSummary(string id = null)
+		{
+			var result = await GetInformationObject<StatusSummary>(id);
+			return result;
+		}
+		public static async Task<InformationChangeItem> GetInformationChangeItem(string id = null)
+		{
+			var result = await GetInformationObject<InformationChangeItem>(id);
+			return result;
+		}
+		public static async Task<OperationExecutionItem> GetOperationExecutionItem(string id = null)
+		{
+			var result = await GetInformationObject<OperationExecutionItem>(id);
+			return result;
+		}
+		public static async Task<GenericObjectCollection> GetGenericObjectCollection(string id = null)
+		{
+			var result = await GetInformationObject<GenericObjectCollection>(id);
+			return result;
+		}
+		public static async Task<GenericCollectionableObject> GetGenericCollectionableObject(string id = null)
+		{
+			var result = await GetInformationObject<GenericCollectionableObject>(id);
+			return result;
+		}
+		public static async Task<GenericObject> GetGenericObject(string id = null)
+		{
+			var result = await GetInformationObject<GenericObject>(id);
+			return result;
+		}
+		public static async Task<GenericValue> GetGenericValue(string id = null)
+		{
+			var result = await GetInformationObject<GenericValue>(id);
+			return result;
+		}
+		public static async Task<INT.ShareCollabParams> GetShareCollabParams(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ShareCollabParams>(id);
+			return result;
+		}
+		public static async Task<INT.CollaborationPartner> GetCollaborationPartner(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CollaborationPartner>(id);
+			return result;
+		}
+		public static async Task<INT.InterfaceJSONData> GetInterfaceJSONData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.InterfaceJSONData>(id);
+			return result;
+		}
+		public static async Task<INT.CollaborationPartnerSummary> GetCollaborationPartnerSummary(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CollaborationPartnerSummary>(id);
+			return result;
+		}
+		public static async Task<INT.PartnerSummaryItem> GetPartnerSummaryItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.PartnerSummaryItem>(id);
+			return result;
+		}
+		public static async Task<INT.ShareInfoSummary> GetShareInfoSummary(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ShareInfoSummary>(id);
+			return result;
+		}
+		public static async Task<INT.ShareInfo> GetShareInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ShareInfo>(id);
+			return result;
+		}
+		public static async Task<INT.ConnectionCommunicationData> GetConnectionCommunicationData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ConnectionCommunicationData>(id);
+			return result;
+		}
+		public static async Task<INT.CategoryInfo> GetCategoryInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CategoryInfo>(id);
+			return result;
+		}
+		public static async Task<INT.CategoryLinkParameters> GetCategoryLinkParameters(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CategoryLinkParameters>(id);
+			return result;
+		}
+		public static async Task<INT.CategoryLinkItem> GetCategoryLinkItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.CategoryLinkItem>(id);
+			return result;
+		}
+		public static async Task<INT.AccountMembershipData> GetAccountMembershipData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.AccountMembershipData>(id);
+			return result;
+		}
+		public static async Task<INT.AccountDetails> GetAccountDetails(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.AccountDetails>(id);
+			return result;
+		}
+		public static async Task<INT.AccountMembershipItem> GetAccountMembershipItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.AccountMembershipItem>(id);
+			return result;
+		}
+		public static async Task<INT.GroupMembershipData> GetGroupMembershipData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.GroupMembershipData>(id);
+			return result;
+		}
+		public static async Task<INT.GroupDetails> GetGroupDetails(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.GroupDetails>(id);
+			return result;
+		}
+		public static async Task<INT.GroupMembershipItem> GetGroupMembershipItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.GroupMembershipItem>(id);
+			return result;
+		}
+		public static async Task<INT.EmailPackage> GetEmailPackage(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.EmailPackage>(id);
+			return result;
+		}
+		public static async Task<INT.EmailAttachment> GetEmailAttachment(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.EmailAttachment>(id);
+			return result;
+		}
+	}
+#endregion
  } 

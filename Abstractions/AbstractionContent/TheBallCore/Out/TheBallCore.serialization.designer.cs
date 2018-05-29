@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -5288,4 +5289,322 @@ namespace INT {
 			private long _unmodified_ReturnedContentLength;
 			
 			}
+	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task SetAccountClientMetadata(INT.AccountMetadata param) 
+		{
+			await ExecuteOperation("TheBall.CORE.SetAccountClientMetadata", param);
+		}
+
+		public static async Task SetAccountServerMetadata(INT.AccountMetadata param) 
+		{
+			await ExecuteOperation("TheBall.CORE.SetAccountServerMetadata", param);
+		}
+		public static async Task<Login> GetLogin(string id = null)
+		{
+			var result = await GetInformationObject<Login>(id);
+			return result;
+		}
+		public static async Task<Email> GetEmail(string id = null)
+		{
+			var result = await GetInformationObject<Email>(id);
+			return result;
+		}
+		public static async Task<Account> GetAccount(string id = null)
+		{
+			var result = await GetInformationObject<Account>(id);
+			return result;
+		}
+		public static async Task<Group> GetGroup(string id = null)
+		{
+			var result = await GetInformationObject<Group>(id);
+			return result;
+		}
+		public static async Task<GroupMembership> GetGroupMembership(string id = null)
+		{
+			var result = await GetInformationObject<GroupMembership>(id);
+			return result;
+		}
+		public static async Task<ContentPackageCollection> GetContentPackageCollection(string id = null)
+		{
+			var result = await GetInformationObject<ContentPackageCollection>(id);
+			return result;
+		}
+		public static async Task<ContentPackage> GetContentPackage(string id = null)
+		{
+			var result = await GetInformationObject<ContentPackage>(id);
+			return result;
+		}
+		public static async Task<InformationInputCollection> GetInformationInputCollection(string id = null)
+		{
+			var result = await GetInformationObject<InformationInputCollection>(id);
+			return result;
+		}
+		public static async Task<InformationInput> GetInformationInput(string id = null)
+		{
+			var result = await GetInformationObject<InformationInput>(id);
+			return result;
+		}
+		public static async Task<InformationOutputCollection> GetInformationOutputCollection(string id = null)
+		{
+			var result = await GetInformationObject<InformationOutputCollection>(id);
+			return result;
+		}
+		public static async Task<InformationOutput> GetInformationOutput(string id = null)
+		{
+			var result = await GetInformationObject<InformationOutput>(id);
+			return result;
+		}
+		public static async Task<AuthenticatedAsActiveDeviceCollection> GetAuthenticatedAsActiveDeviceCollection(string id = null)
+		{
+			var result = await GetInformationObject<AuthenticatedAsActiveDeviceCollection>(id);
+			return result;
+		}
+		public static async Task<AuthenticatedAsActiveDevice> GetAuthenticatedAsActiveDevice(string id = null)
+		{
+			var result = await GetInformationObject<AuthenticatedAsActiveDevice>(id);
+			return result;
+		}
+		public static async Task<DeviceMembershipCollection> GetDeviceMembershipCollection(string id = null)
+		{
+			var result = await GetInformationObject<DeviceMembershipCollection>(id);
+			return result;
+		}
+		public static async Task<DeviceMembership> GetDeviceMembership(string id = null)
+		{
+			var result = await GetInformationObject<DeviceMembership>(id);
+			return result;
+		}
+		public static async Task<InvoiceFiscalExportSummary> GetInvoiceFiscalExportSummary(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceFiscalExportSummary>(id);
+			return result;
+		}
+		public static async Task<InvoiceSummaryContainer> GetInvoiceSummaryContainer(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceSummaryContainer>(id);
+			return result;
+		}
+		public static async Task<InvoiceCollection> GetInvoiceCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceCollection>(id);
+			return result;
+		}
+		public static async Task<Invoice> GetInvoice(string id = null)
+		{
+			var result = await GetInformationObject<Invoice>(id);
+			return result;
+		}
+		public static async Task<InvoiceDetails> GetInvoiceDetails(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceDetails>(id);
+			return result;
+		}
+		public static async Task<InvoiceUserCollection> GetInvoiceUserCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceUserCollection>(id);
+			return result;
+		}
+		public static async Task<InvoiceUser> GetInvoiceUser(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceUser>(id);
+			return result;
+		}
+		public static async Task<InvoiceRowGroupCollection> GetInvoiceRowGroupCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceRowGroupCollection>(id);
+			return result;
+		}
+		public static async Task<InvoiceEventDetailGroupCollection> GetInvoiceEventDetailGroupCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceEventDetailGroupCollection>(id);
+			return result;
+		}
+		public static async Task<InvoiceRowGroup> GetInvoiceRowGroup(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceRowGroup>(id);
+			return result;
+		}
+		public static async Task<InvoiceEventDetailGroup> GetInvoiceEventDetailGroup(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceEventDetailGroup>(id);
+			return result;
+		}
+		public static async Task<InvoiceEventDetailCollection> GetInvoiceEventDetailCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceEventDetailCollection>(id);
+			return result;
+		}
+		public static async Task<InvoiceRowCollection> GetInvoiceRowCollection(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceRowCollection>(id);
+			return result;
+		}
+		public static async Task<InvoiceEventDetail> GetInvoiceEventDetail(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceEventDetail>(id);
+			return result;
+		}
+		public static async Task<InvoiceRow> GetInvoiceRow(string id = null)
+		{
+			var result = await GetInformationObject<InvoiceRow>(id);
+			return result;
+		}
+		public static async Task<CategoryCollection> GetCategoryCollection(string id = null)
+		{
+			var result = await GetInformationObject<CategoryCollection>(id);
+			return result;
+		}
+		public static async Task<Category> GetCategory(string id = null)
+		{
+			var result = await GetInformationObject<Category>(id);
+			return result;
+		}
+		public static async Task<ProcessContainer> GetProcessContainer(string id = null)
+		{
+			var result = await GetInformationObject<ProcessContainer>(id);
+			return result;
+		}
+		public static async Task<Process> GetProcess(string id = null)
+		{
+			var result = await GetInformationObject<Process>(id);
+			return result;
+		}
+		public static async Task<ProcessItem> GetProcessItem(string id = null)
+		{
+			var result = await GetInformationObject<ProcessItem>(id);
+			return result;
+		}
+		public static async Task<SemanticInformationItem> GetSemanticInformationItem(string id = null)
+		{
+			var result = await GetInformationObject<SemanticInformationItem>(id);
+			return result;
+		}
+		public static async Task<InformationOwnerInfo> GetInformationOwnerInfo(string id = null)
+		{
+			var result = await GetInformationObject<InformationOwnerInfo>(id);
+			return result;
+		}
+		public static async Task<UsageSummary> GetUsageSummary(string id = null)
+		{
+			var result = await GetInformationObject<UsageSummary>(id);
+			return result;
+		}
+		public static async Task<UsageMonitorItem> GetUsageMonitorItem(string id = null)
+		{
+			var result = await GetInformationObject<UsageMonitorItem>(id);
+			return result;
+		}
+		public static async Task<RequestResourceUsageCollection> GetRequestResourceUsageCollection(string id = null)
+		{
+			var result = await GetInformationObject<RequestResourceUsageCollection>(id);
+			return result;
+		}
+		public static async Task<RequestResourceUsage> GetRequestResourceUsage(string id = null)
+		{
+			var result = await GetInformationObject<RequestResourceUsage>(id);
+			return result;
+		}
+		public static async Task<ProcessorUsageCollection> GetProcessorUsageCollection(string id = null)
+		{
+			var result = await GetInformationObject<ProcessorUsageCollection>(id);
+			return result;
+		}
+		public static async Task<ProcessorUsage> GetProcessorUsage(string id = null)
+		{
+			var result = await GetInformationObject<ProcessorUsage>(id);
+			return result;
+		}
+		public static async Task<StorageTransactionUsageCollection> GetStorageTransactionUsageCollection(string id = null)
+		{
+			var result = await GetInformationObject<StorageTransactionUsageCollection>(id);
+			return result;
+		}
+		public static async Task<StorageTransactionUsage> GetStorageTransactionUsage(string id = null)
+		{
+			var result = await GetInformationObject<StorageTransactionUsage>(id);
+			return result;
+		}
+		public static async Task<StorageUsageCollection> GetStorageUsageCollection(string id = null)
+		{
+			var result = await GetInformationObject<StorageUsageCollection>(id);
+			return result;
+		}
+		public static async Task<StorageUsage> GetStorageUsage(string id = null)
+		{
+			var result = await GetInformationObject<StorageUsage>(id);
+			return result;
+		}
+		public static async Task<NetworkUsageCollection> GetNetworkUsageCollection(string id = null)
+		{
+			var result = await GetInformationObject<NetworkUsageCollection>(id);
+			return result;
+		}
+		public static async Task<NetworkUsage> GetNetworkUsage(string id = null)
+		{
+			var result = await GetInformationObject<NetworkUsage>(id);
+			return result;
+		}
+		public static async Task<TimeRange> GetTimeRange(string id = null)
+		{
+			var result = await GetInformationObject<TimeRange>(id);
+			return result;
+		}
+		public static async Task<HTTPActivityDetailsCollection> GetHTTPActivityDetailsCollection(string id = null)
+		{
+			var result = await GetInformationObject<HTTPActivityDetailsCollection>(id);
+			return result;
+		}
+		public static async Task<HTTPActivityDetails> GetHTTPActivityDetails(string id = null)
+		{
+			var result = await GetInformationObject<HTTPActivityDetails>(id);
+			return result;
+		}
+		public static async Task<INT.LoginInfo> GetLoginInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.LoginInfo>(id);
+			return result;
+		}
+		public static async Task<INT.ConfirmedLoginInfo> GetConfirmedLoginInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ConfirmedLoginInfo>(id);
+			return result;
+		}
+		public static async Task<INT.LoginRegistrationResult> GetLoginRegistrationResult(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.LoginRegistrationResult>(id);
+			return result;
+		}
+		public static async Task<INT.AccountMetadata> GetAccountMetadata(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.AccountMetadata>(id);
+			return result;
+		}
+		public static async Task<INT.DeviceOperationData> GetDeviceOperationData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.DeviceOperationData>(id);
+			return result;
+		}
+		public static async Task<INT.ContentItemLocationWithMD5> GetContentItemLocationWithMD5(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ContentItemLocationWithMD5>(id);
+			return result;
+		}
+		public static async Task<INT.ItemData> GetItemData(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.ItemData>(id);
+			return result;
+		}
+	}
+#endregion
  } 

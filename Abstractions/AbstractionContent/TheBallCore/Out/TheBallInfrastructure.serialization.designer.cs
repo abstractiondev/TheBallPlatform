@@ -8,7 +8,8 @@ using System.IO;
 using System.Xml;
 using System.Linq;
 using System.Runtime.Serialization;
-using ProtoBuf;
+//using ProtoBuf;
+using System.Threading.Tasks;
 
 
 namespace INT { 
@@ -113,4 +114,82 @@ namespace INT {
 				public UpdateConfigItem[] PackageData { get; set; }
 			}
 
- }  } 
+ } 	#region Operation Calls
+	public partial class Server 
+	{
+
+		// TODO: Implement in partial 
+		//public static async Task ExecuteOperation(string operationName, object parameters) 
+
+		// TODO: Implement in partial 
+
+		// TODO: Implement in partial 
+
+
+		public static async Task UpdateInfraDataInterfaceObjects() 
+		{
+			await ExecuteOperation("TheBall.Infrastructure.UpdateInfraDataInterfaceObjects");
+		}
+
+		public static async Task SetRuntimeVersions(INT.UpdateConfig param) 
+		{
+			await ExecuteOperation("TheBall.Infrastructure.SetRuntimeVersions", param);
+		}
+
+		public static async Task CreateCloudDrive() 
+		{
+			await ExecuteOperation("TheBall.Infrastructure.CreateCloudDrive");
+		}
+
+		public static async Task MountCloudDrive() 
+		{
+			await ExecuteOperation("TheBall.Infrastructure.MountCloudDrive");
+		}
+		public static async Task<INT.UpdateConfig> GetUpdateConfig(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.UpdateConfig>(id);
+			return result;
+		}
+		public static async Task<INT.UpdateConfigItem> GetUpdateConfigItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.UpdateConfigItem>(id);
+			return result;
+		}
+		public static async Task<INT.StatusInfo> GetStatusInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.StatusInfo>(id);
+			return result;
+		}
+		public static async Task<INT.AccessInfo> GetAccessInfo(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.AccessInfo>(id);
+			return result;
+		}
+		public static async Task<INT.WebConsoleConfig> GetWebConsoleConfig(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.WebConsoleConfig>(id);
+			return result;
+		}
+		public static async Task<INT.BaseUIConfigSet> GetBaseUIConfigSet(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.BaseUIConfigSet>(id);
+			return result;
+		}
+		public static async Task<INT.InstanceUIConfig> GetInstanceUIConfig(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.InstanceUIConfig>(id);
+			return result;
+		}
+		public static async Task<INT.MaturityBindingItem> GetMaturityBindingItem(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.MaturityBindingItem>(id);
+			return result;
+		}
+		public static async Task<INT.DeploymentPackages> GetDeploymentPackages(string id = null)
+		{
+			var result = await GetInterfaceObject<INT.DeploymentPackages>(id);
+			return result;
+		}
+	}
+#endregion
+ } 
