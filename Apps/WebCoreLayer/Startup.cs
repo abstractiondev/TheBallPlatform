@@ -24,6 +24,7 @@ using Microsoft.Extensions.Options;
 using TheBall;
 using TheBall.CORE;
 using TheBall.CORE.InstanceSupport;
+using WebCoreLayer.Controllers;
 using Process = System.Diagnostics.Process;
 
 namespace WebCoreLayer
@@ -49,7 +50,7 @@ namespace WebCoreLayer
                 {
                     cookieOptions.Cookie.Name = "THEBALL_AUTH";
                     cookieOptions.LoginPath = "/Login/Login";
-                    cookieOptions.LogoutPath = "/Login/Login";
+                    cookieOptions.LogoutPath = "/Login/Logout";
                     cookieOptions.Events.OnSigningIn += async context =>
                     {
                         var currPrincipal = context.Principal;

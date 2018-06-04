@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -35,6 +36,33 @@ namespace WebCoreLayer.Controllers
             // await HttpContext.Authentication.ChallengeAsync(provider, properties);
             await HttpContext.ChallengeAsync(instanceProvider, properties);
         }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task Login(string login, string password, string returnUrl)
+        {
+            var instanceName = InstanceConfig.Current.InstanceName;
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = returnUrl
+            };
+
+            if (login == null)
+                login = "Anonymous";
+
+            // Add returnUrl to properties -- if applicable
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                properties.Items.Add("returnUrl", returnUrl);
+
+            // The ASP.NET Core 1.1 version of this line was
+            // await HttpContext.Authentication.ChallengeAsync(provider, properties);
+            //await HttpContext.ChallengeAsync(instanceProvider, properties);
+            var claimsIdentity = new ClaimsIdentity(new Claim[] {new Claim("name", login)});
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            await HttpContext.SignInAsync(claimsPrincipal);
+        }
+
 
         [HttpPost]
         [AllowAnonymous]
