@@ -172,6 +172,7 @@ namespace WebCoreLayer
 
             var infraDriveRoot = initedPath ?? Environment.GetEnvironmentVariable("TBCoreFolder") ?? @"X:\";
             PlatformCoreRootPath = infraDriveRoot;
+            Console.WriteLine("Starting at: " + DateTime.Now.ToString());
             Console.WriteLine($"Initiated Root: {PlatformCoreRootPath}");
 
             /*
