@@ -58,6 +58,15 @@ namespace WebCoreLayer
                         if (claimEmailValue == null)
                             throw new SecurityException("Email address from claim missing");
 
+                        if (claimEmailValue == LoginController.AnonymousEmail)
+                        {
+                            await EnsureAccount.ExecuteAsync(new EnsureAccountParameters()
+                            {
+                                EmailAddress = claimEmailValue,
+                                LoginUrl = Login.GetLoginUrlFromEmailAddress(claimEmailValue)
+                            });
+                        }
+
                         var emailID = Email.GetIDFromEmailAddress(claimEmailValue);
                         var email = await ObjectStorage.RetrieveFromSystemOwner<Email>(emailID);
                         if(email == null)
