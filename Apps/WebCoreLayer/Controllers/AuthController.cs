@@ -48,6 +48,7 @@ namespace WebCoreLayer.Controllers
             new ConcurrentDictionary<string, Tuple<Regex, string>[]>();
 
         [HttpGet]
+        [HttpPost]
         public async Task Account(string path)
         {
             //Response.StatusCode = 200;
@@ -89,10 +90,7 @@ namespace WebCoreLayer.Controllers
         private async Task HandlePersonalRequest(string contentPath)
         {
             var context = HttpContext;
-            var principal = context.User;
-            var accountID = principal.Identity.Name;
-            var accountOwner = VirtualOwner.FigureOwner("acc/" + accountID);
-            InformationContext.AuthenticateContextOwner(accountOwner);
+            var accountOwner = InformationContext.CurrentOwner;
             await HandleOwnerRequest(accountOwner, context, contentPath, TBCollaboratorRole.CollaboratorRoleValue);
         }
 
@@ -104,8 +102,8 @@ namespace WebCoreLayer.Controllers
                 // Do first post, and then get to the same URL
                 if (TBCollaboratorRole.HasCollaboratorRights(role) == false)
                     throw new SecurityException("Role '" + role + "' is not authorized to do changing POST requests to web interface");
-                bool isOperationRequest = contentPath.StartsWith("op/");
 
+                bool isOperationRequest = contentPath.StartsWith("op/");
                 if (isOperationRequest || isUploadRequest)
                 {
                     try
@@ -307,8 +305,9 @@ namespace WebCoreLayer.Controllers
             //string operationID = "0";
             var response = context.Response;
             response.ContentType = "application/json";
+            response.StatusCode = StatusCodes.Status202Accepted;
             await response.WriteAsync(String.Format("{{ \"OperationID\": \"{0}\" }}", operationID));
-            context.EndResponseWithStatusCode(202);
+            //context.EndResponseWithStatusCode(202);
             //EndResponseWithStatusCode(context, 200);
         }
 

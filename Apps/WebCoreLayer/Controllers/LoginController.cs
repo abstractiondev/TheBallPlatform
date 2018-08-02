@@ -16,7 +16,9 @@ namespace WebCoreLayer.Controllers
 {
     [Produces("application/json")]
     public class LoginController : Controller
-    {        
+    {
+        public const string AnonymousEmail = "no-reply-anon@theball.me";
+
         [AllowAnonymous]
         [HttpGet]
         public async Task ExternalLogin(string provider, string returnUrl)
@@ -48,8 +50,12 @@ namespace WebCoreLayer.Controllers
                 RedirectUri = returnUrl
             };
 
+            string email = "";
             if (login == null)
+            {
                 login = "Anonymous";
+                email = AnonymousEmail;
+            }
 
             // Add returnUrl to properties -- if applicable
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
@@ -58,7 +64,7 @@ namespace WebCoreLayer.Controllers
             // The ASP.NET Core 1.1 version of this line was
             // await HttpContext.Authentication.ChallengeAsync(provider, properties);
             //await HttpContext.ChallengeAsync(instanceProvider, properties);
-            var claimsIdentity = new ClaimsIdentity(new Claim[] {new Claim("name", login)});
+            var claimsIdentity = new ClaimsIdentity(new Claim[] {new Claim(ClaimTypes.Name, login), new Claim(ClaimTypes.Email, email), new Claim(ClaimTypes.Sid, Guid.Empty.ToString())});
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await HttpContext.SignInAsync(claimsPrincipal);
         }

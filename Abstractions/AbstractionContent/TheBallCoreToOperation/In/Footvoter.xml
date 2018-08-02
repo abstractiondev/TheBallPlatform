@@ -90,8 +90,9 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition dataType="INT.UserProfile" name="UserProfile" designDesc="User profile" state="implemented" />
+            <TargetDefinition dataType="INT.UserProfile" name="UserProfile" designDesc="User profile" state="implemented" asyncSupportMode="AsyncOnly" />
             <MethodExecute name="SetUserProfileFields" designDesc="Set user profile fields" state="implemented">
+              <Parameter name="ProfileData"/>
               <Target name="UserProfile"/>
             </MethodExecute>
             <MethodExecute name="StoreObjects" asyncSupportMode="AsyncOnly" designDesc="Store processed object(s)" state="implemented">
@@ -109,7 +110,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="UserVotedSummary" dataType="INT.VotingSummary" designDesc="User voting data" state="implemented" />
+            <TargetDefinition name="UserVotedSummary" dataType="INT.VotingSummary" designDesc="User voting data" state="implemented" asyncSupportMode="AsyncOnly" />
             <MethodExecute name="PerformVoting" designDesc="Perform voting with votedata applied to user voting data" state="implemented">
               <Parameter name="VoteData"/>
               <Target name="UserVotedSummary"/>
@@ -129,7 +130,7 @@
         </Parameters>
         <Execution>
           <SequentialExecution>
-            <TargetDefinition name="FollowData" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented" />
+            <TargetDefinition name="FollowData" dataType="INT.CompanyFollowData" designDesc="Company follow data" state="implemented" asyncSupportMode="AsyncOnly" />
             <MethodExecute name="SetCompanyFollowData" designDesc="Set company follow data from input" state="implemented">
               <Parameter name="FollowDataInput"/>
               <Target name="FollowData"/>

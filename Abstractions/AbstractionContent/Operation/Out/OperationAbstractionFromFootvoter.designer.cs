@@ -20,8 +20,8 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(UpdateUserProfileParameters parameters)
 		{
 						PrepareParameters(parameters);
-					INT.UserProfile UserProfile = UpdateUserProfileImplementation.GetTarget_UserProfile();	
-				UpdateUserProfileImplementation.ExecuteMethod_SetUserProfileFields(UserProfile);		
+					INT.UserProfile UserProfile =  await UpdateUserProfileImplementation.GetTarget_UserProfileAsync();	
+				UpdateUserProfileImplementation.ExecuteMethod_SetUserProfileFields(parameters.ProfileData, UserProfile);		
 				 await UpdateUserProfileImplementation.ExecuteMethod_StoreObjectsAsync(UserProfile);		
 				}
 				}
@@ -38,7 +38,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(DoVoteParameters parameters)
 		{
 						PrepareParameters(parameters);
-					INT.VotingSummary UserVotedSummary = DoVoteImplementation.GetTarget_UserVotedSummary();	
+					INT.VotingSummary UserVotedSummary =  await DoVoteImplementation.GetTarget_UserVotedSummaryAsync();	
 				DoVoteImplementation.ExecuteMethod_PerformVoting(parameters.VoteData, UserVotedSummary);		
 				 await DoVoteImplementation.ExecuteMethod_StoreObjectsAsync(UserVotedSummary);		
 				}
@@ -56,7 +56,7 @@ using System.Threading.Tasks;
 				public static async Task ExecuteAsync(SetCompanyFollowParameters parameters)
 		{
 						PrepareParameters(parameters);
-					INT.CompanyFollowData FollowData = SetCompanyFollowImplementation.GetTarget_FollowData();	
+					INT.CompanyFollowData FollowData =  await SetCompanyFollowImplementation.GetTarget_FollowDataAsync();	
 				SetCompanyFollowImplementation.ExecuteMethod_SetCompanyFollowData(parameters.FollowDataInput, FollowData);		
 				 await SetCompanyFollowImplementation.ExecuteMethod_StoreObjectsAsync(FollowData);		
 				}

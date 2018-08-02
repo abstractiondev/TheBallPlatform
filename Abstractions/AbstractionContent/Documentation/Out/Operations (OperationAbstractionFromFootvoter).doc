@@ -364,7 +364,7 @@ div.WordSection1
 		<p>		<div class="MsoNormal" >
 		User profile
 		</div>
-		</p><h2>Method Call: SetUserProfileFields ( UserProfile )</h2>
+		</p><h2>Method Call: SetUserProfileFields ( UserProfile, ProfileData )</h2>
 		<p>		<div class="MsoNormal" >
 		Set user profile fields
 		</div>

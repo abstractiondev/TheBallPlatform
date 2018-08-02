@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentSyncTool", "Tools\ContentSyncTool\ContentSyncTool.csproj", "{F108F4F5-4A21-41B5-AD32-471B0565B160}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBallDeviceClient", "Apps
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzMTool", "Tools\AzMTool\AzMTool.csproj", "{D4CDF9D5-AF2A-4ACA-9EE6-A31DE42526F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualStorage", "Apps\VirtualStorage\VirtualStorage.csproj", "{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSTool", "Tools\AWSTool\AWSTool.csproj", "{B3849988-DBB8-459E-86F9-19A8625A223A}"
 EndProject
@@ -58,10 +58,10 @@ Global
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.MonoDroidDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.MonoDroidDebug|Any CPU.Build.0 = Debug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetMonoDroidDebug|Any CPU.ActiveCfg = NuGetDebug|Any CPU
-		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetMonoDroidDebug|Any CPU.Build.0 = NuGetDebug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetMonoDroidDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.NuGetMonoDroidDebug|Any CPU.Build.0 = Debug|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C11070CD-4E20-4C7B-9B9B-D9E5F7FEACA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B3849988-DBB8-459E-86F9-19A8625A223A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -87,5 +87,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD026A66-EFC5-48EE-AE36-0CB47B6A6E8A}
 	EndGlobalSection
 EndGlobal

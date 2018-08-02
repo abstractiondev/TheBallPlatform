@@ -191,7 +191,7 @@
                 </Text>
               </Paragraph>
             </Header>
-            <Header text="Method Call: SetUserProfileFields ( UserProfile )" level="2">
+            <Header text="Method Call: SetUserProfileFields ( UserProfile, ProfileData )" level="2">
               <Paragraph>
                 <Text>
                   <TextContent>Set user profile fields</TextContent>

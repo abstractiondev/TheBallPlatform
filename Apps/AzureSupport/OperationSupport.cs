@@ -67,12 +67,24 @@ namespace TheBall
                 if(!isAdminOwner)
                     throw new SecurityException("TheBall.CORE or TheBall.Admin operations are only allowed from admin group");
             }
-            var fileCollection = request.Form.Files.ToDictionary(item => item.FileName, item =>
+
+            Dictionary<string, string> formValues;
+            Dictionary<string, Tuple<string, byte[]>> fileCollection;
+            if (request.HasFormContentType)
             {
-                var file = request.Form.Files[item.Name];
-                return new Tuple<string, byte[]>(file.FileName, file.OpenReadStream().ToBytes());
-            });
-            Dictionary<string, string> formValues = request.Form.ToDictionary(item => item.Key, item => (string) item.Value);
+                fileCollection = request.Form.Files.ToDictionary(item => item.FileName, item =>
+                {
+                    var file = request.Form.Files[item.Name];
+                    return new Tuple<string, byte[]>(file.FileName, file.OpenReadStream().ToBytes());
+                });
+                formValues = request.Form.ToDictionary(item => item.Key, item => (string) item.Value);
+            }
+            else
+            {
+                fileCollection = new Dictionary<string, Tuple<string, byte[]>>();
+                formValues = new Dictionary<string, string>();
+            }
+
             Dictionary<string, string> queryParameters = request.Query.ToDictionary(item => item.Key, item => (string) item.Value);
             byte[] requestContent = request.Body.ToBytes();
             HttpOperationData operationData = new HttpOperationData

@@ -1,23 +1,29 @@
 using System.Threading.Tasks;
 using Footvoter.Services.INT;
+using TheBall;
 
 namespace Footvoter.Services
 {
     public class UpdateUserProfileImplementation
     {
-        public static UserProfile GetTarget_UserProfile()
+        public static async Task<UserProfile> GetTarget_UserProfileAsync()
         {
-            throw new System.NotImplementedException();
+            var userProfile = await ObjectStorage.GetInterfaceObject<UserProfile>();
+            return userProfile ?? new UserProfile();
         }
 
-        public static void ExecuteMethod_SetUserProfileFields(UserProfile userProfile)
+
+        public static async Task ExecuteMethod_StoreObjectsAsync(UserProfile userProfile)
         {
-            throw new System.NotImplementedException();
+            await ObjectStorage.StoreInterfaceObject(userProfile);
         }
 
-        public static Task ExecuteMethod_StoreObjectsAsync(UserProfile userProfile)
+        public static void ExecuteMethod_SetUserProfileFields(UserProfile parametersProfileData, UserProfile userProfile)
         {
-            throw new System.NotImplementedException();
+            userProfile.firstName = parametersProfileData.firstName;
+            userProfile.lastName = parametersProfileData.lastName;
+            userProfile.dateOfBirth = parametersProfileData.dateOfBirth;
+            userProfile.description = parametersProfileData.description;
         }
     }
 }

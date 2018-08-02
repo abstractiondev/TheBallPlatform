@@ -154,6 +154,7 @@ namespace WebCoreLayer
             app.UseForwardedHeaders(forwardedHeadersOptions);
             app.UseHttpMethodOverride();
             app.UseAuthentication();
+            app.UseInformationContextAuthentication();
             //app.UseStaticFiles();
             app.UseMvc(routes =>
             {

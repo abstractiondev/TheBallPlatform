@@ -1,23 +1,26 @@
 using System.Threading.Tasks;
 using Footvoter.Services.INT;
+using TheBall;
 
 namespace Footvoter.Services
 {
     public class SetCompanyFollowImplementation
     {
-        public static CompanyFollowData GetTarget_FollowData()
+        public static async Task<CompanyFollowData> GetTarget_FollowDataAsync()
         {
-            throw new System.NotImplementedException();
+            var companyFollowData = await ObjectStorage.GetInterfaceObject<CompanyFollowData>();
+            return companyFollowData;
         }
 
         public static void ExecuteMethod_SetCompanyFollowData(CompanyFollowData parametersFollowDataInput, CompanyFollowData followData)
         {
-            throw new System.NotImplementedException();
+            followData.FollowDataItems = parametersFollowDataInput.FollowDataItems;
         }
 
-        public static Task ExecuteMethod_StoreObjectsAsync(CompanyFollowData followData)
+        public static async Task ExecuteMethod_StoreObjectsAsync(CompanyFollowData followData)
         {
-            throw new System.NotImplementedException();
+            await ObjectStorage.StoreInterfaceObject(followData);
         }
+
     }
 }

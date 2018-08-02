@@ -8,5 +8,11 @@ namespace WebCoreLayer
         {
             return builder.UseMiddleware<InformationContextMiddleware>();
         }
+
+        public static IApplicationBuilder UseInformationContextAuthentication(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<InformationContextAuthenticationMiddleware>();
+        }
+
     }
 }
